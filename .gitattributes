@@ -4,3 +4,4 @@ ib_logfile* filter=lfs diff=lfs merge=lfs -text
 ibdata1 filter=lfs diff=lfs merge=lfs -text
 DearmWorldFiles/mysql/data/ibdata1 filter=lfs diff=lfs merge=lfs -text
 DreamWorldFiles/mysql/data/ibdata1 filter=lfs diff=lfs merge=lfs -text
+DreamWorldFiles-4[[:space:]]sims/mysql/data/ibdata1 filter=lfs diff=lfs merge=lfs -text
