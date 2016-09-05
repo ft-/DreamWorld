@@ -1,0 +1,60 @@
+C:\DreamLand Setup Program\2010\Setup DreamWorld\Setup DreamWorld\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\DreamLand Setup Program\2010\Setup DreamWorld\Setup DreamWorld\obj\x86\Debug\WindowsApplication1.Form1.resources
+C:\DreamLand Setup Program\2010\Setup DreamWorld\Setup DreamWorld\obj\x86\Debug\WindowsApplication1.Resources.resources
+C:\DreamLand Setup Program\2010\Setup DreamWorld\Setup DreamWorld\obj\x86\Debug\GenerateResource.read.1.tlog
+C:\DreamLand Setup Program\2010\Setup DreamWorld\Setup DreamWorld\obj\x86\Debug\GenerateResource.write.1.tlog
+C:\DreamLand Setup Program\2010\Setup DreamWorld\Setup DreamWorld\bin\Debug\Run DreamWorld.exe.manifest
+C:\DreamLand Setup Program\2010\Setup DreamWorld\Setup DreamWorld\bin\Debug\Run DreamWorld.application
+C:\DreamLand Setup Program\2010\Setup DreamWorld\Setup DreamWorld\bin\Debug\Run DreamWorld.exe
+C:\DreamLand Setup Program\2010\Setup DreamWorld\Setup DreamWorld\bin\Debug\Run DreamWorld.pdb
+C:\DreamLand Setup Program\2010\Setup DreamWorld\Setup DreamWorld\bin\Debug\Run DreamWorld.xml
+C:\DreamLand Setup Program\2010\Setup DreamWorld\Setup DreamWorld\obj\x86\Debug\Run DreamWorld.TrustInfo.xml
+C:\DreamLand Setup Program\2010\Setup DreamWorld\Setup DreamWorld\obj\x86\Debug\Run DreamWorld.exe.manifest
+C:\DreamLand Setup Program\2010\Setup DreamWorld\Setup DreamWorld\obj\x86\Debug\Run DreamWorld.application
+C:\DreamLand Setup Program\2010\Setup DreamWorld\Setup DreamWorld\obj\x86\Debug\Run DreamWorld.exe
+C:\DreamLand Setup Program\2010\Setup DreamWorld\Setup DreamWorld\obj\x86\Debug\Run DreamWorld.xml
+C:\DreamLand Setup Program\2010\Setup DreamWorld\Setup DreamWorld\obj\x86\Debug\Run DreamWorld.pdb
+F:\Installer\2010\Setup DreamWorld\Setup DreamWorld\obj\x86\Debug\ResolveAssemblyReference.cache
+F:\Installer\2010\Setup DreamWorld\Setup DreamWorld\obj\x86\Debug\WindowsApplication1.Form1.resources
+F:\Installer\2010\Setup DreamWorld\Setup DreamWorld\obj\x86\Debug\WindowsApplication1.Resources.resources
+F:\Installer\2010\Setup DreamWorld\Setup DreamWorld\obj\x86\Debug\GenerateResource.read.1.tlog
+F:\Installer\2010\Setup DreamWorld\Setup DreamWorld\obj\x86\Debug\GenerateResource.write.1.tlog
+F:\Installer\2010\Setup DreamWorld\Setup DreamWorld\obj\x86\Debug\Run DreamWorld.exe
+F:\Installer\2010\Setup DreamWorld\Setup DreamWorld\obj\x86\Debug\Run DreamWorld.xml
+F:\Installer\2010\Setup DreamWorld\Setup DreamWorld\obj\x86\Debug\Run DreamWorld.pdb
+F:\Installer\2010\Setup DreamWorld\Setup DreamWorld\bin\Debug\Run DreamWorld.exe.manifest
+F:\Installer\2010\Setup DreamWorld\Setup DreamWorld\bin\Debug\Run DreamWorld.application
+F:\Installer\2010\Setup DreamWorld\Setup DreamWorld\bin\Debug\Run DreamWorld.exe
+F:\Installer\2010\Setup DreamWorld\Setup DreamWorld\bin\Debug\Run DreamWorld.pdb
+F:\Installer\2010\Setup DreamWorld\Setup DreamWorld\bin\Debug\Run DreamWorld.xml
+F:\Installer\2010\Setup DreamWorld\Setup DreamWorld\obj\x86\Debug\Run DreamWorld.TrustInfo.xml
+F:\Installer\2010\Setup DreamWorld\Setup DreamWorld\obj\x86\Debug\Run DreamWorld.exe.manifest
+F:\Installer\2010\Setup DreamWorld\Setup DreamWorld\obj\x86\Debug\Run DreamWorld.application
+C:\Opensim\DreamWorld GitHub\Installer Src\2010\Setup DreamWorld\Setup DreamWorld\bin\Debug\Start DreamWorld.exe.manifest
+C:\Opensim\DreamWorld GitHub\Installer Src\2010\Setup DreamWorld\Setup DreamWorld\bin\Debug\Start DreamWorld.application
+C:\Opensim\DreamWorld GitHub\Installer Src\2010\Setup DreamWorld\Setup DreamWorld\bin\Debug\Start DreamWorld.exe
+C:\Opensim\DreamWorld GitHub\Installer Src\2010\Setup DreamWorld\Setup DreamWorld\bin\Debug\Start DreamWorld.pdb
+C:\Opensim\DreamWorld GitHub\Installer Src\2010\Setup DreamWorld\Setup DreamWorld\bin\Debug\Start DreamWorld.xml
+C:\Opensim\DreamWorld GitHub\Installer Src\2010\Setup DreamWorld\Setup DreamWorld\obj\x86\Debug\WindowsApplication1.Form1.resources
+C:\Opensim\DreamWorld GitHub\Installer Src\2010\Setup DreamWorld\Setup DreamWorld\obj\x86\Debug\WindowsApplication1.Resources.resources
+C:\Opensim\DreamWorld GitHub\Installer Src\2010\Setup DreamWorld\Setup DreamWorld\obj\x86\Debug\Setup DreamWorld.vbproj.GenerateResource.Cache
+C:\Opensim\DreamWorld GitHub\Installer Src\2010\Setup DreamWorld\Setup DreamWorld\obj\x86\Debug\Start DreamWorld.TrustInfo.xml
+C:\Opensim\DreamWorld GitHub\Installer Src\2010\Setup DreamWorld\Setup DreamWorld\obj\x86\Debug\Start DreamWorld.exe.manifest
+C:\Opensim\DreamWorld GitHub\Installer Src\2010\Setup DreamWorld\Setup DreamWorld\obj\x86\Debug\Start DreamWorld.application
+C:\Opensim\DreamWorld GitHub\Installer Src\2010\Setup DreamWorld\Setup DreamWorld\obj\x86\Debug\Start DreamWorld.exe
+C:\Opensim\DreamWorld GitHub\Installer Src\2010\Setup DreamWorld\Setup DreamWorld\obj\x86\Debug\Start DreamWorld.xml
+C:\Opensim\DreamWorld GitHub\Installer Src\2010\Setup DreamWorld\Setup DreamWorld\obj\x86\Debug\Start DreamWorld.pdb
+C:\Opensim\DreamWorld-GitHub\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Debug\Start DreamWorld.exe
+C:\Opensim\DreamWorld-GitHub\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Debug\Start DreamWorld.xml
+C:\Opensim\DreamWorld-GitHub\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Debug\Start DreamWorld.pdb
+C:\Opensim\DreamWorld-GitHub\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Debug\Setup DreamWorld.vbproj.GenerateResource.Cache
+C:\Opensim\DreamWorld-GitHub\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\bin\Debug\Start DreamWorld.exe.manifest
+C:\Opensim\DreamWorld-GitHub\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\bin\Debug\Start DreamWorld.application
+C:\Opensim\DreamWorld-GitHub\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\bin\Debug\Start DreamWorld.exe
+C:\Opensim\DreamWorld-GitHub\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\bin\Debug\Start DreamWorld.pdb
+C:\Opensim\DreamWorld-GitHub\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\bin\Debug\Start DreamWorld.xml
+C:\Opensim\DreamWorld-GitHub\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Debug\Start DreamWorld.TrustInfo.xml
+C:\Opensim\DreamWorld-GitHub\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Debug\Start DreamWorld.exe.manifest
+C:\Opensim\DreamWorld-GitHub\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Debug\Start DreamWorld.application
+C:\Opensim\DreamWorld-GitHub\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Debug\DreamWorld.Form1.resources
+C:\Opensim\DreamWorld-GitHub\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Debug\DreamWorld.Resources.resources
