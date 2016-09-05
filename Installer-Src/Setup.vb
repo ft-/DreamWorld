@@ -3,20 +3,21 @@ Imports System.IO
 Imports System.Text
 Imports System.Threading
 Imports System.Net.Sockets
+Imports IWshRuntimeLibrary
+
 
 Public Class Form1
 
     Private Declare Sub Sleep Lib "kernel32.dll" (ByVal Milliseconds As Integer)
 
-    Dim CurDrive    ' Holds the current drive that we are on F:\
+    Dim CurDir    ' Holds the current folder that we are running in
     Dim InstallTo  ' Holds a drive we need to copy files to
     Dim Webpage As String
     Dim ctr As Integer
-    Dim DreamWorldName As String
     Dim Opensim As Process
 
-    ' Needed for some systems to clean up the stack, better be safe
     Private Sub Form1_Leave(sender As Object, e As System.EventArgs) Handles Me.Leave
+        ' Needed for some systems to clean up the stack, better be safe
         System.Windows.Forms.Application.Exit()
     End Sub
 
@@ -25,68 +26,31 @@ Public Class Form1
         Dim location As String = System.Environment.GetCommandLineArgs()(0)
         Dim appName As String = System.IO.Path.GetFileName(location)
 
-        ' locate the Start XXX name so we can install to XXX
+        CurDir = My.Application.Info.DirectoryPath
+        ' for debugging when compiling
+       
+        ' FKB debug only
+        CurDir = "C:\DreamWorld"
+        ChDir(CurDir)
 
-        Dim l As Integer
-        Dim appString = Mid(appName, InStr(appName, " "))
-        If (Len(appName)) Then
-            l = InStr(appString, ".")
-            DreamWorldName = Mid(appString, 1, l - 1)
-        Else
-            MsgBox("Cannot locate file name: " + appName, vbAbort)
-        End If
-
-        Me.Text = "Setup " & DreamWorldName
-        Dim installed As Integer
+        Me.Text = "Opensimulator DreamWorld"
 
         ctr = 0
-        installed = False
-        ComboBox1.Visible = False
 
         Label.Visible = True
-
-        InstallButton.Visible = False
-        StartButton.Visible = False
-        StopButton.Visible = False
-        BusyButton.Visible = False
-
-
-        CurDrive = Path.GetPathRoot(My.Application.Info.DirectoryPath)
+        Buttons(InstallButton)
 
         ' Find out if we are running this on the Installed Drive
-        If Dir(CurDrive & "\" & DreamWorldName & "\") <> "" Then
-            installed = True
+        If System.IO.File.Exists("Init") Then
             Buttons(StartButton)
-            Me.Text = "Start " & DreamWorldName
+            Me.Text = "Start Dreamworld"
         Else
+            Dim fs As FileStream = System.IO.File.Create("Init")
+            Dim info As Byte() = New UTF8Encoding(True).GetBytes("This file exists when things are all set up")
+            fs.Write(info, 0, info.Length)
+            fs.Close()
+
             Buttons(InstallButton)
-            Dim allDrives() As DriveInfo = DriveInfo.GetDrives()
-            Dim d As DriveInfo
-            Dim enough As Boolean
-
-            enough = False ' enough space?
-            For Each d In allDrives
-                If d.IsReady = True Then
-                    If (d.TotalFreeSpace > 3000000.0 And (d.DriveType = 3 Or d.DriveType = 4)) Then
-                        ComboBox1.Items.Add(d.Name)
-                        enough = True
-                    End If
-                End If
-            Next
-            If enough = True Then
-
-
-                ComboBox1.SelectedIndex = 0
-                ComboBox1.Visible = True
-                Buttons(InstallButton)
-                Label.Text = "Copy to:"
-            Else
-                CurDrive = Path.GetPathRoot(My.Application.Info.DirectoryPath)
-                ComboBox1.Visible = False
-                Label.Text = ""
-                MsgBox("No enough disk free space to install on any drive, needs 3 Gigs", vbAbort)
-                End
-            End If
         End If
         Application.DoEvents()
     End Sub
@@ -97,7 +61,7 @@ Public Class Form1
         Buttons(BusyButton)
 
         Label.Visible = True
-        Label.Text = "Starting Mowes"
+        Print("Starting Mowes")
 
         Dim p As Process = New Process()
         Dim pi As ProcessStartInfo = New ProcessStartInfo()
@@ -106,7 +70,7 @@ Public Class Form1
         If Not Console.Checked Then
             pi.WindowStyle = ProcessWindowStyle.Minimized
         End If
-        pi.FileName = CurDrive & DreamWorldName & "\Mowes.exe"
+        pi.FileName = CurDir & "\DreamWorldFiles\Mowes.exe"
         p.StartInfo = pi
         p.Start()
 
@@ -130,7 +94,7 @@ Public Class Form1
             Status = CheckMySQL()
             If Status Then
                 iSRunning = 0
-                Label.Text = "MySql is Up"
+                Print("MySql is Up")
             End If
         End While
         ctr = 0 ' retry counter reset - lets give them a minute to get on
@@ -140,44 +104,47 @@ Public Class Form1
 
     Private Sub Install_Click_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles InstallButton.Click
 
-        Dim Dir As String
-        Dir = CurDir()
-
         Buttons(BusyButton)
 
-        ComboBox1.Visible = False
-        Label.Text = "Installing to " + InstallTo & DreamWorldName
 
-        ' FKB debug only
-        Dir = "C:\Opensim\DreamWorld-GitHub"
+        '       Create_ShortCut(InstallTo & DreamWorldName + "\Setup\Start" + DreamWorldName + ".exe", _
+        '                     "Desktop", _
+        '                    "DreamWorld", _
+        '                   "", _
+        '                  InstallTo & DreamWorldName + "\Setup", _
+        '                 WshWindowStyle.WshNormalFocus, _
+        '                0)
 
-        My.Computer.FileSystem.CreateDirectory(InstallTo & DreamWorldName)
-        My.Computer.FileSystem.CopyDirectory(Dir & "\DreamWorldFiles", InstallTo & DreamWorldName, showUI:=FileIO.UIOption.AllDialogs)
 
-        Label.Text = "Installing Onlook Viewer"
+        'ByVal sTargetPath As String, _
+        '                        ByVal sShortCutPath As String, _
+        '                        ByVal sShortCutName As String, _
+        '                        Optional ByVal sArguments As String = "", _
+        '                        Optional ByVal sWorkPath As String = "", _
+        '                        Optional ByVal eWinStyle As WshWindowStyle = vbNormalFocus, _
+        '                        Optional ByVal iIconNum As Integer = 0
+
+        Print("Installing Onlook Viewer")
 
         Dim p As Process = New Process()
         Dim pi As ProcessStartInfo = New ProcessStartInfo()
         pi.Arguments = ""
-        pi.FileName = Dir & "\Viewer\Onlook.exe"
+        pi.FileName = CurDir & "\Viewer\Onlook.exe"
         p.StartInfo = pi
         p.Start()
 
-        Label.Text = "Installing Grid Info"
+        Print("Installing Grid Info")
+
         Dim appData As String = My.Computer.FileSystem.SpecialDirectories.CurrentUserApplicationData
+
         Dim path As String
         path = Mid(appData, 1, InStr(appData, "AppData") - 1)
 
-        My.Computer.FileSystem.CopyFile(Dir & "\Viewer\grids_sg1.xml", path + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml", True)
-
-        CurDrive = InstallTo
+        My.Computer.FileSystem.CopyFile(CurDir & "\Viewer\grids_sg1.xml", path + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml", True)
 
         ' allow them to launch now
-        Label.Text = "Ready to Launch"
+        Print("Ready to Launch")
         Buttons(StartButton)
-
-        ComboBox1.Visible = False
-        Application.DoEvents()
     End Sub
 
     Private Sub WebBrowser1_DocumentCompleted(ByVal sender As System.Object, ByVal e As System.Windows.Forms.WebBrowserDocumentCompletedEventArgs) Handles WebBrowser1.DocumentCompleted
@@ -195,11 +162,9 @@ Public Class Form1
         End If
 
         If Webpage = "Up" Then
-
-            Label.Text = "Starting Opensimulator"
-
             '  Launch(OpenSim)
-            ChDir(CurDrive & DreamWorldName & "\Opensim\bin\")
+            Print("Starting Opensimulator")
+            ChDir(CurDir & "\DreamWorldFiles\Opensim\bin\")
 
             Dim p As Process = New Process()
             Dim pi As ProcessStartInfo = New ProcessStartInfo()
@@ -211,7 +176,7 @@ Public Class Form1
                 pi.WindowStyle = ProcessWindowStyle.Hidden
             End If
 
-            pi.FileName = CurDrive & DreamWorldName & "\Opensim\bin\OpenSim.exe"
+            pi.FileName = CurDir & "\DreamWorldFiles\Opensim\bin\OpenSim.exe"
             p.StartInfo = pi
             p.Start()
             Application.DoEvents()
@@ -227,9 +192,7 @@ Public Class Form1
         Application.DoEvents()
     End Sub
 
-    Private Sub ComboBox1_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ComboBox1.SelectedIndexChanged
-        InstallTo = ComboBox1.SelectedItem
-    End Sub
+    
 
 
     Private Sub WebBrowser2_DocumentCompleted(ByVal sender As System.Object, ByVal e As System.Windows.Forms.WebBrowserDocumentCompletedEventArgs) Handles WebBrowser2.DocumentCompleted
@@ -245,10 +208,9 @@ Public Class Form1
         End If
 
         If Webpage = "Up" Then
-            Label.Text = "Starting Onlook viewer"
+            Print("Starting Onlook viewer")
             ctr = 0
-            Dim Viewer
-            Viewer = Shell(CurDrive & "Program Files (x86)\Onlook\OnLookViewer.exe")
+            Dim Viewer = Shell("C:\Program Files (x86)\Onlook\OnLookViewer.exe")
             If (Viewer) Then
                 ' Show the console
                 Dim webAddress As String = "http://127.0.0.1:9100/wifi"
@@ -267,15 +229,14 @@ Public Class Form1
 
     End Sub
 
-
     Private Sub StopButton_Click(sender As System.Object, e As System.EventArgs) Handles StopButton.Click
 
         Buttons(BusyButton)
-        Label.Text = "Stopping"
+        Print("Stopping")
         ZapAll()
         Buttons(StartButton)
-        Label.Text = ""
-        Application.DoEvents()
+        Print("")
+
     End Sub
 
     Private Function CheckMySQL() As Boolean
@@ -292,22 +253,19 @@ Public Class Form1
         Catch ex As Exception
             Return False
         End Try
-        Application.DoEvents()
         Return True
 
     End Function
 
     Private Function zap(process As String) As Boolean
 
-        Label.Text = "Stopping " + process
+        Print("Stopping " + process)
         ' Kill process by name
         For Each P As Process In System.Diagnostics.Process.GetProcessesByName(process)
             P.Kill()
         Next
-        Label.Text = ""
-        Application.DoEvents()
+        Print("")
         Return True
-
     End Function
 
 
@@ -317,13 +275,12 @@ Public Class Form1
 
         Dim result As Integer = MessageBox.Show("Do you want to Abort?", "caption", MessageBoxButtons.YesNo)
         If result = DialogResult.Yes Then
-            Label.Text = "Stopping"
+            Print("Stopping")
+            Application.DoEvents()
             ZapAll()
             Buttons(StartButton)
-            Label.Text = ""
+            Print("")
         End If
-        Application.DoEvents()
-
     End Sub
 
     Private Function Buttons(button As System.Object) As Boolean
@@ -334,14 +291,12 @@ Public Class Form1
         StartButton.Visible = False
         InstallButton.Visible = False
         button.Visible = True
-        Label.Text = ""
-        Application.DoEvents()
-
+        Print("")
         Return True
 
     End Function
 
-    Private Function ZapAll() As Boolean
+    Private Function ZapAll()
 
         zap("OpenSim")
         zap("mysqld-nt")
@@ -351,4 +306,38 @@ Public Class Form1
         Return True
     End Function
 
+
+
+    Private Sub Create_ShortCut(ByVal sTargetPath As String, _
+                                ByVal sShortCutPath As String, _
+                                ByVal sShortCutName As String, _
+                                Optional ByVal sArguments As String = "", _
+                                Optional ByVal sWorkPath As String = "", _
+                                Optional ByVal eWinStyle As WshWindowStyle = vbNormalFocus, _
+                                Optional ByVal iIconNum As Integer = 0)
+
+        ' Requires reference to Windows Script Host Object Model
+        Dim oShell As IWshRuntimeLibrary.WshShell
+        Dim oShortCut As IWshRuntimeLibrary.WshShortcut
+
+        oShell = New IWshRuntimeLibrary.WshShell
+        oShortCut = oShell.CreateShortcut(oShell.SpecialFolders(sShortCutPath) & _
+                                              "\" & sShortCutName & ".lnk")
+        With oShortCut
+            .TargetPath = sTargetPath
+            .Arguments = sArguments
+            .WorkingDirectory = sWorkPath
+            .WindowStyle = eWinStyle
+            .IconLocation = sTargetPath & "," & iIconNum
+            .Save()
+        End With
+
+        oShortCut = Nothing : oShell = Nothing
+    End Sub
+
+    Private Sub Print(Value As String)
+        Label.Text = Value
+        Application.DoEvents()
+    End Sub
 End Class
+

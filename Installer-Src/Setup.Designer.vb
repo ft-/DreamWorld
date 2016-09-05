@@ -23,26 +23,16 @@ Partial Class Form1
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Form1))
-        Me.InstallButton = New System.Windows.Forms.Button()
         Me.StartButton = New System.Windows.Forms.Button()
         Me.WebBrowser1 = New System.Windows.Forms.WebBrowser()
         Me.Label = New System.Windows.Forms.Label()
-        Me.ComboBox1 = New System.Windows.Forms.ComboBox()
         Me.WebBrowser2 = New System.Windows.Forms.WebBrowser()
         Me.StopButton = New System.Windows.Forms.Button()
         Me.BusyButton = New System.Windows.Forms.Button()
         Me.Console = New System.Windows.Forms.CheckBox()
         Me.Label1 = New System.Windows.Forms.Label()
+        Me.InstallButton = New System.Windows.Forms.Button()
         Me.SuspendLayout()
-        '
-        'InstallButton
-        '
-        Me.InstallButton.Location = New System.Drawing.Point(288, 14)
-        Me.InstallButton.Name = "InstallButton"
-        Me.InstallButton.Size = New System.Drawing.Size(75, 23)
-        Me.InstallButton.TabIndex = 0
-        Me.InstallButton.Text = "Install"
-        Me.InstallButton.UseVisualStyleBackColor = True
         '
         'StartButton
         '
@@ -68,17 +58,8 @@ Partial Class Form1
         Me.Label.ForeColor = System.Drawing.Color.White
         Me.Label.Location = New System.Drawing.Point(67, 19)
         Me.Label.Name = "Label"
-        Me.Label.Size = New System.Drawing.Size(77, 13)
+        Me.Label.Size = New System.Drawing.Size(0, 13)
         Me.Label.TabIndex = 6
-        Me.Label.Text = "Install to Drive:"
-        '
-        'ComboBox1
-        '
-        Me.ComboBox1.FormattingEnabled = True
-        Me.ComboBox1.Location = New System.Drawing.Point(150, 16)
-        Me.ComboBox1.Name = "ComboBox1"
-        Me.ComboBox1.Size = New System.Drawing.Size(69, 21)
-        Me.ComboBox1.TabIndex = 7
         '
         'WebBrowser2
         '
@@ -127,6 +108,15 @@ Partial Class Form1
         Me.Label1.TabIndex = 13
         Me.Label1.Text = "Show Consoles"
         '
+        'InstallButton
+        '
+        Me.InstallButton.Location = New System.Drawing.Point(288, 14)
+        Me.InstallButton.Name = "InstallButton"
+        Me.InstallButton.Size = New System.Drawing.Size(75, 23)
+        Me.InstallButton.TabIndex = 0
+        Me.InstallButton.Text = "Install"
+        Me.InstallButton.UseVisualStyleBackColor = True
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -139,7 +129,6 @@ Partial Class Form1
         Me.Controls.Add(Me.BusyButton)
         Me.Controls.Add(Me.StopButton)
         Me.Controls.Add(Me.WebBrowser2)
-        Me.Controls.Add(Me.ComboBox1)
         Me.Controls.Add(Me.Label)
         Me.Controls.Add(Me.WebBrowser1)
         Me.Controls.Add(Me.StartButton)
@@ -151,7 +140,6 @@ Partial Class Form1
         Me.PerformLayout()
 
     End Sub
-    Friend WithEvents InstallButton As System.Windows.Forms.Button
 
     Public Sub New()
 
@@ -164,10 +152,10 @@ Partial Class Form1
     Friend WithEvents StartButton As System.Windows.Forms.Button
     Friend WithEvents WebBrowser1 As System.Windows.Forms.WebBrowser
     Friend WithEvents Label As System.Windows.Forms.Label
-    Friend WithEvents ComboBox1 As System.Windows.Forms.ComboBox
     Friend WithEvents WebBrowser2 As System.Windows.Forms.WebBrowser
     Friend WithEvents StopButton As System.Windows.Forms.Button
     Friend WithEvents BusyButton As System.Windows.Forms.Button
     Friend WithEvents Console As System.Windows.Forms.CheckBox
     Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents InstallButton As System.Windows.Forms.Button
 End Class

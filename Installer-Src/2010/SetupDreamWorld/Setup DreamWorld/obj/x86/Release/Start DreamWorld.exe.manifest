@@ -43,14 +43,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Start DreamWorld.exe" size="218624">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Start DreamWorld.exe" size="222208">
       <assemblyIdentity name="Start DreamWorld" version="1.0.0.0" language="neutral" processorArchitecture="x86" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>CfE6BqHu9Za2n0bh82abwVYQIgE=</dsig:DigestValue>
+        <dsig:DigestValue>XrqVRrpffdzgOr13vH2Ytpl8xuk=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
