@@ -92,6 +92,9 @@ Public Class Form1
         ' Start Mowes, which starts MySql and Apache automatically.
         Buttons(BusyButton)
 
+        Label.Visible = True
+        Label.Text = "Starting Mowes"
+
         Dim p As Process = New Process()
         Dim pi As ProcessStartInfo = New ProcessStartInfo()
         pi.Arguments = ""
@@ -122,6 +125,7 @@ Public Class Form1
             Status = CheckMySQL()
             If Status Then
                 iSRunning = 0
+                Label.Text = "MySql is Up"
             End If
         End While
         ctr = 0 ' retry counter reset - lets give them a minute to get on
@@ -136,11 +140,16 @@ Public Class Form1
 
         Buttons(BusyButton)
 
-        ' debug only
+        Label.Visible = True
+        Label.Text = "Installing Files to " + InstallTo & DreamWorldName
+
+        ' FKB debug only
         Dir = "C:\Opensim\DreamWorld-GitHub"
 
         My.Computer.FileSystem.CreateDirectory(InstallTo & DreamWorldName)
         My.Computer.FileSystem.CopyDirectory(Dir & "\DreamWorldFiles", InstallTo & DreamWorldName, showUI:=FileIO.UIOption.AllDialogs)
+
+        Label.Text = "Installing Onlook Viewer"
 
         Dim p As Process = New Process()
         Dim pi As ProcessStartInfo = New ProcessStartInfo()
@@ -149,8 +158,9 @@ Public Class Form1
         p.StartInfo = pi
         p.Start()
 
-        Dim appData As String = My.Computer.FileSystem.SpecialDirectories.CurrentUserApplicationData
 
+        Label.Text = "Installing Grid Info"
+        Dim appData As String = My.Computer.FileSystem.SpecialDirectories.CurrentUserApplicationData
         Dim path As String
         path = Mid(appData, 1, InStr(appData, "AppData") - 1)
 
@@ -159,10 +169,10 @@ Public Class Form1
         CurDrive = InstallTo
 
         ' allow them to launch now
+        Label.Text = "Ready to Launch"
         Buttons(StartButton)
 
         ComboBox1.Visible = False
-        Label.Visible = False
 
     End Sub
 
@@ -181,6 +191,8 @@ Public Class Form1
         End If
 
         If Webpage = "Up" Then
+
+            Label.Text = "Starting Opensimulator"
 
             '  Launch(OpenSim)
             ChDir(CurDrive & DreamWorldName & "\Opensim\bin\")
@@ -228,6 +240,7 @@ Public Class Form1
         End If
 
         If Webpage = "Up" Then
+            Label.Text = "Starting Onlook viewer"
             ctr = 0
             Dim Viewer
             Viewer = Shell(CurDrive & "Program Files (x86)\Onlook\OnLookViewer.exe")
@@ -239,12 +252,9 @@ Public Class Form1
             Else
                 MsgBox("Cannot launch the Onlook viewer,  You can try to run it (or another viewer) and add http://127.0.0.1:9100' in the Grid Manager.  Exiting", vbCritical)
                 Buttons(StopButton)
-
             End If
-
         Else
             Sleep(1000)
-
             WebBrowser2.Navigate("http://127.0.0.1:9100/wifi/up.html")
         End If
 
@@ -260,7 +270,7 @@ Public Class Form1
         ZapAll()
         
         Buttons(StartButton)
-        Label.Visible = False
+        Label.Text = ""
 
     End Sub
 
@@ -273,35 +283,24 @@ Public Class Form1
         Dim ServerAddress As String = "127.0.0.1" ' Set the IP address of the server
         Dim PortNumber As Integer = 3307 ' Set the port number used by the server
 
-        Dim Failed As Boolean
-        Failed = True
-        Dim counter As Integer
-        counter = 30000
+        Try
+            ClientSocket.Connect(ServerAddress, PortNumber)
+        Catch ex As Exception
+            Return False
+        End Try
 
-        While Failed
-            Try
-                Failed = False ' let us be optimistic
-                ClientSocket.Connect(ServerAddress, PortNumber)
-            Catch ex As Exception
-                Sleep(1000)
-                Failed = True ' shit, try again
-            End Try
-
-            If Not Failed Then
-                Return True ' Yay
-            End If
-        End While
-
-        Return False
+        Return True
 
     End Function
 
     Private Function zap(process As String) As Boolean
 
+        Label.Text = "Stopping " + process
         ' Kill process by name
         For Each P As Process In System.Diagnostics.Process.GetProcessesByName(process)
             P.Kill()
         Next
+        Label.Text = ""
         Return True
 
     End Function
@@ -317,6 +316,7 @@ Public Class Form1
             Label.Text = "Stopping"
             ZapAll()
             Buttons(StartButton)
+            Label.Text = ""
             Label.Visible = False
         End If
 
@@ -330,6 +330,10 @@ Public Class Form1
         StartButton.Visible = False
         InstallButton.Visible = False
         button.Visible = True
+        Label.Text = ""
+        Label.Visible = False
+        Application.DoEvents()
+
         Return True
 
     End Function
