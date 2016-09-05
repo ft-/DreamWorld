@@ -27,14 +27,15 @@
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>false</MapFileExtensions>
     <UpdateUrl>http://www.outworldz.com/DreamWorld/Updates/</UpdateUrl>
-    <SupportUrl>http://www.ForEverVirtual.com</SupportUrl>
+    <SupportUrl>http://www.Outworldz.com/DreamWorld</SupportUrl>
+    <ErrorReportUrl>http://www.Outworldz.com/DreamWorld/error.htm</ErrorReportUrl>
     <TargetCulture>en-US</TargetCulture>
-    <ProductName>ForEverVirtual Pets</ProductName>
-    <PublisherName>ForEverVirtual.com</PublisherName>
+    <ProductName>DreamWorld Installer</ProductName>
+    <PublisherName>Outworldz.com</PublisherName>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
     <AutorunEnabled>true</AutorunEnabled>
     <ApplicationRevision>1</ApplicationRevision>
-    <ApplicationVersion>0.1.0.1</ApplicationVersion>
+    <ApplicationVersion>0.2.0.1</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -92,6 +93,9 @@
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>horse mustang.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />

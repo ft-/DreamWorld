@@ -29,6 +29,7 @@ Partial Class Form1
         Me.Label = New System.Windows.Forms.Label()
         Me.ComboBox1 = New System.Windows.Forms.ComboBox()
         Me.WebBrowser2 = New System.Windows.Forms.WebBrowser()
+        Me.StopButton = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'Install
@@ -62,7 +63,7 @@ Partial Class Form1
         Me.Label.AutoSize = True
         Me.Label.BackColor = System.Drawing.Color.Black
         Me.Label.ForeColor = System.Drawing.Color.White
-        Me.Label.Location = New System.Drawing.Point(72, 19)
+        Me.Label.Location = New System.Drawing.Point(29, 19)
         Me.Label.Name = "Label"
         Me.Label.Size = New System.Drawing.Size(77, 13)
         Me.Label.TabIndex = 6
@@ -71,7 +72,7 @@ Partial Class Form1
         'ComboBox1
         '
         Me.ComboBox1.FormattingEnabled = True
-        Me.ComboBox1.Location = New System.Drawing.Point(176, 16)
+        Me.ComboBox1.Location = New System.Drawing.Point(150, 16)
         Me.ComboBox1.Name = "ComboBox1"
         Me.ComboBox1.Size = New System.Drawing.Size(69, 21)
         Me.ComboBox1.TabIndex = 7
@@ -84,13 +85,23 @@ Partial Class Form1
         Me.WebBrowser2.Size = New System.Drawing.Size(125, 53)
         Me.WebBrowser2.TabIndex = 8
         '
+        'StopButton
+        '
+        Me.StopButton.Location = New System.Drawing.Point(288, 12)
+        Me.StopButton.Name = "StopButton"
+        Me.StopButton.Size = New System.Drawing.Size(75, 23)
+        Me.StopButton.TabIndex = 10
+        Me.StopButton.Text = "Stop"
+        Me.StopButton.UseVisualStyleBackColor = True
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.Black
         Me.BackgroundImage = CType(resources.GetObject("$this.BackgroundImage"), System.Drawing.Image)
-        Me.ClientSize = New System.Drawing.Size(411, 319)
+        Me.ClientSize = New System.Drawing.Size(409, 323)
+        Me.Controls.Add(Me.StopButton)
         Me.Controls.Add(Me.WebBrowser2)
         Me.Controls.Add(Me.ComboBox1)
         Me.Controls.Add(Me.Label)
@@ -119,4 +130,5 @@ Partial Class Form1
     Friend WithEvents Label As System.Windows.Forms.Label
     Friend WithEvents ComboBox1 As System.Windows.Forms.ComboBox
     Friend WithEvents WebBrowser2 As System.Windows.Forms.WebBrowser
+    Friend WithEvents StopButton As System.Windows.Forms.Button
 End Class

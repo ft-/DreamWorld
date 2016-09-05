@@ -2,7 +2,7 @@
 Imports System.IO
 Imports System.Text
 Imports System.Threading
-
+Imports System.Net.Sockets
 
 
 Public Class Form1
@@ -16,13 +16,24 @@ Public Class Form1
     Dim ctr
     Dim DreamWorldName
 
+    Private Sub Form1_Leave(sender As Object, e As System.EventArgs) Handles Me.Leave
+        System.Windows.Forms.Application.Exit()
+    End Sub
+
     Private Sub Form1_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 
         Dim location As String = System.Environment.GetCommandLineArgs()(0)
         Dim appName As String = System.IO.Path.GetFileName(location)
 
-        appName = Mid(appName, InStr(appName, " "))
-        DreamWorldName = Mid(appName, 1, InStr(appName, ".vshost") - 1)
+        Dim l As Integer
+        Dim appString = Mid(appName, InStr(appName, " "))
+        If (Len(appName)) Then
+            l = InStr(appString, ".")
+            DreamWorldName = Mid(appString, 1, l - 1)
+        Else
+            MsgBox("Cannot locate file name: " + appName, vbAbort)
+        End If
+
 
         Me.Text = "Setup " & DreamWorldName
         Dim installed As Integer
@@ -30,6 +41,8 @@ Public Class Form1
         ctr = 0
         installed = False
         ComboBox1.Visible = False
+        StopButton.Visible = False
+
         Label.Visible = False
         CurDrive = Path.GetPathRoot(My.Application.Info.DirectoryPath)
 
@@ -47,8 +60,6 @@ Public Class Form1
             Dim allDrives() As DriveInfo = DriveInfo.GetDrives()
             Dim d As DriveInfo
             Dim enough As Boolean
-
-            'MsgBox(Path.GetPathRoot(My.Application.Info.DirectoryPath))
 
             enough = False ' enough space?
             For Each d In allDrives
@@ -76,13 +87,32 @@ Public Class Form1
     Private Sub Start_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Start.Click
 
         Dim mowes
+        StopButton.Visible = True
         mowes = Shell(CurDrive & DreamWorldName & "\Mowes.exe")
+
 
         If (mowes > 0) Then
             ' success
+
+            Dim iSRunning As Integer
+            iSRunning = 30000
+            Dim Status = 0
+
+            While iSRunning > 0
+                Sleep(10000)
+                iSRunning = iSRunning - 1
+                Status = CheckMySQL()
+                If Status Then
+                    iSRunning = 0
+                End If
+
+            End While
+
+
             ctr = 0 ' retry counter - lets give them a minute to get on
-            Sleep(10000)
+
             WebBrowser1.Navigate("http://127.0.0.1:62535/start/up.htm")
+
         Else
             MsgBox("Something went wrong. Cannot launch '" & CurDrive & DreamWorldName & "\Mowes.exe'", vbAbort)
         End If
@@ -104,18 +134,19 @@ Public Class Form1
             My.Computer.FileSystem.CreateDirectory(InstallTo & DreamWorldName)
             My.Computer.FileSystem.CopyDirectory(Dir & "\DreamWorldFiles", InstallTo & DreamWorldName, showUI:=FileIO.UIOption.AllDialogs)
 
-            ' Shell(Dir & "\Viewer\Phoenix_Firestorm.exe", AppWinStyle.NormalFocus, True)
-
+            Dim p As Process = New Process()
+            Dim pi As ProcessStartInfo = New ProcessStartInfo()
+            pi.Arguments = ""
+            pi.FileName = Dir & "\Viewer\Onlook.exe"
+            p.StartInfo = pi
+            p.Start()
 
             Dim appData As String = My.Computer.FileSystem.SpecialDirectories.CurrentUserApplicationData
-            
+
             Dim path As String
             path = Mid(appData, 1, InStr(appData, "AppData") - 1)
 
-            ' System.Windows.Forms.Application.UserAppDataPath
-
-            My.Computer.FileSystem.CopyFile(Dir & "\Viewer\grids_sg1.xml", path + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml", Microsoft.VisualBasic.FileIO.UIOption.AllDialogs, Microsoft.VisualBasic.FileIO.UICancelOption.DoNothing)
-
+            My.Computer.FileSystem.CopyFile(Dir & "\Viewer\grids_sg1.xml", path + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml", True)
 
             CurDrive = InstallTo
 
@@ -146,26 +177,28 @@ Public Class Form1
 
             '  Launch(OpenSim)
             ' need to detect 32 vs 64 bit here, for now, 64
-            Dim OpenSim
+
             ChDir(CurDrive & DreamWorldName & "\Opensim\bin\")
 
-            OpenSim = Shell(CurDrive & DreamWorldName & "\Opensim\bin\OpenSim.exe")
+            Dim p As Process = New Process()
+            Dim pi As ProcessStartInfo = New ProcessStartInfo()
 
-            If (OpenSim > 0) Then
-                Sleep(10000)
-                ctr = 0 ' retry counter - lets give them a minute to get on
-                WebBrowser2.Navigate("http://127.0.0.1:9100/wifi/up.html")
-            Else
-                MsgBox("Simulator did not start", vbCritical)
-                End
-            End If
+            ' http://opensimulator.org/wiki/OpenSim.exe_Command_Line_Options
+            ' -console=rest
+            ' -background=True 
 
+            pi.Arguments = ""
+            pi.FileName = CurDrive & DreamWorldName & "\Opensim\bin\OpenSim.exe"
+            p.StartInfo = pi
+            p.Start()
+
+            Sleep(10000)
+            ctr = 0 ' retry counter - lets give them a minute to get on
+            WebBrowser2.Navigate("http://127.0.0.1:9100/wifi/up.html")
         Else
-            ' retry 
-            Sleep(1000)
-            WebBrowser1.Navigate("http://127.0.0.1:62535/start/up.html")
+            MsgBox("Simulator did not start", vbCritical)
+            End
         End If
-
 
     End Sub
 
@@ -187,10 +220,13 @@ Public Class Form1
         If Webpage = "Up" Then
 
             ctr = 0
-            Dim Phoenix
-            Phoenix = Shell(CurDrive & "Program Files (x86)\Onlook\OnLookViewer.exe")
-            If (Phoenix) Then
-                End
+            Dim Viewer
+            Viewer = Shell(CurDrive & "Program Files (x86)\Onlook\OnLookViewer.exe")
+            If (Viewer) Then
+                ' Show the console
+                Dim webAddress As String = "http://127.0.0.1:9100/wifi"
+                Process.Start(webAddress)
+                StopButton.Visible = True
             Else
                 MsgBox("Cannot launch the Onlook viewer,  You can try to run it (or another viewer) and add http://127.0.0.1:9100' in the Grid Manager.  Exiting", vbCritical)
                 End
@@ -204,6 +240,30 @@ Public Class Form1
 
     End Sub
 
-   
-End Class
 
+    Private Sub StopButton_Click(sender As System.Object, e As System.EventArgs) Handles StopButton.Click
+
+        Shell("""C:\Windows\System32\taskkill.exe /FI ""IMAGENAME eq OpenSim.*""", AppWinStyle.MinimizedFocus, True)
+        Shell("""C:\Windows\System32\taskkill.exe /F /FI ""IMAGENAME eq mysqld-nt.*""", AppWinStyle.MinimizedFocus, True)
+        Shell("""C:\Windows\System32\taskkill.exe /FI ""IMAGENAME eq httpd.*""", AppWinStyle.MinimizedFocus, True)
+        Shell("""C:\Windows\System32\taskkill.exe /FI ""IMAGENAME eq Mowes*""", AppWinStyle.MinimizedFocus, True)
+        End
+    End Sub
+
+    Private Function CheckMySQL() As Boolean
+
+        Dim ClientSocket As New TcpClient
+        Dim ServerAddress As String = "127.0.0.1" ' Set the IP address of the server
+        Dim PortNumber As Integer = 3307 ' Set the port number used by the server
+
+        Try
+            ClientSocket.Connect(ServerAddress, PortNumber)
+        Catch ex As Exception
+            Return False
+        End Try
+
+        Return (True)
+
+    End Function
+
+End Class
