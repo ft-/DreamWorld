@@ -4,18 +4,18 @@ Imports System.Text
 Imports System.Threading
 Imports System.Net.Sockets
 
-
 Public Class Form1
 
     Private Declare Sub Sleep Lib "kernel32.dll" (ByVal Milliseconds As Integer)
 
     Dim CurDrive    ' Holds the current drive that we are on F:\
     Dim InstallTo  ' Holds a drive we need to copy files to
-    Dim Thumb = False ' if true, only copy and setup Phoenix 
-    Dim Webpage
-    Dim ctr
-    Dim DreamWorldName
+    Dim Webpage As String
+    Dim ctr As Integer
+    Dim DreamWorldName As String
+    Dim Opensim As Process
 
+    ' Needed for some systems to clean up the stack, better be safe
     Private Sub Form1_Leave(sender As Object, e As System.EventArgs) Handles Me.Leave
         System.Windows.Forms.Application.Exit()
     End Sub
@@ -24,6 +24,8 @@ Public Class Form1
 
         Dim location As String = System.Environment.GetCommandLineArgs()(0)
         Dim appName As String = System.IO.Path.GetFileName(location)
+
+        ' locate the Start XXX name so we can install to XXX
 
         Dim l As Integer
         Dim appString = Mid(appName, InStr(appName, " "))
@@ -34,14 +36,17 @@ Public Class Form1
             MsgBox("Cannot locate file name: " + appName, vbAbort)
         End If
 
-
         Me.Text = "Setup " & DreamWorldName
         Dim installed As Integer
 
         ctr = 0
         installed = False
         ComboBox1.Visible = False
+
+        InstallButton.Visible = False
+        StartButton.Visible = False
         StopButton.Visible = False
+        BusyButton.Visible = False
 
         Label.Visible = False
         CurDrive = Path.GetPathRoot(My.Application.Info.DirectoryPath)
@@ -49,14 +54,10 @@ Public Class Form1
         ' Find out if we are running this on the Installed Drive
         If Dir(CurDrive & "\" & DreamWorldName & "\") <> "" Then
             installed = True
-            Install.Visible = False
-            Start.Visible = True
-
+            Buttons(StartButton)
             Me.Text = "Start " & DreamWorldName
         Else
-            Install.Visible = True
-            Start.Visible = False
-
+            Buttons(InstallButton)
             Dim allDrives() As DriveInfo = DriveInfo.GetDrives()
             Dim d As DriveInfo
             Dim enough As Boolean
@@ -64,7 +65,7 @@ Public Class Form1
             enough = False ' enough space?
             For Each d In allDrives
                 If d.IsReady = True Then
-                    If (d.TotalFreeSpace > 2000000.0 And (d.DriveType = 3 Or d.DriveType = 4)) Then
+                    If (d.TotalFreeSpace > 3000000.0 And (d.DriveType = 3 Or d.DriveType = 4)) Then
                         ComboBox1.Items.Add(d.Name)
                         enough = True
                     End If
@@ -74,130 +75,137 @@ Public Class Form1
                 ComboBox1.SelectedIndex = 0
                 ComboBox1.Visible = True
                 Label.Visible = True
+                Buttons(InstallButton)
             Else
                 CurDrive = Path.GetPathRoot(My.Application.Info.DirectoryPath)
-                Thumb = True
                 ComboBox1.Visible = False
                 Label.Visible = False
+                MsgBox("No enough disk free space to install on any drive, needs 3 Gigs", vbAbort)
+                End
             End If
         End If
 
     End Sub
 
-    Private Sub Start_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Start.Click
+    Private Sub Start_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles StartButton.Click
 
-        Dim mowes
-        StopButton.Visible = True
-        mowes = Shell(CurDrive & DreamWorldName & "\Mowes.exe")
+        ' Start Mowes, which starts MySql and Apache automatically.
+        Buttons(BusyButton)
 
+        Dim p As Process = New Process()
+        Dim pi As ProcessStartInfo = New ProcessStartInfo()
+        pi.Arguments = ""
 
-        If (mowes > 0) Then
-            ' success
-
-            Dim iSRunning As Integer
-            iSRunning = 30000
-            Dim Status = 0
-
-            While iSRunning > 0
-                Sleep(10000)
-                iSRunning = iSRunning - 1
-                Status = CheckMySQL()
-                If Status Then
-                    iSRunning = 0
-                End If
-
-            End While
-
-
-            ctr = 0 ' retry counter - lets give them a minute to get on
-
-            WebBrowser1.Navigate("http://127.0.0.1:62535/start/up.htm")
-
-        Else
-            MsgBox("Something went wrong. Cannot launch '" & CurDrive & DreamWorldName & "\Mowes.exe'", vbAbort)
+        If Not Console.Checked Then
+            pi.WindowStyle = ProcessWindowStyle.Hidden
         End If
+        pi.FileName = CurDrive & DreamWorldName & "\Mowes.exe"
+        p.StartInfo = pi
+        p.Start()
 
+        Dim iSRunning As Integer
+        iSRunning = 30000
+        Dim Status = 0
+
+        ' wait for Mowes to come up on port 62535
+        While iSRunning > 0
+            Sleep(1000)
+            iSRunning = iSRunning - 1
+            If iSRunning = 0 Then
+                MsgBox("Timeout running Mowes - cannot continue", vbAbort)
+                ZapAll()
+                Buttons(StopButton)
+                Return
+            End If
+
+            ' now check that SQL server has started
+            Status = CheckMySQL()
+            If Status Then
+                iSRunning = 0
+            End If
+        End While
+        ctr = 0 ' retry counter reset - lets give them a minute to get on
+        WebBrowser1.Navigate("http://127.0.0.1:62535/start/up.htm")
 
     End Sub
 
-    Private Sub Install_Click_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Install.Click
-        Dim response
-        response = MsgBox("Press Yes to begin to copy files", vbYesNo, "File copy")
-        If response = vbYes Then
+    Private Sub Install_Click_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles InstallButton.Click
 
-            Dim Dir As String
-            Dir = CurDir()
+        Dim Dir As String
+        Dir = CurDir()
 
-            ' debug only
-            Dir = "C:\Opensim\DreamWorld-GitHub"
+        Buttons(BusyButton)
 
-            My.Computer.FileSystem.CreateDirectory(InstallTo & DreamWorldName)
-            My.Computer.FileSystem.CopyDirectory(Dir & "\DreamWorldFiles", InstallTo & DreamWorldName, showUI:=FileIO.UIOption.AllDialogs)
+        ' debug only
+        Dir = "C:\Opensim\DreamWorld-GitHub"
 
-            Dim p As Process = New Process()
-            Dim pi As ProcessStartInfo = New ProcessStartInfo()
-            pi.Arguments = ""
-            pi.FileName = Dir & "\Viewer\Onlook.exe"
-            p.StartInfo = pi
-            p.Start()
+        My.Computer.FileSystem.CreateDirectory(InstallTo & DreamWorldName)
+        My.Computer.FileSystem.CopyDirectory(Dir & "\DreamWorldFiles", InstallTo & DreamWorldName, showUI:=FileIO.UIOption.AllDialogs)
 
-            Dim appData As String = My.Computer.FileSystem.SpecialDirectories.CurrentUserApplicationData
+        Dim p As Process = New Process()
+        Dim pi As ProcessStartInfo = New ProcessStartInfo()
+        pi.Arguments = ""
+        pi.FileName = Dir & "\Viewer\Onlook.exe"
+        p.StartInfo = pi
+        p.Start()
 
-            Dim path As String
-            path = Mid(appData, 1, InStr(appData, "AppData") - 1)
+        Dim appData As String = My.Computer.FileSystem.SpecialDirectories.CurrentUserApplicationData
 
-            My.Computer.FileSystem.CopyFile(Dir & "\Viewer\grids_sg1.xml", path + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml", True)
+        Dim path As String
+        path = Mid(appData, 1, InStr(appData, "AppData") - 1)
 
-            CurDrive = InstallTo
+        My.Computer.FileSystem.CopyFile(Dir & "\Viewer\grids_sg1.xml", path + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml", True)
 
-            ' allow them to launch now
-            Install.Visible = False
-            Start.Visible = True
+        CurDrive = InstallTo
 
-            ComboBox1.Visible = False
-            Label.Visible = False
+        ' allow them to launch now
+        Buttons(StartButton)
 
-        End If
+        ComboBox1.Visible = False
+        Label.Visible = False
 
     End Sub
 
     Private Sub WebBrowser1_DocumentCompleted(ByVal sender As System.Object, ByVal e As System.Windows.Forms.WebBrowserDocumentCompletedEventArgs) Handles WebBrowser1.DocumentCompleted
 
         'When webbrower finish opening the page, source page is diplayed in text box
-        
+
         Webpage = WebBrowser1.DocumentText
 
         ctr = ctr + 1
         If ctr > 60 Then
-            MsgBox("Database and Web Server did not start", vbCritical)
-            End
+            MsgBox("Database did not start", vbCritical)
+            Buttons(StopButton)
+            ZapAll()
+            Return
         End If
 
         If Webpage = "Up" Then
 
             '  Launch(OpenSim)
-            ' need to detect 32 vs 64 bit here, for now, 64
-
             ChDir(CurDrive & DreamWorldName & "\Opensim\bin\")
 
             Dim p As Process = New Process()
             Dim pi As ProcessStartInfo = New ProcessStartInfo()
 
             ' http://opensimulator.org/wiki/OpenSim.exe_Command_Line_Options
-            ' -console=rest
-            ' -background=True 
 
-            pi.Arguments = ""
+            If Not Console.Checked Then
+                pi.Arguments = "-console rest -background True "
+                pi.WindowStyle = ProcessWindowStyle.Hidden
+            End If
+
             pi.FileName = CurDrive & DreamWorldName & "\Opensim\bin\OpenSim.exe"
             p.StartInfo = pi
             p.Start()
 
-            Sleep(10000)
+            Sleep(5000)
             ctr = 0 ' retry counter - lets give them a minute to get on
             WebBrowser2.Navigate("http://127.0.0.1:9100/wifi/up.html")
         Else
             MsgBox("Simulator did not start", vbCritical)
-            End
+            Buttons(StopButton)
+            ZapAll()
         End If
 
     End Sub
@@ -213,12 +221,13 @@ Public Class Form1
 
         ctr = ctr + 1
         If ctr > 60 Then
-            MsgBox("Database and Web Server did not start", vbCritical)
-            End
+            MsgBox("Web Server did not start", vbCritical)
+            Buttons(StopButton)
+            ZapAll()
+            Return
         End If
 
         If Webpage = "Up" Then
-
             ctr = 0
             Dim Viewer
             Viewer = Shell(CurDrive & "Program Files (x86)\Onlook\OnLookViewer.exe")
@@ -226,10 +235,11 @@ Public Class Form1
                 ' Show the console
                 Dim webAddress As String = "http://127.0.0.1:9100/wifi"
                 Process.Start(webAddress)
-                StopButton.Visible = True
+                Buttons(StopButton)
             Else
                 MsgBox("Cannot launch the Onlook viewer,  You can try to run it (or another viewer) and add http://127.0.0.1:9100' in the Grid Manager.  Exiting", vbCritical)
-                End
+                Buttons(StopButton)
+
             End If
 
         Else
@@ -243,27 +253,95 @@ Public Class Form1
 
     Private Sub StopButton_Click(sender As System.Object, e As System.EventArgs) Handles StopButton.Click
 
-        Shell("""C:\Windows\System32\taskkill.exe /FI ""IMAGENAME eq OpenSim.*""", AppWinStyle.MinimizedFocus, True)
-        Shell("""C:\Windows\System32\taskkill.exe /F /FI ""IMAGENAME eq mysqld-nt.*""", AppWinStyle.MinimizedFocus, True)
-        Shell("""C:\Windows\System32\taskkill.exe /FI ""IMAGENAME eq httpd.*""", AppWinStyle.MinimizedFocus, True)
-        Shell("""C:\Windows\System32\taskkill.exe /FI ""IMAGENAME eq Mowes*""", AppWinStyle.MinimizedFocus, True)
-        End
+        Label.Visible = True
+        Label.Text = "Stopping"
+        Buttons(BusyButton)
+
+        ZapAll()
+        
+        Buttons(StartButton)
+        Label.Visible = False
+
     End Sub
 
     Private Function CheckMySQL() As Boolean
+
+        ' tried to probe MySQL  port 3307. If available, return true
+        ' if not, retries for 30 seconds
 
         Dim ClientSocket As New TcpClient
         Dim ServerAddress As String = "127.0.0.1" ' Set the IP address of the server
         Dim PortNumber As Integer = 3307 ' Set the port number used by the server
 
-        Try
-            ClientSocket.Connect(ServerAddress, PortNumber)
-        Catch ex As Exception
-            Return False
-        End Try
+        Dim Failed As Boolean
+        Failed = True
+        Dim counter As Integer
+        counter = 30000
 
-        Return (True)
+        While Failed
+            Try
+                Failed = False ' let us be optimistic
+                ClientSocket.Connect(ServerAddress, PortNumber)
+            Catch ex As Exception
+                Sleep(1000)
+                Failed = True ' shit, try again
+            End Try
 
+            If Not Failed Then
+                Return True ' Yay
+            End If
+        End While
+
+        Return False
+
+    End Function
+
+    Private Function zap(process As String) As Boolean
+
+        ' Kill process by name
+        For Each P As Process In System.Diagnostics.Process.GetProcessesByName(process)
+            P.Kill()
+        Next
+        Return True
+
+    End Function
+
+
+    Private Sub Busy_Click(sender As System.Object, e As System.EventArgs) Handles BusyButton.Click
+
+        ' Busy click shows we are busy
+
+        Dim result As Integer = MessageBox.Show("Do you want to Abort?", "caption", MessageBoxButtons.YesNo)
+        If result = DialogResult.Yes Then
+            Label.Visible = True
+            Label.Text = "Stopping"
+            ZapAll()
+            Buttons(StartButton)
+            Label.Visible = False
+        End If
+
+    End Sub
+
+    Private Function Buttons(button As System.Object) As Boolean
+
+        ' Turns off all 4 stacked buttons, then enables one of them
+        BusyButton.Visible = False
+        StopButton.Visible = False
+        StartButton.Visible = False
+        InstallButton.Visible = False
+        button.Visible = True
+        Return True
+
+    End Function
+
+    Private Function ZapAll() As Boolean
+
+        zap("OpenSim")
+        zap("mysqld-nt")
+        zap("httpd")
+        zap("Mowes")
+
+        Return True
     End Function
 
 End Class
