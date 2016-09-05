@@ -43,12 +43,14 @@ Public Class Form1
         installed = False
         ComboBox1.Visible = False
 
+        Label.Visible = True
+
         InstallButton.Visible = False
         StartButton.Visible = False
         StopButton.Visible = False
         BusyButton.Visible = False
 
-        Label.Visible = False
+
         CurDrive = Path.GetPathRoot(My.Application.Info.DirectoryPath)
 
         ' Find out if we are running this on the Installed Drive
@@ -72,19 +74,21 @@ Public Class Form1
                 End If
             Next
             If enough = True Then
+
+
                 ComboBox1.SelectedIndex = 0
                 ComboBox1.Visible = True
-                Label.Visible = True
                 Buttons(InstallButton)
+                Label.Text = "Copy to:"
             Else
                 CurDrive = Path.GetPathRoot(My.Application.Info.DirectoryPath)
                 ComboBox1.Visible = False
-                Label.Visible = False
+                Label.Text = ""
                 MsgBox("No enough disk free space to install on any drive, needs 3 Gigs", vbAbort)
                 End
             End If
         End If
-
+        Application.DoEvents()
     End Sub
 
     Private Sub Start_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles StartButton.Click
@@ -100,7 +104,7 @@ Public Class Form1
         pi.Arguments = ""
 
         If Not Console.Checked Then
-            pi.WindowStyle = ProcessWindowStyle.Hidden
+            pi.WindowStyle = ProcessWindowStyle.Minimized
         End If
         pi.FileName = CurDrive & DreamWorldName & "\Mowes.exe"
         p.StartInfo = pi
@@ -112,6 +116,7 @@ Public Class Form1
 
         ' wait for Mowes to come up on port 62535
         While iSRunning > 0
+            Application.DoEvents()
             Sleep(1000)
             iSRunning = iSRunning - 1
             If iSRunning = 0 Then
@@ -130,7 +135,7 @@ Public Class Form1
         End While
         ctr = 0 ' retry counter reset - lets give them a minute to get on
         WebBrowser1.Navigate("http://127.0.0.1:62535/start/up.htm")
-
+        Application.DoEvents()
     End Sub
 
     Private Sub Install_Click_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles InstallButton.Click
@@ -140,8 +145,8 @@ Public Class Form1
 
         Buttons(BusyButton)
 
-        Label.Visible = True
-        Label.Text = "Installing Files to " + InstallTo & DreamWorldName
+        ComboBox1.Visible = False
+        Label.Text = "Installing to " + InstallTo & DreamWorldName
 
         ' FKB debug only
         Dir = "C:\Opensim\DreamWorld-GitHub"
@@ -158,7 +163,6 @@ Public Class Form1
         p.StartInfo = pi
         p.Start()
 
-
         Label.Text = "Installing Grid Info"
         Dim appData As String = My.Computer.FileSystem.SpecialDirectories.CurrentUserApplicationData
         Dim path As String
@@ -173,7 +177,7 @@ Public Class Form1
         Buttons(StartButton)
 
         ComboBox1.Visible = False
-
+        Application.DoEvents()
     End Sub
 
     Private Sub WebBrowser1_DocumentCompleted(ByVal sender As System.Object, ByVal e As System.Windows.Forms.WebBrowserDocumentCompletedEventArgs) Handles WebBrowser1.DocumentCompleted
@@ -210,8 +214,9 @@ Public Class Form1
             pi.FileName = CurDrive & DreamWorldName & "\Opensim\bin\OpenSim.exe"
             p.StartInfo = pi
             p.Start()
-
+            Application.DoEvents()
             Sleep(5000)
+
             ctr = 0 ' retry counter - lets give them a minute to get on
             WebBrowser2.Navigate("http://127.0.0.1:9100/wifi/up.html")
         Else
@@ -219,7 +224,7 @@ Public Class Form1
             Buttons(StopButton)
             ZapAll()
         End If
-
+        Application.DoEvents()
     End Sub
 
     Private Sub ComboBox1_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ComboBox1.SelectedIndexChanged
@@ -254,24 +259,23 @@ Public Class Form1
                 Buttons(StopButton)
             End If
         Else
+            Application.DoEvents()
             Sleep(1000)
             WebBrowser2.Navigate("http://127.0.0.1:9100/wifi/up.html")
         End If
+        Application.DoEvents()
 
     End Sub
 
 
     Private Sub StopButton_Click(sender As System.Object, e As System.EventArgs) Handles StopButton.Click
 
-        Label.Visible = True
-        Label.Text = "Stopping"
         Buttons(BusyButton)
-
+        Label.Text = "Stopping"
         ZapAll()
-        
         Buttons(StartButton)
         Label.Text = ""
-
+        Application.DoEvents()
     End Sub
 
     Private Function CheckMySQL() As Boolean
@@ -288,7 +292,7 @@ Public Class Form1
         Catch ex As Exception
             Return False
         End Try
-
+        Application.DoEvents()
         Return True
 
     End Function
@@ -301,6 +305,7 @@ Public Class Form1
             P.Kill()
         Next
         Label.Text = ""
+        Application.DoEvents()
         Return True
 
     End Function
@@ -312,13 +317,12 @@ Public Class Form1
 
         Dim result As Integer = MessageBox.Show("Do you want to Abort?", "caption", MessageBoxButtons.YesNo)
         If result = DialogResult.Yes Then
-            Label.Visible = True
             Label.Text = "Stopping"
             ZapAll()
             Buttons(StartButton)
             Label.Text = ""
-            Label.Visible = False
         End If
+        Application.DoEvents()
 
     End Sub
 
@@ -331,7 +335,6 @@ Public Class Form1
         InstallButton.Visible = False
         button.Visible = True
         Label.Text = ""
-        Label.Visible = False
         Application.DoEvents()
 
         Return True
@@ -344,7 +347,7 @@ Public Class Form1
         zap("mysqld-nt")
         zap("httpd")
         zap("Mowes")
-
+        Application.DoEvents()
         Return True
     End Function
 
