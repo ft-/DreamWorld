@@ -40,11 +40,11 @@ Public Class Form1
         Buttons(InstallButton)
 
         ' Find out if we are running this on the Installed Drive
-        If System.IO.File.Exists("DreamWorldFiles\Init") Then
+        If System.IO.File.Exists("Init") Then
             Buttons(StartButton)
             Me.Text = "Start Dreamworld"
         Else
-            Dim fs As FileStream = System.IO.File.Create("DreamWorldFiles\Init")
+            Dim fs As FileStream = System.IO.File.Create("Init")
             Dim info As Byte() = New UTF8Encoding(True).GetBytes("This file exists when things are all set up")
             fs.Write(info, 0, info.Length)
             fs.Close()
@@ -118,7 +118,7 @@ Public Class Form1
         Buttons(BusyButton)
 
         Print("Installing Shortcut")
-        Create_ShortCut(CurDir & "\DreamWorldFiles\Setup\Start.exe")
+        Create_ShortCut(CurDir & "\DreamWorldFiles\Start.exe")
         Print("Installing Onlook Viewer")
 
         Dim p As Process = New Process()
