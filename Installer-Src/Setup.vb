@@ -11,7 +11,6 @@ Public Class Form1
     Private Declare Sub Sleep Lib "kernel32.dll" (ByVal Milliseconds As Integer)
 
     Dim CurDir    ' Holds the current folder that we are running in
-    Dim InstallTo  ' Holds a drive we need to copy files to
     Dim Webpage As String
     Dim ctr As Integer
     Dim Opensim As Process
@@ -41,11 +40,11 @@ Public Class Form1
         Buttons(InstallButton)
 
         ' Find out if we are running this on the Installed Drive
-        If System.IO.File.Exists("Init") Then
+        If System.IO.File.Exists("DreamWorldFiles\Init") Then
             Buttons(StartButton)
             Me.Text = "Start Dreamworld"
         Else
-            Dim fs As FileStream = System.IO.File.Create("Init")
+            Dim fs As FileStream = System.IO.File.Create("DreamWorldFiles\Init")
             Dim info As Byte() = New UTF8Encoding(True).GetBytes("This file exists when things are all set up")
             fs.Write(info, 0, info.Length)
             fs.Close()
@@ -60,11 +59,17 @@ Public Class Form1
         ' Start Mowes, which starts MySql and Apache automatically.
         Buttons(BusyButton)
 
-        My.Computer.FileSystem.DeleteFile(CurDir + "\DreamWorldFiles\Opensim\Opensim.log")
-        My.Computer.FileSystem.DeleteFile(CurDir + "\DreamWorldFiles\Opensim\OpenSimConsoleHistory.txt")
+        Try
+            My.Computer.FileSystem.DeleteFile(CurDir + "\DreamWorldFiles\Opensim\bin\Opensim.log")
+        Catch ex As Exception
+            ' do nothing
+        End Try
 
-
-
+        Try
+            My.Computer.FileSystem.DeleteFile(CurDir + "\DreamWorldFiles\Opensim\bin\OpenSimConsoleHistory.txt")
+        Catch ex As Exception
+            ' do nothing
+        End Try
 
         Label.Visible = True
         Print("Starting Mowes")
@@ -112,23 +117,8 @@ Public Class Form1
 
         Buttons(BusyButton)
 
-        Create_ShortCut(InstallTo & "DreamWorldFiles\Setup\Start.exe", _
-                      "Desktop", _
-                     "DreamWorld", _
-                    "", _
-                   InstallTo & "DreamWorldFiles\Setup", _
-                 WshWindowStyle.WshNormalFocus, _
-                 0)
-
-
-        'ByVal sTargetPath As String, _
-        '                        ByVal sShortCutPath As String, _
-        '                        ByVal sShortCutName As String, _
-        '                        Optional ByVal sArguments As String = "", _
-        '                        Optional ByVal sWorkPath As String = "", _
-        '                        Optional ByVal eWinStyle As WshWindowStyle = vbNormalFocus, _
-        '                        Optional ByVal iIconNum As Integer = 0
-
+        Print("Installing Shortcut")
+        Create_ShortCut(CurDir & "\DreamWorldFiles\Setup\Start.exe")
         Print("Installing Onlook Viewer")
 
         Dim p As Process = New Process()
@@ -311,33 +301,19 @@ Public Class Form1
         Return True
     End Function
 
-
-
-    Private Sub Create_ShortCut(ByVal sTargetPath As String, _
-                                ByVal sShortCutPath As String, _
-                                ByVal sShortCutName As String, _
-                                Optional ByVal sArguments As String = "", _
-                                Optional ByVal sWorkPath As String = "", _
-                                Optional ByVal eWinStyle As WshWindowStyle = vbNormalFocus, _
-                                Optional ByVal iIconNum As Integer = 0)
+    Private Sub Create_ShortCut(ByVal sTargetPath As String)
 
         ' Requires reference to Windows Script Host Object Model
-        Dim oShell As IWshRuntimeLibrary.WshShell
-        Dim oShortCut As IWshRuntimeLibrary.WshShortcut
+        Dim WshShell As WshShellClass = New WshShellClass
+        Dim MyShortcut As IWshRuntimeLibrary.IWshShortcut
 
-        oShell = New IWshRuntimeLibrary.WshShell
-        oShortCut = oShell.CreateShortcut(oShell.SpecialFolders(sShortCutPath) & _
-                                              "\" & sShortCutName & ".lnk")
-        With oShortCut
-            .TargetPath = sTargetPath
-            .Arguments = sArguments
-            .WorkingDirectory = sWorkPath
-            .WindowStyle = eWinStyle
-            .IconLocation = sTargetPath & "," & iIconNum
-            .Save()
-        End With
+        ' The shortcut will be created on the desktop
+        Dim DesktopFolder As String = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory)
+        MyShortcut = CType(WshShell.CreateShortcut(DesktopFolder & "\Dreamworld.lnk"), IWshRuntimeLibrary.IWshShortcut)
+        MyShortcut.TargetPath = sTargetPath
+        MyShortcut.IconLocation = "moricons.dll, 61"
+        MyShortcut.Save()
 
-        oShortCut = Nothing : oShell = Nothing
     End Sub
 
     Private Sub Print(Value As String)
