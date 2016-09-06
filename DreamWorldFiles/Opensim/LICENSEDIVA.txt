@@ -1,4 +1,4 @@
-The following addons are
+The following addons are 
 Copyright (c) Crista Lopes (aka diva). All rights reserved.
 
 - Diva Groups (Diva.Groups.dll)

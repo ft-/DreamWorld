@@ -60,6 +60,12 @@ Public Class Form1
         ' Start Mowes, which starts MySql and Apache automatically.
         Buttons(BusyButton)
 
+        My.Computer.FileSystem.DeleteFile(CurDir + "\DreamWorldFiles\Opensim\Opensim.log")
+        My.Computer.FileSystem.DeleteFile(CurDir + "\DreamWorldFiles\Opensim\OpenSimConsoleHistory.txt")
+
+
+
+
         Label.Visible = True
         Print("Starting Mowes")
 
@@ -106,14 +112,13 @@ Public Class Form1
 
         Buttons(BusyButton)
 
-
-        '       Create_ShortCut(InstallTo & DreamWorldName + "\Setup\Start" + DreamWorldName + ".exe", _
-        '                     "Desktop", _
-        '                    "DreamWorld", _
-        '                   "", _
-        '                  InstallTo & DreamWorldName + "\Setup", _
-        '                 WshWindowStyle.WshNormalFocus, _
-        '                0)
+        Create_ShortCut(InstallTo & "DreamWorldFiles\Setup\Start.exe", _
+                      "Desktop", _
+                     "DreamWorld", _
+                    "", _
+                   InstallTo & "DreamWorldFiles\Setup", _
+                 WshWindowStyle.WshNormalFocus, _
+                 0)
 
 
         'ByVal sTargetPath As String, _

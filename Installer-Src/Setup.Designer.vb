@@ -56,7 +56,7 @@ Partial Class Form1
         Me.Label.AutoSize = True
         Me.Label.BackColor = System.Drawing.Color.Black
         Me.Label.ForeColor = System.Drawing.Color.White
-        Me.Label.Location = New System.Drawing.Point(67, 19)
+        Me.Label.Location = New System.Drawing.Point(33, 19)
         Me.Label.Name = "Label"
         Me.Label.Size = New System.Drawing.Size(0, 13)
         Me.Label.TabIndex = 6

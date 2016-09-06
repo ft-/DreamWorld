@@ -43,19 +43,19 @@ C:\Opensim\DreamWorld GitHub\Installer Src\2010\Setup DreamWorld\Setup DreamWorl
 C:\Opensim\DreamWorld GitHub\Installer Src\2010\Setup DreamWorld\Setup DreamWorld\obj\x86\Release\Start DreamWorld.exe
 C:\Opensim\DreamWorld GitHub\Installer Src\2010\Setup DreamWorld\Setup DreamWorld\obj\x86\Release\Start DreamWorld.xml
 C:\Opensim\DreamWorld GitHub\Installer Src\2010\Setup DreamWorld\Setup DreamWorld\obj\x86\Release\Start DreamWorld.pdb
-C:\Opensim\DreamWorld-GitHub\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Release\Start DreamWorld.exe
-C:\Opensim\DreamWorld-GitHub\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Release\Start DreamWorld.xml
-C:\Opensim\DreamWorld-GitHub\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Release\Start DreamWorld.pdb
-C:\Opensim\DreamWorld-GitHub\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\bin\Release\Start DreamWorld.exe.manifest
-C:\Opensim\DreamWorld-GitHub\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\bin\Release\Start DreamWorld.application
-C:\Opensim\DreamWorld-GitHub\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\bin\Release\Start DreamWorld.exe
-C:\Opensim\DreamWorld-GitHub\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\bin\Release\Start DreamWorld.pdb
-C:\Opensim\DreamWorld-GitHub\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\bin\Release\Start DreamWorld.xml
 C:\Opensim\DreamWorld-GitHub\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Release\DreamWorld.Form1.resources
 C:\Opensim\DreamWorld-GitHub\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Release\DreamWorld.Resources.resources
 C:\Opensim\DreamWorld-GitHub\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Release\Setup DreamWorld.vbproj.GenerateResource.Cache
-C:\Opensim\DreamWorld-GitHub\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Release\Start DreamWorld.TrustInfo.xml
-C:\Opensim\DreamWorld-GitHub\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Release\Start DreamWorld.exe.manifest
-C:\Opensim\DreamWorld-GitHub\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Release\Start DreamWorld.application
 C:\Opensim\DreamWorld-GitHub\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Release\Interop.IWshRuntimeLibrary.dll
 C:\Opensim\DreamWorld-GitHub\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Release\Setup DreamWorld.vbproj.ResolveComReference.cache
+C:\Opensim\DreamWorld-GitHub\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\bin\Release\Start.exe.manifest
+C:\Opensim\DreamWorld-GitHub\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\bin\Release\Start.application
+C:\Opensim\DreamWorld-GitHub\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\bin\Release\Start.exe
+C:\Opensim\DreamWorld-GitHub\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\bin\Release\Start.pdb
+C:\Opensim\DreamWorld-GitHub\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\bin\Release\Start.xml
+C:\Opensim\DreamWorld-GitHub\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Release\Start.TrustInfo.xml
+C:\Opensim\DreamWorld-GitHub\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Release\Start.exe.manifest
+C:\Opensim\DreamWorld-GitHub\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Release\Start.application
+C:\Opensim\DreamWorld-GitHub\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Release\Start.exe
+C:\Opensim\DreamWorld-GitHub\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Release\Start.xml
+C:\Opensim\DreamWorld-GitHub\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Release\Start.pdb
