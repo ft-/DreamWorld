@@ -29,8 +29,8 @@ Public Class Form1
         ' for debugging when compiling
        
         ' FKB debug only
-        CurDir = "C:\DreamWorld"
-        ChDir(CurDir)
+        ' CurDir = "C:\DreamWorld"
+        ' ChDir(CurDir)
 
         Me.Text = "Opensimulator DreamWorld"
 
