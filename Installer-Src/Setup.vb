@@ -45,10 +45,6 @@ Public Class Form1
             Me.Text = "Start Dreamworld"
         Else
             Dim fs As FileStream = System.IO.File.Create("Init")
-            Dim info As Byte() = New UTF8Encoding(True).GetBytes("This file exists when things are all set up")
-            fs.Write(info, 0, info.Length)
-            fs.Close()
-
             Buttons(InstallButton)
         End If
         Application.DoEvents()
@@ -118,7 +114,7 @@ Public Class Form1
         Buttons(BusyButton)
 
         Print("Installing Shortcut")
-        Create_ShortCut(CurDir & "\DreamWorldFiles\Start.exe")
+        Create_ShortCut(CurDir & "\Start.exe")
         Print("Installing Onlook Viewer")
 
         Dim p As Process = New Process()
@@ -312,6 +308,7 @@ Public Class Form1
         MyShortcut = CType(WshShell.CreateShortcut(DesktopFolder & "\Dreamworld.lnk"), IWshRuntimeLibrary.IWshShortcut)
         MyShortcut.TargetPath = sTargetPath
         MyShortcut.IconLocation = "moricons.dll, 61"
+        MyShortcut.WorkingDirectory = CurDir
         MyShortcut.Save()
 
     End Sub
