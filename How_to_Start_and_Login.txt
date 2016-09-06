@@ -1,25 +1,21 @@
 
-This application requires 2 GB of free disk space and a good 3-D graphics card.   
+This application requires 1 to 2 GB of free disk space and a good 3-D graphics card.   
 
-1) Unzip the application and save everything to a folder.  Navigate to the folder "DreamWorldFiles"  and run Click "Start.exe"
-2) Click "Install"  The system will install the Onlook Viewer for several minutes.
+1) Unzip the application and save everything to a folder named "DreamWorld".  Navigate to the folder "DreamWorld"  and run Click "Start.exe"
+2) Click the "Install" button. The system will install the Onlook Viewer and a dekstop shortcut.
 3) After the programs are installed, click "Start".
-4) Several programs will appear. These includes Mowes and OpenSim.
-   If your firewall is operating as it should, a series of requests to send data through the firewall will appear. (No personal data is sent anywhere when you authorize this app.)
-5) The Web browwser will open 
-6) The Onlook Viewer will appear
-7) Log in as "Dream Guy"or "Dream Girl", "Simona Stick"or with the password '123'.
-8) To exit, quite the viewer, and click "Stop".  You may then start or close the app.
+4) If your firewall is operating as it should, a series of requests to send data through the firewall will appear. (No personal data is sent anywhere when you authorize this app) The firewal is being programmed so the viewer and server can connect to themselves.
+5) The Web browwser will open, with an adminitrative interface. Use is optional.
+6) The Onlook Viewer will appear.
+7) Log in as "Simona Stick"  with the password '123'.  
+8) To exit, just quit the viewer, and click "Stop".  You may then start agian, or close the app.
 
-The next time you wish to log in, click "Start.exe"
-
-To shut down: 
+The next time you wish to log in, click the icon and click "Start"
 
 Administration:
+When using the web interface, use user "Wifi Admin" and the password "secret". With this you can control extra users.  Simona Stick, password 123, aowns the island.
 
-When using the web interface, the "Wifi Admin" password is "secret". With this you can control extra users.
-
-If you close the browser window, you can get back to it with an AdminPanel icon. You can can this panel use to create new users, examine inventory, and view the console status.
+If you close the browser window, you can get back to it with an AdminPanel icon. You can can this panel use to create new users examine inventory, and view the console status.
 
 
 Other passwords
@@ -27,7 +23,7 @@ MySQL Database root user has no password
 MySQL Database "opensim" user name "opensim" has a password of "opensimpass"
 
 Version:
-DreamWorld update as of 8/31/2016
+DreamWorld update as of 9/6/2016 version 0.2.1
 Sim-On-A-Stick is Version 0.8.0 post fixes and running its own MySQL, Apache, and PHP for Windows with BulletSim physics and built from Diva D2.
 
 ==================
