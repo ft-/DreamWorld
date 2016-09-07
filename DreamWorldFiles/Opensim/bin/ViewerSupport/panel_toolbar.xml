@@ -5,12 +5,7 @@
   <string name="IM">1 IM</string>
   <panel bottom="0" filename="panel_bg_toolbar.xml" height="28" left="0" width="1024"/>
   <layout_stack name="toolbar_stack" follows="left|right|bottom|top" bottom="2" left="1" width="1022" height="26" min_width="200" orientation="horizontal" border_size="0">
-    <layout_panel name="panelquit" height="24" width="50" user_resize="false">
-      <button bottom="0" height="24" label="Quit" name="quit_btn" image_overlay="icn_toolbar_quit.tga" image_overlay_alignment="left" image_selected="toolbar_btn_selected.tga" image_unselected="toolbar_btn_enabled.tga" image_disabled="toolbar_btn_disabled.tga" scale_image="true" width="50" follows="left|right">
-        <button.commit_callback function="ShowFloater" parameter="quit"/>
-      </button>
-    </layout_panel>
-    <layout_panel name="paneldestinations" height="24" width="50" user_resize="false">
+    <layout_panel name="paneldestinations" height="24" width="50" user_resize="false" visible="false">
       <button bottom="0" height="24" label="Destinations" name="destinations_btn" image_overlay="icn_toolbar_destinations.tga" image_overlay_alignment="left" image_selected="toolbar_btn_selected.tga" image_unselected="toolbar_btn_enabled.tga" image_disabled="toolbar_btn_disabled.tga" scale_image="true" width="50" follows="left|right">
         <button.commit_callback function="ShowFloater" parameter="destinations"/>
       </button>
@@ -25,27 +20,27 @@
         <button.commit_callback function="ShowFloater" parameter="snapshot"/>
       </button>
     </layout_panel>
-    <layout_panel name="panelsettings" height="24" width="50" user_resize="false">
-      <button toggle="true" control_name="wlfAdvSettingsPopup" bottom="0" height="24" label="Settings" name="settings_btn" image_selected="toolbar_btn_selected.tga" image_unselected="toolbar_btn_enabled.tga" image_disabled="toolbar_btn_disabled.tga" scale_image="true" width="50" follows="left|right"/>
-    </layout_panel>
-    <layout_panel name="panelenvsettings" height="24" width="50" user_resize="false"  visible="false">
-      <button bottom="0" height="24" label="Environment" name="env_editor_btn" image_overlay="icn_toolbar_env_editor.tga" image_overlay_alignment="left" image_selected="toolbar_btn_selected.tga" image_unselected="toolbar_btn_enabled.tga" image_disabled="toolbar_btn_disabled.tga" scale_image="true" width="50" follows="left|right">
+    <layout_panel name="panelenvsettings" height="24" width="50" user_resize="false">
+      <button bottom="0" height="24" label="Environment Editor" name="env_editor_btn" image_overlay="icn_toolbar_env_editor.tga" image_overlay_alignment="left" image_selected="toolbar_btn_selected.tga" image_unselected="toolbar_btn_enabled.tga" image_disabled="toolbar_btn_disabled.tga" scale_image="true" width="50" follows="left|right">
         <button.commit_callback function="ShowFloater" parameter="EnvSettings"/>
       </button>
     </layout_panel>
-    <layout_panel name="paneldaycycle" height="24" width="50" user_resize="false"  visible="false">
-      <button bottom="0" height="24" label="Day Cycle Editor" name="day_cycle_editor_btn" image_overlay="icn_toolbar_day_cycle_editor.tga" image_overlay_alignment="left" image_selected="toolbar_btn_selected.tga" image_unselected="toolbar_btn_enabled.tga" image_disabled="toolbar_btn_disabled.tga" scale_image="true" width="50" follows="left|right">
-        <button.commit_callback function="ShowFloater" parameter="DayCycle"/>
-      </button>
+    <layout_panel name="panelsettings" height="24" width="50" user_resize="false">
+      <button toggle="true" control_name="wlfAdvSettingsPopup" bottom="0" height="24" label="Settings" name="settings_btn" image_selected="toolbar_btn_selected.tga" image_unselected="toolbar_btn_enabled.tga" image_disabled="toolbar_btn_disabled.tga" scale_image="true" width="50" follows="left|right"/>
     </layout_panel>
-    <layout_panel name="panelwindlight" height="24" width="50" user_resize="false"  visible="false">
+    <layout_panel name="panelwindlight" height="24" width="50" user_resize="false">
       <button bottom="0" height="24" label="Windlight" name="windlight_btn" image_overlay="icn_toolbar_windlight.tga" image_overlay_alignment="left" image_selected="toolbar_btn_selected.tga" image_unselected="toolbar_btn_enabled.tga" image_disabled="toolbar_btn_disabled.tga" scale_image="true" width="50" follows="left|right">
         <button.commit_callback function="ShowFloater" parameter="Windlight"/>
       </button>
     </layout_panel>
-    <layout_panel name="panelwatersettings" height="24" width="50" user_resize="false"  visible="false">
+    <layout_panel name="panelwatersettings" height="24" width="50" user_resize="false">
       <button bottom="0" height="24" label="Water Editor" name="water_editor_btn" image_overlay="icn_toolbar_water_editor.tga" image_overlay_alignment="left" image_selected="toolbar_btn_selected.tga" image_unselected="toolbar_btn_enabled.tga" image_disabled="toolbar_btn_disabled.tga" scale_image="true" width="50" follows="left|right">
         <button.commit_callback function="ShowFloater" parameter="WaterSettings"/>
+      </button>
+    </layout_panel>
+    <layout_panel name="paneldaycycle" height="24" width="50" user_resize="false" visible="false">
+      <button bottom="0" height="24" label="Day Cycle Editor" name="day_cycle_editor_btn" image_overlay="icn_toolbar_day_cycle_editor.tga" image_overlay_alignment="left" image_selected="toolbar_btn_selected.tga" image_unselected="toolbar_btn_enabled.tga" image_disabled="toolbar_btn_disabled.tga" scale_image="true" width="50" follows="left|right">
+        <button.commit_callback function="ShowFloater" parameter="DayCycle"/>
       </button>
     </layout_panel>
     <layout_panel name="panelpostprocess" height="24" width="50" user_resize="false" visible="false">
@@ -63,6 +58,11 @@
         <button.commit_callback function="ShowFloater" parameter="joystick"/>
       </button>
       <button bottom="-22" height="16" width="16" left="4" toggle="true" scale_image="false" image_unselected="checkbox_enabled_false.tga" image_selected="checkbox_enabled_true.tga" label="" control_name="JoystickEnabled" name="enable_joystick" tool_tip="Toggle Joystick controls on and off"/>
+    </layout_panel>
+    <layout_panel name="panelquit" height="24" width="50" user_resize="false">
+      <button bottom="0" height="24" label="Quit" name="quit_btn" image_overlay="icn_toolbar_quit.tga" image_overlay_alignment="left" image_selected="toolbar_btn_selected.tga" image_unselected="toolbar_btn_enabled.tga" image_disabled="toolbar_btn_disabled.tga" scale_image="true" width="50" follows="left|right">
+        <button.commit_callback function="ShowFloater" parameter="quit"/>
+      </button>
     </layout_panel>
   </layout_stack>
 </panel>
