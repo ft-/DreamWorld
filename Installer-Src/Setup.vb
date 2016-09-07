@@ -5,6 +5,13 @@ Imports System.Threading
 Imports System.Net.Sockets
 Imports IWshRuntimeLibrary
 
+' Copyright 2014 Fred Beckhusen  
+' Redistribution and use in binary and source form is permitted provided that the license in the text file is followed and included
+'
+' revision 0.2.1 2014-01-1 Initial Dreamworld with horse
+' revision 0.2.1 2016-09-05 Initial release in new form as a bare sim
+' revision 0.2.2 2016-09-06 Zap all process if foreced closed by X
+
 
 Public Class Form1
 
@@ -14,13 +21,17 @@ Public Class Form1
     Dim Webpage As String
     Dim ctr As Integer
     Dim Opensim As Process
+    Dim Running As Boolean
 
     Private Sub Form1_Leave(sender As Object, e As System.EventArgs) Handles Me.Leave
         ' Needed for some systems to clean up the stack, better be safe
+        ZapAll()
         System.Windows.Forms.Application.Exit()
     End Sub
 
     Private Sub Form1_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+
+        Running = False
 
         Dim location As String = System.Environment.GetCommandLineArgs()(0)
         Dim appName As String = System.IO.Path.GetFileName(location)
@@ -54,6 +65,7 @@ Public Class Form1
 
         ' Start Mowes, which starts MySql and Apache automatically.
         Buttons(BusyButton)
+        Running = True
 
         Try
             My.Computer.FileSystem.DeleteFile(CurDir + "\DreamWorldFiles\Opensim\bin\Opensim.log")
@@ -91,7 +103,7 @@ Public Class Form1
             Sleep(1000)
             iSRunning = iSRunning - 1
             If iSRunning = 0 Then
-                MsgBox("Timeout running Mowes - cannot continue", vbAbort)
+                MsgBox("Timeout running MySQL - cannot continue", vbAbort)
                 ZapAll()
                 Buttons(StopButton)
                 Return
@@ -294,6 +306,7 @@ Public Class Form1
         zap("httpd")
         zap("Mowes")
         Application.DoEvents()
+        Running = False
         Return True
     End Function
 
@@ -316,6 +329,7 @@ Public Class Form1
     Private Sub Print(Value As String)
         Label.Text = Value
         Application.DoEvents()
+        Sleep(100)  ' time to read
     End Sub
 End Class
 
