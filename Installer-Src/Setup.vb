@@ -27,7 +27,9 @@ Public Class Form1
     Private Sub Form1_Leave(sender As Object, e As System.EventArgs) Handles Me.Leave
         ' Needed for some systems to clean up the stack, better be safe
         ZapAll()
-        System.Windows.Forms.Application.Exit()
+        My.Settings.Save()
+        End
+
     End Sub
 
     Private Sub Form1_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
@@ -47,6 +49,26 @@ Public Class Form1
         Me.Text = "Opensimulator DreamWorld"
 
         ctr = 0
+
+        PropertyGrid1.SelectedObject = My.Settings
+
+        ' Attribute for the user-scope settings.
+        Dim userAttr As New System.Configuration.UserScopedSettingAttribute
+        Dim attrs As New System.ComponentModel.AttributeCollection(userAttr)
+        PropertyGrid1.BrowsableAttributes = attrs
+
+        ' asserts first from Settings Tab
+        mnuShow.Checked = My.Settings.Console
+        mnuHide.Checked = Not My.Settings.Console
+
+        mnuAdminShow.Checked = My.Settings.Admin
+        mnuAdminHide.Checked = Not My.Settings.Admin
+
+        mnuEasy.Checked = Not My.Settings.Viewer
+        mnuFull.Checked = My.Settings.Viewer
+
+        mnuYes.Checked = My.Settings.Viewer
+        mnuNo.Checked = Not My.Settings.Viewer
 
         Label.Visible = True
         Buttons(InstallButton)
@@ -252,6 +274,7 @@ Public Class Form1
         ZapAll()
         Buttons(StartButton)
         Print("")
+        My.Settings.Save()
         End
     End Sub
 
@@ -447,26 +470,32 @@ Public Class Form1
         mnuAdminHide.Checked = False
     End Sub
 
-    Private Sub ViewUIToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles ViewUIToolStripMenuItem.Click
+    
+    Private Function Random() As String
+        Dim value As Integer = CInt(Int((6000 * Rnd()) + 1))
+        Return Str(value)
+    End Function
+
+  
+
+    Private Sub WebUIToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles WebUi.Click
         If Running Then
             Dim webAddress As String = "http://127.0.0.1:9100/wifi"
             Process.Start(webAddress)
         Else
             MsgBox("Opensim is not running", vbInformation)
         End If
-
     End Sub
 
-    Private Sub ShutdownToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles ShutdownToolStripMenuItem.Click
+    Private Sub ShutdownNowToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles ShutdownNowToolStripMenuItem.Click
         Print("Stopping")
         Application.DoEvents()
         ZapAll()
         Buttons(StartButton)
         Print("")
     End Sub
-    Private Function Random() As String
-        Dim value As Integer = CInt(Int((6000 * Rnd()) + 1))
-        Return Str(value)
-    End Function
+
+
+
 End Class
 

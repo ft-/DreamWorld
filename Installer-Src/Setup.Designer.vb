@@ -41,18 +41,22 @@ Partial Class Form1
         Me.UIToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuEasy = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuFull = New System.Windows.Forms.ToolStripMenuItem()
-        Me.AvatarToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuNo = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuYes = New System.Windows.Forms.ToolStripMenuItem()
         Me.AdminUIToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuAdminHide = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuAdminShow = New System.Windows.Forms.ToolStripMenuItem()
+        Me.AvatarToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuNo = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuYes = New System.Windows.Forms.ToolStripMenuItem()
+        Me.OpensimulatorToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.WebUi = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ShutdownNowToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.HelpToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuLogin = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuAbout = New System.Windows.Forms.ToolStripMenuItem()
         Me.UIToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
         Me.ViewUIToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ShutdownToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.PropertyGrid1 = New System.Windows.Forms.PropertyGrid()
         Me.MenuStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -84,7 +88,7 @@ Partial Class Form1
         '
         'WebBrowser3
         '
-        Me.WebBrowser3.Location = New System.Drawing.Point(2, 60)
+        Me.WebBrowser3.Location = New System.Drawing.Point(0, 44)
         Me.WebBrowser3.MinimumSize = New System.Drawing.Size(20, 20)
         Me.WebBrowser3.Name = "WebBrowser3"
         Me.WebBrowser3.ScriptErrorsSuppressed = True
@@ -134,7 +138,7 @@ Partial Class Form1
         Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FileToolStripMenuItem, Me.ConsoleToolStripMenuItem, Me.HelpToolStripMenuItem, Me.UIToolStripMenuItem1})
         Me.MenuStrip1.Location = New System.Drawing.Point(0, 0)
         Me.MenuStrip1.Name = "MenuStrip1"
-        Me.MenuStrip1.Size = New System.Drawing.Size(402, 24)
+        Me.MenuStrip1.Size = New System.Drawing.Size(598, 24)
         Me.MenuStrip1.TabIndex = 21
         Me.MenuStrip1.Text = "MenuStrip1"
         '
@@ -153,7 +157,7 @@ Partial Class Form1
         '
         'ConsoleToolStripMenuItem
         '
-        Me.ConsoleToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ConsoleToolStripMenuItem1, Me.UIToolStripMenuItem, Me.AvatarToolStripMenuItem, Me.AdminUIToolStripMenuItem})
+        Me.ConsoleToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ConsoleToolStripMenuItem1, Me.UIToolStripMenuItem, Me.AdminUIToolStripMenuItem, Me.AvatarToolStripMenuItem, Me.OpensimulatorToolStripMenuItem})
         Me.ConsoleToolStripMenuItem.Name = "ConsoleToolStripMenuItem"
         Me.ConsoleToolStripMenuItem.Size = New System.Drawing.Size(61, 20)
         Me.ConsoleToolStripMenuItem.Text = "Settings"
@@ -162,7 +166,7 @@ Partial Class Form1
         '
         Me.ConsoleToolStripMenuItem1.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuHide, Me.mnuShow})
         Me.ConsoleToolStripMenuItem1.Name = "ConsoleToolStripMenuItem1"
-        Me.ConsoleToolStripMenuItem1.Size = New System.Drawing.Size(152, 22)
+        Me.ConsoleToolStripMenuItem1.Size = New System.Drawing.Size(153, 22)
         Me.ConsoleToolStripMenuItem1.Text = "Console"
         '
         'mnuHide
@@ -170,20 +174,20 @@ Partial Class Form1
         Me.mnuHide.Checked = True
         Me.mnuHide.CheckState = System.Windows.Forms.CheckState.Checked
         Me.mnuHide.Name = "mnuHide"
-        Me.mnuHide.Size = New System.Drawing.Size(152, 22)
+        Me.mnuHide.Size = New System.Drawing.Size(103, 22)
         Me.mnuHide.Text = "Hide"
         '
         'mnuShow
         '
         Me.mnuShow.Name = "mnuShow"
-        Me.mnuShow.Size = New System.Drawing.Size(152, 22)
+        Me.mnuShow.Size = New System.Drawing.Size(103, 22)
         Me.mnuShow.Text = "Show"
         '
         'UIToolStripMenuItem
         '
         Me.UIToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuEasy, Me.mnuFull})
         Me.UIToolStripMenuItem.Name = "UIToolStripMenuItem"
-        Me.UIToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.UIToolStripMenuItem.Size = New System.Drawing.Size(153, 22)
         Me.UIToolStripMenuItem.Text = "Viewer UI"
         '
         'mnuEasy
@@ -191,41 +195,20 @@ Partial Class Form1
         Me.mnuEasy.Checked = True
         Me.mnuEasy.CheckState = System.Windows.Forms.CheckState.Checked
         Me.mnuEasy.Name = "mnuEasy"
-        Me.mnuEasy.Size = New System.Drawing.Size(152, 22)
+        Me.mnuEasy.Size = New System.Drawing.Size(97, 22)
         Me.mnuEasy.Text = "Easy"
         '
         'mnuFull
         '
         Me.mnuFull.Name = "mnuFull"
-        Me.mnuFull.Size = New System.Drawing.Size(152, 22)
+        Me.mnuFull.Size = New System.Drawing.Size(97, 22)
         Me.mnuFull.Text = "Full"
-        '
-        'AvatarToolStripMenuItem
-        '
-        Me.AvatarToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuNo, Me.mnuYes})
-        Me.AvatarToolStripMenuItem.Name = "AvatarToolStripMenuItem"
-        Me.AvatarToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
-        Me.AvatarToolStripMenuItem.Text = "Avatar"
-        '
-        'mnuNo
-        '
-        Me.mnuNo.Checked = True
-        Me.mnuNo.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.mnuNo.Name = "mnuNo"
-        Me.mnuNo.Size = New System.Drawing.Size(152, 22)
-        Me.mnuNo.Text = "No"
-        '
-        'mnuYes
-        '
-        Me.mnuYes.Name = "mnuYes"
-        Me.mnuYes.Size = New System.Drawing.Size(152, 22)
-        Me.mnuYes.Text = "Yes"
         '
         'AdminUIToolStripMenuItem
         '
         Me.AdminUIToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuAdminHide, Me.mnuAdminShow})
         Me.AdminUIToolStripMenuItem.Name = "AdminUIToolStripMenuItem"
-        Me.AdminUIToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.AdminUIToolStripMenuItem.Size = New System.Drawing.Size(153, 22)
         Me.AdminUIToolStripMenuItem.Text = "Admin UI"
         '
         'mnuAdminHide
@@ -233,14 +216,54 @@ Partial Class Form1
         Me.mnuAdminHide.Checked = True
         Me.mnuAdminHide.CheckState = System.Windows.Forms.CheckState.Checked
         Me.mnuAdminHide.Name = "mnuAdminHide"
-        Me.mnuAdminHide.Size = New System.Drawing.Size(152, 22)
+        Me.mnuAdminHide.Size = New System.Drawing.Size(103, 22)
         Me.mnuAdminHide.Text = "Hide"
         '
         'mnuAdminShow
         '
         Me.mnuAdminShow.Name = "mnuAdminShow"
-        Me.mnuAdminShow.Size = New System.Drawing.Size(152, 22)
+        Me.mnuAdminShow.Size = New System.Drawing.Size(103, 22)
         Me.mnuAdminShow.Text = "Show"
+        '
+        'AvatarToolStripMenuItem
+        '
+        Me.AvatarToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuNo, Me.mnuYes})
+        Me.AvatarToolStripMenuItem.Name = "AvatarToolStripMenuItem"
+        Me.AvatarToolStripMenuItem.Size = New System.Drawing.Size(153, 22)
+        Me.AvatarToolStripMenuItem.Text = "Avatar"
+        '
+        'mnuNo
+        '
+        Me.mnuNo.Checked = True
+        Me.mnuNo.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.mnuNo.Name = "mnuNo"
+        Me.mnuNo.Size = New System.Drawing.Size(91, 22)
+        Me.mnuNo.Text = "No"
+        '
+        'mnuYes
+        '
+        Me.mnuYes.Name = "mnuYes"
+        Me.mnuYes.Size = New System.Drawing.Size(91, 22)
+        Me.mnuYes.Text = "Yes"
+        '
+        'OpensimulatorToolStripMenuItem
+        '
+        Me.OpensimulatorToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.WebUi, Me.ShutdownNowToolStripMenuItem})
+        Me.OpensimulatorToolStripMenuItem.Name = "OpensimulatorToolStripMenuItem"
+        Me.OpensimulatorToolStripMenuItem.Size = New System.Drawing.Size(153, 22)
+        Me.OpensimulatorToolStripMenuItem.Text = "Opensimulator"
+        '
+        'WebUi
+        '
+        Me.WebUi.Name = "WebUi"
+        Me.WebUi.Size = New System.Drawing.Size(172, 22)
+        Me.WebUi.Text = "Show Web UI Now"
+        '
+        'ShutdownNowToolStripMenuItem
+        '
+        Me.ShutdownNowToolStripMenuItem.Name = "ShutdownNowToolStripMenuItem"
+        Me.ShutdownNowToolStripMenuItem.Size = New System.Drawing.Size(172, 22)
+        Me.ShutdownNowToolStripMenuItem.Text = "Shutdown Now!"
         '
         'HelpToolStripMenuItem
         '
@@ -283,12 +306,20 @@ Partial Class Form1
         Me.ShutdownToolStripMenuItem.Size = New System.Drawing.Size(128, 22)
         Me.ShutdownToolStripMenuItem.Text = "Shutdown"
         '
+        'PropertyGrid1
+        '
+        Me.PropertyGrid1.Location = New System.Drawing.Point(326, 331)
+        Me.PropertyGrid1.Name = "PropertyGrid1"
+        Me.PropertyGrid1.Size = New System.Drawing.Size(240, 165)
+        Me.PropertyGrid1.TabIndex = 22
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.Black
-        Me.ClientSize = New System.Drawing.Size(402, 328)
+        Me.ClientSize = New System.Drawing.Size(598, 515)
+        Me.Controls.Add(Me.PropertyGrid1)
         Me.Controls.Add(Me.Label)
         Me.Controls.Add(Me.BusyButton)
         Me.Controls.Add(Me.StopButton)
@@ -348,4 +379,8 @@ Partial Class Form1
     Friend WithEvents UIToolStripMenuItem1 As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ViewUIToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ShutdownToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents OpensimulatorToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents WebUi As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ShutdownNowToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents PropertyGrid1 As System.Windows.Forms.PropertyGrid
 End Class

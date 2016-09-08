@@ -53,6 +53,54 @@ Namespace My
                 Return defaultInstance
             End Get
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public Property Console() As Boolean
+            Get
+                Return CType(Me("Console"),Boolean)
+            End Get
+            Set
+                Me("Console") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public Property Avatar() As Boolean
+            Get
+                Return CType(Me("Avatar"),Boolean)
+            End Get
+            Set
+                Me("Avatar") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public Property Admin() As Boolean
+            Get
+                Return CType(Me("Admin"),Boolean)
+            End Get
+            Set
+                Me("Admin") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public Property Viewer() As Boolean
+            Get
+                Return CType(Me("Viewer"),Boolean)
+            End Get
+            Set
+                Me("Viewer") = value
+            End Set
+        End Property
     End Class
 End Namespace
 
