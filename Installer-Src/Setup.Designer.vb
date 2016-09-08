@@ -35,17 +35,24 @@ Partial Class Form1
         Me.FileToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuExit = New System.Windows.Forms.ToolStripMenuItem()
         Me.ConsoleToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuShow = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ConsoleToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuHide = New System.Windows.Forms.ToolStripMenuItem()
-        Me.EasyToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuShow = New System.Windows.Forms.ToolStripMenuItem()
+        Me.UIToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuEasy = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuFull = New System.Windows.Forms.ToolStripMenuItem()
         Me.AvatarToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuVisible = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuInvisible = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuNo = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuYes = New System.Windows.Forms.ToolStripMenuItem()
+        Me.AdminUIToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuAdminHide = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuAdminShow = New System.Windows.Forms.ToolStripMenuItem()
         Me.HelpToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuLogin = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuAbout = New System.Windows.Forms.ToolStripMenuItem()
+        Me.UIToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ViewUIToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ShutdownToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -62,7 +69,7 @@ Partial Class Form1
         Me.Label.AutoSize = True
         Me.Label.BackColor = System.Drawing.Color.Black
         Me.Label.ForeColor = System.Drawing.Color.White
-        Me.Label.Location = New System.Drawing.Point(12, 279)
+        Me.Label.Location = New System.Drawing.Point(12, 28)
         Me.Label.Name = "Label"
         Me.Label.Size = New System.Drawing.Size(0, 13)
         Me.Label.TabIndex = 6
@@ -77,7 +84,7 @@ Partial Class Form1
         '
         'WebBrowser3
         '
-        Me.WebBrowser3.Location = New System.Drawing.Point(2, 57)
+        Me.WebBrowser3.Location = New System.Drawing.Point(2, 60)
         Me.WebBrowser3.MinimumSize = New System.Drawing.Size(20, 20)
         Me.WebBrowser3.Name = "WebBrowser3"
         Me.WebBrowser3.ScriptErrorsSuppressed = True
@@ -88,7 +95,7 @@ Partial Class Form1
         '
         'BusyButton
         '
-        Me.BusyButton.Location = New System.Drawing.Point(201, 28)
+        Me.BusyButton.Location = New System.Drawing.Point(315, 1)
         Me.BusyButton.Name = "BusyButton"
         Me.BusyButton.Size = New System.Drawing.Size(75, 23)
         Me.BusyButton.TabIndex = 18
@@ -97,7 +104,7 @@ Partial Class Form1
         '
         'StopButton
         '
-        Me.StopButton.Location = New System.Drawing.Point(303, 28)
+        Me.StopButton.Location = New System.Drawing.Point(315, -1)
         Me.StopButton.Name = "StopButton"
         Me.StopButton.Size = New System.Drawing.Size(75, 23)
         Me.StopButton.TabIndex = 17
@@ -106,7 +113,7 @@ Partial Class Form1
         '
         'StartButton
         '
-        Me.StartButton.Location = New System.Drawing.Point(105, 28)
+        Me.StartButton.Location = New System.Drawing.Point(315, 1)
         Me.StartButton.Name = "StartButton"
         Me.StartButton.Size = New System.Drawing.Size(75, 23)
         Me.StartButton.TabIndex = 16
@@ -115,7 +122,7 @@ Partial Class Form1
         '
         'InstallButton
         '
-        Me.InstallButton.Location = New System.Drawing.Point(24, 27)
+        Me.InstallButton.Location = New System.Drawing.Point(315, 1)
         Me.InstallButton.Name = "InstallButton"
         Me.InstallButton.Size = New System.Drawing.Size(75, 23)
         Me.InstallButton.TabIndex = 15
@@ -124,7 +131,7 @@ Partial Class Form1
         '
         'MenuStrip1
         '
-        Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FileToolStripMenuItem, Me.ConsoleToolStripMenuItem, Me.EasyToolStripMenuItem, Me.AvatarToolStripMenuItem, Me.HelpToolStripMenuItem})
+        Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FileToolStripMenuItem, Me.ConsoleToolStripMenuItem, Me.HelpToolStripMenuItem, Me.UIToolStripMenuItem1})
         Me.MenuStrip1.Location = New System.Drawing.Point(0, 0)
         Me.MenuStrip1.Name = "MenuStrip1"
         Me.MenuStrip1.Size = New System.Drawing.Size(402, 24)
@@ -146,67 +153,94 @@ Partial Class Form1
         '
         'ConsoleToolStripMenuItem
         '
-        Me.ConsoleToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuShow, Me.mnuHide})
+        Me.ConsoleToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ConsoleToolStripMenuItem1, Me.UIToolStripMenuItem, Me.AvatarToolStripMenuItem, Me.AdminUIToolStripMenuItem})
         Me.ConsoleToolStripMenuItem.Name = "ConsoleToolStripMenuItem"
-        Me.ConsoleToolStripMenuItem.Size = New System.Drawing.Size(62, 20)
-        Me.ConsoleToolStripMenuItem.Text = "Console"
+        Me.ConsoleToolStripMenuItem.Size = New System.Drawing.Size(61, 20)
+        Me.ConsoleToolStripMenuItem.Text = "Settings"
         '
-        'mnuShow
+        'ConsoleToolStripMenuItem1
         '
-        Me.mnuShow.Name = "mnuShow"
-        Me.mnuShow.Size = New System.Drawing.Size(103, 22)
-        Me.mnuShow.Text = "Show"
+        Me.ConsoleToolStripMenuItem1.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuHide, Me.mnuShow})
+        Me.ConsoleToolStripMenuItem1.Name = "ConsoleToolStripMenuItem1"
+        Me.ConsoleToolStripMenuItem1.Size = New System.Drawing.Size(152, 22)
+        Me.ConsoleToolStripMenuItem1.Text = "Console"
         '
         'mnuHide
         '
         Me.mnuHide.Checked = True
         Me.mnuHide.CheckState = System.Windows.Forms.CheckState.Checked
         Me.mnuHide.Name = "mnuHide"
-        Me.mnuHide.Size = New System.Drawing.Size(103, 22)
+        Me.mnuHide.Size = New System.Drawing.Size(152, 22)
         Me.mnuHide.Text = "Hide"
         '
-        'EasyToolStripMenuItem
+        'mnuShow
         '
-        Me.EasyToolStripMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-        Me.EasyToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuEasy, Me.mnuFull})
-        Me.EasyToolStripMenuItem.Name = "EasyToolStripMenuItem"
-        Me.EasyToolStripMenuItem.Size = New System.Drawing.Size(30, 20)
-        Me.EasyToolStripMenuItem.Text = "UI"
+        Me.mnuShow.Name = "mnuShow"
+        Me.mnuShow.Size = New System.Drawing.Size(152, 22)
+        Me.mnuShow.Text = "Show"
+        '
+        'UIToolStripMenuItem
+        '
+        Me.UIToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuEasy, Me.mnuFull})
+        Me.UIToolStripMenuItem.Name = "UIToolStripMenuItem"
+        Me.UIToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.UIToolStripMenuItem.Text = "Viewer UI"
         '
         'mnuEasy
         '
         Me.mnuEasy.Checked = True
         Me.mnuEasy.CheckState = System.Windows.Forms.CheckState.Checked
         Me.mnuEasy.Name = "mnuEasy"
-        Me.mnuEasy.Size = New System.Drawing.Size(107, 22)
+        Me.mnuEasy.Size = New System.Drawing.Size(152, 22)
         Me.mnuEasy.Text = "Easy"
         '
         'mnuFull
         '
         Me.mnuFull.Name = "mnuFull"
-        Me.mnuFull.Size = New System.Drawing.Size(107, 22)
-        Me.mnuFull.Text = "Full UI"
+        Me.mnuFull.Size = New System.Drawing.Size(152, 22)
+        Me.mnuFull.Text = "Full"
         '
         'AvatarToolStripMenuItem
         '
-        Me.AvatarToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuVisible, Me.mnuInvisible})
+        Me.AvatarToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuNo, Me.mnuYes})
         Me.AvatarToolStripMenuItem.Name = "AvatarToolStripMenuItem"
-        Me.AvatarToolStripMenuItem.Size = New System.Drawing.Size(53, 20)
+        Me.AvatarToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
         Me.AvatarToolStripMenuItem.Text = "Avatar"
         '
-        'mnuVisible
+        'mnuNo
         '
-        Me.mnuVisible.Name = "mnuVisible"
-        Me.mnuVisible.Size = New System.Drawing.Size(117, 22)
-        Me.mnuVisible.Text = "Visible"
+        Me.mnuNo.Checked = True
+        Me.mnuNo.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.mnuNo.Name = "mnuNo"
+        Me.mnuNo.Size = New System.Drawing.Size(152, 22)
+        Me.mnuNo.Text = "No"
         '
-        'mnuInvisible
+        'mnuYes
         '
-        Me.mnuInvisible.Checked = True
-        Me.mnuInvisible.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.mnuInvisible.Name = "mnuInvisible"
-        Me.mnuInvisible.Size = New System.Drawing.Size(117, 22)
-        Me.mnuInvisible.Text = "Invisible"
+        Me.mnuYes.Name = "mnuYes"
+        Me.mnuYes.Size = New System.Drawing.Size(152, 22)
+        Me.mnuYes.Text = "Yes"
+        '
+        'AdminUIToolStripMenuItem
+        '
+        Me.AdminUIToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuAdminHide, Me.mnuAdminShow})
+        Me.AdminUIToolStripMenuItem.Name = "AdminUIToolStripMenuItem"
+        Me.AdminUIToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.AdminUIToolStripMenuItem.Text = "Admin UI"
+        '
+        'mnuAdminHide
+        '
+        Me.mnuAdminHide.Checked = True
+        Me.mnuAdminHide.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.mnuAdminHide.Name = "mnuAdminHide"
+        Me.mnuAdminHide.Size = New System.Drawing.Size(152, 22)
+        Me.mnuAdminHide.Text = "Hide"
+        '
+        'mnuAdminShow
+        '
+        Me.mnuAdminShow.Name = "mnuAdminShow"
+        Me.mnuAdminShow.Size = New System.Drawing.Size(152, 22)
+        Me.mnuAdminShow.Text = "Show"
         '
         'HelpToolStripMenuItem
         '
@@ -229,6 +263,25 @@ Partial Class Form1
         Me.mnuAbout.Name = "mnuAbout"
         Me.mnuAbout.Size = New System.Drawing.Size(107, 22)
         Me.mnuAbout.Text = "About"
+        '
+        'UIToolStripMenuItem1
+        '
+        Me.UIToolStripMenuItem1.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ViewUIToolStripMenuItem, Me.ShutdownToolStripMenuItem})
+        Me.UIToolStripMenuItem1.Name = "UIToolStripMenuItem1"
+        Me.UIToolStripMenuItem1.Size = New System.Drawing.Size(98, 20)
+        Me.UIToolStripMenuItem1.Text = "Opensimulator"
+        '
+        'ViewUIToolStripMenuItem
+        '
+        Me.ViewUIToolStripMenuItem.Name = "ViewUIToolStripMenuItem"
+        Me.ViewUIToolStripMenuItem.Size = New System.Drawing.Size(128, 22)
+        Me.ViewUIToolStripMenuItem.Text = "View UI"
+        '
+        'ShutdownToolStripMenuItem
+        '
+        Me.ShutdownToolStripMenuItem.Name = "ShutdownToolStripMenuItem"
+        Me.ShutdownToolStripMenuItem.Size = New System.Drawing.Size(128, 22)
+        Me.ShutdownToolStripMenuItem.Text = "Shutdown"
         '
         'Form1
         '
@@ -274,18 +327,25 @@ Partial Class Form1
     Friend WithEvents StartButton As System.Windows.Forms.Button
     Friend WithEvents InstallButton As System.Windows.Forms.Button
     Friend WithEvents MenuStrip1 As System.Windows.Forms.MenuStrip
-    Friend WithEvents EasyToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuEasy As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuFull As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents FileToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnuExit As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ConsoleToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuShow As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuHide As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents HelpToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnuLogin As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnuAbout As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ConsoleToolStripMenuItem1 As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuShow As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuHide As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents UIToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuEasy As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuFull As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents AvatarToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuVisible As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuInvisible As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuYes As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuNo As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents AdminUIToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuAdminHide As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuAdminShow As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents UIToolStripMenuItem1 As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ViewUIToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ShutdownToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
 End Class
