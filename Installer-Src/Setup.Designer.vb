@@ -53,10 +53,6 @@ Partial Class Form1
         Me.HelpToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuLogin = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuAbout = New System.Windows.Forms.ToolStripMenuItem()
-        Me.UIToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ViewUIToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ShutdownToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.PropertyGrid1 = New System.Windows.Forms.PropertyGrid()
         Me.MenuStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -93,13 +89,13 @@ Partial Class Form1
         Me.WebBrowser3.Name = "WebBrowser3"
         Me.WebBrowser3.ScriptErrorsSuppressed = True
         Me.WebBrowser3.ScrollBarsEnabled = False
-        Me.WebBrowser3.Size = New System.Drawing.Size(400, 270)
+        Me.WebBrowser3.Size = New System.Drawing.Size(431, 98)
         Me.WebBrowser3.TabIndex = 14
         Me.WebBrowser3.Url = New System.Uri("http://www.outworldz.com/DreamWorld/Home.htm", System.UriKind.Absolute)
         '
         'BusyButton
         '
-        Me.BusyButton.Location = New System.Drawing.Point(315, 1)
+        Me.BusyButton.Location = New System.Drawing.Point(344, 1)
         Me.BusyButton.Name = "BusyButton"
         Me.BusyButton.Size = New System.Drawing.Size(75, 23)
         Me.BusyButton.TabIndex = 18
@@ -108,7 +104,7 @@ Partial Class Form1
         '
         'StopButton
         '
-        Me.StopButton.Location = New System.Drawing.Point(315, -1)
+        Me.StopButton.Location = New System.Drawing.Point(344, 0)
         Me.StopButton.Name = "StopButton"
         Me.StopButton.Size = New System.Drawing.Size(75, 23)
         Me.StopButton.TabIndex = 17
@@ -117,7 +113,7 @@ Partial Class Form1
         '
         'StartButton
         '
-        Me.StartButton.Location = New System.Drawing.Point(315, 1)
+        Me.StartButton.Location = New System.Drawing.Point(344, 1)
         Me.StartButton.Name = "StartButton"
         Me.StartButton.Size = New System.Drawing.Size(75, 23)
         Me.StartButton.TabIndex = 16
@@ -126,7 +122,7 @@ Partial Class Form1
         '
         'InstallButton
         '
-        Me.InstallButton.Location = New System.Drawing.Point(315, 1)
+        Me.InstallButton.Location = New System.Drawing.Point(344, 1)
         Me.InstallButton.Name = "InstallButton"
         Me.InstallButton.Size = New System.Drawing.Size(75, 23)
         Me.InstallButton.TabIndex = 15
@@ -135,10 +131,10 @@ Partial Class Form1
         '
         'MenuStrip1
         '
-        Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FileToolStripMenuItem, Me.ConsoleToolStripMenuItem, Me.HelpToolStripMenuItem, Me.UIToolStripMenuItem1})
+        Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FileToolStripMenuItem, Me.ConsoleToolStripMenuItem, Me.HelpToolStripMenuItem})
         Me.MenuStrip1.Location = New System.Drawing.Point(0, 0)
         Me.MenuStrip1.Name = "MenuStrip1"
-        Me.MenuStrip1.Size = New System.Drawing.Size(598, 24)
+        Me.MenuStrip1.Size = New System.Drawing.Size(431, 24)
         Me.MenuStrip1.TabIndex = 21
         Me.MenuStrip1.Text = "MenuStrip1"
         '
@@ -287,39 +283,12 @@ Partial Class Form1
         Me.mnuAbout.Size = New System.Drawing.Size(107, 22)
         Me.mnuAbout.Text = "About"
         '
-        'UIToolStripMenuItem1
-        '
-        Me.UIToolStripMenuItem1.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ViewUIToolStripMenuItem, Me.ShutdownToolStripMenuItem})
-        Me.UIToolStripMenuItem1.Name = "UIToolStripMenuItem1"
-        Me.UIToolStripMenuItem1.Size = New System.Drawing.Size(98, 20)
-        Me.UIToolStripMenuItem1.Text = "Opensimulator"
-        '
-        'ViewUIToolStripMenuItem
-        '
-        Me.ViewUIToolStripMenuItem.Name = "ViewUIToolStripMenuItem"
-        Me.ViewUIToolStripMenuItem.Size = New System.Drawing.Size(128, 22)
-        Me.ViewUIToolStripMenuItem.Text = "View UI"
-        '
-        'ShutdownToolStripMenuItem
-        '
-        Me.ShutdownToolStripMenuItem.Name = "ShutdownToolStripMenuItem"
-        Me.ShutdownToolStripMenuItem.Size = New System.Drawing.Size(128, 22)
-        Me.ShutdownToolStripMenuItem.Text = "Shutdown"
-        '
-        'PropertyGrid1
-        '
-        Me.PropertyGrid1.Location = New System.Drawing.Point(326, 331)
-        Me.PropertyGrid1.Name = "PropertyGrid1"
-        Me.PropertyGrid1.Size = New System.Drawing.Size(240, 165)
-        Me.PropertyGrid1.TabIndex = 22
-        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.Black
-        Me.ClientSize = New System.Drawing.Size(598, 515)
-        Me.Controls.Add(Me.PropertyGrid1)
+        Me.ClientSize = New System.Drawing.Size(431, 142)
         Me.Controls.Add(Me.Label)
         Me.Controls.Add(Me.BusyButton)
         Me.Controls.Add(Me.StopButton)
@@ -376,11 +345,7 @@ Partial Class Form1
     Friend WithEvents AdminUIToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnuAdminHide As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnuAdminShow As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents UIToolStripMenuItem1 As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents ViewUIToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents ShutdownToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents OpensimulatorToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents WebUi As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ShutdownNowToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents PropertyGrid1 As System.Windows.Forms.PropertyGrid
 End Class

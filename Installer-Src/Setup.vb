@@ -27,7 +27,7 @@ Public Class Form1
     Private Sub Form1_Leave(sender As Object, e As System.EventArgs) Handles Me.Leave
         ' Needed for some systems to clean up the stack, better be safe
         ZapAll()
-        My.Settings.Save()
+
         End
 
     End Sub
@@ -43,19 +43,12 @@ Public Class Form1
         ' for debugging when compiling
        
         ' FKB debug only
-        CurDir = "C:\DreamWorld"
+        CurDir = "\DreamWorldz"
         ChDir(CurDir)
 
         Me.Text = "Opensimulator DreamWorld"
 
         ctr = 0
-
-        PropertyGrid1.SelectedObject = My.Settings
-
-        ' Attribute for the user-scope settings.
-        Dim userAttr As New System.Configuration.UserScopedSettingAttribute
-        Dim attrs As New System.ComponentModel.AttributeCollection(userAttr)
-        PropertyGrid1.BrowsableAttributes = attrs
 
         ' asserts first from Settings Tab
         mnuShow.Checked = My.Settings.Console
@@ -88,7 +81,6 @@ Public Class Form1
     Private Sub WebBrowser1_DocumentCompleted(ByVal sender As System.Object, ByVal e As System.Windows.Forms.WebBrowserDocumentCompletedEventArgs) Handles WebBrowser1.DocumentCompleted
 
         ' start Opensimulator
-
         Webpage = WebBrowser1.DocumentText
 
         ctr = ctr + 1
@@ -101,6 +93,8 @@ Public Class Form1
 
         If Webpage = "Up" Then
             '  Launch(OpenSim)
+            WebBrowser3.Url = New Uri("http://www.Outworldz.com/DreamWorld/StartingOpensim.htm?id=" + Random())
+
             Print("Starting Opensimulator")
             ChDir(CurDir & "\DreamWorldFiles\Opensim\bin\")
 
@@ -146,6 +140,8 @@ Public Class Form1
         End If
 
         If Webpage = "Up" Then
+            WebBrowser3.Url = New Uri("http://www.Outworldz.com/DreamWorld/StartingOnlook.htm?id=" + Random())
+
             Print("Starting Onlook viewer")
             ctr = 0
 
@@ -161,12 +157,13 @@ Public Class Form1
 
             ' Show the web console
             If mnuAdminShow.Checked Then
+                WebBrowser3.Url = New Uri("http://www.Outworldz.com/DreamWorld/Wifi.htm?id=" + Random())
                 Dim webAddress As String = "http://127.0.0.1:9100/wifi"
                 Process.Start(webAddress)
             End If
 
             Buttons(StopButton)
-            
+
         Else
             Application.DoEvents()
             Sleep(1000)
@@ -201,7 +198,12 @@ Public Class Form1
         Print("Stopping " + process)
         ' Kill process by name
         For Each P As Process In System.Diagnostics.Process.GetProcessesByName(process)
-            P.Kill()
+            Try
+                P.Kill()
+            Catch
+                ' nothing
+            End Try
+
         Next
         Print("")
         Return True
@@ -258,7 +260,7 @@ Public Class Form1
         MyShortcut.TargetPath = sTargetPath
         MyShortcut.IconLocation = "moricons.dll, 61"
         MyShortcut.WorkingDirectory = CurDir
-        MyShortcut.Save()
+
 
     End Sub
 
@@ -274,12 +276,12 @@ Public Class Form1
         ZapAll()
         Buttons(StartButton)
         Print("")
-        My.Settings.Save()
+
         End
     End Sub
 
     Private Sub mnuLogin_Click(sender As System.Object, e As System.EventArgs) Handles mnuLogin.Click
-        WebBrowser3.Url = New Uri("http://www.Outworldz.com/DreamWorld/Help.htm?id=" + Random())
+        WebBrowser3.Url = New Uri("http://www.Outworldz.com/DreamWorld/Login.htm?id=" + Random())
 
     End Sub
 
@@ -291,6 +293,8 @@ Public Class Form1
 
     Private Sub StartButton_Click(sender As System.Object, e As System.EventArgs) Handles StartButton.Click
         ' Start Mowes, which starts MySql and Apache automatically.
+
+        WebBrowser3.Url = New Uri("http://www.Outworldz.com/DreamWorld/Starting.htm?id=" + Random())
         Buttons(BusyButton)
         Running = True
 
@@ -337,6 +341,7 @@ Public Class Form1
             End If
 
             ' now check that SQL server has started
+
             Status = CheckMySQL()
             If Status Then
                 iSRunning = 0
@@ -350,15 +355,19 @@ Public Class Form1
     End Sub
 
     Private Sub StopButton_Click_1(sender As System.Object, e As System.EventArgs) Handles StopButton.Click
+        WebBrowser3.Url = New Uri("http://www.Outworldz.com/DreamWorld?id=" + Random())
         Buttons(BusyButton)
         Print("Stopping")
         ZapAll()
         Buttons(StartButton)
         Print("")
+
     End Sub
 
     Private Sub InstallButton_Click(sender As System.Object, e As System.EventArgs) Handles InstallButton.Click
         Buttons(BusyButton)
+
+        WebBrowser3.Url = New Uri("http://www.Outworldz.com/DreamWorld/Install.htm?id=" + Random())
 
         Print("Installing Shortcut")
         Create_ShortCut(CurDir & "\Start.exe")
@@ -383,15 +392,17 @@ Public Class Form1
         ' allow them to launch now
         Print("Ready to Launch")
         Buttons(StartButton)
+        WebBrowser3.Url = New Uri("http://www.Outworldz.com/DreamWorld?id=" + Random())
     End Sub
 
   
     Private Sub ShowToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles mnuShow.Click
         WebBrowser3.Url = New Uri("http://www.Outworldz.com/DreamWorld/Show.htm?id=" + Random())
 
-
         mnuShow.Checked = True
         mnuHide.Checked = False
+        My.Settings.Console = mnuShow.Checked
+        My.Settings.Save()
 
         If Running Then
             MsgBox("Change will occur when the Viewer is next logged in", vbInformation)
@@ -401,9 +412,9 @@ Public Class Form1
     Private Sub mnuHide_Click(sender As System.Object, e As System.EventArgs) Handles mnuHide.Click
         WebBrowser3.Url = New Uri("http://www.Outworldz.com/DreamWorld/Hide.htm?id=" + Random())
 
-
         mnuShow.Checked = False
         mnuHide.Checked = True
+        My.Settings.Save()
 
         If Running Then
             MsgBox("Change will occur when the Viewer is next logged in", vbInformation)
@@ -415,9 +426,10 @@ Public Class Form1
         My.Computer.FileSystem.CopyFile(CurDir & "\DreamWorldFiles\Opensim\bin\ViewerSupport\panel_no_toolbar.xml.example", CurDir & "\DreamWorldFiles\Opensim\bin\ViewerSupport\panel_toolbar.xml", True)
         WebBrowser3.Url = New Uri("http://www.Outworldz.com/DreamWorld/Easy.htm?id=" + Random())
 
-
         mnuEasy.Checked = True
         mnuFull.Checked = False
+        My.Settings.Viewer = mnuEasy.Checked
+        My.Settings.Save()
 
         If Running Then
             MsgBox("Change will occur when the sim is restarted", vbInformation)
@@ -430,6 +442,8 @@ Public Class Form1
 
         mnuEasy.Checked = False
         mnuFull.Checked = True
+        My.Settings.Viewer = mnuEasy.Checked
+        My.Settings.Save()
 
         If Running Then
             MsgBox("Change will occur when the sim is restarted", vbInformation)
@@ -442,6 +456,8 @@ Public Class Form1
 
         mnuNo.Checked = True
         mnuYes.Checked = False
+        My.Settings.Viewer = mnuYes.Checked
+        My.Settings.Save()
 
         If Running Then
             MsgBox("Change will occur when the Viewer is next logged in", vbInformation)
@@ -454,6 +470,8 @@ Public Class Form1
 
         mnuYes.Checked = True
         mnuNo.Checked = False
+        My.Settings.Viewer = mnuYes.Checked
+        My.Settings.Save()
 
         If Running Then
             MsgBox("Change will occur when the Viewer is next logged in", vbInformation)
@@ -461,13 +479,19 @@ Public Class Form1
     End Sub
 
     Private Sub HideToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles mnuAdminHide.Click
+        WebBrowser3.Url = New Uri("http://www.Outworldz.com/DreamWorld/NoAdmin.htm?id=" + Random())
         mnuAdminShow.Checked = False
         mnuAdminHide.Checked = True
+        My.Settings.Admin = mnuAdminShow.Checked
+        My.Settings.Save()
     End Sub
 
     Private Sub ShowToolStripMenuItem_Click_1(sender As System.Object, e As System.EventArgs) Handles mnuAdminShow.Click
+        WebBrowser3.Url = New Uri("http://www.Outworldz.com/DreamWorld/Admin.htm?id=" + Random())
         mnuAdminShow.Checked = True
         mnuAdminHide.Checked = False
+        My.Settings.Admin = mnuAdminShow.Checked
+        My.Settings.Save()
     End Sub
 
     
@@ -479,22 +503,27 @@ Public Class Form1
   
 
     Private Sub WebUIToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles WebUi.Click
+        WebBrowser3.Url = New Uri("http://www.Outworldz.com/DreamWorld/Wifi.htm?id=" + Random())
         If Running Then
+
             Dim webAddress As String = "http://127.0.0.1:9100/wifi"
             Process.Start(webAddress)
         Else
+
             MsgBox("Opensim is not running", vbInformation)
         End If
     End Sub
 
     Private Sub ShutdownNowToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles ShutdownNowToolStripMenuItem.Click
+
+        WebBrowser3.Url = New Uri("http://www.Outworldz.com/DreamWorld?id=" + Random())
+
         Print("Stopping")
         Application.DoEvents()
         ZapAll()
         Buttons(StartButton)
         Print("")
     End Sub
-
 
 
 End Class
