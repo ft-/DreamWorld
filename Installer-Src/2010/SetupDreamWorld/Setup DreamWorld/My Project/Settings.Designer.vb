@@ -15,7 +15,7 @@ Option Explicit On
 Namespace My
     
     <Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute(),  _
-     Global.System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "10.0.0.0"),  _
+     Global.System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "14.0.0.0"),  _
      Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Advanced)>  _
     Partial Friend NotInheritable Class MySettings
         Inherits Global.System.Configuration.ApplicationSettingsBase
@@ -57,9 +57,9 @@ Namespace My
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
-        Public Property Console() As Boolean
+        Public Property Console() As String
             Get
-                Return CType(Me("Console"),Boolean)
+                Return CType(Me("Console"),String)
             End Get
             Set
                 Me("Console") = value
@@ -69,9 +69,9 @@ Namespace My
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
-        Public Property Avatar() As Boolean
+        Public Property Avatar() As String
             Get
-                Return CType(Me("Avatar"),Boolean)
+                Return CType(Me("Avatar"),String)
             End Get
             Set
                 Me("Avatar") = value
@@ -81,9 +81,9 @@ Namespace My
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
-        Public Property Admin() As Boolean
+        Public Property Admin() As String
             Get
-                Return CType(Me("Admin"),Boolean)
+                Return CType(Me("Admin"),String)
             End Get
             Set
                 Me("Admin") = value
@@ -93,9 +93,9 @@ Namespace My
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
-        Public Property Viewer() As Boolean
+        Public Property Viewer() As String
             Get
-                Return CType(Me("Viewer"),Boolean)
+                Return CType(Me("Viewer"),String)
             End Get
             Set
                 Me("Viewer") = value

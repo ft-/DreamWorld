@@ -50,19 +50,19 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>+6NQZJWMr3yTuTNGZdzs7jIY6vA=</dsig:DigestValue>
+        <dsig:DigestValue>Cl6IszDz1Az2zonRQdVp52vEl6I=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Start.exe" size="169472">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Start.exe" size="171520">
       <assemblyIdentity name="Start" version="1.0.0.0" language="neutral" processorArchitecture="x86" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>VqD4O/0vJhVssdtawX1GxvsCnZQ=</dsig:DigestValue>
+        <dsig:DigestValue>Ief4ePfPKIP2ttkaaKqd+IJWlFc=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

@@ -51,3 +51,4 @@ D:\Opensim\DreamWorld\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x8
 D:\Opensim\DreamWorld\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\bin\Release\Start.pdb
 D:\Opensim\DreamWorld\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\bin\Release\Start.xml
 D:\Opensim\DreamWorld\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\bin\Release\Interop.IWshRuntimeLibrary.dll
+C:\Opensim\DreamWorld-GitHub\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\bin\Release\Start.exe.config

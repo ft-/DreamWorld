@@ -51,3 +51,4 @@ D:\Opensim\DreamWorld\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x8
 D:\Opensim\DreamWorld\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Debug\Start.TrustInfo.xml
 D:\Opensim\DreamWorld\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Debug\Start.exe.manifest
 D:\Opensim\DreamWorld\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Debug\Start.application
+C:\Opensim\DreamWorld-GitHub\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\bin\Debug\Start.exe.config

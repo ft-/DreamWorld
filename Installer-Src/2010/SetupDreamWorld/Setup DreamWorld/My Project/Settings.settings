@@ -2,16 +2,16 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="My" GeneratedClassName="MySettings" UseMySettingsClassName="true">
   <Profiles />
   <Settings>
-    <Setting Name="Console" Type="System.Boolean" Scope="User">
+    <Setting Name="Console" Type="System.String" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="Avatar" Type="System.Boolean" Scope="User">
+    <Setting Name="Avatar" Type="System.String" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="Admin" Type="System.Boolean" Scope="User">
+    <Setting Name="Admin" Type="System.String" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="Viewer" Type="System.Boolean" Scope="User">
+    <Setting Name="Viewer" Type="System.String" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>

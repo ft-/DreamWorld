@@ -26,15 +26,15 @@ Partial Class Form1
         Me.WebBrowser1 = New System.Windows.Forms.WebBrowser()
         Me.Label = New System.Windows.Forms.Label()
         Me.WebBrowser2 = New System.Windows.Forms.WebBrowser()
-        Me.WebBrowser3 = New System.Windows.Forms.WebBrowser()
-        Me.BusyButton = New System.Windows.Forms.Button()
         Me.StopButton = New System.Windows.Forms.Button()
         Me.StartButton = New System.Windows.Forms.Button()
         Me.InstallButton = New System.Windows.Forms.Button()
         Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
         Me.FileToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuExit = New System.Windows.Forms.ToolStripMenuItem()
         Me.ConsoleToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.HelpToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.BusyButton = New System.Windows.Forms.Button()
+        Me.mnuExit = New System.Windows.Forms.ToolStripMenuItem()
         Me.ConsoleToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuHide = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuShow = New System.Windows.Forms.ToolStripMenuItem()
@@ -50,7 +50,6 @@ Partial Class Form1
         Me.OpensimulatorToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.WebUi = New System.Windows.Forms.ToolStripMenuItem()
         Me.ShutdownNowToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.HelpToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuLogin = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuAbout = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuStrip1.SuspendLayout()
@@ -82,29 +81,9 @@ Partial Class Form1
         Me.WebBrowser2.Size = New System.Drawing.Size(125, 53)
         Me.WebBrowser2.TabIndex = 8
         '
-        'WebBrowser3
-        '
-        Me.WebBrowser3.Location = New System.Drawing.Point(0, 44)
-        Me.WebBrowser3.MinimumSize = New System.Drawing.Size(20, 20)
-        Me.WebBrowser3.Name = "WebBrowser3"
-        Me.WebBrowser3.ScriptErrorsSuppressed = True
-        Me.WebBrowser3.ScrollBarsEnabled = False
-        Me.WebBrowser3.Size = New System.Drawing.Size(431, 98)
-        Me.WebBrowser3.TabIndex = 14
-        Me.WebBrowser3.Url = New System.Uri("http://www.outworldz.com/DreamWorld/Home.htm", System.UriKind.Absolute)
-        '
-        'BusyButton
-        '
-        Me.BusyButton.Location = New System.Drawing.Point(344, 1)
-        Me.BusyButton.Name = "BusyButton"
-        Me.BusyButton.Size = New System.Drawing.Size(75, 23)
-        Me.BusyButton.TabIndex = 18
-        Me.BusyButton.Text = "Busy"
-        Me.BusyButton.UseVisualStyleBackColor = True
-        '
         'StopButton
         '
-        Me.StopButton.Location = New System.Drawing.Point(344, 0)
+        Me.StopButton.Location = New System.Drawing.Point(167, 0)
         Me.StopButton.Name = "StopButton"
         Me.StopButton.Size = New System.Drawing.Size(75, 23)
         Me.StopButton.TabIndex = 17
@@ -113,7 +92,7 @@ Partial Class Form1
         '
         'StartButton
         '
-        Me.StartButton.Location = New System.Drawing.Point(344, 1)
+        Me.StartButton.Location = New System.Drawing.Point(167, 1)
         Me.StartButton.Name = "StartButton"
         Me.StartButton.Size = New System.Drawing.Size(75, 23)
         Me.StartButton.TabIndex = 16
@@ -122,7 +101,7 @@ Partial Class Form1
         '
         'InstallButton
         '
-        Me.InstallButton.Location = New System.Drawing.Point(344, 1)
+        Me.InstallButton.Location = New System.Drawing.Point(167, 1)
         Me.InstallButton.Name = "InstallButton"
         Me.InstallButton.Size = New System.Drawing.Size(75, 23)
         Me.InstallButton.TabIndex = 15
@@ -145,12 +124,6 @@ Partial Class Form1
         Me.FileToolStripMenuItem.Size = New System.Drawing.Size(37, 20)
         Me.FileToolStripMenuItem.Text = "File"
         '
-        'mnuExit
-        '
-        Me.mnuExit.Name = "mnuExit"
-        Me.mnuExit.Size = New System.Drawing.Size(92, 22)
-        Me.mnuExit.Text = "Exit"
-        '
         'ConsoleToolStripMenuItem
         '
         Me.ConsoleToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ConsoleToolStripMenuItem1, Me.UIToolStripMenuItem, Me.AdminUIToolStripMenuItem, Me.AvatarToolStripMenuItem, Me.OpensimulatorToolStripMenuItem})
@@ -158,9 +131,33 @@ Partial Class Form1
         Me.ConsoleToolStripMenuItem.Size = New System.Drawing.Size(61, 20)
         Me.ConsoleToolStripMenuItem.Text = "Settings"
         '
+        'HelpToolStripMenuItem
+        '
+        Me.HelpToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuLogin, Me.mnuAbout})
+        Me.HelpToolStripMenuItem.Name = "HelpToolStripMenuItem"
+        Me.HelpToolStripMenuItem.Size = New System.Drawing.Size(44, 20)
+        Me.HelpToolStripMenuItem.Text = "Help"
+        '
+        'BusyButton
+        '
+        Me.BusyButton.Location = New System.Drawing.Point(167, 1)
+        Me.BusyButton.Name = "BusyButton"
+        Me.BusyButton.Size = New System.Drawing.Size(75, 23)
+        Me.BusyButton.TabIndex = 18
+        Me.BusyButton.Text = "Busy"
+        Me.BusyButton.UseVisualStyleBackColor = True
+        '
+        'mnuExit
+        '
+        Me.mnuExit.Image = Global.DreamWorld.My.Resources.Resources._exit
+        Me.mnuExit.Name = "mnuExit"
+        Me.mnuExit.Size = New System.Drawing.Size(92, 22)
+        Me.mnuExit.Text = "Exit"
+        '
         'ConsoleToolStripMenuItem1
         '
         Me.ConsoleToolStripMenuItem1.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuHide, Me.mnuShow})
+        Me.ConsoleToolStripMenuItem1.Image = Global.DreamWorld.My.Resources.Resources.window_edit
         Me.ConsoleToolStripMenuItem1.Name = "ConsoleToolStripMenuItem1"
         Me.ConsoleToolStripMenuItem1.Size = New System.Drawing.Size(153, 22)
         Me.ConsoleToolStripMenuItem1.Text = "Console"
@@ -182,6 +179,7 @@ Partial Class Form1
         'UIToolStripMenuItem
         '
         Me.UIToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuEasy, Me.mnuFull})
+        Me.UIToolStripMenuItem.Image = Global.DreamWorld.My.Resources.Resources.document_connection
         Me.UIToolStripMenuItem.Name = "UIToolStripMenuItem"
         Me.UIToolStripMenuItem.Size = New System.Drawing.Size(153, 22)
         Me.UIToolStripMenuItem.Text = "Viewer UI"
@@ -203,6 +201,7 @@ Partial Class Form1
         'AdminUIToolStripMenuItem
         '
         Me.AdminUIToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuAdminHide, Me.mnuAdminShow})
+        Me.AdminUIToolStripMenuItem.Image = Global.DreamWorld.My.Resources.Resources.document_view
         Me.AdminUIToolStripMenuItem.Name = "AdminUIToolStripMenuItem"
         Me.AdminUIToolStripMenuItem.Size = New System.Drawing.Size(153, 22)
         Me.AdminUIToolStripMenuItem.Text = "Admin UI"
@@ -224,6 +223,7 @@ Partial Class Form1
         'AvatarToolStripMenuItem
         '
         Me.AvatarToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuNo, Me.mnuYes})
+        Me.AvatarToolStripMenuItem.Image = Global.DreamWorld.My.Resources.Resources.users1
         Me.AvatarToolStripMenuItem.Name = "AvatarToolStripMenuItem"
         Me.AvatarToolStripMenuItem.Size = New System.Drawing.Size(153, 22)
         Me.AvatarToolStripMenuItem.Text = "Avatar"
@@ -245,33 +245,29 @@ Partial Class Form1
         'OpensimulatorToolStripMenuItem
         '
         Me.OpensimulatorToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.WebUi, Me.ShutdownNowToolStripMenuItem})
+        Me.OpensimulatorToolStripMenuItem.Image = Global.DreamWorld.My.Resources.Resources.cube_blue
         Me.OpensimulatorToolStripMenuItem.Name = "OpensimulatorToolStripMenuItem"
         Me.OpensimulatorToolStripMenuItem.Size = New System.Drawing.Size(153, 22)
         Me.OpensimulatorToolStripMenuItem.Text = "Opensimulator"
         '
         'WebUi
         '
+        Me.WebUi.Image = Global.DreamWorld.My.Resources.Resources.window_add
         Me.WebUi.Name = "WebUi"
         Me.WebUi.Size = New System.Drawing.Size(172, 22)
         Me.WebUi.Text = "Show Web UI Now"
         '
         'ShutdownNowToolStripMenuItem
         '
+        Me.ShutdownNowToolStripMenuItem.Image = Global.DreamWorld.My.Resources.Resources._error
         Me.ShutdownNowToolStripMenuItem.Name = "ShutdownNowToolStripMenuItem"
         Me.ShutdownNowToolStripMenuItem.Size = New System.Drawing.Size(172, 22)
         Me.ShutdownNowToolStripMenuItem.Text = "Shutdown Now!"
         '
-        'HelpToolStripMenuItem
-        '
-        Me.HelpToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuLogin, Me.mnuAbout})
-        Me.HelpToolStripMenuItem.Name = "HelpToolStripMenuItem"
-        Me.HelpToolStripMenuItem.Size = New System.Drawing.Size(44, 20)
-        Me.HelpToolStripMenuItem.Text = "Help"
-        '
         'mnuLogin
         '
         Me.mnuLogin.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None
-        Me.mnuLogin.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+        Me.mnuLogin.Image = Global.DreamWorld.My.Resources.Resources.question_and_answer
         Me.mnuLogin.Name = "mnuLogin"
         Me.mnuLogin.Size = New System.Drawing.Size(107, 22)
         Me.mnuLogin.Text = "Login"
@@ -279,6 +275,7 @@ Partial Class Form1
         'mnuAbout
         '
         Me.mnuAbout.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None
+        Me.mnuAbout.Image = Global.DreamWorld.My.Resources.Resources.about
         Me.mnuAbout.Name = "mnuAbout"
         Me.mnuAbout.Size = New System.Drawing.Size(107, 22)
         Me.mnuAbout.Text = "About"
@@ -288,7 +285,7 @@ Partial Class Form1
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.Black
-        Me.ClientSize = New System.Drawing.Size(431, 142)
+        Me.ClientSize = New System.Drawing.Size(431, 257)
         Me.Controls.Add(Me.Label)
         Me.Controls.Add(Me.BusyButton)
         Me.Controls.Add(Me.StopButton)
@@ -296,7 +293,6 @@ Partial Class Form1
         Me.Controls.Add(Me.InstallButton)
         Me.Controls.Add(Me.WebBrowser2)
         Me.Controls.Add(Me.WebBrowser1)
-        Me.Controls.Add(Me.WebBrowser3)
         Me.Controls.Add(Me.MenuStrip1)
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MainMenuStrip = Me.MenuStrip1
@@ -321,7 +317,6 @@ Partial Class Form1
     Friend WithEvents WebBrowser1 As System.Windows.Forms.WebBrowser
     Friend WithEvents Label As System.Windows.Forms.Label
     Friend WithEvents WebBrowser2 As System.Windows.Forms.WebBrowser
-    Friend WithEvents WebBrowser3 As System.Windows.Forms.WebBrowser
     Friend WithEvents BusyButton As System.Windows.Forms.Button
     Friend WithEvents StopButton As System.Windows.Forms.Button
     Friend WithEvents StartButton As System.Windows.Forms.Button
