@@ -43,8 +43,8 @@ Public Class Form1
         ' for debugging when compiling
 
         ' FKB debug only
-        CurDir = "\DreamWorld"
-        ChDir(CurDir)
+        'CurDir = "\DreamWorld"
+        'ChDir(CurDir)
 
         ctr = 0
 
@@ -136,7 +136,6 @@ Public Class Form1
         End If
 
         If Webpage = "Up" Then
-            ' WebBrowser3.Url = New Uri("http://www.Outworldz.com/DreamWorld/StartingOnlook.htm?id=" + Random())
 
             Print("Starting Onlook viewer")
             ctr = 0
@@ -153,12 +152,15 @@ Public Class Form1
 
             ' Show the web console
             If mnuAdminShow.Checked Then
-                ' WebBrowser3.Url = New Uri("http://www.Outworldz.com/DreamWorld/Wifi.htm?id=" + Random())
                 Dim webAddress As String = "http://127.0.0.1:9100/wifi"
                 Process.Start(webAddress)
             End If
 
             Buttons(StopButton)
+
+            Print("Login as 'Simon Stick', password is '123'")
+            Sleep(5)
+            Print("")
 
         Else
             Application.DoEvents()
@@ -167,6 +169,7 @@ Public Class Form1
             WebBrowser2.Refresh(WebBrowserRefreshOption.Completely)
         End If
         Application.DoEvents()
+
 
     End Sub
 
@@ -278,12 +281,14 @@ Public Class Form1
 
     Private Sub mnuLogin_Click(sender As System.Object, e As System.EventArgs) Handles mnuLogin.Click
 
-        Print("User 'Simona Stick' has a password of '123'.")
+        Print("Use to OnLook Viewer to log in.  User 'Simona Stick' has a password of '123'. You can use the Web UI Interface to create a new avatar.")
 
     End Sub
 
     Private Sub mnuAbout_Click(sender As System.Object, e As System.EventArgs) Handles mnuAbout.Click
         Print("(c) 2014 www.Outworldz.com")
+        Dim webAddress As String = "http://www.outworldz.com/Dreamworld"
+        Process.Start(webAddress)
     End Sub
 
     Private Sub StartButton_Click(sender As System.Object, e As System.EventArgs) Handles StartButton.Click
@@ -433,7 +438,7 @@ Public Class Form1
 
     Private Sub mnuFull_Click(sender As System.Object, e As System.EventArgs) Handles mnuFull.Click
         My.Computer.FileSystem.CopyFile(CurDir & "\DreamWorldFiles\Opensim\bin\ViewerSupport\panel_toolbar.xml.example", CurDir & "\DreamWorldFiles\Opensim\bin\ViewerSupport\panel_toolbar.xml", True)
-        ' WebBrowser3.Url = New Uri("http://www.Outworldz.com/DreamWorld/Full.htm?id=" + Random())
+
         Print("Onlook Viewer is set for the Full UI mode.")
         mnuEasy.Checked = False
         mnuFull.Checked = True
@@ -462,7 +467,7 @@ Public Class Form1
 
     Private Sub VisibleToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles mnuYes.Click
         My.Computer.FileSystem.CopyFile(CurDir & "\DreamWorldFiles\Opensim\bin\config-include\Camera.ini.example", CurDir & "\DreamWorldFiles\Opensim\bin\config-include\Camera.ini", True)
-        'WebBrowser3.Url = New Uri("http://www.Outworldz.com/DreamWorld/Invisible.htm?id=" + Random())
+
         Print("Your Avatar will not be shown. Use the Arrow keys to move around. Use Page Up and Page Down to move the camera Up and Down.")
         mnuYes.Checked = True
         mnuNo.Checked = False
@@ -500,7 +505,7 @@ Public Class Form1
 
 
     Private Sub WebUIToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles WebUi.Click
-        'WebBrowser3.Url = New Uri("http://www.Outworldz.com/DreamWorld/Wifi.htm?id=" + Random())
+
         Print("The Web UI lets you add or view settings for the default avatar. 'Simona Stick' has a password of '123'. You can also login as 'Wifi Admin' with a password of 'secret' to access any avatar or create new avatars.")
         If Running Then
 
