@@ -5,17 +5,16 @@ Imports System.Threading
 Imports System.Net.Sockets
 Imports IWshRuntimeLibrary
 
+
 ' Copyright 2014 Fred Beckhusen  
 ' Redistribution and use in binary and source form is permitted provided that the license in the text file is followed and included
 '
 ' revision 0.2.1 2014-01-1 Initial Dreamworld with horse
 ' revision 0.2.1 2016-09-05 Initial release in new form as a bare sim
 ' revision 0.2.2 2016-09-06 Zap all process if forced closed by X
-
+' revision 0.2.3 2016-09-10 Add Icons and messages
 
 Public Class Form1
-
-    Private Declare Sub Sleep Lib "kernel32.dll" (ByVal Milliseconds As Integer)
 
     Dim CurDir    ' Holds the current folder that we are running in
     Dim Webpage As String
@@ -23,6 +22,7 @@ Public Class Form1
     Dim Opensim As Process
     Dim Running As Boolean
 
+    Private Declare Sub Sleep Lib "kernel32.dll" (ByVal Milliseconds As Integer)
 
     Private Sub Form1_Leave(sender As Object, e As System.EventArgs) Handles Me.Leave
         ' Needed for some systems to clean up the stack, better be safe
@@ -46,8 +46,6 @@ Public Class Form1
         CurDir = "\DreamWorld"
         ChDir(CurDir)
 
-        Me.Text = "Opensimulator DreamWorld"
-
         ctr = 0
 
         ' asserts first from Settings Tab
@@ -63,13 +61,12 @@ Public Class Form1
         mnuYes.Checked = My.Settings.Viewer
         mnuNo.Checked = Not My.Settings.Viewer
 
-        Label.Visible = True
         Buttons(InstallButton)
 
         ' Find out if we are running this on the Installed Drive
         If System.IO.File.Exists("Init") Then
             Buttons(StartButton)
-            Me.Text = "Start Opensimulator"
+            TextBox1.Text = "Start Opensimulator"
         Else
             Dim fs As FileStream = System.IO.File.Create("Init")
             Buttons(InstallButton)
@@ -93,7 +90,7 @@ Public Class Form1
 
         If Webpage = "Up" Then
             '  Launch(OpenSim)
-       
+
             Print("Starting Opensimulator")
             ChDir(CurDir & "\DreamWorldFiles\Opensim\bin\")
 
@@ -124,7 +121,7 @@ Public Class Form1
         Application.DoEvents()
     End Sub
 
-    
+
     Private Sub WebBrowser2_DocumentCompleted(ByVal sender As System.Object, ByVal e As System.Windows.Forms.WebBrowserDocumentCompletedEventArgs) Handles WebBrowser2.DocumentCompleted
 
         ' Start Onlook Viewer
@@ -264,7 +261,7 @@ Public Class Form1
     End Sub
 
     Private Sub Print(Value As String)
-        Label.Text = Value
+        TextBox1.Text = Value
         Application.DoEvents()
         Sleep(100)  ' time to read
     End Sub
@@ -280,20 +277,19 @@ Public Class Form1
     End Sub
 
     Private Sub mnuLogin_Click(sender As System.Object, e As System.EventArgs) Handles mnuLogin.Click
-        'WebBrowser3.Url = New Uri("http://www.Outworldz.com/DreamWorld/Login.htm?id=" + Random())
+
+        Print("User 'Simona Stick' has a password of '123'.")
 
     End Sub
 
     Private Sub mnuAbout_Click(sender As System.Object, e As System.EventArgs) Handles mnuAbout.Click
-        MsgBox("(c) 2014 www.Outworldz.com", vbInformation)
-        ' WebBrowser3.Url = New Uri("http://www.Outworldz.com/DreamWorld/About.htm?id=" + Random())
-
+        Print("(c) 2014 www.Outworldz.com")
     End Sub
 
     Private Sub StartButton_Click(sender As System.Object, e As System.EventArgs) Handles StartButton.Click
         ' Start Mowes, which starts MySql and Apache automatically.
+        Print("DreamWorlds is starting the web server and database engines.")
 
-        'WebBrowser3.Url = New Uri("http://www.Outworldz.com/DreamWorld/Starting.htm?id=" + Random())
         Buttons(BusyButton)
         Running = True
 
@@ -309,8 +305,7 @@ Public Class Form1
             ' do nothing
         End Try
 
-        Label.Visible = True
-        Print("Starting Mowes")
+        Print("Starting Database and Web Server")
 
         Dim p As Process = New Process()
         Dim pi As ProcessStartInfo = New ProcessStartInfo()
@@ -354,7 +349,9 @@ Public Class Form1
     End Sub
 
     Private Sub StopButton_Click_1(sender As System.Object, e As System.EventArgs) Handles StopButton.Click
-        'WebBrowser3.Url = New Uri("http://www.Outworldz.com/DreamWorld?id=" + Random())
+
+        Print("Opensim is Stopped. Click Start.")
+
         Buttons(BusyButton)
         Print("Stopping")
         ZapAll()
@@ -365,8 +362,7 @@ Public Class Form1
 
     Private Sub InstallButton_Click(sender As System.Object, e As System.EventArgs) Handles InstallButton.Click
         Buttons(BusyButton)
-
-        ' WebBrowser3.Url = New Uri("http://www.Outworldz.com/DreamWorld/Install.htm?id=" + Random())
+        Print("Installing...")
 
         Print("Installing Shortcut")
         Create_ShortCut(CurDir & "\Start.exe")
@@ -389,96 +385,98 @@ Public Class Form1
         My.Computer.FileSystem.CopyFile(CurDir & "\Viewer\grids_sg1.xml", path + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml", True)
 
         ' allow them to launch now
-        Print("Ready to Launch")
+        Print("Ready to Launch. CLick 'Start' to boot Opensimulator")
         Buttons(StartButton)
-        'WebBrowser3.Url = New Uri("http://www.Outworldz.com/DreamWorld?id=" + Random())
+
     End Sub
 
   
     Private Sub ShowToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles mnuShow.Click
-        'WebBrowser3.Url = New Uri("http://www.Outworldz.com/DreamWorld/Show.htm?id=" + Random())
 
+        Print("The Opensimulator Console will be shown when the system is running")
         mnuShow.Checked = True
         mnuHide.Checked = False
         My.Settings.Console = mnuShow.Checked
         My.Settings.Save()
 
         If Running Then
-            MsgBox("Change will occur when the Viewer is next logged in", vbInformation)
+            Print("The Opensimulator Console will be shown the next time the system is started")
         End If
     End Sub
 
     Private Sub mnuHide_Click(sender As System.Object, e As System.EventArgs) Handles mnuHide.Click
-        'WebBrowser3.Url = New Uri("http://www.Outworldz.com/DreamWorld/Hide.htm?id=" + Random())
 
+        Print("The Opensimulator Console will not be shown. You can still interact with it with Opensimulator->View UI")
         mnuShow.Checked = False
         mnuHide.Checked = True
         My.Settings.Save()
 
         If Running Then
-            MsgBox("Change will occur when the Viewer is next logged in", vbInformation)
+            Print("The Opensimulator Console will not be shown. Change will occur when the system is restarted")
         End If
 
     End Sub
 
     Private Sub mnuEasy_Click_1(sender As System.Object, e As System.EventArgs) Handles mnuEasy.Click
         My.Computer.FileSystem.CopyFile(CurDir & "\DreamWorldFiles\Opensim\bin\ViewerSupport\panel_no_toolbar.xml.example", CurDir & "\DreamWorldFiles\Opensim\bin\ViewerSupport\panel_toolbar.xml", True)
-        ' WebBrowser3.Url = New Uri("http://www.Outworldz.com/DreamWorld/Easy.htm?id=" + Random())
 
+        Print("Onlook Viewer is set for Easy UI mode.")
         mnuEasy.Checked = True
         mnuFull.Checked = False
         My.Settings.Viewer = mnuEasy.Checked
         My.Settings.Save()
 
         If Running Then
-            MsgBox("Change will occur when the sim is restarted", vbInformation)
+            MsgBox("Onlook Viewer is set for Easy UI mode. Change will occur when the sim is restarted", vbInformation)
         End If
     End Sub
 
     Private Sub mnuFull_Click(sender As System.Object, e As System.EventArgs) Handles mnuFull.Click
         My.Computer.FileSystem.CopyFile(CurDir & "\DreamWorldFiles\Opensim\bin\ViewerSupport\panel_toolbar.xml.example", CurDir & "\DreamWorldFiles\Opensim\bin\ViewerSupport\panel_toolbar.xml", True)
         ' WebBrowser3.Url = New Uri("http://www.Outworldz.com/DreamWorld/Full.htm?id=" + Random())
-
+        Print("Onlook Viewer is set for the Full UI mode.")
         mnuEasy.Checked = False
         mnuFull.Checked = True
         My.Settings.Viewer = mnuEasy.Checked
         My.Settings.Save()
 
         If Running Then
-            MsgBox("Change will occur when the sim is restarted", vbInformation)
+            MsgBox("Onlook Viewer is set for the Full UI mode. Change will occur when the sim is restarted", vbInformation)
         End If
     End Sub
 
     Private Sub NoneToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles mnuNo.Click
         My.Computer.FileSystem.CopyFile(CurDir & "\DreamWorldFiles\Opensim\bin\config-include\NoCamera.ini.example", CurDir & "\DreamWorldFiles\Opensim\bin\config-include\Camera.ini", True)
-        'WebBrowser3.Url = New Uri("http://www.Outworldz.com/DreamWorld/Visible.htm?id=" + Random())
 
+        Print("Your Avatar will be shown when you log in.")
         mnuNo.Checked = True
         mnuYes.Checked = False
+
         My.Settings.Viewer = mnuYes.Checked
         My.Settings.Save()
 
         If Running Then
-            MsgBox("Change will occur when the Viewer is next logged in", vbInformation)
+            MsgBox("Your Avatar will be shown when you log in. Change will occur when the Viewer is next logged in", vbInformation)
         End If
     End Sub
 
     Private Sub VisibleToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles mnuYes.Click
         My.Computer.FileSystem.CopyFile(CurDir & "\DreamWorldFiles\Opensim\bin\config-include\Camera.ini.example", CurDir & "\DreamWorldFiles\Opensim\bin\config-include\Camera.ini", True)
         'WebBrowser3.Url = New Uri("http://www.Outworldz.com/DreamWorld/Invisible.htm?id=" + Random())
-
+        Print("Your Avatar will not be shown. Use the Arrow keys to move around. Use Page Up and Page Down to move the camera Up and Down.")
         mnuYes.Checked = True
         mnuNo.Checked = False
         My.Settings.Viewer = mnuYes.Checked
         My.Settings.Save()
 
         If Running Then
-            MsgBox("Change will occur when the Viewer is next logged in", vbInformation)
+            MsgBox("Your Avatar will not be shown. Use the Arrow keys to move around. Use Page Up and Page Down to move the camera Up and Down.  Change will occur when the Viewer is next logged in", vbInformation)
         End If
     End Sub
 
     Private Sub HideToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles mnuAdminHide.Click
-        'WebBrowser3.Url = New Uri("http://www.Outworldz.com/DreamWorld/NoAdmin.htm?id=" + Random())
+
+        Print("DreamWorlds is set to hide the Opensimulator Web Admin page. You can still access the console via the web interface.")
         mnuAdminShow.Checked = False
         mnuAdminHide.Checked = True
         My.Settings.Admin = mnuAdminShow.Checked
@@ -486,7 +484,8 @@ Public Class Form1
     End Sub
 
     Private Sub ShowToolStripMenuItem_Click_1(sender As System.Object, e As System.EventArgs) Handles mnuAdminShow.Click
-        ' WebBrowser3.Url = New Uri("http://www.Outworldz.com/DreamWorld/Admin.htm?id=" + Random())
+
+        Print("DreamWorlds is set to show the Openimulator Web interface after it starts.")
         mnuAdminShow.Checked = True
         mnuAdminHide.Checked = False
         My.Settings.Admin = mnuAdminShow.Checked
@@ -499,10 +498,10 @@ Public Class Form1
         Return Str(value)
     End Function
 
-  
 
     Private Sub WebUIToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles WebUi.Click
         'WebBrowser3.Url = New Uri("http://www.Outworldz.com/DreamWorld/Wifi.htm?id=" + Random())
+        Print("The Web UI lets you add or view settings for the default avatar. 'Simona Stick' has a password of '123'. You can also login as 'Wifi Admin' with a password of 'secret' to access any avatar or create new avatars.")
         If Running Then
 
             Dim webAddress As String = "http://127.0.0.1:9100/wifi"
@@ -514,8 +513,6 @@ Public Class Form1
     End Sub
 
     Private Sub ShutdownNowToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles ShutdownNowToolStripMenuItem.Click
-
-        'WebBrowser3.Url = New Uri("http://www.Outworldz.com/DreamWorld?id=" + Random())
 
         Print("Stopping")
         Application.DoEvents()

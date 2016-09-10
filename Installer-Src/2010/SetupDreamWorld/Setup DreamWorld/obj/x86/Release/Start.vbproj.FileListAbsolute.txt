@@ -52,3 +52,4 @@ D:\Opensim\DreamWorld\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\bin\Re
 D:\Opensim\DreamWorld\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\bin\Release\Start.xml
 D:\Opensim\DreamWorld\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\bin\Release\Interop.IWshRuntimeLibrary.dll
 C:\Opensim\DreamWorld-GitHub\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\bin\Release\Start.exe.config
+C:\Opensim\DreamWorld-GitHub\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Release\Start.vbprojResolveAssemblyReference.cache

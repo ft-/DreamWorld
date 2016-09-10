@@ -57,9 +57,9 @@ Namespace My
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
-        Public Property Console() As String
+        Public Property Console() As Boolean
             Get
-                Return CType(Me("Console"),String)
+                Return CType(Me("Console"),Boolean)
             End Get
             Set
                 Me("Console") = value
@@ -69,9 +69,9 @@ Namespace My
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
-        Public Property Avatar() As String
+        Public Property Avatar() As Boolean
             Get
-                Return CType(Me("Avatar"),String)
+                Return CType(Me("Avatar"),Boolean)
             End Get
             Set
                 Me("Avatar") = value
@@ -81,9 +81,9 @@ Namespace My
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
-        Public Property Admin() As String
+        Public Property Admin() As Boolean
             Get
-                Return CType(Me("Admin"),String)
+                Return CType(Me("Admin"),Boolean)
             End Get
             Set
                 Me("Admin") = value
@@ -93,9 +93,9 @@ Namespace My
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
-        Public Property Viewer() As String
+        Public Property Viewer() As Boolean
             Get
-                Return CType(Me("Viewer"),String)
+                Return CType(Me("Viewer"),Boolean)
             End Get
             Set
                 Me("Viewer") = value
