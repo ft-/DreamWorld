@@ -43,8 +43,8 @@ Partial Class Form1
         Me.mnuAdminHide = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuAdminShow = New System.Windows.Forms.ToolStripMenuItem()
         Me.AvatarToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuNo = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuYes = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuNoAvatar = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuYesAvatar = New System.Windows.Forms.ToolStripMenuItem()
         Me.OpensimulatorToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.WebUi = New System.Windows.Forms.ToolStripMenuItem()
         Me.ShutdownNowToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -174,13 +174,13 @@ Partial Class Form1
         Me.mnuEasy.Checked = True
         Me.mnuEasy.CheckState = System.Windows.Forms.CheckState.Checked
         Me.mnuEasy.Name = "mnuEasy"
-        Me.mnuEasy.Size = New System.Drawing.Size(97, 22)
+        Me.mnuEasy.Size = New System.Drawing.Size(152, 22)
         Me.mnuEasy.Text = "Easy"
         '
         'mnuFull
         '
         Me.mnuFull.Name = "mnuFull"
-        Me.mnuFull.Size = New System.Drawing.Size(97, 22)
+        Me.mnuFull.Size = New System.Drawing.Size(152, 22)
         Me.mnuFull.Text = "Full"
         '
         'AdminUIToolStripMenuItem
@@ -196,36 +196,36 @@ Partial Class Form1
         Me.mnuAdminHide.Checked = True
         Me.mnuAdminHide.CheckState = System.Windows.Forms.CheckState.Checked
         Me.mnuAdminHide.Name = "mnuAdminHide"
-        Me.mnuAdminHide.Size = New System.Drawing.Size(103, 22)
+        Me.mnuAdminHide.Size = New System.Drawing.Size(152, 22)
         Me.mnuAdminHide.Text = "Hide"
         '
         'mnuAdminShow
         '
         Me.mnuAdminShow.Name = "mnuAdminShow"
-        Me.mnuAdminShow.Size = New System.Drawing.Size(103, 22)
+        Me.mnuAdminShow.Size = New System.Drawing.Size(152, 22)
         Me.mnuAdminShow.Text = "Show"
         '
         'AvatarToolStripMenuItem
         '
-        Me.AvatarToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuNo, Me.mnuYes})
+        Me.AvatarToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuNoAvatar, Me.mnuYesAvatar})
         Me.AvatarToolStripMenuItem.Image = Global.DreamWorld.My.Resources.Resources.users1
         Me.AvatarToolStripMenuItem.Name = "AvatarToolStripMenuItem"
         Me.AvatarToolStripMenuItem.Size = New System.Drawing.Size(153, 22)
         Me.AvatarToolStripMenuItem.Text = "Avatar"
         '
-        'mnuNo
+        'mnuNoAvatar
         '
-        Me.mnuNo.Checked = True
-        Me.mnuNo.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.mnuNo.Name = "mnuNo"
-        Me.mnuNo.Size = New System.Drawing.Size(91, 22)
-        Me.mnuNo.Text = "No"
+        Me.mnuNoAvatar.Checked = True
+        Me.mnuNoAvatar.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.mnuNoAvatar.Name = "mnuNoAvatar"
+        Me.mnuNoAvatar.Size = New System.Drawing.Size(152, 22)
+        Me.mnuNoAvatar.Text = "No"
         '
-        'mnuYes
+        'mnuYesAvatar
         '
-        Me.mnuYes.Name = "mnuYes"
-        Me.mnuYes.Size = New System.Drawing.Size(91, 22)
-        Me.mnuYes.Text = "Yes"
+        Me.mnuYesAvatar.Name = "mnuYesAvatar"
+        Me.mnuYesAvatar.Size = New System.Drawing.Size(152, 22)
+        Me.mnuYesAvatar.Text = "Yes"
         '
         'OpensimulatorToolStripMenuItem
         '
@@ -336,8 +336,8 @@ Partial Class Form1
     Friend WithEvents mnuAdminHide As ToolStripMenuItem
     Friend WithEvents mnuAdminShow As ToolStripMenuItem
     Friend WithEvents AvatarToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents mnuNo As ToolStripMenuItem
-    Friend WithEvents mnuYes As ToolStripMenuItem
+    Friend WithEvents mnuNoAvatar As ToolStripMenuItem
+    Friend WithEvents mnuYesAvatar As ToolStripMenuItem
     Friend WithEvents OpensimulatorToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents WebUi As ToolStripMenuItem
     Friend WithEvents ShutdownNowToolStripMenuItem As ToolStripMenuItem

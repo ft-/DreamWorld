@@ -1,0 +1,162 @@
+160905 22:36:29 [ERROR] Missing system table mysql.proxies_priv; please run mysql_upgrade to create it
+160905 22:36:29 [ERROR] Native table 'performance_schema'.'events_waits_current' has the wrong structure
+160905 22:36:29 [ERROR] Native table 'performance_schema'.'events_waits_history' has the wrong structure
+160905 22:36:29 [ERROR] Native table 'performance_schema'.'events_waits_history_long' has the wrong structure
+160905 22:36:29 [ERROR] Native table 'performance_schema'.'setup_consumers' has the wrong structure
+160905 22:36:29 [ERROR] Native table 'performance_schema'.'setup_instruments' has the wrong structure
+160905 22:36:29 [ERROR] Native table 'performance_schema'.'setup_timers' has the wrong structure
+160905 22:36:29 [ERROR] Native table 'performance_schema'.'performance_timers' has the wrong structure
+160905 22:36:29 [ERROR] Native table 'performance_schema'.'threads' has the wrong structure
+160905 22:36:29 [ERROR] Native table 'performance_schema'.'events_waits_summary_by_thread_by_event_name' has the wrong structure
+160905 22:36:29 [ERROR] Native table 'performance_schema'.'events_waits_summary_by_instance' has the wrong structure
+160905 22:36:29 [ERROR] Native table 'performance_schema'.'events_waits_summary_global_by_event_name' has the wrong structure
+160905 22:36:29 [ERROR] Native table 'performance_schema'.'file_summary_by_event_name' has the wrong structure
+160905 22:36:29 [ERROR] Native table 'performance_schema'.'file_summary_by_instance' has the wrong structure
+160905 22:36:29 [ERROR] Native table 'performance_schema'.'mutex_instances' has the wrong structure
+160905 22:36:29 [ERROR] Native table 'performance_schema'.'rwlock_instances' has the wrong structure
+160905 22:36:29 [ERROR] Native table 'performance_schema'.'cond_instances' has the wrong structure
+160905 22:36:29 [ERROR] Native table 'performance_schema'.'file_instances' has the wrong structure
+160905 22:36:29 [Note] Event Scheduler: Loaded 0 events
+160905 22:36:29 [Note] C:\DreamWorld\DreamWorldFiles\mysql\bin\mysqld-nt.exe: ready for connections.
+Version: '5.5.8'  socket: ''  port: 3307  MySQL Community Server (GPL)
+160906 20:22:13 [ERROR] Missing system table mysql.proxies_priv; please run mysql_upgrade to create it
+160906 20:22:13 [ERROR] Native table 'performance_schema'.'events_waits_current' has the wrong structure
+160906 20:22:13 [ERROR] Native table 'performance_schema'.'events_waits_history' has the wrong structure
+160906 20:22:13 [ERROR] Native table 'performance_schema'.'events_waits_history_long' has the wrong structure
+160906 20:22:13 [ERROR] Native table 'performance_schema'.'setup_consumers' has the wrong structure
+160906 20:22:13 [ERROR] Native table 'performance_schema'.'setup_instruments' has the wrong structure
+160906 20:22:13 [ERROR] Native table 'performance_schema'.'setup_timers' has the wrong structure
+160906 20:22:13 [ERROR] Native table 'performance_schema'.'performance_timers' has the wrong structure
+160906 20:22:13 [ERROR] Native table 'performance_schema'.'threads' has the wrong structure
+160906 20:22:13 [ERROR] Native table 'performance_schema'.'events_waits_summary_by_thread_by_event_name' has the wrong structure
+160906 20:22:13 [ERROR] Native table 'performance_schema'.'events_waits_summary_by_instance' has the wrong structure
+160906 20:22:13 [ERROR] Native table 'performance_schema'.'events_waits_summary_global_by_event_name' has the wrong structure
+160906 20:22:13 [ERROR] Native table 'performance_schema'.'file_summary_by_event_name' has the wrong structure
+160906 20:22:13 [ERROR] Native table 'performance_schema'.'file_summary_by_instance' has the wrong structure
+160906 20:22:13 [ERROR] Native table 'performance_schema'.'mutex_instances' has the wrong structure
+160906 20:22:13 [ERROR] Native table 'performance_schema'.'rwlock_instances' has the wrong structure
+160906 20:22:14 [ERROR] Native table 'performance_schema'.'cond_instances' has the wrong structure
+160906 20:22:14 [ERROR] Native table 'performance_schema'.'file_instances' has the wrong structure
+160906 20:22:14 [Note] Event Scheduler: Loaded 0 events
+160906 20:22:14 [Note] C:\DreamWorld\DreamWorldFiles\mysql\bin\mysqld-nt.exe: ready for connections.
+Version: '5.5.8'  socket: ''  port: 3307  MySQL Community Server (GPL)
+160906 20:23:05 [Note] C:\DreamWorld\DreamWorldFiles\mysql\bin\mysqld-nt.exe: Normal shutdown
+
+160906 20:23:05 [Note] Event Scheduler: Purging the queue. 0 events
+160906 20:24:24 [ERROR] Missing system table mysql.proxies_priv; please run mysql_upgrade to create it
+160906 20:24:24 [ERROR] Native table 'performance_schema'.'events_waits_current' has the wrong structure
+160906 20:24:24 [ERROR] Native table 'performance_schema'.'events_waits_history' has the wrong structure
+160906 20:24:24 [ERROR] Native table 'performance_schema'.'events_waits_history_long' has the wrong structure
+160906 20:24:24 [ERROR] Native table 'performance_schema'.'setup_consumers' has the wrong structure
+160906 20:24:24 [ERROR] Native table 'performance_schema'.'setup_instruments' has the wrong structure
+160906 20:24:24 [ERROR] Native table 'performance_schema'.'setup_timers' has the wrong structure
+160906 20:24:24 [ERROR] Native table 'performance_schema'.'performance_timers' has the wrong structure
+160906 20:24:24 [ERROR] Native table 'performance_schema'.'threads' has the wrong structure
+160906 20:24:24 [ERROR] Native table 'performance_schema'.'events_waits_summary_by_thread_by_event_name' has the wrong structure
+160906 20:24:24 [ERROR] Native table 'performance_schema'.'events_waits_summary_by_instance' has the wrong structure
+160906 20:24:24 [ERROR] Native table 'performance_schema'.'events_waits_summary_global_by_event_name' has the wrong structure
+160906 20:24:24 [ERROR] Native table 'performance_schema'.'file_summary_by_event_name' has the wrong structure
+160906 20:24:24 [ERROR] Native table 'performance_schema'.'file_summary_by_instance' has the wrong structure
+160906 20:24:24 [ERROR] Native table 'performance_schema'.'mutex_instances' has the wrong structure
+160906 20:24:24 [ERROR] Native table 'performance_schema'.'rwlock_instances' has the wrong structure
+160906 20:24:24 [ERROR] Native table 'performance_schema'.'cond_instances' has the wrong structure
+160906 20:24:24 [ERROR] Native table 'performance_schema'.'file_instances' has the wrong structure
+160906 20:24:24 [Note] Event Scheduler: Loaded 0 events
+160906 20:24:24 [Note] C:\DreamWorld\DreamWorldFiles\mysql\bin\mysqld-nt.exe: ready for connections.
+Version: '5.5.8'  socket: ''  port: 3307  MySQL Community Server (GPL)
+160906 20:28:06 [Note] C:\DreamWorld\DreamWorldFiles\mysql\bin\mysqld-nt.exe: Normal shutdown
+
+160906 20:28:06 [Note] Event Scheduler: Purging the queue. 0 events
+160906 20:28:08 [Warning] C:\DreamWorld\DreamWorldFiles\mysql\bin\mysqld-nt.exe: Forcing close of thread 4  user: 'opensim'
+
+160906 20:28:08 [Warning] C:\DreamWorld\DreamWorldFiles\mysql\bin\mysqld-nt.exe: Forcing close of thread 3  user: 'opensim'
+
+160906 20:28:08 [Warning] C:\DreamWorld\DreamWorldFiles\mysql\bin\mysqld-nt.exe: Forcing close of thread 2  user: 'opensim'
+
+160907 20:35:48 [ERROR] Missing system table mysql.proxies_priv; please run mysql_upgrade to create it
+160907 20:35:48 [ERROR] Native table 'performance_schema'.'events_waits_current' has the wrong structure
+160907 20:35:48 [ERROR] Native table 'performance_schema'.'events_waits_history' has the wrong structure
+160907 20:35:48 [ERROR] Native table 'performance_schema'.'events_waits_history_long' has the wrong structure
+160907 20:35:48 [ERROR] Native table 'performance_schema'.'setup_consumers' has the wrong structure
+160907 20:35:48 [ERROR] Native table 'performance_schema'.'setup_instruments' has the wrong structure
+160907 20:35:48 [ERROR] Native table 'performance_schema'.'setup_timers' has the wrong structure
+160907 20:35:48 [ERROR] Native table 'performance_schema'.'performance_timers' has the wrong structure
+160907 20:35:48 [ERROR] Native table 'performance_schema'.'threads' has the wrong structure
+160907 20:35:48 [ERROR] Native table 'performance_schema'.'events_waits_summary_by_thread_by_event_name' has the wrong structure
+160907 20:35:48 [ERROR] Native table 'performance_schema'.'events_waits_summary_by_instance' has the wrong structure
+160907 20:35:48 [ERROR] Native table 'performance_schema'.'events_waits_summary_global_by_event_name' has the wrong structure
+160907 20:35:48 [ERROR] Native table 'performance_schema'.'file_summary_by_event_name' has the wrong structure
+160907 20:35:48 [ERROR] Native table 'performance_schema'.'file_summary_by_instance' has the wrong structure
+160907 20:35:48 [ERROR] Native table 'performance_schema'.'mutex_instances' has the wrong structure
+160907 20:35:48 [ERROR] Native table 'performance_schema'.'rwlock_instances' has the wrong structure
+160907 20:35:48 [ERROR] Native table 'performance_schema'.'cond_instances' has the wrong structure
+160907 20:35:48 [ERROR] Native table 'performance_schema'.'file_instances' has the wrong structure
+160907 20:35:48 [Note] Event Scheduler: Loaded 0 events
+160907 20:35:48 [Note] C:\DreamWorld\DreamWorldFiles\mysql\bin\mysqld-nt.exe: ready for connections.
+Version: '5.5.8'  socket: ''  port: 3307  MySQL Community Server (GPL)
+160907 20:37:58 [Note] C:\DreamWorld\DreamWorldFiles\mysql\bin\mysqld-nt.exe: Normal shutdown
+
+160907 20:37:58 [Note] Event Scheduler: Purging the queue. 0 events
+160907 20:39:14 [ERROR] Missing system table mysql.proxies_priv; please run mysql_upgrade to create it
+160907 20:39:14 [ERROR] Native table 'performance_schema'.'events_waits_current' has the wrong structure
+160907 20:39:14 [ERROR] Native table 'performance_schema'.'events_waits_history' has the wrong structure
+160907 20:39:14 [ERROR] Native table 'performance_schema'.'events_waits_history_long' has the wrong structure
+160907 20:39:14 [ERROR] Native table 'performance_schema'.'setup_consumers' has the wrong structure
+160907 20:39:14 [ERROR] Native table 'performance_schema'.'setup_instruments' has the wrong structure
+160907 20:39:14 [ERROR] Native table 'performance_schema'.'setup_timers' has the wrong structure
+160907 20:39:14 [ERROR] Native table 'performance_schema'.'performance_timers' has the wrong structure
+160907 20:39:14 [ERROR] Native table 'performance_schema'.'threads' has the wrong structure
+160907 20:39:14 [ERROR] Native table 'performance_schema'.'events_waits_summary_by_thread_by_event_name' has the wrong structure
+160907 20:39:14 [ERROR] Native table 'performance_schema'.'events_waits_summary_by_instance' has the wrong structure
+160907 20:39:14 [ERROR] Native table 'performance_schema'.'events_waits_summary_global_by_event_name' has the wrong structure
+160907 20:39:14 [ERROR] Native table 'performance_schema'.'file_summary_by_event_name' has the wrong structure
+160907 20:39:14 [ERROR] Native table 'performance_schema'.'file_summary_by_instance' has the wrong structure
+160907 20:39:14 [ERROR] Native table 'performance_schema'.'mutex_instances' has the wrong structure
+160907 20:39:14 [ERROR] Native table 'performance_schema'.'rwlock_instances' has the wrong structure
+160907 20:39:14 [ERROR] Native table 'performance_schema'.'cond_instances' has the wrong structure
+160907 20:39:14 [ERROR] Native table 'performance_schema'.'file_instances' has the wrong structure
+160907 20:39:14 [Note] Event Scheduler: Loaded 0 events
+160907 20:39:14 [Note] C:\DreamWorld\DreamWorldFiles\mysql\bin\mysqld-nt.exe: ready for connections.
+Version: '5.5.8'  socket: ''  port: 3307  MySQL Community Server (GPL)
+160910 15:22:28 [ERROR] Missing system table mysql.proxies_priv; please run mysql_upgrade to create it
+160910 15:22:28 [ERROR] Native table 'performance_schema'.'events_waits_current' has the wrong structure
+160910 15:22:28 [ERROR] Native table 'performance_schema'.'events_waits_history' has the wrong structure
+160910 15:22:28 [ERROR] Native table 'performance_schema'.'events_waits_history_long' has the wrong structure
+160910 15:22:28 [ERROR] Native table 'performance_schema'.'setup_consumers' has the wrong structure
+160910 15:22:28 [ERROR] Native table 'performance_schema'.'setup_instruments' has the wrong structure
+160910 15:22:28 [ERROR] Native table 'performance_schema'.'setup_timers' has the wrong structure
+160910 15:22:28 [ERROR] Native table 'performance_schema'.'performance_timers' has the wrong structure
+160910 15:22:28 [ERROR] Native table 'performance_schema'.'threads' has the wrong structure
+160910 15:22:28 [ERROR] Native table 'performance_schema'.'events_waits_summary_by_thread_by_event_name' has the wrong structure
+160910 15:22:28 [ERROR] Native table 'performance_schema'.'events_waits_summary_by_instance' has the wrong structure
+160910 15:22:28 [ERROR] Native table 'performance_schema'.'events_waits_summary_global_by_event_name' has the wrong structure
+160910 15:22:28 [ERROR] Native table 'performance_schema'.'file_summary_by_event_name' has the wrong structure
+160910 15:22:28 [ERROR] Native table 'performance_schema'.'file_summary_by_instance' has the wrong structure
+160910 15:22:28 [ERROR] Native table 'performance_schema'.'mutex_instances' has the wrong structure
+160910 15:22:28 [ERROR] Native table 'performance_schema'.'rwlock_instances' has the wrong structure
+160910 15:22:28 [ERROR] Native table 'performance_schema'.'cond_instances' has the wrong structure
+160910 15:22:28 [ERROR] Native table 'performance_schema'.'file_instances' has the wrong structure
+160910 15:22:28 [Note] Event Scheduler: Loaded 0 events
+160910 15:22:28 [Note] C:\DreamWorld\DreamWorldFiles\mysql\bin\mysqld-nt.exe: ready for connections.
+Version: '5.5.8'  socket: ''  port: 3307  MySQL Community Server (GPL)
+160910 17:41:51 [ERROR] Missing system table mysql.proxies_priv; please run mysql_upgrade to create it
+160910 17:41:51 [ERROR] Native table 'performance_schema'.'events_waits_current' has the wrong structure
+160910 17:41:51 [ERROR] Native table 'performance_schema'.'events_waits_history' has the wrong structure
+160910 17:41:51 [ERROR] Native table 'performance_schema'.'events_waits_history_long' has the wrong structure
+160910 17:41:51 [ERROR] Native table 'performance_schema'.'setup_consumers' has the wrong structure
+160910 17:41:51 [ERROR] Native table 'performance_schema'.'setup_instruments' has the wrong structure
+160910 17:41:51 [ERROR] Native table 'performance_schema'.'setup_timers' has the wrong structure
+160910 17:41:51 [ERROR] Native table 'performance_schema'.'performance_timers' has the wrong structure
+160910 17:41:51 [ERROR] Native table 'performance_schema'.'threads' has the wrong structure
+160910 17:41:51 [ERROR] Native table 'performance_schema'.'events_waits_summary_by_thread_by_event_name' has the wrong structure
+160910 17:41:51 [ERROR] Native table 'performance_schema'.'events_waits_summary_by_instance' has the wrong structure
+160910 17:41:51 [ERROR] Native table 'performance_schema'.'events_waits_summary_global_by_event_name' has the wrong structure
+160910 17:41:51 [ERROR] Native table 'performance_schema'.'file_summary_by_event_name' has the wrong structure
+160910 17:41:51 [ERROR] Native table 'performance_schema'.'file_summary_by_instance' has the wrong structure
+160910 17:41:51 [ERROR] Native table 'performance_schema'.'mutex_instances' has the wrong structure
+160910 17:41:51 [ERROR] Native table 'performance_schema'.'rwlock_instances' has the wrong structure
+160910 17:41:51 [ERROR] Native table 'performance_schema'.'cond_instances' has the wrong structure
+160910 17:41:51 [ERROR] Native table 'performance_schema'.'file_instances' has the wrong structure
+160910 17:41:51 [Note] Event Scheduler: Loaded 0 events
+160910 17:41:51 [Note] C:\DreamWorld\DreamWorldFiles\mysql\bin\mysqld-nt.exe: ready for connections.
+Version: '5.5.8'  socket: ''  port: 3307  MySQL Community Server (GPL)

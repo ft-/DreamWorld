@@ -4,15 +4,17 @@ Imports System.Text
 Imports System.Threading
 Imports System.Net.Sockets
 Imports IWshRuntimeLibrary
-
+Imports IniParser
 
 ' Copyright 2014 Fred Beckhusen  
-' Redistribution and use in binary and source form is permitted provided that the license in the text file is followed and included
+' Redistribution and use in binary and source form is permitted provided 
+' that ALL the licenses in the text files are followed and included in all copies
 '
 ' revision 0.2.1 2014-01-1 Initial Dreamworld with horse
 ' revision 0.2.1 2016-09-05 Initial release in new form as a bare sim
 ' revision 0.2.2 2016-09-06 Zap all process if forced closed by X
 ' revision 0.2.3 2016-09-10 Add Icons and messages
+' revision 0.2.4 2016-09-10 Handle Opensim.ini for camera and viewer UI
 
 Public Class Form1
 
@@ -25,9 +27,9 @@ Public Class Form1
     Private Declare Sub Sleep Lib "kernel32.dll" (ByVal Milliseconds As Integer)
 
     Private Sub Form1_Leave(sender As Object, e As System.EventArgs) Handles Me.Leave
+
         ' Needed for some systems to clean up the stack, better be safe
         ZapAll()
-
         End
 
     End Sub
@@ -49,17 +51,33 @@ Public Class Form1
         ctr = 0
 
         ' asserts first from Settings Tab
+
+        'mnuShow shows the DOS box for Opensimulator
         mnuShow.Checked = My.Settings.Console
         mnuHide.Checked = Not My.Settings.Console
 
+        ' Admin shows the Web UI
         mnuAdminShow.Checked = My.Settings.Admin
         mnuAdminHide.Checked = Not My.Settings.Admin
 
-        mnuEasy.Checked = Not My.Settings.Viewer
+        ' Viewer UI shows the full viewer UI
+        If My.Settings.Viewer Then
+            SetIni("\Opensim\bin\Opensim.ini", "SpecialUIModule", "enabled", "false")
+        Else
+            SetIni("\Opensim\bin\Opensim.ini", "SpecialUIModule", "enabled", "true")
+        End If
         mnuFull.Checked = My.Settings.Viewer
+        mnuEasy.Checked = Not My.Settings.Viewer
 
-        mnuYes.Checked = My.Settings.Viewer
-        mnuNo.Checked = Not My.Settings.Viewer
+
+        'Avatar visible?
+        If My.Settings.Avatar Then
+            SetIni("\Opensim\bin\Opensim.ini", "CameraOnlyModeModule", "enabled", "false")
+        Else
+            SetIni("\Opensim\bin\Opensim.ini", "CameraOnlyModeModule", "enabled", "true")
+        End If
+        mnuYesAvatar.Checked = My.Settings.Avatar
+        mnuNoAvatar.Checked = Not My.Settings.Avatar
 
         Buttons(InstallButton)
 
@@ -72,8 +90,8 @@ Public Class Form1
             Buttons(InstallButton)
         End If
         Application.DoEvents()
-    End Sub
 
+    End Sub
 
     Private Sub WebBrowser1_DocumentCompleted(ByVal sender As System.Object, ByVal e As System.Windows.Forms.WebBrowserDocumentCompletedEventArgs) Handles WebBrowser1.DocumentCompleted
 
@@ -119,8 +137,8 @@ Public Class Form1
             ZapAll()
         End If
         Application.DoEvents()
-    End Sub
 
+    End Sub
 
     Private Sub WebBrowser2_DocumentCompleted(ByVal sender As System.Object, ByVal e As System.Windows.Forms.WebBrowserDocumentCompletedEventArgs) Handles WebBrowser2.DocumentCompleted
 
@@ -170,9 +188,7 @@ Public Class Form1
         End If
         Application.DoEvents()
 
-
     End Sub
-
 
     Private Function CheckMySQL() As Boolean
 
@@ -206,13 +222,13 @@ Public Class Form1
         Next
         Print("")
         Return True
+
     End Function
 
 
     Private Sub Busy_Click(sender As System.Object, e As System.EventArgs)
 
         ' Busy click shows we are busy
-
         Dim result As Integer = MessageBox.Show("Do you want to Abort?", "caption", MessageBoxButtons.YesNo)
         If result = DialogResult.Yes Then
             Print("Stopping")
@@ -221,6 +237,7 @@ Public Class Form1
             Buttons(StartButton)
             Print("")
         End If
+
     End Sub
 
     Private Function Buttons(button As System.Object) As Boolean
@@ -245,6 +262,7 @@ Public Class Form1
         Application.DoEvents()
         Running = False
         Return True
+
     End Function
 
     Private Sub Create_ShortCut(ByVal sTargetPath As String)
@@ -264,19 +282,22 @@ Public Class Form1
     End Sub
 
     Private Sub Print(Value As String)
+
         TextBox1.Text = Value
         Application.DoEvents()
         Sleep(100)  ' time to read
+
     End Sub
 
     Private Sub mnuExit_Click(sender As System.Object, e As System.EventArgs) Handles mnuExit.Click
+
         Print("Stopping")
         Application.DoEvents()
         ZapAll()
         Buttons(StartButton)
         Print("")
-
         End
+
     End Sub
 
     Private Sub mnuLogin_Click(sender As System.Object, e As System.EventArgs) Handles mnuLogin.Click
@@ -286,12 +307,15 @@ Public Class Form1
     End Sub
 
     Private Sub mnuAbout_Click(sender As System.Object, e As System.EventArgs) Handles mnuAbout.Click
+
         Print("(c) 2014 www.Outworldz.com")
         Dim webAddress As String = "http://www.outworldz.com/Dreamworld"
         Process.Start(webAddress)
+
     End Sub
 
     Private Sub StartButton_Click(sender As System.Object, e As System.EventArgs) Handles StartButton.Click
+
         ' Start Mowes, which starts MySql and Apache automatically.
         Print("DreamWorlds is starting the web server and database engines.")
 
@@ -351,6 +375,7 @@ Public Class Form1
         WebBrowser1.Navigate("http://127.0.0.1:62535/start/up.htm?id=" + Random())
 
         Application.DoEvents()
+
     End Sub
 
     Private Sub StopButton_Click_1(sender As System.Object, e As System.EventArgs) Handles StopButton.Click
@@ -366,6 +391,7 @@ Public Class Form1
     End Sub
 
     Private Sub InstallButton_Click(sender As System.Object, e As System.EventArgs) Handles InstallButton.Click
+
         Buttons(BusyButton)
         Print("Installing...")
 
@@ -395,7 +421,7 @@ Public Class Form1
 
     End Sub
 
-  
+
     Private Sub ShowToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles mnuShow.Click
 
         Print("The Opensimulator Console will be shown when the system is running")
@@ -407,6 +433,7 @@ Public Class Form1
         If Running Then
             Print("The Opensimulator Console will be shown the next time the system is started")
         End If
+
     End Sub
 
     Private Sub mnuHide_Click(sender As System.Object, e As System.EventArgs) Handles mnuHide.Click
@@ -423,7 +450,6 @@ Public Class Form1
     End Sub
 
     Private Sub mnuEasy_Click_1(sender As System.Object, e As System.EventArgs) Handles mnuEasy.Click
-        My.Computer.FileSystem.CopyFile(CurDir & "\DreamWorldFiles\Opensim\bin\ViewerSupport\panel_no_toolbar.xml.example", CurDir & "\DreamWorldFiles\Opensim\bin\ViewerSupport\panel_toolbar.xml", True)
 
         Print("Onlook Viewer is set for Easy UI mode.")
         mnuEasy.Checked = True
@@ -431,13 +457,15 @@ Public Class Form1
         My.Settings.Viewer = mnuEasy.Checked
         My.Settings.Save()
 
+        SetIni("\Opensim\bin\Opensim.ini", "SpecialUIModule", "enabled", "true")
+
         If Running Then
             MsgBox("Onlook Viewer is set for Easy UI mode. Change will occur when the sim is restarted", vbInformation)
         End If
+
     End Sub
 
     Private Sub mnuFull_Click(sender As System.Object, e As System.EventArgs) Handles mnuFull.Click
-        My.Computer.FileSystem.CopyFile(CurDir & "\DreamWorldFiles\Opensim\bin\ViewerSupport\panel_toolbar.xml.example", CurDir & "\DreamWorldFiles\Opensim\bin\ViewerSupport\panel_toolbar.xml", True)
 
         Print("Onlook Viewer is set for the Full UI mode.")
         mnuEasy.Checked = False
@@ -445,38 +473,47 @@ Public Class Form1
         My.Settings.Viewer = mnuEasy.Checked
         My.Settings.Save()
 
+        SetIni("\Opensim\bin\Opensim.ini", "SpecialUIModule", "enabled", "false")
+
         If Running Then
             MsgBox("Onlook Viewer is set for the Full UI mode. Change will occur when the sim is restarted", vbInformation)
         End If
+
     End Sub
 
-    Private Sub NoneToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles mnuNo.Click
-        My.Computer.FileSystem.CopyFile(CurDir & "\DreamWorldFiles\Opensim\bin\config-include\NoCamera.ini.example", CurDir & "\DreamWorldFiles\Opensim\bin\config-include\Camera.ini", True)
-
-        Print("Your Avatar will be shown when you log in.")
-        mnuNo.Checked = True
-        mnuYes.Checked = False
-
-        My.Settings.Viewer = mnuYes.Checked
-        My.Settings.Save()
-
-        If Running Then
-            MsgBox("Your Avatar will be shown when you log in. Change will occur when the Viewer is next logged in", vbInformation)
-        End If
-    End Sub
-
-    Private Sub VisibleToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles mnuYes.Click
-        My.Computer.FileSystem.CopyFile(CurDir & "\DreamWorldFiles\Opensim\bin\config-include\Camera.ini.example", CurDir & "\DreamWorldFiles\Opensim\bin\config-include\Camera.ini", True)
+    Private Sub NoneToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles mnuNoAvatar.Click
 
         Print("Your Avatar will not be shown. Use the Arrow keys to move around. Use Page Up and Page Down to move the camera Up and Down.")
-        mnuYes.Checked = True
-        mnuNo.Checked = False
-        My.Settings.Viewer = mnuYes.Checked
+
+        mnuNoAvatar.Checked = True
+        mnuYesAvatar.Checked = False
+
+        My.Settings.Avatar = False
         My.Settings.Save()
 
+        SetIni("\Opensim\bin\Opensim.ini", "CameraOnlyModeModule", "enabled", "true")
+
         If Running Then
-            MsgBox("Your Avatar will not be shown. Use the Arrow keys to move around. Use Page Up and Page Down to move the camera Up and Down.  Change will occur when the Viewer is next logged in", vbInformation)
+            MsgBox("Your Avatar will not be shown when you log in. Change will occur when the Viewer is next logged in.", vbInformation)
         End If
+
+    End Sub
+
+    Private Sub VisibleToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles mnuYesAvatar.Click
+
+        Print("Your Avatar will be shown when you log in. Use the Arrow keys to move around. Use Page Up and Page Down to move the camera Up and Down.  Change will occur when the Viewer is next logged in")
+        mnuYesAvatar.Checked = True
+        mnuNoAvatar.Checked = false
+
+        My.Settings.Avatar = True
+        My.Settings.Save()
+
+        SetIni("\Opensim\bin\Opensim.ini", "CameraOnlyModeModule", "enabled", "false")
+
+        If Running Then
+            MsgBox("Your Avatar will be shown. Change will occur when the Viewer is next logged in. ", vbInformation)
+        End If
+
     End Sub
 
     Private Sub HideToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles mnuAdminHide.Click
@@ -486,6 +523,7 @@ Public Class Form1
         mnuAdminHide.Checked = True
         My.Settings.Admin = mnuAdminShow.Checked
         My.Settings.Save()
+
     End Sub
 
     Private Sub ShowToolStripMenuItem_Click_1(sender As System.Object, e As System.EventArgs) Handles mnuAdminShow.Click
@@ -495,26 +533,26 @@ Public Class Form1
         mnuAdminHide.Checked = False
         My.Settings.Admin = mnuAdminShow.Checked
         My.Settings.Save()
+
     End Sub
 
-    
     Private Function Random() As String
+
         Dim value As Integer = CInt(Int((6000 * Rnd()) + 1))
         Return Str(value)
+
     End Function
 
 
     Private Sub WebUIToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles WebUi.Click
 
-        Print("The Web UI lets you add or view settings for the default avatar. 'Simona Stick' has a password of '123'. You can also login as 'Wifi Admin' with a password of 'secret' to access any avatar or create new avatars.")
+        Print("The Web UI lets you add or view settings for the default avatar. ")
         If Running Then
 
             Dim webAddress As String = "http://127.0.0.1:9100/wifi"
             Process.Start(webAddress)
-        Else
-
-            MsgBox("Opensim is not running", vbInformation)
         End If
+
     End Sub
 
     Private Sub ShutdownNowToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles ShutdownNowToolStripMenuItem.Click
@@ -524,8 +562,34 @@ Public Class Form1
         ZapAll()
         Buttons(StartButton)
         Print("")
+
     End Sub
 
+    Private Function GetIni(filepath As String, section As String, key As String) As String
+
+        ' gets values from an INI file
+        Dim parser = New FileIniDataParser()
+        parser.Parser.Configuration.CommentString = ";" ' Opensim uses semicolons
+
+        Dim Data = parser.ReadFile(CurDir + "\DreamWorldFiles" & filepath)
+        Dim value = Data(section)(key)
+        Return value
+
+    End Function
+
+    Private Function SetIni(filepath As String, section As String, key As String, value As String) As Boolean
+
+        ' sets values into any INI file
+        Dim parser = New FileIniDataParser()
+        parser.Parser.Configuration.CommentString = ";" ' Opensim uses semicolons
+        Dim Data = parser.ReadFile(CurDir + "\DreamWorldFiles" & filepath)
+        Dim oldvalue = Data(section)(key)
+
+        Data(section)(key) = value ' replace it and save it
+        parser.WriteFile(CurDir + "\DreamWorldFiles" & filepath, Data)
+        Return True
+
+    End Function
 
 End Class
 

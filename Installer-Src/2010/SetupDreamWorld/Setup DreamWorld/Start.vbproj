@@ -97,6 +97,10 @@
     <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="INIFileParser, Version=2.3.0.0, Culture=neutral, PublicKeyToken=79af7b307b65cf3c, processorArchitecture=MSIL">
+      <HintPath>..\packages\ini-parser.2.3.0\lib\net20\INIFileParser.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
@@ -203,6 +207,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="cubes.ico" />
+    <None Include="packages.config" />
     <None Include="Resources\gear_pause.png" />
     <None Include="Resources\exit.png" />
     <None Include="Resources\about1.png" />
