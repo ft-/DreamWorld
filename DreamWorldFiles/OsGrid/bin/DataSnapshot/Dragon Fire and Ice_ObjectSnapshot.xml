@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<objectdata>
+  <object>
+    <uuid>9c2f3265-76ab-4111-9dba-534b2047d4f4</uuid>
+    <title>bucket of water</title>
+    <description>Galerie LyAvain Swansong</description>
+    <flags>8000</flags>
+    <regionuuid>d00ceea7-3600-4813-9192-91c93ea7ce5b</regionuuid>
+    <parceluuid>08aabc87-1a35-41fe-a05c-bdc0e8e5020e</parceluuid>
+    <location>496.0046/467.8568/22.58643</location>
+  </object>
+  <object>
+    <uuid>942e7ed7-636b-4f72-9ce0-6fde291dea69</uuid>
+    <title>Ice Harp</title>
+    <description>&lt;1.026251,-0.156312,0.883324&gt;|&lt;-0.000748,-0.043566,-0.998896,-0.017564&gt;</description>
+    <flags>8040</flags>
+    <regionuuid>d00ceea7-3600-4813-9192-91c93ea7ce5b</regionuuid>
+    <parceluuid>08aabc87-1a35-41fe-a05c-bdc0e8e5020e</parceluuid>
+    <location>434.972/621.3957/71.53489</location>
+    <image>27124f02-3747-4fa4-a90e-443b5b58def3</image>
+  </object>
+  <object>
+    <uuid>fb627299-3804-4577-9965-abfaa1db6db7</uuid>
+    <title>Elsa Avatar</title>
+    <description>
+    </description>
+    <flags>8000</flags>
+    <regionuuid>d00ceea7-3600-4813-9192-91c93ea7ce5b</regionuuid>
+    <parceluuid>08aabc87-1a35-41fe-a05c-bdc0e8e5020e</parceluuid>
+    <location>403.8723/583.1891/95.91807</location>
+    <image>2f864419-05c7-49e1-be6f-463f02c92711</image>
+  </object>
+  <object>
+    <uuid>a12ee60e-6e61-4e28-9390-18e7bead029e</uuid>
+    <title>Anna Avatar</title>
+    <description>
+    </description>
+    <flags>8000</flags>
+    <regionuuid>d00ceea7-3600-4813-9192-91c93ea7ce5b</regionuuid>
+    <parceluuid>08aabc87-1a35-41fe-a05c-bdc0e8e5020e</parceluuid>
+    <location>403.3857/582.7354/95.91807</location>
+    <image>f9b0d284-b84d-42f8-b6e4-6f734f14ac67</image>
+  </object>
+  <object>
+    <uuid>931d5147-4d08-4eec-b9f6-cd253294b48b</uuid>
+    <title>bucket of water</title>
+    <description>Galerie LyAvain Swansong</description>
+    <flags>8000</flags>
+    <regionuuid>d00ceea7-3600-4813-9192-91c93ea7ce5b</regionuuid>
+    <parceluuid>08aabc87-1a35-41fe-a05c-bdc0e8e5020e</parceluuid>
+    <location>496.0046/467.8568/22.58643</location>
+  </object>
+  <object>
+    <uuid>9f05ef82-1baf-4b24-b666-a1db47e59d1d</uuid>
+    <title>bucket of water</title>
+    <description>Galerie LyAvain Swansong</description>
+    <flags>8000</flags>
+    <regionuuid>d00ceea7-3600-4813-9192-91c93ea7ce5b</regionuuid>
+    <parceluuid>08aabc87-1a35-41fe-a05c-bdc0e8e5020e</parceluuid>
+    <location>496.0046/467.8568/22.58643</location>
+  </object>
+  <object>
+    <uuid>254b8eae-cb34-4eee-88fe-0e2448cdb76d</uuid>
+    <title>couch/bed beautiful</title>
+    <description>.</description>
+    <flags>8040</flags>
+    <regionuuid>d00ceea7-3600-4813-9192-91c93ea7ce5b</regionuuid>
+    <parceluuid>08aabc87-1a35-41fe-a05c-bdc0e8e5020e</parceluuid>
+    <location>429.4048/611.4036/96.5556</location>
+    <image>8dcd4a48-2d37-4909-9f78-f7a9eb4ef903</image>
+  </object>
+  <object>
+    <uuid>1b39dbac-8a06-45f7-8c49-969a4cc6a692</uuid>
+    <title>Chest with Clothes</title>
+    <description>
+    </description>
+    <flags>8000</flags>
+    <regionuuid>d00ceea7-3600-4813-9192-91c93ea7ce5b</regionuuid>
+    <parceluuid>08aabc87-1a35-41fe-a05c-bdc0e8e5020e</parceluuid>
+    <location>419.2633/583.3047/96.95671</location>
+  </object>
+  <object>
+    <uuid>6875e0e1-8929-4790-b851-02f7e8092196</uuid>
+    <title>Minnie the Mop Lady</title>
+    <description>See inside for the model and appearance maker</description>
+    <flags>8440</flags>
+    <regionuuid>d00ceea7-3600-4813-9192-91c93ea7ce5b</regionuuid>
+    <parceluuid>08aabc87-1a35-41fe-a05c-bdc0e8e5020e</parceluuid>
+    <location>427.4357/604.7829/95.94616</location>
+  </object>
+</objectdata>

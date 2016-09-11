@@ -1,0 +1,2 @@
+OSgrid 0.8.3.0 (Dev) 41b2855: 2015-10-21
+git hash : 41b28550ad04dd68a0d8055c47ccfaf8648fb22e
