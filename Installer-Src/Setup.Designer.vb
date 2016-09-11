@@ -31,8 +31,10 @@ Partial Class Form1
         Me.BusyButton = New System.Windows.Forms.Button()
         Me.TextBox1 = New System.Windows.Forms.TextBox()
         Me.FileToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuExit = New System.Windows.Forms.ToolStripMenuItem()
         Me.ConsoleToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.HelpToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
+        Me.mnuExit = New System.Windows.Forms.ToolStripMenuItem()
         Me.ConsoleToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuHide = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuShow = New System.Windows.Forms.ToolStripMenuItem()
@@ -48,10 +50,14 @@ Partial Class Form1
         Me.OpensimulatorToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.WebUi = New System.Windows.Forms.ToolStripMenuItem()
         Me.ShutdownNowToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.HelpToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.GridToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuLocal = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuOsGrid = New System.Windows.Forms.ToolStripMenuItem()
+        Me.AutoBackupToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.AutoYes = New System.Windows.Forms.ToolStripMenuItem()
+        Me.AutoNo = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuLogin = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuAbout = New System.Windows.Forms.ToolStripMenuItem()
-        Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
         Me.MenuStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -125,26 +131,40 @@ Partial Class Form1
         Me.FileToolStripMenuItem.Size = New System.Drawing.Size(37, 20)
         Me.FileToolStripMenuItem.Text = "File"
         '
-        'mnuExit
-        '
-        Me.mnuExit.Image = Global.DreamWorld.My.Resources.Resources._exit
-        Me.mnuExit.Name = "mnuExit"
-        Me.mnuExit.Size = New System.Drawing.Size(92, 22)
-        Me.mnuExit.Text = "Exit"
-        '
         'ConsoleToolStripMenuItem
         '
-        Me.ConsoleToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ConsoleToolStripMenuItem1, Me.UIToolStripMenuItem, Me.AdminUIToolStripMenuItem, Me.AvatarToolStripMenuItem, Me.OpensimulatorToolStripMenuItem})
+        Me.ConsoleToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ConsoleToolStripMenuItem1, Me.UIToolStripMenuItem, Me.AdminUIToolStripMenuItem, Me.AvatarToolStripMenuItem, Me.OpensimulatorToolStripMenuItem, Me.GridToolStripMenuItem, Me.AutoBackupToolStripMenuItem})
         Me.ConsoleToolStripMenuItem.Name = "ConsoleToolStripMenuItem"
         Me.ConsoleToolStripMenuItem.Size = New System.Drawing.Size(61, 20)
         Me.ConsoleToolStripMenuItem.Text = "Settings"
         '
+        'HelpToolStripMenuItem
+        '
+        Me.HelpToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuLogin, Me.mnuAbout})
+        Me.HelpToolStripMenuItem.Name = "HelpToolStripMenuItem"
+        Me.HelpToolStripMenuItem.Size = New System.Drawing.Size(44, 20)
+        Me.HelpToolStripMenuItem.Text = "Help"
+        '
+        'MenuStrip1
+        '
+        Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FileToolStripMenuItem, Me.ConsoleToolStripMenuItem, Me.HelpToolStripMenuItem})
+        Me.MenuStrip1.Location = New System.Drawing.Point(0, 0)
+        Me.MenuStrip1.Name = "MenuStrip1"
+        Me.MenuStrip1.Size = New System.Drawing.Size(431, 24)
+        Me.MenuStrip1.TabIndex = 21
+        Me.MenuStrip1.Text = "MenuStrip1"
+        '
+        'mnuExit
+        '
+        Me.mnuExit.Name = "mnuExit"
+        Me.mnuExit.Size = New System.Drawing.Size(92, 22)
+        Me.mnuExit.Text = "Exit"
+        '
         'ConsoleToolStripMenuItem1
         '
         Me.ConsoleToolStripMenuItem1.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuHide, Me.mnuShow})
-        Me.ConsoleToolStripMenuItem1.Image = Global.DreamWorld.My.Resources.Resources.window_edit
         Me.ConsoleToolStripMenuItem1.Name = "ConsoleToolStripMenuItem1"
-        Me.ConsoleToolStripMenuItem1.Size = New System.Drawing.Size(153, 22)
+        Me.ConsoleToolStripMenuItem1.Size = New System.Drawing.Size(152, 22)
         Me.ConsoleToolStripMenuItem1.Text = "Console"
         '
         'mnuHide
@@ -152,21 +172,20 @@ Partial Class Form1
         Me.mnuHide.Checked = True
         Me.mnuHide.CheckState = System.Windows.Forms.CheckState.Checked
         Me.mnuHide.Name = "mnuHide"
-        Me.mnuHide.Size = New System.Drawing.Size(103, 22)
+        Me.mnuHide.Size = New System.Drawing.Size(152, 22)
         Me.mnuHide.Text = "Hide"
         '
         'mnuShow
         '
         Me.mnuShow.Name = "mnuShow"
-        Me.mnuShow.Size = New System.Drawing.Size(103, 22)
+        Me.mnuShow.Size = New System.Drawing.Size(152, 22)
         Me.mnuShow.Text = "Show"
         '
         'UIToolStripMenuItem
         '
         Me.UIToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuEasy, Me.mnuFull})
-        Me.UIToolStripMenuItem.Image = Global.DreamWorld.My.Resources.Resources.document_connection
         Me.UIToolStripMenuItem.Name = "UIToolStripMenuItem"
-        Me.UIToolStripMenuItem.Size = New System.Drawing.Size(153, 22)
+        Me.UIToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
         Me.UIToolStripMenuItem.Text = "Viewer UI"
         '
         'mnuEasy
@@ -186,9 +205,8 @@ Partial Class Form1
         'AdminUIToolStripMenuItem
         '
         Me.AdminUIToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuAdminHide, Me.mnuAdminShow})
-        Me.AdminUIToolStripMenuItem.Image = Global.DreamWorld.My.Resources.Resources.document_view
         Me.AdminUIToolStripMenuItem.Name = "AdminUIToolStripMenuItem"
-        Me.AdminUIToolStripMenuItem.Size = New System.Drawing.Size(153, 22)
+        Me.AdminUIToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
         Me.AdminUIToolStripMenuItem.Text = "Admin UI"
         '
         'mnuAdminHide
@@ -208,9 +226,8 @@ Partial Class Form1
         'AvatarToolStripMenuItem
         '
         Me.AvatarToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuNoAvatar, Me.mnuYesAvatar})
-        Me.AvatarToolStripMenuItem.Image = Global.DreamWorld.My.Resources.Resources.users1
         Me.AvatarToolStripMenuItem.Name = "AvatarToolStripMenuItem"
-        Me.AvatarToolStripMenuItem.Size = New System.Drawing.Size(153, 22)
+        Me.AvatarToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
         Me.AvatarToolStripMenuItem.Text = "Avatar"
         '
         'mnuNoAvatar
@@ -230,36 +247,68 @@ Partial Class Form1
         'OpensimulatorToolStripMenuItem
         '
         Me.OpensimulatorToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.WebUi, Me.ShutdownNowToolStripMenuItem})
-        Me.OpensimulatorToolStripMenuItem.Image = Global.DreamWorld.My.Resources.Resources.cube_blue
         Me.OpensimulatorToolStripMenuItem.Name = "OpensimulatorToolStripMenuItem"
-        Me.OpensimulatorToolStripMenuItem.Size = New System.Drawing.Size(153, 22)
-        Me.OpensimulatorToolStripMenuItem.Text = "Opensimulator"
+        Me.OpensimulatorToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.OpensimulatorToolStripMenuItem.Text = "Simulator"
         '
         'WebUi
         '
-        Me.WebUi.Image = Global.DreamWorld.My.Resources.Resources.window_add
         Me.WebUi.Name = "WebUi"
         Me.WebUi.Size = New System.Drawing.Size(172, 22)
         Me.WebUi.Text = "Show Web UI Now"
         '
         'ShutdownNowToolStripMenuItem
         '
-        Me.ShutdownNowToolStripMenuItem.Image = Global.DreamWorld.My.Resources.Resources._error
         Me.ShutdownNowToolStripMenuItem.Name = "ShutdownNowToolStripMenuItem"
         Me.ShutdownNowToolStripMenuItem.Size = New System.Drawing.Size(172, 22)
         Me.ShutdownNowToolStripMenuItem.Text = "Shutdown Now!"
         '
-        'HelpToolStripMenuItem
+        'GridToolStripMenuItem
         '
-        Me.HelpToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuLogin, Me.mnuAbout})
-        Me.HelpToolStripMenuItem.Name = "HelpToolStripMenuItem"
-        Me.HelpToolStripMenuItem.Size = New System.Drawing.Size(44, 20)
-        Me.HelpToolStripMenuItem.Text = "Help"
+        Me.GridToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuLocal, Me.mnuOsGrid})
+        Me.GridToolStripMenuItem.Name = "GridToolStripMenuItem"
+        Me.GridToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.GridToolStripMenuItem.Text = "Grid"
+        '
+        'mnuLocal
+        '
+        Me.mnuLocal.Checked = True
+        Me.mnuLocal.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.mnuLocal.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+        Me.mnuLocal.Name = "mnuLocal"
+        Me.mnuLocal.Size = New System.Drawing.Size(152, 22)
+        Me.mnuLocal.Text = "Local"
+        '
+        'mnuOsGrid
+        '
+        Me.mnuOsGrid.Name = "mnuOsGrid"
+        Me.mnuOsGrid.Size = New System.Drawing.Size(152, 22)
+        Me.mnuOsGrid.Text = "OsGrid.org"
+        '
+        'AutoBackupToolStripMenuItem
+        '
+        Me.AutoBackupToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AutoYes, Me.AutoNo})
+        Me.AutoBackupToolStripMenuItem.Name = "AutoBackupToolStripMenuItem"
+        Me.AutoBackupToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.AutoBackupToolStripMenuItem.Text = "AutoBackup"
+        '
+        'AutoYes
+        '
+        Me.AutoYes.Checked = True
+        Me.AutoYes.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.AutoYes.Name = "AutoYes"
+        Me.AutoYes.Size = New System.Drawing.Size(152, 22)
+        Me.AutoYes.Text = "Enabled"
+        '
+        'AutoNo
+        '
+        Me.AutoNo.Name = "AutoNo"
+        Me.AutoNo.Size = New System.Drawing.Size(152, 22)
+        Me.AutoNo.Text = "Disabled"
         '
         'mnuLogin
         '
         Me.mnuLogin.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None
-        Me.mnuLogin.Image = Global.DreamWorld.My.Resources.Resources.question_and_answer
         Me.mnuLogin.Name = "mnuLogin"
         Me.mnuLogin.Size = New System.Drawing.Size(107, 22)
         Me.mnuLogin.Text = "Login"
@@ -267,19 +316,9 @@ Partial Class Form1
         'mnuAbout
         '
         Me.mnuAbout.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None
-        Me.mnuAbout.Image = Global.DreamWorld.My.Resources.Resources.about
         Me.mnuAbout.Name = "mnuAbout"
         Me.mnuAbout.Size = New System.Drawing.Size(107, 22)
         Me.mnuAbout.Text = "About"
-        '
-        'MenuStrip1
-        '
-        Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FileToolStripMenuItem, Me.ConsoleToolStripMenuItem, Me.HelpToolStripMenuItem})
-        Me.MenuStrip1.Location = New System.Drawing.Point(0, 0)
-        Me.MenuStrip1.Name = "MenuStrip1"
-        Me.MenuStrip1.Size = New System.Drawing.Size(431, 24)
-        Me.MenuStrip1.TabIndex = 21
-        Me.MenuStrip1.Text = "MenuStrip1"
         '
         'Form1
         '
@@ -345,4 +384,10 @@ Partial Class Form1
     Friend WithEvents mnuLogin As ToolStripMenuItem
     Friend WithEvents mnuAbout As ToolStripMenuItem
     Friend WithEvents MenuStrip1 As MenuStrip
+    Friend WithEvents GridToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents mnuLocal As ToolStripMenuItem
+    Friend WithEvents mnuOsGrid As ToolStripMenuItem
+    Friend WithEvents AutoBackupToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents AutoYes As ToolStripMenuItem
+    Friend WithEvents AutoNo As ToolStripMenuItem
 End Class

@@ -101,6 +101,30 @@ Namespace My
                 Me("Viewer") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("Local")>  _
+        Public Property Grid() As String
+            Get
+                Return CType(Me("Grid"),String)
+            End Get
+            Set
+                Me("Grid") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("True")>  _
+        Public Property AutoBackup() As Boolean
+            Get
+                Return CType(Me("AutoBackup"),Boolean)
+            End Get
+            Set
+                Me("AutoBackup") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

@@ -28,15 +28,54 @@ The installer will not work without one key modifications:   A copy of  "Up.html
 
 You can copy the folder "DreamWorld"  make changes to the copy and database by logging in, adding content, or editing files to make different setups.  
 
+The bottom of Opensim.ini has a configured Autobackup module.  You must create an Autobackup folder in your Opensim bin folder to accomodate this.
+
+ [AutoBackupModule]
+    AutoBackupModuleEnabled = true
+    AutoBackup = true
+    AutoBackupInterval = 1440
+    AutoBackupBusyCheck = false
+    AutoBackupThreshold = 1
+    AutoBackupSkipAssets = false
+    AutoBackupKeepFilesForDays = 120
+    AutoBackupNaming = Time
+    AutoBackupDir = "AutoBackup"
+
+
+The bottom of Opensim.ini  has the CameraOnlyModeModule and SpecialUIModule. These values are changed dynamically by the installer
+
+
+  [CameraOnlyModeModule]
+  
+  ;# include the camera versus avatar settings. The Dreamworld installer will change this file as needed
+  enabled = true
+  
+  ;; Users with UserLevel equal or less than this will be sent this mode.
+  ;; Others above will not.
+  UserLevel = 0
+  
+  [SpecialUIModule]
+  enabled = true
+  
+  ;; Users with UserLevel equal or less than this will be sent this mode.
+  ;; Others above will not.
+  UserLevel = 0
+
+
+
 Backups 
 
 The database will grow and grow!   So before you make any changes, you should make a backup copy of "DreamWorldFiles" folder.     Do not use the original folder for live work.    
 
-Compiliation:  You need to use Microsoft Visual Basic 2010.  Navigate to \Installer-Src\2010\SetupDreamWorld and open the Solution "Setup DreamWorld.sln"
+Compiliation:  You need to use Microsoft Visual Basic 1010 to 2015.  Navigate to \Installer-Src\2010\SetupDreamWorld and open the Solution "Setup DreamWorld.sln"
 
-Navigate to Debug->Build Start. The app should compile.   Navigate to "Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\bin\Release" and copy Start.exe and Start.Application to DreamworldFiles
+Navigate to Debug->Build Start. The app should compile.   Navigate to "Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\bin\Release" and copy Start.exe and Start.Application to \DreamworldFiles to be ready for production.
 
-Running Start.exe will Set up the system. 
+You can run Start.exe with the command line option 'clean' and it will delete extra data that Opensim does not need in a distribution, such as cache and script folders
+
+
+
+
 
 
 

@@ -15,20 +15,24 @@ Imports IniParser
 ' revision 0.2.2 2016-09-06 Zap all process if forced closed by X
 ' revision 0.2.3 2016-09-10 Add Icons and messages
 ' revision 0.2.4 2016-09-10 Handle Opensim.ini for camera and viewer UI
+' revision 0.3.0 2016-09-10 Released new UI
+' revision 0.3.1 2016-09-11 Standalone + OsGrid
+
+' Command line args:
+' clean makes it wipe out Opensim files that are not needed for zipping
+' debug forces this to use the \Dreamworlds folder for testing 
 
 Public Class Form1
 
     Dim CurDir    ' Holds the current folder that we are running in
-    Dim Webpage As String
-    Dim ctr As Integer
-    Dim Opensim As Process
-    Dim Running As Boolean
-
+    Dim ctr As Integer  ' global retry counter
+    Dim Running As Boolean ' global running flag
+    Dim MyGrid ' holds the Grid folder name
     Private Declare Sub Sleep Lib "kernel32.dll" (ByVal Milliseconds As Integer)
 
     Private Sub Form1_Leave(sender As Object, e As System.EventArgs) Handles Me.Leave
 
-        ' Needed for some systems to clean up the stack, better be safe
+        ' Needed to stop Opensim
         ZapAll()
         End
 
@@ -36,57 +40,32 @@ Public Class Form1
 
     Private Sub Form1_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 
-        Running = False
+        Dim arguments As String() = Environment.GetCommandLineArgs()
 
-        Dim location As String = System.Environment.GetCommandLineArgs()(0)
-        Dim appName As String = System.IO.Path.GetFileName(location)
+        Running = False ' global flag is true when opensim is running
 
         CurDir = My.Application.Info.DirectoryPath
-        ' for debugging when compiling
 
-        ' FKB debug only
-        'CurDir = "\DreamWorld"
-        'ChDir(CurDir)
 
-        ctr = 0
-
-        ' asserts first from Settings Tab
-
-        'mnuShow shows the DOS box for Opensimulator
-        mnuShow.Checked = My.Settings.Console
-        mnuHide.Checked = Not My.Settings.Console
-
-        ' Admin shows the Web UI
-        mnuAdminShow.Checked = My.Settings.Admin
-        mnuAdminHide.Checked = Not My.Settings.Admin
-
-        ' Viewer UI shows the full viewer UI
-        If My.Settings.Viewer Then
-            SetIni("\Opensim\bin\Opensim.ini", "SpecialUIModule", "enabled", "false")
-        Else
-            SetIni("\Opensim\bin\Opensim.ini", "SpecialUIModule", "enabled", "true")
+        If arguments.Length > 1 Then
+            ' for debugging when compiling
+            If arguments(1) = "clean" Then
+                ' Clean up the file system
+                CleanAll()
+            ElseIf arguments(1) = "debug" Then
+                CurDir = "\DreamWorld"
+            End If
         End If
-        mnuFull.Checked = My.Settings.Viewer
-        mnuEasy.Checked = Not My.Settings.Viewer
 
+        ' Set the INI files for the selected grid
+        SetGridValues()
 
-        'Avatar visible?
-        If My.Settings.Avatar Then
-            SetIni("\Opensim\bin\Opensim.ini", "CameraOnlyModeModule", "enabled", "false")
-        Else
-            SetIni("\Opensim\bin\Opensim.ini", "CameraOnlyModeModule", "enabled", "true")
-        End If
-        mnuYesAvatar.Checked = My.Settings.Avatar
-        mnuNoAvatar.Checked = Not My.Settings.Avatar
-
-        Buttons(InstallButton)
-
-        ' Find out if we are running this on the Installed Drive
-        If System.IO.File.Exists("Init") Then
+        ' Find out if the viewer is installed 
+        If System.IO.File.Exists(CurDir & "\DreamworldFiles\Init") Then
             Buttons(StartButton)
-            TextBox1.Text = "Start Opensimulator"
+            TextBox1.Text = "Opensimulator is ready to start in " & MyGrid & " Mode"
         Else
-            Dim fs As FileStream = System.IO.File.Create("Init")
+            Dim fs As FileStream = System.IO.File.Create(CurDir & "\DreamworldFiles\Init")
             Buttons(InstallButton)
         End If
         Application.DoEvents()
@@ -96,7 +75,7 @@ Public Class Form1
     Private Sub WebBrowser1_DocumentCompleted(ByVal sender As System.Object, ByVal e As System.Windows.Forms.WebBrowserDocumentCompletedEventArgs) Handles WebBrowser1.DocumentCompleted
 
         ' start Opensimulator
-        Webpage = WebBrowser1.DocumentText
+        Dim Webpage = WebBrowser1.DocumentText
 
         ctr = ctr + 1
         If ctr > 60 Then
@@ -110,7 +89,7 @@ Public Class Form1
             '  Launch(OpenSim)
 
             Print("Starting Opensimulator")
-            ChDir(CurDir & "\DreamWorldFiles\Opensim\bin\")
+            ChDir(CurDir & "\DreamWorldFiles\" & MyGrid & "\bin\")
 
             Dim p As Process = New Process()
             Dim pi As ProcessStartInfo = New ProcessStartInfo()
@@ -122,7 +101,7 @@ Public Class Form1
                 pi.WindowStyle = ProcessWindowStyle.Hidden
             End If
 
-            pi.FileName = CurDir & "\DreamWorldFiles\Opensim\bin\OpenSim.exe"
+            pi.FileName = CurDir & "\DreamWorldFiles\" & MyGrid & "\bin\OpenSim.exe"
             p.StartInfo = pi
             p.Start()
             Application.DoEvents()
@@ -143,7 +122,7 @@ Public Class Form1
     Private Sub WebBrowser2_DocumentCompleted(ByVal sender As System.Object, ByVal e As System.Windows.Forms.WebBrowserDocumentCompletedEventArgs) Handles WebBrowser2.DocumentCompleted
 
         ' Start Onlook Viewer
-        Webpage = WebBrowser2.DocumentText
+        Dim Webpage = WebBrowser2.DocumentText
 
         ctr = ctr + 1
         If ctr > 60 Then
@@ -323,18 +302,18 @@ Public Class Form1
         Running = True
 
         Try
-            My.Computer.FileSystem.DeleteFile(CurDir + "\DreamWorldFiles\Opensim\bin\Opensim.log")
+            My.Computer.FileSystem.DeleteFile(CurDir + "\DreamWorldFiles" & MyGrid & "\bin\Opensim.log")
         Catch ex As Exception
             ' do nothing
         End Try
 
         Try
-            My.Computer.FileSystem.DeleteFile(CurDir + "\DreamWorldFiles\Opensim\bin\OpenSimConsoleHistory.txt")
+            My.Computer.FileSystem.DeleteFile(CurDir + "\DreamWorldFiles\" & MyGrid & "\bin\OpenSimConsoleHistory.txt")
         Catch ex As Exception
             ' do nothing
         End Try
 
-        Print("Starting Database and Web Server")
+        Print("Starting Database And Web Server")
 
         Dim p As Process = New Process()
         Dim pi As ProcessStartInfo = New ProcessStartInfo()
@@ -368,11 +347,11 @@ Public Class Form1
             Status = CheckMySQL()
             If Status Then
                 iSRunning = 0
-                Print("Database is Up")
+                Print("Database Is Up")
             End If
         End While
         ctr = 0 ' retry counter reset - lets give them a minute to get on
-        WebBrowser1.Navigate("http://127.0.0.1:62535/start/up.htm?id=" + Random())
+        WebBrowser1.Navigate("http: //127.0.0.1:62535/start/up.htm?id=" + Random())
 
         Application.DoEvents()
 
@@ -457,7 +436,7 @@ Public Class Form1
         My.Settings.Viewer = mnuEasy.Checked
         My.Settings.Save()
 
-        SetIni("\Opensim\bin\Opensim.ini", "SpecialUIModule", "enabled", "true")
+        SetIni(MyGrid & "\bin\Opensim.ini", "SpecialUIModule", "enabled", "true")
 
         If Running Then
             MsgBox("Onlook Viewer is set for Easy UI mode. Change will occur when the sim is restarted", vbInformation)
@@ -473,7 +452,7 @@ Public Class Form1
         My.Settings.Viewer = mnuEasy.Checked
         My.Settings.Save()
 
-        SetIni("\Opensim\bin\Opensim.ini", "SpecialUIModule", "enabled", "false")
+        SetIni(MyGrid & "\bin\Opensim.ini", "SpecialUIModule", "enabled", "false")
 
         If Running Then
             MsgBox("Onlook Viewer is set for the Full UI mode. Change will occur when the sim is restarted", vbInformation)
@@ -491,7 +470,7 @@ Public Class Form1
         My.Settings.Avatar = False
         My.Settings.Save()
 
-        SetIni("\Opensim\bin\Opensim.ini", "CameraOnlyModeModule", "enabled", "true")
+        SetIni(MyGrid & "\bin\Opensim.ini", "CameraOnlyModeModule", "enabled", "true")
 
         If Running Then
             MsgBox("Your Avatar will not be shown when you log in. Change will occur when the Viewer is next logged in.", vbInformation)
@@ -508,7 +487,7 @@ Public Class Form1
         My.Settings.Avatar = True
         My.Settings.Save()
 
-        SetIni("\Opensim\bin\Opensim.ini", "CameraOnlyModeModule", "enabled", "false")
+        SetIni(MyGrid & "\bin\Opensim.ini", "CameraOnlyModeModule", "enabled", "false")
 
         If Running Then
             MsgBox("Your Avatar will be shown. Change will occur when the Viewer is next logged in. ", vbInformation)
@@ -548,7 +527,6 @@ Public Class Form1
 
         Print("The Web UI lets you add or view settings for the default avatar. ")
         If Running Then
-
             Dim webAddress As String = "http://127.0.0.1:9100/wifi"
             Process.Start(webAddress)
         End If
@@ -571,7 +549,7 @@ Public Class Form1
         Dim parser = New FileIniDataParser()
         parser.Parser.Configuration.CommentString = ";" ' Opensim uses semicolons
 
-        Dim Data = parser.ReadFile(CurDir + "\DreamWorldFiles" & filepath)
+        Dim Data = parser.ReadFile(CurDir + "\DreamWorldFiles\" & filepath)
         Dim value = Data(section)(key)
         Return value
 
@@ -582,14 +560,153 @@ Public Class Form1
         ' sets values into any INI file
         Dim parser = New FileIniDataParser()
         parser.Parser.Configuration.CommentString = ";" ' Opensim uses semicolons
-        Dim Data = parser.ReadFile(CurDir + "\DreamWorldFiles" & filepath)
+        parser.Parser.Configuration.SkipInvalidLines = True
+
+        Dim Data = parser.ReadFile(CurDir + "\DreamWorldFiles\" & filepath)
+
         Dim oldvalue = Data(section)(key)
 
         Data(section)(key) = value ' replace it and save it
-        parser.WriteFile(CurDir + "\DreamWorldFiles" & filepath, Data)
+        parser.WriteFile(CurDir + "\DreamWorldFiles\" & filepath, Data)
         Return True
+        '
+    End Function
+    Private Function CleanAll()
+        Clean("Local")
+        Clean("OsGrid")
+        Return True
+    End Function
+    Private Function Clean(AGrid As String)
 
+        Try
+            System.IO.Directory.Delete(CurDir & "\DreamWorldFiles\" & AGrid & "\bin\addin-db-002", True)
+        Catch
+        End Try
+        Try
+            System.IO.Directory.Delete(CurDir & "\DreamWorldFiles\" & AGrid & "\bin\assetcache", True)
+        Catch
+        End Try
+        Try
+            System.IO.Directory.Delete(CurDir & "\DreamWorldFiles\" & AGrid & "\bin\DataSnapshot", True)
+        Catch
+        End Try
+        Try
+            System.IO.Directory.Delete(CurDir & "\DreamWorldFiles\" & AGrid & "\bin\ScriptEngines", True)
+        Catch
+        End Try
+        Try
+            System.IO.Directory.Delete(CurDir & "\DreamWorldFiles\" & AGrid & "\bin\MapTiles", True)
+        Catch
+        End Try
+
+        Try
+            My.Computer.FileSystem.DeleteFile(CurDir + "\DreamWorldFiles" & AGrid & "\bin\Opensim.log")
+        Catch ex As Exception
+            ' do nothing
+        End Try
+        Try
+            My.Computer.FileSystem.DeleteFile(CurDir + "\DreamWorldFiles\" & AGrid & "\bin\OpenSimConsoleHistory.txt")
+        Catch ex As Exception
+        End Try
+        Try
+            My.Computer.FileSystem.DeleteFile(CurDir + "\DreamWorldFiles\Init")
+        Catch ex As Exception
+        End Try
+
+        MsgBox("System is Clean")
+        End
     End Function
 
+    Private Sub mnuOsGrid_Click(sender As Object, e As EventArgs) Handles mnuOsGrid.Click
+        MyGrid = "OsGrid"
+        My.Settings.Grid = MyGrid
+        My.Settings.Save()
+        mnuOsGrid.Checked = True
+        mnuLocal.Checked = False
+        SetGridValues()
+        Print("DreamWorlds will connect to OsGrid.org. You must log in with an Avatar name registered with OsGrid.org. You must also 'Port Forward' your router to this machine on port 8000 for Tcp and Udp traffic")
+    End Sub
+
+    Private Sub mnuLocal_Click(sender As Object, e As EventArgs) Handles mnuLocal.Click
+        MyGrid = "Local"
+        My.Settings.Grid = MyGrid
+        My.Settings.Save()
+        mnuOsGrid.Checked = False
+        mnuLocal.Checked = True
+        SetGridValues()
+        Print("DreamWorlds will connect to your own locally hosted sim. You must log in with the name 'Simon Stick' with a password of 123'")
+    End Sub
+
+    Private Function SetGridValues()
+
+        MyGrid = My.Settings.Grid       ' which grid are we running, OsGrid, or 'Local' folder Opensim
+
+        'mnuShow shows the DOS box for Opensimulator
+        mnuShow.Checked = My.Settings.Console
+        mnuHide.Checked = Not My.Settings.Console
+
+        ' Admin shows the Web UI
+        mnuAdminShow.Checked = My.Settings.Admin
+        mnuAdminHide.Checked = Not My.Settings.Admin
+
+        ' Viewer UI shows the full viewer UI
+        If My.Settings.Viewer Then
+            SetIni(MyGrid & "\bin\Opensim.ini", "SpecialUIModule", "enabled", "false")
+        Else
+            SetIni(MyGrid & "\bin\Opensim.ini", "SpecialUIModule", "enabled", "true")
+        End If
+        mnuFull.Checked = My.Settings.Viewer
+        mnuEasy.Checked = Not My.Settings.Viewer
+
+
+        'Avatar visible?
+        If My.Settings.Avatar Then
+            SetIni(MyGrid & "\bin\Opensim.ini", "CameraOnlyModeModule", "enabled", "false")
+        Else
+            SetIni(MyGrid & "\bin\Opensim.ini", "CameraOnlyModeModule", "enabled", "true")
+        End If
+        mnuYesAvatar.Checked = My.Settings.Avatar
+        mnuNoAvatar.Checked = Not My.Settings.Avatar
+
+        ' Grid
+        If MyGrid = "Local" Then
+            mnuLocal.Checked = True
+            mnuOsGrid.Checked = False
+        Else
+            mnuLocal.Checked = False
+            mnuOsGrid.Checked = True
+        End If
+
+        ' Autobackup
+        If My.Settings.AutoBackup Then
+            SetIni(MyGrid & "\bin\Opensim.ini", "AutoBackupModule", "AutoBackupModuleEnabled", "true")
+            AutoYes.Checked = True
+            AutoNo.Checked = False
+            My.Settings.AutoBackup = True
+        Else
+            SetIni(MyGrid & "\bin\Opensim.ini", "AutoBackupModule", "AutoBackupModuleEnabled", "false")
+            AutoYes.Checked = False
+            AutoNo.Checked = True
+            My.Settings.AutoBackup = False
+        End If
+
+        Return True
+    End Function
+
+    Private Sub YesToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AutoYes.Click
+        Print("DreamWorlds is set Autoback the sim into an OAR every 24 hours. Oars are saved in \bin\AutoBackup")
+        AutoYes.Checked = True
+        AutoNo.Checked = False
+        My.Settings.AutoBackup = True
+        My.Settings.Save()
+    End Sub
+
+    Private Sub AutoNo_Click(sender As Object, e As EventArgs) Handles AutoNo.Click
+        Print("Backups disabled")
+        AutoYes.Checked = False
+        AutoNo.Checked = True
+        My.Settings.AutoBackup = False
+        My.Settings.Save()
+    End Sub
 End Class
 
