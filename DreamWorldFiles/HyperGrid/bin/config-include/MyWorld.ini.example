@@ -14,7 +14,7 @@
     ConnectionString = "Data Source=localhost;Database=opensim;User ID=opensim;Password=***;Old Guids=true;Allow Zero Datetime=true;"
 
 [Network]
-    http_listener_port = 9000
+    http_listener_port = 9100
 
 [Hypergrid]
     HomeURI = "http://127.0.0.1:9000"

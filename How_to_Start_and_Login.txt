@@ -16,14 +16,10 @@ When using the web interface, use user "Wifi Admin" and the password "secret". W
 
 If you close the browser window, you can get back to it with an AdminPanel icon. You can can this panel use to create new users examine inventory, and view the console status.
 
+This is only  is made possible by the work of the entire OpenSimulator development team, and specifically Crista Lopes (Diva Canto) for her D2 Distro of OpenSim.
 
-Other passwords
-MySQL Database root user has no password
-MySQL Database "opensim" user name "opensim" has a password of "opensimpass"
+For licensing information, please see licenses in the apache2, diva-r25084, mowes, mysql, and php5 folders. Additional licenses, such as for MySQL, may also apply.
 
-Version:
-DreamWorld update as of 9/6/2016 version 0.2.1
-Sim-On-A-Stick is Version 0.8.0 post fixes and running its own MySQL, Apache, and PHP for Windows with BulletSim physics and built from Diva D2.
 
 ==================
 This application requires 2 GB of free disk space and a good 3-D graphics card.

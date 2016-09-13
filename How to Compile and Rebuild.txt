@@ -10,19 +10,44 @@ The system supports a special installer that will put a easy-to-use copy of a cu
 
 Multiple copies of different simulations can be made and distributed via DVD, download, or thumb drive. 
 
+LAUNCHING MANUALLY
+
+Its standard iopensim, so do the standard things:
+
+Launch mowes.exe
+launch \bin\OpenSim.exe
+
+After OpenSim has fully started, use your favourite viewer with the following grid and login information:
+
+login URI: http://127.0.0.1:9100/
+User First Name: Simona
+User Last Name: Stick
+Password: 123
+
+Admin User for Wifi that can administer accounts using the web interface is:
+login URI: http://127.0.0.1:9100/
+User First Name: Wifi
+User Last Name: Admin
+Password: secret
+
+Other passwords
+MySQL Database root user has no password
+MySQL Database "opensim" user name "opensim" has a password of "opensimpass"
+
+
 File structure: 
 
 Each folder has specific purposes. Some are used for distribution, others hold source code or output from compilers.
 
 The following folders must be in any distributed zip, thumb, or DVD.  
-   DreamWorldFiles - Contents is a 0.8.0 "Sim On A Stick". 
+   DreamWorldFiles - Contents is everything you need post insatll. All other folders are for setup or source.
    Viewer:  The easy to use Onlook viewer
 
 Installer-Src - Hold Source code for the Start.exe 
 
 Making A Different Installation: 
 
-Everything that makes a sim unique is located in a single folder "DreamWorldFiles".   It is essentially a copy of the default SoaS installation with modifications to make it easy to install and ready to use.  
+Everything that makes a sim unique is located in a single folder "DreamWorldFiles".   It is essentially a copy of the default installation with modifications to make it easy to install and ready to use.  
 
 The installer will not work without one key modifications:   A copy of  "Up.html" which contains the single word "Up' is added to DreamWorldFiles\Opensim\bin\WifiPages to check that the sim is up.
 

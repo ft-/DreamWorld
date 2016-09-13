@@ -1,0 +1,220 @@
+2016-09-12 20:53:48,306 INFO  - OpenSim.Application [OPENSIM MAIN]: configured log4net using default OpenSim.exe.config
+2016-09-12 20:53:48,318 INFO  - OpenSim.Application [OPENSIM MAIN]: System Locale is en-US
+2016-09-12 20:53:48,321 INFO  - OpenSim.Application [OPENSIM MAIN]: Environment variable MONO_THREADS_PER_CPU is unset
+2016-09-12 20:53:48,321 INFO  - OpenSim.Application [OPENSIM MAIN]: Runtime gave us 8 min worker threads and 8 min IOCP threads
+2016-09-12 20:53:48,321 INFO  - OpenSim.Application [OPENSIM MAIN]: Runtime gave us 32767 max worker threads and 1000 max IOCP threads
+2016-09-12 20:53:48,321 INFO  - OpenSim.Application [OPENSIM MAIN]: Limiting max worker threads to 1000
+2016-09-12 20:53:48,322 INFO  - OpenSim.Application [OPENSIM MAIN]: Threadpool set to 1000 max worker threads and 1000 max IOCP threads
+2016-09-12 20:53:48,326 INFO  - OpenSim.Application [OPENSIM MAIN]: Environment is supported by OpenSimulator.
+2016-09-12 20:53:48,338 INFO  - OpenSim.ConfigurationLoader [CONFIG]: Reading configuration settings
+2016-09-12 20:53:48,339 INFO  - OpenSim.ConfigurationLoader [CONFIG]: Reading configuration file C:\Opensim\DreamWorld-GitHub\DreamWorldFiles\HyperGrid\bin\OpenSimDefaults.ini
+2016-09-12 20:53:48,358 INFO  - OpenSim.ConfigurationLoader [CONFIG]: Reading configuration file C:\Opensim\DreamWorld-GitHub\DreamWorldFiles\HyperGrid\bin\OpenSim.ini
+2016-09-12 20:53:48,361 INFO  - OpenSim.ConfigurationLoader [CONFIG]: Reading configuration file C:\Opensim\DreamWorld-GitHub\DreamWorldFiles\HyperGrid\bin\config-include\DivaPreferences.ini
+2016-09-12 20:53:48,365 INFO  - OpenSim.ConfigurationLoader [CONFIG]: Reading configuration file C:\Opensim\DreamWorld-GitHub\DreamWorldFiles\HyperGrid\bin\config-include\MyWorld.ini
+2016-09-12 20:53:48,367 INFO  - OpenSim.ConfigurationLoader [CONFIG]: Loading environment variables for Config
+2016-09-12 20:53:48,373 INFO  - OpenSim.OpenSim [OPENSIM MAIN]: Using async_call_method UnsafeQueueUserWorkItem
+2016-09-12 20:53:48,381 INFO  - OpenSim.OpenSim ====================================================================
+2016-09-12 20:53:48,381 INFO  - OpenSim.OpenSim ========================= STARTING OPENSIM =========================
+2016-09-12 20:53:48,382 INFO  - OpenSim.OpenSim ====================================================================
+2016-09-12 20:53:48,388 INFO  - OpenSim.Framework.Console.LocalConsole [LOCAL CONSOLE]: Persistent command line history is Enabled, up to 100 lines from file C:\Opensim\DreamWorld-GitHub\DreamWorldFiles\HyperGrid\bin\OpenSimConsoleHistory.txt
+2016-09-12 20:53:48,388 INFO  - OpenSim.Framework.Console.LocalConsole [LOCAL CONSOLE]: Creating new empty command line history file C:\Opensim\DreamWorld-GitHub\DreamWorldFiles\HyperGrid\bin\OpenSimConsoleHistory.txt
+2016-09-12 20:53:48,390 INFO  - OpenSim.Framework.Servers.ServerBase [SERVER BASE]: Starting in C:\Opensim\DreamWorld-GitHub\DreamWorldFiles\HyperGrid\bin
+2016-09-12 20:53:48,390 INFO  - OpenSim.Framework.Servers.ServerBase [SERVER BASE]: OpenSimulator version: OpenSim 0.8.2.1 Release          
+2016-09-12 20:53:48,391 INFO  - OpenSim.Framework.Servers.ServerBase [SERVER BASE]: Operating system version: Microsoft Windows NT 6.2.9200.0, .NET platform Win32NT, 64-bit
+2016-09-12 20:53:48,398 INFO  - OpenSim.Framework.Servers.ServerBase [SERVER BASE]: Logging started to file C:\Opensim\DreamWorld-GitHub\DreamWorldFiles\HyperGrid\bin\OpenSim.log
+2016-09-12 20:53:48,602 INFO  - OpenSim.Data.MySQL.MySQLEstateStore [REGION DB]: MySql - connecting: Data Source=localhost;Database=opensim;Port=3307;User ID=opensim;Password=***;Old Guids=true;Allow Zero Datetime=true;
+2016-09-12 20:53:48,618 INFO  - OpenSim.RegionApplicationBase [REGION SERVER]: Starting HTTP server on port 9100
+2016-09-12 20:53:48,620 INFO  - OpenSim.Framework.Servers.HttpServer.BaseHttpServer [BASE HTTP SERVER]: Starting HTTP server on port 9100
+2016-09-12 20:53:49,571 INFO  - OpenSim.Framework.PluginLoader`1 [PLUGINS]: Initializing addin manager
+2016-09-12 20:53:50,463 INFO  - OpenSim.Framework.PluginLoader`1 [PLUGINS]: Plugin Loaded: OpenSim
+2016-09-12 20:53:50,466 INFO  - OpenSim.Framework.PluginLoader`1 [PLUGINS]: Plugin Loaded: OpenSim.Region.Framework
+2016-09-12 20:53:50,466 INFO  - OpenSim.Framework.PluginLoader`1 [PLUGINS]: Plugin Loaded: Robust
+2016-09-12 20:53:50,473 INFO  - OpenSim.Framework.PluginLoader`1 [PLUGINS]: Plugin Loaded: OpenSim.Data
+2016-09-12 20:53:50,489 INFO  - OpenSim.Framework.PluginLoader`1 [PLUGINS]: Loading extension point /OpenSim/Startup
+2016-09-12 20:53:50,517 INFO  - OpenSim.Framework.PluginLoader`1 [PLUGINS]: Trying plugin /OpenSim/Startup/LoadRegions
+2016-09-12 20:53:50,519 INFO  - OpenSim.Framework.PluginLoader`1 [PLUGINS]: Plugin Loaded: OpenSim.ApplicationPlugins.RegionModulesController
+2016-09-12 20:53:50,522 INFO  - OpenSim.Framework.PluginLoader`1 [PLUGINS]: Trying plugin /OpenSim/Startup/LoadRegions
+2016-09-12 20:53:50,523 INFO  - OpenSim.Framework.PluginLoader`1 [PLUGINS]: Plugin Loaded: OpenSim.ApplicationPlugins.LoadRegions
+2016-09-12 20:53:50,526 INFO  - OpenSim.Framework.PluginLoader`1 [PLUGINS]: Trying plugin /OpenSim/Startup/LoadRegions
+2016-09-12 20:53:50,526 INFO  - OpenSim.Framework.PluginLoader`1 [PLUGINS]: Plugin Loaded: OpenSim.ApplicationPlugins.RemoteController
+2016-09-12 20:53:50,538 INFO  - OpenSim.Framework.PluginLoader`1 [PLUGINS]: Plugin Loaded: SimianGrid
+2016-09-12 20:53:50,543 INFO  - OpenSim.Framework.PluginLoader`1 [PLUGINS]: Plugin Loaded: LindenUDP
+2016-09-12 20:53:50,547 INFO  - OpenSim.Framework.PluginLoader`1 [PLUGINS]: Plugin Loaded: OpenSim.Region.CoreModules
+2016-09-12 20:53:50,566 INFO  - OpenSim.Framework.PluginLoader`1 [PLUGINS]: Plugin Loaded: OpenSim.Region.PhysicsModule.POS
+2016-09-12 20:53:50,570 INFO  - OpenSim.Framework.PluginLoader`1 [PLUGINS]: Plugin Loaded: Diva.Interfaces
+2016-09-12 20:53:50,571 INFO  - OpenSim.Framework.PluginLoader`1 [PLUGINS]: Plugin Loaded: Diva.Wifi
+2016-09-12 20:53:50,593 INFO  - OpenSim.Framework.PluginLoader`1 [PLUGINS]: Plugin Loaded: LindenCaps
+2016-09-12 20:53:50,599 INFO  - OpenSim.Framework.PluginLoader`1 [PLUGINS]: Plugin Loaded: OpenSim.Groups
+2016-09-12 20:53:50,603 INFO  - OpenSim.Framework.PluginLoader`1 [PLUGINS]: Plugin Loaded: OpenSim.Region.PhysicsModule.ODE
+2016-09-12 20:53:50,607 INFO  - OpenSim.Framework.PluginLoader`1 [PLUGINS]: Plugin Loaded: OpenSim.OfflineIM
+2016-09-12 20:53:50,610 INFO  - OpenSim.Framework.PluginLoader`1 [PLUGINS]: Plugin Loaded: OpenSim.Region.PhysicsModule.BasicPhysics
+2016-09-12 20:53:50,614 INFO  - OpenSim.Framework.PluginLoader`1 [PLUGINS]: Plugin Loaded: OpenSim.Region.OptionalModules
+2016-09-12 20:53:50,621 INFO  - OpenSim.Framework.PluginLoader`1 [PLUGINS]: Plugin Loaded: Diva.MISearchModules
+2016-09-12 20:53:50,624 INFO  - OpenSim.Framework.PluginLoader`1 [PLUGINS]: Plugin Loaded: Diva.TOS
+2016-09-12 20:53:50,627 INFO  - OpenSim.Framework.PluginLoader`1 [PLUGINS]: Plugin Loaded: OpenSim.Region.PhysicsModules.Meshing
+2016-09-12 20:53:50,629 INFO  - OpenSim.Framework.PluginLoader`1 [PLUGINS]: Plugin Loaded: OpenSim.Region.PhysicsModule.BulletS
+2016-09-12 20:53:50,633 INFO  - OpenSim.Framework.PluginLoader`1 [PLUGINS]: Plugin Loaded: OpenSim.Region.ScriptEngine.XEngine
+2016-09-12 20:53:50,636 INFO  - OpenSim.ApplicationPlugins.RegionModulesController.RegionModulesControllerPlugin [REGIONMODULES]: From plugin SimianGrid, (version 0.8.2.1), loaded 2 modules, 1 shared, 1 non-shared 0 unknown
+2016-09-12 20:53:50,639 INFO  - OpenSim.ApplicationPlugins.RegionModulesController.RegionModulesControllerPlugin [REGIONMODULES]: From plugin LindenUDP, (version 0.8.2.1), loaded 1 modules, 0 shared, 1 non-shared 0 unknown
+2016-09-12 20:53:50,641 INFO  - OpenSim.ApplicationPlugins.RegionModulesController.RegionModulesControllerPlugin [REGIONMODULES]: From plugin OpenSim.Region.CoreModules, (version 0.8.2.1), loaded 98 modules, 58 shared, 40 non-shared 0 unknown
+2016-09-12 20:53:50,642 INFO  - OpenSim.ApplicationPlugins.RegionModulesController.RegionModulesControllerPlugin [REGIONMODULES]: From plugin OpenSim.Region.PhysicsModule.POS, (version 0.8.2.1), loaded 1 modules, 0 shared, 1 non-shared 0 unknown
+2016-09-12 20:53:50,643 INFO  - OpenSim.ApplicationPlugins.RegionModulesController.RegionModulesControllerPlugin [REGIONMODULES]: From plugin Diva.Wifi, (version 0.8.2.1.11), loaded 1 modules, 1 shared, 0 non-shared 0 unknown
+2016-09-12 20:53:50,644 INFO  - OpenSim.ApplicationPlugins.RegionModulesController.RegionModulesControllerPlugin [REGIONMODULES]: From plugin LindenCaps, (version 0.8.2.1), loaded 16 modules, 2 shared, 14 non-shared 0 unknown
+2016-09-12 20:53:50,645 INFO  - OpenSim.ApplicationPlugins.RegionModulesController.RegionModulesControllerPlugin [REGIONMODULES]: From plugin OpenSim.Groups, (version 0.8.2.1), loaded 5 modules, 5 shared, 0 non-shared 0 unknown
+2016-09-12 20:53:50,646 INFO  - OpenSim.ApplicationPlugins.RegionModulesController.RegionModulesControllerPlugin [REGIONMODULES]: From plugin OpenSim.Region.PhysicsModule.ODE, (version 0.8.2.1), loaded 1 modules, 0 shared, 1 non-shared 0 unknown
+2016-09-12 20:53:50,647 INFO  - OpenSim.ApplicationPlugins.RegionModulesController.RegionModulesControllerPlugin [REGIONMODULES]: From plugin OpenSim.OfflineIM, (version 0.8.2.1), loaded 1 modules, 1 shared, 0 non-shared 0 unknown
+2016-09-12 20:53:50,648 INFO  - OpenSim.ApplicationPlugins.RegionModulesController.RegionModulesControllerPlugin [REGIONMODULES]: From plugin OpenSim.Region.PhysicsModule.BasicPhysics, (version 0.8.2.1), loaded 1 modules, 0 shared, 1 non-shared 0 unknown
+2016-09-12 20:53:50,650 INFO  - OpenSim.ApplicationPlugins.RegionModulesController.RegionModulesControllerPlugin [REGIONMODULES]: From plugin OpenSim.Region.OptionalModules, (version 0.8.2.1), loaded 35 modules, 20 shared, 15 non-shared 0 unknown
+2016-09-12 20:53:50,651 INFO  - OpenSim.ApplicationPlugins.RegionModulesController.RegionModulesControllerPlugin [REGIONMODULES]: From plugin Diva.MISearchModules, (version 0.8.1.0.2), loaded 1 modules, 1 shared, 0 non-shared 0 unknown
+2016-09-12 20:53:50,652 INFO  - OpenSim.ApplicationPlugins.RegionModulesController.RegionModulesControllerPlugin [REGIONMODULES]: From plugin Diva.TOS, (version 0.8.1.0.1), loaded 1 modules, 1 shared, 0 non-shared 0 unknown
+2016-09-12 20:53:50,653 INFO  - OpenSim.ApplicationPlugins.RegionModulesController.RegionModulesControllerPlugin [REGIONMODULES]: From plugin OpenSim.Region.PhysicsModules.Meshing, (version 0.8.2.1), loaded 2 modules, 0 shared, 2 non-shared 0 unknown
+2016-09-12 20:53:50,654 INFO  - OpenSim.ApplicationPlugins.RegionModulesController.RegionModulesControllerPlugin [REGIONMODULES]: From plugin OpenSim.Region.PhysicsModule.BulletS, (version 0.8.2.1), loaded 2 modules, 0 shared, 2 non-shared 0 unknown
+2016-09-12 20:53:50,655 INFO  - OpenSim.ApplicationPlugins.RegionModulesController.RegionModulesControllerPlugin [REGIONMODULES]: From plugin OpenSim.Region.ScriptEngine.XEngine, (version 0.8.2.1), loaded 1 modules, 0 shared, 1 non-shared 0 unknown
+2016-09-12 20:53:50,667 INFO  - OpenSim.Region.CoreModules.Asset.FlotsamAssetCache [FLOTSAM ASSET CACHE]: FlotsamAssetCache enabled
+2016-09-12 20:53:50,668 INFO  - OpenSim.Region.CoreModules.Asset.FlotsamAssetCache [FLOTSAM ASSET CACHE]: Cache Directory ./assetcache
+2016-09-12 20:53:52,946 INFO  - OpenSim.Services.InventoryService.LibraryService [LIBRARY INVENTORY]: Loading library control file ./inventory/Libraries.xml
+2016-09-12 20:53:52,987 INFO  - OpenSim.Region.CoreModules.ServiceConnectorsIn.Asset.AssetServiceInConnectorModule [ASSET IN CONNECTOR]: AssetServiceInConnector enabled
+2016-09-12 20:53:52,988 INFO  - OpenSim.Region.CoreModules.ServiceConnectorsIn.Authentication.AuthenticationServiceInConnectorModule [AUTHENTICATION IN CONNECTOR]: Authentication Service In Connector enabled
+2016-09-12 20:53:52,989 INFO  - OpenSim.Region.CoreModules.ServiceConnectorsIn.Grid.GridInfoServiceInConnectorModule [GRIDINFO IN CONNECTOR]: GridInfo Service In Connector enabled
+2016-09-12 20:53:52,990 INFO  - OpenSim.Region.CoreModules.ServiceConnectorsIn.Hypergrid.HypergridServiceInConnectorModule [HGGRID IN CONNECTOR]: Hypergrid Service In Connector enabled
+2016-09-12 20:53:52,991 INFO  - OpenSim.Region.CoreModules.ServiceConnectorsIn.Inventory.InventoryServiceInConnectorModule [INVENTORY IN CONNECTOR]: Inventory Service In Connector enabled
+2016-09-12 20:53:52,992 INFO  - OpenSim.Region.CoreModules.ServiceConnectorsIn.Login.LLLoginServiceInConnectorModule [LLLOGIN IN CONNECTOR]: LLLoginerviceInConnector enabled
+2016-09-12 20:53:52,993 INFO  - OpenSim.Region.CoreModules.ServiceConnectorsIn.MapImage.MapImageServiceInConnectorModule [MAP SERVICE IN CONNECTOR]: MapImage Service In Connector enabled
+2016-09-12 20:53:53,035 INFO  - OpenSim.Region.CoreModules.ServiceConnectorsIn.Neighbour.NeighbourServiceInConnectorModule [NEIGHBOUR IN CONNECTOR]: NeighbourServiceInConnector enabled
+2016-09-12 20:53:53,036 INFO  - OpenSim.Region.CoreModules.ServiceConnectorsIn.Simulation.SimulationServiceInConnectorModule [SIM SERVICE]: SimulationService IN connector enabled
+2016-09-12 20:53:53,052 INFO  - OpenSim.Region.CoreModules.ServiceConnectorsOut.Profile.LocalUserProfilesServicesConnector [LOCAL USERPROFILES SERVICE CONNECTOR]: Local user profiles connector enabled
+2016-09-12 20:53:53,058 INFO  - OpenSim.Services.Connectors.HGAssetServiceConnector [HG ASSET SERVICE]: HG asset service enabled
+2016-09-12 20:53:53,060 INFO  - OpenSim.Region.CoreModules.ServiceConnectorsOut.Asset.HGAssetBroker [HG ASSET CONNECTOR]: HG asset broker enabled
+2016-09-12 20:53:53,062 INFO  - OpenSim.Region.CoreModules.ServiceConnectorsOut.Authentication.LocalAuthenticationServicesConnector [AUTH CONNECTOR]: Local Authentication connector enabled
+2016-09-12 20:53:53,064 INFO  - OpenSim.Region.CoreModules.ServiceConnectorsOut.Avatar.LocalAvatarServicesConnector [AVATAR CONNECTOR]: Local avatar connector enabled
+2016-09-12 20:53:53,067 INFO  - OpenSim.Region.CoreModules.ServiceConnectorsOut.Grid.LocalGridServicesConnector [LOCAL GRID SERVICE CONNECTOR]: Local grid connector enabled
+2016-09-12 20:53:53,071 INFO  - OpenSim.Region.CoreModules.ServiceConnectorsOut.GridUser.LocalGridUserServicesConnector [LOCAL GRID USER SERVICE CONNECTOR]: Local grid user connector enabled
+2016-09-12 20:53:53,074 INFO  - OpenSim.Region.CoreModules.ServiceConnectorsOut.Inventory.HGInventoryBroker [HG INVENTORY CONNECTOR]: HG inventory broker enabled with inner connector of type OpenSim.Services.InventoryService.XInventoryService
+2016-09-12 20:53:53,075 INFO  - OpenSim.Region.CoreModules.ServiceConnectorsOut.Land.LocalLandServicesConnector [LAND CONNECTOR]: Local land connector enabled
+2016-09-12 20:53:53,077 INFO  - OpenSim.Region.CoreModules.ServiceConnectorsOut.MapImage.MapImageServiceModule [MAP IMAGE SERVICE MODULE]: enabled with refresh time 60 min and service object OpenSim.Services.MapImageService.dll:MapImageService
+2016-09-12 20:53:53,078 INFO  - OpenSim.Region.CoreModules.ServiceConnectorsOut.Neighbour.RemoteNeighbourServicesConnector [NEIGHBOUR CONNECTOR]: Remote Neighbour connector enabled
+2016-09-12 20:53:53,080 INFO  - OpenSim.Region.CoreModules.ServiceConnectorsOut.Presence.LocalPresenceServicesConnector [LOCAL PRESENCE CONNECTOR]: Local presence connector enabled
+2016-09-12 20:53:53,082 INFO  - OpenSim.Region.CoreModules.ServiceConnectorsOut.Simulation.RemoteSimulationConnectorModule [REMOTE SIMULATION CONNECTOR]: Remote simulation enabled.
+2016-09-12 20:53:53,091 INFO  - OpenSim.Region.CoreModules.ServiceConnectorsOut.UserAccounts.LocalUserAccountServicesConnector [LOCAL USER ACCOUNT SERVICE CONNECTOR]: Local user connector enabled
+2016-09-12 20:53:53,094 INFO  - OpenSim.Region.CoreModules.World.Serialiser.SerialiserModule [Serialiser] Enabled, using save dir "exports"
+2016-09-12 20:53:53,097 INFO  - Diva.Wifi.WifiModule [Wifi Module]: Initializing...
+2016-09-12 20:53:54,160 INFO  - OpenSim.Groups.GroupsMessagingModule [Groups.Messaging]: GroupsMessagingModule enabled with MessageOnlineOnly = True, DebugEnabled = False
+2016-09-12 20:53:54,162 INFO  - OpenSim.Groups.GroupsModule [Groups]: Initializing Groups Module V2
+2016-09-12 20:53:54,199 ERROR - OpenSim.Region.RegionCombinerModule.RegionCombinerModule [REGION COMBINER MODULE]: THIS MODULE IS BEING MARKED OBSOLETE AND MAY SOON BE REMOVED. PLEASE USE VARREGIONS INSTEAD.
+2016-09-12 20:53:54,219 INFO  - MetaverseInk.ImageService.ImageServiceModule [MI IMAGESERVICE] Initializing...
+2016-09-12 20:53:54,230 INFO  - OpenSim.Region.CoreModules.ServiceConnectorsIn.Login.LLLoginServiceInConnectorModule [LLLOGIN IN CONNECTOR]: Starting...
+2016-09-12 20:53:54,238 INFO  - OpenSim.ApplicationPlugins.LoadRegions.LoadRegionsPlugin [LOAD REGIONS PLUGIN]: Loading region configurations from filesystem
+2016-09-12 20:53:54,241 INFO  - OpenSim.ApplicationPlugins.LoadRegions.RegionLoaderFileSystem [REGION LOADER FILE SYSTEM]: Loading config files from .\Regions
+2016-09-12 20:53:54,241 INFO  - OpenSim.ApplicationPlugins.LoadRegions.RegionLoaderFileSystem [REGION LOADER FILE SYSTEM]: Loading config file .\Regions\RegionConfig.ini
+2016-09-12 20:53:54,252 INFO  - OpenSim.ApplicationPlugins.LoadRegions.RegionLoaderFileSystem [REGION LOADER FILE SYSTEM]: Loaded config for region SoaS 1
+2016-09-12 20:53:54,252 INFO  - OpenSim.ApplicationPlugins.LoadRegions.LoadRegionsPlugin [LOAD REGIONS PLUGIN]: Loading specific shared modules...
+2016-09-12 20:53:54,253 INFO  - OpenSim.ApplicationPlugins.LoadRegions.LoadRegionsPlugin [LOAD REGIONS PLUGIN]: Done.
+2016-09-12 20:53:54,339 INFO  - OpenSim.Region.Framework.Scenes.Scene [SCENE]: Region SoaS 1, WORLD MAP refresh time set to 0 seconds
+2016-09-12 20:53:54,341 INFO  - OpenSim.Region.Framework.Scenes.Scene [SCENE]: Using high-resolution performance counter for statistics.
+2016-09-12 20:53:54,364 INFO  - OpenSim.OpenSimBase [MODULES]: Loading Region's modules (old style)
+2016-09-12 20:53:54,365 INFO  - OpenSim.OpenSimBase [REGIONMODULES]: Loading Region's modules (new style)
+2016-09-12 20:53:54,381 INFO  - OpenSim.Region.CoreModules.Avatar.Chat.ChatModule [CHAT]: Initialized for SoaS 1 w:10 s:20 S:100
+2016-09-12 20:53:54,401 INFO  - OpenSim.Region.CoreModules.ServiceConnectorsIn.Asset.AssetServiceInConnectorModule [HGAssetService]: Starting...
+2016-09-12 20:53:54,415 ERROR - OpenSim.Server.Base.ServerUtils [SERVER UTILS]: Error loading plugin OpenSim.Services.Interfaces.IAssetService from OpenSim.Services.HypergridService.dll. Exception: [HGAssetService] No HomeURI specified
+System.Reflection.TargetInvocationException: Exception has been thrown by the target of an invocation. ---> System.Exception: [HGAssetService] No HomeURI specified
+   at OpenSim.Services.HypergridService.HGAssetService..ctor(IConfigSource config, String configName)
+   --- End of inner exception stack trace ---
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Object[] arguments, Signature sig, Boolean constructor)
+   at System.Reflection.RuntimeConstructorInfo.Invoke(BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at System.RuntimeType.CreateInstanceImpl(BindingFlags bindingAttr, Binder binder, Object[] args, CultureInfo culture, Object[] activationAttributes, StackCrawlMark& stackMark)
+   at System.Activator.CreateInstance(Type type, BindingFlags bindingAttr, Binder binder, Object[] args, CultureInfo culture, Object[] activationAttributes)
+   at System.Activator.CreateInstance(Type type, Object[] args)
+   at OpenSim.Server.Base.ServerUtils.LoadPlugin[T](String dllName, String className, Object[] args)
+2016-09-12 20:53:54,421 ERROR - OpenSim.Server.Base.ServerUtils [SERVER UTILS]: Error loading plugin OpenSim.Services.HypergridService.dll: Exception has been thrown by the target of an invocation. args.Length 2
+2016-09-12 20:53:54,422 ERROR - OpenSim.Server.Base.ServerUtils [SERVER UTILS]: Error loading plugin OpenSim.Server.Handlers.Base.IServiceConnector from OpenSim.Server.Handlers.dll. Exception: Failed to load AssetService from OpenSim.Services.HypergridService.dll:HGAssetService; config is HGAssetService
+System.Reflection.TargetInvocationException: Exception has been thrown by the target of an invocation. ---> System.Exception: Failed to load AssetService from OpenSim.Services.HypergridService.dll:HGAssetService; config is HGAssetService
+   at OpenSim.Server.Handlers.Asset.AssetServiceConnector..ctor(IConfigSource config, IHttpServer server, String configName)
+   --- End of inner exception stack trace ---
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Object[] arguments, Signature sig, Boolean constructor)
+   at System.Reflection.RuntimeConstructorInfo.Invoke(BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at System.RuntimeType.CreateInstanceImpl(BindingFlags bindingAttr, Binder binder, Object[] args, CultureInfo culture, Object[] activationAttributes, StackCrawlMark& stackMark)
+   at System.Activator.CreateInstance(Type type, BindingFlags bindingAttr, Binder binder, Object[] args, CultureInfo culture, Object[] activationAttributes)
+   at System.Activator.CreateInstance(Type type, Object[] args)
+   at OpenSim.Server.Base.ServerUtils.LoadPlugin[T](String dllName, String className, Object[] args)
+2016-09-12 20:53:54,426 ERROR - OpenSim.Server.Base.ServerUtils [SERVER UTILS]: Error loading plugin OpenSim.Server.Handlers.dll: Exception has been thrown by the target of an invocation. args.Length 3
+2016-09-12 20:53:54,428 INFO  - OpenSim.Region.CoreModules.ServiceConnectorsIn.Inventory.InventoryServiceInConnectorModule [RegionInventoryService]: Starting...
+2016-09-12 20:53:54,453 INFO  - OpenSim.Region.CoreModules.ServiceConnectorsOut.Presence.BasePresenceServiceConnector [BASE PRESENCE SERVICE CONNECTOR]: Enabled for region SoaS 1
+2016-09-12 20:53:54,467 INFO  - OpenSim.Region.DataSnapshot.SnapshotStore [DATASNAPSHOT]: Creating directory DataSnapshot
+2016-09-12 20:53:54,469 INFO  - OpenSim.Region.DataSnapshot.DataRequestHandler [DATASNAPSHOT]: Set up snapshot service
+2016-09-12 20:53:54,668 ERROR - OpenSim.Framework.RestClient [REST CLIENT] Error fetching resource from server: http://metaverseink.com/cgi-bin/register.py?service=online&host=127.0.0.1&port=9100&secret=f63159f4-0bdb-49ed-9556-3bf045aa6aa0 
+System.Net.WebException: The remote server returned an error: (500) Internal Server Error.
+   at System.Net.HttpWebRequest.GetResponse()
+   at OpenSim.Framework.RestClient.Request(IServiceAuth auth)
+2016-09-12 20:53:54,672 WARN  - OpenSim.Region.DataSnapshot.DataSnapshotManager [DATASNAPSHOT]: Unable to decode reply from data service. Ignoring.    at OpenSim.Region.DataSnapshot.DataSnapshotManager.NotifyDataServices(String servicesStr, String serviceName)
+2016-09-12 20:53:54,673 INFO  - OpenSim.Region.DataSnapshot.DataSnapshotManager [DATASNAPSHOT]: data service http://metaverseink.com/cgi-bin/register.py notified. Secret: f63159f4-0bdb-49ed-9556-3bf045aa6aa0
+2016-09-12 20:53:54,716 INFO  - OpenSim.Region.CoreModules.Framework.InventoryAccess.HGInventoryAccessModule [HG INVENTORY ACCESS MODULE]: HGInventoryAccessModule enabled.
+2016-09-12 20:53:54,726 INFO  - OpenSim.Region.CoreModules.ServiceConnectorsOut.Authorization.LocalAuthorizationServicesConnector [AUTHORIZATION CONNECTOR]: Initialise
+2016-09-12 20:53:54,727 INFO  - OpenSim.Region.CoreModules.ServiceConnectorsOut.Authorization.LocalAuthorizationServicesConnector [AUTHORIZATION CONNECTOR]: Local authorization connector enabled
+2016-09-12 20:53:54,733 INFO  - OpenSim.Region.CoreModules.World.LightShare.EnvironmentModule [EnvironmentModule]: Module is enabled.
+2016-09-12 20:53:54,748 INFO  - OpenSim.Region.CoreModules.WindModule [WIND] Enabled with an update rate of 150 frames.
+2016-09-12 20:53:54,779 INFO  - OpenSim.Region.PhysicsModule.BulletS.ExtendedPhysics [EXTENDED PHYSICS] module is not enabled
+2016-09-12 20:53:54,786 INFO  - OpenSim.Region.ScriptEngine.XEngine.XEngine [XEngine]: Script stop strategy is co-op
+2016-09-12 20:53:54,863 INFO  - OpenSim.Region.ClientStack.LindenUDP.LLUDPServer [LLUDPSERVER]: Average Environment.TickCount resolution: 15.6ms
+2016-09-12 20:53:54,897 INFO  - OpenSim.Region.CoreModules.World.WorldMap.WorldMapModule [WORLD MAP]: JPEG Map location: http://127.0.0.1:9100/index.php?method=regionImageae823f8aedcc4351b7970e1072b312a8
+2016-09-12 20:53:54,968 INFO  - OpenSim.Region.CoreModules.World.Terrain.TerrainModule E ... ChannelDigger
+2016-09-12 20:53:54,969 INFO  - OpenSim.Region.CoreModules.World.Terrain.TerrainModule L ... GenericSystemDrawing
+2016-09-12 20:53:54,969 INFO  - OpenSim.Region.CoreModules.World.Terrain.TerrainModule L ... JPEG
+2016-09-12 20:53:54,981 INFO  - OpenSim.Region.CoreModules.World.Terrain.TerrainModule L ... LLRAW
+2016-09-12 20:53:54,981 INFO  - OpenSim.Region.CoreModules.World.Terrain.TerrainModule L ... RAW32
+2016-09-12 20:53:54,991 INFO  - OpenSim.Region.CoreModules.WindModule [WIND] Found Plugin: ConfigurableWind
+2016-09-12 20:53:54,992 INFO  - OpenSim.Region.CoreModules.WindModule [WIND] Found Plugin: SimpleRandomWind
+2016-09-12 20:53:54,992 INFO  - OpenSim.Region.CoreModules.WindModule [WIND] SimpleRandomWind plugin found, initializing.
+2016-09-12 20:53:55,084 INFO  - OpenSim.Region.PhysicsModule.BulletS.BSScene [BULLETS SCENE] Selected bullet engine bulletunmanaged -> BulletUnmanaged/
+2016-09-12 20:53:55,106 INFO  - OpenSim.Region.PhysicsModule.BulletS.BSScene [BULLETS SCENE] Linksets implemented with Compound
+2016-09-12 20:53:55,115 INFO  - OpenSim.Region.ScriptEngine.XEngine.XEngine [XEngine]: Initializing scripts in region SoaS 1
+2016-09-12 20:53:55,132 INFO  - OpenSim.Region.CoreModules.Framework.Library.LibraryModule [LIBRARY MODULE]: Loading library archive Library\Clothing Library (small).iar (Clothing Library (small))...
+2016-09-12 20:53:56,049 INFO  - OpenSim.Region.CoreModules.Avatar.Inventory.Archiver.InventoryArchiveReadRequest [INVENTORY ARCHIVER]: Loading IAR with version 0.1
+2016-09-12 20:53:56,051 INFO  - OpenSim.Region.CoreModules.Framework.Library.LibraryModule [LIBRARY MODULE]: Loading library archive Library\Objects Library (small).iar (Objects Library (small))...
+2016-09-12 20:53:56,052 INFO  - OpenSim.Region.CoreModules.Avatar.Inventory.Archiver.InventoryArchiveReadRequest [INVENTORY ARCHIVER]: Loading IAR with version 0.3
+2016-09-12 20:53:56,627 INFO  - OpenSim.Region.CoreModules.ServiceConnectorsIn.Authentication.AuthenticationServiceInConnectorModule [AUTHENTICATION IN CONNECTOR]: Starting...
+2016-09-12 20:53:56,630 INFO  - OpenSim.Region.CoreModules.ServiceConnectorsIn.Grid.GridInfoServiceInConnectorModule [GridInfo]: Starting...
+2016-09-12 20:53:56,633 INFO  - OpenSim.Region.CoreModules.ServiceConnectorsIn.Hypergrid.HypergridServiceInConnectorModule [HypergridService]: Starting...
+2016-09-12 20:53:56,679 INFO  - OpenSim.Region.CoreModules.ServiceConnectorsIn.Simulation.SimulationServiceInConnectorModule [SIM SERVICE]: Starting...
+2016-09-12 20:53:56,682 INFO  - OpenSim.Region.CoreModules.ServiceConnectorsOut.Asset.HGAssetBroker [HG ASSET CONNECTOR]: Enabled hypergrid asset broker for region SoaS 1
+2016-09-12 20:53:56,683 INFO  - OpenSim.Region.CoreModules.ServiceConnectorsOut.Asset.HGAssetBroker [HG ASSET CONNECTOR]: Enabled asset caching for region SoaS 1
+2016-09-12 20:53:56,684 INFO  - OpenSim.Region.CoreModules.ServiceConnectorsOut.GridUser.LocalGridUserServicesConnector [LOCAL GRID USER SERVICE CONNECTOR]: Enabled local grid user for region SoaS 1
+2016-09-12 20:53:56,685 INFO  - OpenSim.Region.CoreModules.ServiceConnectorsOut.Inventory.HGInventoryBroker [HG INVENTORY CONNECTOR]: Enabled HG inventory for region SoaS 1
+2016-09-12 20:53:56,686 INFO  - OpenSim.Region.CoreModules.ServiceConnectorsOut.Neighbour.RemoteNeighbourServicesConnector [NEIGHBOUR CONNECTOR]: Enabled remote neighbours for region SoaS 1
+2016-09-12 20:53:56,686 INFO  - OpenSim.Region.CoreModules.ServiceConnectorsOut.UserAccounts.LocalUserAccountServicesConnector [LOCAL USER ACCOUNT SERVICE CONNECTOR]: Enabled local user accounts for region SoaS 1
+2016-09-12 20:53:56,713 INFO  - MetaverseInk.ImageService.ImageServiceModule [MI IMAGESERVICE]: Set up image service
+2016-09-12 20:53:56,714 INFO  - MetaverseInk.ImageService.ImageServiceModule [MI IMAGESERVICE] Starting watcher for DataSnapshot
+2016-09-12 20:53:56,715 INFO  - MetaverseInk.ImageService.ImageServiceModule [MI IMAGESERVICE]: Creating directory DataSnapshot
+2016-09-12 20:53:56,718 INFO  - OpenSim.Region.ClientStack.LindenUDP.LLUDPServer [LLUDPSERVER]: Starting inbound packet processing for the LLUDP server in asynchronous mode with UsePools = True
+2016-09-12 20:53:56,721 INFO  - OpenSim.Region.ClientStack.LindenUDP.LLUDPServer [LLUDPSERVER]: Starting outbound packet processing for the LLUDP server
+2016-09-12 20:53:56,726 INFO  - OpenSim.Region.CoreModules.Scripting.ScriptModuleComms.ScriptModuleCommsModule [MODULE COMMANDS]: Script engine found, module active
+2016-09-12 20:53:56,728 INFO  - OpenSim.Region.CoreModules.ServiceConnectorsOut.Authorization.LocalAuthorizationServicesConnector [AUTHORIZATION CONNECTOR]: Enabled local authorization for region SoaS 1
+2016-09-12 20:53:56,794 INFO  - OpenSim.Region.Framework.Scenes.Scene [SCENE]: Loading objects from datastore
+2016-09-12 20:53:56,835 INFO  - OpenSim.Region.Framework.Scenes.Scene [SCENE]: Loaded 84 objects from the datastore
+2016-09-12 20:53:56,905 INFO  - OpenSim.Region.Framework.Scenes.Scene [SCENE]: Loading land objects from storage
+2016-09-12 20:53:58,176 INFO  - OpenSim.Region.Framework.Scenes.Scene [SCENE]: Initializing script instances in SoaS 1
+2016-09-12 20:53:58,180 INFO  - OpenSim.Region.Framework.Scenes.Scene [SCENE]: Initialized 0 script instances in SoaS 1
+2016-09-12 20:53:58,199 INFO  - OpenSim.ApplicationPlugins.RemoteController.RemoteAdminPlugin [RADMIN]: Default avatars not loaded
+2016-09-12 20:55:17,821 INFO  - OpenSim.Services.LLLoginService.LLLoginService [LLOGIN SERVICE]: Login request for Simona Stick at last using viewer 1.8.6.6289, channel OnLook Release, IP 127.0.0.1, Mac 221f53f31a18dc26255f11f57fe46e77, Id0 cd43cbf77f1f2500b7047eeb89ae102e
+2016-09-12 20:55:18,308 INFO  - OpenSim.Services.HypergridService.GatekeeperService [GATEKEEPER SERVICE]: Login request for Simona Stick @ http://127.0.0.1:9100/ (26ecc3a5-9243-470e-b8d9-4afcacdecf58) at ae823f8a-edcc-4351-b797-0e1072b312a8 using viewer OnLook Release 1.8.6.6289, channel OnLook Release, IP 127.0.0.1, Mac 221f53f31a18dc26255f11f57fe46e77, Id0 cd43cbf77f1f2500b7047eeb89ae102e, Teleport Flags: ViaLogin. From region Unknown
+2016-09-12 20:55:18,480 INFO  - OpenSim.Region.Framework.Scenes.Scene [SCENE]: Region SoaS 1 authenticated and authorized incoming root agent Simona Stick 26ecc3a5-9243-470e-b8d9-4afcacdecf58 (circuit code 1963785485)
+2016-09-12 20:55:20,516 INFO  - OpenSim.Region.Framework.Scenes.ScenePresence [SCENE PRESENCE]: Completing movement of Simona Stick into region SoaS 1 in position <136.5219, 134.8327, 23.37161>
+2016-09-12 20:57:48,457 INFO  - OpenSim.Services.GridService.HypergridLinker [HYPERGRID LINKER]: Link to hg.osgrid.org:80 , in <22103,0>
+2016-09-12 20:57:49,126 INFO  - OpenSim.Services.GridService.HypergridLinker [HYPERGRID LINKER]: Successfully linked to region http://hg.osgrid.org:80/ at <22103,0> with image 750022b6-c90e-418d-98ff-e082dfc8f456
+2016-09-12 20:57:49,152 INFO  - OpenSim.Services.GridService.HypergridLinker [HYPERGRID LINKER]: Link to hg.osgrid.org:80 , in <15036,0>
+2016-09-12 21:01:51,701 INFO  - OpenSim.Region.CoreModules.World.WorldMap.WorldMapModule [WORLD MAP]: exception on parse of RequestMapItems reply from http://hg.osgrid.org:80/MAP/MapItems/24302505508732928: Unable to cast object of type 'OpenMetaverse.StructuredData.OSD' to type 'OpenMetaverse.StructuredData.OSDMap'.
+2016-09-12 21:03:37,271 INFO  - OpenSim.Region.ClientStack.LindenUDP.LLClientView [CLIENT]: Got a logout request for Simona Stick in SoaS 1
+2016-09-12 21:03:39,337 INFO  - OpenSim.OpenSimBase [SHUTDOWN]: Closing all threads
+2016-09-12 21:03:39,337 INFO  - OpenSim.OpenSimBase [SHUTDOWN]: Killing listener thread
+2016-09-12 21:03:39,338 INFO  - OpenSim.OpenSimBase [SHUTDOWN]: Killing clients
+2016-09-12 21:03:39,338 INFO  - OpenSim.OpenSimBase [SHUTDOWN]: Closing console and terminating
+2016-09-12 21:03:39,340 INFO  - OpenSim.Region.Framework.Scenes.Scene [SCENE]: Closing down the single simulator: SoaS 1
+2016-09-12 21:03:39,909 INFO  - OpenSim.Region.DataSnapshot.DataSnapshotManager [DATASNAPSHOT]: Region SoaS 1 is being removed, removing from indexing
+2016-09-12 21:03:39,912 INFO  - OpenSim.Region.ClientStack.LindenUDP.LLUDPServer [LLUDPSERVER]: Shutting down the LLUDP server for SoaS 1
+2016-09-12 21:03:39,961 INFO  - OpenSim.Region.ScriptEngine.XEngine.XEngine [XEngine]: Shutting down 0 scripts in SoaS 1
+2016-09-12 21:03:40,067 ERROR - OpenSim.Framework.RestClient [REST CLIENT] Error fetching resource from server: http://metaverseink.com/cgi-bin/register.py?service=offline&host=127.0.0.1&port=9100&secret=f63159f4-0bdb-49ed-9556-3bf045aa6aa0 
+System.Net.WebException: The remote server returned an error: (500) Internal Server Error.
+   at System.Net.HttpWebRequest.GetResponse()
+   at OpenSim.Framework.RestClient.Request(IServiceAuth auth)
+2016-09-12 21:03:40,068 WARN  - OpenSim.Region.DataSnapshot.DataSnapshotManager [DATASNAPSHOT]: Unable to decode reply from data service. Ignoring.    at OpenSim.Region.DataSnapshot.DataSnapshotManager.NotifyDataServices(String servicesStr, String serviceName)
+2016-09-12 21:03:40,069 INFO  - OpenSim.Region.DataSnapshot.DataSnapshotManager [DATASNAPSHOT]: data service http://metaverseink.com/cgi-bin/register.py notified. Secret: f63159f4-0bdb-49ed-9556-3bf045aa6aa0
+2016-09-12 21:03:40,071 INFO  - OpenSim.Framework.Servers.BaseOpenSimServer [SHUTDOWN]: Shutdown processing on main thread complete.  Exiting...
