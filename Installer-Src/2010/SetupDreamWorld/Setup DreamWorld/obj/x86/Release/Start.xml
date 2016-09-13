@@ -47,6 +47,16 @@ Start
   Looks up a localized resource of type System.Drawing.Bitmap.
 </summary>
 </member>
+<member name="P:DreamWorld.My.Resources.Resources.disk_blue">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:DreamWorld.My.Resources.Resources.disk_blue1">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
 <member name="P:DreamWorld.My.Resources.Resources.document_connection">
 <summary>
   Looks up a localized resource of type System.Drawing.Bitmap.
@@ -72,12 +82,22 @@ Start
   Looks up a localized resource of type System.Drawing.Bitmap.
 </summary>
 </member>
+<member name="P:DreamWorld.My.Resources.Resources.users3">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
 <member name="P:DreamWorld.My.Resources.Resources.window_add">
 <summary>
   Looks up a localized resource of type System.Drawing.Bitmap.
 </summary>
 </member>
 <member name="P:DreamWorld.My.Resources.Resources.window_edit">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:DreamWorld.My.Resources.Resources.window_environment">
 <summary>
   Looks up a localized resource of type System.Drawing.Bitmap.
 </summary>

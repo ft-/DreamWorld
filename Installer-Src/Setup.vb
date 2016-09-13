@@ -254,9 +254,9 @@ Public Class Form1
         Dim DesktopFolder As String = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory)
         MyShortcut = CType(WshShell.CreateShortcut(DesktopFolder & "\Dreamworld.lnk"), IWshRuntimeLibrary.IWshShortcut)
         MyShortcut.TargetPath = sTargetPath
-        MyShortcut.IconLocation = "moricons.dll, 61"
+        MyShortcut.IconLocation = WshShell.ExpandEnvironmentStrings(CurDir & "\Start.exe, 0 ")
         MyShortcut.WorkingDirectory = CurDir
-
+        MyShortcut.Save()
 
     End Sub
 
@@ -395,7 +395,7 @@ Public Class Form1
         My.Computer.FileSystem.CopyFile(CurDir & "\Viewer\grids_sg1.xml", path + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml", True)
 
         ' allow them to launch now
-        Print("Ready to Launch. CLick 'Start' to boot Opensimulator")
+        Print("Ready to Launch. Click 'Start' to boot Opensimulator")
         Buttons(StartButton)
 
     End Sub
