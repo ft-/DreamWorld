@@ -1,10 +1,10 @@
-﻿Imports System
-Imports System.IO
-Imports System.Text
-Imports System.Threading
+﻿Imports System.IO
 Imports System.Net.Sockets
 Imports IWshRuntimeLibrary
 Imports IniParser
+
+
+
 
 ' Copyright 2014 Fred Beckhusen  
 ' Redistribution and use in binary and source form is permitted provided 
@@ -54,6 +54,12 @@ Public Class Form1
                 CleanAll()
             ElseIf arguments(1) = "debug" Then
                 CurDir = "\DreamWorld"
+                Try
+                    AllowFirewall()
+                Catch
+                    Print("Router is blocking port 9100 so hypergrid may not be available")
+                End Try
+
             End If
         End If
 
@@ -374,6 +380,13 @@ Public Class Form1
         Buttons(BusyButton)
         Print("Installing...")
 
+        Try
+            AllowFirewall()
+        Catch
+            Print("Router is blocking port 9100 so hypergrid may not be available")
+        End Try
+
+
         Print("Installing Shortcut")
         Create_ShortCut(CurDir & "\Start.exe")
         Print("Installing Onlook Viewer")
@@ -482,7 +495,7 @@ Public Class Form1
 
         Print("Your Avatar will be shown when you log in. Use the Arrow keys to move around. Use Page Up and Page Down to move the camera Up and Down.  Change will occur when the Viewer is next logged in")
         mnuYesAvatar.Checked = True
-        mnuNoAvatar.Checked = false
+        mnuNoAvatar.Checked = False
 
         My.Settings.Avatar = True
         My.Settings.Save()
@@ -708,5 +721,16 @@ Public Class Form1
         My.Settings.AutoBackup = False
         My.Settings.Save()
     End Sub
-End Class
 
+    Function AllowFirewall() As Boolean
+        Dim MyUPnPMap As New UPnP
+        If MyUPnPMap.Exists(9100, UPnP.Protocol.UDP) Then
+            Return False 'already in use
+        Else
+            MyUPnPMap.Add(UPnP.LocalIP, 9100, UPnP.Protocol.UDP, "Opensim")
+            Return True 'successfully added
+        End If
+
+    End Function
+
+End Class

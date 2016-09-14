@@ -14,3 +14,4 @@ C:\Opensim\DreamWorld\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x8
 C:\Opensim\DreamWorld\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Debug\Start.exe
 C:\Opensim\DreamWorld\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Debug\Start.xml
 C:\Opensim\DreamWorld\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Debug\Start.pdb
+C:\Opensim\DreamWorld\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Debug\Interop.NATUPNPLib.dll
