@@ -104,7 +104,7 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("Local")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("Hypergrid")>  _
         Public Property Grid() As String
             Get
                 Return CType(Me("Grid"),String)
@@ -123,6 +123,30 @@ Namespace My
             End Get
             Set
                 Me("AutoBackup") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("9100")>  _
+        Public Property PublicPort() As String
+            Get
+                Return CType(Me("PublicPort"),String)
+            End Get
+            Set
+                Me("PublicPort") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("127.0.0.1")>  _
+        Public Property PublicIP() As String
+            Get
+                Return CType(Me("PublicIP"),String)
+            End Get
+            Set
+                Me("PublicIP") = value
             End Set
         End Property
     End Class

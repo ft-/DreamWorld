@@ -15,10 +15,16 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="Grid" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Local</Value>
+      <Value Profile="(Default)">Hypergrid</Value>
     </Setting>
     <Setting Name="AutoBackup" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="PublicPort" Type="System.String" Scope="User">
+      <Value Profile="(Default)">9100</Value>
+    </Setting>
+    <Setting Name="PublicIP" Type="System.String" Scope="User">
+      <Value Profile="(Default)">127.0.0.1</Value>
     </Setting>
   </Settings>
 </SettingsFile>

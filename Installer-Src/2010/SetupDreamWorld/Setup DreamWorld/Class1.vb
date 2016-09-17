@@ -150,7 +150,9 @@ Public Class UPnP
         For Each mapping As NATUPNPLib.IStaticPortMapping In staticMapping
 
             ' Compare
-            If mapping.ExternalPort.Equals(Port) AndAlso mapping.Protocol.ToString.Equals(Prot.ToString) Then Return True
+            If mapping.ExternalPort.Equals(Port) AndAlso mapping.Protocol.ToString.Equals(Prot.ToString) Then
+                Return True
+            End If
 
         Next
 
