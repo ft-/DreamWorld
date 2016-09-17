@@ -10,23 +10,23 @@
         <key>gridname</key>
             <string>DreamWorld</string>
         <key>gridnick</key>
-            <string>Dreamworld</string>
+            <string>dreamworld</string>
         <key>helperuri</key>
-            <string>http://127.0.0.1:9100/wifi</string>
+            <string>http://</string>
         <key>inventory_links</key>
             <boolean>0</boolean>
         <key>locked</key>
             <boolean>0</boolean>
         <key>loginpage</key>
-            <string>http://127.0.0.1:9100/wifi/welcome.html</string>
+            <string>http://127.0.0.1:9000/wifi/welcome.html</string>
         <key>loginuri</key>
-            <string>http://127.0.0.1:9100/</string>
+            <string>http://127.0.0.1:9000/</string>
         <key>password</key>
-            <string>http://127.0.0.1:9100/wifi/forgotpassword</string>
+            <string>http://127.0.0.1:9000/wifi/forgotpassword</string>
         <key>platform</key>
             <string>OpenSim</string>
         <key>register</key>
-            <string>http://127.0.0.1:9100/wifi/user/account</string>
+            <string>http://127.0.0.1:9000/wifi/user/account</string>
         <key>render_compat</key>
             <boolean>1</boolean>
         <key>search</key>

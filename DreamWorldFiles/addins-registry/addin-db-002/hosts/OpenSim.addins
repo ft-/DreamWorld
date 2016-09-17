@@ -1,3 +1,3 @@
-<Addins host-reference="C:\Opensim\DreamWorld-GitHub\DreamWorldFiles\HyperGrid\bin\OpenSim.exe">
-  <Directory shared="false">C:\Opensim\DreamWorld-GitHub\DreamWorldFiles\HyperGrid\bin</Directory>
+<Addins host-reference="C:\DreamWorld\DreamWorldFiles\HyperGrid\bin\OpenSim.exe">
+  <Directory shared="false">C:\DreamWorld\DreamWorldFiles\HyperGrid\bin</Directory>
 </Addins>
