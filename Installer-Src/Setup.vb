@@ -18,6 +18,7 @@ Public Class Form1
 
     Private Declare Sub Sleep Lib "kernel32.dll" (ByVal Milliseconds As Integer)
     Dim gCurSlashDir As String '  holds the current directory info in Unix format
+    Dim LocalIp As Boolean = False  ' will be true if loopback works
 
     Private Sub Form1_Leave(sender As Object, e As System.EventArgs) Handles Me.Leave
 
@@ -51,15 +52,35 @@ Public Class Form1
         ' Set the INI files for the selected grid
         SetGridValues()
 
-        ' Find out if the viewer is installed 
-        If System.IO.File.Exists(gCurDir & "\DreamworldFiles\Init") Then
+        Dim client As New System.Net.WebClient
+
+        Try
+            My.Settings.PublicIP = client.DownloadString("https://api.ipify.org")
+        Catch ex As exception
+            MsgBox("Cannot connect to the Internet", vbAbort)
+            ZapAll()
             Buttons(StartButton)
-            TextBox1.Text = "Opensimulator Is ready to start In " & My.Settings.Grid & " Mode"
+            Return
+        End Try
+
+        ' Find out if the viewer is installed, make a file we can benchmark to
+        If System.IO.File.Exists(gCurDir & "\DreamworldFiles\Init.txt") Then
+            Buttons(StartButton)
+            TextBox1.Text = "Opensimulator Is ready to start"
         Else
-            Dim fs As FileStream = System.IO.File.Create(gCurDir & "\DreamworldFiles\Init")
+            Using outputFile As New StreamWriter(gCurDir & "\DreamworldFiles\Init.txt", True)
+                Dim counter As Integer = 100
+                While counter
+                    outputFile.WriteLine("This file lets Dreamworld know it has been installed and to benchmark network loopback")
+                    counter = counter - 1
+                End While
+            End Using
             Buttons(InstallButton)
         End If
-        Application.DoEvents()
+
+        Dim ws As WebServer = WebServer.getWebServer
+        ws.VirtualRoot = gCurDir & "\DreamWorldFiles\"
+        ws.StartWebServer()
 
     End Sub
     Private Sub StartButton_Click(sender As System.Object, e As System.EventArgs) Handles StartButton.Click
@@ -71,6 +92,8 @@ Public Class Form1
 
         Buttons(BusyButton)
         Running(True)
+
+        OpenPorts() ' Open router ports
 
 
         ' clear out the log files
@@ -127,10 +150,25 @@ Public Class Form1
         ProgressBar1.Value = 50
         Print("Database Is Up")
 
-        Dim client As New System.Net.WebClient
 
         ' Set Public Port
-        My.Settings.PublicIP = client.DownloadString("https://api.ipify.org")
+        Dim client As New System.Net.WebClient
+        Try
+            My.Settings.PublicIP = client.DownloadString("https://api.ipify.org")
+        Catch ex As Exception
+            Print("Cannot reach the Internet. Aborting")
+            ZapAll()
+            Buttons(StartButton)
+        End Try
+
+        Try
+            Dim Benchmark = client.DownloadString("http://" & My.Settings.PublicIP & ":8001/Init.txt")
+        Catch ex As exception
+            MsgBox("See Info on screen about opening up ports in your router", vbExclamation)
+            Print("Hypergrid requires that Ports 8001 and 8002 be forwarded to this PC in your router. You can do this manually, or by checking that UPnP is supported and working on your router. ")
+            My.Settings.PublicIP = "127.0.0.1" ' dang it, we cannot go to the hypergird
+        End Try
+
         ProgressBar1.Value = 53
         SetIni(gCurDir & "\DreamWorldFiles\" & My.Settings.Grid & "\bin\Opensim.ini", "Const", "BaseURL", My.Settings.PublicIP, ";")
         ProgressBar1.Value = 54
@@ -158,8 +196,9 @@ Public Class Form1
         ' Wait for Opensim to start listening via wifi
         Dim Up = ""
         Try
-            Up = client.DownloadString("http: //127.0.0.1:9000/wifi/up.html?r=" + Random())
-        Catch
+            Up = client.DownloadString("http://127.0.0.1:9000/wifi/?r=" + Random())
+        Catch ex As exception
+            Up = ""
         End Try
 
         While Up <> "Up"
@@ -183,7 +222,8 @@ Public Class Form1
 
             Try
                 Up = client.DownloadString("http://127.0.0.1:9000/wifi/up.html?r=" + Random())
-            Catch
+            Catch ex As exception
+                Up = ""
             End Try
 
         End While
@@ -205,7 +245,7 @@ Public Class Form1
         End If
 
         Buttons(StopButton)
-        Print("Login as 'Simona Stick', password is '123'.  Your simulators HyperGrid address is " + My.Settings.PublicIP + ":" + My.Settings.PublicPort)
+        Print("Login as 'Dream World', password is '123'.  Your simulators HyperGrid address is " + My.Settings.PublicIP + ":" + My.Settings.PublicPort)
         ' done with bootup
         ProgressBar1.Value = 100
 
@@ -223,7 +263,7 @@ Public Class Form1
         Catch ex As Exception
             Return False
         End Try
-        Return True
+        CheckMySQL = True
 
     End Function
 
@@ -234,12 +274,12 @@ Public Class Form1
         For Each P As Process In System.Diagnostics.Process.GetProcessesByName(process)
             Try
                 P.Kill()
-            Catch
+            Catch ex As exception
                 ' nothing
             End Try
         Next
         Print("")
-        Return True
+        zap = True
 
     End Function
 
@@ -263,7 +303,7 @@ Public Class Form1
         InstallButton.Visible = False
         button.Visible = True
         Print("")
-        Return True
+        Buttons = True
 
     End Function
 
@@ -276,7 +316,7 @@ Public Class Form1
         ProgressBar1.Value = 0
         Application.DoEvents()
         Running(False)
-        Return True
+        ZapAll = True
     End Function
 
     Private Sub Create_ShortCut(ByVal sTargetPath As String)
@@ -348,13 +388,11 @@ Public Class Form1
         Buttons(BusyButton)
         Print("Installing...")
 
-        OpenPorts() ' Open router ports
         ProgressBar1.Value = 10
 
         Print("Installing Shortcut")
         Create_ShortCut(gCurDir & "\Start.exe")
         ProgressBar1.Value = 20
-
 
         Print("Installing Onlook Viewer")
         ProgressBar1.Value = 90
@@ -494,10 +532,9 @@ Public Class Form1
     Private Function Random() As String
 
         Dim value As Integer = CInt(Int((6000 * Rnd()) + 1))
-        Return Str(value)
+        Random = Str(value)
 
     End Function
-
 
     Private Sub WebUIToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles WebUi.Click
 
@@ -527,11 +564,11 @@ Public Class Form1
 
         Dim Data = parser.ReadFile(filepath)
         Dim value = Data(section)(key)
-        Return value
+        GetIni = value
 
     End Function
 
-    Private Function SetIni(filepath As String, section As String, key As String, value As String, delim As String) As Boolean
+    Private Sub SetIni(filepath As String, section As String, key As String, value As String, delim As String)
 
         ' sets values into any INI file
         Dim parser = New FileIniDataParser()
@@ -544,40 +581,37 @@ Public Class Form1
             Dim oldvalue = Data(section)(key)
             Data(section)(key) = value ' replace it and save it
             parser.WriteFile(filepath, Data)
-        Catch
+        Catch ex As Exception
             MsgBox("Cannot locate '" + key + "' in section '" + section + "' in file " + filepath, vbOK)
         End Try
-
-        Return True
-
-    End Function
-    Private Function CleanAll()
+    End Sub
+    Private Function CleanAll() As Boolean
         Clean("HyperGrid")
         Clean("OsGrid")
 
-        Return True
+        CleanAll = True
     End Function
-    Private Function Clean(AGrid As String)
+    Private Sub Clean(AGrid As String)
 
         Try
             System.IO.Directory.Delete(gCurDir & "\DreamWorldFiles\" & AGrid & "\bin\addin-db-002", True)
-        Catch
+        Catch ex As Exception
         End Try
         Try
             System.IO.Directory.Delete(gCurDir & "\DreamWorldFiles\" & AGrid & "\bin\assetcache", True)
-        Catch
+        Catch ex As Exception
         End Try
         Try
             System.IO.Directory.Delete(gCurDir & "\DreamWorldFiles\" & AGrid & "\bin\DataSnapshot", True)
-        Catch
+        Catch ex As Exception
         End Try
         Try
             System.IO.Directory.Delete(gCurDir & "\DreamWorldFiles\" & AGrid & "\bin\ScriptEngines", True)
-        Catch
+        Catch ex As Exception
         End Try
         Try
             System.IO.Directory.Delete(gCurDir & "\DreamWorldFiles\" & AGrid & "\bin\MapTiles", True)
-        Catch
+        Catch ex As Exception
         End Try
 
         Try
@@ -590,15 +624,13 @@ Public Class Form1
         Catch ex As Exception
         End Try
         Try
-            My.Computer.FileSystem.DeleteFile(gCurDir + "\DreamWorldFiles\Init")
+            My.Computer.FileSystem.DeleteFile(gCurDir + "\DreamWorldFiles\Init.txt")
         Catch ex As Exception
         End Try
 
-
-
         MsgBox("System Is Clean")
         End
-    End Function
+    End Sub
 
     Private Sub mnuOsGrid_Click(sender As Object, e As EventArgs) Handles mnuOsGrid.Click
         My.Settings.Grid = "OsGrid"
@@ -624,7 +656,7 @@ Public Class Form1
 
     End Sub
 
-    Private Function SetGridValues()
+    Private Sub SetGridValues()
 
         'mnuShow shows the DOS box for Opensimulator
         mnuShow.Checked = My.Settings.Console
@@ -676,9 +708,7 @@ Public Class Form1
             My.Settings.AutoBackup = False
         End If
 
-       
-        Return True
-    End Function
+    End Sub
 
     Private Sub YesToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AutoYes.Click
         Print("DreamWorlds is set Autoback the sim into an OAR every 24 hours. Oars are saved in the AutoBackup folder")
@@ -704,18 +734,26 @@ Public Class Form1
         If MyUPnPMap.Exists(My.Settings.PublicPort, UPnP.Protocol.UDP) Then
             portcount = portcount + 1
         Else
-            MyUPnPMap.Add(UPnP.LocalIP, My.Settings.PublicPort, UPnP.Protocol.UDP, "Opensim")
+            MyUPnPMap.Add(UPnP.LocalIP, My.Settings.PublicPort, UPnP.Protocol.UDP, "Opensim UDP")
             portcount = portcount + 1
         End If
 
         If MyUPnPMap.Exists(My.Settings.PublicPort, UPnP.Protocol.TCP) Then
             portcount = portcount + 1
         Else
-            MyUPnPMap.Add(UPnP.LocalIP, My.Settings.PublicPort, UPnP.Protocol.TCP, "Opensim")
+            MyUPnPMap.Add(UPnP.LocalIP, My.Settings.PublicPort, UPnP.Protocol.TCP, "Opensim TCP")
             portcount = portcount + 1
         End If
 
-        If (portcount = 2) Then
+        If MyUPnPMap.Exists(8001, UPnP.Protocol.TCP) Then
+            portcount = portcount + 1
+        Else
+            MyUPnPMap.Add(UPnP.LocalIP, 8001, UPnP.Protocol.TCP, "Opensim Probe")
+            portcount = portcount + 1
+        End If
+
+
+        If (portcount = 3) Then
             Return True 'successfully added
         End If
 
@@ -733,8 +771,8 @@ Public Class Form1
                 Print("Firewall Closed")
                 Return False
             End If
-        Catch
-            Print("Router is blocking port " + My.Settings.PublicPort + " so hypergrid may not be available")
+        Catch e As Exception
+            Print("Router is blocking a port so hypergrid may not be available")
             Return False
         End Try
     End Function
