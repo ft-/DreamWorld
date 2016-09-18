@@ -220,6 +220,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="cubes.ico" />
+    <None Include="Resources\user2.png" />
+    <None Include="Resources\user3.png" />
+    <None Include="Resources\users2.png" />
+    <None Include="Resources\user1_into.png" />
+    <None Include="Resources\box_new.png" />
+    <None Include="Resources\box_tall.png" />
     <None Include="Resources\disk_blue.png" />
     <None Include="Resources\window_environment.png" />
     <None Include="Resources\users3.png" />

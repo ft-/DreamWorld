@@ -149,6 +149,30 @@ Namespace My
                 Me("PublicIP") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public Property Startup() As Boolean
+            Get
+                Return CType(Me("Startup"),Boolean)
+            End Get
+            Set
+                Me("Startup") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("True")>  _
+        Public Property Onlook() As Boolean
+            Get
+                Return CType(Me("Onlook"),Boolean)
+            End Get
+            Set
+                Me("Onlook") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

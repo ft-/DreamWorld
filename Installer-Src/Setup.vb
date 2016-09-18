@@ -30,7 +30,9 @@ Public Class Form1
     End Sub
 
     Private Sub Form1_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        ZapAll()
+        Me.AllowDrop = True
+        TextBox1.AllowDrop = True
+
         Running = False ' true when opensim is running
         gCurDir = My.Application.Info.DirectoryPath
         gCurSlashDir = gCurDir.Replace("\", "/")    ' becuase Mysql uses unix like slashes, that's why
@@ -50,6 +52,8 @@ Public Class Form1
             End If
         End If
 
+        ZapAll()
+
         ' Set the INI files for the selected grid
         SetGridValues()
 
@@ -67,7 +71,7 @@ Public Class Form1
         ' Find out if the viewer is installed, make a file we can benchmark to
         If System.IO.File.Exists(gCurDir & "\DreamworldFiles\Init.txt") Then
             Buttons(StartButton)
-            TextBox1.Text = "Opensimulator Is ready to start"
+            TextBox1.Text = "Opensimulator Is ready to start. You can drag and drop new IAR and OAR content on this screen and it will be loaded when the simulation starts"
         Else
             Using outputFile As New StreamWriter(gCurDir & "\DreamworldFiles\Init.txt", True)
                 Dim counter As Integer = 100
@@ -231,14 +235,16 @@ Public Class Form1
 
         ProgressBar1.Value = 90
 
-        Print("Starting Onlook viewer")
+        If My.Settings.Onlook Then
+            Print("Starting Onlook viewer")
+            pi.Arguments = ""
+            pi.FileName = "C:\Program Files (x86)\Onlook\OnLookViewer.exe"
+            pi.WindowStyle = ProcessWindowStyle.Normal
+            p.StartInfo = pi
+            p.Start()
+        End If
 
-        pi.Arguments = ""
-        pi.FileName = "C:\Program Files (x86)\Onlook\OnLookViewer.exe"
-        pi.WindowStyle = ProcessWindowStyle.Normal
-        p.StartInfo = pi
-        p.Start()
-
+        ProgressBar1.Value = 95
         ' Show the web console
         If mnuAdminShow.Checked Then
             Dim webAddress As String = "http://127.0.0.1:8002/?r=" + Random()
@@ -308,17 +314,7 @@ Public Class Form1
 
     End Function
 
-    Private Function ZapAll()
 
-        ProgressBar1.Value = 100
-        zap("OpenSim")
-        ProgressBar1.Value = 66
-        zap("mysqld-nt")
-        ProgressBar1.Value = 0
-        Application.DoEvents()
-        Running = False
-        ZapAll = True
-    End Function
 
     Private Sub Create_ShortCut(ByVal sTargetPath As String)
 
@@ -517,7 +513,7 @@ Public Class Form1
 
     End Function
 
-    Private Sub WebUIToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) 
+    Private Sub WebUIToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs)
 
         Print("The Web UI lets you add or view settings for the default avatar. ")
         If Running Then
@@ -527,7 +523,7 @@ Public Class Form1
 
     End Sub
 
-    Private Sub ShutdownNowToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) 
+    Private Sub ShutdownNowToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs)
 
         Print("Stopping")
         Application.DoEvents()
@@ -683,6 +679,16 @@ Public Class Form1
             My.Settings.AutoBackup = False
         End If
 
+        'Onlook viewer
+        If My.Settings.Onlook = True Then
+            mnuOther.Checked = False
+            mnuOnlook.Checked = True
+        Else
+            mnuOther.Checked = True
+            mnuOnlook.Checked = False
+        End If
+
+
     End Sub
 
     Private Sub YesToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AutoYes.Click
@@ -785,5 +791,170 @@ Public Class Form1
             Print("Opensim is not running")
         End If
 
+    End Sub
+    Private Sub SimContent(oar As String, type As String)
+
+        ' remove the console starup file
+        Try
+            My.Computer.FileSystem.DeleteFile(gCurDir & "\DreamworldFiles\" + My.Settings.Grid & "\bin\startup_commands.txt")
+        Catch ex As Exception
+            ' do nothing
+        End Try
+
+
+        Using outputFile As New StreamWriter(gCurDir & "\DreamworldFiles\" + My.Settings.Grid & "\bin\startup_commands.txt", True)
+            outputFile.WriteLine("load " + type + "  " + Chr(34) + oar + Chr(34))
+            outputFile.WriteLine("show stats")
+        End Using
+
+    End Sub
+
+    Private Function ZapAll()
+
+        ' remove the console starup file
+        Try
+            My.Computer.FileSystem.DeleteFile(gCurDir & "\DreamworldFiles\" + My.Settings.Grid & "\bin\startup_commands.txt")
+        Catch ex As Exception
+            ' do nothing
+        End Try
+
+        Using outputFile As New StreamWriter(gCurDir & "\DreamworldFiles\" + My.Settings.Grid & "\bin\startup_commands.txt", True)
+            outputFile.WriteLine("save oar " + gCurDir & "\DreamworldFiles\Autobackup\DreamWorldBackup.oar")
+            outputFile.WriteLine("show stats")
+        End Using
+
+        ProgressBar1.Value = 100
+        zap("OpenSim")
+        ProgressBar1.Value = 66
+        zap("mysqld-nt")
+        ProgressBar1.Value = 0
+        Application.DoEvents()
+        Running = False
+        ZapAll = True
+    End Function
+
+
+    Private Sub TextBox1_DragDrop(sender As System.Object, e As System.Windows.Forms.DragEventArgs) Handles TextBox1.DragDrop
+        Dim files() As String = e.Data.GetData(DataFormats.FileDrop)
+        For Each pathname In files
+            pathname.Replace("\", "/")
+            Dim extension = Path.GetExtension(pathname)
+            extension.Replace(".", "")
+            If extension.ToLower = ".iar" Then
+                SimContent(pathname, extension)
+                Print("Opensim will load your file when it is restarted. This may take time to load. You will find it in your inventory.")
+            ElseIf extension.ToLower = ".oar" Then
+                SimContent(pathname, extension)
+                Print("Opensim will load your file when it is restarted. This may take time to load.")
+            Else
+                Print("Unrecognized file type: " + extension + ".  Drag and drop any OAR or IAR files to load them when the sim starts")
+            End If
+        Next
+    End Sub
+
+    Private Sub TextBox1_DragEnter(sender As System.Object, e As System.Windows.Forms.DragEventArgs) Handles Me.DragEnter
+        If e.Data.GetDataPresent(DataFormats.FileDrop) Then
+            e.Effect = DragDropEffects.Copy
+        End If
+    End Sub
+
+    Private Sub Form1_DragDrop(sender As System.Object, e As System.Windows.Forms.DragEventArgs) Handles Me.DragDrop
+        Dim files() As String = e.Data.GetData(DataFormats.FileDrop)
+        For Each pathname In files
+
+            pathname.Replace("\", "/")
+            Dim extension = Path.GetExtension(pathname)
+            extension = Mid(extension, 2, 5)
+            If extension.ToLower = "iar" Then
+                SimContent(pathname, extension)
+                Print("Opensim will load your file when it is restarted. This may take time to load. You will find it in your inventory.")
+            ElseIf extension.ToLower = "oar" Then
+                SimContent(pathname, extension)
+                Print("Opensim will load your file when it is restarted. This may take time to load.")
+            Else
+                Print("Unrecognized file type: " + extension + ".  Drag and drop any OAR or IAR files to load them when the sim starts")
+            End If
+        Next
+    End Sub
+
+    Private Sub Form1_DragEnter(sender As System.Object, e As System.Windows.Forms.DragEventArgs) Handles Me.DragEnter
+        If e.Data.GetDataPresent(DataFormats.FileDrop) Then
+            e.Effect = DragDropEffects.Copy
+        End If
+    End Sub
+
+    Private Sub OnlookToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles mnuOnlook.Click
+        Print("Onlook Viewer will be launched on Startup")
+        mnuOther.Checked = False
+        mnuOnlook.Checked = True
+        My.Settings.Onlook = True
+        My.Settings.Save()
+    End Sub
+
+    Private Sub OtherToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles mnuOther.Click
+        Print("Onlook VIewer will not be launched on Startup.")
+        mnuOther.Checked = True
+        mnuOnlook.Checked = False
+        My.Settings.Onlook = False
+        My.Settings.Save()
+    End Sub
+
+    Private Sub AdminUIToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AdminUIToolStripMenuItem.Click
+
+    End Sub
+
+    Private Sub LoadPirateIslandToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles LoadPirateIslandToolStripMenuItem.Click
+        SimContent("http://www.outworldz.com/DreamWorld/OAR/LonelyIsland.oar", "oar")
+        Print("Opensim will load LonelyIsland.oar when it is restarted. This may take time to load.")
+    End Sub
+
+    Private Sub LoadStorrmhavenToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles LoadStormhavenToolStripMenuItem.Click
+        SimContent("http://www.outworldz.com/DreamWorld/OAR/Stormhaven Port Aurora.oar", "oar")
+        Print("Opensim will load Stormhaven Port Aurora by Arcadia Asylum when restarted. This may take time to load.")
+    End Sub
+
+    Private Sub LoadFreebieMallToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles LoadFreebieMallToolStripMenuItem.Click
+        SimContent("http://www.outworldz.com/DreamWorld/OAR/FreebieMall OAR.tgz", "oar")
+        Print("Opensim will load Freebie Mall by Linda Kellie when restarted. This may take time to load.")
+    End Sub
+
+    Private Sub FantasyIslandToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles FantasyIslandToolStripMenuItem.Click
+        SimContent("http://www.outworldz.com/DreamWorld/OAR/Fantasy OAR.gz", "oar")
+        Print("Opensim will load Fantasy Island by Linda Kellie when restarted. This may take time to load.")
+    End Sub
+
+    Private Sub EducationSimToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles mnuDoomedCity.Click
+        SimContent("http://www.outworldz.com/DreamWorld/OAR/Doomed_City.oar", "oar")
+        Print("Opensim will load Doomed City by J.P. van de Giessen  when restarted. This may take time to load.")
+    End Sub
+
+    Private Sub SteamIslandToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles SteamIslandToolStripMenuItem.Click
+        SimContent("http://www.outworldz.com/DreamWorld/OAR/OAR-Steam Factory.oar", "oar")
+        Print("Opensim will load Steam Factory when restarted. This may take time to load.")
+    End Sub
+
+    Private Sub MayaToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles MayaToolStripMenuItem.Click
+        SimContent("http://www.outworldz.com/DreamWorld/OAR/Maya OAR.oar", "oar")
+        Print("Opensim will load Maya by Dave Pentecost when restarted. Includes large houses with courtyards, small thatched palapas, and a model of the Temple of the Inscriptions Maya pyramid from Palenque, Mexico.  This may take time to load.")
+    End Sub
+
+    Private Sub BlankSimToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles BackupToolStripMenuItem.Click
+        SimContent(gCurDir & "\DreamworldFiles\Autobackup\DreamWorldBackup.oar", "oar")
+        Print("Opensim will load \Autobackup\DreamWorldBackup.oar when it is restarted. This may take time to load.")
+    End Sub
+
+    Private Sub MensClothingToolStripMenuItem_Click(sender As Object, e As EventArgs)
+        SimContent("http://www.outworldz.com/DreamWorld/OAR/LK-MENS-CLOTHING.iar", "iar")
+        Print("Opensim will load LK-MENS-CLOTHING.iar by Linda Kellie when it is restarted. This may take time to load. You will find it in your inventory.")
+    End Sub
+
+    Private Sub FullAvatarsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles FullAvatarsToolStripMenuItem.Click
+        SimContent("http://www.outworldz.com/DreamWorld/OAR/FULLAVATARS.iar", "iar")
+        Print("Opensim will load FULLAVATARS.iar by Linda Kellie when it is restarted. This may take time to load. You will find it in your inventory.")
+    End Sub
+
+    Private Sub FemaleClothingToolStripMenuItem1_Click(sender As Object, e As EventArgs) Handles FemaleClothingToolStripMenuItem1.Click
+        SimContent("http://www.outworldz.com/DreamWorld/OAR/LK-WOMENS-CLOTHING.iar", "iar")
+        Print("Opensim will load LK-WOMENS-CLOTHING.iar by Linda Kellie when it is restarted. This may take time to load. You will find it in your inventory.")
     End Sub
 End Class
