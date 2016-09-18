@@ -62,19 +62,19 @@ Partial Class Form1
         Me.ContentToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.BackupToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.PirateIslandToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ConferenceCenterToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.LoadPirateIslandToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.LoadStormhavenToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.LoadFreebieMallToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.FantasyIslandToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuDoomedCity = New System.Windows.Forms.ToolStripMenuItem()
+        Me.MayaToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.SteamIslandToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuUndersea = New System.Windows.Forms.ToolStripMenuItem()
+        Me.LoadStormhavenToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ClothingInventoryToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.FullAvatarsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.FemaleClothingToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
         Me.MaleClothingToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.WebBrowser3 = New System.Windows.Forms.WebBrowser()
         Me.ProgressBar1 = New System.Windows.Forms.ProgressBar()
-        Me.SteamIslandToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.MayaToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -373,46 +373,60 @@ Partial Class Form1
         '
         'PirateIslandToolStripMenuItem
         '
-        Me.PirateIslandToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.LoadPirateIslandToolStripMenuItem, Me.LoadStormhavenToolStripMenuItem, Me.LoadFreebieMallToolStripMenuItem, Me.FantasyIslandToolStripMenuItem, Me.mnuDoomedCity, Me.SteamIslandToolStripMenuItem, Me.MayaToolStripMenuItem})
+        Me.PirateIslandToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ConferenceCenterToolStripMenuItem, Me.LoadPirateIslandToolStripMenuItem, Me.FantasyIslandToolStripMenuItem, Me.MayaToolStripMenuItem, Me.SteamIslandToolStripMenuItem, Me.mnuUndersea, Me.LoadStormhavenToolStripMenuItem})
         Me.PirateIslandToolStripMenuItem.Image = Global.DreamWorld.My.Resources.Resources.box_tall
         Me.PirateIslandToolStripMenuItem.Name = "PirateIslandToolStripMenuItem"
         Me.PirateIslandToolStripMenuItem.Size = New System.Drawing.Size(208, 22)
         Me.PirateIslandToolStripMenuItem.Text = "Load New Island"
         '
+        'ConferenceCenterToolStripMenuItem
+        '
+        Me.ConferenceCenterToolStripMenuItem.Image = Global.DreamWorld.My.Resources.Resources.box_tall
+        Me.ConferenceCenterToolStripMenuItem.Name = "ConferenceCenterToolStripMenuItem"
+        Me.ConferenceCenterToolStripMenuItem.Size = New System.Drawing.Size(238, 22)
+        Me.ConferenceCenterToolStripMenuItem.Text = "Conference Center (small)"
+        '
         'LoadPirateIslandToolStripMenuItem
         '
         Me.LoadPirateIslandToolStripMenuItem.Image = Global.DreamWorld.My.Resources.Resources.box_tall
         Me.LoadPirateIslandToolStripMenuItem.Name = "LoadPirateIslandToolStripMenuItem"
-        Me.LoadPirateIslandToolStripMenuItem.Size = New System.Drawing.Size(206, 22)
-        Me.LoadPirateIslandToolStripMenuItem.Text = "Pirate Island"
-        '
-        'LoadStormhavenToolStripMenuItem
-        '
-        Me.LoadStormhavenToolStripMenuItem.Image = Global.DreamWorld.My.Resources.Resources.box_tall
-        Me.LoadStormhavenToolStripMenuItem.Name = "LoadStormhavenToolStripMenuItem"
-        Me.LoadStormhavenToolStripMenuItem.Size = New System.Drawing.Size(206, 22)
-        Me.LoadStormhavenToolStripMenuItem.Text = "Storrmhaven Port Aurora"
-        '
-        'LoadFreebieMallToolStripMenuItem
-        '
-        Me.LoadFreebieMallToolStripMenuItem.Image = Global.DreamWorld.My.Resources.Resources.box_tall
-        Me.LoadFreebieMallToolStripMenuItem.Name = "LoadFreebieMallToolStripMenuItem"
-        Me.LoadFreebieMallToolStripMenuItem.Size = New System.Drawing.Size(206, 22)
-        Me.LoadFreebieMallToolStripMenuItem.Text = "Freebie mall"
+        Me.LoadPirateIslandToolStripMenuItem.Size = New System.Drawing.Size(238, 22)
+        Me.LoadPirateIslandToolStripMenuItem.Text = "Desert Island (small)"
         '
         'FantasyIslandToolStripMenuItem
         '
         Me.FantasyIslandToolStripMenuItem.Image = Global.DreamWorld.My.Resources.Resources.box_tall
         Me.FantasyIslandToolStripMenuItem.Name = "FantasyIslandToolStripMenuItem"
-        Me.FantasyIslandToolStripMenuItem.Size = New System.Drawing.Size(206, 22)
-        Me.FantasyIslandToolStripMenuItem.Text = "Fantasy Island"
+        Me.FantasyIslandToolStripMenuItem.Size = New System.Drawing.Size(238, 22)
+        Me.FantasyIslandToolStripMenuItem.Text = "Fantasy Island (small)"
         '
-        'mnuDoomedCity
+        'MayaToolStripMenuItem
         '
-        Me.mnuDoomedCity.Image = Global.DreamWorld.My.Resources.Resources.box_tall
-        Me.mnuDoomedCity.Name = "mnuDoomedCity"
-        Me.mnuDoomedCity.Size = New System.Drawing.Size(206, 22)
-        Me.mnuDoomedCity.Text = "Doomed City"
+        Me.MayaToolStripMenuItem.Image = Global.DreamWorld.My.Resources.Resources.box_tall
+        Me.MayaToolStripMenuItem.Name = "MayaToolStripMenuItem"
+        Me.MayaToolStripMenuItem.Size = New System.Drawing.Size(238, 22)
+        Me.MayaToolStripMenuItem.Text = "Maya (small)"
+        '
+        'SteamIslandToolStripMenuItem
+        '
+        Me.SteamIslandToolStripMenuItem.Image = Global.DreamWorld.My.Resources.Resources.box_tall
+        Me.SteamIslandToolStripMenuItem.Name = "SteamIslandToolStripMenuItem"
+        Me.SteamIslandToolStripMenuItem.Size = New System.Drawing.Size(238, 22)
+        Me.SteamIslandToolStripMenuItem.Text = "Steam Factory (small)"
+        '
+        'mnuUndersea
+        '
+        Me.mnuUndersea.Image = Global.DreamWorld.My.Resources.Resources.box_tall
+        Me.mnuUndersea.Name = "mnuUndersea"
+        Me.mnuUndersea.Size = New System.Drawing.Size(238, 22)
+        Me.mnuUndersea.Text = "Undersea Observatory (small)"
+        '
+        'LoadStormhavenToolStripMenuItem
+        '
+        Me.LoadStormhavenToolStripMenuItem.Image = Global.DreamWorld.My.Resources.Resources.box_tall
+        Me.LoadStormhavenToolStripMenuItem.Name = "LoadStormhavenToolStripMenuItem"
+        Me.LoadStormhavenToolStripMenuItem.Size = New System.Drawing.Size(238, 22)
+        Me.LoadStormhavenToolStripMenuItem.Text = "Storrmhaven Pirate Port (huge)"
         '
         'ClothingInventoryToolStripMenuItem
         '
@@ -457,20 +471,6 @@ Partial Class Form1
         Me.ProgressBar1.Name = "ProgressBar1"
         Me.ProgressBar1.Size = New System.Drawing.Size(78, 11)
         Me.ProgressBar1.TabIndex = 24
-        '
-        'SteamIslandToolStripMenuItem
-        '
-        Me.SteamIslandToolStripMenuItem.Image = Global.DreamWorld.My.Resources.Resources.box_tall
-        Me.SteamIslandToolStripMenuItem.Name = "SteamIslandToolStripMenuItem"
-        Me.SteamIslandToolStripMenuItem.Size = New System.Drawing.Size(206, 22)
-        Me.SteamIslandToolStripMenuItem.Text = "Steam Factory"
-        '
-        'MayaToolStripMenuItem
-        '
-        Me.MayaToolStripMenuItem.Image = Global.DreamWorld.My.Resources.Resources.box_tall
-        Me.MayaToolStripMenuItem.Name = "MayaToolStripMenuItem"
-        Me.MayaToolStripMenuItem.Size = New System.Drawing.Size(206, 22)
-        Me.MayaToolStripMenuItem.Text = "Maya"
         '
         'Form1
         '
@@ -559,9 +559,9 @@ Partial Class Form1
     Friend WithEvents mnuOther As ToolStripMenuItem
     Friend WithEvents LoadPirateIslandToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents LoadStormhavenToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents LoadFreebieMallToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents FantasyIslandToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents mnuDoomedCity As ToolStripMenuItem
+    Friend WithEvents mnuUndersea As ToolStripMenuItem
     Friend WithEvents SteamIslandToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents MayaToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents ConferenceCenterToolStripMenuItem As ToolStripMenuItem
 End Class

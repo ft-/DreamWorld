@@ -18,15 +18,15 @@
         <key>locked</key>
             <boolean>0</boolean>
         <key>loginpage</key>
-            <string>http://127.0.0.1:9000/wifi/welcome.html</string>
+            <string>http://127.0.0.1:8002/wifi/welcome.html</string>
         <key>loginuri</key>
-            <string>http://127.0.0.1:9000/</string>
+            <string>http://127.0.0.1:8002/</string>
         <key>password</key>
-            <string>http://127.0.0.1:9000/wifi/forgotpassword</string>
+            <string>http://127.0.0.1:8002/wifi/forgotpassword</string>
         <key>platform</key>
             <string>OpenSim</string>
         <key>register</key>
-            <string>http://127.0.0.1:9000/wifi/user/account</string>
+            <string>http://127.0.0.1:8002/wifi/user/account</string>
         <key>render_compat</key>
             <boolean>1</boolean>
         <key>search</key>

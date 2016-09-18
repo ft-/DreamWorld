@@ -19,6 +19,7 @@ Public Class Form1
     Dim isRunning As Boolean
     Private Declare Sub Sleep Lib "kernel32.dll" (ByVal Milliseconds As Integer)
     Dim ws As WebServer
+    Dim ContentLoading As Boolean
 
     Private Sub Form1_Leave(sender As Object, e As System.EventArgs) Handles Me.Leave
 
@@ -100,6 +101,7 @@ Public Class Form1
 
         OpenPorts() ' Open router ports
 
+        ContentLoading = True
 
         ' clear out the log files
         Try
@@ -233,6 +235,8 @@ Public Class Form1
 
         End While
 
+        ContentLoading = False
+
         ProgressBar1.Value = 90
 
         If My.Settings.Onlook Then
@@ -252,7 +256,7 @@ Public Class Form1
         End If
 
         Buttons(StopButton)
-        Print("Login as 'Dream World', password is '123'.  Your simulators HyperGrid address is " + My.Settings.PublicIP + ":" + My.Settings.PublicPort)
+        Print("Login as 'Dream World', password is '123'.  Hypergrid address is " + My.Settings.PublicIP + ":" + My.Settings.PublicPort)
         ' done with bootup
         ProgressBar1.Value = 100
 
@@ -278,11 +282,12 @@ Public Class Form1
 
         Print("Stopping " + process)
         ' Kill process by name
+
         For Each P As Process In System.Diagnostics.Process.GetProcessesByName(process)
             Try
                 P.Kill()
-            Catch ex As exception
-                ' nothing
+            Catch ex As Exception
+                Debug.Print("Cannot locate " + process)
             End Try
         Next
         Print("")
@@ -313,8 +318,6 @@ Public Class Form1
         Buttons = True
 
     End Function
-
-
 
     Private Sub Create_ShortCut(ByVal sTargetPath As String)
 
@@ -792,7 +795,7 @@ Public Class Form1
         End If
 
     End Sub
-    Private Sub SimContent(oar As String, type As String)
+    Private Sub SimContent(thing As String, type As String)
 
         ' remove the console starup file
         Try
@@ -800,12 +803,20 @@ Public Class Form1
         Catch ex As Exception
             ' do nothing
         End Try
-
-
-        Using outputFile As New StreamWriter(gCurDir & "\DreamworldFiles\" + My.Settings.Grid & "\bin\startup_commands.txt", True)
-            outputFile.WriteLine("load " + type + "  " + Chr(34) + oar + Chr(34))
-            outputFile.WriteLine("show stats")
-        End Using
+        Try
+            If type = "iar" Then
+                Using outputFile As New StreamWriter(gCurDir & "\DreamworldFiles\" + My.Settings.Grid & "\bin\startup_commands.txt", True)
+                    outputFile.WriteLine("load iar --merge Dream World / 123 " + Chr(34) + thing + Chr(34))
+                    outputFile.WriteLine("show stats")
+                End Using
+            ElseIf type = "oar" Then
+                Using outputFile As New StreamWriter(gCurDir & "\DreamworldFiles\" + My.Settings.Grid & "\bin\startup_commands.txt", True)
+                    outputFile.WriteLine("load " + type + "  " + Chr(34) + thing + Chr(34))
+                    outputFile.WriteLine("show stats")
+                End Using
+            End If
+        Catch
+        End Try
 
     End Sub
 
@@ -814,19 +825,25 @@ Public Class Form1
         ' remove the console starup file
         Try
             My.Computer.FileSystem.DeleteFile(gCurDir & "\DreamworldFiles\" + My.Settings.Grid & "\bin\startup_commands.txt")
+
+
+            If ContentLoading = False Then
+                Using outputFile As New StreamWriter(gCurDir & "\DreamworldFiles\" + My.Settings.Grid & "\bin\startup_commands.txt", True)
+                    outputFile.WriteLine("save oar " + gCurDir & "\DreamworldFiles\Autobackup\DreamWorldBackup.oar")
+                    outputFile.WriteLine("show stats")
+                    ContentLoading = False
+                End Using
+            End If
+
         Catch ex As Exception
             ' do nothing
         End Try
 
-        Using outputFile As New StreamWriter(gCurDir & "\DreamworldFiles\" + My.Settings.Grid & "\bin\startup_commands.txt", True)
-            outputFile.WriteLine("save oar " + gCurDir & "\DreamworldFiles\Autobackup\DreamWorldBackup.oar")
-            outputFile.WriteLine("show stats")
-        End Using
-
         ProgressBar1.Value = 100
         zap("OpenSim")
-        ProgressBar1.Value = 66
+        ProgressBar1.Value = 50
         zap("mysqld-nt")
+
         ProgressBar1.Value = 0
         Application.DoEvents()
         Running = False
@@ -836,32 +853,9 @@ Public Class Form1
 
     Private Sub TextBox1_DragDrop(sender As System.Object, e As System.Windows.Forms.DragEventArgs) Handles TextBox1.DragDrop
         Dim files() As String = e.Data.GetData(DataFormats.FileDrop)
+        ContentLoading = True
+
         For Each pathname In files
-            pathname.Replace("\", "/")
-            Dim extension = Path.GetExtension(pathname)
-            extension.Replace(".", "")
-            If extension.ToLower = ".iar" Then
-                SimContent(pathname, extension)
-                Print("Opensim will load your file when it is restarted. This may take time to load. You will find it in your inventory.")
-            ElseIf extension.ToLower = ".oar" Then
-                SimContent(pathname, extension)
-                Print("Opensim will load your file when it is restarted. This may take time to load.")
-            Else
-                Print("Unrecognized file type: " + extension + ".  Drag and drop any OAR or IAR files to load them when the sim starts")
-            End If
-        Next
-    End Sub
-
-    Private Sub TextBox1_DragEnter(sender As System.Object, e As System.Windows.Forms.DragEventArgs) Handles Me.DragEnter
-        If e.Data.GetDataPresent(DataFormats.FileDrop) Then
-            e.Effect = DragDropEffects.Copy
-        End If
-    End Sub
-
-    Private Sub Form1_DragDrop(sender As System.Object, e As System.Windows.Forms.DragEventArgs) Handles Me.DragDrop
-        Dim files() As String = e.Data.GetData(DataFormats.FileDrop)
-        For Each pathname In files
-
             pathname.Replace("\", "/")
             Dim extension = Path.GetExtension(pathname)
             extension = Mid(extension, 2, 5)
@@ -871,8 +865,42 @@ Public Class Form1
             ElseIf extension.ToLower = "oar" Then
                 SimContent(pathname, extension)
                 Print("Opensim will load your file when it is restarted. This may take time to load.")
+            ElseIf extension.ToLower = ".gz" Then
+                SimContent(pathname, extension)
+                Print("Opensim will load your file when it is restarted. This may take time to load.")
             Else
                 Print("Unrecognized file type: " + extension + ".  Drag and drop any OAR or IAR files to load them when the sim starts")
+                ContentLoading = False
+            End If
+        Next
+    End Sub
+
+    Private Sub TextBox1_DragEnter(sender As System.Object, e As System.Windows.Forms.DragEventArgs) Handles TextBox1.DragEnter
+        If e.Data.GetDataPresent(DataFormats.FileDrop) Then
+            e.Effect = DragDropEffects.Copy
+        End If
+    End Sub
+
+    Private Sub Form1_DragDrop(sender As System.Object, e As System.Windows.Forms.DragEventArgs) Handles Me.DragDrop
+        Dim files() As String = e.Data.GetData(DataFormats.FileDrop)
+        ContentLoading = True
+
+        For Each pathname In files
+            pathname.Replace("\", "/")
+            Dim extension = Path.GetExtension(pathname)
+            extension = Mid(extension, 2, 5)
+            If extension.ToLower = "iar" Then
+                SimContent(pathname, extension)
+                Print("Opensim will load your file when it is restarted. This may take time to load. You will find it in your inventory.")
+            ElseIf extension.ToLower = "oar" Then
+                SimContent(pathname, extension)
+                Print("Opensim will load your file when it is restarted. This may take time to load.")
+            ElseIf extension.ToLower = ".gz" Then
+                SimContent(pathname, extension)
+                Print("Opensim will load your file when it is restarted. This may take time to load.")
+            Else
+                Print("Unrecognized file type: " + extension + ".  Drag and drop any OAR or IAR files to load them when the sim starts")
+                ContentLoading = False
             End If
         Next
     End Sub
@@ -899,10 +927,6 @@ Public Class Form1
         My.Settings.Save()
     End Sub
 
-    Private Sub AdminUIToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AdminUIToolStripMenuItem.Click
-
-    End Sub
-
     Private Sub LoadPirateIslandToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles LoadPirateIslandToolStripMenuItem.Click
         SimContent("http://www.outworldz.com/DreamWorld/OAR/LonelyIsland.oar", "oar")
         Print("Opensim will load LonelyIsland.oar when it is restarted. This may take time to load.")
@@ -912,19 +936,13 @@ Public Class Form1
         SimContent("http://www.outworldz.com/DreamWorld/OAR/Stormhaven Port Aurora.oar", "oar")
         Print("Opensim will load Stormhaven Port Aurora by Arcadia Asylum when restarted. This may take time to load.")
     End Sub
-
-    Private Sub LoadFreebieMallToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles LoadFreebieMallToolStripMenuItem.Click
-        SimContent("http://www.outworldz.com/DreamWorld/OAR/FreebieMall OAR.tgz", "oar")
-        Print("Opensim will load Freebie Mall by Linda Kellie when restarted. This may take time to load.")
-    End Sub
-
     Private Sub FantasyIslandToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles FantasyIslandToolStripMenuItem.Click
         SimContent("http://www.outworldz.com/DreamWorld/OAR/Fantasy OAR.gz", "oar")
         Print("Opensim will load Fantasy Island by Linda Kellie when restarted. This may take time to load.")
     End Sub
 
-    Private Sub EducationSimToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles mnuDoomedCity.Click
-        SimContent("http://www.outworldz.com/DreamWorld/OAR/Doomed_City.oar", "oar")
+    Private Sub EducationSimToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles mnuUndersea.Click
+        SimContent("http://www.outworldz.com/DreamWorld/OAR/Undersea_Observatory.oar", "oar")
         Print("Opensim will load Doomed City by J.P. van de Giessen  when restarted. This may take time to load.")
     End Sub
 
@@ -957,4 +975,11 @@ Public Class Form1
         SimContent("http://www.outworldz.com/DreamWorld/OAR/LK-WOMENS-CLOTHING.iar", "iar")
         Print("Opensim will load LK-WOMENS-CLOTHING.iar by Linda Kellie when it is restarted. This may take time to load. You will find it in your inventory.")
     End Sub
+
+    Private Sub ConferenceCenterToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ConferenceCenterToolStripMenuItem.Click
+
+        SimContent("http://www.outworldz.com/DreamWorld/OAR/ConferenceCenter.gz", "oar")
+        Print("Opensim will load  ConferenceCenter.gz by Linda Kellie when it is restarted. This may take a long time to load. ")
+    End Sub
+
 End Class
