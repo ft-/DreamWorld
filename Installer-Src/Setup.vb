@@ -357,7 +357,7 @@ Public Class Form1
 
     Private Sub mnuLogin_Click(sender As System.Object, e As System.EventArgs) Handles mnuLogin.Click
 
-        Print("Use to OnLook Viewer to log in.  User 'Simona Stick' has a password of '123'. You can use the Web UI Interface to create a new avatar.")
+        Print("Use to OnLook Viewer to log in.  User 'Dream World' has a password of '123'. You can also use the Web UI Interface to create a new avatar.")
 
     End Sub
 
@@ -449,7 +449,7 @@ Public Class Form1
         My.Settings.Viewer = mnuEasy.Checked
         My.Settings.Save()
         SetIni(gCurDir & "\DreamWorldFiles\" & My.Settings.Grid & "\bin\Opensim.ini", "SpecialUIModule", "enabled", "true", ";")
-        Print("Onlook Viewer is set for Easy UI mode. Change will occur when the sim is restarted", vbInformation)
+        Print("Onlook Viewer is set for Easy UI mode. Change will occur when the sim is restarted")
     End Sub
 
     Private Sub mnuFull_Click(sender As System.Object, e As System.EventArgs) Handles mnuFull.Click
@@ -459,7 +459,7 @@ Public Class Form1
         My.Settings.Viewer = mnuEasy.Checked
         My.Settings.Save()
         SetIni(gCurDir & "\DreamWorldFiles\" & My.Settings.Grid & "\bin\Opensim.ini", "SpecialUIModule", "enabled", "false", ";")
-        Print("Onlook Viewer is set for the Full UI mode. Change will occur when the sim is restarted", vbInformation)
+        Print("Onlook Viewer is set for the Full UI mode. Change will occur when the sim is restarted")
 
     End Sub
 
@@ -473,7 +473,7 @@ Public Class Form1
         My.Settings.Save()
 
         SetIni(gCurDir & "\DreamWorldFiles\" & My.Settings.Grid & "\bin\Opensim.ini", "CameraOnlyModeModule", "enabled", "true", ";")
-        Print("Your Avatar will not be shown when you log in. Change will occur when the Viewer is next logged in.", vbInformation)
+        Print("Your Avatar will not be shown when you log in. Change will occur when the Viewer is next logged in.")
 
     End Sub
 
@@ -517,7 +517,7 @@ Public Class Form1
 
     End Function
 
-    Private Sub WebUIToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles WebUi.Click
+    Private Sub WebUIToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) 
 
         Print("The Web UI lets you add or view settings for the default avatar. ")
         If Running Then
@@ -527,7 +527,7 @@ Public Class Form1
 
     End Sub
 
-    Private Sub ShutdownNowToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles ShutdownNowToolStripMenuItem.Click
+    Private Sub ShutdownNowToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) 
 
         Print("Stopping")
         Application.DoEvents()
@@ -563,8 +563,9 @@ Public Class Form1
         Catch ex As Exception
             MsgBox("Cannot locate '" + key + "' in section '" + section + "' in file " + filepath + ". This is not good", vbOK)
         End Try
+
     End Sub
-    Private Sub CleanAll() As Boolean
+    Private Sub CleanAll()
         Clean("HyperGrid")
         Clean("OsGrid")
     End Sub
@@ -775,4 +776,14 @@ Public Class Form1
             isRunning = Value
         End Set
     End Property
+
+    Private Sub AdminUIToolStripMenuItem1_Click(sender As Object, e As EventArgs) Handles AdminUIToolStripMenuItem1.Click
+        If (Running) Then
+            Dim webAddress As String = "http://127.0.0.1:8002/?r=" + Random()
+            Process.Start(webAddress)
+        Else
+            Print("Opensim is not running")
+        End If
+
+    End Sub
 End Class
