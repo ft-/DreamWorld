@@ -21,7 +21,7 @@
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="PublicPort" Type="System.String" Scope="User">
-      <Value Profile="(Default)">9100</Value>
+      <Value Profile="(Default)">8002</Value>
     </Setting>
     <Setting Name="PublicIP" Type="System.String" Scope="User">
       <Value Profile="(Default)">127.0.0.1</Value>

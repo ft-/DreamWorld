@@ -78,7 +78,6 @@ Public Class WebServer
         GetIPAddress = oAddr
     End Function
 
-
     Friend Shared Function getWebServer() As WebServer
         If Not blnFlag Then
             singleWebserver = New WebServer
