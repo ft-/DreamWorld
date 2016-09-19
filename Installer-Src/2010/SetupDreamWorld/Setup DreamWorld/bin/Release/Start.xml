@@ -77,12 +77,22 @@ Start
   Looks up a localized resource of type System.Drawing.Bitmap.
 </summary>
 </member>
+<member name="P:DreamWorld.My.Resources.Resources.download">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
 <member name="P:DreamWorld.My.Resources.Resources.gear_pause">
 <summary>
   Looks up a localized resource of type System.Drawing.Bitmap.
 </summary>
 </member>
 <member name="P:DreamWorld.My.Resources.Resources.question_and_answer">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:DreamWorld.My.Resources.Resources.server_client">
 <summary>
   Looks up a localized resource of type System.Drawing.Bitmap.
 </summary>

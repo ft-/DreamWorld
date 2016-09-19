@@ -23,10 +23,7 @@ Public Class Form1
 
     Private Sub Form1_Leave(sender As Object, e As System.EventArgs) Handles Me.Leave
 
-        ws.StopWebServer()
-        ' Needed to stop Opensim
-        ZapAll()
-        End
+        Exitall()
 
     End Sub
 
@@ -72,7 +69,7 @@ Public Class Form1
         ' Find out if the viewer is installed, make a file we can benchmark to
         If System.IO.File.Exists(gCurDir & "\DreamworldFiles\Init.txt") Then
             Buttons(StartButton)
-            TextBox1.Text = "Opensimulator Is ready to start. You can drag and drop new IAR and OAR content on this screen and it will be loaded when the simulation starts"
+            TextBox1.Text = "Opensimulator is ready to start."
         Else
             Using outputFile As New StreamWriter(gCurDir & "\DreamworldFiles\Init.txt", True)
                 Dim counter As Integer = 100
@@ -155,8 +152,7 @@ Public Class Form1
         End While
 
         ProgressBar1.Value = 50
-        Print("Database Is Up")
-
+        Print("Getting Public IP")
 
         ' Set Public Port
         Dim client As New System.Net.WebClient
@@ -168,14 +164,18 @@ Public Class Form1
             Buttons(StartButton)
         End Try
 
+        Print("Testing Loopback")
         Try
+            Application.DoEvents()
             Dim Benchmark = client.DownloadString("http://" & My.Settings.PublicIP & ":8001/Init.txt")
-        Catch ex As exception
-            MsgBox("See Info on screen about opening up ports in your router", vbExclamation)
-            Print("Hypergrid requires that Ports 8001 and 8002 be forwarded to this PC in your router. You can do this manually, or by checking that UPnP is supported and working on your router. ")
+            Application.DoEvents()
+        Catch ex As Exception
+            MsgBox("See Info on screen about Loopback", vbExclamation)
+            Print("Hypergrid travel requires that your router support a feature named 'loopback'. See the Help section for 'Loopback' and how to enable it in Windows. ")
             My.Settings.PublicIP = "127.0.0.1" ' dang it, we cannot go to the hypergird
         End Try
 
+        Print("Writing INI files")
         ProgressBar1.Value = 53
         SetIni(gCurDir & "\DreamWorldFiles\" & My.Settings.Grid & "\bin\Opensim.ini", "Const", "BaseURL", My.Settings.PublicIP, ";")
         ProgressBar1.Value = 54
@@ -185,6 +185,8 @@ Public Class Form1
         ProgressBar1.Value = 59
         SetIni(gCurDir & "\DreamWorldFiles\" & My.Settings.Grid & "\bin\Regions\RegionConfig.ini", "DreamWorld", "ExternalHostName", My.Settings.PublicIP, ";")
         ProgressBar1.Value = 60
+
+        Print("Starting Opensimulator")
         ' switch to Opensim folder
         ChDir(gCurDir & "\DreamWorldFiles\" & My.Settings.Grid & "\bin\")
 
@@ -211,7 +213,7 @@ Public Class Form1
         While Up.Length = 0
             Application.DoEvents()
             ProgressBar1.Value = ProgressBar1.Value + 1
-            If ProgressBar1.Value = 90 Then
+            If ProgressBar1.Value > 90 Then
                 Print("Opensim failed to start")
                 ZapAll()
                 Buttons(StartButton)
@@ -345,13 +347,7 @@ Public Class Form1
 
     Private Sub mnuExit_Click(sender As System.Object, e As System.EventArgs) Handles mnuExit.Click
 
-        Print("Stopping")
-        Application.DoEvents()
-        ZapAll()
-        Buttons(StartButton)
-        Print("")
-        End
-
+        ExitAll()
     End Sub
 
     Private Sub mnuLogin_Click(sender As System.Object, e As System.EventArgs) Handles mnuLogin.Click
@@ -790,6 +786,7 @@ Public Class Form1
         If (Running) Then
             Dim webAddress As String = "http://127.0.0.1:8002/?r=" + Random()
             Process.Start(webAddress)
+            Print("Log in as Wifi Administrator with a password of 'secret'")
         Else
             Print("Opensim is not running")
         End If
@@ -848,6 +845,8 @@ Public Class Form1
         Application.DoEvents()
         Running = False
         ZapAll = True
+
+        Print("Opensimulator is stopped. You can drag and drop new IAR and OAR content on this screen and it will be loaded when the simulation starts")
     End Function
 
 
@@ -977,9 +976,30 @@ Public Class Form1
     End Sub
 
     Private Sub ConferenceCenterToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ConferenceCenterToolStripMenuItem.Click
-
         SimContent("http://www.outworldz.com/DreamWorld/OAR/ConferenceCenter.gz", "oar")
         Print("Opensim will load  ConferenceCenter.gz by Linda Kellie when it is restarted. This may take a long time to load. ")
     End Sub
 
+    Private Sub LoopBackToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles LoopBackToolStripMenuItem.Click
+        Dim webAddress As String = "http://www.outworldz.com/Dreamworld/Loopback.htm"
+        Process.Start(webAddress)
+    End Sub
+
+    Private Sub MoreContentToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles MoreContentToolStripMenuItem.Click
+        Dim webAddress As String = "http://www.outworldz.com/cgi/freesculpts.plx"
+        Process.Start(webAddress)
+        Print(" Drag and drop  OAR or IAR files here to load them when the sim starts")
+    End Sub
+    Private Sub ExitAll()
+
+        Print("Stopping")
+        Try
+            ws.StopWebServer()
+        Catch
+        End Try
+
+        ' Needed to stop Opensim
+        ZapAll()
+        End
+    End Sub
 End Class
