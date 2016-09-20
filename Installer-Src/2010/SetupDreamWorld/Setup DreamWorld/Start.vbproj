@@ -130,6 +130,10 @@
     <Compile Include="..\..\..\Setup.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Advanced.Designer.vb">
+      <DependentUpon>Advanced.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Advanced.vb" />
     <Compile Include="Class1.vb" />
     <Compile Include="Class2.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
@@ -152,6 +156,9 @@
   <ItemGroup>
     <EmbeddedResource Include="..\..\..\Setup.resx">
       <DependentUpon>Setup.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Advanced.resx">
+      <DependentUpon>Advanced.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
@@ -220,6 +227,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="cubes.ico" />
+    <None Include="Resources\earth_network.png" />
     <None Include="Resources\download.png" />
     <None Include="Resources\server_client.png" />
     <None Include="Resources\user2.png" />

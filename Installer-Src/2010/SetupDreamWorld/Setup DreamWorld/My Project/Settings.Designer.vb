@@ -173,6 +173,66 @@ Namespace My
                 Me("Onlook") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("DreamWorld")>  _
+        Public Property SimName() As String
+            Get
+                Return CType(Me("SimName"),String)
+            End Get
+            Set
+                Me("SimName") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("2339")>  _
+        Public Property CoordX() As String
+            Get
+                Return CType(Me("CoordX"),String)
+            End Get
+            Set
+                Me("CoordX") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("1446")>  _
+        Public Property CoordY() As String
+            Get
+                Return CType(Me("CoordY"),String)
+            End Get
+            Set
+                Me("CoordY") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("8003")>  _
+        Public Property PrivatePort() As String
+            Get
+                Return CType(Me("PrivatePort"),String)
+            End Get
+            Set
+                Me("PrivatePort") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("512,512")>  _
+        Public Property SizeXY() As String
+            Get
+                Return CType(Me("SizeXY"),String)
+            End Get
+            Set
+                Me("SizeXY") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

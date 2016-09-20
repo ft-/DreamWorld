@@ -32,5 +32,20 @@
     <Setting Name="Onlook" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
+    <Setting Name="SimName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">DreamWorld</Value>
+    </Setting>
+    <Setting Name="CoordX" Type="System.String" Scope="User">
+      <Value Profile="(Default)">2339</Value>
+    </Setting>
+    <Setting Name="CoordY" Type="System.String" Scope="User">
+      <Value Profile="(Default)">1446</Value>
+    </Setting>
+    <Setting Name="PrivatePort" Type="System.String" Scope="User">
+      <Value Profile="(Default)">8003</Value>
+    </Setting>
+    <Setting Name="SizeXY" Type="System.String" Scope="User">
+      <Value Profile="(Default)">512,512</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
