@@ -1085,12 +1085,22 @@ Public Class Form1
 
         Print("Installing Grid Info...")
 
-        My.Computer.FileSystem.CopyFile(xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml", xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1_Localhost.xml.bak", True)
+        Try
+            My.Computer.FileSystem.CopyFile(xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml", xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1_Localhost.xml.bak", True)
+        Catch
+        End Try
 
         If My.Settings.PublicIP = "127.0.0.1" Then
-            My.Computer.FileSystem.CopyFile(gCurDir & "\Viewer\grids_sg_Hypergrid.xml", xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1_Localhost.xml", True)
+            Try
+                My.Computer.FileSystem.CopyFile(gCurDir & "\Viewer\grids_sg_Hypergrid.xml", xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1_Localhost.xml", True)
+            Catch
+            End Try
         Else
-            My.Computer.FileSystem.CopyFile(gCurDir & "\Viewer\grids_sg_Hypergrid.xml", xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml", True)
+            Try
+                My.Computer.FileSystem.CopyFile(gCurDir & "\Viewer\grids_sg_Hypergrid.xml", xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml", True)
+            Catch ex As Exception
+            End Try
+
         End If
 
     End Sub
@@ -1098,7 +1108,11 @@ Public Class Form1
     Private Sub RemoveGrid()
 
         ' restore backup - they may have changed it. Dreamworlds is supposed to be simple. If they launch the viewer by itself, they can change grids
-        My.Computer.FileSystem.CopyFile(xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1_Localhost.xml.bak", xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1_Localhost.xml", True)
+        Try
+            My.Computer.FileSystem.CopyFile(xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1_Localhost.xml.bak", xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1_Localhost.xml", True)
+        Catch
+        End Try
+
     End Sub
 
 End Class
