@@ -55,6 +55,7 @@ Public Class Form1
         ZapAll()
 
 
+
         Try
             My.Settings.PublicIP = client.DownloadString("https://api.ipify.org")
         Catch ex As exception
@@ -70,11 +71,7 @@ Public Class Form1
             Print("Opensimulator is ready to start.")
         Else
             Using outputFile As New StreamWriter(gCurDir & "\DreamworldFiles\Init.txt", True)
-                Dim counter As Integer = 100
-                While counter
-                    outputFile.WriteLine("This file lets Dreamworld know it has been installed and to benchmark network loopback")
-                    counter = counter - 1
-                End While
+                outputFile.WriteLine("This file lets Dreamworld know it has been installed and to benchmark the network loopback")
             End Using
             Buttons(InstallButton)
         End If
@@ -82,6 +79,10 @@ Public Class Form1
         ws = WebServer.getWebServer
         ws.VirtualRoot = gCurDir & "\DreamWorldFiles\"
         ws.StartWebServer()
+
+        OpenPorts() ' Open router ports
+
+        SetINIFromSettings()
 
     End Sub
     Private Sub StartButton_Click(sender As System.Object, e As System.EventArgs) Handles StartButton.Click
@@ -95,10 +96,13 @@ Public Class Form1
         Buttons(BusyButton)
         Running = True
 
+        zap("OnlookViewer")
+
         OpenPorts() ' Open router ports
 
         LogFiles(5) ' clear log fles
         StartMySql(20) ' boot up MySql, and wait for it to start listening
+
         GetPubIP(40)    ' we need this if we are HG enabled
         Loopback(50)    ' test he loopback on the router. If it fails, use localhost, no Hg
         SetINIFromSettings()    ' set up the INI files
@@ -115,7 +119,6 @@ Public Class Form1
         Else
             Print("Login as 'Dream World', password is '123'. Hypergrid address is " + My.Settings.PublicIP + ":" + My.Settings.PublicPort)
         End If
-
 
         ' done with bootup
         ProgressBar1.Value = 100
@@ -242,23 +245,26 @@ Public Class Form1
         Buttons(BusyButton)
         Print("Installing...")
 
-        ProgressBar1.Value = 10
+        ProgressBar1.Value = 5
 
         Print("Installing Shortcut")
         Create_ShortCut(gCurDir & "\Start.exe")
-        ProgressBar1.Value = 20
+        ProgressBar1.Value = 10
 
+        My.Computer.FileSystem.CopyFile(gCurDir & "\Viewer\grids_sg1.xml", xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml", True)
+
+        ' If Not System.IO.File.Exists(xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml") Then
         Print("Installing Onlook Viewer")
-        ProgressBar1.Value = 90
-        Dim p As Process = New Process()
-        Dim pi As ProcessStartInfo = New ProcessStartInfo()
-        pi.Arguments = ""
-        pi.FileName = gCurDir & "\Viewer\Onlook.exe"
-        p.StartInfo = pi
-        p.Start()
+            Dim p As Process = New Process()
+            Dim pi As ProcessStartInfo = New ProcessStartInfo()
+            pi.Arguments = ""
+            pi.FileName = gCurDir & "\Viewer\Onlook.exe"
+            p.StartInfo = pi
+            p.Start()
 
-
-        ' allow them to launch now
+        Print("You must Install the Onlook Viewer before installation can continue")
+        ProgressBar1.Value = 50
+        Sleep(10)
         Print("Ready to Launch. Click 'Start' to boot Opensimulator.")
         Buttons(StartButton)
         ProgressBar1.Value = 100
@@ -307,21 +313,17 @@ Public Class Form1
         mnuFull.Checked = True
         My.Settings.Viewer = mnuEasy.Checked
         My.Settings.Save()
-
         Print("Onlook Viewer is set for the Full UI mode. Change will occur when the sim is restarted")
 
     End Sub
 
     Private Sub NoneToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles mnuNoAvatar.Click
 
-
         mnuNoAvatar.Checked = True
         mnuYesAvatar.Checked = False
 
         My.Settings.Avatar = False
         My.Settings.Save()
-
-
 
         Print("Your Avatar will not be shown when you log in. Change will occur when the Viewer is next logged in.")
 
@@ -335,8 +337,6 @@ Public Class Form1
 
         My.Settings.Avatar = True
         My.Settings.Save()
-
-
 
     End Sub
 
@@ -563,7 +563,6 @@ Public Class Form1
             Adv.Check1024.Checked = False
             Adv.SizeX.Text = My.Settings.SizeX
             Adv.SizeY.Text = My.Settings.SizeY
-
         End If
 
 
@@ -730,6 +729,8 @@ Public Class Form1
         zap("OpenSim")
         ProgressBar1.Value = 50
         zap("mysqld-nt")
+
+        zap("OnlookViewer")
 
         ProgressBar1.Value = 0
         Application.DoEvents()
