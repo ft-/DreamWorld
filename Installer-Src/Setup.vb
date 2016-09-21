@@ -54,8 +54,6 @@ Public Class Form1
 
         ZapAll()
 
-
-
         Try
             My.Settings.PublicIP = client.DownloadString("https://api.ipify.org")
         Catch ex As exception
@@ -251,9 +249,9 @@ Public Class Form1
         Create_ShortCut(gCurDir & "\Start.exe")
         ProgressBar1.Value = 10
 
-        My.Computer.FileSystem.CopyFile(gCurDir & "\Viewer\grids_sg1.xml", xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml", True)
+        My.Computer.FileSystem.CopyFile(gCurDir & "\Viewer\grids_sg1_Localhost.xml", xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml", True)
 
-        ' If Not System.IO.File.Exists(xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml") Then
+
         Print("Installing Onlook Viewer")
             Dim p As Process = New Process()
             Dim pi As ProcessStartInfo = New ProcessStartInfo()
