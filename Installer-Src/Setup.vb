@@ -21,6 +21,7 @@ Public Class Form1
     Dim ws As WebServer
     Dim ContentLoading As Boolean
     Dim client As New System.Net.WebClient
+    Dim Adv As New Advanced ' Bring the form into memory 
 
     Private Sub Form1_Leave(sender As Object, e As System.EventArgs) Handles Me.Leave
 
@@ -53,8 +54,6 @@ Public Class Form1
 
         ZapAll()
 
-        ' Set the INI files for the selected grid
-        SetGridValues()
 
         Try
             My.Settings.PublicIP = client.DownloadString("https://api.ipify.org")
@@ -97,18 +96,21 @@ Public Class Form1
         Running = True
 
         OpenPorts() ' Open router ports
-        ContentLoading = True ' set this flag so we do not save the oar automatically.
+
         LogFiles(5) ' clear log fles
         StartMySql(20) ' boot up MySql, and wait for it to start listening
         GetPubIP(40)    ' we need this if we are HG enabled
         Loopback(50)    ' test he loopback on the router. If it fails, use localhost, no Hg
-        WriteINI(60)    ' set up the INI files
+        SetINIFromSettings()    ' set up the INI files
+
+        ContentLoading = True ' set this flag so we do not save the oar automatically.
         Opensimulator(90) ' Launch the rocket
         Wifi(95)        ' Launch the Wifi panel, if enabled
         Onlook(100)
 
         Buttons(StopButton)
         If My.Settings.PublicIP = "127.0.0.1" Then
+
             Print("Login as 'Dream World', password is '123'.  Access to the Hypergrid had to be disabled. See Help->Loopback to see why.")
         Else
             Print("Login as 'Dream World', password is '123'. Hypergrid address is " + My.Settings.PublicIP + ":" + My.Settings.PublicPort)
@@ -295,7 +297,7 @@ Public Class Form1
         mnuFull.Checked = False
         My.Settings.Viewer = mnuEasy.Checked
         My.Settings.Save()
-        SetIni(gCurDir & "\DreamWorldFiles\" & My.Settings.Grid & "\bin\Opensim.ini", "SpecialUIModule", "enabled", "true", ";")
+
         Print("Onlook Viewer is set for Easy UI mode. Change will occur when the sim is restarted")
     End Sub
 
@@ -305,7 +307,7 @@ Public Class Form1
         mnuFull.Checked = True
         My.Settings.Viewer = mnuEasy.Checked
         My.Settings.Save()
-        SetIni(gCurDir & "\DreamWorldFiles\" & My.Settings.Grid & "\bin\Opensim.ini", "SpecialUIModule", "enabled", "false", ";")
+
         Print("Onlook Viewer is set for the Full UI mode. Change will occur when the sim is restarted")
 
     End Sub
@@ -319,7 +321,8 @@ Public Class Form1
         My.Settings.Avatar = False
         My.Settings.Save()
 
-        SetIni(gCurDir & "\DreamWorldFiles\" & My.Settings.Grid & "\bin\Opensim.ini", "CameraOnlyModeModule", "enabled", "true", ";")
+
+
         Print("Your Avatar will not be shown when you log in. Change will occur when the Viewer is next logged in.")
 
     End Sub
@@ -333,7 +336,7 @@ Public Class Form1
         My.Settings.Avatar = True
         My.Settings.Save()
 
-        SetIni(gCurDir & "\DreamWorldFiles\" & My.Settings.Grid & "\bin\Opensim.ini", "CameraOnlyModeModule", "enabled", "false", ";")
+
 
     End Sub
 
@@ -461,7 +464,7 @@ Public Class Form1
         My.Settings.Save()
         mnuOsGrid.Checked = True
         mnuHyperGrid.Checked = False
-        SetGridValues()
+
         Print("DreamWorlds will connect to OsGrid.org. You must log in with an Avatar name registered with OsGrid.org. You must also 'Port Forward' your router to this machine on port 8000 for Tcp and Udp traffic")
         My.Computer.FileSystem.CopyFile(gCurDir & "\Viewer\grids_sg_OsGrid.xml", xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml", True)
 
@@ -473,12 +476,12 @@ Public Class Form1
         My.Settings.Save()
         mnuOsGrid.Checked = False
         mnuHyperGrid.Checked = True
-        SetGridValues()
+
         Print("DreamWorlds will connect as a locally hosted hypergridded sim.")
         My.Computer.FileSystem.CopyFile(gCurDir & "\Viewer\grids_sg_HyperGrid.xml", xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml", True)
     End Sub
 
-    Private Sub SetGridValues()
+    Private Sub SetINIFromSettings()
 
         'mnuShow shows the DOS box for Opensimulator
         mnuShow.Checked = My.Settings.Console
@@ -503,6 +506,8 @@ Public Class Form1
         Else
             SetIni(gCurDir & "\DreamWorldFiles\" & My.Settings.Grid & "\bin\Opensim.ini", "CameraOnlyModeModule", "enabled", "true", ";")
         End If
+
+
         mnuYesAvatar.Checked = My.Settings.Avatar
         mnuNoAvatar.Checked = Not My.Settings.Avatar
 
@@ -515,6 +520,16 @@ Public Class Form1
         If My.Settings.Grid = "OsGrid" Then
             mnuHyperGrid.Checked = False
             mnuOsGrid.Checked = True
+        End If
+
+
+        'Onlook viewer
+        If My.Settings.Onlook = True Then
+            mnuOther.Checked = False
+            mnuOnlook.Checked = True
+        Else
+            mnuOther.Checked = True
+            mnuOnlook.Checked = False
         End If
 
         ' Autobackup
@@ -530,18 +545,37 @@ Public Class Form1
             My.Settings.AutoBackup = False
         End If
 
-        'Onlook viewer
-        If My.Settings.Onlook = True Then
-            mnuOther.Checked = False
-            mnuOnlook.Checked = True
+        If My.Settings.SizeX = 256 And My.Settings.SizeY = 256 Then
+            Adv.Check256.Checked = True
+            Adv.Check512.Checked = False
+            Adv.Check1024.Checked = False
+        ElseIf My.Settings.SizeX = 512 And My.Settings.SizeY = 512 Then
+            Adv.Check256.Checked = False
+            Adv.Check512.Checked = True
+            Adv.Check1024.Checked = False
+        ElseIf My.Settings.SizeX = 256 And My.Settings.SizeY = 256 Then
+            Adv.Check256.Checked = False
+            Adv.Check512.Checked = False
+            Adv.Check1024.Checked = True
         Else
-            mnuOther.Checked = True
-            mnuOnlook.Checked = False
+            Adv.Check256.Checked = False
+            Adv.Check512.Checked = False
+            Adv.Check1024.Checked = False
+            Adv.SizeX.Text = My.Settings.SizeX
+            Adv.SizeY.Text = My.Settings.SizeY
+
         End If
 
 
-        SetIni(gCurDir & "\DreamWorldFiles\" & My.Settings.Grid & "\bin\Opensim.ini", "AutoBackupModule", "AutoBackup", "false", ";")
-        SetIni(gCurDir & "\DreamWorldFiles\" & My.Settings.Grid & "\bin\Opensim.ini", "AutoBackupModule", "AutoBackup", "false", ";")
+        SetIni(gCurDir & "\DreamWorldFiles\" & My.Settings.Grid & "\bin\Opensim.ini", "Const", "BaseURL", My.Settings.PublicIP, ";")
+        SetIni(gCurDir & "\DreamWorldFiles\" + My.Settings.Grid & "\bin\Opensim.ini", "Const", "PublicPort", My.Settings.PublicPort, ";")
+
+        ' RegionConfig
+        SetIni(gCurDir & "\DreamWorldFiles\" & My.Settings.Grid & "\bin\Regions\RegionConfig.ini", "DreamWorld", "SizeY", My.Settings.SizeY, ";")
+        SetIni(gCurDir & "\DreamWorldFiles\" & My.Settings.Grid & "\bin\Regions\RegionConfig.ini", "DreamWorld", "SizeX", My.Settings.SizeX, ";")
+
+        SetIni(gCurDir & "\DreamWorldFiles\" & My.Settings.Grid & "\bin\Regions\RegionConfig.ini", "DreamWorld", "InternalPort", My.Settings.PublicPort, ";")
+        SetIni(gCurDir & "\DreamWorldFiles\" & My.Settings.Grid & "\bin\Regions\RegionConfig.ini", "DreamWorld", "ExternalHostName", My.Settings.PublicIP, ";")
 
 
     End Sub
@@ -550,7 +584,7 @@ Public Class Form1
         Print("DreamWorlds is set Autoback the sim into an OAR every 24 hours. Oars are saved in the AutoBackup folder")
         AutoYes.Checked = True
         AutoNo.Checked = False
-        SetIni(gCurDir & "\DreamWorldFiles\" & My.Settings.Grid & "\bin\Opensim.ini", "AutoBackupModule", "AutoBackup", "true", ";")
+
         My.Settings.AutoBackup = True
         My.Settings.Save()
     End Sub
@@ -559,7 +593,7 @@ Public Class Form1
         Print("Backups disabled")
         AutoYes.Checked = False
         AutoNo.Checked = True
-        SetIni(gCurDir & "\DreamWorldFiles\" & My.Settings.Grid & "\bin\Opensim.ini", "AutoBackupModule", "AutoBackup", "false", ";")
+
         My.Settings.AutoBackup = False
         My.Settings.Save()
     End Sub
@@ -601,10 +635,10 @@ Public Class Form1
 
         Try
             If AllowFirewall() Then ' open uPNP port
-                Print("Firewall Open")
+                Print("UPnP Port Forward Success")
                 Return True
             Else
-                Print("Firewall Closed")
+                Print("UPnP Port Forward failed, so hypergrid may not be available")
                 Return False
             End If
         Catch e As Exception
@@ -946,25 +980,7 @@ Public Class Form1
         ProgressBar1.Value = progress
 
     End Sub
-    Private Sub WriteINI(progress As Integer)
 
-        Print("Writing INI files")
-        ProgressBar1.Value = progress - 6
-        SetIni(gCurDir & "\DreamWorldFiles\" & My.Settings.Grid & "\bin\Opensim.ini", "Const", "BaseURL", My.Settings.PublicIP, ";")
-        ProgressBar1.Value = progress - 5
-        SetIni(gCurDir & "\DreamWorldFiles\" + My.Settings.Grid & "\bin\Opensim.ini", "Const", "PublicPort", My.Settings.PublicPort, ";")
-        ProgressBar1.Value = progress - 4
-        SetIni(gCurDir & "\DreamWorldFiles\" & My.Settings.Grid & "\bin\Regions\RegionConfig.ini", "DreamWorld", "InternalPort", My.Settings.PublicPort, ";")
-        ProgressBar1.Value = progress - 3
-        SetIni(gCurDir & "\DreamWorldFiles\" & My.Settings.Grid & "\bin\Regions\RegionConfig.ini", "DreamWorld", "ExternalHostName", My.Settings.PublicIP, ";")
-        ProgressBar1.Value = progress - 2
-        SetIni(gCurDir & "\DreamWorldFiles\" & My.Settings.Grid & "\bin\Regions\RegionConfig.ini", "DreamWorld", "SizeX", My.Settings.CoordX, ";")
-        ProgressBar1.Value = progress - 1
-        SetIni(gCurDir & "\DreamWorldFiles\" & My.Settings.Grid & "\bin\Regions\RegionConfig.ini", "DreamWorld", "SizeY", My.Settings.CoordY, ";")
-
-        ProgressBar1.Value = progress
-
-    End Sub
     Private Sub Opensimulator(progress As Integer)
         Print("Starting Opensimulator")
         ' switch to Opensim folder
@@ -1026,6 +1042,8 @@ Public Class Form1
     End Sub
     Private Sub Onlook(progess As Integer)
 
+        InstallGridXML() ' choose a grid for Onlook
+
         If My.Settings.Onlook Then
             Print("Starting Onlook viewer")
             Dim p As Process = New Process()
@@ -1051,8 +1069,6 @@ Public Class Form1
 
     Private Sub AdvancedSettingsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AdvancedSettingsToolStripMenuItem.Click
 
-        ' Create a new form and set its Visible property to true.
-        Dim Adv As New Advanced
         Adv.Visible = True
 
         ' Set the new form's desktop location so it appears below and 
@@ -1063,13 +1079,13 @@ Public Class Form1
         Adv.Activate()
     End Sub
 
-    Private Sub InstallGrid()
+    Private Sub InstallGridXML()
 
         ' we have to change the viewer Grid settings  if we are on localhost
 
         Print("Installing Grid Info...")
 
-        My.Computer.FileSystem.CopyFile(xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1_Localhost.xml", xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1_Localhost.xml.bak", True)
+        My.Computer.FileSystem.CopyFile(xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml", xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1_Localhost.xml.bak", True)
 
         If My.Settings.PublicIP = "127.0.0.1" Then
             My.Computer.FileSystem.CopyFile(gCurDir & "\Viewer\grids_sg_Hypergrid.xml", xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1_Localhost.xml", True)

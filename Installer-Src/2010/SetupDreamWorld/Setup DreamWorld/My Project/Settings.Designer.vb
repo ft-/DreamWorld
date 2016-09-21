@@ -224,13 +224,25 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("512,512")>  _
-        Public Property SizeXY() As String
+         Global.System.Configuration.DefaultSettingValueAttribute("512")>  _
+        Public Property SizeX() As String
             Get
-                Return CType(Me("SizeXY"),String)
+                Return CType(Me("SizeX"),String)
             End Get
             Set
-                Me("SizeXY") = value
+                Me("SizeX") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("512")>  _
+        Public Property SizeY() As String
+            Get
+                Return CType(Me("SizeY"),String)
+            End Get
+            Set
+                Me("SizeY") = value
             End Set
         End Property
     End Class

@@ -44,8 +44,11 @@
     <Setting Name="PrivatePort" Type="System.String" Scope="User">
       <Value Profile="(Default)">8003</Value>
     </Setting>
-    <Setting Name="SizeXY" Type="System.String" Scope="User">
-      <Value Profile="(Default)">512,512</Value>
+    <Setting Name="SizeX" Type="System.String" Scope="User">
+      <Value Profile="(Default)">512</Value>
+    </Setting>
+    <Setting Name="SizeY" Type="System.String" Scope="User">
+      <Value Profile="(Default)">512</Value>
     </Setting>
   </Settings>
 </SettingsFile>

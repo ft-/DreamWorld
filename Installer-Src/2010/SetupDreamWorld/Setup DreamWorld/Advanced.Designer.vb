@@ -275,7 +275,8 @@ Partial Class Advanced
         If Check256.Checked = True Then
             Check512.Checked = False
             Check1024.Checked = False
-            My.Settings.SizeXY = "256,256"
+            My.Settings.SizeX = "256"
+            My.Settings.SizeY = "256"
             SizeX.Text = ""
             SizeY.Text = ""
         End If
@@ -286,9 +287,10 @@ Partial Class Advanced
         If Check512.Checked = True Then
             Check256.Checked = False
             Check1024.Checked = False
+            My.Settings.SizeX = "512"
+            My.Settings.SizeY = "512"
             SizeX.Text = ""
             SizeY.Text = ""
-            My.Settings.SizeXY = "512,512"
         End If
     End Sub
 
@@ -296,7 +298,8 @@ Partial Class Advanced
         If Check1024.Checked = True Then
             Check256.Checked = False
             Check512.Checked = False
-            My.Settings.SizeXY = "1024,1024"
+            My.Settings.SizeX = "1024"
+            My.Settings.SizeX = "1024"
             SizeX.Text = ""
             SizeY.Text = ""
         End If
@@ -307,7 +310,7 @@ Partial Class Advanced
             Check256.Checked = False
             Check512.Checked = False
             Check1024.Checked = False
-            My.Settings.SizeXY = SizeX.Text + "," + SizeY.Text
+            My.Settings.SizeX = SizeX.Text
         End If
 
     End Sub
@@ -317,7 +320,7 @@ Partial Class Advanced
             Check256.Checked = False
             Check512.Checked = False
             Check1024.Checked = False
-            My.Settings.SizeXY = SizeX.Text + "," + SizeY.Text
+            My.Settings.SizeY = SizeY.Text
         End If
     End Sub
 
