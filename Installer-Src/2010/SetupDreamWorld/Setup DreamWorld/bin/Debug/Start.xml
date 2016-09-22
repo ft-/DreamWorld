@@ -1,0 +1,265 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+Start
+</name>
+</assembly>
+<members>
+<member name="T:DreamWorld.My.Resources.Resources">
+<summary>
+  A strongly-typed resource class, for looking up localized strings, etc.
+</summary>
+</member>
+<member name="P:DreamWorld.My.Resources.Resources.ResourceManager">
+<summary>
+  Returns the cached ResourceManager instance used by this class.
+</summary>
+</member>
+<member name="P:DreamWorld.My.Resources.Resources.Culture">
+<summary>
+  Overrides the current thread's CurrentUICulture property for all
+  resource lookups using this strongly typed resource class.
+</summary>
+</member>
+<member name="P:DreamWorld.My.Resources.Resources._error">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:DreamWorld.My.Resources.Resources._exit">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:DreamWorld.My.Resources.Resources.about">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:DreamWorld.My.Resources.Resources.about1">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:DreamWorld.My.Resources.Resources.box_new">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:DreamWorld.My.Resources.Resources.box_tall">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:DreamWorld.My.Resources.Resources.cube_blue">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:DreamWorld.My.Resources.Resources.disk_blue">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:DreamWorld.My.Resources.Resources.disk_blue1">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:DreamWorld.My.Resources.Resources.document_connection">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:DreamWorld.My.Resources.Resources.document_view">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:DreamWorld.My.Resources.Resources.download">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:DreamWorld.My.Resources.Resources.earth_network">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:DreamWorld.My.Resources.Resources.gear_pause">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:DreamWorld.My.Resources.Resources.question_and_answer">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:DreamWorld.My.Resources.Resources.server_client">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:DreamWorld.My.Resources.Resources.user1_into">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:DreamWorld.My.Resources.Resources.user2">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:DreamWorld.My.Resources.Resources.user3">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:DreamWorld.My.Resources.Resources.users1">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:DreamWorld.My.Resources.Resources.users2">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:DreamWorld.My.Resources.Resources.users3">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:DreamWorld.My.Resources.Resources.window_add">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:DreamWorld.My.Resources.Resources.window_edit">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:DreamWorld.My.Resources.Resources.window_environment">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="T:DreamWorld.UPnP.Protocol">
+ <summary>
+ The different supported protocols
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="F:DreamWorld.UPnP.Protocol.TCP">
+ <summary>
+ Transmission Control Protocol
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="F:DreamWorld.UPnP.Protocol.UDP">
+ <summary>
+ User Datagram Protocol
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="P:DreamWorld.UPnP.UPnPEnabled">
+ <summary>
+ Returns if UPnP is enabled.
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:DreamWorld.UPnP.#ctor">
+ <summary>
+ The UPnP Managed Class
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="M:DreamWorld.UPnP.GetStaticMappings">
+ <summary>
+ Returns all static port mappings
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="M:DreamWorld.UPnP.GetDynamicMappings">
+ <summary>
+ Returns all dynamic port mappings
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="M:DreamWorld.UPnP.Add(System.String,System.Int32,DreamWorld.UPnP.Protocol,System.String)">
+ <summary>
+ Adds a port mapping to the UPnP enabled device.
+ </summary>
+ <param name="localIP">The local IP address to map to.</param>
+ <param name="Port">The port to forward.</param>
+ <param name="prot">The protocol of the port [TCP/UDP]</param>
+ <param name="desc">A small description of the port.</param>
+ <exception cref="T:System.ApplicationException">This exception is thrown when UPnP is disabled.</exception>
+ <exception cref="T:System.ObjectDisposedException">This exception is thrown when this class has been disposed.</exception>
+ <exception cref="T:System.ArgumentException">This exception is thrown when any of the supplied arguments are invalid.</exception>
+ <remarks></remarks>
+</member>
+<member name="M:DreamWorld.UPnP.Remove(System.Int32,DreamWorld.UPnP.Protocol)">
+ <summary>
+ Removes a port mapping from the UPnP enabled device.
+ </summary>
+ <param name="Port">The port to remove.</param>
+ <param name="prot">The protocol of the port [TCP/UDP]</param>
+ <exception cref="T:System.ApplicationException">This exception is thrown when UPnP is disabled.</exception>
+ <exception cref="T:System.ObjectDisposedException">This exception is thrown when this class has been disposed.</exception>
+ <exception cref="T:System.ArgumentException">This exception is thrown when the port [or protocol] is invalid.</exception>
+ <remarks></remarks>
+</member>
+<member name="M:DreamWorld.UPnP.Exists(System.Int32,DreamWorld.UPnP.Protocol)">
+ <summary>
+ Checks to see if a port exists in the mapping.
+ </summary>
+ <param name="Port">The port to check.</param>
+ <param name="prot">The protocol of the port [TCP/UDP]</param>
+ <exception cref="T:System.ApplicationException">This exception is thrown when UPnP is disabled.</exception>
+ <exception cref="T:System.ObjectDisposedException">This exception is thrown when this class has been disposed.</exception>
+ <exception cref="T:System.ArgumentException">This exception is thrown when the port [or protocol] is invalid.</exception>
+ <remarks></remarks>
+</member>
+<member name="M:DreamWorld.UPnP.LocalIP">
+ <summary>
+ Attempts to locate the local IP address of this computer.
+ </summary>
+ <returns>String</returns>
+ <remarks></remarks>
+</member>
+<member name="M:DreamWorld.UPnP.IsPrivateIP(System.String)">
+ <summary>
+ Checks to see if an IP address is a local IP address.
+ </summary>
+ <param name="CheckIP">The IP address to check.</param>
+ <returns>Boolean</returns>
+ <remarks></remarks>
+</member>
+<member name="M:DreamWorld.UPnP.Dispose(System.Boolean)">
+ <summary>
+ Disposes of the UPnP class
+ </summary>
+ <param name="disposing">True or False makes no difference.</param>
+ <remarks></remarks>
+</member>
+<member name="M:DreamWorld.UPnP.Dispose">
+ <summary>
+ Dispose!
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="M:DreamWorld.UPnP.Print">
+ <summary>
+ Prints out some debugging information to use.
+ </summary>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+</members>
+</doc>

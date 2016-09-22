@@ -56,7 +56,7 @@ Public Class Form1
 
         Try
             My.Settings.PublicIP = client.DownloadString("https://api.ipify.org")
-        Catch ex As exception
+        Catch ex As Exception
             MsgBox("Cannot connect to the Internet", vbAbort)
             ZapAll()
             Buttons(StartButton)
@@ -68,19 +68,84 @@ Public Class Form1
             Buttons(StartButton)
             Print("Opensimulator is ready to start.")
         Else
+            Buttons(InstallButton)
+
+            ws = WebServer.getWebServer
+            ws.VirtualRoot = gCurDir & "\DreamWorldFiles\"
+            ws.StartWebServer()
+
+            OpenPorts() ' Open router ports
+
+            SetINIFromSettings()
+
+            ProgressBar1.Visible = True
+            ProgressBar1.Minimum = 0
+            ProgressBar1.Maximum = 100
+            ProgressBar1.Value = 0
+
+            Buttons(BusyButton)
+            Print("Installing...")
+
+            ProgressBar1.Value = 0
+            Me.Show()
+
+            Print("Installing Desktop Shortcut")
+            Create_ShortCut(gCurDir & "\Start.exe")
+            ProgressBar1.Value = 10
+
+            My.Computer.FileSystem.CopyFile(gCurDir & "\Viewer\grids_sg1_Localhost.xml", xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml", True)
+
+            Print("Installing Onlook Viewer")
+            Dim p As Process = New Process()
+            Dim pi As ProcessStartInfo = New ProcessStartInfo()
+            pi.Arguments = ""
+            pi.FileName = gCurDir & "\Viewer\Onlook.exe"
+            p.StartInfo = pi
+            Try
+                p.Start()
+            Catch
+            End Try
+
+            ProgressBar1.Value = 11
+
+            Print("Install and Start the Onlook Viewer")
+
+            Dim toggle As Boolean = False
+            While Not System.IO.File.Exists(xmlPath() + "\AppData\Roaming\Onlook\user_settings\settings_onlook.xml")
+
+                Application.DoEvents()
+
+                Sleep(1000)
+                If (toggle) Then
+                    Print("Install and Start the Onlook Viewer")
+                    toggle = False
+                Else
+                    Print("            Start the Onlook Viewer")
+                    toggle = False
+                    toggle = True
+                End If
+
+                ProgressBar1.Value = ProgressBar1.Value + 1
+                If ProgressBar1.Value = 100 Then
+                    ProgressBar1.Value = 0
+                    Print("Cannot continue until you start the Onlook viewer")
+                End If
+                Me.Show()
+
+
+            End While
+
+
+            Print("Ready to Launch! Click 'Start' to begin your adventure in Opensimulator.")
+            Buttons(StartButton)
+            ProgressBar1.Value = 100
+
+            ' mark the system as ready
             Using outputFile As New StreamWriter(gCurDir & "\DreamworldFiles\Init.txt", True)
                 outputFile.WriteLine("This file lets Dreamworld know it has been installed and to benchmark the network loopback")
             End Using
-            Buttons(InstallButton)
+
         End If
-
-        ws = WebServer.getWebServer
-        ws.VirtualRoot = gCurDir & "\DreamWorldFiles\"
-        ws.StartWebServer()
-
-        OpenPorts() ' Open router ports
-
-        SetINIFromSettings()
 
     End Sub
     Private Sub StartButton_Click(sender As System.Object, e As System.EventArgs) Handles StartButton.Click
@@ -113,7 +178,7 @@ Public Class Form1
         Buttons(StopButton)
         If My.Settings.PublicIP = "127.0.0.1" Then
 
-            Print("Login as 'Dream World', password is '123'.  Access to the Hypergrid had to be disabled. See Help->Loopback to see why.")
+            Print("Login as 'Dream World', password is '123'.  Access to the Hypergrid is disabled because of your router. See Help->Loopback to see why.")
         Else
             Print("Login as 'Dream World', password is '123'. Hypergrid address is " + My.Settings.PublicIP + ":" + My.Settings.PublicPort)
         End If
@@ -200,7 +265,7 @@ Public Class Form1
 
         TextBox1.Text = Value
         Application.DoEvents()
-        Sleep(100)  ' time to read
+        Sleep(500)  ' time to read
 
     End Sub
 
@@ -233,41 +298,7 @@ Public Class Form1
 
     End Sub
 
-    Private Sub InstallButton_Click(sender As System.Object, e As System.EventArgs) Handles InstallButton.Click
 
-        ProgressBar1.Visible = True
-        ProgressBar1.Minimum = 0
-        ProgressBar1.Maximum = 100
-        ProgressBar1.Value = 0
-
-        Buttons(BusyButton)
-        Print("Installing...")
-
-        ProgressBar1.Value = 5
-
-        Print("Installing Shortcut")
-        Create_ShortCut(gCurDir & "\Start.exe")
-        ProgressBar1.Value = 10
-
-        My.Computer.FileSystem.CopyFile(gCurDir & "\Viewer\grids_sg1_Localhost.xml", xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml", True)
-
-
-        Print("Installing Onlook Viewer")
-            Dim p As Process = New Process()
-            Dim pi As ProcessStartInfo = New ProcessStartInfo()
-            pi.Arguments = ""
-            pi.FileName = gCurDir & "\Viewer\Onlook.exe"
-            p.StartInfo = pi
-            p.Start()
-
-        Print("You must Install the Onlook Viewer before installation can continue")
-        ProgressBar1.Value = 50
-        Sleep(10)
-        Print("Ready to Launch. Click 'Start' to boot Opensimulator.")
-        Buttons(StartButton)
-        ProgressBar1.Value = 100
-
-    End Sub
 
     Private Sub ShowToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles mnuShow.Click
 
@@ -598,41 +629,42 @@ Public Class Form1
     Function AllowFirewall() As Boolean
         Dim MyUPnPMap As New UPnP
         Dim portcount = 0
-        If MyUPnPMap.Exists(My.Settings.PublicPort, UPnP.Protocol.UDP) Then
-            portcount = portcount + 1
-        Else
-            MyUPnPMap.Add(UPnP.LocalIP, My.Settings.PublicPort, UPnP.Protocol.UDP, "Opensim UDP")
-            portcount = portcount + 1
-        End If
+        Try
+            If MyUPnPMap.Exists(My.Settings.PublicPort, UPnP.Protocol.UDP) Then
+                MyUPnPMap.Remove(My.Settings.PublicPort, UPnP.Protocol.UDP)
+                MyUPnPMap.Add(UPnP.LocalIP, My.Settings.PublicPort, UPnP.Protocol.UDP, "Opensim UDP")
+            Else
+                MyUPnPMap.Add(UPnP.LocalIP, My.Settings.PublicPort, UPnP.Protocol.UDP, "Opensim UDP")
+            End If
 
-        If MyUPnPMap.Exists(My.Settings.PublicPort, UPnP.Protocol.TCP) Then
-            portcount = portcount + 1
-        Else
-            MyUPnPMap.Add(UPnP.LocalIP, My.Settings.PublicPort, UPnP.Protocol.TCP, "Opensim TCP")
-            portcount = portcount + 1
-        End If
+            If MyUPnPMap.Exists(My.Settings.PublicPort, UPnP.Protocol.TCP) Then
+                MyUPnPMap.Remove(My.Settings.PublicPort, UPnP.Protocol.TCP)
+                MyUPnPMap.Add(UPnP.LocalIP, My.Settings.PublicPort, UPnP.Protocol.TCP, "Opensim TCP")
+            Else
+                MyUPnPMap.Add(UPnP.LocalIP, My.Settings.PublicPort, UPnP.Protocol.TCP, "Opensim TCP")
+            End If
 
-        If MyUPnPMap.Exists(8001, UPnP.Protocol.TCP) Then
-            portcount = portcount + 1
-        Else
-            MyUPnPMap.Add(UPnP.LocalIP, 8001, UPnP.Protocol.TCP, "Opensim Probe")
-            portcount = portcount + 1
-        End If
+            If MyUPnPMap.Exists(8001, UPnP.Protocol.TCP) Then
+                MyUPnPMap.Remove(8001, UPnP.Protocol.TCP)
+                MyUPnPMap.Add(UPnP.LocalIP, 8001, UPnP.Protocol.TCP, "Opensim Probe")
+            Else
+                MyUPnPMap.Add(UPnP.LocalIP, 8001, UPnP.Protocol.TCP, "Opensim Probe")
+            End If
+        Catch
+            Return False
+        End Try
 
+        Return True 'successfully added
 
-        If (portcount = 3) Then
-            Return True 'successfully added
-        End If
-
-        Return False
 
     End Function
 
     Private Function OpenPorts()
 
+        Print("Checking your Router")
         Try
             If AllowFirewall() Then ' open uPNP port
-                Print("UPnP Port Forward Success")
+                Print("UPnP is Okay")
                 Return True
             Else
                 Print("UPnP Port Forward failed, so hypergrid may not be available")
@@ -971,6 +1003,8 @@ Public Class Form1
             Dim Benchmark = client.DownloadString("http://" & My.Settings.PublicIP & ":8001/Init.txt")
             Application.DoEvents()
         Catch ex As Exception
+
+            Application.DoEvents()
             MsgBox("See Info on screen about Loopback", vbExclamation)
             Print("Hypergrid travel requires that your router support a feature named 'loopback'. See the Help section for 'Loopback' and how to enable it in Windows. ")
             My.Settings.PublicIP = "127.0.0.1" ' dang it, we cannot go to the hypergird
@@ -997,7 +1031,18 @@ Public Class Form1
 
         pi.FileName = gCurDir & "\DreamWorldFiles\" & My.Settings.Grid & "\bin\OpenSim.exe"
         p.StartInfo = pi
-        p.Start()
+        Try
+            p.Start()
+        Catch
+            Dim yesno = MsgBox("Opensim did not start. Do you want to see the log file?", vbYesNo)
+            If (yesno = vbYes) Then
+                Dim Log As String = gCurDir + "\DreamWorldFiles\" & My.Settings.Grid & "\bin\OpenSim.log"
+                System.Diagnostics.Process.Start("wordpad.exe", Log)
+            End If
+            ZapAll()
+            Buttons(StartButton)
+            Return
+        End Try
 
         ' Wait for Opensim to start listening via wifi
         Dim Up = ""
