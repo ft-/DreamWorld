@@ -1,0 +1,36 @@
+2016-09-21 21:42:33,769 INFO  - OpenSim.Application [OPENSIM MAIN]: configured log4net using default OpenSim.exe.config
+2016-09-21 21:42:33,781 INFO  - OpenSim.Application [OPENSIM MAIN]: System Locale is en-US
+2016-09-21 21:42:33,784 INFO  - OpenSim.Application [OPENSIM MAIN]: Environment variable MONO_THREADS_PER_CPU is unset
+2016-09-21 21:42:33,784 INFO  - OpenSim.Application [OPENSIM MAIN]: Runtime gave us 8 min worker threads and 8 min IOCP threads
+2016-09-21 21:42:33,784 INFO  - OpenSim.Application [OPENSIM MAIN]: Runtime gave us 32767 max worker threads and 1000 max IOCP threads
+2016-09-21 21:42:33,785 INFO  - OpenSim.Application [OPENSIM MAIN]: Limiting max worker threads to 1000
+2016-09-21 21:42:33,785 INFO  - OpenSim.Application [OPENSIM MAIN]: Threadpool set to 1000 max worker threads and 1000 max IOCP threads
+2016-09-21 21:42:33,790 INFO  - OpenSim.Application [OPENSIM MAIN]: Environment is supported by OpenSimulator.
+2016-09-21 21:42:33,801 INFO  - OpenSim.ConfigurationLoader [CONFIG]: Reading configuration settings
+2016-09-21 21:42:33,802 INFO  - OpenSim.ConfigurationLoader [CONFIG]: Reading configuration file C:\Opensim\DreamWorld-GitHub\DreamWorldFiles\Hypergrid\bin\OpenSimDefaults.ini
+2016-09-21 21:42:33,821 INFO  - OpenSim.ConfigurationLoader [CONFIG]: Reading configuration file C:\Opensim\DreamWorld-GitHub\DreamWorldFiles\Hypergrid\bin\OpenSim.ini
+2016-09-21 21:42:33,825 WARN  - OpenSim.ConfigurationLoader [CONFIG]: Could not find include file C:\Opensim\DreamWorld-GitHub\DreamWorldFiles\Hypergrid\bin\config-include\osslEnable.ini
+2016-09-21 21:42:33,825 INFO  - OpenSim.ConfigurationLoader [CONFIG]: Reading configuration file C:\Opensim\DreamWorld-GitHub\DreamWorldFiles\HyperGrid\bin\config-include\DivaPreferences.ini
+2016-09-21 21:42:33,828 WARN  - OpenSim.ConfigurationLoader [CONFIG]: Could not find include file C:\Opensim\DreamWorld-GitHub\DreamWorldFiles\Hypergrid\bin\config-include\osslEnable.ini
+2016-09-21 21:42:33,829 INFO  - OpenSim.ConfigurationLoader [CONFIG]: Reading configuration file C:\Opensim\DreamWorld-GitHub\DreamWorldFiles\HyperGrid\bin\config-include\MyWorld.ini
+2016-09-21 21:42:33,831 WARN  - OpenSim.ConfigurationLoader [CONFIG]: Could not find include file C:\Opensim\DreamWorld-GitHub\DreamWorldFiles\Hypergrid\bin\config-include\osslEnable.ini
+2016-09-21 21:42:33,833 INFO  - OpenSim.ConfigurationLoader [CONFIG]: Loading environment variables for Config
+2016-09-21 21:42:33,840 INFO  - OpenSim.OpenSim [OPENSIM MAIN]: Using async_call_method UnsafeQueueUserWorkItem
+2016-09-21 21:42:33,847 INFO  - OpenSim.OpenSim ====================================================================
+2016-09-21 21:42:33,847 INFO  - OpenSim.OpenSim ========================= STARTING OPENSIM =========================
+2016-09-21 21:42:33,848 INFO  - OpenSim.OpenSim ====================================================================
+2016-09-21 21:42:33,855 INFO  - OpenSim.Framework.Console.LocalConsole [LOCAL CONSOLE]: Persistent command line history is Enabled, up to 100 lines from file C:\Opensim\DreamWorld-GitHub\DreamWorldFiles\Hypergrid\bin\OpenSimConsoleHistory.txt
+2016-09-21 21:42:33,855 INFO  - OpenSim.Framework.Console.LocalConsole [LOCAL CONSOLE]: Creating new empty command line history file C:\Opensim\DreamWorld-GitHub\DreamWorldFiles\Hypergrid\bin\OpenSimConsoleHistory.txt
+2016-09-21 21:42:33,857 INFO  - OpenSim.Framework.Servers.ServerBase [SERVER BASE]: Starting in C:\Opensim\DreamWorld-GitHub\DreamWorldFiles\Hypergrid\bin
+2016-09-21 21:42:33,857 INFO  - OpenSim.Framework.Servers.ServerBase [SERVER BASE]: OpenSimulator version: OpenSim 0.8.2.1 Release          
+2016-09-21 21:42:33,857 INFO  - OpenSim.Framework.Servers.ServerBase [SERVER BASE]: Operating system version: Microsoft Windows NT 6.2.9200.0, .NET platform Win32NT, 64-bit
+2016-09-21 21:42:33,864 INFO  - OpenSim.Framework.Servers.ServerBase [SERVER BASE]: Logging started to file C:\Opensim\DreamWorld-GitHub\DreamWorldFiles\Hypergrid\bin\OpenSim.log
+2016-09-21 21:42:34,103 INFO  - OpenSim.Data.Migration [MIGRATIONS]: Creating migrations at version 1
+2016-09-21 21:42:34,129 INFO  - OpenSim.Data.Migration [MIGRATIONS]: Upgrading RegionStore to latest revision 50.
+2016-09-21 21:42:34,130 INFO  - OpenSim.Data.Migration [MIGRATIONS]: NOTE - this may take a while, don't interrupt this process!
+2016-09-21 21:42:34,390 INFO  - OpenSim.Data.Migration [MIGRATIONS]: Creating RegionStore at version 1
+2016-09-21 21:42:34,555 INFO  - OpenSim.Data.Migration [MIGRATIONS]: Updating RegionStore to version 2
+2016-09-21 21:42:34,678 INFO  - OpenSim.Data.Migration [MIGRATIONS]: Updating RegionStore to version 3
+2016-09-21 21:42:34,736 INFO  - OpenSim.Data.Migration [MIGRATIONS]: Updating RegionStore to version 4
+2016-09-21 21:42:34,823 INFO  - OpenSim.Data.Migration [MIGRATIONS]: Updating RegionStore to version 5
+2016-09-21 21:42:35,646 INFO  - OpenSim.Data.Migration [MIGRATIONS]: Updating RegionStore to version 6
