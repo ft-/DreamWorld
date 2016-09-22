@@ -206,9 +206,7 @@ Public Class Form1
 
     Private Function zap(process As String) As Boolean
 
-        Print("Stopping " + process)
         ' Kill process by name
-
         For Each P As Process In System.Diagnostics.Process.GetProcessesByName(process)
             Try
                 P.Kill()
@@ -216,9 +214,7 @@ Public Class Form1
                 Debug.Print("Cannot locate " + process)
             End Try
         Next
-        Print("")
         zap = True
-
     End Function
 
     Private Sub Busy_Click(sender As System.Object, e As System.EventArgs)
@@ -242,7 +238,6 @@ Public Class Form1
         button.Visible = True
         Print("")
         Buttons = True
-
     End Function
 
     Private Sub Create_ShortCut(ByVal sTargetPath As String)
@@ -265,7 +260,7 @@ Public Class Form1
 
         TextBox1.Text = Value
         Application.DoEvents()
-        Sleep(500)  ' time to read
+        Sleep(1000)  ' time to read
 
     End Sub
 
@@ -297,8 +292,6 @@ Public Class Form1
         Print("Opensim is Stopped")
 
     End Sub
-
-
 
     Private Sub ShowToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles mnuShow.Click
 
@@ -423,8 +416,7 @@ Public Class Form1
         parser.Parser.Configuration.CommentString = ";" ' Opensim uses semicolons
 
         Dim Data = parser.ReadFile(filepath)
-        Dim value = Data(section)(key)
-        GetIni = value
+        GetIni = Data(section)(key)
 
     End Function
 
@@ -661,10 +653,11 @@ Public Class Form1
 
     Private Function OpenPorts()
 
-        Print("Checking your Router")
+        Print("Human is instructed to wait while I say hello to your router ...")
         Try
             If AllowFirewall() Then ' open uPNP port
-                Print("UPnP is Okay")
+
+                Print("...  continuing ...")
                 Return True
             Else
                 Print("UPnP Port Forward failed, so hypergrid may not be available")
@@ -674,6 +667,7 @@ Public Class Form1
             Print("Router is blocking a port so hypergrid may not be available")
             Return False
         End Try
+
     End Function
 
     Private Sub BusyButton_Click(sender As Object, e As EventArgs) Handles BusyButton.Click
@@ -682,14 +676,12 @@ Public Class Form1
         ZapAll()
         Buttons(StartButton)
         Print("Opensim is Stopped")
-
     End Sub
 
     Private Function xmlPath() As String
         ' gets the path to the %APPDATA% folder on windows so we can seek out the Onlook folders
         Dim appData As String = My.Computer.FileSystem.SpecialDirectories.CurrentUserApplicationData
         Return Mid(appData, 1, InStr(appData, "AppData") - 1)
-
     End Function
 
     Public Property Running() As Boolean
@@ -702,6 +694,7 @@ Public Class Form1
     End Property
 
     Private Sub AdminUIToolStripMenuItem1_Click(sender As Object, e As EventArgs) Handles AdminUIToolStripMenuItem1.Click
+
         If (Running) Then
             Dim webAddress As String = "http://127.0.0.1:8002/?r=" + Random()
             Process.Start(webAddress)
@@ -736,13 +729,11 @@ Public Class Form1
 
     End Sub
 
-    Private Function ZapAll()
+    Private Sub ZapAll()
 
         ' remove the console starup file
         Try
             My.Computer.FileSystem.DeleteFile(gCurDir & "\DreamworldFiles\" + My.Settings.Grid & "\bin\startup_commands.txt")
-
-
             If ContentLoading = False Then
                 Using outputFile As New StreamWriter(gCurDir & "\DreamworldFiles\" + My.Settings.Grid & "\bin\startup_commands.txt", True)
                     outputFile.WriteLine("save oar " + gCurDir & "\DreamworldFiles\Autobackup\DreamWorldBackup.oar")
@@ -765,10 +756,10 @@ Public Class Form1
         ProgressBar1.Value = 0
         Application.DoEvents()
         Running = False
-        ZapAll = True
 
         Print("Opensimulator is stopped. You can drag and drop new IAR and OAR content on this screen and it will be loaded when the simulation starts")
-    End Function
+
+    End Sub
 
 
     Private Sub TextBox1_DragDrop(sender As System.Object, e As System.Windows.Forms.DragEventArgs) Handles TextBox1.DragDrop
@@ -944,8 +935,8 @@ Public Class Form1
         ' Start MySql in background.  
         Print("Starting Database")
 
-        SetIni(gCurDir & "\DreamWorldFiles\mysql\my.ini", "mysqld", "basedir", gCurSlashDir + "/DreamWorldFiles/mysql", "#")
-        SetIni(gCurDir & "\DreamWorldFiles\mysql\My.ini", "mysqld", "datadir", gCurSlashDir + "/DreamWorldFiles/mysql/data", "#")
+        SetIni(gCurDir & "\DreamWorldFiles\mysql\my.ini", "mysqld", "basedir", """" + gCurSlashDir + "/DreamWorldFiles/Mysql" + """", "#")
+        SetIni(gCurDir & "\DreamWorldFiles\mysql\My.ini", "mysqld", "datadir", """" + gCurSlashDir + "/DreamWorldFiles/Mysql/Data" + """", "#")
 
         Dim p As Process = New Process()
         Dim pi As ProcessStartInfo = New ProcessStartInfo()
@@ -988,9 +979,8 @@ Public Class Form1
         Try
             My.Settings.PublicIP = client.DownloadString("https://api.ipify.org")
         Catch ex As Exception
-            Print("Cannot reach the Internet. Aborting")
-            ZapAll()
-            Buttons(StartButton)
+            Print("Cannot reach the Internet? Proceeding locally")
+            My.Settings.PublicIP = "127.0.0.1"
         End Try
 
         ProgressBar1.Value = progress
@@ -1005,8 +995,8 @@ Public Class Form1
         Catch ex As Exception
 
             Application.DoEvents()
-            MsgBox("See Info on screen about Loopback", vbExclamation)
-            Print("Hypergrid travel requires that your router support a feature named 'loopback'. See the Help section for 'Loopback' and how to enable it in Windows. ")
+            Print("Hypergrid travel requires a router with 'loopback'. It seems to be missing from yours. See the Help section for 'Loopback' and how to enable it in Windows. Opensim can still continue, but without Hypergrid.")
+            MsgBox("See Info on screen about Loopback. Opensim can still continue, but without Hypergrid", vbExclamation)
             My.Settings.PublicIP = "127.0.0.1" ' dang it, we cannot go to the hypergird
         End Try
 
