@@ -28,7 +28,6 @@ Partial Class Form1
         Me.StopButton = New System.Windows.Forms.Button()
         Me.StartButton = New System.Windows.Forms.Button()
         Me.InstallButton = New System.Windows.Forms.Button()
-        Me.BusyButton = New System.Windows.Forms.Button()
         Me.TextBox1 = New System.Windows.Forms.TextBox()
         Me.FileToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuExit = New System.Windows.Forms.ToolStripMenuItem()
@@ -39,12 +38,15 @@ Partial Class Form1
         Me.ViewerToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuOnlook = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuOther = New System.Windows.Forms.ToolStripMenuItem()
-        Me.UIToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.KokuaToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.CatznipToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.SingularityToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.FirestormToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.AlchemyToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.UKanDoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.VUI = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuEasy = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuFull = New System.Windows.Forms.ToolStripMenuItem()
-        Me.AdminUIToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuAdminHide = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuAdminShow = New System.Windows.Forms.ToolStripMenuItem()
         Me.AvatarToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuNoAvatar = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuYesAvatar = New System.Windows.Forms.ToolStripMenuItem()
@@ -58,6 +60,7 @@ Partial Class Form1
         Me.HelpToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuLogin = New System.Windows.Forms.ToolStripMenuItem()
         Me.AdminUIToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
         Me.LoopBackToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuAbout = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
@@ -78,6 +81,7 @@ Partial Class Form1
         Me.MoreContentToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.WebBrowser3 = New System.Windows.Forms.WebBrowser()
         Me.ProgressBar1 = New System.Windows.Forms.ProgressBar()
+        Me.BusyButton = New System.Windows.Forms.Button()
         Me.MenuStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -124,15 +128,6 @@ Partial Class Form1
         Me.InstallButton.Text = "Install"
         Me.InstallButton.UseVisualStyleBackColor = True
         '
-        'BusyButton
-        '
-        Me.BusyButton.Location = New System.Drawing.Point(222, 0)
-        Me.BusyButton.Name = "BusyButton"
-        Me.BusyButton.Size = New System.Drawing.Size(63, 23)
-        Me.BusyButton.TabIndex = 18
-        Me.BusyButton.Text = "Busy"
-        Me.BusyButton.UseVisualStyleBackColor = True
-        '
         'TextBox1
         '
         Me.TextBox1.AcceptsReturn = True
@@ -160,7 +155,7 @@ Partial Class Form1
         '
         'ConsoleToolStripMenuItem
         '
-        Me.ConsoleToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ConsoleToolStripMenuItem1, Me.ViewerToolStripMenuItem, Me.UIToolStripMenuItem, Me.AdminUIToolStripMenuItem, Me.AvatarToolStripMenuItem, Me.GridToolStripMenuItem, Me.AutoBackupToolStripMenuItem, Me.AdvancedSettingsToolStripMenuItem})
+        Me.ConsoleToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ConsoleToolStripMenuItem1, Me.ViewerToolStripMenuItem, Me.VUI, Me.AvatarToolStripMenuItem, Me.GridToolStripMenuItem, Me.AutoBackupToolStripMenuItem, Me.AdvancedSettingsToolStripMenuItem})
         Me.ConsoleToolStripMenuItem.Name = "ConsoleToolStripMenuItem"
         Me.ConsoleToolStripMenuItem.Size = New System.Drawing.Size(61, 20)
         Me.ConsoleToolStripMenuItem.Text = "Settings"
@@ -193,29 +188,72 @@ Partial Class Form1
         Me.ViewerToolStripMenuItem.Image = Global.DreamWorld.My.Resources.Resources.window_environment
         Me.ViewerToolStripMenuItem.Name = "ViewerToolStripMenuItem"
         Me.ViewerToolStripMenuItem.Size = New System.Drawing.Size(172, 22)
-        Me.ViewerToolStripMenuItem.Text = "Viewer"
+        Me.ViewerToolStripMenuItem.Text = "Viewer Type"
         '
         'mnuOnlook
         '
         Me.mnuOnlook.Checked = True
         Me.mnuOnlook.CheckState = System.Windows.Forms.CheckState.Checked
         Me.mnuOnlook.Name = "mnuOnlook"
-        Me.mnuOnlook.Size = New System.Drawing.Size(113, 22)
+        Me.mnuOnlook.Size = New System.Drawing.Size(152, 22)
         Me.mnuOnlook.Text = "Onlook"
         '
         'mnuOther
         '
+        Me.mnuOther.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.KokuaToolStripMenuItem, Me.CatznipToolStripMenuItem, Me.SingularityToolStripMenuItem, Me.FirestormToolStripMenuItem, Me.AlchemyToolStripMenuItem, Me.UKanDoToolStripMenuItem})
         Me.mnuOther.Name = "mnuOther"
-        Me.mnuOther.Size = New System.Drawing.Size(113, 22)
-        Me.mnuOther.Text = "Other"
+        Me.mnuOther.Size = New System.Drawing.Size(152, 22)
+        Me.mnuOther.Text = "Other "
         '
-        'UIToolStripMenuItem
+        'KokuaToolStripMenuItem
         '
-        Me.UIToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuEasy, Me.mnuFull})
-        Me.UIToolStripMenuItem.Image = Global.DreamWorld.My.Resources.Resources.window_edit
-        Me.UIToolStripMenuItem.Name = "UIToolStripMenuItem"
-        Me.UIToolStripMenuItem.Size = New System.Drawing.Size(172, 22)
-        Me.UIToolStripMenuItem.Text = "Viewer UI"
+        Me.KokuaToolStripMenuItem.Image = Global.DreamWorld.My.Resources.Resources.TPV_Kokua_Icon
+        Me.KokuaToolStripMenuItem.Name = "KokuaToolStripMenuItem"
+        Me.KokuaToolStripMenuItem.Size = New System.Drawing.Size(130, 22)
+        Me.KokuaToolStripMenuItem.Text = "Kokua"
+        '
+        'CatznipToolStripMenuItem
+        '
+        Me.CatznipToolStripMenuItem.Image = Global.DreamWorld.My.Resources.Resources.TPV_Catznip_2_Icon
+        Me.CatznipToolStripMenuItem.Name = "CatznipToolStripMenuItem"
+        Me.CatznipToolStripMenuItem.Size = New System.Drawing.Size(130, 22)
+        Me.CatznipToolStripMenuItem.Text = "Catznip"
+        '
+        'SingularityToolStripMenuItem
+        '
+        Me.SingularityToolStripMenuItem.Image = Global.DreamWorld.My.Resources.Resources.TPV_Singularity_Icon
+        Me.SingularityToolStripMenuItem.Name = "SingularityToolStripMenuItem"
+        Me.SingularityToolStripMenuItem.Size = New System.Drawing.Size(130, 22)
+        Me.SingularityToolStripMenuItem.Text = "Singularity"
+        '
+        'FirestormToolStripMenuItem
+        '
+        Me.FirestormToolStripMenuItem.Image = Global.DreamWorld.My.Resources.Resources.TPV_Firestorm_Icon
+        Me.FirestormToolStripMenuItem.Name = "FirestormToolStripMenuItem"
+        Me.FirestormToolStripMenuItem.Size = New System.Drawing.Size(130, 22)
+        Me.FirestormToolStripMenuItem.Text = "Firestorm"
+        '
+        'AlchemyToolStripMenuItem
+        '
+        Me.AlchemyToolStripMenuItem.Image = Global.DreamWorld.My.Resources.Resources.TPV_Alchemy_2_Icon
+        Me.AlchemyToolStripMenuItem.Name = "AlchemyToolStripMenuItem"
+        Me.AlchemyToolStripMenuItem.Size = New System.Drawing.Size(130, 22)
+        Me.AlchemyToolStripMenuItem.Text = "Alchemy"
+        '
+        'UKanDoToolStripMenuItem
+        '
+        Me.UKanDoToolStripMenuItem.Image = Global.DreamWorld.My.Resources.Resources.TPV_UKanDo_Icon
+        Me.UKanDoToolStripMenuItem.Name = "UKanDoToolStripMenuItem"
+        Me.UKanDoToolStripMenuItem.Size = New System.Drawing.Size(130, 22)
+        Me.UKanDoToolStripMenuItem.Text = "UKanDo"
+        '
+        'VUI
+        '
+        Me.VUI.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuEasy, Me.mnuFull})
+        Me.VUI.Image = Global.DreamWorld.My.Resources.Resources.window_edit
+        Me.VUI.Name = "VUI"
+        Me.VUI.Size = New System.Drawing.Size(172, 22)
+        Me.VUI.Text = "Viewer UI"
         '
         'mnuEasy
         '
@@ -231,49 +269,26 @@ Partial Class Form1
         Me.mnuFull.Size = New System.Drawing.Size(97, 22)
         Me.mnuFull.Text = "Full"
         '
-        'AdminUIToolStripMenuItem
-        '
-        Me.AdminUIToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuAdminHide, Me.mnuAdminShow})
-        Me.AdminUIToolStripMenuItem.Image = Global.DreamWorld.My.Resources.Resources.document_view
-        Me.AdminUIToolStripMenuItem.Name = "AdminUIToolStripMenuItem"
-        Me.AdminUIToolStripMenuItem.Size = New System.Drawing.Size(172, 22)
-        Me.AdminUIToolStripMenuItem.Text = "Admin UI"
-        Me.AdminUIToolStripMenuItem.Visible = False
-        '
-        'mnuAdminHide
-        '
-        Me.mnuAdminHide.Checked = True
-        Me.mnuAdminHide.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.mnuAdminHide.Name = "mnuAdminHide"
-        Me.mnuAdminHide.Size = New System.Drawing.Size(103, 22)
-        Me.mnuAdminHide.Text = "Hide"
-        '
-        'mnuAdminShow
-        '
-        Me.mnuAdminShow.Name = "mnuAdminShow"
-        Me.mnuAdminShow.Size = New System.Drawing.Size(103, 22)
-        Me.mnuAdminShow.Text = "Show"
-        '
         'AvatarToolStripMenuItem
         '
         Me.AvatarToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuNoAvatar, Me.mnuYesAvatar})
         Me.AvatarToolStripMenuItem.Image = Global.DreamWorld.My.Resources.Resources.users1
         Me.AvatarToolStripMenuItem.Name = "AvatarToolStripMenuItem"
         Me.AvatarToolStripMenuItem.Size = New System.Drawing.Size(172, 22)
-        Me.AvatarToolStripMenuItem.Text = "Avatar"
+        Me.AvatarToolStripMenuItem.Text = "Avatar Visible?"
         '
         'mnuNoAvatar
         '
         Me.mnuNoAvatar.Checked = True
         Me.mnuNoAvatar.CheckState = System.Windows.Forms.CheckState.Checked
         Me.mnuNoAvatar.Name = "mnuNoAvatar"
-        Me.mnuNoAvatar.Size = New System.Drawing.Size(91, 22)
+        Me.mnuNoAvatar.Size = New System.Drawing.Size(152, 22)
         Me.mnuNoAvatar.Text = "No"
         '
         'mnuYesAvatar
         '
         Me.mnuYesAvatar.Name = "mnuYesAvatar"
-        Me.mnuYesAvatar.Size = New System.Drawing.Size(91, 22)
+        Me.mnuYesAvatar.Size = New System.Drawing.Size(152, 22)
         Me.mnuYesAvatar.Text = "Yes"
         '
         'GridToolStripMenuItem
@@ -330,7 +345,7 @@ Partial Class Form1
         '
         'HelpToolStripMenuItem
         '
-        Me.HelpToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuLogin, Me.AdminUIToolStripMenuItem1, Me.LoopBackToolStripMenuItem, Me.mnuAbout})
+        Me.HelpToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuLogin, Me.AdminUIToolStripMenuItem1, Me.ToolStripMenuItem1, Me.LoopBackToolStripMenuItem, Me.mnuAbout})
         Me.HelpToolStripMenuItem.Name = "HelpToolStripMenuItem"
         Me.HelpToolStripMenuItem.Size = New System.Drawing.Size(44, 20)
         Me.HelpToolStripMenuItem.Text = "Help"
@@ -340,29 +355,36 @@ Partial Class Form1
         Me.mnuLogin.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None
         Me.mnuLogin.Image = Global.DreamWorld.My.Resources.Resources.about
         Me.mnuLogin.Name = "mnuLogin"
-        Me.mnuLogin.Size = New System.Drawing.Size(127, 22)
-        Me.mnuLogin.Text = "Login"
+        Me.mnuLogin.Size = New System.Drawing.Size(174, 22)
+        Me.mnuLogin.Text = "How to  Login"
         '
         'AdminUIToolStripMenuItem1
         '
         Me.AdminUIToolStripMenuItem1.Image = Global.DreamWorld.My.Resources.Resources.document_view
         Me.AdminUIToolStripMenuItem1.Name = "AdminUIToolStripMenuItem1"
-        Me.AdminUIToolStripMenuItem1.Size = New System.Drawing.Size(127, 22)
-        Me.AdminUIToolStripMenuItem1.Text = "Add Users"
+        Me.AdminUIToolStripMenuItem1.Size = New System.Drawing.Size(174, 22)
+        Me.AdminUIToolStripMenuItem1.Text = "Opensim Console"
+        '
+        'ToolStripMenuItem1
+        '
+        Me.ToolStripMenuItem1.Image = Global.DreamWorld.My.Resources.Resources.replace2
+        Me.ToolStripMenuItem1.Name = "ToolStripMenuItem1"
+        Me.ToolStripMenuItem1.Size = New System.Drawing.Size(174, 22)
+        Me.ToolStripMenuItem1.Text = "Help on Ports"
         '
         'LoopBackToolStripMenuItem
         '
-        Me.LoopBackToolStripMenuItem.Image = Global.DreamWorld.My.Resources.Resources.server_client
+        Me.LoopBackToolStripMenuItem.Image = Global.DreamWorld.My.Resources.Resources.refresh
         Me.LoopBackToolStripMenuItem.Name = "LoopBackToolStripMenuItem"
-        Me.LoopBackToolStripMenuItem.Size = New System.Drawing.Size(127, 22)
-        Me.LoopBackToolStripMenuItem.Text = "LoopBack"
+        Me.LoopBackToolStripMenuItem.Size = New System.Drawing.Size(174, 22)
+        Me.LoopBackToolStripMenuItem.Text = "Help on LoopBack "
         '
         'mnuAbout
         '
         Me.mnuAbout.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None
         Me.mnuAbout.Image = Global.DreamWorld.My.Resources.Resources.question_and_answer
         Me.mnuAbout.Name = "mnuAbout"
-        Me.mnuAbout.Size = New System.Drawing.Size(127, 22)
+        Me.mnuAbout.Size = New System.Drawing.Size(174, 22)
         Me.mnuAbout.Text = "About"
         '
         'MenuStrip1
@@ -491,10 +513,19 @@ Partial Class Form1
         '
         'ProgressBar1
         '
-        Me.ProgressBar1.Location = New System.Drawing.Point(303, 7)
+        Me.ProgressBar1.Location = New System.Drawing.Point(298, 8)
         Me.ProgressBar1.Name = "ProgressBar1"
-        Me.ProgressBar1.Size = New System.Drawing.Size(78, 11)
+        Me.ProgressBar1.Size = New System.Drawing.Size(83, 10)
         Me.ProgressBar1.TabIndex = 24
+        '
+        'BusyButton
+        '
+        Me.BusyButton.Location = New System.Drawing.Point(222, 0)
+        Me.BusyButton.Name = "BusyButton"
+        Me.BusyButton.Size = New System.Drawing.Size(63, 23)
+        Me.BusyButton.TabIndex = 18
+        Me.BusyButton.Text = "Busy"
+        Me.BusyButton.UseVisualStyleBackColor = True
         '
         'Form1
         '
@@ -547,12 +578,9 @@ Partial Class Form1
     Friend WithEvents ConsoleToolStripMenuItem1 As ToolStripMenuItem
     Friend WithEvents mnuHide As ToolStripMenuItem
     Friend WithEvents mnuShow As ToolStripMenuItem
-    Friend WithEvents UIToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents VUI As ToolStripMenuItem
     Friend WithEvents mnuEasy As ToolStripMenuItem
     Friend WithEvents mnuFull As ToolStripMenuItem
-    Friend WithEvents AdminUIToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents mnuAdminHide As ToolStripMenuItem
-    Friend WithEvents mnuAdminShow As ToolStripMenuItem
     Friend WithEvents AvatarToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents mnuNoAvatar As ToolStripMenuItem
     Friend WithEvents mnuYesAvatar As ToolStripMenuItem
@@ -591,4 +619,11 @@ Partial Class Form1
     Friend WithEvents LoopBackToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents MoreContentToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents AdvancedSettingsToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents ToolStripMenuItem1 As ToolStripMenuItem
+    Friend WithEvents FirestormToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents AlchemyToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents UKanDoToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents KokuaToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents CatznipToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents SingularityToolStripMenuItem As ToolStripMenuItem
 End Class

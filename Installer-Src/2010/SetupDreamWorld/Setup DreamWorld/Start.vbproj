@@ -73,10 +73,11 @@
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>7EF64813A4429307962716665DC8BF4A3CFF568E</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>076FB211DAD6ABF8C929A51E7F65D4F18584A321</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>Setup DreamWorld_1_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>
+    </ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>false</GenerateManifests>
@@ -85,7 +86,7 @@
     <SignManifests>false</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <TargetZone>LocalIntranet</TargetZone>
+    <TargetZone>Internet</TargetZone>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
@@ -95,6 +96,10 @@
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="INIFileParser, Version=2.3.0.0, Culture=neutral, PublicKeyToken=79af7b307b65cf3c, processorArchitecture=MSIL">
@@ -228,6 +233,17 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="cubes.ico" />
+    <None Include="Resources\TPV-Black_Dragon-Icon.png" />
+    <None Include="Resources\TPV-Singularity-Icon.png" />
+    <None Include="Resources\TPV-Catznip-2-Icon.png" />
+    <None Include="Resources\TPV-Kokua-Icon.png" />
+    <None Include="Resources\TPV-UKanDo-Icon.png" />
+    <None Include="Resources\TPV-Alchemy-2-Icon.png" />
+    <None Include="Resources\TPV-Firestorm-Icon.png" />
+    <None Include="Resources\flash.png" />
+    <None Include="Resources\refresh.png" />
+    <None Include="Resources\replace2.png" />
+    <None Include="Resources\recycle.png" />
     <None Include="Resources\earth_network.png" />
     <None Include="Resources\download.png" />
     <None Include="Resources\server_client.png" />

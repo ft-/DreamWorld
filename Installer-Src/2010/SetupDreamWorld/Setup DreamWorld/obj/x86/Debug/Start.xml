@@ -87,6 +87,11 @@ Start
   Looks up a localized resource of type System.Drawing.Bitmap.
 </summary>
 </member>
+<member name="P:DreamWorld.My.Resources.Resources.flash">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
 <member name="P:DreamWorld.My.Resources.Resources.gear_pause">
 <summary>
   Looks up a localized resource of type System.Drawing.Bitmap.
@@ -97,7 +102,57 @@ Start
   Looks up a localized resource of type System.Drawing.Bitmap.
 </summary>
 </member>
+<member name="P:DreamWorld.My.Resources.Resources.recycle">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:DreamWorld.My.Resources.Resources.refresh">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:DreamWorld.My.Resources.Resources.replace2">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
 <member name="P:DreamWorld.My.Resources.Resources.server_client">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:DreamWorld.My.Resources.Resources.TPV_Alchemy_2_Icon">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:DreamWorld.My.Resources.Resources.TPV_Black_Dragon_Icon">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:DreamWorld.My.Resources.Resources.TPV_Catznip_2_Icon">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:DreamWorld.My.Resources.Resources.TPV_Firestorm_Icon">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:DreamWorld.My.Resources.Resources.TPV_Kokua_Icon">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:DreamWorld.My.Resources.Resources.TPV_Singularity_Icon">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:DreamWorld.My.Resources.Resources.TPV_UKanDo_Icon">
 <summary>
   Looks up a localized resource of type System.Drawing.Bitmap.
 </summary>

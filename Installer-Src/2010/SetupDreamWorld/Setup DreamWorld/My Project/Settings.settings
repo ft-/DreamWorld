@@ -2,19 +2,16 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="My" GeneratedClassName="MySettings" UseMySettingsClassName="true">
   <Profiles />
   <Settings>
-    <Setting Name="Console" Type="System.Boolean" Scope="User">
+    <Setting Name="ConsoleShow" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="AvatarShow" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="Avatar" Type="System.Boolean" Scope="User">
+    <Setting Name="ViewerEase" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="Admin" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
-    <Setting Name="Viewer" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
-    <Setting Name="Grid" Type="System.String" Scope="User">
+    <Setting Name="GridFolder" Type="System.String" Scope="User">
       <Value Profile="(Default)">Hypergrid</Value>
     </Setting>
     <Setting Name="AutoBackup" Type="System.Boolean" Scope="User">
@@ -26,9 +23,6 @@
     <Setting Name="PublicIP" Type="System.String" Scope="User">
       <Value Profile="(Default)">127.0.0.1</Value>
     </Setting>
-    <Setting Name="Startup" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
     <Setting Name="Onlook" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
@@ -36,19 +30,22 @@
       <Value Profile="(Default)">DreamWorld</Value>
     </Setting>
     <Setting Name="CoordX" Type="System.String" Scope="User">
-      <Value Profile="(Default)">2339</Value>
+      <Value Profile="(Default)">2000</Value>
     </Setting>
     <Setting Name="CoordY" Type="System.String" Scope="User">
-      <Value Profile="(Default)">1446</Value>
+      <Value Profile="(Default)">2000</Value>
     </Setting>
     <Setting Name="PrivatePort" Type="System.String" Scope="User">
       <Value Profile="(Default)">8003</Value>
     </Setting>
     <Setting Name="SizeX" Type="System.String" Scope="User">
-      <Value Profile="(Default)">512</Value>
+      <Value Profile="(Default)">256</Value>
     </Setting>
     <Setting Name="SizeY" Type="System.String" Scope="User">
-      <Value Profile="(Default)">512</Value>
+      <Value Profile="(Default)">256</Value>
+    </Setting>
+    <Setting Name="WifiPort" Type="System.String" Scope="User">
+      <Value Profile="(Default)">9000</Value>
     </Setting>
   </Settings>
 </SettingsFile>

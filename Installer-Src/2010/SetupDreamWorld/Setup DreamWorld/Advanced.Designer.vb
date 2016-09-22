@@ -246,6 +246,21 @@ Partial Class Advanced
     End Sub
 
     Private Sub Advanced_Load(sender As Object, e As EventArgs) Handles Me.Load
+
+        If My.Settings.SizeX = "256" And My.Settings.SizeY = "256" Then
+            Check256.Checked = True
+            Check512.Checked = False
+            Check1024.Checked = False
+        ElseIf My.Settings.SizeX = "512" And My.Settings.SizeY = "512" Then
+            Check256.Checked = False
+            Check512.Checked = True
+            Check1024.Checked = False
+        ElseIf My.Settings.SizeX = "1024" And My.Settings.SizeY = "1024" Then
+            Check256.Checked = False
+            Check512.Checked = False
+            Check1024.Checked = True
+        End If
+
         Y.Text = My.Settings.CoordY
         X.Text = My.Settings.CoordX
         PublicPort.Text = My.Settings.PublicPort

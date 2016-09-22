@@ -56,61 +56,49 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
-        Public Property Console() As Boolean
+         Global.System.Configuration.DefaultSettingValueAttribute("True")>  _
+        Public Property ConsoleShow() As Boolean
             Get
-                Return CType(Me("Console"),Boolean)
+                Return CType(Me("ConsoleShow"),Boolean)
             End Get
             Set
-                Me("Console") = value
+                Me("ConsoleShow") = value
             End Set
         End Property
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
-        Public Property Avatar() As Boolean
+        Public Property AvatarShow() As Boolean
             Get
-                Return CType(Me("Avatar"),Boolean)
+                Return CType(Me("AvatarShow"),Boolean)
             End Get
             Set
-                Me("Avatar") = value
+                Me("AvatarShow") = value
             End Set
         End Property
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
-        Public Property Admin() As Boolean
+        Public Property ViewerEase() As Boolean
             Get
-                Return CType(Me("Admin"),Boolean)
+                Return CType(Me("ViewerEase"),Boolean)
             End Get
             Set
-                Me("Admin") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
-        Public Property Viewer() As Boolean
-            Get
-                Return CType(Me("Viewer"),Boolean)
-            End Get
-            Set
-                Me("Viewer") = value
+                Me("ViewerEase") = value
             End Set
         End Property
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("Hypergrid")>  _
-        Public Property Grid() As String
+        Public Property GridFolder() As String
             Get
-                Return CType(Me("Grid"),String)
+                Return CType(Me("GridFolder"),String)
             End Get
             Set
-                Me("Grid") = value
+                Me("GridFolder") = value
             End Set
         End Property
         
@@ -152,18 +140,6 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
-        Public Property Startup() As Boolean
-            Get
-                Return CType(Me("Startup"),Boolean)
-            End Get
-            Set
-                Me("Startup") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("True")>  _
         Public Property Onlook() As Boolean
             Get
@@ -188,7 +164,7 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("2339")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("2000")>  _
         Public Property CoordX() As String
             Get
                 Return CType(Me("CoordX"),String)
@@ -200,7 +176,7 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("1446")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("2000")>  _
         Public Property CoordY() As String
             Get
                 Return CType(Me("CoordY"),String)
@@ -224,7 +200,7 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("512")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("256")>  _
         Public Property SizeX() As String
             Get
                 Return CType(Me("SizeX"),String)
@@ -236,13 +212,25 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("512")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("256")>  _
         Public Property SizeY() As String
             Get
                 Return CType(Me("SizeY"),String)
             End Get
             Set
                 Me("SizeY") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("9000")>  _
+        Public Property WifiPort() As String
+            Get
+                Return CType(Me("WifiPort"),String)
+            End Get
+            Set
+                Me("WifiPort") = value
             End Set
         End Property
     End Class
