@@ -22,6 +22,9 @@ Public Class Form1
     Dim ContentLoading As Boolean
     Dim client As New System.Net.WebClient
     Dim Adv As New Advanced ' Bring the form into memory 
+    Dim pMySql As Process = New Process()
+    Dim pOpensim As Process = New Process()
+    Dim pOnlook As Process = New Process()
 
     Private Sub Form1_Leave(sender As Object, e As System.EventArgs) Handles Me.Leave
         Log("Info:Exit")
@@ -29,16 +32,20 @@ Public Class Form1
     End Sub
 
     Private Sub Form1_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        Buttons(BusyButton)
+        ProgressBar1.Visible = False
+
         Me.Show()
 
         Me.AllowDrop = True
         TextBox1.AllowDrop = True
 
         Running = False ' true when opensim is running
-        gCurDir = My.Application.Info.DirectoryPath
-        gCurSlashDir = gCurDir.Replace("\", "/")    ' becuase Mysql uses unix like slashes, that's why
 
-        ProgressBar1.Visible = False
+        MyFolder = My.Application.Info.DirectoryPath
+
+        gCurSlashDir = MyFolder.Replace("\", "/")    ' becuase Mysql uses unix like slashes, that's why
+
         ' I would like to buy an argument
         Dim arguments As String() = Environment.GetCommandLineArgs()
 
@@ -48,20 +55,11 @@ Public Class Form1
                 ' Clean up the file system
                 CleanAll()
             ElseIf arguments(1) = "debug" Then
-
-                gCurDir = "\DreamWorld" ' for testing, as the compiler buries itself in ../../../debug
+                MyFolder = "\DreamWorld" ' for testing, as the compiler buries itself in ../../../debug
                 Log("Info:Using Debug folder \Dreamworld")
                 gCurSlashDir = "/DreamWorld"
             End If
         End If
-
-        Try
-            My.Computer.FileSystem.DeleteFile(gCurDir & "\DreamWorldFiles\DreamWorld.log")
-        Catch
-            Log("Warn:Could not find the DreamWorld Log file")
-        End Try
-
-
         ZapAll()
 
         Try
@@ -105,14 +103,14 @@ Public Class Form1
             ProgressBar1.Value = 10
 
             Print("Installing Onlook Viewer")
-            Dim p As Process = New Process()
+
             Dim pi As ProcessStartInfo = New ProcessStartInfo()
             pi.Arguments = ""
             pi.FileName = gCurDir & "\Viewer\Onlook.exe"
-            p.StartInfo = pi
+            pOnlook.StartInfo = pi
             Try
                 Log("Info:Launching Onlook installer")
-                p.Start()
+                pOnlook.Start()
             Catch
                 Log("Error:Onlook installer failed to load")
             End Try
@@ -150,12 +148,18 @@ Public Class Form1
                 outputFile.WriteLine("This file lets Dreamworld know it has been installed and to benchmark the network loopback")
             End Using
 
-            mnuShow.Checked = My.Settings.ConsoleShow
-
         End If
 
     End Sub
     Private Sub StartButton_Click(sender As System.Object, e As System.EventArgs) Handles StartButton.Click
+
+        Try
+            My.Computer.FileSystem.DeleteFile(gCurDir & "\DreamWorldFiles\DreamWorld.log")
+        Catch
+            Log("Warn:Could not find the DreamWorld Log file")
+        End Try
+
+
 
         ' Set up the progres bar for 0-100
         ProgressBar1.Visible = True
@@ -202,7 +206,7 @@ Public Class Form1
         SetINIFromSettings()    ' set up the INI files
         ContentLoading = True ' set this flag so we do not save the oar automatically.
 
-        Opensimulator(98) ' Launch the rocket
+        Start_Opensimulator(98) ' Launch the rocket
 
         Onlook(100)
 
@@ -320,7 +324,7 @@ Public Class Form1
     End Sub
 
     Private Sub ShowToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles mnuShow.Click
-        Print("The Opensimulator Console will be shown when the system is running.")
+        Print("The Opensimulator Console will be shown when Opensim is running.")
         mnuShow.Checked = True
         mnuHide.Checked = False
         My.Settings.ConsoleShow = mnuShow.Checked
@@ -334,9 +338,10 @@ Public Class Form1
         Print("The Opensimulator Console will not be shown. You can still interact with it with Help->Opensim Console")
         mnuShow.Checked = False
         mnuHide.Checked = True
+        My.Settings.ConsoleShow = mnuShow.Checked
         My.Settings.Save()
         If Running Then
-            Print("The Opensimulator Console will not be shown. Change will occur when the system is restarted")
+            Print("The Opensimulator Console will not be shown. Change will occur when Opensim is restarted")
         End If
     End Sub
 
@@ -500,7 +505,7 @@ Public Class Form1
         'mnuShow shows the DOS box for Opensimulator
         mnuShow.Checked = My.Settings.ConsoleShow
         mnuHide.Checked = Not My.Settings.ConsoleShow
-        If mnuShow.Checked Then
+        If My.Settings.ConsoleShow Then
             Log("Info:Console will be shown")
         End If
 
@@ -743,6 +748,8 @@ Public Class Form1
 
     Private Sub ZapAll()
 
+
+
         ' remove the console startup file
         Try
             My.Computer.FileSystem.DeleteFile(gCurDir & "\DreamworldFiles\" + My.Settings.GridFolder & "\bin\startup_commands.txt")
@@ -763,10 +770,14 @@ Public Class Form1
         End Try
 
         ProgressBar1.Value = 100
-        zap("OpenSim")
+        pOpensim.Close()
+        ' zap("OpenSim")
         ProgressBar1.Value = 50
-        zap("mysqld-nt")
-        zap("OnlookViewer")
+        'zap("mysqld-nt")
+        pMySql.Close()
+
+        'zap("OnlookViewer")
+        pOnlook.Close()
         ProgressBar1.Value = 0
         Application.DoEvents()
         Running = False
@@ -927,13 +938,13 @@ Public Class Form1
         SetIni(gCurDir & "\DreamWorldFiles\mysql\my.ini", "mysqld", "basedir", """" + gCurSlashDir + "/DreamWorldFiles/Mysql" + """", "#")
         SetIni(gCurDir & "\DreamWorldFiles\mysql\My.ini", "mysqld", "datadir", """" + gCurSlashDir + "/DreamWorldFiles/Mysql/Data" + """", "#")
 
-        Dim p As Process = New Process()
+
         Dim pi As ProcessStartInfo = New ProcessStartInfo()
         pi.Arguments = "--defaults-file=" + gCurSlashDir + "/DreamworldFiles/mysql/my.ini"
         pi.WindowStyle = ProcessWindowStyle.Hidden
         pi.FileName = gCurDir & "\DreamWorldFiles\mysql\bin\mysqld-nt.exe"
-        p.StartInfo = pi
-        p.Start()
+        pMySql.StartInfo = pi
+        pMySql.Start()
 
         ProgressBar1.Value = progress / 2
 
@@ -987,15 +998,9 @@ Public Class Form1
         ProgressBar1.Value = progress
     End Sub
 
-    Private Sub Opensimulator(progress As Integer)
+    Private Sub Start_Opensimulator(progress As Integer)
         Print("Starting Opensimulator")
 
-        Dim p As Process = New Process()
-        If mnuHide.Checked Then
-            p.StartInfo.UseShellExecute = False
-            p.StartInfo.RedirectStandardOutput = True
-
-        End If
 
         Dim pi As ProcessStartInfo = New ProcessStartInfo()
         pi.WorkingDirectory = gCurDir & "\DreamWorldFiles\" & My.Settings.GridFolder & "\bin\"
@@ -1010,9 +1015,10 @@ Public Class Form1
         End If
 
         pi.FileName = gCurDir & "\DreamWorldFiles\" & My.Settings.GridFolder & "\bin\OpenSim.exe"
-        p.StartInfo = pi
+        pOpensim.StartInfo = pi
+
         Try
-            p.Start()
+            pOpensim.Start()
         Catch
             Dim yesno = MsgBox("Opensim did not start. Do you want to see the log file?", vbYesNo)
             If (yesno = vbYes) Then
@@ -1023,14 +1029,6 @@ Public Class Form1
             Buttons(StartButton)
             Return
         End Try
-
-        If mnuHide.Checked Then
-            ' To avoid deadlocks, always read the output stream first And then wait.
-            Dim output = p.StandardOutput.ReadToEnd()
-            p.WaitForExit()
-            Print(output)
-        End If
-
 
         ' Wait for Opensim to start listening via wifi
         Dim Up = ""
@@ -1070,8 +1068,8 @@ Public Class Form1
         ContentLoading = False ' the server is now loaded, so flip the content switch off.  The server will do a Autobackup on the next startup.
         ProgressBar1.Value = progress
 
-
     End Sub
+
     Private Sub Onlook(progess As Integer)
 
         If My.Settings.Onlook Then
@@ -1178,7 +1176,7 @@ Public Class Form1
         Process.Start(webAddress)
     End Sub
 
-    Private Function Log(message As String)
+    Public Function Log(message As String)
         Using outputFile As New StreamWriter(gCurDir & "\DreamworldFiles\DreamWorld.log", True)
             outputFile.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + message)
         End Using
@@ -1186,5 +1184,15 @@ Public Class Form1
     End Function
 
 
+    Public Property MyFolder() As String
+        Get
+            Return gCurDir
+        End Get
+        Set(ByVal Value As String)
+            gCurDir = Value
+        End Set
+    End Property
+
 End Class
+
 

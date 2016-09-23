@@ -113,7 +113,7 @@ Public Class WebServer
         'now go through the mime definitions and apply to the request.
         Dim dom As New XmlDocument
 
-        dom.Load(Application.StartupPath & "\Mime.xml")    ' was Settings.xml
+        dom.Load(My.Application.Info.DirectoryPath & "\Mime.xml")    ' was Settings.xml
         Dim objCurrentNode As XmlNode
         objCurrentNode = dom.SelectSingleNode("//mimetypes")
         'now go through all child nodes.
@@ -210,7 +210,13 @@ Public Class WebServer
         Dim sFormattedMessage As String = ""
         Do While True
             'accept new socket connection
-            Dim mySocket As Socket = LocalTCPListener.AcceptSocket
+            Dim mySocket As Socket
+            Try
+                mySocket = LocalTCPListener.AcceptSocket
+            Catch
+                Form1.Log("Socket error on listener")
+            End Try
+
             If mySocket.Connected Then
                 Dim bReceive() As Byte = New [Byte](1024) {}
                 Dim i As Integer = mySocket.Receive(bReceive, bReceive.Length, 0)
