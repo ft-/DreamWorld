@@ -31,12 +31,10 @@ Partial Class AdvancedForm
         Me.SizeY = New System.Windows.Forms.TextBox()
         Me.SizeX = New System.Windows.Forms.TextBox()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
-        Me.Label6 = New System.Windows.Forms.Label()
         Me.Label5 = New System.Windows.Forms.Label()
         Me.Label4 = New System.Windows.Forms.Label()
         Me.PrivatePort = New System.Windows.Forms.TextBox()
         Me.PublicPort = New System.Windows.Forms.TextBox()
-        Me.WifiPort = New System.Windows.Forms.TextBox()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.SuspendLayout()
@@ -121,8 +119,6 @@ Partial Class AdvancedForm
         '
         'GroupBox2
         '
-        Me.GroupBox2.Controls.Add(Me.WifiPort)
-        Me.GroupBox2.Controls.Add(Me.Label6)
         Me.GroupBox2.Controls.Add(Me.Label5)
         Me.GroupBox2.Controls.Add(Me.Label4)
         Me.GroupBox2.Controls.Add(Me.PrivatePort)
@@ -133,15 +129,6 @@ Partial Class AdvancedForm
         Me.GroupBox2.TabIndex = 5
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Ports"
-        '
-        'Label6
-        '
-        Me.Label6.AutoSize = True
-        Me.Label6.Location = New System.Drawing.Point(6, 72)
-        Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(47, 13)
-        Me.Label6.TabIndex = 6
-        Me.Label6.Text = "Wifi Port"
         '
         'Label5
         '
@@ -175,13 +162,6 @@ Partial Class AdvancedForm
         Me.PublicPort.Size = New System.Drawing.Size(47, 20)
         Me.PublicPort.TabIndex = 0
         '
-        'WifiPort
-        '
-        Me.WifiPort.Location = New System.Drawing.Point(82, 69)
-        Me.WifiPort.Name = "WifiPort"
-        Me.WifiPort.Size = New System.Drawing.Size(47, 20)
-        Me.WifiPort.TabIndex = 7
-        '
         'AdvancedForm
         '
         Me.ClientSize = New System.Drawing.Size(408, 149)
@@ -208,7 +188,5 @@ Partial Class AdvancedForm
     Friend WithEvents PublicPort As TextBox
     Friend WithEvents Label4 As Label
     Friend WithEvents PrivatePort As TextBox
-    Friend WithEvents Label6 As Label
     Friend WithEvents Label5 As Label
-    Friend WithEvents WifiPort As TextBox
 End Class

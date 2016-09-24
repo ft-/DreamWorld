@@ -306,7 +306,7 @@ Public Class Form1
     End Sub
 
     Private Sub mnuLogin_Click(sender As System.Object, e As System.EventArgs) Handles mnuLogin.Click
-        Print("UserID 'Dream World' has a password of '123'. You can also use Help->Opensim Console to create a new avatar.")
+        Print("'Dream Guy ' and 'Dream Girl' have a password of '123'. You can also use Help->Opensim Console to create a new avatar or change passwords.")
     End Sub
 
     Private Sub mnuAbout_Click(sender As System.Object, e As System.EventArgs) Handles mnuAbout.Click
@@ -385,7 +385,7 @@ Public Class Form1
     Private Sub WebUIToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs)
         Print("The Web UI lets you add or view settings for the default avatar. ")
         If Running Then
-            Dim webAddress As String = "http://127.0.0.1:" + My.Settings.WifiPort
+            Dim webAddress As String = "http://127.0.0.1:" + My.Settings.PublicPort
             Process.Start(webAddress)
         End If
     End Sub
@@ -693,7 +693,7 @@ Public Class Form1
 
     Private Sub AdminUIToolStripMenuItem1_Click(sender As Object, e As EventArgs) Handles AdminUIToolStripMenuItem1.Click
         If (Running) Then
-            Dim webAddress As String = "http://127.0.0.1:" + My.Settings.PublicPort + "/?r=" + Random()
+            Dim webAddress As String = "http://127.0.0.1:" + My.Settings.PublicPort
             Process.Start(webAddress)
             Print("Log in as 'Wifi Administrator' with a password of 'secret' to add users")
         Else
@@ -1029,7 +1029,7 @@ Public Class Form1
         ' Wait for Opensim to start listening via wifi
         Dim Up = ""
         Try
-            Up = client.DownloadString("http://127.0.0.1:" + +My.Settings.WifiPort + "/?r=" + Random())
+            Up = client.DownloadString("http://127.0.0.1:" + +My.Settings.PublicPort + "/?r=" + Random())
         Catch ex As Exception
             Up = ""
         End Try

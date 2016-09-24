@@ -30,7 +30,7 @@
 
         PublicPort.Text = My.Settings.PublicPort
         PrivatePort.Text = My.Settings.PrivatePort
-        WifiPort.Text = My.Settings.WifiPort
+
     End Sub
 
     Private Sub CheckBox256_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBox256.CheckedChanged
@@ -116,9 +116,7 @@
         My.Settings.Save()
     End Sub
     Private Sub Form2_Closed(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Closed
-
         Form1.ActualForm = Nothing
-
     End Sub
 
 End Class
