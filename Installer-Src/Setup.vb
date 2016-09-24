@@ -968,8 +968,7 @@ Public Class Form1
         Dim pi As ProcessStartInfo = New ProcessStartInfo()
         pi.WorkingDirectory = gCurDir & "\DreamWorldFiles\" & My.Settings.GridFolder & "\bin\"
 
-
-        If ContentLoading Then
+        If ContentLoading.Length Then
             Log("Info:Opensim console is forced visible")
             pi.Arguments = ""
             pi.WindowStyle = ProcessWindowStyle.Normal
