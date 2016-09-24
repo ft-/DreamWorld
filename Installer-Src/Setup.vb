@@ -21,10 +21,10 @@ Public Class Form1
     Dim ws As WebServer
     Dim ContentLoading As Boolean
     Dim client As New System.Net.WebClient
-    Dim Adv As New Advanced ' Bring the form into memory 
     Dim pMySql As Process = New Process()
     Dim pOpensim As Process = New Process()
     Dim pOnlook As Process = New Process()
+    Private Shared m_ActiveForm As Form
 
     Private Sub Form1_Leave(sender As Object, e As System.EventArgs) Handles Me.Leave
         Log("Info:Exit")
@@ -32,6 +32,8 @@ Public Class Form1
     End Sub
 
     Private Sub Form1_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+
+
         Buttons(BusyButton)
         ProgressBar1.Visible = False
 
@@ -572,31 +574,6 @@ Public Class Form1
             My.Settings.AutoBackup = False
         End If
 
-        If My.Settings.SizeX = 256 And My.Settings.SizeY = 256 Then
-            Log("Info:Grid is 256X256")
-            Adv.Check256.Checked = True
-            Adv.Check512.Checked = False
-            Adv.Check1024.Checked = False
-        ElseIf My.Settings.SizeX = 512 And My.Settings.SizeY = 512 Then
-            Log("Info:Grid is 512X512")
-            Adv.Check256.Checked = False
-            Adv.Check512.Checked = True
-            Adv.Check1024.Checked = False
-        ElseIf My.Settings.SizeX = 1024 And My.Settings.SizeY = 1024 Then
-            Log("Info:Grid is 1024X1024")
-            Adv.Check256.Checked = False
-            Adv.Check512.Checked = False
-            Adv.Check1024.Checked = True
-        Else
-            Log("Info:Grid is manually set to " + My.Settings.SizeX + My.Settings.SizeY)
-            Adv.Check256.Checked = False
-            Adv.Check512.Checked = False
-            Adv.Check1024.Checked = False
-            Adv.SizeX.Text = My.Settings.SizeX
-            Adv.SizeY.Text = My.Settings.SizeY
-        End If
-
-
         ' RegionConfig
         SetIni(gCurDir + "\DreamWorldFiles\" + My.Settings.GridFolder + "\bin\Regions\RegionConfig.ini", "DreamWorld", "SizeY", My.Settings.SizeY, ";")
         SetIni(gCurDir + "\DreamWorldFiles\" + My.Settings.GridFolder + "\bin\Regions\RegionConfig.ini", "DreamWorld", "SizeX", My.Settings.SizeX, ";")
@@ -670,7 +647,7 @@ Public Class Form1
 
     Private Function OpenPorts()
 
-        Print("Human is instructed to wait while I say hello to your router ...")
+        Print("The human is instructed to wait while I check out your router ...")
         Try
             If AllowFirewall() Then ' open uPNP port
                 Log("uPnp:Ok")
@@ -773,6 +750,19 @@ Public Class Form1
         pOpensim.Close()
         zap("OpenSim")
         ProgressBar1.Value = 50
+
+        Dim p As Process = New Process()
+        Dim pi As ProcessStartInfo = New ProcessStartInfo()
+        pi.Arguments = " - u root shutdown"
+        pi.FileName = gCurDir + "\DreamWorldFiles\mysql\bin\mysqladmin.exe"
+        pi.WindowStyle = ProcessWindowStyle.Minimized
+        p.StartInfo = pi
+        Try
+            p.Start()
+        Catch
+            Log("Error:mysqladmin failed to launch to stop opensim")
+        End Try
+
         zap("mysqld-nt")
         pMySql.Close()
 
@@ -786,7 +776,7 @@ Public Class Form1
 
     Private Sub TextBox1_DragDrop(sender As System.Object, e As System.Windows.Forms.DragEventArgs) Handles TextBox1.DragDrop
         Dim files() As String = e.Data.GetData(DataFormats.FileDrop)
-        ContentLoading = True
+
 
         For Each pathname In files
             pathname.Replace("\", "/")
@@ -796,15 +786,18 @@ Public Class Form1
                 SimContent(pathname, extension)
                 Log("Info:Load iar " + pathname)
                 Print("Opensim will load your file when it is restarted. This may take time to load. You will find it in your inventory.")
+                ContentLoading = True
             ElseIf extension.ToLower = "oar" Then
                 SimContent(pathname, extension)
                 Log("Info:Load oar " + pathname)
                 Print("Opensim will load your file when it is restarted. This may take time to load.")
+                ContentLoading = True
             ElseIf extension.ToLower = ".gz" Then
                 Log("Info:Load oar " + pathname)
                 SimContent(pathname, extension)
                 Log("Info:Load gz " + pathname)
                 Print("Opensim will load your file when it is restarted. This may take time to load.")
+                ContentLoading = True
             Else
                 Log("Info:Unrecognized file type:" + extension)
                 Print("Unrecognized file type:" + extension + ".  Drag and drop any OAR or IAR files to load them when the sim starts")
@@ -1097,14 +1090,15 @@ Public Class Form1
 
     Private Sub AdvancedSettingsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AdvancedSettingsToolStripMenuItem.Click
 
-        Adv.Visible = True
-
+        ActualForm = New AdvancedForm ' Bring the form into memory 
         ' Set the new form's desktop location so it appears below and 
         ' to the right of the current form.
-        Adv.SetDesktopLocation(200, 200)
 
-        ' Keep the current form active by calling the Activate method.
-        Adv.Activate()
+        ActualForm.SetDesktopLocation(300, 200)
+
+        ActualForm.Activate()
+        ActualForm.Visible = True
+
     End Sub
 
     Private Sub InstallGridXML()
@@ -1196,6 +1190,16 @@ Public Class Form1
         End Set
     End Property
 
+    Public Shared Property ActualForm() As Form
+        Get
+            ActualForm = m_ActiveForm
+        End Get
+        Set(ByVal Value As Form)
+            m_ActiveForm = Value
+        End Set
+    End Property
+
 End Class
+
 
 

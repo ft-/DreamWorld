@@ -31,7 +31,6 @@ C:\Opensim\DreamWorld-GitHub\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld
 C:\Opensim\DreamWorld-GitHub\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Debug\Start.exe
 C:\Opensim\DreamWorld-GitHub\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Debug\Start.xml
 C:\Opensim\DreamWorld-GitHub\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Debug\Start.pdb
-C:\Opensim\DreamWorld-GitHub\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Debug\DreamWorld.Advanced.resources
 C:\Users\Debbie\Dropbox\scripts\github\DreamWorld-GitHub\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\bin\Debug\Start.exe.config
 C:\Users\Debbie\Dropbox\scripts\github\DreamWorld-GitHub\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Debug\Interop.IWshRuntimeLibrary.dll
 C:\Users\Debbie\Dropbox\scripts\github\DreamWorld-GitHub\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Debug\Interop.NATUPNPLib.dll
@@ -39,3 +38,4 @@ C:\Users\Debbie\Dropbox\scripts\github\DreamWorld-GitHub\Installer-Src\2010\Setu
 C:\Users\Debbie\Dropbox\scripts\github\DreamWorld-GitHub\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Debug\Start.exe
 C:\Users\Debbie\Dropbox\scripts\github\DreamWorld-GitHub\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Debug\Start.xml
 C:\Users\Debbie\Dropbox\scripts\github\DreamWorld-GitHub\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Debug\Start.pdb
+C:\Opensim\DreamWorld-GitHub\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Debug\DreamWorld.AdvancedForm.resources
