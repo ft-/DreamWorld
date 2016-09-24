@@ -235,15 +235,6 @@ Partial Class Advanced
     Friend WithEvents PrivatePort As TextBox
     Friend WithEvents PublicPort As TextBox
 
-    Private Sub X_TextChanged(sender As Object, e As EventArgs) Handles X.TextChanged
-        My.Settings.CoordX = X.Text
-        My.Settings.Save()
-    End Sub
-
-    Private Sub Y_TextChanged(sender As Object, e As EventArgs) Handles Y.TextChanged
-        My.Settings.CoordY = Y.Text
-        My.Settings.Save()
-    End Sub
 
     Private Sub Advanced_Load(sender As Object, e As EventArgs) Handles Me.Load
 
@@ -269,12 +260,23 @@ Partial Class Advanced
 
     End Sub
 
+    Private Sub X_TextChanged(sender As Object, e As EventArgs) Handles X.TextChanged
+        My.Settings.CoordX = X.Text
+        My.Settings.Save()
+    End Sub
+
+    Private Sub Y_TextChanged(sender As Object, e As EventArgs) Handles Y.TextChanged
+        My.Settings.CoordY = Y.Text
+        My.Settings.Save()
+    End Sub
     Private Sub PrivatePort_TextChanged(sender As Object, e As EventArgs) Handles PrivatePort.TextChanged
-        My.Settings.PrivatePort = PrivatePort.Text
+        My.Settings.PrivatePort = PrivatePort.TextMy.Settings.Save
+
     End Sub
 
     Private Sub PublicPort_TextChanged(sender As Object, e As EventArgs) Handles PublicPort.TextChanged
         My.Settings.PublicPort = PublicPort.Text
+        My.Settings.Save()
     End Sub
 
     Friend WithEvents Label5 As Label
@@ -295,6 +297,7 @@ Partial Class Advanced
             My.Settings.SizeY = "256"
             SizeX.Text = ""
             SizeY.Text = ""
+            My.Settings.Save()
         End If
 
     End Sub
@@ -307,6 +310,7 @@ Partial Class Advanced
             My.Settings.SizeY = "512"
             SizeX.Text = ""
             SizeY.Text = ""
+            My.Settings.Save()
         End If
     End Sub
 
@@ -318,6 +322,7 @@ Partial Class Advanced
             My.Settings.SizeX = "1024"
             SizeX.Text = ""
             SizeY.Text = ""
+            My.Settings.Save()
         End If
     End Sub
 
@@ -327,6 +332,7 @@ Partial Class Advanced
             Check512.Checked = False
             Check1024.Checked = False
             My.Settings.SizeX = SizeX.Text
+            My.Settings.Save()
         End If
 
     End Sub
@@ -337,6 +343,7 @@ Partial Class Advanced
             Check512.Checked = False
             Check1024.Checked = False
             My.Settings.SizeY = SizeY.Text
+            My.Settings.Save()
         End If
     End Sub
 
