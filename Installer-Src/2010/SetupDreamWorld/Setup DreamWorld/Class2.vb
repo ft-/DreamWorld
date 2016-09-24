@@ -87,7 +87,6 @@ Public Class WebServer
         End If
     End Function
 
-
     Public Sub StartWebServer()
         Try
             LocalTCPListener = New TcpListener(LocalAddress, LocalPort)
@@ -305,6 +304,8 @@ Public Class WebServer
             ' Clean-up code can go here.
             ' If there is no Finally clause, ThreadAbortException is
             ' re-thrown by the system at the end of the Catch clause. 
+            Thread.ResetAbort()
+
         Finally
             ' Clean-up code can go here.
         End Try
@@ -315,6 +316,7 @@ Public Class WebServer
         Try
             LocalTCPListener.Stop()
         Catch
+
         End Try
         Try
             WebThread.Abort()
