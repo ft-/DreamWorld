@@ -211,11 +211,8 @@ Public Class WebServer
         Do While True
             'accept new socket connection
             Dim mySocket As Socket
-            Try
-                mySocket = LocalTCPListener.AcceptSocket
-            Catch
-                Form1.Log("Socket error on listener")
-            End Try
+
+            mySocket = LocalTCPListener.AcceptSocket
 
             If mySocket.Connected Then
                 Dim bReceive() As Byte = New [Byte](1024) {}

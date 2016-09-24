@@ -74,6 +74,12 @@ Public Class Form1
 
         InstallGridXML()
 
+        Log("Info:Starting Disgnostic server")
+        ws = WebServer.getWebServer
+        ws.VirtualRoot = gCurDir & "\DreamWorldFiles\"
+        ws.StartWebServer()
+
+
         ' Find out if the viewer is installed, make a file we can benchmark to
         If System.IO.File.Exists(gCurDir & "\DreamworldFiles\Init.txt") Then
             Buttons(StartButton)
@@ -174,10 +180,6 @@ Public Class Form1
 
         OpenPorts() ' Open router ports
 
-        Log("Info:Starting webserver")
-        ws = WebServer.getWebServer
-        ws.VirtualRoot = gCurDir & "\DreamWorldFiles\"
-        ws.StartWebServer()
 
         Dim isPortOpen As String = ""
         Try
@@ -200,8 +202,8 @@ Public Class Form1
         GetPubIP(20)    ' we need this if we are HG enabled
         Loopback(30)    ' test he loopback on the router. If it fails, use localhost, no Hg
 
-        Log("Info:Stop Web Server")
-        ws.StopWebServer()
+        ' Log("Info:Stop Web Server")
+        ' ws.StopWebServer()
 
         SetINIFromSettings()    ' set up the INI files
         ContentLoading = True ' set this flag so we do not save the oar automatically.
@@ -748,8 +750,6 @@ Public Class Form1
 
     Private Sub ZapAll()
 
-
-
         ' remove the console startup file
         Try
             My.Computer.FileSystem.DeleteFile(gCurDir & "\DreamworldFiles\" + My.Settings.GridFolder & "\bin\startup_commands.txt")
@@ -771,12 +771,12 @@ Public Class Form1
 
         ProgressBar1.Value = 100
         pOpensim.Close()
-        ' zap("OpenSim")
+        zap("OpenSim")
         ProgressBar1.Value = 50
-        'zap("mysqld-nt")
+        zap("mysqld-nt")
         pMySql.Close()
 
-        'zap("OnlookViewer")
+        zap("OnlookViewer")
         pOnlook.Close()
         ProgressBar1.Value = 0
         Application.DoEvents()
