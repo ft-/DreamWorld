@@ -222,6 +222,8 @@ Public Class Form1
         ' done with bootup
         ProgressBar1.Value = 100
 
+        ContentLoading = False ' the server is now loaded, so flip the content switch off.  
+
     End Sub
 
     Private Function CheckMySQL() As Boolean
@@ -727,24 +729,13 @@ Public Class Form1
 
     Private Sub ZapAll()
 
-        ' remove the console startup file
-        Try
-            My.Computer.FileSystem.DeleteFile(gCurDir & "\DreamworldFiles\" + My.Settings.GridFolder & "\bin\startup_commands.txt")
-        Catch ex As Exception
-            Log("Warn:There was no startup_commands.txt file")
-        End Try
-        Try
-            If ContentLoading = False Then
-                Using outputFile As New StreamWriter(gCurDir & "\DreamworldFiles\" + My.Settings.GridFolder & "\bin\startup_commands.txt", True)
-                    outputFile.WriteLine("save oar " + gCurDir & "\DreamworldFiles\Autobackup\DreamWorldBackup.oar")
-                    outputFile.WriteLine("show stats")
-                    ContentLoading = False
-                End Using
-            End If
-
-        Catch ex As Exception
-            Log("Error:writing of the Backup OAR command failed")
-        End Try
+        If ContentLoading = False Then
+            ' remove the console startup file
+            Try
+                My.Computer.FileSystem.DeleteFile(gCurDir & "\DreamworldFiles\" + My.Settings.GridFolder & "\bin\startup_commands.txt")
+            Catch ex As Exception
+            End Try
+        End If
 
         ProgressBar1.Value = 100
         pOpensim.Close()
@@ -1051,7 +1042,7 @@ Public Class Form1
                 Return
             End If
             Application.DoEvents()
-            Sleep(3000)
+            Sleep(4000)
 
             Try
                 Up = client.DownloadString("http://127.0.0.1:8002/?r=" + Random())
@@ -1061,7 +1052,7 @@ Public Class Form1
 
         End While
 
-        ContentLoading = False ' the server is now loaded, so flip the content switch off.  The server will do a Autobackup on the next startup.
+
         ProgressBar1.Value = progress
 
     End Sub
