@@ -1,1 +1,1 @@
-mysqld-nt.exe C:\Opensim\DreamWorld\DreamWorldFiles\mysql\my.ini
+mysqld-nt.exe --defaults-file=C:/Opensim/DreamWorld/DreamWorldFiles/mysql/my.ini
