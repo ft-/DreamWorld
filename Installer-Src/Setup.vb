@@ -902,7 +902,11 @@ Public Class Form1
         Print("Testing Loopback")
         Try
             Application.DoEvents()
+            ws = WebServer.getWebServer
+            ws.VirtualRoot = gCurDir & "\DreamWorldFiles\"
+            ws.StartWebServer()
             Dim Benchmark = client.DownloadString("http://" & My.Settings.PublicIP & ":8001/Init.txt")
+            ws.StopWebServer()
             Application.DoEvents()
         Catch ex As Exception
 
@@ -1226,7 +1230,6 @@ Public Class Form1
 
     Private Sub Diagnose(iProgress As Integer)
 
-
         Log("Info:Starting Diagnostic server")
         ws = WebServer.getWebServer
         ws.VirtualRoot = gCurDir & "\DreamWorldFiles\"
@@ -1238,6 +1241,7 @@ Public Class Form1
         Catch ex As Exception
             Log("Dang:The Outworld web site is down")
         End Try
+        ws.StopWebServer()
 
         If isPortOpen <> "yes" Then
             Log("Warn:Port " + My.Settings.PublicPort + " is not open")
@@ -1250,16 +1254,6 @@ Public Class Form1
         GetPubIP(iProgress - 10)    ' we need this if we are HG enabled
         Loopback(iProgress - 5)    ' test he loopback on the router. If it fails, use localhost, no Hg
 
-        Dim stopweb As String = ""
-        Try
-            stopweb = client.DownloadString("http://127.0.0.1/stop.txt")
-        Catch ex As Exception
-            Log("diagnostic server stopped")
-        End Try
-        If stopweb.Length Then
-            ws.StopWebServer()
-            Log("diagnostic server aborted")
-        End If
         ProgressBar1.Value = iProgress
     End Sub
 
