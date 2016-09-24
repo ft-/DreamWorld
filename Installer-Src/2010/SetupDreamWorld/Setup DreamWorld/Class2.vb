@@ -207,8 +207,9 @@ Public Class WebServer
         Dim sPhysicalFilePath As String = ""
         Dim sFormattedMessage As String = ""
         Try
+            Dim WebBusy As Boolean = True
             ' Code that is executing when the thread is aborted.
-            Do While True
+            Do While WebBusy
                 'accept new socket connection
                 Dim mySocket As Socket = LocalTCPListener.AcceptSocket
                 If mySocket.Connected Then
@@ -235,6 +236,13 @@ Public Class WebServer
                         sQueryString = sRequest.Substring(iStartPos)
                         sRequestedFile = Replace(sRequestedFile, "?" & sQueryString, "")
                     End If
+
+                    If sRequestedFile = "stop.txt" Then
+                        WebBusy = False
+                        WebThread.Abort()
+                        Return
+                    End If
+
                     'get the directory
                     sDirName = sRequest.Substring(sRequest.IndexOf("/"), sRequest.LastIndexOf("/") - 3)
                     'identify the physical directory.
@@ -296,8 +304,8 @@ Public Class WebServer
                     mySocket.Close()
 
                 End If
-
             Loop
+
 
         Catch ex As ThreadAbortException
 
