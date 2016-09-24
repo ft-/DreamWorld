@@ -261,8 +261,9 @@ Partial Class Advanced
             Check1024.Checked = True
         End If
 
-        Y.Text = My.Settings.CoordY
-        X.Text = My.Settings.CoordX
+        Y.Text = My.Settings.SizeY
+        X.Text = My.Settings.SizeX
+
         PublicPort.Text = My.Settings.PublicPort
         PrivatePort.Text = My.Settings.PrivatePort
 

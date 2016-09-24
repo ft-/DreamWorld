@@ -180,7 +180,6 @@ Public Class Form1
 
         OpenPorts() ' Open router ports
 
-
         Dim isPortOpen As String = ""
         Try
             isPortOpen = client.DownloadString("http://www.outworldz.com/cgi/probe.plx?Port=8001")
@@ -201,9 +200,6 @@ Public Class Form1
 
         GetPubIP(20)    ' we need this if we are HG enabled
         Loopback(30)    ' test he loopback on the router. If it fails, use localhost, no Hg
-
-        ' Log("Info:Stop Web Server")
-        ' ws.StopWebServer()
 
         SetINIFromSettings()    ' set up the INI files
         ContentLoading = True ' set this flag so we do not save the oar automatically.
@@ -509,6 +505,8 @@ Public Class Form1
         mnuHide.Checked = Not My.Settings.ConsoleShow
         If My.Settings.ConsoleShow Then
             Log("Info:Console will be shown")
+        Else
+            Log("Info:Console will not be shown")
         End If
 
         ' Viewer UI shows the full viewer UI
@@ -519,6 +517,7 @@ Public Class Form1
             Log("Info:Viewer set to Normal")
             SetIni(gCurDir & "\DreamWorldFiles\" & My.Settings.GridFolder & "\bin\Opensim.ini", "SpecialUIModule", "enabled", "true", ";")
         End If
+
         mnuFull.Checked = My.Settings.ViewerEase
         mnuEasy.Checked = Not My.Settings.ViewerEase
 
@@ -530,6 +529,7 @@ Public Class Form1
             Log("Info:Set to not show avatar")
             SetIni(gCurDir & "\DreamWorldFiles\" & My.Settings.GridFolder & "\bin\Opensim.ini", "CameraOnlyModeModule", "enabled", "true", ";")
         End If
+
         mnuYesAvatar.Checked = My.Settings.AvatarShow
         mnuNoAvatar.Checked = Not My.Settings.AvatarShow
 
@@ -905,6 +905,10 @@ Public Class Form1
         Print("Stopping")
         Try
             RemoveGrid()
+        Catch
+            Log("Info:gris settings set back to defaults")
+        End Try
+        Try
             ws.StopWebServer()
             Log("Info:Webserver stopped.")
         Catch
@@ -1000,7 +1004,6 @@ Public Class Form1
 
     Private Sub Start_Opensimulator(progress As Integer)
         Print("Starting Opensimulator")
-
 
         Dim pi As ProcessStartInfo = New ProcessStartInfo()
         pi.WorkingDirectory = gCurDir & "\DreamWorldFiles\" & My.Settings.GridFolder & "\bin\"
