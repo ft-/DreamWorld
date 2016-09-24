@@ -305,8 +305,8 @@ Public Class WebServer
 
     Public Sub StopWebServer()
         Try
-            LocalTCPListener.Stop()
             WebThread.Abort()
+            LocalTCPListener.Stop() ' swap
         Catch ex As Exception
             Console.WriteLine(ex.Message)
         End Try

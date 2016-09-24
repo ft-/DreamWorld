@@ -26,7 +26,7 @@ Public Class Form1
     Dim pOnlook As Process = New Process()
     Private Shared m_ActiveForm As Form
 
-    Private Sub Form1_Leave(sender As Object, e As System.EventArgs) Handles Me.Leave
+    Private Sub Form1_Closed(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Closed
         Log("Info:Exit")
         ExitAll()
     End Sub
@@ -893,8 +893,8 @@ Public Class Form1
             Log("Info:gris settings set back to defaults")
         End Try
         Try
-            ws.StopWebServer()
-            Log("Info:Webserver stopped.")
+            ' ws.StopWebServer()
+            'Log("Info:Webserver stopped.")
         Catch
             Log("Error:Webserver failed to stop")
         End Try

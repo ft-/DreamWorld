@@ -221,18 +221,6 @@ Namespace My
                 Me("SizeY") = value
             End Set
         End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("9000")>  _
-        Public Property WifiPort() As String
-            Get
-                Return CType(Me("WifiPort"),String)
-            End Get
-            Set
-                Me("WifiPort") = value
-            End Set
-        End Property
     End Class
 End Namespace
 

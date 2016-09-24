@@ -44,8 +44,5 @@
     <Setting Name="SizeY" Type="System.String" Scope="User">
       <Value Profile="(Default)">256</Value>
     </Setting>
-    <Setting Name="WifiPort" Type="System.String" Scope="User">
-      <Value Profile="(Default)">9000</Value>
-    </Setting>
   </Settings>
 </SettingsFile>
