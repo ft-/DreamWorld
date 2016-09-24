@@ -65,7 +65,6 @@ Partial Class Form1
         Me.mnuAbout = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
         Me.ContentToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.BackupToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.PirateIslandToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ConferenceCenterToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.LoadPirateIslandToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -82,6 +81,7 @@ Partial Class Form1
         Me.WebBrowser3 = New System.Windows.Forms.WebBrowser()
         Me.ProgressBar1 = New System.Windows.Forms.ProgressBar()
         Me.BusyButton = New System.Windows.Forms.Button()
+        Me.HypergridorgToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -103,7 +103,7 @@ Partial Class Form1
         '
         'StopButton
         '
-        Me.StopButton.Location = New System.Drawing.Point(222, 0)
+        Me.StopButton.Location = New System.Drawing.Point(291, 0)
         Me.StopButton.Name = "StopButton"
         Me.StopButton.Size = New System.Drawing.Size(63, 23)
         Me.StopButton.TabIndex = 17
@@ -112,7 +112,7 @@ Partial Class Form1
         '
         'StartButton
         '
-        Me.StartButton.Location = New System.Drawing.Point(222, 0)
+        Me.StartButton.Location = New System.Drawing.Point(291, 0)
         Me.StartButton.Name = "StartButton"
         Me.StartButton.Size = New System.Drawing.Size(63, 23)
         Me.StartButton.TabIndex = 16
@@ -121,7 +121,7 @@ Partial Class Form1
         '
         'InstallButton
         '
-        Me.InstallButton.Location = New System.Drawing.Point(222, 1)
+        Me.InstallButton.Location = New System.Drawing.Point(291, 1)
         Me.InstallButton.Name = "InstallButton"
         Me.InstallButton.Size = New System.Drawing.Size(63, 23)
         Me.InstallButton.TabIndex = 15
@@ -134,10 +134,11 @@ Partial Class Form1
         Me.TextBox1.AllowDrop = True
         Me.TextBox1.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.TextBox1.Font = New System.Drawing.Font("Verdana", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TextBox1.Location = New System.Drawing.Point(12, 43)
+        Me.TextBox1.Location = New System.Drawing.Point(0, 43)
         Me.TextBox1.Multiline = True
         Me.TextBox1.Name = "TextBox1"
-        Me.TextBox1.Size = New System.Drawing.Size(369, 110)
+        Me.TextBox1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
+        Me.TextBox1.Size = New System.Drawing.Size(393, 149)
         Me.TextBox1.TabIndex = 22
         '
         'FileToolStripMenuItem
@@ -173,13 +174,13 @@ Partial Class Form1
         Me.mnuHide.Checked = True
         Me.mnuHide.CheckState = System.Windows.Forms.CheckState.Checked
         Me.mnuHide.Name = "mnuHide"
-        Me.mnuHide.Size = New System.Drawing.Size(103, 22)
+        Me.mnuHide.Size = New System.Drawing.Size(152, 22)
         Me.mnuHide.Text = "Hide"
         '
         'mnuShow
         '
         Me.mnuShow.Name = "mnuShow"
-        Me.mnuShow.Size = New System.Drawing.Size(103, 22)
+        Me.mnuShow.Size = New System.Drawing.Size(152, 22)
         Me.mnuShow.Text = "Show"
         '
         'ViewerToolStripMenuItem
@@ -260,13 +261,13 @@ Partial Class Form1
         Me.mnuEasy.Checked = True
         Me.mnuEasy.CheckState = System.Windows.Forms.CheckState.Checked
         Me.mnuEasy.Name = "mnuEasy"
-        Me.mnuEasy.Size = New System.Drawing.Size(97, 22)
+        Me.mnuEasy.Size = New System.Drawing.Size(152, 22)
         Me.mnuEasy.Text = "Easy"
         '
         'mnuFull
         '
         Me.mnuFull.Name = "mnuFull"
-        Me.mnuFull.Size = New System.Drawing.Size(97, 22)
+        Me.mnuFull.Size = New System.Drawing.Size(152, 22)
         Me.mnuFull.Text = "Full"
         '
         'AvatarToolStripMenuItem
@@ -293,7 +294,7 @@ Partial Class Form1
         '
         'GridToolStripMenuItem
         '
-        Me.GridToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuHyperGrid, Me.mnuOsGrid})
+        Me.GridToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuHyperGrid, Me.mnuOsGrid, Me.HypergridorgToolStripMenuItem})
         Me.GridToolStripMenuItem.Image = Global.DreamWorld.My.Resources.Resources.document_connection
         Me.GridToolStripMenuItem.Name = "GridToolStripMenuItem"
         Me.GridToolStripMenuItem.Size = New System.Drawing.Size(172, 22)
@@ -305,13 +306,13 @@ Partial Class Form1
         Me.mnuHyperGrid.Checked = True
         Me.mnuHyperGrid.CheckState = System.Windows.Forms.CheckState.Checked
         Me.mnuHyperGrid.Name = "mnuHyperGrid"
-        Me.mnuHyperGrid.Size = New System.Drawing.Size(131, 22)
+        Me.mnuHyperGrid.Size = New System.Drawing.Size(152, 22)
         Me.mnuHyperGrid.Text = "HyperGrid"
         '
         'mnuOsGrid
         '
         Me.mnuOsGrid.Name = "mnuOsGrid"
-        Me.mnuOsGrid.Size = New System.Drawing.Size(131, 22)
+        Me.mnuOsGrid.Size = New System.Drawing.Size(152, 22)
         Me.mnuOsGrid.Text = "OsGrid.org"
         '
         'AutoBackupToolStripMenuItem
@@ -327,13 +328,13 @@ Partial Class Form1
         Me.AutoYes.Checked = True
         Me.AutoYes.CheckState = System.Windows.Forms.CheckState.Checked
         Me.AutoYes.Name = "AutoYes"
-        Me.AutoYes.Size = New System.Drawing.Size(119, 22)
+        Me.AutoYes.Size = New System.Drawing.Size(152, 22)
         Me.AutoYes.Text = "Enabled"
         '
         'AutoNo
         '
         Me.AutoNo.Name = "AutoNo"
-        Me.AutoNo.Size = New System.Drawing.Size(119, 22)
+        Me.AutoNo.Size = New System.Drawing.Size(152, 22)
         Me.AutoNo.Text = "Disabled"
         '
         'AdvancedSettingsToolStripMenuItem
@@ -398,24 +399,17 @@ Partial Class Form1
         '
         'ContentToolStripMenuItem
         '
-        Me.ContentToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.BackupToolStripMenuItem, Me.PirateIslandToolStripMenuItem, Me.ClothingInventoryToolStripMenuItem, Me.MoreContentToolStripMenuItem})
+        Me.ContentToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.PirateIslandToolStripMenuItem, Me.ClothingInventoryToolStripMenuItem, Me.MoreContentToolStripMenuItem})
         Me.ContentToolStripMenuItem.Name = "ContentToolStripMenuItem"
         Me.ContentToolStripMenuItem.Size = New System.Drawing.Size(62, 20)
         Me.ContentToolStripMenuItem.Text = "Content"
-        '
-        'BackupToolStripMenuItem
-        '
-        Me.BackupToolStripMenuItem.Image = Global.DreamWorld.My.Resources.Resources.cube_blue
-        Me.BackupToolStripMenuItem.Name = "BackupToolStripMenuItem"
-        Me.BackupToolStripMenuItem.Size = New System.Drawing.Size(208, 22)
-        Me.BackupToolStripMenuItem.Text = "Restore from Last Session"
         '
         'PirateIslandToolStripMenuItem
         '
         Me.PirateIslandToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ConferenceCenterToolStripMenuItem, Me.LoadPirateIslandToolStripMenuItem, Me.FantasyIslandToolStripMenuItem, Me.MayaToolStripMenuItem, Me.SteamIslandToolStripMenuItem, Me.mnuUndersea, Me.LoadStormhavenToolStripMenuItem})
         Me.PirateIslandToolStripMenuItem.Image = Global.DreamWorld.My.Resources.Resources.box_tall
         Me.PirateIslandToolStripMenuItem.Name = "PirateIslandToolStripMenuItem"
-        Me.PirateIslandToolStripMenuItem.Size = New System.Drawing.Size(208, 22)
+        Me.PirateIslandToolStripMenuItem.Size = New System.Drawing.Size(187, 22)
         Me.PirateIslandToolStripMenuItem.Text = "Load New Island"
         '
         'ConferenceCenterToolStripMenuItem
@@ -472,7 +466,7 @@ Partial Class Form1
         Me.ClothingInventoryToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FullAvatarsToolStripMenuItem, Me.FemaleClothingToolStripMenuItem1, Me.MaleClothingToolStripMenuItem})
         Me.ClothingInventoryToolStripMenuItem.Image = Global.DreamWorld.My.Resources.Resources.user1_into
         Me.ClothingInventoryToolStripMenuItem.Name = "ClothingInventoryToolStripMenuItem"
-        Me.ClothingInventoryToolStripMenuItem.Size = New System.Drawing.Size(208, 22)
+        Me.ClothingInventoryToolStripMenuItem.Size = New System.Drawing.Size(187, 22)
         Me.ClothingInventoryToolStripMenuItem.Text = "Avatar Parts"
         '
         'FullAvatarsToolStripMenuItem
@@ -500,7 +494,7 @@ Partial Class Form1
         '
         Me.MoreContentToolStripMenuItem.Image = Global.DreamWorld.My.Resources.Resources.download
         Me.MoreContentToolStripMenuItem.Name = "MoreContentToolStripMenuItem"
-        Me.MoreContentToolStripMenuItem.Size = New System.Drawing.Size(208, 22)
+        Me.MoreContentToolStripMenuItem.Size = New System.Drawing.Size(187, 22)
         Me.MoreContentToolStripMenuItem.Text = "Free Islands and Parts"
         '
         'WebBrowser3
@@ -513,19 +507,25 @@ Partial Class Form1
         '
         'ProgressBar1
         '
-        Me.ProgressBar1.Location = New System.Drawing.Point(298, 8)
+        Me.ProgressBar1.Location = New System.Drawing.Point(0, 27)
         Me.ProgressBar1.Name = "ProgressBar1"
-        Me.ProgressBar1.Size = New System.Drawing.Size(83, 10)
+        Me.ProgressBar1.Size = New System.Drawing.Size(393, 18)
         Me.ProgressBar1.TabIndex = 24
         '
         'BusyButton
         '
-        Me.BusyButton.Location = New System.Drawing.Point(222, 0)
+        Me.BusyButton.Location = New System.Drawing.Point(291, 1)
         Me.BusyButton.Name = "BusyButton"
         Me.BusyButton.Size = New System.Drawing.Size(63, 23)
         Me.BusyButton.TabIndex = 18
         Me.BusyButton.Text = "Busy"
         Me.BusyButton.UseVisualStyleBackColor = True
+        '
+        'HypergridorgToolStripMenuItem
+        '
+        Me.HypergridorgToolStripMenuItem.Name = "HypergridorgToolStripMenuItem"
+        Me.HypergridorgToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.HypergridorgToolStripMenuItem.Text = "Hypergrid.org"
         '
         'Form1
         '
@@ -533,7 +533,7 @@ Partial Class Form1
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.White
-        Me.ClientSize = New System.Drawing.Size(393, 160)
+        Me.ClientSize = New System.Drawing.Size(393, 194)
         Me.Controls.Add(Me.ProgressBar1)
         Me.Controls.Add(Me.WebBrowser3)
         Me.Controls.Add(Me.TextBox1)
@@ -598,7 +598,6 @@ Partial Class Form1
     Friend WithEvents ProgressBar1 As ProgressBar
     Friend WithEvents AdminUIToolStripMenuItem1 As ToolStripMenuItem
     Friend WithEvents ContentToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents BackupToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents PirateIslandToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ClothingInventoryToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents MensClothingToolStripMenuItem As ToolStripMenuItem
@@ -626,4 +625,5 @@ Partial Class Form1
     Friend WithEvents KokuaToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents CatznipToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents SingularityToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents HypergridorgToolStripMenuItem As ToolStripMenuItem
 End Class

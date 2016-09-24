@@ -65,7 +65,7 @@ Public Class Form1
                 gCurSlashDir = "/DreamWorld"
             End If
         End If
-        ZapAll()
+        KillAll()
 
         Try
             My.Settings.PublicIP = client.DownloadString("https://api.ipify.org?a=b" + Random())
@@ -161,8 +161,6 @@ Public Class Form1
 
         End If
 
-        ws.StopWebServer()
-
     End Sub
     Private Sub StartButton_Click(sender As System.Object, e As System.EventArgs) Handles StartButton.Click
 
@@ -171,8 +169,6 @@ Public Class Form1
         Catch
             Log("Warn:Could not find the DreamWorld Log file")
         End Try
-
-
 
         ' Set up the progres bar for 0-100
         ProgressBar1.Visible = True
@@ -268,7 +264,7 @@ Public Class Form1
         Dim result As Integer = MessageBox.Show("Do you want to Abort?", "caption", MessageBoxButtons.YesNo)
         If result = DialogResult.Yes Then
             Print("Stopping")
-            ZapAll()
+            KillAll()
             Buttons(StartButton)
             Print("")
         End If
@@ -309,13 +305,11 @@ Public Class Form1
 
     Private Sub mnuExit_Click(sender As System.Object, e As System.EventArgs) Handles mnuExit.Click
         Log("Info:Exiting")
-
         End
-
     End Sub
 
     Private Sub mnuLogin_Click(sender As System.Object, e As System.EventArgs) Handles mnuLogin.Click
-        Print("'Dream Avatar' has a password of '123'. You can also use Help->Opensim Console to create a new avatar or change passwords.")
+        Print("'Dream Avatar','Dream Guy' and 'Dream Girl' have password='123'. You can also use Help->Opensim Console to create a new avatar or change passwords.")
     End Sub
 
     Private Sub mnuAbout_Click(sender As System.Object, e As System.EventArgs) Handles mnuAbout.Click
@@ -327,7 +321,7 @@ Public Class Form1
     Private Sub StopButton_Click_1(sender As System.Object, e As System.EventArgs) Handles StopButton.Click
         Buttons(BusyButton)
         Print("Stopping")
-        ZapAll()
+        KillAll()
         Buttons(StartButton)
         Print("Opensim is Stopped")
     End Sub
@@ -402,7 +396,7 @@ Public Class Form1
     Private Sub ShutdownNowToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs)
         Print("Stopping")
         Application.DoEvents()
-        ZapAll()
+        KillAll()
         Buttons(StartButton)
         Print("")
     End Sub
@@ -679,7 +673,7 @@ Public Class Form1
 
         Print("Stopping")
         Application.DoEvents()
-        ZapAll()
+        KillAll()
         Buttons(StartButton)
         Print("Opensim is Stopped")
         Log("Info:Stopped")
@@ -720,6 +714,8 @@ Public Class Form1
             If type = "iar" Then
                 Using outputFile As New StreamWriter(gCurDir & "\DreamworldFiles\" + My.Settings.GridFolder & "\bin\startup_commands.txt", True)
                     outputFile.WriteLine("load iar --merge Dream Avatar / 123 " + Chr(34) + thing + Chr(34))
+                    outputFile.WriteLine("load iar --merge Dream Guy / 123 " + Chr(34) + thing + Chr(34))
+                    outputFile.WriteLine("load iar --merge Dream Girl / 123 " + Chr(34) + thing + Chr(34))
                     outputFile.WriteLine("show stats")
                 End Using
             ElseIf type = "oar" Then
@@ -734,7 +730,7 @@ Public Class Form1
 
     End Sub
 
-    Private Sub ZapAll()
+    Private Sub KillAll()
 
         If ContentLoading = False Then
             ' remove the console startup file
@@ -746,6 +742,7 @@ Public Class Form1
 
         ProgressBar1.Value = 100
         pOpensim.Close()
+        Sleep(1000)
         zap("OpenSim")
         ProgressBar1.Value = 50
 
@@ -758,12 +755,14 @@ Public Class Form1
         Try
             p.Start()
         Catch
-            Log("Error:mysqladmin failed to launch to stop opensim")
+            Log("Error:mysqladmin failed to stop opensim")
         End Try
 
+        Sleep(1000)
         zap("mysqld-nt")
         pMySql.Close()
 
+        Sleep(1000)
         zap("OnlookViewer")
         pOnlook.Close()
         ProgressBar1.Value = 0
@@ -857,23 +856,18 @@ Public Class Form1
         Print("Opensim will load Maya by Dave Pentecost when restarted. Includes large houses with courtyards, small thatched palapas, and a model of the Temple of the Inscriptions Maya pyramid from Palenque, Mexico.  This may take time to load.")
     End Sub
 
-    Private Sub BlankSimToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles BackupToolStripMenuItem.Click
-        SimContent(gCurDir & "\DreamworldFiles\Autobackup\DreamWorldBackup.oar", "oar")
-        Print("Opensim will load \Autobackup\DreamWorldBackup.oar when it is restarted. This may take time to load.")
-    End Sub
-
     Private Sub MensClothingToolStripMenuItem_Click(sender As Object, e As EventArgs)
-        SimContent("http://www.outworldz.com/DreamWorld/OAR/LK-MENS-CLOTHING.iar", "iar")
+        SimContent("http://www.outworldz.com/DreamWorld/IAR/LK-MENS-CLOTHING.iar", "iar")
         Print("Opensim will load LK-MENS-CLOTHING.iar by Linda Kellie when it is restarted. This may take time to load. You will find it in your inventory.")
     End Sub
 
     Private Sub FullAvatarsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles FullAvatarsToolStripMenuItem.Click
-        SimContent("http://www.outworldz.com/DreamWorld/OAR/FULLAVATARS.iar", "iar")
+        SimContent("http://www.outworldz.com/DreamWorld/IAR/FULLAVATARS.iar", "iar")
         Print("Opensim will load FULLAVATARS.iar by Linda Kellie when it is restarted. This may take time to load. You will find it in your inventory.")
     End Sub
 
     Private Sub FemaleClothingToolStripMenuItem1_Click(sender As Object, e As EventArgs) Handles FemaleClothingToolStripMenuItem1.Click
-        SimContent("http://www.outworldz.com/DreamWorld/OAR/LK-WOMENS-CLOTHING.iar", "iar")
+        SimContent("http://www.outworldz.com/DreamWorld/IAR/LK-WOMENS-CLOTHING.iar", "iar")
         Print("Opensim will load LK-WOMENS-CLOTHING.iar by Linda Kellie when it is restarted. This may take time to load. You will find it in your inventory.")
     End Sub
 
@@ -895,20 +889,13 @@ Public Class Form1
     Private Sub ExitAll()
         Print("Stopping")
         Try
-            RemoveGrid()
+            RemoveGrid()    ' puts Onlook back to default
         Catch
             Log("Info:gris settings set back to defaults")
         End Try
-        Try
-            ' ws.StopWebServer()
-            'Log("Info:Webserver stopped.")
-        Catch
-            Log("Error:Webserver failed to stop")
-        End Try
 
         ' Needed to stop Opensim
-        ZapAll()
-
+        KillAll()
     End Sub
     Private Sub LogFiles(progress As Integer)
         ' clear out the log files
@@ -933,7 +920,6 @@ Public Class Form1
         SetIni(gCurDir & "\DreamWorldFiles\mysql\my.ini", "mysqld", "basedir", """" + gCurSlashDir + "/DreamWorldFiles/Mysql" + """", "#")
         SetIni(gCurDir & "\DreamWorldFiles\mysql\My.ini", "mysqld", "datadir", """" + gCurSlashDir + "/DreamWorldFiles/Mysql/Data" + """", "#")
 
-
         Dim pi As ProcessStartInfo = New ProcessStartInfo()
         pi.Arguments = "--defaults-file=" + gCurSlashDir + "/DreamworldFiles/mysql/my.ini"
         pi.WindowStyle = ProcessWindowStyle.Hidden
@@ -953,7 +939,7 @@ Public Class Form1
             Application.DoEvents()
             If ProgressBar1.Value = 100 Then
                 MsgBox("Timeout running MySQL - cannot Continue", vbAbort)
-                ZapAll()
+                KillAll()
                 Buttons(StartButton)
                 Return
             End If
@@ -1019,7 +1005,7 @@ Public Class Form1
                 Dim Log As String = gCurDir + "\DreamWorldFiles\" & My.Settings.GridFolder & "\bin\OpenSim.log"
                 System.Diagnostics.Process.Start("wordpad.exe", Log)
             End If
-            ZapAll()
+            KillAll()
             Buttons(StartButton)
             Return
         End Try
@@ -1037,14 +1023,14 @@ Public Class Form1
             ProgressBar1.Value = ProgressBar1.Value + 1
             If ProgressBar1.Value > 90 Then
                 Print("Opensim failed to start")
-                ZapAll()
+                KillAll()
                 Buttons(StartButton)
                 Dim yesno = MsgBox("Opensim did not start. Do you want to see the log file?", vbYesNo)
                 If (yesno = vbYes) Then
                     Dim Log As String = gCurDir + "\DreamWorldFiles\" & My.Settings.GridFolder & "\bin\OpenSim.log"
                     System.Diagnostics.Process.Start("wordpad.exe", Log)
                 End If
-                ZapAll()
+                KillAll()
                 Buttons(StartButton)
                 Return
             End If
@@ -1068,14 +1054,14 @@ Public Class Form1
 
         If My.Settings.Onlook Then
             Print("Starting Onlook viewer")
-            Dim p As Process = New Process()
+
             Dim pi As ProcessStartInfo = New ProcessStartInfo()
             pi.Arguments = ""
             pi.FileName = "C:\Program Files (x86)\Onlook\OnLookViewer.exe"
             pi.WindowStyle = ProcessWindowStyle.Normal
-            p.StartInfo = pi
+            pOnlook.StartInfo = pi
             Try
-                p.Start()
+                pOnlook.Start()
             Catch
                 Log("Error:Onlook failed to launch")
             End Try
