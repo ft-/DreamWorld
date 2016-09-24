@@ -36,7 +36,6 @@ Public Class WebServer
         End Get
     End Property
 
-
     Public Property DefaultDocument() As String
         Get
             Return DefaultDoc
@@ -208,18 +207,12 @@ Public Class WebServer
         Dim sQueryString As String
         Dim sPhysicalFilePath As String = ""
         Dim sFormattedMessage As String = ""
-        Do While True
-            'accept new socket connection
-            Dim mySocket As Socket
-
-            Try
-                mySocket = LocalTCPListener.AcceptSocket
-            Catch
-            End Try
-
-
-
-            If mySocket.Connected Then
+        Try
+            ' Code that is executing when the thread is aborted.
+            Do While True
+                'accept new socket connection
+                Dim mySocket As Socket = LocalTCPListener.AcceptSocket
+                If mySocket.Connected Then
                     Dim bReceive() As Byte = New [Byte](1024) {}
                     Dim i As Integer = mySocket.Receive(bReceive, bReceive.Length, 0)
                     Dim sBuffer As String = Encoding.ASCII.GetString(bReceive)
@@ -305,20 +298,31 @@ Public Class WebServer
 
                 End If
 
-        Loop
+            Loop
+
+        Catch ex As ThreadAbortException
+
+            ' Clean-up code can go here.
+            ' If there is no Finally clause, ThreadAbortException is
+            ' re-thrown by the system at the end of the Catch clause. 
+        Finally
+            ' Clean-up code can go here.
+        End Try
 
     End Sub
 
     Public Sub StopWebServer()
         Try
             LocalTCPListener.Stop()
+        Catch
+        End Try
+        Try
             WebThread.Abort()
         Catch ex As Exception
             Console.WriteLine(ex.Message)
         End Try
     End Sub
 #End Region
-
 
 End Class
 
