@@ -29,6 +29,9 @@ Public Class Form1
     Private Sub Form1_Closed(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Closed
         Log("Info:Exit")
         ExitAll()
+        Print("Goodbye!")
+        Sleep(1000)
+
     End Sub
 
     Private Sub Form1_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
@@ -157,6 +160,8 @@ Public Class Form1
             End Using
 
         End If
+
+        ws.StopWebServer()
 
     End Sub
     Private Sub StartButton_Click(sender As System.Object, e As System.EventArgs) Handles StartButton.Click
@@ -304,11 +309,13 @@ Public Class Form1
 
     Private Sub mnuExit_Click(sender As System.Object, e As System.EventArgs) Handles mnuExit.Click
         Log("Info:Exiting")
-        ExitAll()
+
+        End
+
     End Sub
 
     Private Sub mnuLogin_Click(sender As System.Object, e As System.EventArgs) Handles mnuLogin.Click
-        Print("'Dream Guy ' and 'Dream Girl' have a password of '123'. You can also use Help->Opensim Console to create a new avatar or change passwords.")
+        Print("'Dream Avatar' has a password of '123'. You can also use Help->Opensim Console to create a new avatar or change passwords.")
     End Sub
 
     Private Sub mnuAbout_Click(sender As System.Object, e As System.EventArgs) Handles mnuAbout.Click
@@ -712,7 +719,7 @@ Public Class Form1
         Try
             If type = "iar" Then
                 Using outputFile As New StreamWriter(gCurDir & "\DreamworldFiles\" + My.Settings.GridFolder & "\bin\startup_commands.txt", True)
-                    outputFile.WriteLine("load iar --merge Dream World / 123 " + Chr(34) + thing + Chr(34))
+                    outputFile.WriteLine("load iar --merge Dream Avatar / 123 " + Chr(34) + thing + Chr(34))
                     outputFile.WriteLine("show stats")
                 End Using
             ElseIf type = "oar" Then
@@ -901,7 +908,7 @@ Public Class Form1
 
         ' Needed to stop Opensim
         ZapAll()
-        End
+
     End Sub
     Private Sub LogFiles(progress As Integer)
         ' clear out the log files

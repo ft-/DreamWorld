@@ -10,7 +10,7 @@ Public Class WebServer
 #Region "Declarations"
     Private Shared singleWebserver As WebServer
     Private Shared blnFlag As Boolean
-
+    Private Declare Sub Sleep Lib "kernel32.dll" (ByVal Milliseconds As Integer)
     Private LocalTCPListener As TcpListener
     Private LocalPort As Integer = 8001
     Private LocalAddress As IPAddress = GetIPAddress()
@@ -212,101 +212,107 @@ Public Class WebServer
             'accept new socket connection
             Dim mySocket As Socket
 
-            mySocket = LocalTCPListener.AcceptSocket
+            Try
+                mySocket = LocalTCPListener.AcceptSocket
+            Catch
+            End Try
+
+
 
             If mySocket.Connected Then
-                Dim bReceive() As Byte = New [Byte](1024) {}
-                Dim i As Integer = mySocket.Receive(bReceive, bReceive.Length, 0)
-                Dim sBuffer As String = Encoding.ASCII.GetString(bReceive)
-                'find the GET request.
-                If (sBuffer.Substring(0, 3) <> "GET") Then
-                    mySocket.Close()
-                    Return
-                End If
-                iStartPos = sBuffer.IndexOf("HTTP", 1)
-                Dim sHttpVersion = sBuffer.Substring(iStartPos, 8)
-                sRequest = sBuffer.Substring(0, iStartPos - 1)
-                sRequest.Replace("\\", "/")
-                If (sRequest.IndexOf(".") < 1) And (Not (sRequest.EndsWith("/"))) Then
-                    sRequest = sRequest & "/"
-                End If
-                'get the file name
-                iStartPos = sRequest.LastIndexOf("/") + 1
-                sRequestedFile = sRequest.Substring(iStartPos)
-                If InStr(sRequest, "?") <> 0 Then
-                    iStartPos = sRequest.IndexOf("?") + 1
-                    sQueryString = sRequest.Substring(iStartPos)
-                    sRequestedFile = Replace(sRequestedFile, "?" & sQueryString, "")
-                End If
-                'get the directory
-                sDirName = sRequest.Substring(sRequest.IndexOf("/"), sRequest.LastIndexOf("/") - 3)
-                'identify the physical directory.
-                If (sDirName = "/") Then
-                    sLocalDir = sWebserverRoot
-                Else
-                    sLocalDir = GetLocalPath(sWebserverRoot, sDirName)
-                End If
-                'if the directory isn't there then display error.
-                If sLocalDir.Length = 0 Then
-                    sErrorMessage = "Error!! Requested Directory does not exists"
-                    SendHeader(sHttpVersion, "", sErrorMessage.Length, " 404 Not Found", mySocket)
-                    SendToBrowser(sErrorMessage, mySocket)
-                    mySocket.Close()
-                End If
-
-                If sRequestedFile.Length = 0 Then
-                    sRequestedFile = GetTheDefaultFileName(sLocalDir)
-                    If sRequestedFile = "" Then
-                        sErrorMessage = "Error!! No Default File Name Specified"
-                        SendHeader(sHttpVersion, "", sErrorMessage.Length, " 404 Not Found", mySocket)
-                        SendToBrowser(sErrorMessage, mySocket)
+                    Dim bReceive() As Byte = New [Byte](1024) {}
+                    Dim i As Integer = mySocket.Receive(bReceive, bReceive.Length, 0)
+                    Dim sBuffer As String = Encoding.ASCII.GetString(bReceive)
+                    'find the GET request.
+                    If (sBuffer.Substring(0, 3) <> "GET") Then
                         mySocket.Close()
                         Return
                     End If
-                End If
+                    iStartPos = sBuffer.IndexOf("HTTP", 1)
+                    Dim sHttpVersion = sBuffer.Substring(iStartPos, 8)
+                    sRequest = sBuffer.Substring(0, iStartPos - 1)
+                    sRequest.Replace("\\", "/")
+                    If (sRequest.IndexOf(".") < 1) And (Not (sRequest.EndsWith("/"))) Then
+                        sRequest = sRequest & "/"
+                    End If
+                    'get the file name
+                    iStartPos = sRequest.LastIndexOf("/") + 1
+                    sRequestedFile = sRequest.Substring(iStartPos)
+                    If InStr(sRequest, "?") <> 0 Then
+                        iStartPos = sRequest.IndexOf("?") + 1
+                        sQueryString = sRequest.Substring(iStartPos)
+                        sRequestedFile = Replace(sRequestedFile, "?" & sQueryString, "")
+                    End If
+                    'get the directory
+                    sDirName = sRequest.Substring(sRequest.IndexOf("/"), sRequest.LastIndexOf("/") - 3)
+                    'identify the physical directory.
+                    If (sDirName = "/") Then
+                        sLocalDir = sWebserverRoot
+                    Else
+                        sLocalDir = GetLocalPath(sWebserverRoot, sDirName)
+                    End If
+                    'if the directory isn't there then display error.
+                    If sLocalDir.Length = 0 Then
+                        sErrorMessage = "Error!! Requested Directory does not exists"
+                        SendHeader(sHttpVersion, "", sErrorMessage.Length, " 404 Not Found", mySocket)
+                        SendToBrowser(sErrorMessage, mySocket)
+                        mySocket.Close()
+                    End If
 
-                Dim sMimeType As String = GetMimeType(sRequestedFile)
-                sPhysicalFilePath = sLocalDir & sRequestedFile
-                If Not File.Exists(sPhysicalFilePath) Then
-                    sErrorMessage = "404 Error! File Does Not Exists..."
-                    SendHeader(sHttpVersion, "", sErrorMessage.Length, " 404 Not Found", mySocket)
-                    SendToBrowser(sErrorMessage, mySocket)
-                Else
+                    If sRequestedFile.Length = 0 Then
+                        sRequestedFile = GetTheDefaultFileName(sLocalDir)
+                        If sRequestedFile = "" Then
+                            sErrorMessage = "Error!! No Default File Name Specified"
+                            SendHeader(sHttpVersion, "", sErrorMessage.Length, " 404 Not Found", mySocket)
+                            SendToBrowser(sErrorMessage, mySocket)
+                            mySocket.Close()
+                            Return
+                        End If
+                    End If
 
-                    Try
-                        Dim iTotBytes As Integer = 0
-                        Dim sResponse As String = ""
-                        Dim fs As New FileStream(sPhysicalFilePath, FileMode.Open, FileAccess.Read, FileShare.Read)
-                        Dim reader As New BinaryReader(fs)
-                        Dim bytes() As Byte = New Byte(fs.Length) {}
-
-                        While reader.BaseStream.Position < reader.BaseStream.Length
-                            reader.Read(bytes, 0, bytes.Length)
-                            sResponse = sResponse & Encoding.ASCII.GetString(bytes, 0, reader.BaseStream.Length)
-                            iTotBytes = reader.BaseStream.Length
-                        End While
-                        reader.Close()
-                        fs.Close()
-                        SendHeader(sHttpVersion, sMimeType, iTotBytes, " 200 OK", mySocket)
-                        SendToBrowser(bytes, mySocket)
-                    Catch ex As Exception
+                    Dim sMimeType As String = GetMimeType(sRequestedFile)
+                    sPhysicalFilePath = sLocalDir & sRequestedFile
+                    If Not File.Exists(sPhysicalFilePath) Then
                         sErrorMessage = "404 Error! File Does Not Exists..."
                         SendHeader(sHttpVersion, "", sErrorMessage.Length, " 404 Not Found", mySocket)
                         SendToBrowser(sErrorMessage, mySocket)
-                    End Try
+                    Else
+
+                        Try
+                            Dim iTotBytes As Integer = 0
+                            Dim sResponse As String = ""
+                            Dim fs As New FileStream(sPhysicalFilePath, FileMode.Open, FileAccess.Read, FileShare.Read)
+                            Dim reader As New BinaryReader(fs)
+                            Dim bytes() As Byte = New Byte(fs.Length) {}
+
+                            While reader.BaseStream.Position < reader.BaseStream.Length
+                                reader.Read(bytes, 0, bytes.Length)
+                                sResponse = sResponse & Encoding.ASCII.GetString(bytes, 0, reader.BaseStream.Length)
+                                iTotBytes = reader.BaseStream.Length
+                            End While
+                            reader.Close()
+                            fs.Close()
+                            SendHeader(sHttpVersion, sMimeType, iTotBytes, " 200 OK", mySocket)
+                            SendToBrowser(bytes, mySocket)
+                        Catch ex As Exception
+                            sErrorMessage = "404 Error! File Does Not Exists..."
+                            SendHeader(sHttpVersion, "", sErrorMessage.Length, " 404 Not Found", mySocket)
+                            SendToBrowser(sErrorMessage, mySocket)
+                        End Try
+
+                    End If
+                    mySocket.Close()
 
                 End If
-                mySocket.Close()
 
-            End If
         Loop
 
     End Sub
 
     Public Sub StopWebServer()
         Try
+            LocalTCPListener.Stop()
             WebThread.Abort()
-            LocalTCPListener.Stop() ' swap
         Catch ex As Exception
             Console.WriteLine(ex.Message)
         End Try
