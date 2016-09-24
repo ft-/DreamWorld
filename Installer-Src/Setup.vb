@@ -3,7 +3,6 @@ Imports System.Net.Sockets
 Imports IWshRuntimeLibrary
 Imports IniParser
 
-
 ' Copyright 2014 Fred Beckhusen  
 ' Redistribution and use in binary and source form is permitted provided 
 ' that ALL the licenses in the text files are followed and included in all copies
@@ -19,7 +18,7 @@ Public Class Form1
     Dim isRunning As Boolean
     Private Declare Sub Sleep Lib "kernel32.dll" (ByVal Milliseconds As Integer)
     Dim ws As WebServer
-    Dim ContentLoading As Boolean
+    Dim ContentLoading As String = ""
     Dim client As New System.Net.WebClient
     Dim pMySql As Process = New Process()
     Dim pOpensim As Process = New Process()
@@ -31,11 +30,9 @@ Public Class Form1
         ExitAll()
         Print("Goodbye!")
         Sleep(1000)
-
     End Sub
 
     Private Sub Form1_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-
 
         Buttons(BusyButton)
         ProgressBar1.Visible = False
@@ -65,6 +62,10 @@ Public Class Form1
                 gCurSlashDir = "/DreamWorld"
             End If
         End If
+
+        Print("I need a moment to wake up from a lovely dream. " + SaySomething())
+
+
         KillAll()
 
         Try
@@ -77,12 +78,9 @@ Public Class Form1
 
         SetINIFromSettings()
 
-        InstallGridXML()
+        SetIAROARContent() ' load IAR and OAR web content
 
-        Log("Info:Starting Disgnostic server")
-        ws = WebServer.getWebServer
-        ws.VirtualRoot = gCurDir & "\DreamWorldFiles\"
-        ws.StartWebServer()
+        InstallGridXML()
 
 
         ' Find out if the viewer is installed, make a file we can benchmark to
@@ -183,12 +181,20 @@ Public Class Form1
 
         OpenPorts() ' Open router ports
 
+        Log("Info:Starting Diagnostic server")
+        ws = WebServer.getWebServer
+        ws.VirtualRoot = gCurDir & "\DreamWorldFiles\"
+        ws.StartWebServer()
+
+        LogFiles(5) ' clear log fles
+
         Dim isPortOpen As String = ""
         Try
             isPortOpen = client.DownloadString("http://www.outworldz.com/cgi/probe.plx?Port=8001")
         Catch ex As Exception
             Log("Dang:The Outworld web site is down")
         End Try
+
 
         If isPortOpen <> "yes" Then
             Log("Warn:Port " + My.Settings.PublicPort + " is not open")
@@ -198,14 +204,19 @@ Public Class Form1
             Print("Hypergrid Ports are open")
         End If
 
-        LogFiles(5) ' clear log fles
-        StartMySql(15) ' boot up MySql, and wait for it to start listening
-
         GetPubIP(20)    ' we need this if we are HG enabled
         Loopback(30)    ' test he loopback on the router. If it fails, use localhost, no Hg
 
+        Dim stopweb As String
+        Try
+            stopweb = client.DownloadString("http://127.0.0.1/stop.txt")
+        Catch ex As Exception
+            Log("Dang: webserver stopped :-)")
+        End Try
+
+        StartMySql(15) ' boot up MySql, and wait for it to start listening
+
         SetINIFromSettings()    ' set up the INI files
-        ContentLoading = True ' set this flag so we do not save the oar automatically.
 
         Start_Opensimulator(98) ' Launch the rocket
 
@@ -223,7 +234,7 @@ Public Class Form1
         ' done with bootup
         ProgressBar1.Value = 100
 
-        ContentLoading = False ' the server is now loaded, so flip the content switch off.  
+        ContentLoading = "" ' the server is now loaded, so flip the content switch off.  
 
     End Sub
 
@@ -320,10 +331,10 @@ Public Class Form1
 
     Private Sub StopButton_Click_1(sender As System.Object, e As System.EventArgs) Handles StopButton.Click
         Buttons(BusyButton)
-        Print("Stopping")
+
         KillAll()
         Buttons(StartButton)
-        Print("Opensim is Stopped")
+
     End Sub
 
     Private Sub ShowToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles mnuShow.Click
@@ -418,7 +429,7 @@ Public Class Form1
         Try
             Dim oldvalue = Data(section)(key)
             Data(section)(key) = value ' replace it and save it
-            Log("Info:Writing " + key + "' in section '" + section + "' in file " + filepath)
+            Log("Info:Writing section '" + section + "' in file '" + filepath + "' in key '" + key + "' with value of '" + value + "'")
             parser.WriteFile(filepath, Data)
         Catch ex As Exception
             Log("Info:Cannot locate '" + key + "' in section '" + section + "' in file " + filepath + ". This is not good")
@@ -704,6 +715,9 @@ Public Class Form1
         End If
     End Sub
     Private Sub SimContent(thing As String, type As String)
+
+        thing = "http://www.Outworldz.com/DreamWorld/" + type + "/" + thing 'make a real URL
+
         ' remove the console startup file
         Try
             My.Computer.FileSystem.DeleteFile(gCurDir & "\DreamworldFiles\" + My.Settings.GridFolder & "\bin\startup_commands.txt")
@@ -720,6 +734,7 @@ Public Class Form1
                 End Using
             ElseIf type = "oar" Then
                 Using outputFile As New StreamWriter(gCurDir & "\DreamworldFiles\" + My.Settings.GridFolder & "\bin\startup_commands.txt", True)
+
                     outputFile.WriteLine("load " + type + "  " + Chr(34) + thing + Chr(34))
                     outputFile.WriteLine("show stats")
                 End Using
@@ -732,7 +747,7 @@ Public Class Form1
 
     Private Sub KillAll()
 
-        If ContentLoading = False Then
+        If ContentLoading.Length = 0 Then
             ' remove the console startup file
             Try
                 My.Computer.FileSystem.DeleteFile(gCurDir & "\DreamworldFiles\" + My.Settings.GridFolder & "\bin\startup_commands.txt")
@@ -768,7 +783,7 @@ Public Class Form1
         ProgressBar1.Value = 0
         Application.DoEvents()
         Running = False
-        Print("Opensimulator is stopped.")
+
     End Sub
 
     Private Sub TextBox1_DragDrop(sender As System.Object, e As System.Windows.Forms.DragEventArgs) Handles TextBox1.DragDrop
@@ -783,22 +798,22 @@ Public Class Form1
                 SimContent(pathname, extension)
                 Log("Info:Load iar " + pathname)
                 Print("Opensim will load your file when it is restarted. This may take time to load. You will find it in your inventory.")
-                ContentLoading = True
+                ContentLoading = pathname
             ElseIf extension.ToLower = "oar" Then
                 SimContent(pathname, extension)
                 Log("Info:Load oar " + pathname)
                 Print("Opensim will load your file when it is restarted. This may take time to load.")
-                ContentLoading = True
+                ContentLoading = pathname
             ElseIf extension.ToLower = ".gz" Then
                 Log("Info:Load oar " + pathname)
                 SimContent(pathname, extension)
                 Log("Info:Load gz " + pathname)
                 Print("Opensim will load your file when it is restarted. This may take time to load.")
-                ContentLoading = True
+                ContentLoading = pathname
             Else
                 Log("Info:Unrecognized file type:" + extension)
                 Print("Unrecognized file type:" + extension + ".  Drag and drop any OAR or IAR files to load them when the sim starts")
-                ContentLoading = False
+                ContentLoading = ""
             End If
         Next
     End Sub
@@ -827,53 +842,19 @@ Public Class Form1
         My.Settings.Save()
     End Sub
 
-    Private Sub LoadPirateIslandToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles LoadPirateIslandToolStripMenuItem.Click
-        SimContent("http://www.outworldz.com/DreamWorld/OAR/LonelyIsland.oar", "oar")
-        Print("Opensim will load LonelyIsland.oar when it is restarted. This may take time to load.")
-    End Sub
-
-    Private Sub LoadStorrmhavenToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles LoadStormhavenToolStripMenuItem.Click
-        SimContent("http://www.outworldz.com/DreamWorld/OAR/Stormhaven Port Aurora.oar", "oar")
-        Print("Opensim will load Stormhaven Port Aurora by Arcadia Asylum when restarted. This may take time to load.")
-    End Sub
-    Private Sub FantasyIslandToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles FantasyIslandToolStripMenuItem.Click
-        SimContent("http://www.outworldz.com/DreamWorld/OAR/Fantasy OAR.gz", "oar")
-        Print("Opensim will load Fantasy Island by Linda Kellie when restarted. This may take time to load.")
-    End Sub
-
-    Private Sub EducationSimToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles mnuUndersea.Click
-        SimContent("http://www.outworldz.com/DreamWorld/OAR/Undersea_Observatory.oar", "oar")
-        Print("Opensim will load Doomed City by J.P. van de Giessen  when restarted. This may take time to load.")
-    End Sub
-
-    Private Sub SteamIslandToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles SteamIslandToolStripMenuItem.Click
-        SimContent("http://www.outworldz.com/DreamWorld/OAR/OAR-Steam Factory.oar", "oar")
-        Print("Opensim will load Steam Factory when restarted. This may take time to load.")
-    End Sub
-
-    Private Sub MayaToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles MayaToolStripMenuItem.Click
-        SimContent("http://www.outworldz.com/DreamWorld/OAR/Maya OAR.oar", "oar")
-        Print("Opensim will load Maya by Dave Pentecost when restarted. Includes large houses with courtyards, small thatched palapas, and a model of the Temple of the Inscriptions Maya pyramid from Palenque, Mexico.  This may take time to load.")
-    End Sub
-
     Private Sub MensClothingToolStripMenuItem_Click(sender As Object, e As EventArgs)
         SimContent("http://www.outworldz.com/DreamWorld/IAR/LK-MENS-CLOTHING.iar", "iar")
         Print("Opensim will load LK-MENS-CLOTHING.iar by Linda Kellie when it is restarted. This may take time to load. You will find it in your inventory.")
     End Sub
 
-    Private Sub FullAvatarsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles FullAvatarsToolStripMenuItem.Click
+    Private Sub FullAvatarsToolStripMenuItem_Click(sender As Object, e As EventArgs)
         SimContent("http://www.outworldz.com/DreamWorld/IAR/FULLAVATARS.iar", "iar")
         Print("Opensim will load FULLAVATARS.iar by Linda Kellie when it is restarted. This may take time to load. You will find it in your inventory.")
     End Sub
 
-    Private Sub FemaleClothingToolStripMenuItem1_Click(sender As Object, e As EventArgs) Handles FemaleClothingToolStripMenuItem1.Click
+    Private Sub FemaleClothingToolStripMenuItem1_Click(sender As Object, e As EventArgs)
         SimContent("http://www.outworldz.com/DreamWorld/IAR/LK-WOMENS-CLOTHING.iar", "iar")
         Print("Opensim will load LK-WOMENS-CLOTHING.iar by Linda Kellie when it is restarted. This may take time to load. You will find it in your inventory.")
-    End Sub
-
-    Private Sub ConferenceCenterToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ConferenceCenterToolStripMenuItem.Click
-        SimContent("http://www.outworldz.com/DreamWorld/OAR/ConferenceCenter.gz", "oar")
-        Print("Opensim will load  ConferenceCenter.gz by Linda Kellie when it is restarted. This may take a long time to load. ")
     End Sub
 
     Private Sub LoopBackToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles LoopBackToolStripMenuItem.Click
@@ -896,6 +877,8 @@ Public Class Form1
 
         ' Needed to stop Opensim
         KillAll()
+
+
     End Sub
     Private Sub LogFiles(progress As Integer)
         ' clear out the log files
@@ -984,7 +967,14 @@ Public Class Form1
 
         Dim pi As ProcessStartInfo = New ProcessStartInfo()
         pi.WorkingDirectory = gCurDir & "\DreamWorldFiles\" & My.Settings.GridFolder & "\bin\"
-        If mnuHide.Checked Then
+
+
+        If ContentLoading Then
+            Log("Info:Opensim console is forced visible")
+            pi.Arguments = ""
+            pi.WindowStyle = ProcessWindowStyle.Normal
+            Print("Please wait for the console to show 'LOGINS ENABLED'. It will take a while to load " + ContentLoading)
+        ElseIf mnuHide.Checked Then
             Log("Info:Opensim console is hidden")
             pi.Arguments = "-console rest -background True "
             pi.WindowStyle = ProcessWindowStyle.Hidden
@@ -1158,9 +1148,13 @@ Public Class Form1
     End Sub
 
     Public Function Log(message As String)
-        Using outputFile As New StreamWriter(gCurDir & "\DreamworldFiles\DreamWorld.log", True)
-            outputFile.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + message)
-        End Using
+        Try
+            Using outputFile As New StreamWriter(gCurDir & "\DreamworldFiles\DreamWorld.log", True)
+                outputFile.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + message)
+            End Using
+        Catch
+        End Try
+
         Return True
     End Function
 
@@ -1183,7 +1177,98 @@ Public Class Form1
         End Set
     End Property
 
+    Private Sub SetIAROARContent()
+
+        IslandToolStripMenuItem.Visible = False
+        ClothingInventoryToolStripMenuItem.Visible = False
+
+        Print("Finding content for your sim")
+        Dim oars As String = ""
+        Try
+            oars = client.DownloadString("http://www.outworldz.com/Dreamworld/Content.plx?type=OAR&_=" + Random())
+        Catch ex As Exception
+            Log("No Oars, dang")
+        End Try
+
+        Dim oarreader = New System.IO.StringReader(oars)
+        Dim line As String = ""
+        Dim ContentAvailable As Boolean = True
+        While ContentAvailable
+            line = oarreader.ReadLine()
+            Debug.Print(line)
+            If line <> Nothing Then
+                Dim OarMenu As New ToolStripMenuItem
+                OarMenu.Text = line
+                OarMenu.ToolTipText = "CLick to load this content the next time the simulator is started"
+                OarMenu.DisplayStyle = ToolStripItemDisplayStyle.Text
+                AddHandler OarMenu.Click, New EventHandler(AddressOf OarCick)
+                IslandToolStripMenuItem.Visible = True
+                IslandToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {OarMenu})
+            Else
+                ContentAvailable = False
+            End If
+        End While
+
+
+        Print("Finding content for your avatar")
+        Dim iars As String = ""
+        Try
+            iars = client.DownloadString("http://www.outworldz.com/Dreamworld/Content.plx?type=IAR&_=" + Random())
+        Catch ex As Exception
+            Log("No IARS, dang")
+        End Try
+
+        Dim iarreader = New System.IO.StringReader(iars)
+        ContentAvailable = True
+        While ContentAvailable
+            line = iarreader.ReadLine()
+            Debug.Print(line)
+            If line <> Nothing Then
+                Dim IarMenu As New ToolStripMenuItem
+                IarMenu.Text = line
+                IarMenu.ToolTipText = "CLick to load this content the next time the simulator is started"
+                IarMenu.DisplayStyle = ToolStripItemDisplayStyle.Text
+                AddHandler IarMenu.Click, New EventHandler(AddressOf IarClick)
+                ClothingInventoryToolStripMenuItem.Visible = True
+                ClothingInventoryToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {IarMenu})
+            Else
+                ContentAvailable = False
+            End If
+        End While
+    End Sub
+
+    Private Sub OarCick(sender As Object, e As EventArgs)
+        Dim file = Mid(sender.text, 1, InStr(sender.text, "|") - 2)
+        SimContent(file, "oar")
+        sender.checked = True
+        Print("Opensim will load " + file + " when restarted.  This may take time to load.")
+    End Sub
+    Private Sub IarClick(sender As Object, e As EventArgs)
+        Dim file = Mid(sender.text, 1, InStr(sender.text, "|") - 2)
+        SimContent(file, "iar")
+        sender.checked = True
+        Print("Opensim will load " + file + " when restarted.  This may take time to load.")
+    End Sub
+
+    Private Function SaySomething()
+
+        Dim Array() As String = {"I was flying a dragon in the Outworldz.",
+                                 "I was chatting with people at OsGrid.org. It's the largest hypergrid enabled virtual world.",
+                                 "Some friends and I were riding a rollercoaster in the Great Canadian Grid.",
+                                 "I was watching a really pretty particle exhibit on the Metropolis grid.",
+                                 "We were discussing politics in German, Dutch, and French. And we all understood each other!",
+                                 "I was on a hypergrid safari in the mountains of Africa in Virunga.  ",
+                                 "I won a race while riding a silly cow at the Outworldz 'Frankie' sim.",
+                                 "The party I ws at had a wonderful singer. I can stll hear her voice floating above the sky.",
+                                 "The spaceport at Gravity in OsGrid was really hopping.",
+                                 "I made a pile of prims that you simply will not believe!"
+                                 }
+
+
+        Dim value As Integer = CInt(Int((Array.Length - 1) * Rnd()))
+        Debug.Print(Array(value))
+        Return Array(value)
+    End Function
+
 End Class
-
-
 

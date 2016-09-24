@@ -47,5 +47,6 @@ C:\Users\Debbie\Dropbox\scripts\github\DreamWorld-GitHub\Installer-Src\2010\Setu
 C:\Users\Debbie\Dropbox\scripts\github\DreamWorld-GitHub\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Release\DreamWorld.Advanced.resources
 C:\Users\Debbie\Dropbox\scripts\github\DreamWorld-GitHub\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Release\DreamWorld.Resources.resources
 C:\Users\Debbie\Dropbox\scripts\github\DreamWorld-GitHub\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Release\Start.vbproj.GenerateResource.Cache
-C:\Opensim\DreamWorld-GitHub\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Release\Start.vbprojResolveAssemblyReference.cache
 C:\Opensim\DreamWorld-GitHub\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Release\DreamWorld.AdvancedForm.resources
+C:\Opensim\DreamWorld-GitHub\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\bin\Release\Newtonsoft.Json.dll
+C:\Opensim\DreamWorld-GitHub\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\bin\Release\Newtonsoft.Json.xml
