@@ -27,15 +27,20 @@ Public Class Form1
 
     Private Sub Form1_Closed(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Closed
         Log("Info:Exit")
+        Print("Hold fast to your dreams ...")
         ExitAll()
-        Print("Goodbye!")
+        Print("I'll tell you my dream when I wake up again.")
         Sleep(1000)
     End Sub
 
     Private Sub Form1_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 
         Buttons(BusyButton)
+
         ProgressBar1.Visible = False
+        ProgressBar1.Minimum = 0
+        ProgressBar1.Maximum = 100
+        ProgressBar1.Value = 0
 
         Me.Show()
 
@@ -65,51 +70,36 @@ Public Class Form1
 
         Print("I need a moment to wake up from a lovely dream. " + SaySomething())
 
-
+        ProgressBar1.Visible = True
+        ProgressBar1.Value = 5
         KillAll()
+        ProgressBar1.Value = 10
 
-        Try
-            My.Settings.PublicIP = client.DownloadString("https://api.ipify.org?a=b" + Random())
-        Catch ex As Exception
-            My.Settings.PublicIP = "127.0.0.1"
-        End Try
+        GetPubIP(15)
+        SetINIFromSettings(20)
+        SetIAROARContent(30) ' load IAR and OAR web content
+        InstallGridXML(40)
 
-        Log("Info:Public Ip is " + My.Settings.PublicIP)
-
-        SetINIFromSettings()
-
-        SetIAROARContent() ' load IAR and OAR web content
-
-        InstallGridXML()
-
+        OpenPorts(45) ' Open router ports
+        Diagnose(50)
 
         ' Find out if the viewer is installed, make a file we can benchmark to
         If System.IO.File.Exists(gCurDir & "\DreamworldFiles\Init.txt") Then
             Buttons(StartButton)
-            Print("Opensimulator is ready to start.")
+            ProgressBar1.Value = 100
+            Print("Dream World is ready to start.")
             Log("Info:Ready to start")
 
         Else
             Buttons(InstallButton)
 
-            OpenPorts() ' Open router ports
-
-            SetINIFromSettings()
-
-            ProgressBar1.Visible = True
-            ProgressBar1.Minimum = 0
-            ProgressBar1.Maximum = 100
-            ProgressBar1.Value = 0
+            SetINIFromSettings(52)
 
             Buttons(BusyButton)
-            Print("Installing...")
 
-            ProgressBar1.Value = 0
-            Me.Show()
-
-            Print("Installing Desktop Shortcut")
+            Print("Installing Desktop Icon")
             Create_ShortCut(gCurDir & "\Start.exe")
-            ProgressBar1.Value = 10
+            ProgressBar1.Value = 60
 
             Print("Installing Onlook Viewer")
 
@@ -124,12 +114,12 @@ Public Class Form1
                 Log("Error:Onlook installer failed to load")
             End Try
 
-            ProgressBar1.Value = 11
+            ProgressBar1.Value = 62
             Print("Please Install and Start the Onlook Viewer")
             Dim toggle As Boolean = False
-            While Not System.IO.File.Exists(xmlPath() + "\AppData\Roaming\Onlook\user_settings\settings_onlook.xml")
+            While Not System.IO.File.Exists(xmlPath() + "\AppData\Roaming\Onlook\user_settings\settings_onlook.xml" And ProgressBar1.Value < 99)
                 Application.DoEvents()
-                Sleep(1000)
+                Sleep(4000)
                 If (toggle) Then
                     Print("Attention needed - please Install and Start the Onlook Viewer ")
                     toggle = False
@@ -141,14 +131,13 @@ Public Class Form1
 
                 ProgressBar1.Value = ProgressBar1.Value + 1
                 If ProgressBar1.Value = 100 Then
-                    ProgressBar1.Value = 0
-                    Print("Cannot continue until you start the Onlook viewer")
-                    Sleep(5000)
+                    Print("You win. Proceeding with Dream World ")
+                    toggle = True
                 End If
             End While
 
             Log("Info:Ready to Launch")
-            Print("Ready to Launch! Click 'Start' to begin your adventure in Opensimulator.")
+            Print("Ready to Launch! Click 'Start' to begin your dream in the Dream World.")
             Buttons(StartButton)
             ProgressBar1.Value = 100
 
@@ -177,46 +166,10 @@ Public Class Form1
         Buttons(BusyButton)
         Running = True
 
-        zap("OnlookViewer")
-
-        OpenPorts() ' Open router ports
-
-        Log("Info:Starting Diagnostic server")
-        ws = WebServer.getWebServer
-        ws.VirtualRoot = gCurDir & "\DreamWorldFiles\"
-        ws.StartWebServer()
-
         LogFiles(5) ' clear log fles
+        StartMySql(25) ' boot up MySql, and wait for it to start listening
 
-        Dim isPortOpen As String = ""
-        Try
-            isPortOpen = client.DownloadString("http://www.outworldz.com/cgi/probe.plx?Port=8001")
-        Catch ex As Exception
-            Log("Dang:The Outworld web site is down")
-        End Try
-
-
-        If isPortOpen <> "yes" Then
-            Log("Warn:Port " + My.Settings.PublicPort + " is not open")
-            Print("Port " + My.Settings.PublicPort + " is not open, so Hypergrid is not available.  Opensimulator will continue in standalone mode.")
-        Else
-            Log("Info:Hypergird port " + My.Settings.PublicPort + "is open")
-            Print("Hypergrid Ports are open")
-        End If
-
-        GetPubIP(20)    ' we need this if we are HG enabled
-        Loopback(30)    ' test he loopback on the router. If it fails, use localhost, no Hg
-
-        Dim stopweb As String
-        Try
-            stopweb = client.DownloadString("http://127.0.0.1/stop.txt")
-        Catch ex As Exception
-            Log("Dang: webserver stopped :-)")
-        End Try
-
-        StartMySql(15) ' boot up MySql, and wait for it to start listening
-
-        SetINIFromSettings()    ' set up the INI files
+        SetINIFromSettings(30)    ' set up the INI files
 
         Start_Opensimulator(98) ' Launch the rocket
 
@@ -514,7 +467,7 @@ Public Class Form1
         My.Computer.FileSystem.CopyFile(gCurDir & "\Viewer\grids_sg_HyperGrid.xml", xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml", True)
     End Sub
 
-    Private Sub SetINIFromSettings()
+    Private Sub SetINIFromSettings(iProgress As Integer)
 
         'mnuShow shows the DOS box for Opensimulator
         mnuShow.Checked = My.Settings.ConsoleShow
@@ -524,6 +477,7 @@ Public Class Form1
         Else
             Log("Info:Console will not be shown")
         End If
+
 
         ' Viewer UI shows the full viewer UI
         If My.Settings.ViewerEase Then
@@ -600,7 +554,7 @@ Public Class Form1
         SetIni(gCurDir + "\DreamWorldFiles\" + My.Settings.GridFolder + "\bin\Opensim.ini", "Const", "PublicPort", My.Settings.PublicPort, ";")
         SetIni(gCurDir + "\DreamWorldFiles\" + My.Settings.GridFolder + "\bin\Regions\RegionConfig.ini", "DreamWorld", "InternalPort", My.Settings.PublicPort, ";")
 
-
+        ProgressBar1.Value = iProgress
     End Sub
 
     Private Sub YesToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AutoYes.Click
@@ -659,7 +613,7 @@ Public Class Form1
         Return True 'successfully added
     End Function
 
-    Private Function OpenPorts()
+    Private Function OpenPorts(progress As Integer)
 
         Print("The human is instructed to wait while I check out your router ...")
         Try
@@ -677,6 +631,7 @@ Public Class Form1
             Print("Router is blocking a port so hypergrid may not be available")
             Return False
         End Try
+        ProgressBar1.Value = progress
 
     End Function
 
@@ -755,11 +710,9 @@ Public Class Form1
             End Try
         End If
 
-        ProgressBar1.Value = 100
         pOpensim.Close()
         Sleep(1000)
         zap("OpenSim")
-        ProgressBar1.Value = 50
 
         Dim p As Process = New Process()
         Dim pi As ProcessStartInfo = New ProcessStartInfo()
@@ -780,7 +733,7 @@ Public Class Form1
         Sleep(1000)
         zap("OnlookViewer")
         pOnlook.Close()
-        ProgressBar1.Value = 0
+
         Application.DoEvents()
         Running = False
 
@@ -868,16 +821,15 @@ Public Class Form1
         Print(" Drag and drop  OAR or IAR files here to load them whenever the sim starts")
     End Sub
     Private Sub ExitAll()
-        Print("Stopping")
+
         Try
             RemoveGrid()    ' puts Onlook back to default
         Catch
-            Log("Info:gris settings set back to defaults")
+            Log("Info:grid settings set back to defaults")
         End Try
 
         ' Needed to stop Opensim
         KillAll()
-
 
     End Sub
     Private Sub LogFiles(progress As Integer)
@@ -933,7 +885,7 @@ Public Class Form1
         End While
         ProgressBar1.Value = progress
     End Sub
-    Private Sub GetPubIP(progress As Integer)
+    Private Sub GetPubIP(iProgress As Integer)
 
         Print("Getting Public IP")
         ' Set Public Port
@@ -944,7 +896,7 @@ Public Class Form1
             My.Settings.PublicIP = "127.0.0.1"
         End Try
 
-        ProgressBar1.Value = progress
+        ProgressBar1.Value = iProgress
     End Sub
     Private Sub Loopback(progress As Integer)
         Print("Testing Loopback")
@@ -962,7 +914,7 @@ Public Class Form1
         ProgressBar1.Value = progress
     End Sub
 
-    Private Sub Start_Opensimulator(progress As Integer)
+    Private Sub Start_Opensimulator(iProgress As Integer)
         Print("Starting Opensimulator")
 
         Dim pi As ProcessStartInfo = New ProcessStartInfo()
@@ -1035,7 +987,7 @@ Public Class Form1
         End While
 
 
-        ProgressBar1.Value = progress
+        ProgressBar1.Value = iProgress
 
     End Sub
 
@@ -1074,7 +1026,7 @@ Public Class Form1
 
     End Sub
 
-    Private Sub InstallGridXML()
+    Private Sub InstallGridXML(iProgress As Integer)
 
         ' we have to change the viewer Grid settings  if we are on localhost
 
@@ -1092,6 +1044,7 @@ Public Class Form1
             Log("Error:Failed to install onlook XML")
         End Try
 
+        ProgressBar1.Value = iProgress
     End Sub
 
     Private Sub RemoveGrid()
@@ -1176,12 +1129,12 @@ Public Class Form1
         End Set
     End Property
 
-    Private Sub SetIAROARContent()
+    Private Sub SetIAROARContent(iProgress As String)
 
         IslandToolStripMenuItem.Visible = False
         ClothingInventoryToolStripMenuItem.Visible = False
 
-        Print("Finding content for your sim")
+        Print("Dreaming up new content for your sim")
         Dim oars As String = ""
         Try
             oars = client.DownloadString("http://www.outworldz.com/Dreamworld/Content.plx?type=OAR&_=" + Random())
@@ -1209,7 +1162,7 @@ Public Class Form1
         End While
 
 
-        Print("Finding content for your avatar")
+        Print("Dreaming new clothes and items for your avatar")
         Dim iars As String = ""
         Try
             iars = client.DownloadString("http://www.outworldz.com/Dreamworld/Content.plx?type=IAR&_=" + Random())
@@ -1234,19 +1187,21 @@ Public Class Form1
                 ContentAvailable = False
             End If
         End While
+
+        ProgressBar1.Value = iProgress
     End Sub
 
     Private Sub OarCick(sender As Object, e As EventArgs)
         Dim file = Mid(sender.text, 1, InStr(sender.text, "|") - 2)
         SimContent(file, "oar")
         sender.checked = True
-        Print("Opensim will load " + file + " when restarted.  This may take time to load.")
+        Print("Opensimulator will load " + file + " when restarted.  This may take time to load.")
     End Sub
     Private Sub IarClick(sender As Object, e As EventArgs)
         Dim file = Mid(sender.text, 1, InStr(sender.text, "|") - 2)
         SimContent(file, "iar")
         sender.checked = True
-        Print("Opensim will load " + file + " when restarted.  This may take time to load.")
+        Print("Opensimulator will load " + file + " when restarted.  This may take time to load.")
     End Sub
 
     Private Function SaySomething()
@@ -1269,5 +1224,46 @@ Public Class Form1
         Return Array(value)
     End Function
 
+    Private Sub Diagnose(iProgress As Integer)
+
+
+        Log("Info:Starting Diagnostic server")
+        ws = WebServer.getWebServer
+        ws.VirtualRoot = gCurDir & "\DreamWorldFiles\"
+        ws.StartWebServer()
+
+        Dim isPortOpen As String = ""
+        Try
+            isPortOpen = client.DownloadString("http://www.outworldz.com/cgi/probe.plx?Port=8001")
+        Catch ex As Exception
+            Log("Dang:The Outworld web site is down")
+        End Try
+
+        If isPortOpen <> "yes" Then
+            Log("Warn:Port " + My.Settings.PublicPort + " is not open")
+            Print("Port " + My.Settings.PublicPort + " is not open, so Hypergrid is not available.  Opensimulator will continue in standalone mode.")
+        Else
+            Log("Info:Hypergird port " + My.Settings.PublicPort + "is open")
+            Print("Hypergrid Ports are open!  You can share your Dream World with others.")
+        End If
+
+        GetPubIP(iProgress - 10)    ' we need this if we are HG enabled
+        Loopback(iProgress - 5)    ' test he loopback on the router. If it fails, use localhost, no Hg
+
+        Dim stopweb As String = ""
+        Try
+            stopweb = client.DownloadString("http://127.0.0.1/stop.txt")
+        Catch ex As Exception
+            Log("diagnostic server stopped")
+        End Try
+        If stopweb.Length Then
+            ws.StopWebServer()
+            Log("diagnostic server aborted")
+        End If
+        ProgressBar1.Value = iProgress
+    End Sub
+
+
 End Class
+
 

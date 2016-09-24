@@ -312,7 +312,7 @@ Public Class WebServer
             ' Clean-up code can go here.
             ' If there is no Finally clause, ThreadAbortException is
             ' re-thrown by the system at the end of the Catch clause. 
-            Thread.ResetAbort()
+            'Thread.ResetAbort()
 
         Finally
             ' Clean-up code can go here.
@@ -323,8 +323,8 @@ Public Class WebServer
     Public Sub StopWebServer()
         Try
             LocalTCPListener.Stop()
-        Catch
-
+        Catch ex As Exception
+            Console.WriteLine(ex.Message)
         End Try
         Try
             WebThread.Abort()
