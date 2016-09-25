@@ -1,9 +1,10 @@
 ﻿Imports System.IO
+Imports System.IO.Compression
 Imports System.Net.Sockets
 Imports IWshRuntimeLibrary
 Imports IniParser
-Imports System.IO.Compression
 Imports System.Net
+Imports Ionic.Zip
 
 
 ' Copyright 2014 Fred Beckhusen  
@@ -19,7 +20,7 @@ Public Class Form1
     Dim gCurDir    ' Holds the current folder that we are running in
     Dim gCurSlashDir As String '  holds the current directory info in Unix format
     Dim isRunning As Boolean
-    Private Declare Sub Sleep Lib "kernel32.dll" (ByVal Milliseconds As Integer)
+    Private Declare Sub Sleep Lib "kernel32.dll" (ByVal Millisecond As Integer)
     Dim ws As WebServer
     Dim ContentLoading As String = ""
     Dim client As New System.Net.WebClient
@@ -75,6 +76,7 @@ Public Class Form1
 
         ProgressBar1.Visible = True
         ProgressBar1.Value = 5
+        Sleep(2)
         KillAll()
         ProgressBar1.Value = 10
 
@@ -121,7 +123,7 @@ Public Class Form1
             ProgressBar1.Value = 62
             Print("Please Install and Start the Onlook Viewer")
             Dim toggle As Boolean = False
-            While Not System.IO.File.Exists(xmlPath() + "\AppData\Roaming\Onlook\user_settings\settings_onlook.xml" And ProgressBar1.Value < 99)
+            While Not System.IO.File.Exists(xmlPath() + "\AppData\Roaming\Onlook\user_settings\settings_onlook.xml") And ProgressBar1.Value < 99
                 Application.DoEvents()
                 Sleep(4000)
                 If (toggle) Then
@@ -349,6 +351,7 @@ Public Class Form1
     End Sub
 
     Private Function Random() As String
+        Randomize()
         Dim value As Integer = CInt(Int((6000 * Rnd()) + 1))
         Random = Str(value)
     End Function
@@ -586,8 +589,8 @@ Public Class Form1
         Try
             If MyUPnPMap.Exists(My.Settings.PublicPort, UPnP.Protocol.UDP) Then
                 Log("uPnp:PublicPort.UDP exists")
-                MyUPnPMap.Remove(My.Settings.PublicPort, UPnP.Protocol.UDP)
-                MyUPnPMap.Add(UPnP.LocalIP, My.Settings.PublicPort, UPnP.Protocol.UDP, "Opensim UDP")
+                'MyUPnPMap.Remove(My.Settings.PublicPort, UPnP.Protocol.UDP)
+                'MyUPnPMap.Add(UPnP.LocalIP, My.Settings.PublicPort, UPnP.Protocol.UDP, "Opensim UDP")
             Else
                 Log("uPnp:PublicPort.UDP added")
                 MyUPnPMap.Add(UPnP.LocalIP, My.Settings.PublicPort, UPnP.Protocol.UDP, "Opensim UDP")
@@ -595,8 +598,8 @@ Public Class Form1
 
             If MyUPnPMap.Exists(My.Settings.PublicPort, UPnP.Protocol.TCP) Then
                 Log("uPnp:PublicPort.TCP exists")
-                MyUPnPMap.Remove(My.Settings.PublicPort, UPnP.Protocol.TCP)
-                MyUPnPMap.Add(UPnP.LocalIP, My.Settings.PublicPort, UPnP.Protocol.TCP, "Opensim TCP")
+                'MyUPnPMap.Remove(My.Settings.PublicPort, UPnP.Protocol.TCP)
+                'MyUPnPMap.Add(UPnP.LocalIP, My.Settings.PublicPort, UPnP.Protocol.TCP, "Opensim TCP")
             Else
                 Log("uPnp:PublicPort.UDP added")
                 MyUPnPMap.Add(UPnP.LocalIP, My.Settings.PublicPort, UPnP.Protocol.TCP, "Opensim TCP")
@@ -604,8 +607,8 @@ Public Class Form1
 
             If MyUPnPMap.Exists(8001, UPnP.Protocol.TCP) Then
                 Log("uPnp:8001.TCP exists")
-                MyUPnPMap.Remove(8001, UPnP.Protocol.TCP)
-                MyUPnPMap.Add(UPnP.LocalIP, 8001, UPnP.Protocol.TCP, "Opensim Probe")
+                'MyUPnPMap.Remove(8001, UPnP.Protocol.TCP)
+                'MyUPnPMap.Add(UPnP.LocalIP, 8001, UPnP.Protocol.TCP, "Opensim Probe")
             Else
                 Log("uPnp:8001.TCP Added ")
                 MyUPnPMap.Add(UPnP.LocalIP, 8001, UPnP.Protocol.TCP, "Opensim Probe")
@@ -715,8 +718,8 @@ Public Class Form1
         End If
 
         pOpensim.Close()
-        Sleep(1000)
-        zap("OpenSim")
+        'Sleep(1000)
+        'zap("OpenSim")
 
         Dim p As Process = New Process()
         Dim pi As ProcessStartInfo = New ProcessStartInfo()
@@ -731,12 +734,14 @@ Public Class Form1
         End Try
 
         Sleep(1000)
-        zap("mysqld-nt")
         pMySql.Close()
+        'zap("mysqld-nt")
 
-        Sleep(1000)
-        zap("OnlookViewer")
+        'Sleep(1000)
+
         pOnlook.Close()
+        ' Sleep(1000)
+        ' zap("OnlookViewer")
 
         Application.DoEvents()
         Running = False
@@ -1225,7 +1230,7 @@ Public Class Form1
                                  "The spaceport at Gravity in OsGrid was really hopping.",
                                  "I made a pile of prims that you simply will not believe!"
                                  }
-
+        Randomize()
 
         Dim value As Integer = CInt(Int((Array.Length - 1) * Rnd()))
         Debug.Print(Array(value))
@@ -1261,38 +1266,72 @@ Public Class Form1
         ProgressBar1.Value = iProgress
     End Sub
 
-    Private Sub Download()
+    Private Function Download()
 
-        Dim Tmpfile As String = Path.GetTempFileName()
-        Dim myUrl As String
-        Dim zipfile
+        Dim fileName As String = "DreamWorld.zip"
+
         Try
 
-            Dim remoteUri As String = "http://www.outworldz.com/download/dreamworld.zip"
-            Dim fileName As String = "DreamWorld.zip"
+            Dim remoteUri As String = "http://www.outworldz.com/download/"
             Dim myStringWebResource As String = Nothing
             ' Create a new WebClient instance.
             Dim myWebClient As New WebClient()
             ' Concatenate the domain with the Web resource filename. Because DownloadFile 
             'requires a fully qualified resource name, concatenate the domain with the Web resource file name.
             myStringWebResource = remoteUri + fileName
-            Console.WriteLine("Downloading File ""{0}"" from ""{1}"" ......." + ControlChars.Cr + ControlChars.Cr, fileName, myStringWebResource)
+            Print("Downloading " + fileName)
             ' The DownloadFile() method downloads the Web resource and saves it into the current file-system folder.
             myWebClient.DownloadFile(myStringWebResource, fileName)
-            Console.WriteLine("Successfully Downloaded file ""{0}"" from ""{1}""", fileName, myStringWebResource)
-            Console.WriteLine((ControlChars.Cr + "Downloaded file saved in the following file system folder:" + ControlChars.Cr + ControlChars.Tab + Application.StartupPath))
 
         Catch
+            Print("Uh Oh! Failed to dowmload the files I need to dream again!")
+            Return False
         End Try
 
-        Using archive As ZipArchive = ZipFile.OpenRead(zipPath)
-            For Each entry As ZipArchiveEntry In archive.Entries
-                If entry.FullName.EndsWith(".txt", StringComparison.OrdinalIgnoreCase) Then
-                    entry.ExtractToFile(Path.Combine(extractPath, entry.FullName))
+        Dim SmallFont As Font = New Font(Me.Font.FontFamily, Me.FontHeight - 1, FontStyle.Regular)
+        TextBox1.Font = SmallFont
+
+
+        Using zip As ZipFile = ZipFile.Read(fileName)
+            Print("Received " + Str(zip.Entries.Count) + " files. Extracting to disk.")
+            ProgressBar1.Maximum = zip.Entries.Count
+            ProgressBar1.Value = 0
+            For Each ZipEntry In zip
+
+                If ZipEntry.IsDirectory Then
+                    TextBox1.Text = "Make Folder:" + ZipEntry.FileName
+                Else
+                    TextBox1.Text = "Extract File:" + ZipEntry.FileName
                 End If
+                Application.DoEvents()
+
+                ZipEntry.Extract(MyFolder + "\Test", Ionic.Zip.ExtractExistingFileAction.OverwriteSilently)
+                ProgressBar1.Value = ProgressBar1.Value + 1
             Next
         End Using
+        Dim Normal As Font = New Font(Me.Font.FontFamily, Me.FontHeight + 2, FontStyle.Regular)
+        TextBox1.Font = Normal
 
+        Return True
+
+    End Function
+
+    Private Sub CHeckForUpdatesToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CHeckForUpdatesToolStripMenuItem.Click
+        Dim Update As String = My.Settings.Version
+        Try
+            Update = client.DownloadString("http://www.outworldz.com/DreamWorld/Update.plx?Ver=" + My.Settings.Version + "&_=" + Random())
+        Catch ex As Exception
+            Log("Dang:The Outworld web site is down")
+        End Try
+
+        Dim newVer As Single = Update
+        Dim MyVer As Single = My.Settings.Version
+
+        If newver > mYver Then
+            Print("I am Dreamworld version " + My.Settings.Version + vbCrLf + "A more dreamy version " + Update + " is available." + vbCrLf + vbCrLf + "http//www.Outworldz.com/Download")
+        Else
+            Print("I am the dreamiest version available. I like to dream of new worlds, silly things, and airplane wings.")
+        End If
     End Sub
 
 End Class

@@ -82,6 +82,11 @@ Start
   Looks up a localized resource of type System.Drawing.Bitmap.
 </summary>
 </member>
+<member name="P:DreamWorld.My.Resources.Resources.download1">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
 <member name="P:DreamWorld.My.Resources.Resources.earth_network">
 <summary>
   Looks up a localized resource of type System.Drawing.Bitmap.
