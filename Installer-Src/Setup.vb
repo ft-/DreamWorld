@@ -2,6 +2,9 @@
 Imports System.Net.Sockets
 Imports IWshRuntimeLibrary
 Imports IniParser
+Imports System.IO.Compression
+Imports System.Net
+
 
 ' Copyright 2014 Fred Beckhusen  
 ' Redistribution and use in binary and source form is permitted provided 
@@ -91,7 +94,8 @@ Public Class Form1
             Log("Info:Ready to start")
 
         Else
-            Buttons(InstallButton)
+
+            Download()
 
             SetINIFromSettings(52)
 
@@ -1257,6 +1261,39 @@ Public Class Form1
         ProgressBar1.Value = iProgress
     End Sub
 
+    Private Sub Download()
+
+        Dim Tmpfile As String = Path.GetTempFileName()
+        Dim myUrl As String
+        Dim zipfile
+        Try
+
+            Dim remoteUri As String = "http://www.outworldz.com/download/dreamworld.zip"
+            Dim fileName As String = "DreamWorld.zip"
+            Dim myStringWebResource As String = Nothing
+            ' Create a new WebClient instance.
+            Dim myWebClient As New WebClient()
+            ' Concatenate the domain with the Web resource filename. Because DownloadFile 
+            'requires a fully qualified resource name, concatenate the domain with the Web resource file name.
+            myStringWebResource = remoteUri + fileName
+            Console.WriteLine("Downloading File ""{0}"" from ""{1}"" ......." + ControlChars.Cr + ControlChars.Cr, fileName, myStringWebResource)
+            ' The DownloadFile() method downloads the Web resource and saves it into the current file-system folder.
+            myWebClient.DownloadFile(myStringWebResource, fileName)
+            Console.WriteLine("Successfully Downloaded file ""{0}"" from ""{1}""", fileName, myStringWebResource)
+            Console.WriteLine((ControlChars.Cr + "Downloaded file saved in the following file system folder:" + ControlChars.Cr + ControlChars.Tab + Application.StartupPath))
+
+        Catch
+        End Try
+
+        Using archive As ZipArchive = ZipFile.OpenRead(zipPath)
+            For Each entry As ZipArchiveEntry In archive.Entries
+                If entry.FullName.EndsWith(".txt", StringComparison.OrdinalIgnoreCase) Then
+                    entry.ExtractToFile(Path.Combine(extractPath, entry.FullName))
+                End If
+            Next
+        End Using
+
+    End Sub
 
 End Class
 

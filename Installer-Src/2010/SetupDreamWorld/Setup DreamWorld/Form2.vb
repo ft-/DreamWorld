@@ -2,6 +2,7 @@
     Friend WithEvents Label1 As Label
     Public Property Form2 As Object
 
+
     Private Sub Loaded(sender As Object, e As EventArgs) Handles Me.Load
 
         If My.Settings.SizeX = "256" And My.Settings.SizeY = "256" Then
