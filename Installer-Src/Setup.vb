@@ -110,6 +110,17 @@ Public Class Form1
             Create_ShortCut(MyFolder & "\Start.exe")
             ProgressBar1.Value = 60
 
+            Try
+                ' mark the system as read        
+                Using outputFile As New StreamWriter(MyFolder & "\DreamworldFiles\Init.txt", True)
+                    outputFile.WriteLine("This file lets Dream World know it has been installed and to benchmark the network loopback")
+                End Using
+            Catch
+                Log("Could not create Init.txt")
+            End Try
+
+
+
             Print("Installing Onlook Viewer")
 
             Dim pi As ProcessStartInfo = New ProcessStartInfo()
@@ -145,20 +156,13 @@ Public Class Form1
                 End If
             End While
 
-            Log("Info:Ready to Launch")
+
             ProgressBar1.Value = 100
 
             Print("Ready to Launch! Click 'Start' to begin the dreaming in the Dream World.")
             Buttons(StartButton)
 
-            Try
-                ' mark the system as read        
-                Using outputFile As New StreamWriter(MyFolder & "\DreamworldFiles\Init.txt", True)
-                    outputFile.WriteLine("This file lets Dream World know it has been installed and to benchmark the network loopback")
-                End Using
-            Catch
-                Log("Could not create Init.txt")
-            End Try
+
 
 
         End If
