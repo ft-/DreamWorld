@@ -6,7 +6,6 @@ Imports IniParser
 Imports System.Net
 Imports Ionic.Zip
 
-
 ' Copyright 2014 Fred Beckhusen  
 ' Redistribution and use in binary and source form is permitted provided 
 ' that ALL the licenses in the text files are followed and included in all copies
@@ -33,13 +32,16 @@ Public Class Form1
         Log("Info:Exit")
         Print("Hold fast to your dreams ...")
         ExitAll()
-        Print("I'll tell you my dream when I wake up again.")
+        Print("I'll tell you my next dream when I wake up.")
         Sleep(1000)
     End Sub
 
     Private Sub Form1_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 
         Buttons(BusyButton)
+
+        MnuContent.Visible = False
+        mnuSettings.Visible = False
 
         ProgressBar1.Visible = False
         ProgressBar1.Minimum = 0
@@ -76,20 +78,31 @@ Public Class Form1
 
         ProgressBar1.Visible = True
         ProgressBar1.Value = 5
-        Sleep(2)
-        KillAll()
+        Sleep(2000)
+
+        If Not System.IO.File.Exists(MyFolder & "\DreamworldFiles\Init.txt") Then
+            Print("Oh! I need to get to work!")
+            If Not Download() Then
+                Return
+            End If
+        End If
+
         ProgressBar1.Value = 10
 
         GetPubIP(15)
         SetINIFromSettings(20)
+        mnuSettings.Visible = True
+
         SetIAROARContent(30) ' load IAR and OAR web content
+        MnuContent.Visible = True
+
         InstallGridXML(40)
 
         OpenPorts(45) ' Open router ports
         Diagnose(50)
 
         ' Find out if the viewer is installed, make a file we can benchmark to
-        If System.IO.File.Exists(gCurDir & "\DreamworldFiles\Init.txt") Then
+        If System.IO.File.Exists(MyFolder & "\DreamworldFiles\Init.txt") Then
             Buttons(StartButton)
             ProgressBar1.Value = 100
             Print("Dream World is ready to start.")
@@ -97,21 +110,15 @@ Public Class Form1
 
         Else
 
-            Download()
-
-            SetINIFromSettings(52)
-
-            Buttons(BusyButton)
-
             Print("Installing Desktop Icon")
-            Create_ShortCut(gCurDir & "\Start.exe")
+            Create_ShortCut(MyFolder & "\Start.exe")
             ProgressBar1.Value = 60
 
             Print("Installing Onlook Viewer")
 
             Dim pi As ProcessStartInfo = New ProcessStartInfo()
             pi.Arguments = ""
-            pi.FileName = gCurDir & "\Viewer\Onlook.exe"
+            pi.FileName = MyFolder & "\Viewer\Onlook.exe"
             pOnlook.StartInfo = pi
             Try
                 Log("Info:Launching Onlook installer")
@@ -137,20 +144,26 @@ Public Class Form1
 
                 ProgressBar1.Value = ProgressBar1.Value + 1
                 If ProgressBar1.Value = 100 Then
-                    Print("You win. Proceeding with Dream World ")
+                    Print("You win. Proceeding with Dream World Installation. You may need to add the grid manually.")
                     toggle = True
                 End If
             End While
 
             Log("Info:Ready to Launch")
-            Print("Ready to Launch! Click 'Start' to begin your dream in the Dream World.")
-            Buttons(StartButton)
             ProgressBar1.Value = 100
 
-            ' mark the system as ready
-            Using outputFile As New StreamWriter(gCurDir & "\DreamworldFiles\Init.txt", True)
-                outputFile.WriteLine("This file lets Dreamworld know it has been installed and to benchmark the network loopback")
-            End Using
+            Print("Ready to Launch! Click 'Start' to begin the dreaming in the Dream World.")
+            Buttons(StartButton)
+
+            Try
+                ' mark the system as read        
+                Using outputFile As New StreamWriter(MyFolder & "\DreamworldFiles\Init.txt", True)
+                    outputFile.WriteLine("This file lets Dream World know it has been installed and to benchmark the network loopback")
+                End Using
+            Catch
+                Log("Could not create Init.txt")
+            End Try
+
 
         End If
 
@@ -158,7 +171,7 @@ Public Class Form1
     Private Sub StartButton_Click(sender As System.Object, e As System.EventArgs) Handles StartButton.Click
 
         Try
-            My.Computer.FileSystem.DeleteFile(gCurDir & "\DreamWorldFiles\DreamWorld.log")
+            My.Computer.FileSystem.DeleteFile(MyFolder & "\DreamWorldFiles\DreamWorld.log")
         Catch
             Log("Warn:Could not find the DreamWorld Log file")
         End Try
@@ -187,7 +200,7 @@ Public Class Form1
             Print("Access to the Hypergrid is disabled because of your router. See Help->Loopback to see why.")
         Else
             Log("Info:Ready for login")
-            Print("DreamWorld is ready for you to log in.  The Hypergrid address is " + My.Settings.PublicIP + ":" + My.Settings.PublicPort)
+            Print("Dream World is ready for you to log in.  The Hypergrid address is " + My.Settings.PublicIP + ":" + My.Settings.PublicPort)
         End If
 
         ' done with bootup
@@ -260,8 +273,8 @@ Public Class Form1
         Dim DesktopFolder As String = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory)
         MyShortcut = CType(WshShell.CreateShortcut(DesktopFolder & "\Dreamworld.lnk"), IWshRuntimeLibrary.IWshShortcut)
         MyShortcut.TargetPath = sTargetPath
-        MyShortcut.IconLocation = WshShell.ExpandEnvironmentStrings(gCurDir & "\Start.exe, 0 ")
-        MyShortcut.WorkingDirectory = gCurDir
+        MyShortcut.IconLocation = WshShell.ExpandEnvironmentStrings(MyFolder & "\Start.exe, 0 ")
+        MyShortcut.WorkingDirectory = MyFolder
         MyShortcut.Save()
 
     End Sub
@@ -402,44 +415,44 @@ Public Class Form1
     End Sub
     Private Sub Clean(AGrid As String)
         Try
-            System.IO.Directory.Delete(gCurDir & "\DreamWorldFiles\" & AGrid & "\bin\addin-db-002", True)
+            System.IO.Directory.Delete(MyFolder & "\DreamWorldFiles\" & AGrid & "\bin\addin-db-002", True)
         Catch ex As Exception
             Log("Info:addin-db-002 was empty")
         End Try
         Try
-            System.IO.Directory.Delete(gCurDir & "\DreamWorldFiles\" & AGrid & "\bin\assetcache", True)
+            System.IO.Directory.Delete(MyFolder & "\DreamWorldFiles\" & AGrid & "\bin\assetcache", True)
         Catch ex As Exception
             Log("Info:Assetcache had nothing in it")
         End Try
         Try
-            System.IO.Directory.Delete(gCurDir & "\DreamWorldFiles\" & AGrid & "\bin\DataSnapshot", True)
+            System.IO.Directory.Delete(MyFolder & "\DreamWorldFiles\" & AGrid & "\bin\DataSnapshot", True)
         Catch ex As Exception
             Log("Info:Nothing in DataSnapshot")
         End Try
 
         Try
-            System.IO.Directory.Delete(gCurDir & "\DreamWorldFiles\" & AGrid & "\bin\ScriptEngines", True)
+            System.IO.Directory.Delete(MyFolder & "\DreamWorldFiles\" & AGrid & "\bin\ScriptEngines", True)
         Catch ex As Exception
             Log("Info:Empty scriptengines")
         End Try
         Try
-            System.IO.Directory.Delete(gCurDir & "\DreamWorldFiles\" & AGrid & "\bin\MapTiles", True)
+            System.IO.Directory.Delete(MyFolder & "\DreamWorldFiles\" & AGrid & "\bin\MapTiles", True)
         Catch ex As Exception
             Log("Info:No Maptiles to delete")
         End Try
         Try
-            My.Computer.FileSystem.DeleteFile(gCurDir + "\DreamWorldFiles" & AGrid & "\bin\Opensim.log")
+            My.Computer.FileSystem.DeleteFile(MyFolder + "\DreamWorldFiles" & AGrid & "\bin\Opensim.log")
         Catch ex As Exception
             Log("Info:Opensim.log is empty")
         End Try
 
         Try
-            My.Computer.FileSystem.DeleteFile(gCurDir + "\DreamWorldFiles\" & AGrid & "\bin\OpenSimConsoleHistory.txt")
+            My.Computer.FileSystem.DeleteFile(MyFolder + "\DreamWorldFiles\" & AGrid & "\bin\OpenSimConsoleHistory.txt")
         Catch ex As Exception
             Log("Info:Console history is empty")
         End Try
         Try
-            My.Computer.FileSystem.DeleteFile(gCurDir + "\DreamWorldFiles\Init.txt")
+            My.Computer.FileSystem.DeleteFile(MyFolder + "\DreamWorldFiles\Init.txt")
         Catch ex As Exception
             Log("Info:Never initted")
         End Try
@@ -454,11 +467,11 @@ Public Class Form1
         My.Settings.Save()
         mnuOsGrid.Checked = True
         mnuHyperGrid.Checked = False
-        Print("DreamWorlds will connect to OsGrid.org. You must log in with an Avatar name registered with OsGrid.org. You must also 'Port Forward' your router to this machine on port 8000 for Tcp and Udp traffic")
+        Print("Dream World will connect to OsGrid.org. You must log in with an Avatar name registered with OsGrid.org. You must also 'Port Forward' your router to this machine on port 8000 for Tcp and Udp traffic")
         Try
-            My.Computer.FileSystem.CopyFile(gCurDir & "\Viewer\grids_sg_OsGrid.xml", xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml", True)
+            My.Computer.FileSystem.CopyFile(MyFolder & "\Viewer\grids_sg_OsGrid.xml", xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml", True)
         Catch
-            Log("Error:Cannot copy " + gCurDir & "\Viewer\grids_sg_OsGrid.xml to " + xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml")
+            Log("Error:Cannot copy " + MyFolder & "\Viewer\grids_sg_OsGrid.xml to " + xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml")
         End Try
     End Sub
 
@@ -469,9 +482,9 @@ Public Class Form1
         mnuOsGrid.Checked = False
         mnuHyperGrid.Checked = True
 
-        Print("DreamWorlds will connect as a locally hosted hypergridded sim.")
-        Log("DreamWorlds will connect as a locally hosted hypergridded sim.")
-        My.Computer.FileSystem.CopyFile(gCurDir & "\Viewer\grids_sg_HyperGrid.xml", xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml", True)
+        Print("Dream World will connect as a locally hosted hypergridded sim.")
+        Log("Dream World will connect as a locally hosted hypergridded sim.")
+        My.Computer.FileSystem.CopyFile(MyFolder & "\Viewer\grids_sg_HyperGrid.xml", xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml", True)
     End Sub
 
     Private Sub SetINIFromSettings(iProgress As Integer)
@@ -489,10 +502,10 @@ Public Class Form1
         ' Viewer UI shows the full viewer UI
         If My.Settings.ViewerEase Then
             Log("Info:Viewer set to Easy")
-            SetIni(gCurDir & "\DreamWorldFiles\" & My.Settings.GridFolder & "\bin\Opensim.ini", "SpecialUIModule", "enabled", "false", ";")
+            SetIni(MyFolder & "\DreamWorldFiles\" & My.Settings.GridFolder & "\bin\Opensim.ini", "SpecialUIModule", "enabled", "false", ";")
         Else
             Log("Info:Viewer set to Normal")
-            SetIni(gCurDir & "\DreamWorldFiles\" & My.Settings.GridFolder & "\bin\Opensim.ini", "SpecialUIModule", "enabled", "true", ";")
+            SetIni(MyFolder & "\DreamWorldFiles\" & My.Settings.GridFolder & "\bin\Opensim.ini", "SpecialUIModule", "enabled", "true", ";")
         End If
 
         mnuFull.Checked = My.Settings.ViewerEase
@@ -501,10 +514,10 @@ Public Class Form1
         'Avatar visible?
         If My.Settings.AvatarShow Then
             Log("Info:Showing the avatar")
-            SetIni(gCurDir & "\DreamWorldFiles\" & My.Settings.GridFolder & "\bin\Opensim.ini", "CameraOnlyModeModule", "enabled", "false", ";")
+            SetIni(MyFolder & "\DreamWorldFiles\" & My.Settings.GridFolder & "\bin\Opensim.ini", "CameraOnlyModeModule", "enabled", "false", ";")
         Else
             Log("Info:Set to not show avatar")
-            SetIni(gCurDir & "\DreamWorldFiles\" & My.Settings.GridFolder & "\bin\Opensim.ini", "CameraOnlyModeModule", "enabled", "true", ";")
+            SetIni(MyFolder & "\DreamWorldFiles\" & My.Settings.GridFolder & "\bin\Opensim.ini", "CameraOnlyModeModule", "enabled", "true", ";")
         End If
 
         mnuYesAvatar.Checked = My.Settings.AvatarShow
@@ -537,35 +550,35 @@ Public Class Form1
         ' Autobackup
         If My.Settings.AutoBackup Then
             Log("Info:Autobackup is On")
-            SetIni(gCurDir & "\DreamWorldFiles\" & My.Settings.GridFolder & "\bin\Opensim.ini", "AutoBackupModule", "AutoBackup", "true", ";")
+            SetIni(MyFolder & "\DreamWorldFiles\" & My.Settings.GridFolder & "\bin\Opensim.ini", "AutoBackupModule", "AutoBackup", "true", ";")
             AutoYes.Checked = True
             AutoNo.Checked = False
             My.Settings.AutoBackup = True
         Else
             Log("Info:Autobackup is Off")
-            SetIni(gCurDir & "\DreamWorldFiles\" & My.Settings.GridFolder & "\bin\Opensim.ini", "AutoBackupModule", "AutoBackup", "false", ";")
+            SetIni(MyFolder & "\DreamWorldFiles\" & My.Settings.GridFolder & "\bin\Opensim.ini", "AutoBackupModule", "AutoBackup", "false", ";")
             AutoYes.Checked = False
             AutoNo.Checked = True
             My.Settings.AutoBackup = False
         End If
 
         ' RegionConfig
-        SetIni(gCurDir + "\DreamWorldFiles\" + My.Settings.GridFolder + "\bin\Regions\RegionConfig.ini", "DreamWorld", "SizeY", My.Settings.SizeY, ";")
-        SetIni(gCurDir + "\DreamWorldFiles\" + My.Settings.GridFolder + "\bin\Regions\RegionConfig.ini", "DreamWorld", "SizeX", My.Settings.SizeX, ";")
+        SetIni(MyFolder + "\DreamWorldFiles\" + My.Settings.GridFolder + "\bin\Regions\RegionConfig.ini", "DreamWorld", "SizeY", My.Settings.SizeY, ";")
+        SetIni(MyFolder + "\DreamWorldFiles\" + My.Settings.GridFolder + "\bin\Regions\RegionConfig.ini", "DreamWorld", "SizeX", My.Settings.SizeX, ";")
 
         Log("Info:Public IP is " + My.Settings.PublicIP)
-        SetIni(gCurDir + "\DreamWorldFiles\" + My.Settings.GridFolder + "\bin\Regions\RegionConfig.ini", "DreamWorld", "ExternalHostName", My.Settings.PublicIP, ";")
-        SetIni(gCurDir + "\DreamWorldFiles\" + My.Settings.GridFolder + "\bin\Opensim.ini", "Const", "BaseURL", My.Settings.PublicIP, ";")
+        SetIni(MyFolder + "\DreamWorldFiles\" + My.Settings.GridFolder + "\bin\Regions\RegionConfig.ini", "DreamWorld", "ExternalHostName", My.Settings.PublicIP, ";")
+        SetIni(MyFolder + "\DreamWorldFiles\" + My.Settings.GridFolder + "\bin\Opensim.ini", "Const", "BaseURL", My.Settings.PublicIP, ";")
 
         Log("Info:Public Port is " + My.Settings.PublicPort)
-        SetIni(gCurDir + "\DreamWorldFiles\" + My.Settings.GridFolder + "\bin\Opensim.ini", "Const", "PublicPort", My.Settings.PublicPort, ";")
-        SetIni(gCurDir + "\DreamWorldFiles\" + My.Settings.GridFolder + "\bin\Regions\RegionConfig.ini", "DreamWorld", "InternalPort", My.Settings.PublicPort, ";")
+        SetIni(MyFolder + "\DreamWorldFiles\" + My.Settings.GridFolder + "\bin\Opensim.ini", "Const", "PublicPort", My.Settings.PublicPort, ";")
+        SetIni(MyFolder + "\DreamWorldFiles\" + My.Settings.GridFolder + "\bin\Regions\RegionConfig.ini", "DreamWorld", "InternalPort", My.Settings.PublicPort, ";")
 
         ProgressBar1.Value = iProgress
     End Sub
 
     Private Sub YesToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AutoYes.Click
-        Print("DreamWorlds Is set Autoback the sim into an OAR every 24 hours. Backups will be saved in the AutoBackup folder")
+        Print("DreamWorld Is set Autoback the sim into an OAR every 24 hours. Backups will be saved in the AutoBackup folder")
         Log("Info:Backups are enabled")
         AutoYes.Checked = True
         AutoNo.Checked = False
@@ -682,20 +695,20 @@ Public Class Form1
 
         ' remove the console startup file
         Try
-            My.Computer.FileSystem.DeleteFile(gCurDir & "\DreamworldFiles\" + My.Settings.GridFolder & "\bin\startup_commands.txt")
+            My.Computer.FileSystem.DeleteFile(MyFolder & "\DreamworldFiles\" + My.Settings.GridFolder & "\bin\startup_commands.txt")
         Catch ex As Exception
             Log("Info:no Opensim startup commands located")
         End Try
         Try
             If type = "iar" Then
-                Using outputFile As New StreamWriter(gCurDir & "\DreamworldFiles\" + My.Settings.GridFolder & "\bin\startup_commands.txt", True)
+                Using outputFile As New StreamWriter(MyFolder & "\DreamworldFiles\" + My.Settings.GridFolder & "\bin\startup_commands.txt", True)
                     outputFile.WriteLine("load iar --merge Dream Avatar / 123 " + Chr(34) + thing + Chr(34))
                     outputFile.WriteLine("load iar --merge Dream Guy / 123 " + Chr(34) + thing + Chr(34))
                     outputFile.WriteLine("load iar --merge Dream Girl / 123 " + Chr(34) + thing + Chr(34))
                     outputFile.WriteLine("show stats")
                 End Using
             ElseIf type = "oar" Then
-                Using outputFile As New StreamWriter(gCurDir & "\DreamworldFiles\" + My.Settings.GridFolder & "\bin\startup_commands.txt", True)
+                Using outputFile As New StreamWriter(MyFolder & "\DreamworldFiles\" + My.Settings.GridFolder & "\bin\startup_commands.txt", True)
 
                     outputFile.WriteLine("load " + type + "  " + Chr(34) + thing + Chr(34))
                     outputFile.WriteLine("show stats")
@@ -712,7 +725,7 @@ Public Class Form1
         If ContentLoading.Length = 0 Then
             ' remove the console startup file
             Try
-                My.Computer.FileSystem.DeleteFile(gCurDir & "\DreamworldFiles\" + My.Settings.GridFolder & "\bin\startup_commands.txt")
+                My.Computer.FileSystem.DeleteFile(MyFolder & "\DreamworldFiles\" + My.Settings.GridFolder & "\bin\startup_commands.txt")
             Catch ex As Exception
             End Try
         End If
@@ -724,7 +737,7 @@ Public Class Form1
         Dim p As Process = New Process()
         Dim pi As ProcessStartInfo = New ProcessStartInfo()
         pi.Arguments = " - u root shutdown"
-        pi.FileName = gCurDir + "\DreamWorldFiles\mysql\bin\mysqladmin.exe"
+        pi.FileName = MyFolder + "\DreamWorldFiles\mysql\bin\mysqladmin.exe"
         pi.WindowStyle = ProcessWindowStyle.Minimized
         p.StartInfo = pi
         Try
@@ -804,21 +817,6 @@ Public Class Form1
         My.Settings.Save()
     End Sub
 
-    Private Sub MensClothingToolStripMenuItem_Click(sender As Object, e As EventArgs)
-        SimContent("http://www.outworldz.com/DreamWorld/IAR/LK-MENS-CLOTHING.iar", "iar")
-        Print("Opensim will load LK-MENS-CLOTHING.iar by Linda Kellie when it is restarted. This may take time to load. You will find it in your inventory.")
-    End Sub
-
-    Private Sub FullAvatarsToolStripMenuItem_Click(sender As Object, e As EventArgs)
-        SimContent("http://www.outworldz.com/DreamWorld/IAR/FULLAVATARS.iar", "iar")
-        Print("Opensim will load FULLAVATARS.iar by Linda Kellie when it is restarted. This may take time to load. You will find it in your inventory.")
-    End Sub
-
-    Private Sub FemaleClothingToolStripMenuItem1_Click(sender As Object, e As EventArgs)
-        SimContent("http://www.outworldz.com/DreamWorld/IAR/LK-WOMENS-CLOTHING.iar", "iar")
-        Print("Opensim will load LK-WOMENS-CLOTHING.iar by Linda Kellie when it is restarted. This may take time to load. You will find it in your inventory.")
-    End Sub
-
     Private Sub LoopBackToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles LoopBackToolStripMenuItem.Click
         Dim webAddress As String = "http://www.outworldz.com/Dreamworld/Loopback.htm"
         Process.Start(webAddress)
@@ -844,13 +842,13 @@ Public Class Form1
     Private Sub LogFiles(progress As Integer)
         ' clear out the log files
         Try
-            My.Computer.FileSystem.DeleteFile(gCurDir + "\DreamWorldFiles" & My.Settings.GridFolder & "\bin\Opensim.log")
+            My.Computer.FileSystem.DeleteFile(MyFolder + "\DreamWorldFiles" & My.Settings.GridFolder & "\bin\Opensim.log")
         Catch ex As Exception
             Log("Info:Opensim Log file did not exist")
         End Try
 
         Try
-            My.Computer.FileSystem.DeleteFile(gCurDir + "\DreamWorldFiles\" & My.Settings.GridFolder & "\bin\OpenSimConsoleHistory.txt")
+            My.Computer.FileSystem.DeleteFile(MyFolder + "\DreamWorldFiles\" & My.Settings.GridFolder & "\bin\OpenSimConsoleHistory.txt")
         Catch ex As Exception
             Log("Info:Console history was not empty")
         End Try
@@ -861,13 +859,13 @@ Public Class Form1
         ' Start MySql in background.  
         Print("Starting Database")
 
-        SetIni(gCurDir & "\DreamWorldFiles\mysql\my.ini", "mysqld", "basedir", """" + gCurSlashDir + "/DreamWorldFiles/Mysql" + """", "#")
-        SetIni(gCurDir & "\DreamWorldFiles\mysql\My.ini", "mysqld", "datadir", """" + gCurSlashDir + "/DreamWorldFiles/Mysql/Data" + """", "#")
+        SetIni(MyFolder & "\DreamWorldFiles\mysql\my.ini", "mysqld", "basedir", """" + gCurSlashDir + "/DreamWorldFiles/Mysql" + """", "#")
+        SetIni(MyFolder & "\DreamWorldFiles\mysql\My.ini", "mysqld", "datadir", """" + gCurSlashDir + "/DreamWorldFiles/Mysql/Data" + """", "#")
 
         Dim pi As ProcessStartInfo = New ProcessStartInfo()
         pi.Arguments = "--defaults-file=" + gCurSlashDir + "/DreamworldFiles/mysql/my.ini"
         pi.WindowStyle = ProcessWindowStyle.Hidden
-        pi.FileName = gCurDir & "\DreamWorldFiles\mysql\bin\mysqld-nt.exe"
+        pi.FileName = MyFolder & "\DreamWorldFiles\mysql\bin\mysqld-nt.exe"
         pMySql.StartInfo = pi
         pMySql.Start()
 
@@ -912,7 +910,7 @@ Public Class Form1
         Try
             Application.DoEvents()
             ws = WebServer.getWebServer
-            ws.VirtualRoot = gCurDir & "\DreamWorldFiles\"
+            ws.VirtualRoot = MyFolder & "\DreamWorldFiles\"
             ws.StartWebServer()
             Dim Benchmark = client.DownloadString("http://" & My.Settings.PublicIP & ":8001/Init.txt")
             ws.StopWebServer()
@@ -931,7 +929,7 @@ Public Class Form1
         Print("Starting Opensimulator")
 
         Dim pi As ProcessStartInfo = New ProcessStartInfo()
-        pi.WorkingDirectory = gCurDir & "\DreamWorldFiles\" & My.Settings.GridFolder & "\bin\"
+        pi.WorkingDirectory = MyFolder & "\DreamWorldFiles\" & My.Settings.GridFolder & "\bin\"
 
         If ContentLoading.Length Then
             Log("Info:Opensim console is forced visible")
@@ -948,7 +946,7 @@ Public Class Form1
             pi.WindowStyle = ProcessWindowStyle.Normal
         End If
 
-        pi.FileName = gCurDir & "\DreamWorldFiles\" & My.Settings.GridFolder & "\bin\OpenSim.exe"
+        pi.FileName = MyFolder & "\DreamWorldFiles\" & My.Settings.GridFolder & "\bin\OpenSim.exe"
         pOpensim.StartInfo = pi
 
         Try
@@ -956,7 +954,7 @@ Public Class Form1
         Catch
             Dim yesno = MsgBox("Opensim did not start. Do you want to see the log file?", vbYesNo)
             If (yesno = vbYes) Then
-                Dim Log As String = gCurDir + "\DreamWorldFiles\" & My.Settings.GridFolder & "\bin\OpenSim.log"
+                Dim Log As String = MyFolder + "\DreamWorldFiles\" & My.Settings.GridFolder & "\bin\OpenSim.log"
                 System.Diagnostics.Process.Start("wordpad.exe", Log)
             End If
             KillAll()
@@ -981,7 +979,7 @@ Public Class Form1
                 Buttons(StartButton)
                 Dim yesno = MsgBox("Opensim did not start. Do you want to see the log file?", vbYesNo)
                 If (yesno = vbYes) Then
-                    Dim Log As String = gCurDir + "\DreamWorldFiles\" & My.Settings.GridFolder & "\bin\OpenSim.log"
+                    Dim Log As String = MyFolder + "\DreamWorldFiles\" & My.Settings.GridFolder & "\bin\OpenSim.log"
                     System.Diagnostics.Process.Start("wordpad.exe", Log)
                 End If
                 KillAll()
@@ -1052,7 +1050,7 @@ Public Class Form1
         End Try
 
         Try
-            My.Computer.FileSystem.CopyFile(gCurDir & "\Viewer\Hypergrid.xml", xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml", True)
+            My.Computer.FileSystem.CopyFile(MyFolder & "\Viewer\Hypergrid.xml", xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml", True)
         Catch ex As Exception
             Log("Error:Failed to install onlook XML")
         End Try
@@ -1114,7 +1112,7 @@ Public Class Form1
 
     Public Function Log(message As String)
         Try
-            Using outputFile As New StreamWriter(gCurDir & "\DreamworldFiles\DreamWorld.log", True)
+            Using outputFile As New StreamWriter(MyFolder & "\DreamworldFiles\DreamWorld.log", True)
                 outputFile.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + message)
             End Using
         Catch
@@ -1241,7 +1239,7 @@ Public Class Form1
 
         Log("Info:Starting Diagnostic server")
         ws = WebServer.getWebServer
-        ws.VirtualRoot = gCurDir & "\DreamWorldFiles\"
+        ws.VirtualRoot = MyFolder & "\DreamWorldFiles\"
         ws.StartWebServer()
 
         Dim isPortOpen As String = ""
@@ -1261,7 +1259,7 @@ Public Class Form1
         End If
 
         GetPubIP(iProgress - 10)    ' we need this if we are HG enabled
-        Loopback(iProgress - 5)    ' test he loopback on the router. If it fails, use localhost, no Hg
+        Loopback(iProgress - 5)    ' test the loopback on the router. If it fails, use localhost, no Hg
 
         ProgressBar1.Value = iProgress
     End Sub
@@ -1288,9 +1286,6 @@ Public Class Form1
             Return False
         End Try
 
-        Dim SmallFont As Font = New Font(Me.Font.FontFamily, Me.FontHeight - 1, FontStyle.Regular)
-        TextBox1.Font = SmallFont
-
 
         Using zip As ZipFile = ZipFile.Read(fileName)
             Print("Received " + Str(zip.Entries.Count) + " files. Extracting to disk.")
@@ -1298,19 +1293,20 @@ Public Class Form1
             ProgressBar1.Value = 0
             For Each ZipEntry In zip
 
-                If ZipEntry.IsDirectory Then
-                    TextBox1.Text = "Make Folder:" + ZipEntry.FileName
-                Else
-                    TextBox1.Text = "Extract File:" + ZipEntry.FileName
-                End If
-                Application.DoEvents()
+                TextBox1.Text = "Extracting " + Path.GetFileName(ZipEntry.FileName)
 
-                ZipEntry.Extract(MyFolder + "\Test", Ionic.Zip.ExtractExistingFileAction.OverwriteSilently)
+                Application.DoEvents()
+                ZipEntry.Extract(MyFolder, Ionic.Zip.ExtractExistingFileAction.OverwriteSilently)
                 ProgressBar1.Value = ProgressBar1.Value + 1
             Next
         End Using
-        Dim Normal As Font = New Font(Me.Font.FontFamily, Me.FontHeight + 2, FontStyle.Regular)
-        TextBox1.Font = Normal
+
+
+        Try
+            My.Computer.FileSystem.DeleteFile(MyFolder + "/DreamWorld.zip")
+        Catch
+            Log("Warn:Could not delete the DreamWorld.Zip file")
+        End Try
 
         Return True
 
@@ -1328,11 +1324,12 @@ Public Class Form1
         Dim MyVer As Single = My.Settings.Version
 
         If newver > mYver Then
-            Print("I am Dreamworld version " + My.Settings.Version + vbCrLf + "A more dreamy version " + Update + " is available." + vbCrLf + vbCrLf + "http//www.Outworldz.com/Download")
+            Print("I am Dream World version " + My.Settings.Version + vbCrLf + "A more dreamy version " + Update + " is available." + vbCrLf + vbCrLf + "http//www.Outworldz.com/Download")
         Else
             Print("I am the dreamiest version available. I like to dream of new worlds, silly things, and airplane wings.")
         End If
     End Sub
+
 
 End Class
 
