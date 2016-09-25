@@ -74,11 +74,11 @@ Public Class Form1
             End If
         End If
 
-        Print("I need a moment to wake up from a lovely dream. " + SaySomething())
+        Print("I need a moment to wake up from a lovely dream. " + SaySomething() + " And then I woke up.")
 
         ProgressBar1.Visible = True
         ProgressBar1.Value = 5
-        Sleep(2000)
+        Sleep(3000)
 
         If Not System.IO.File.Exists(MyFolder & "\DreamworldFiles\Init.txt") Then
             Print("Oh! I need to get to work!")
@@ -1217,17 +1217,35 @@ Public Class Form1
 
     Private Function SaySomething()
 
-        Dim Array() As String = {"I was flying a dragon in the Outworldz.",
-                                 "I was chatting with people at OsGrid.org. It's the largest hypergrid enabled virtual world.",
+        Dim Array() As String = {"I was flying a dragon in the Outworldz!",
+                                 "I was chatting with people at OsGrid.org. It's the largest hypergrid-enabled virtual world.",
                                  "Some friends and I were riding a rollercoaster in the Great Canadian Grid.",
                                  "I was watching a really pretty particle exhibit on the Metropolis grid.",
                                  "We were discussing politics in German, Dutch, and French. And we all understood each other!",
-                                 "I was on a hypergrid safari in the mountains of Africa in Virunga.  ",
+                                 "I was on a hypergrid safari in the mountains of Africa in the Outworldz at Virunga.",
                                  "I won a race while riding a silly cow at the Outworldz 'Frankie' sim.",
-                                 "The party I ws at had a wonderful singer. I can stll hear her voice floating above the sky.",
-                                 "The spaceport at Gravity in OsGrid was really hopping.",
-                                 "I made a pile of prims that you simply will not believe!"
-                                 }
+                                 "The party I was at had a wonderful singer. I can stll hear her voice floating above the sky.",
+                                 "The spaceport at Gravity sim in OsGrid was really hopping. And floating.",
+                                 "I was a mermaid in the Lost Worlds.",
+                                 "I made a pile of prims that you simply will not believe!",
+                                 "I was asked when I was going to straighten out the castle. 'Why? Is it tilted?'",
+                                 "I made a mesh of it",
+                                 "I saw a man without pants attached to a eagle flying up in the air. Always rez before you attach. ",
+                                 "I forgot the dream already, but I do remember I woke up in it.",
+                                 "I had no pants on.  Or shirt, shoes, or hair.  The worst part was there was no facelight! I looked hideous!",
+                                 "",
+                                 "Then I woke up.",
+                                 "I dreamt that I was floating in a river and a NPC crocodile chased me.",
+                                 "My friend started doing an interpretive dance and clicked the wrong color of pose ball, and I was like, 'OH SHES GAY!'",
+                                 "I dreamt I drove our car into the ocean. I found a pose ball, and grabbed onto it.",
+                                 "There was a NPC zebra in my bathtub!",
+                                 "Last night, I had a dreamed an ant was my best friend and then I woke up.  ",
+                                 "I dreamed that there were NPCs with yellow dinosaur heads attacking my house, so I decided to fly away. ",
+                                 "Last night, I saw a dream that there were pimples all over my face.  So I switched skins and looked perfect!",
+                                 "I had a dream where I had lost my blue snow boots, so I was asking everybody where I got them on the hypergrid.",
+                                 "My cousin logged in and she knew my avatar name! I need to make an alt now.",
+                                 "I had a dream that i was sitting on my roof with my crush and we stood up and fell off. "
+                                }
         Randomize()
 
         Dim value As Integer = CInt(Int((Array.Length - 1) * Rnd()))

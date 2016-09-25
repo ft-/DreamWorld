@@ -2,24 +2,23 @@
 This application requires 1 to 2 GB of free disk space and a good 3-D graphics card.   
 
 1) Unzip the application and save everything to a folder named "DreamWorld".  Navigate to the folder "DreamWorld"  and run Click "Start.exe"
-2) Click the "Install" button. The system will install the Onlook Viewer and a dekstop shortcut.
+2) The system will download and install Opensimulator, the Onlook Viewer and a desktop shortcut.
 3) After the programs are installed, click "Start".
-4) If your firewall is operating as it should, a series of requests to send data through the firewall will appear. (No personal data is sent anywhere when you authorize this app) The firewal is being programmed so the viewer and server can connect to themselves.
+4) If your firewall is operating as it should, a series of requests to send data through the firewall will appear. No personal data is sent anywhere when you authorize this app. The firewall is being programmed so the viewer and server can connect to themselves.
 5) The Onlook Viewer will appear.
-6) Log in as "Dream World"  with the password '123'.  
-7) To exit, quit the viewer, and click "Stop".  You may then start again, or close the app.
+6) User "Dream Avatar" owns the island.  Log in as "Dream Avatar" with the password '123'.  
+7) To exit, click "Stop".  You may then click Start again, or close the app.  
 
 The next time you wish to log in, click the icon on your desktop and click "Start"
 
 Administration:
-When using the web interface, use user "Wifi Admin" and the password "secret". With this you can control extra users.  Use "Dream World" owns the island.
+When using the web interface, use user "Wifi Administrator" and the password "secret". With this you can control extra users.  
 
-If you close the browser window, you can get back to it with an AdminPanel icon. You can can this panel use to create new users examine inventory, and view the console status.
+If you close the browser window, you can get back to it with an AdminPanel icon. You can can this panel use to create new users, examine inventory, and view the console status.
 
-This is only  is made possible by the work of the entire OpenSimulator development team, and specifically Crista Lopes (Diva Canto) for her D2 Distro of OpenSim.
+This is is made possible by the work of the entire OpenSimulator development team, and specifically Crista Lopes (Diva Canto) for her D2 Distro of OpenSim.
 
-For licensing information, please see licenses in the apache2, diva-r25084, mowes, mysql, and php5 folders. Additional licenses, such as for MySQL, may also apply.
-
+For licensing information, please see licenses in the various folders. Additional licenses, such as for MySQL, may also apply.
 
 ==================
 This application requires 2 GB of free disk space and a good 3-D graphics card.
