@@ -66,7 +66,7 @@ Partial Class AdvancedForm
         Me.CheckBox1024.Name = "CheckBox1024"
         Me.CheckBox1024.Size = New System.Drawing.Size(87, 17)
         Me.CheckBox1024.TabIndex = 3
-        Me.CheckBox1024.Text = "1024 X 1054"
+        Me.CheckBox1024.Text = "1024 X 1024"
         Me.CheckBox1024.UseVisualStyleBackColor = True
         '
         'GroupBox1
