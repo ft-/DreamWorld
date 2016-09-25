@@ -11,7 +11,6 @@
             CheckBox1024.Checked = False
             SizeX.Text = ""
             SizeY.Text = ""
-
         ElseIf My.Settings.SizeX = "512" And My.Settings.SizeY = "512" Then
             CheckBox256.Checked = False
             CheckBox512.Checked = True
@@ -36,6 +35,7 @@
 
     Private Sub CheckBox256_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBox256.CheckedChanged
         If CheckBox256.Checked = True Then
+
             CheckBox512.Checked = False
             CheckBox1024.Checked = False
             My.Settings.SizeX = "256"
@@ -50,6 +50,7 @@
     Private Sub CheckBox512_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBox512.CheckedChanged
         If CheckBox512.Checked = True Then
             CheckBox256.Checked = False
+
             CheckBox1024.Checked = False
             My.Settings.SizeX = "512"
             My.Settings.SizeY = "512"
@@ -63,8 +64,9 @@
         If CheckBox1024.Checked = True Then
             CheckBox256.Checked = False
             CheckBox512.Checked = False
+
             My.Settings.SizeX = "1024"
-            My.Settings.SizeX = "1024"
+            My.Settings.SizeY = "1024"
             SizeX.Text = ""
             SizeY.Text = ""
             My.Settings.Save()

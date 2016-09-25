@@ -88,16 +88,12 @@ Public Class Form1
         End If
 
         ProgressBar1.Value = 10
-
         GetPubIP(15)
         SetINIFromSettings(20)
         mnuSettings.Visible = True
-
         SetIAROARContent(30) ' load IAR and OAR web content
         MnuContent.Visible = True
-
         InstallGridXML(40)
-
         OpenPorts(45) ' Open router ports
         Diagnose(50)
 
@@ -292,7 +288,7 @@ Public Class Form1
     End Sub
 
     Private Sub mnuLogin_Click(sender As System.Object, e As System.EventArgs) Handles mnuLogin.Click
-        Print("'Dream Avatar','Dream Guy' and 'Dream Girl' have password='123'. You can also use Help->Opensim Console to create a new avatar or change passwords.")
+        Print("'Dream World' has a password='123'. You can also use Help->Opensim Console to create a new avatar or change passwords.")
     End Sub
 
     Private Sub mnuAbout_Click(sender As System.Object, e As System.EventArgs) Handles mnuAbout.Click
@@ -702,9 +698,7 @@ Public Class Form1
         Try
             If type = "iar" Then
                 Using outputFile As New StreamWriter(MyFolder & "\DreamworldFiles\" + My.Settings.GridFolder & "\bin\startup_commands.txt", True)
-                    outputFile.WriteLine("load iar --merge Dream Avatar / 123 " + Chr(34) + thing + Chr(34))
-                    outputFile.WriteLine("load iar --merge Dream Guy / 123 " + Chr(34) + thing + Chr(34))
-                    outputFile.WriteLine("load iar --merge Dream Girl / 123 " + Chr(34) + thing + Chr(34))
+                    outputFile.WriteLine("load iar --merge Dream World / 123 " + Chr(34) + thing + Chr(34))
                     outputFile.WriteLine("show stats")
                 End Using
             ElseIf type = "oar" Then
@@ -731,8 +725,8 @@ Public Class Form1
         End If
 
         pOpensim.Close()
-        'Sleep(1000)
-        'zap("OpenSim")
+        Sleep(1000)
+        zap("OpenSim")
 
         Dim p As Process = New Process()
         Dim pi As ProcessStartInfo = New ProcessStartInfo()
@@ -748,13 +742,13 @@ Public Class Form1
 
         Sleep(1000)
         pMySql.Close()
-        'zap("mysqld-nt")
+        zap("mysqld-nt")
 
-        'Sleep(1000)
+        Sleep(1000)
 
         pOnlook.Close()
-        ' Sleep(1000)
-        ' zap("OnlookViewer")
+        Sleep(1000)
+        zap("OnlookViewer")
 
         Application.DoEvents()
         Running = False
@@ -1276,7 +1270,6 @@ Public Class Form1
             Print("Hypergrid Ports are open!  You can share your Dream World with others.")
         End If
 
-        GetPubIP(iProgress - 10)    ' we need this if we are HG enabled
         Loopback(iProgress - 5)    ' test the loopback on the router. If it fails, use localhost, no Hg
 
         ProgressBar1.Value = iProgress
