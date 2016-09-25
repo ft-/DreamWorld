@@ -687,8 +687,6 @@ Public Class Form1
     End Sub
     Private Sub SimContent(thing As String, type As String)
 
-        thing = "http://www.Outworldz.com/DreamWorld/" + type + "/" + thing 'make a real URL
-
         ' remove the console startup file
         Try
             My.Computer.FileSystem.DeleteFile(MyFolder & "\DreamworldFiles\" + My.Settings.GridFolder & "\bin\startup_commands.txt")
@@ -1198,12 +1196,14 @@ Public Class Form1
 
     Private Sub OarCick(sender As Object, e As EventArgs)
         Dim file = Mid(sender.text, 1, InStr(sender.text, "|") - 2)
+        file = "http://www.Outworldz.com/DreamWorld/OAR/" + file 'make a real URL
         SimContent(file, "oar")
         sender.checked = True
         Print("Opensimulator will load " + file + " when restarted.  This may take time to load.")
     End Sub
     Private Sub IarClick(sender As Object, e As EventArgs)
         Dim file = Mid(sender.text, 1, InStr(sender.text, "|") - 2)
+        file = "http://www.Outworldz.com/DreamWorld/IAR/" + file 'make a real URL
         SimContent(file, "iar")
         sender.checked = True
         Print("Opensimulator will load " + file + " when restarted.  This may take time to load.")
@@ -1228,7 +1228,7 @@ Public Class Form1
                                  "I forgot the dream already, but I do remember I woke up in it.",
                                  "I had no pants on.  Or shirt, shoes, or hair.  The worst part was there was no facelight! I looked hideous!",
                                  "",
-                                 "Then I woke up.",
+                                 "Then I woke up!",
                                  "I dreamt that I was floating in a river and a NPC crocodile chased me.",
                                  "My friend started doing an interpretive dance and clicked the wrong color of pose ball, and I was like, 'OH SHES GAY!'",
                                  "I dreamt I drove our car into the ocean. I found a pose ball, and grabbed onto it.",
