@@ -117,7 +117,7 @@ Public Class Form1
             ProgressBar1.Value = 62
             Print("Please Install and Start the Onlook Viewer")
             Dim toggle As Boolean = False
-            While Not System.IO.File.Exists(xmlPath() + "\AppData\Roaming\Onlook\user_settings\settings_onlook.xml" And ProgressBar1.Value < 99)
+            While Not System.IO.File.Exists(xmlPath() + "\AppData\Roaming\Onlook\user_settings\settings_onlook.xml") And ProgressBar1.Value < 99
                 Application.DoEvents()
                 Sleep(4000)
                 If (toggle) Then
@@ -1221,6 +1221,7 @@ Public Class Form1
                                  "The spaceport at Gravity in OsGrid was really hopping.",
                                  "I made a pile of prims that you simply will not believe!"
                                  }
+        Randomize()
 
 
         Dim value As Integer = CInt(Int((Array.Length - 1) * Rnd()))
