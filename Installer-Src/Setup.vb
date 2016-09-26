@@ -334,7 +334,7 @@ Public Class Form1
     Private Sub mnuEasy_Click_1(sender As System.Object, e As System.EventArgs) Handles mnuEasy.Click
         mnuEasy.Checked = True
         mnuFull.Checked = False
-        My.Settings.ViewerEase = mnuEasy.Checked
+        My.Settings.ViewerEase = True
         My.Settings.Save()
         Print("Onlook Viewer is set for Easy UI mode. Change will occur when the sim is restarted")
     End Sub
@@ -342,7 +342,7 @@ Public Class Form1
     Private Sub mnuFull_Click(sender As System.Object, e As System.EventArgs) Handles mnuFull.Click
         mnuEasy.Checked = False
         mnuFull.Checked = True
-        My.Settings.ViewerEase = mnuEasy.Checked
+        My.Settings.ViewerEase = False
         My.Settings.Save()
         Print("Onlook Viewer is set for the Full UI mode. Change will occur when the sim is restarted")
     End Sub
