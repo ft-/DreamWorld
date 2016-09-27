@@ -100,7 +100,8 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>Outworldz.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DotNetZip, Version=1.10.1.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
@@ -242,7 +243,6 @@
   <ItemGroup>
     <Content Include="cubes.ico" />
     <None Include="Resources\download1.png" />
-    <None Include="Outworldz.pfx" />
     <None Include="Resources\TPV-Black_Dragon-Icon.png" />
     <None Include="Resources\TPV-Singularity-Icon.png" />
     <None Include="Resources\TPV-Catznip-2-Icon.png" />

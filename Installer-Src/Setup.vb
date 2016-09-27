@@ -74,18 +74,22 @@ Public Class Form1
             End If
         End If
 
-        Print("I need a moment to wake up from a lovely dream. " + SaySomething() + " And then I woke up.")
+        Print("I need a moment to wake up from my dream. " + SaySomething() + " And then I woke up.")
 
         ProgressBar1.Visible = True
         ProgressBar1.Value = 5
-        Sleep(3000)
+        Sleep(5000)
 
-        If Not System.IO.File.Exists(MyFolder & "\DreamworldFiles\Init.txt") Then
-            Print("Oh! I need to get to work!")
-            If Not Download() Then
-                Return
-            End If
-        End If
+        'If Not System.IO.File.Exists(MyFolder & "\DreamworldFiles\Init.txt") Then
+        'Print("Oh! I need to get to work!")
+        'If Not Download() Then
+        'Return
+        'End If
+        'End If
+        ws = WebServer.getWebServer
+        ws.VirtualRoot = MyFolder & "\DreamWorldFiles\Diag\"
+        ws.StartListener()
+
 
         ProgressBar1.Value = 10
         GetPubIP(15)
@@ -94,18 +98,21 @@ Public Class Form1
         SetIAROARContent(30) ' load IAR and OAR web content
         MnuContent.Visible = True
         InstallGridXML(40)
-        OpenPorts(45) ' Open router ports
-        Diagnose(50)
 
-        ' Find out if the viewer is installed, make a file we can benchmark to
+        If Not System.IO.File.Exists(MyFolder & "\DreamworldFiles\Init.txt") Then
+            OpenPorts(45) ' Open router ports
+            Diagnose(50)
+            Print("Diagnostics can be re-run in Help-Diagnostics")
+        End If
+
         If System.IO.File.Exists(MyFolder & "\DreamworldFiles\Init.txt") Then
+            ' Find out if the viewer is installed, make a file we can benchmark to
+
             Buttons(StartButton)
             ProgressBar1.Value = 100
             Print("Dream World is ready to start.")
             Log("Info:Ready to start")
-
         Else
-
             Print("Installing Desktop Icon")
             Create_ShortCut(MyFolder & "\Start.exe")
             ProgressBar1.Value = 60
@@ -115,14 +122,11 @@ Public Class Form1
                 Using outputFile As New StreamWriter(MyFolder & "\DreamworldFiles\Init.txt", True)
                     outputFile.WriteLine("This file lets Dream World know it has been installed and to benchmark the network loopback")
                 End Using
-            Catch
-                Log("Could not create Init.txt")
+            Catch ex As Exception
+                Log("Could not create Init.txt:" + ex.Message)
             End Try
 
-
-
             Print("Installing Onlook Viewer")
-
             Dim pi As ProcessStartInfo = New ProcessStartInfo()
             pi.Arguments = ""
             pi.FileName = MyFolder & "\Viewer\Onlook.exe"
@@ -130,8 +134,8 @@ Public Class Form1
             Try
                 Log("Info:Launching Onlook installer")
                 pOnlook.Start()
-            Catch
-                Log("Error:Onlook installer failed to load")
+            Catch ex As Exception
+                Log("Error:Onlook installer failed to load:" + ex.Message)
             End Try
 
             ProgressBar1.Value = 62
@@ -156,14 +160,9 @@ Public Class Form1
                 End If
             End While
 
-
             ProgressBar1.Value = 100
-
             Print("Ready to Launch! Click 'Start' to begin the dreaming in the Dream World.")
             Buttons(StartButton)
-
-
-
 
         End If
 
@@ -173,7 +172,7 @@ Public Class Form1
         Try
             My.Computer.FileSystem.DeleteFile(MyFolder & "\DreamWorldFiles\DreamWorld.log")
         Catch
-            Log("Warn:Could not find the DreamWorld Log file")
+            Log("Info:Could not find the DreamWorld Log file")
         End Try
 
         ' Set up the progres bar for 0-100
@@ -190,7 +189,7 @@ Public Class Form1
 
         SetINIFromSettings(30)    ' set up the INI files
 
-        Start_Opensimulator(98) ' Launch the rocket
+        Start_Opensimulator(40) ' Launch the rocket
 
         Onlook(100)
 
@@ -212,13 +211,12 @@ Public Class Form1
 
     Private Function CheckMySQL() As Boolean
 
-        ' tried to probe MySQL  port 3307. If available, return true
+        ' tried to probe MySQL port. If available, return true
         Dim ClientSocket As New TcpClient
         Dim ServerAddress As String = "127.0.0.1" ' Set the IP address of the server
-        Dim PortNumber As Integer = 3307 ' Set the port number used by the server
 
         Try
-            ClientSocket.Connect(ServerAddress, PortNumber)
+            ClientSocket.Connect(ServerAddress, My.Settings.MySqlPort)
         Catch ex As Exception
             Log("Error:MySql port probe failed on port 3307")
             Return False
@@ -229,7 +227,6 @@ Public Class Form1
     End Function
 
     Private Function zap(processName As String) As Boolean
-
         ' Kill process by name
         For Each P As Process In System.Diagnostics.Process.GetProcessesByName(processName)
             Try
@@ -264,7 +261,6 @@ Public Class Form1
     End Function
 
     Private Sub Create_ShortCut(ByVal sTargetPath As String)
-
         ' Requires reference to Windows Script Host Object Model
         Dim WshShell As WshShellClass = New WshShellClass
         Dim MyShortcut As IWshRuntimeLibrary.IWshShortcut
@@ -292,7 +288,7 @@ Public Class Form1
     End Sub
 
     Private Sub mnuLogin_Click(sender As System.Object, e As System.EventArgs) Handles mnuLogin.Click
-        Print("'Dream World' has a password='123'. You can also use Help->Opensim Console to create a new avatar or change passwords.")
+        Print("'Dream World' has a password='123'. You can also use 'Help->Web Interface' to create a new avatar or change passwords.")
     End Sub
 
     Private Sub mnuAbout_Click(sender As System.Object, e As System.EventArgs) Handles mnuAbout.Click
@@ -303,10 +299,8 @@ Public Class Form1
 
     Private Sub StopButton_Click_1(sender As System.Object, e As System.EventArgs) Handles StopButton.Click
         Buttons(BusyButton)
-
         KillAll()
         Buttons(StartButton)
-
     End Sub
 
     Private Sub ShowToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles mnuShow.Click
@@ -372,7 +366,7 @@ Public Class Form1
     Private Sub WebUIToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs)
         Print("The Web UI lets you add or view settings for the default avatar. ")
         If Running Then
-            Dim webAddress As String = "http://127.0.0.1:" + My.Settings.PublicPort
+            Dim webAddress As String = "http://127.0.0.1:" + My.Settings.WifiPort
             Process.Start(webAddress)
         End If
     End Sub
@@ -488,7 +482,6 @@ Public Class Form1
     End Sub
 
     Private Sub SetINIFromSettings(iProgress As Integer)
-
         'mnuShow shows the DOS box for Opensimulator
         mnuShow.Checked = My.Settings.ConsoleShow
         mnuHide.Checked = Not My.Settings.ConsoleShow
@@ -497,7 +490,6 @@ Public Class Form1
         Else
             Log("Info:Console will not be shown")
         End If
-
 
         ' Viewer UI shows the full viewer UI
         If My.Settings.ViewerEase Then
@@ -551,16 +543,13 @@ Public Class Form1
         If My.Settings.AutoBackup Then
             Log("Info:Autobackup is On")
             SetIni(MyFolder & "\DreamWorldFiles\" & My.Settings.GridFolder & "\bin\Opensim.ini", "AutoBackupModule", "AutoBackup", "true", ";")
-            AutoYes.Checked = True
-            AutoNo.Checked = False
-            My.Settings.AutoBackup = True
         Else
             Log("Info:Autobackup is Off")
             SetIni(MyFolder & "\DreamWorldFiles\" & My.Settings.GridFolder & "\bin\Opensim.ini", "AutoBackupModule", "AutoBackup", "false", ";")
-            AutoYes.Checked = False
-            AutoNo.Checked = True
-            My.Settings.AutoBackup = False
         End If
+
+        SetIni(MyFolder & "\DreamWorldFiles\" & My.Settings.GridFolder & "\bin\Opensim.ini", "AutoBackupModule", "AutoBackupInterval", My.Settings.AutobackupInterval, ";")
+        SetIni(MyFolder & "\DreamWorldFiles\" & My.Settings.GridFolder & "\bin\Opensim.ini", "AutoBackupModule", "AutoBackupKeepFilesForDays", My.Settings.KeepForDays, ";")
 
         ' RegionConfig
         SetIni(MyFolder + "\DreamWorldFiles\" + My.Settings.GridFolder + "\bin\Regions\RegionConfig.ini", "DreamWorld", "SizeY", My.Settings.SizeY, ";")
@@ -574,25 +563,16 @@ Public Class Form1
         SetIni(MyFolder + "\DreamWorldFiles\" + My.Settings.GridFolder + "\bin\Opensim.ini", "Const", "PublicPort", My.Settings.PublicPort, ";")
         SetIni(MyFolder + "\DreamWorldFiles\" + My.Settings.GridFolder + "\bin\Regions\RegionConfig.ini", "DreamWorld", "InternalPort", My.Settings.PublicPort, ";")
 
+        Log("Info:Wifi Port is " + My.Settings.WifiPort)
+        SetIni(MyFolder + "\DreamWorldFiles\" + My.Settings.GridFolder + "\bin\Opensim.ini", "Const", "WifiPort", My.Settings.WifiPort, ";")
+
+        Log("Info:Saving Wifi Admin for " + My.Settings.AdminFirst + " " + My.Settings.AdminLast)
+        SetIni(MyFolder + "\DreamWorldFiles\" + My.Settings.GridFolder + "\bin\config-include\MyWorld.ini", "WifiService", "AdminFirst", """" + My.Settings.AdminFirst + """", ";")
+        SetIni(MyFolder + "\DreamWorldFiles\" + My.Settings.GridFolder + "\bin\config-include\MyWorld.ini", "WifiService", "AdminLast", """" + My.Settings.AdminLast + """", ";")
+        SetIni(MyFolder + "\DreamWorldFiles\" + My.Settings.GridFolder + "\bin\config-include\MyWorld.ini", "WifiService", "AdminPassword", """" + My.Settings.Password + """", ";")
+
+
         ProgressBar1.Value = iProgress
-    End Sub
-
-    Private Sub YesToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AutoYes.Click
-        Print("DreamWorld Is set Autoback the sim into an OAR every 24 hours. Backups will be saved in the AutoBackup folder")
-        Log("Info:Backups are enabled")
-        AutoYes.Checked = True
-        AutoNo.Checked = False
-        My.Settings.AutoBackup = True
-        My.Settings.Save()
-    End Sub
-
-    Private Sub AutoNo_Click(sender As Object, e As EventArgs) Handles AutoNo.Click
-        Print("Backups disabled")
-        Log("Info:Backups are disabled")
-        AutoYes.Checked = False
-        AutoNo.Checked = True
-        My.Settings.AutoBackup = False
-        My.Settings.Save()
     End Sub
 
     Function AllowFirewall() As Boolean
@@ -602,8 +582,6 @@ Public Class Form1
         Try
             If MyUPnPMap.Exists(My.Settings.PublicPort, UPnP.Protocol.UDP) Then
                 Log("uPnp:PublicPort.UDP exists")
-                'MyUPnPMap.Remove(My.Settings.PublicPort, UPnP.Protocol.UDP)
-                'MyUPnPMap.Add(UPnP.LocalIP, My.Settings.PublicPort, UPnP.Protocol.UDP, "Opensim UDP")
             Else
                 Log("uPnp:PublicPort.UDP added")
                 MyUPnPMap.Add(UPnP.LocalIP, My.Settings.PublicPort, UPnP.Protocol.UDP, "Opensim UDP")
@@ -611,30 +589,32 @@ Public Class Form1
 
             If MyUPnPMap.Exists(My.Settings.PublicPort, UPnP.Protocol.TCP) Then
                 Log("uPnp:PublicPort.TCP exists")
-                'MyUPnPMap.Remove(My.Settings.PublicPort, UPnP.Protocol.TCP)
-                'MyUPnPMap.Add(UPnP.LocalIP, My.Settings.PublicPort, UPnP.Protocol.TCP, "Opensim TCP")
             Else
                 Log("uPnp:PublicPort.UDP added")
                 MyUPnPMap.Add(UPnP.LocalIP, My.Settings.PublicPort, UPnP.Protocol.TCP, "Opensim TCP")
             End If
 
-            If MyUPnPMap.Exists(8001, UPnP.Protocol.TCP) Then
+            If MyUPnPMap.Exists(My.Settings.WifiPort, UPnP.Protocol.TCP) Then
+                Log("uPnp:WifiPort.TCP exists")
+            Else
+                Log("uPnp:PublicPort.TCP added")
+                MyUPnPMap.Add(UPnP.LocalIP, My.Settings.WifiPort, UPnP.Protocol.TCP, "Opensim TCP")
+            End If
+
+            If MyUPnPMap.Exists(My.Settings.LoopBack, UPnP.Protocol.TCP) Then
                 Log("uPnp:8001.TCP exists")
-                'MyUPnPMap.Remove(8001, UPnP.Protocol.TCP)
-                'MyUPnPMap.Add(UPnP.LocalIP, 8001, UPnP.Protocol.TCP, "Opensim Probe")
             Else
                 Log("uPnp:8001.TCP Added ")
-                MyUPnPMap.Add(UPnP.LocalIP, 8001, UPnP.Protocol.TCP, "Opensim Probe")
+                MyUPnPMap.Add(UPnP.LocalIP, My.Settings.LoopBack, UPnP.Protocol.TCP, "Opensim Probe")
             End If
-        Catch
-            Log("uPnp:UPnP Exception caught")
+        Catch e As Exception
+            Log("uPnp:UPnP Exception caught: " + e.Message)
             Return False
         End Try
         Return True 'successfully added
     End Function
 
     Private Function OpenPorts(progress As Integer)
-
         Print("The human is instructed to wait while I check out your router ...")
         Try
             If AllowFirewall() Then ' open uPNP port
@@ -643,20 +623,18 @@ Public Class Form1
                 Return True
             Else
                 Log("uPnP:fail")
-                Print("UPnP Port forwarding is not enabled. Opensimulator is installing as a stand alone application.")
+                Print("UPnP Port forwarding is not enabled. Opensimulator set for standalone operation.")
                 Return False
             End If
         Catch e As Exception
-            Log("Error:uPnP Exception")
+            Log("Error:uPnP Exception:" + e.Message)
             Print("Router is blocking a port so hypergrid may not be available")
             Return False
         End Try
         ProgressBar1.Value = progress
-
     End Function
 
     Private Sub BusyButton_Click(sender As Object, e As EventArgs) Handles BusyButton.Click
-
         Print("Stopping")
         Application.DoEvents()
         KillAll()
@@ -684,13 +662,12 @@ Public Class Form1
         If (Running) Then
             Dim webAddress As String = "http://127.0.0.1:" + My.Settings.PublicPort
             Process.Start(webAddress)
-            Print("Log in as 'Wifi Administrator' with a password of 'secret' to add users")
+            Print("Log in as 'Wifi Admin' with a password of '" + My.Settings.Password + "'to add users")
         Else
             Print("Opensim is not running")
         End If
     End Sub
     Private Sub SimContent(thing As String, type As String)
-
         ' remove the console startup file
         Try
             My.Computer.FileSystem.DeleteFile(MyFolder & "\DreamworldFiles\" + My.Settings.GridFolder & "\bin\startup_commands.txt")
@@ -713,11 +690,9 @@ Public Class Form1
         Catch
             Log("Error:iar or oar file write failure")
         End Try
-
     End Sub
 
     Private Sub KillAll()
-
         If ContentLoading.Length = 0 Then
             ' remove the console startup file
             Try
@@ -754,13 +729,10 @@ Public Class Form1
 
         Application.DoEvents()
         Running = False
-
     End Sub
 
     Private Sub TextBox1_DragDrop(sender As System.Object, e As System.Windows.Forms.DragEventArgs) Handles TextBox1.DragDrop
         Dim files() As String = e.Data.GetData(DataFormats.FileDrop)
-
-
         For Each pathname In files
             pathname.Replace("\", "/")
             Dim extension = Path.GetExtension(pathname)
@@ -824,7 +796,6 @@ Public Class Form1
         Print(" Drag and drop  OAR or IAR files here to load them whenever the sim starts")
     End Sub
     Private Sub ExitAll()
-
         Try
             RemoveGrid()    ' puts Onlook back to default
         Catch
@@ -833,7 +804,6 @@ Public Class Form1
 
         ' Needed to stop Opensim
         KillAll()
-
     End Sub
     Private Sub LogFiles(progress As Integer)
         ' clear out the log files
@@ -857,6 +827,7 @@ Public Class Form1
 
         SetIni(MyFolder & "\DreamWorldFiles\mysql\my.ini", "mysqld", "basedir", """" + gCurSlashDir + "/DreamWorldFiles/Mysql" + """", "#")
         SetIni(MyFolder & "\DreamWorldFiles\mysql\My.ini", "mysqld", "datadir", """" + gCurSlashDir + "/DreamWorldFiles/Mysql/Data" + """", "#")
+        SetIni(MyFolder & "\DreamWorldFiles\mysql\My.ini", "client", "port", My.Settings.MySqlPort, "#")
 
         Dim pi As ProcessStartInfo = New ProcessStartInfo()
         pi.Arguments = "--defaults-file=" + gCurSlashDir + "/DreamworldFiles/mysql/my.ini"
@@ -868,7 +839,6 @@ Public Class Form1
         ProgressBar1.Value = progress / 2
 
         ' Check for MySql operation
-
         Dim Mysql = False
         ' wait for MySql to come up 
         Mysql = CheckMySQL()
@@ -902,22 +872,30 @@ Public Class Form1
         ProgressBar1.Value = iProgress
     End Sub
     Private Sub Loopback(progress As Integer)
-        Print("Testing Loopback")
+        Print("Testing Network Loopback")
         Try
             Application.DoEvents()
-            ws = WebServer.getWebServer
-            ws.VirtualRoot = MyFolder & "\DreamWorldFiles\"
             ws.StartWebServer()
-            Dim Benchmark = client.DownloadString("http://" & My.Settings.PublicIP & ":8001/Init.txt")
-            ws.StopWebServer()
+            Dim Benchmark = client.DownloadString("http://" & My.Settings.PublicIP & ":" + My.Settings.LoopBack + "/test.htm")
             Application.DoEvents()
+            Print("Loopback Test Passed")
         Catch ex As Exception
-
             Application.DoEvents()
             Print("Hypergrid travel requires a router with 'loopback'. It seems to be missing from yours. See the Help section for 'Loopback' and how to enable it in Windows. Opensim can still continue, but without Hypergrid.")
             MsgBox("See Info on screen about Loopback. Opensim can still continue, but without Hypergrid", vbExclamation)
             My.Settings.PublicIP = "127.0.0.1" ' dang it, we cannot go to the hypergird
+            ' try to close the web server
+            Try
+                Dim Benchmark = client.DownloadString("http://localhost:" + My.Settings.LoopBack + "/test.htm")
+            Catch
+                Log("Error: cannot open localhost:8001")
+            End Try
+            Try
+                ws.StopWebServer()
+            Catch
+            End Try
         End Try
+
         ProgressBar1.Value = progress
     End Sub
 
@@ -961,7 +939,7 @@ Public Class Form1
         ' Wait for Opensim to start listening via wifi
         Dim Up = ""
         Try
-            Up = client.DownloadString("http://127.0.0.1:" + +My.Settings.PublicPort + "/?r=" + Random())
+            Up = client.DownloadString("http://127.0.0.1:" + +My.Settings.WifiPort + "/?r=" + Random())
         Catch ex As Exception
             Up = ""
         End Try
@@ -985,6 +963,8 @@ Public Class Form1
             Application.DoEvents()
             Sleep(4000)
 
+
+
             Try
                 Up = client.DownloadString("http://127.0.0.1:8002/?r=" + Random())
             Catch ex As Exception
@@ -993,16 +973,13 @@ Public Class Form1
 
         End While
 
-
         ProgressBar1.Value = iProgress
 
     End Sub
 
     Private Sub Onlook(progess As Integer)
-
         If My.Settings.Onlook Then
             Print("Starting Onlook viewer")
-
             Dim pi As ProcessStartInfo = New ProcessStartInfo()
             pi.Arguments = ""
             pi.FileName = "C:\Program Files (x86)\Onlook\OnLookViewer.exe"
@@ -1013,15 +990,11 @@ Public Class Form1
             Catch
                 Log("Error:Onlook failed to launch")
             End Try
-
         End If
-
         ProgressBar1.Value = 95
     End Sub
 
-
     Private Sub AdvancedSettingsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AdvancedSettingsToolStripMenuItem.Click
-
         ActualForm = New AdvancedForm ' Bring the form into memory 
         ' Set the new form's desktop location so it appears below and 
         ' to the right of the current form.
@@ -1038,7 +1011,6 @@ Public Class Form1
         ' we have to change the viewer Grid settings  if we are on localhost
 
         Print("Setting Grid Info...")
-
         Try
             My.Computer.FileSystem.CopyFile(xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml", xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml.xml.bak", True)
         Catch
@@ -1055,7 +1027,6 @@ Public Class Form1
     End Sub
 
     Private Sub RemoveGrid()
-
         ' restore backup - they may have changed it. Dreamworlds is supposed to be simple. If they launch the viewer by itself, they can change grids
         Try
             My.Computer.FileSystem.CopyFile(xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml.bak", xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml", True)
@@ -1231,8 +1202,6 @@ Public Class Form1
                                  "I saw a man without pants attached to a eagle flying up in the air. Always rez before you attach. ",
                                  "I forgot the dream already, but I do remember I woke up in it.",
                                  "I had no pants on.  Or shirt, shoes, or hair.  The worst part was there was no facelight! I looked hideous!",
-                                 "",
-                                 "Then I woke up!",
                                  "I dreamt that I was floating in a river and a NPC crocodile chased me.",
                                  "My friend started doing an interpretive dance and clicked the wrong color of pose ball, and I was like, 'OH SHES GAY!'",
                                  "I dreamt I drove our car into the ocean. I found a pose ball, and grabbed onto it.",
@@ -1254,17 +1223,26 @@ Public Class Form1
     Private Sub Diagnose(iProgress As Integer)
 
         Log("Info:Starting Diagnostic server")
-        ws = WebServer.getWebServer
-        ws.VirtualRoot = MyFolder & "\DreamWorldFiles\"
-        ws.StartWebServer()
 
+        ws.StartWebServer()
         Dim isPortOpen As String = ""
         Try
-            isPortOpen = client.DownloadString("http://www.outworldz.com/cgi/probe.plx?Port=8001")
+            isPortOpen = client.DownloadString("http://www.outworldz.com/Dreamworld/probe.plx?Port=" + My.Settings.LoopBack + "&_=" + Random())
         Catch ex As Exception
-            Log("Dang:The Outworld web site is down")
+            Log("Dang:The Outworldz web site cannot find a path back")
+            ' attempt to close the blocking web server
+            Try
+                isPortOpen = client.DownloadString("http://localhost:" + My.Settings.LoopBack + "/test.htm")
+            Catch
+                Log("Dang: localhost is down")
+            End Try
+
+            Try
+                ws.StopWebServer()
+            Catch
+            End Try
         End Try
-        ws.StopWebServer()
+
 
         If isPortOpen <> "yes" Then
             Log("Warn:Port " + My.Settings.PublicPort + " is not open")
@@ -1274,9 +1252,9 @@ Public Class Form1
             Print("Hypergrid Ports are open!  You can share your Dream World with others.")
         End If
 
-        Loopback(iProgress - 5)    ' test the loopback on the router. If it fails, use localhost, no Hg
+        Loopback(iProgress)    ' test the loopback on the router. If it fails, use localhost, no Hg
 
-        ProgressBar1.Value = iProgress
+
     End Sub
 
     Private Function Download()
@@ -1316,7 +1294,6 @@ Public Class Form1
             Next
         End Using
 
-
         Try
             My.Computer.FileSystem.DeleteFile(MyFolder + "/DreamWorld.zip")
         Catch
@@ -1338,14 +1315,18 @@ Public Class Form1
         Dim newVer As Single = Update
         Dim MyVer As Single = My.Settings.Version
 
-        If newver > mYver Then
+        If newVer > MyVer Then
             Print("I am Dream World version " + My.Settings.Version + vbCrLf + "A more dreamy version " + Update + " is available." + vbCrLf + vbCrLf + "http//www.Outworldz.com/Download")
         Else
-            Print("I am the dreamiest version available. I like to dream of new worlds, silly things, and airplane wings.")
+            Print("I am the dreamiest version available.")
         End If
     End Sub
 
-
+    Private Sub DiagnosticsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles DiagnosticsToolStripMenuItem.Click
+        ProgressBar1.Value = 0
+        OpenPorts(25) ' Open router ports
+        Diagnose(100)
+    End Sub
 End Class
 
 

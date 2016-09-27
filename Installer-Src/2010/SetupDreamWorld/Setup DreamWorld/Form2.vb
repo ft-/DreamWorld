@@ -31,11 +31,29 @@
         PublicPort.Text = My.Settings.PublicPort
         PrivatePort.Text = My.Settings.PrivatePort
 
+        AutoBackupKeepFilesForDays.Text = My.Settings.KeepForDays
+        If My.Settings.AutobackupInterval = 60 Then
+            AutoBackupInterval.SelectedIndex = 0
+        ElseIf My.Settings.AutobackupInterval = 12 * 60 Then
+            AutoBackupInterval.SelectedIndex = 1
+        ElseIf My.Settings.AutobackupInterval = 24 * 60 Then
+            AutoBackupInterval.SelectedIndex = 2
+        Else
+            AutoBackupInterval.SelectedIndex = 3
+        End If
+
+        DiagPort.Text = My.Settings.LoopBack
+        WifiPort.Text = My.Settings.WifiPort
+        Mysql.Text = My.Settings.MySqlPort
+        AutoBackup.Checked = My.Settings.AutoBackup
+        Password.Text = My.Settings.Password
+        AdminLast.Text = My.Settings.AdminLast
+        AdminFirst.Text = My.Settings.AdminFirst
+
     End Sub
 
     Private Sub CheckBox256_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBox256.CheckedChanged
         If CheckBox256.Checked = True Then
-
             CheckBox512.Checked = False
             CheckBox1024.Checked = False
             My.Settings.SizeX = "256"
@@ -50,7 +68,6 @@
     Private Sub CheckBox512_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBox512.CheckedChanged
         If CheckBox512.Checked = True Then
             CheckBox256.Checked = False
-
             CheckBox1024.Checked = False
             My.Settings.SizeX = "512"
             My.Settings.SizeY = "512"
@@ -64,7 +81,6 @@
         If CheckBox1024.Checked = True Then
             CheckBox256.Checked = False
             CheckBox512.Checked = False
-
             My.Settings.SizeX = "1024"
             My.Settings.SizeY = "1024"
             SizeX.Text = ""
@@ -81,7 +97,6 @@
             My.Settings.SizeX = SizeX.Text
             My.Settings.Save()
         End If
-
     End Sub
 
     Private Sub SizeY_TextChanged(sender As Object, e As EventArgs) Handles SizeY.TextChanged
@@ -94,21 +109,6 @@
         End If
     End Sub
 
-    Private Sub X_TextChanged(sender As Object, e As EventArgs) Handles SizeX.TextChanged
-        My.Settings.CoordX = SizeX.Text
-        CheckBox256.Checked = False
-        CheckBox512.Checked = False
-        CheckBox1024.Checked = False
-        My.Settings.Save()
-    End Sub
-
-    Private Sub Y_TextChanged(sender As Object, e As EventArgs) Handles SizeY.TextChanged
-        My.Settings.CoordY = SizeY.Text
-        CheckBox256.Checked = False
-        CheckBox512.Checked = False
-        CheckBox1024.Checked = False
-        My.Settings.Save()
-    End Sub
     Private Sub PrivatePort_TextChanged(sender As Object, e As EventArgs) Handles PrivatePort.TextChanged
         My.Settings.PrivatePort = PrivatePort.Text
         My.Settings.Save()
@@ -118,8 +118,63 @@
         My.Settings.PublicPort = PublicPort.Text
         My.Settings.Save()
     End Sub
+
     Private Sub Form2_Closed(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Closed
+        'My.Settings.Save()
         Form1.ActualForm = Nothing
     End Sub
 
+    Private Sub TextBox1_TextChanged(sender As Object, e As EventArgs) Handles WifiPort.TextChanged
+        My.Settings.WifiPort = WifiPort.Text
+        My.Settings.Save()
+    End Sub
+
+    Private Sub DiagPort_TextChanged(sender As Object, e As EventArgs) Handles DiagPort.TextChanged
+        My.Settings.LoopBack = DiagPort.Text
+        My.Settings.Save()
+    End Sub
+
+    Private Sub TextBox1_TextChanged_1(sender As Object, e As EventArgs) Handles Mysql.TextChanged
+        My.Settings.MySqlPort = Mysql.Text
+        My.Settings.Save()
+    End Sub
+
+    Private Sub ABEnabled_CheckedChanged(sender As Object, e As EventArgs) Handles AutoBackup.CheckedChanged
+        My.Settings.AutoBackup = AutoBackup.Checked
+        My.Settings.Save()
+    End Sub
+
+    Private Sub AutoBackupInterval_SelectedIndexChanged(sender As Object, e As EventArgs) Handles AutoBackupInterval.SelectedIndexChanged
+        Dim text = AutoBackupInterval.SelectedItem.ToString()
+        Dim Interval As Integer
+        If text = "Hourly" Then Interval = 60
+        If text = "12 Hour" Then Interval = 60 * 12
+        If text = "Daily" Then Interval = 60 * 24
+        If text = "Weekly" Then Interval = 60 * 24 * 7
+
+        My.Settings.AutobackupInterval = Interval
+        My.Settings.Save()
+    End Sub
+
+    Private Sub AutoBackupKeepFilesForDays_TextChanged(sender As Object, e As EventArgs) Handles AutoBackupKeepFilesForDays.TextChanged
+        If Convert.ToInt32(AutoBackupKeepFilesForDays.Text) > 0 Then
+            My.Settings.KeepForDays = Convert.ToInt32(AutoBackupKeepFilesForDays.Text)
+            My.Settings.Save()
+        End If
+    End Sub
+
+    Private Sub TextBox1_TextChanged_2(sender As Object, e As EventArgs) Handles AdminFirst.TextChanged
+        My.Settings.AdminFirst = AdminFirst.Text
+        My.Settings.Save()
+    End Sub
+
+    Private Sub AdminLast_TextChanged(sender As Object, e As EventArgs) Handles AdminLast.TextChanged
+        My.Settings.AdminLast = AdminLast.Text
+        My.Settings.Save()
+    End Sub
+
+    Private Sub Password_TextChanged(sender As Object, e As EventArgs) Handles Password.TextChanged
+        My.Settings.Password = Password.Text
+        My.Settings.Save()
+    End Sub
 End Class

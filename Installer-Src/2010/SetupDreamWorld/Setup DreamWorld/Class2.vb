@@ -1,10 +1,10 @@
 ﻿
 Imports System.IO
-    Imports System.Net
-    Imports System.Net.Sockets
-    Imports System.Text
-    Imports System.Threading
-    Imports System.Xml
+Imports System.Net
+Imports System.Net.Sockets
+Imports System.Text
+Imports System.Threading
+Imports System.Xml
 
 Public Class WebServer
 #Region "Declarations"
@@ -86,15 +86,17 @@ Public Class WebServer
             Return singleWebserver
         End If
     End Function
+    Public Sub StartListener()
+        LocalTCPListener = New TcpListener(LocalAddress, LocalPort)
+        LocalTCPListener.Start()
+    End Sub
 
     Public Sub StartWebServer()
         Try
-            LocalTCPListener = New TcpListener(LocalAddress, LocalPort)
-            LocalTCPListener.Start()
             WebThread = New Thread(AddressOf StartListen)
             WebThread.Start()
         Catch ex As Exception
-            Console.WriteLine(ex.Message)
+            Debug.Print(ex.Message)
         End Try
     End Sub
     'Here is where we check our XML file and see what MIME types are defined and handle the accordingly.
@@ -301,14 +303,12 @@ Public Class WebServer
             End If
 
         Catch ex As ThreadAbortException
-
             ' Clean-up code can go here.
             ' If there is no Finally clause, ThreadAbortException is
             ' re-thrown by the system at the end of the Catch clause. 
-            'Thread.ResetAbort()
-
+            Debug.Print(ex.Message)
         Finally
-            ' Clean-up code can go here.
+            Debug.Print("Web server finally exiting")
         End Try
 
     End Sub
@@ -316,13 +316,15 @@ Public Class WebServer
     Public Sub StopWebServer()
         Try
             LocalTCPListener.Stop()
+            Debug.Print("Stopped listener")
         Catch ex As Exception
-            Console.WriteLine(ex.Message)
+            Debug.Print(ex.Message)
         End Try
         Try
             WebThread.Abort()
+            WebThread.Join()
         Catch ex As Exception
-            Console.WriteLine(ex.Message)
+            Debug.Print(ex.Message)
         End Try
     End Sub
 #End Region

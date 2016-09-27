@@ -54,9 +54,6 @@ Partial Class Form1
         Me.mnuHyperGrid = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuOsGrid = New System.Windows.Forms.ToolStripMenuItem()
         Me.HypergridorgToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.AutoBackupToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.AutoYes = New System.Windows.Forms.ToolStripMenuItem()
-        Me.AutoNo = New System.Windows.Forms.ToolStripMenuItem()
         Me.AdvancedSettingsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.HelpToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuLogin = New System.Windows.Forms.ToolStripMenuItem()
@@ -64,6 +61,7 @@ Partial Class Form1
         Me.ToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
         Me.LoopBackToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.CHeckForUpdatesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.DiagnosticsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuAbout = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
         Me.MnuContent = New System.Windows.Forms.ToolStripMenuItem()
@@ -150,7 +148,7 @@ Partial Class Form1
         '
         'mnuSettings
         '
-        Me.mnuSettings.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ConsoleToolStripMenuItem1, Me.ViewerToolStripMenuItem, Me.VUI, Me.AvatarToolStripMenuItem, Me.GridToolStripMenuItem, Me.AutoBackupToolStripMenuItem, Me.AdvancedSettingsToolStripMenuItem})
+        Me.mnuSettings.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ConsoleToolStripMenuItem1, Me.ViewerToolStripMenuItem, Me.VUI, Me.AvatarToolStripMenuItem, Me.GridToolStripMenuItem, Me.AdvancedSettingsToolStripMenuItem})
         Me.mnuSettings.Name = "mnuSettings"
         Me.mnuSettings.Size = New System.Drawing.Size(61, 20)
         Me.mnuSettings.Text = "Settings"
@@ -300,42 +298,20 @@ Partial Class Form1
         Me.mnuHyperGrid.Checked = True
         Me.mnuHyperGrid.CheckState = System.Windows.Forms.CheckState.Checked
         Me.mnuHyperGrid.Name = "mnuHyperGrid"
-        Me.mnuHyperGrid.Size = New System.Drawing.Size(148, 22)
+        Me.mnuHyperGrid.Size = New System.Drawing.Size(152, 22)
         Me.mnuHyperGrid.Text = "HyperGrid"
         '
         'mnuOsGrid
         '
         Me.mnuOsGrid.Name = "mnuOsGrid"
-        Me.mnuOsGrid.Size = New System.Drawing.Size(148, 22)
+        Me.mnuOsGrid.Size = New System.Drawing.Size(152, 22)
         Me.mnuOsGrid.Text = "OsGrid.org"
         '
         'HypergridorgToolStripMenuItem
         '
         Me.HypergridorgToolStripMenuItem.Name = "HypergridorgToolStripMenuItem"
-        Me.HypergridorgToolStripMenuItem.Size = New System.Drawing.Size(148, 22)
+        Me.HypergridorgToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
         Me.HypergridorgToolStripMenuItem.Text = "Hypergrid.org"
-        '
-        'AutoBackupToolStripMenuItem
-        '
-        Me.AutoBackupToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AutoYes, Me.AutoNo})
-        Me.AutoBackupToolStripMenuItem.Image = Global.DreamWorld.My.Resources.Resources.disk_blue
-        Me.AutoBackupToolStripMenuItem.Name = "AutoBackupToolStripMenuItem"
-        Me.AutoBackupToolStripMenuItem.Size = New System.Drawing.Size(172, 22)
-        Me.AutoBackupToolStripMenuItem.Text = "AutoBackup"
-        '
-        'AutoYes
-        '
-        Me.AutoYes.Checked = True
-        Me.AutoYes.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.AutoYes.Name = "AutoYes"
-        Me.AutoYes.Size = New System.Drawing.Size(119, 22)
-        Me.AutoYes.Text = "Enabled"
-        '
-        'AutoNo
-        '
-        Me.AutoNo.Name = "AutoNo"
-        Me.AutoNo.Size = New System.Drawing.Size(119, 22)
-        Me.AutoNo.Text = "Disabled"
         '
         'AdvancedSettingsToolStripMenuItem
         '
@@ -346,7 +322,7 @@ Partial Class Form1
         '
         'HelpToolStripMenuItem
         '
-        Me.HelpToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuLogin, Me.AdminUIToolStripMenuItem1, Me.ToolStripMenuItem1, Me.LoopBackToolStripMenuItem, Me.CHeckForUpdatesToolStripMenuItem, Me.mnuAbout})
+        Me.HelpToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuLogin, Me.AdminUIToolStripMenuItem1, Me.ToolStripMenuItem1, Me.LoopBackToolStripMenuItem, Me.CHeckForUpdatesToolStripMenuItem, Me.DiagnosticsToolStripMenuItem, Me.mnuAbout})
         Me.HelpToolStripMenuItem.Name = "HelpToolStripMenuItem"
         Me.HelpToolStripMenuItem.Size = New System.Drawing.Size(44, 20)
         Me.HelpToolStripMenuItem.Text = "Help"
@@ -356,43 +332,50 @@ Partial Class Form1
         Me.mnuLogin.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None
         Me.mnuLogin.Image = Global.DreamWorld.My.Resources.Resources.about
         Me.mnuLogin.Name = "mnuLogin"
-        Me.mnuLogin.Size = New System.Drawing.Size(174, 22)
+        Me.mnuLogin.Size = New System.Drawing.Size(183, 22)
         Me.mnuLogin.Text = "How to  Login"
         '
         'AdminUIToolStripMenuItem1
         '
         Me.AdminUIToolStripMenuItem1.Image = Global.DreamWorld.My.Resources.Resources.document_view
         Me.AdminUIToolStripMenuItem1.Name = "AdminUIToolStripMenuItem1"
-        Me.AdminUIToolStripMenuItem1.Size = New System.Drawing.Size(174, 22)
-        Me.AdminUIToolStripMenuItem1.Text = "Opensim Console"
+        Me.AdminUIToolStripMenuItem1.Size = New System.Drawing.Size(183, 22)
+        Me.AdminUIToolStripMenuItem1.Text = "Web Interface"
         '
         'ToolStripMenuItem1
         '
         Me.ToolStripMenuItem1.Image = Global.DreamWorld.My.Resources.Resources.replace2
         Me.ToolStripMenuItem1.Name = "ToolStripMenuItem1"
-        Me.ToolStripMenuItem1.Size = New System.Drawing.Size(174, 22)
+        Me.ToolStripMenuItem1.Size = New System.Drawing.Size(183, 22)
         Me.ToolStripMenuItem1.Text = "Help on Ports"
         '
         'LoopBackToolStripMenuItem
         '
         Me.LoopBackToolStripMenuItem.Image = Global.DreamWorld.My.Resources.Resources.refresh
         Me.LoopBackToolStripMenuItem.Name = "LoopBackToolStripMenuItem"
-        Me.LoopBackToolStripMenuItem.Size = New System.Drawing.Size(174, 22)
+        Me.LoopBackToolStripMenuItem.Size = New System.Drawing.Size(183, 22)
         Me.LoopBackToolStripMenuItem.Text = "Help on LoopBack "
         '
         'CHeckForUpdatesToolStripMenuItem
         '
         Me.CHeckForUpdatesToolStripMenuItem.Image = Global.DreamWorld.My.Resources.Resources.download1
         Me.CHeckForUpdatesToolStripMenuItem.Name = "CHeckForUpdatesToolStripMenuItem"
-        Me.CHeckForUpdatesToolStripMenuItem.Size = New System.Drawing.Size(174, 22)
+        Me.CHeckForUpdatesToolStripMenuItem.Size = New System.Drawing.Size(183, 22)
         Me.CHeckForUpdatesToolStripMenuItem.Text = "Check for Updates"
+        '
+        'DiagnosticsToolStripMenuItem
+        '
+        Me.DiagnosticsToolStripMenuItem.Image = Global.DreamWorld.My.Resources.Resources.flash
+        Me.DiagnosticsToolStripMenuItem.Name = "DiagnosticsToolStripMenuItem"
+        Me.DiagnosticsToolStripMenuItem.Size = New System.Drawing.Size(183, 22)
+        Me.DiagnosticsToolStripMenuItem.Text = "Network Diagnostics"
         '
         'mnuAbout
         '
         Me.mnuAbout.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None
         Me.mnuAbout.Image = Global.DreamWorld.My.Resources.Resources.question_and_answer
         Me.mnuAbout.Name = "mnuAbout"
-        Me.mnuAbout.Size = New System.Drawing.Size(174, 22)
+        Me.mnuAbout.Size = New System.Drawing.Size(183, 22)
         Me.mnuAbout.Text = "About"
         '
         'MenuStrip1
@@ -519,9 +502,6 @@ Partial Class Form1
     Friend WithEvents MenuStrip1 As MenuStrip
     Friend WithEvents GridToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents mnuOsGrid As ToolStripMenuItem
-    Friend WithEvents AutoBackupToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents AutoYes As ToolStripMenuItem
-    Friend WithEvents AutoNo As ToolStripMenuItem
     Friend WithEvents mnuHyperGrid As ToolStripMenuItem
     Friend WithEvents WebBrowser3 As WebBrowser
     Friend WithEvents ProgressBar1 As ProgressBar
@@ -546,4 +526,5 @@ Partial Class Form1
     Friend WithEvents SingularityToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents HypergridorgToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents CHeckForUpdatesToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents DiagnosticsToolStripMenuItem As ToolStripMenuItem
 End Class

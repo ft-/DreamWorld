@@ -233,6 +233,114 @@ Namespace My
                 Me("Version") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("9000")>  _
+        Public Property WifiPort() As String
+            Get
+                Return CType(Me("WifiPort"),String)
+            End Get
+            Set
+                Me("WifiPort") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("8001")>  _
+        Public Property LoopBack() As String
+            Get
+                Return CType(Me("LoopBack"),String)
+            End Get
+            Set
+                Me("LoopBack") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("3307")>  _
+        Public Property MySqlPort() As String
+            Get
+                Return CType(Me("MySqlPort"),String)
+            End Get
+            Set
+                Me("MySqlPort") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("1400")>  _
+        Public Property AutobackupInterval() As String
+            Get
+                Return CType(Me("AutobackupInterval"),String)
+            End Get
+            Set
+                Me("AutobackupInterval") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("30")>  _
+        Public Property KeepForDays() As String
+            Get
+                Return CType(Me("KeepForDays"),String)
+            End Get
+            Set
+                Me("KeepForDays") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("secret")>  _
+        Public Property Password() As String
+            Get
+                Return CType(Me("Password"),String)
+            End Get
+            Set
+                Me("Password") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("Wifi")>  _
+        Public Property AdminFirst() As String
+            Get
+                Return CType(Me("AdminFirst"),String)
+            End Get
+            Set
+                Me("AdminFirst") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("Admin")>  _
+        Public Property AdminLast() As String
+            Get
+                Return CType(Me("AdminLast"),String)
+            End Get
+            Set
+                Me("AdminLast") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("email@somewhere.com")>  _
+        Public Property AdminEmail() As String
+            Get
+                Return CType(Me("AdminEmail"),String)
+            End Get
+            Set
+                Me("AdminEmail") = value
+            End Set
+        End Property
     End Class
 End Namespace
 
