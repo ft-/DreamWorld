@@ -50,3 +50,4 @@ C:\Users\Debbie\Dropbox\scripts\github\DreamWorld-GitHub\Installer-Src\2010\Setu
 C:\Opensim\DreamWorld-GitHub\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Release\DreamWorld.AdvancedForm.resources
 C:\Opensim\DreamWorld-GitHub\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\bin\Release\DotNetZip.dll
 C:\Opensim\DreamWorld-GitHub\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\bin\Release\DotNetZip.xml
+C:\Opensim\DreamWorld-GitHub\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Release\DreamWorld.ConsoleForm.resources

@@ -1,9 +1,11 @@
-﻿Imports System.IO
-Imports System.IO.Compression
+﻿
+Imports System.Net
+Imports System.Text
+Imports System.IO
 Imports System.Net.Sockets
 Imports IWshRuntimeLibrary
 Imports IniParser
-Imports System.Net
+
 Imports Ionic.Zip
 
 ' Copyright 2014 Fred Beckhusen  
@@ -11,23 +13,56 @@ Imports Ionic.Zip
 ' that ALL the licenses in the text files are followed and included in all copies
 
 ' Command line args:
-' clean makes it wipe out Opensim files that are not needed for zipping
-' debug forces this to use the \Dreamworlds folder for testing 
+'     'clean' makes it wipe out Opensim files that are not needed for zipping
+'    'debug' forces this to use the \Dreamworlds folder for testing 
 
 Public Class Form1
 
+#Region "Declarations"
     Dim gCurDir    ' Holds the current folder that we are running in
     Dim gCurSlashDir As String '  holds the current directory info in Unix format
     Dim isRunning As Boolean
     Private Declare Sub Sleep Lib "kernel32.dll" (ByVal Millisecond As Integer)
-    Dim ws As WebServer
+    Dim ws As Net
+
     Dim ContentLoading As String = ""
     Dim client As New System.Net.WebClient
     Dim pMySql As Process = New Process()
     Dim pOpensim As Process = New Process()
     Dim pOnlook As Process = New Process()
     Private Shared m_ActiveForm As Form
+#End Region
 
+
+#Region "Properties"
+    Public Property Running() As Boolean
+        Get
+            Return isRunning
+        End Get
+        Set(ByVal Value As Boolean)
+            isRunning = Value
+        End Set
+    End Property
+    Public Property MyFolder() As String
+        Get
+            Return gCurDir
+        End Get
+        Set(ByVal Value As String)
+            gCurDir = Value
+        End Set
+    End Property
+
+    Public Shared Property ActualForm() As Form
+        Get
+            ActualForm = m_ActiveForm
+        End Get
+        Set(ByVal Value As Form)
+            m_ActiveForm = Value
+        End Set
+    End Property
+#End Region
+
+#Region "Methods"
     Private Sub Form1_Closed(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Closed
         Log("Info:Exit")
         Print("Hold fast to your dreams ...")
@@ -47,7 +82,7 @@ Public Class Form1
         ProgressBar1.Minimum = 0
         ProgressBar1.Maximum = 100
         ProgressBar1.Value = 0
-
+        ProgressBar1.ForeColor = Color.LightGreen
         Me.Show()
 
         Me.AllowDrop = True
@@ -74,22 +109,14 @@ Public Class Form1
             End If
         End If
 
-        Print("I need a moment to wake up from my dream. " + SaySomething() + " And then I woke up.")
+        SaySomething()
 
         ProgressBar1.Visible = True
         ProgressBar1.Value = 5
         Sleep(5000)
 
-        'If Not System.IO.File.Exists(MyFolder & "\DreamworldFiles\Init.txt") Then
-        'Print("Oh! I need to get to work!")
-        'If Not Download() Then
-        'Return
-        'End If
-        'End If
-        ws = WebServer.getWebServer
-        ws.VirtualRoot = MyFolder & "\DreamWorldFiles\Diag\"
-        ws.StartListener()
-
+        ws = Net.getWebServer
+        ws.StartServer()
 
         ProgressBar1.Value = 10
         GetPubIP(15)
@@ -102,7 +129,9 @@ Public Class Form1
         If Not System.IO.File.Exists(MyFolder & "\DreamworldFiles\Init.txt") Then
             OpenPorts(45) ' Open router ports
             Diagnose(50)
-            Print("Diagnostics can be re-run in Help-Diagnostics")
+            Loopback(60)    ' test the loopback on the router. If it fails, use localhost, no Hg
+            Print("Diagnostics can be re-run in Help->Diagnostics at any time")
+            Sleep(1000)
         End If
 
         If System.IO.File.Exists(MyFolder & "\DreamworldFiles\Init.txt") Then
@@ -135,6 +164,7 @@ Public Class Form1
                 Log("Info:Launching Onlook installer")
                 pOnlook.Start()
             Catch ex As Exception
+                ProgressBar1.ForeColor = Color.Magenta
                 Log("Error:Onlook installer failed to load:" + ex.Message)
             End Try
 
@@ -145,30 +175,33 @@ Public Class Form1
                 Application.DoEvents()
                 Sleep(4000)
                 If (toggle) Then
+                    ProgressBar1.ForeColor = Color.Magenta
                     Print("Attention needed - please Install and Start the Onlook Viewer ")
                     toggle = False
                 Else
                     Print("Start the Onlook Viewer")
+                    ProgressBar1.ForeColor = Color.Cyan
                     toggle = False
                     toggle = True
                 End If
 
                 ProgressBar1.Value = ProgressBar1.Value + 1
                 If ProgressBar1.Value = 100 Then
+                    ProgressBar1.ForeColor = Color.Cyan
                     Print("You win. Proceeding with Dream World Installation. You may need to add the grid manually.")
                     toggle = True
                 End If
             End While
 
             ProgressBar1.Value = 100
+            ProgressBar1.ForeColor = Color.Green
             Print("Ready to Launch! Click 'Start' to begin the dreaming in the Dream World.")
             Buttons(StartButton)
-
         End If
 
     End Sub
     Private Sub StartButton_Click(sender As System.Object, e As System.EventArgs) Handles StartButton.Click
-
+        ProgressBar1.ForeColor = Color.LightGreen
         Try
             My.Computer.FileSystem.DeleteFile(MyFolder & "\DreamWorldFiles\DreamWorld.log")
         Catch
@@ -199,30 +232,28 @@ Public Class Form1
             Print("Access to the Hypergrid is disabled because of your router. See Help->Loopback to see why.")
         Else
             Log("Info:Ready for login")
-            Print("Dream World is ready for you to log in.  The Hypergrid address is " + My.Settings.PublicIP + ":" + My.Settings.PublicPort)
+            Print("Dream World is ready for you to log in. Hypergrid address is " + My.Settings.PublicIP + ":" + My.Settings.PublicPort)
         End If
 
         ' done with bootup
         ProgressBar1.Value = 100
 
-        ContentLoading = "" ' the server is now loaded, so flip the content switch off.  
 
     End Sub
 
-    Private Function CheckMySQL() As Boolean
+    Private Function CheckPort(ServerAddress As String, Port As Integer) As Boolean
 
         ' tried to probe MySQL port. If available, return true
         Dim ClientSocket As New TcpClient
-        Dim ServerAddress As String = "127.0.0.1" ' Set the IP address of the server
-
         Try
-            ClientSocket.Connect(ServerAddress, My.Settings.MySqlPort)
+            ClientSocket.Connect(ServerAddress, Port)
         Catch ex As Exception
+            ProgressBar1.ForeColor = Color.Red
             Log("Error:MySql port probe failed on port 3307")
             Return False
         End Try
         Log("Info:MySql is Up")
-        CheckMySQL = True
+        CheckPort = True
 
     End Function
 
@@ -244,9 +275,12 @@ Public Class Form1
         Dim result As Integer = MessageBox.Show("Do you want to Abort?", "caption", MessageBoxButtons.YesNo)
         If result = DialogResult.Yes Then
             Print("Stopping")
+            ProgressBar1.Value = 100
             KillAll()
             Buttons(StartButton)
-            Print("")
+            Print("Stopped")
+            ProgressBar1.ForeColor = Color.Gray
+            ProgressBar1.Value = 0
         End If
     End Sub
 
@@ -298,16 +332,23 @@ Public Class Form1
     End Sub
 
     Private Sub StopButton_Click_1(sender As System.Object, e As System.EventArgs) Handles StopButton.Click
+        Print("Stopping")
+        ProgressBar1.Value = 100
         Buttons(BusyButton)
         KillAll()
         Buttons(StartButton)
+        Print("Stopped")
+        ProgressBar1.ForeColor = Color.Gray
+        ProgressBar1.Value = 0
     End Sub
 
     Private Sub ShowToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles mnuShow.Click
         Print("The Opensimulator Console will be shown when Opensim is running.")
         mnuShow.Checked = True
         mnuHide.Checked = False
+        ConsoleTool.Visible = False
         My.Settings.ConsoleShow = mnuShow.Checked
+
         My.Settings.Save()
         If Running Then
             Print("The Opensimulator Console will be shown the next time the system is started.")
@@ -318,6 +359,7 @@ Public Class Form1
         Print("The Opensimulator Console will not be shown. You can still interact with it with Help->Opensim Console")
         mnuShow.Checked = False
         mnuHide.Checked = True
+        ConsoleTool.Visible = True
         My.Settings.ConsoleShow = mnuShow.Checked
         My.Settings.Save()
         If Running Then
@@ -399,6 +441,7 @@ Public Class Form1
             Log("Info:Writing section '" + section + "' in file '" + filepath + "' in key '" + key + "' with value of '" + value + "'")
             parser.WriteFile(filepath, Data)
         Catch ex As Exception
+            ProgressBar1.ForeColor = Color.Red
             Log("Info:Cannot locate '" + key + "' in section '" + section + "' in file " + filepath + ". This is not good")
             MsgBox("Cannot locate '" + key + "' in section '" + section + "' in file " + filepath + ". This is not good", vbOK)
         End Try
@@ -500,8 +543,10 @@ Public Class Form1
             SetIni(MyFolder & "\DreamWorldFiles\" & My.Settings.GridFolder & "\bin\Opensim.ini", "SpecialUIModule", "enabled", "true", ";")
         End If
 
-        mnuFull.Checked = My.Settings.ViewerEase
-        mnuEasy.Checked = Not My.Settings.ViewerEase
+
+
+        mnuFull.Checked = Not My.Settings.ViewerEase
+        mnuEasy.Checked = My.Settings.ViewerEase
 
         'Avatar visible?
         If My.Settings.AvatarShow Then
@@ -570,7 +615,9 @@ Public Class Form1
         SetIni(MyFolder + "\DreamWorldFiles\" + My.Settings.GridFolder + "\bin\config-include\MyWorld.ini", "WifiService", "AdminFirst", """" + My.Settings.AdminFirst + """", ";")
         SetIni(MyFolder + "\DreamWorldFiles\" + My.Settings.GridFolder + "\bin\config-include\MyWorld.ini", "WifiService", "AdminLast", """" + My.Settings.AdminLast + """", ";")
         SetIni(MyFolder + "\DreamWorldFiles\" + My.Settings.GridFolder + "\bin\config-include\MyWorld.ini", "WifiService", "AdminPassword", """" + My.Settings.Password + """", ";")
-
+        SetIni(MyFolder + "\DreamWorldFiles\" + My.Settings.GridFolder + "\bin\config-include\MyWorld.ini", "WifiService", "AdminPassword", """" + My.Settings.Password + """", ";")
+        SetIni(MyFolder + "\DreamWorldFiles\" + My.Settings.GridFolder + "\bin\config-include\MyWorld.ini", "Network", "ConsoleUser", """" + My.Settings.ConsoleUser + """", ";")
+        SetIni(MyFolder + "\DreamWorldFiles\" + My.Settings.GridFolder + "\bin\config-include\MyWorld.ini", "Network", "ConsolePass", """" + My.Settings.ConsolePass + """", ";")
 
         ProgressBar1.Value = iProgress
     End Sub
@@ -602,9 +649,9 @@ Public Class Form1
             End If
 
             If MyUPnPMap.Exists(My.Settings.LoopBack, UPnP.Protocol.TCP) Then
-                Log("uPnp:8001.TCP exists")
+                Log("uPnp:LoopBack.TCP exists")
             Else
-                Log("uPnp:8001.TCP Added ")
+                Log("uPnp:LoopBack.TCP Added ")
                 MyUPnPMap.Add(UPnP.LocalIP, My.Settings.LoopBack, UPnP.Protocol.TCP, "Opensim Probe")
             End If
         Catch e As Exception
@@ -619,15 +666,20 @@ Public Class Form1
         Try
             If AllowFirewall() Then ' open uPNP port
                 Log("uPnp:Ok")
+                ProgressBar1.Value = progress
                 Print("Ok, looking good ...")
                 Return True
             Else
                 Log("uPnP:fail")
+                ProgressBar1.ForeColor = Color.Magenta
+                ProgressBar1.Value = progress
                 Print("UPnP Port forwarding is not enabled. Opensimulator set for standalone operation.")
                 Return False
             End If
         Catch e As Exception
+            ProgressBar1.ForeColor = Color.Magenta
             Log("Error:uPnP Exception:" + e.Message)
+            ProgressBar1.Value = progress
             Print("Router is blocking a port so hypergrid may not be available")
             Return False
         End Try
@@ -649,15 +701,6 @@ Public Class Form1
         Return Mid(appData, 1, InStr(appData, "AppData") - 1)
     End Function
 
-    Public Property Running() As Boolean
-        Get
-            Return isRunning
-        End Get
-        Set(ByVal Value As Boolean)
-            isRunning = Value
-        End Set
-    End Property
-
     Private Sub AdminUIToolStripMenuItem1_Click(sender As Object, e As EventArgs) Handles AdminUIToolStripMenuItem1.Click
         If (Running) Then
             Dim webAddress As String = "http://127.0.0.1:" + My.Settings.PublicPort
@@ -678,16 +721,17 @@ Public Class Form1
             If type = "iar" Then
                 Using outputFile As New StreamWriter(MyFolder & "\DreamworldFiles\" + My.Settings.GridFolder & "\bin\startup_commands.txt", True)
                     outputFile.WriteLine("load iar --merge Dream World / 123 " + Chr(34) + thing + Chr(34))
-                    outputFile.WriteLine("show stats")
+                    outputFile.WriteLine("alert New content is loaded")
                 End Using
             ElseIf type = "oar" Then
                 Using outputFile As New StreamWriter(MyFolder & "\DreamworldFiles\" + My.Settings.GridFolder & "\bin\startup_commands.txt", True)
 
                     outputFile.WriteLine("load " + type + "  " + Chr(34) + thing + Chr(34))
-                    outputFile.WriteLine("show stats")
+                    outputFile.WriteLine("alert New content is loaded")
                 End Using
             End If
         Catch
+            ProgressBar1.ForeColor = Color.Magenta
             Log("Error:iar or oar file write failure")
         End Try
     End Sub
@@ -793,9 +837,12 @@ Public Class Form1
     Private Sub MoreContentToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles MoreContentToolStripMenuItem.Click
         Dim webAddress As String = "http://www.outworldz.com/cgi/freesculpts.plx"
         Process.Start(webAddress)
-        Print(" Drag and drop  OAR or IAR files here to load them whenever the sim starts")
+        Print(" Drag and drop OAR or IAR files here to load them whenever the sim starts")
     End Sub
     Private Sub ExitAll()
+
+        ws.StopWebServer()
+
         Try
             RemoveGrid()    ' puts Onlook back to default
         Catch
@@ -841,7 +888,7 @@ Public Class Form1
         ' Check for MySql operation
         Dim Mysql = False
         ' wait for MySql to come up 
-        Mysql = CheckMySQL()
+        Mysql = CheckPort("127.0.0.1", My.Settings.MySqlPort)
         While Not Mysql
             ProgressBar1.Value = ProgressBar1.Value + 1
             Application.DoEvents()
@@ -854,13 +901,13 @@ Public Class Form1
 
             ' check again
             Sleep(1000)
-            Mysql = CheckMySQL()
+            Mysql = CheckPort("127.0.0.1", My.Settings.MySqlPort)
         End While
         ProgressBar1.Value = progress
     End Sub
     Private Sub GetPubIP(iProgress As Integer)
 
-        Print("Getting Public IP")
+        ' Print("Getting Public IP")
         ' Set Public Port
         Try
             My.Settings.PublicIP = client.DownloadString("https://api.ipify.org")
@@ -872,36 +919,23 @@ Public Class Form1
         ProgressBar1.Value = iProgress
     End Sub
     Private Sub Loopback(progress As Integer)
-        Print("Testing Network Loopback")
-        Try
-            Application.DoEvents()
-            ws.StartWebServer()
-            Dim Benchmark = client.DownloadString("http://" & My.Settings.PublicIP & ":" + My.Settings.LoopBack + "/test.htm")
-            Application.DoEvents()
-            Print("Loopback Test Passed")
-        Catch ex As Exception
+
+        Print("Testing Network for Compatibility")
+        If CheckPort(My.Settings.PublicIP, My.Settings.LoopBack) Then
+            Print("Test Passed")
+        Else
             Application.DoEvents()
             Print("Hypergrid travel requires a router with 'loopback'. It seems to be missing from yours. See the Help section for 'Loopback' and how to enable it in Windows. Opensim can still continue, but without Hypergrid.")
             MsgBox("See Info on screen about Loopback. Opensim can still continue, but without Hypergrid", vbExclamation)
             My.Settings.PublicIP = "127.0.0.1" ' dang it, we cannot go to the hypergird
-            ' try to close the web server
-            Try
-                Dim Benchmark = client.DownloadString("http://localhost:" + My.Settings.LoopBack + "/test.htm")
-            Catch
-                Log("Error: cannot open localhost:8001")
-            End Try
-            Try
-                ws.StopWebServer()
-            Catch
-            End Try
-        End Try
-
+        End If
         ProgressBar1.Value = progress
+
     End Sub
 
     Private Sub Start_Opensimulator(iProgress As Integer)
-        Print("Starting Opensimulator")
 
+        Print("Starting Opensimulator")
         Dim pi As ProcessStartInfo = New ProcessStartInfo()
         pi.WorkingDirectory = MyFolder & "\DreamWorldFiles\" & My.Settings.GridFolder & "\bin\"
 
@@ -963,16 +997,13 @@ Public Class Form1
             Application.DoEvents()
             Sleep(4000)
 
-
-
             Try
-                Up = client.DownloadString("http://127.0.0.1:8002/?r=" + Random())
+                Up = client.DownloadString("http://127.0.0.1:" + My.Settings.PublicPort + "/?r=" + Random())
             Catch ex As Exception
                 Up = ""
             End Try
-
         End While
-
+        ContentLoading = "" ' the server is now loaded, so flip the content switch off. 
         ProgressBar1.Value = iProgress
 
     End Sub
@@ -982,7 +1013,7 @@ Public Class Form1
             Print("Starting Onlook viewer")
             Dim pi As ProcessStartInfo = New ProcessStartInfo()
             pi.Arguments = ""
-            pi.FileName = "C:\Program Files (x86)\Onlook\OnLookViewer.exe"
+            pi.FileName = "C: \Program Files (x86)\Onlook\OnLookViewer.exe"
             pi.WindowStyle = ProcessWindowStyle.Normal
             pOnlook.StartInfo = pi
             Try
@@ -1008,8 +1039,7 @@ Public Class Form1
 
     Private Sub InstallGridXML(iProgress As Integer)
 
-        ' we have to change the viewer Grid settings  if we are on localhost
-
+        ' we have to change the viewer Grid settings if we are on localhost
         Print("Setting Grid Info...")
         Try
             My.Computer.FileSystem.CopyFile(xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml", xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml.xml.bak", True)
@@ -1022,8 +1052,8 @@ Public Class Form1
         Catch ex As Exception
             Log("Error:Failed to install onlook XML")
         End Try
-
         ProgressBar1.Value = iProgress
+
     End Sub
 
     Private Sub RemoveGrid()
@@ -1056,7 +1086,6 @@ Public Class Form1
         Process.Start(webAddress)
     End Sub
 
-
     Private Sub UKanDoToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles UKanDoToolStripMenuItem.Click
         Dim webAddress As String = "http://www.ukando.info/"
         Process.Start(webAddress)
@@ -1084,28 +1113,9 @@ Public Class Form1
             End Using
         Catch
         End Try
-
         Return True
+
     End Function
-
-
-    Public Property MyFolder() As String
-        Get
-            Return gCurDir
-        End Get
-        Set(ByVal Value As String)
-            gCurDir = Value
-        End Set
-    End Property
-
-    Public Shared Property ActualForm() As Form
-        Get
-            ActualForm = m_ActiveForm
-        End Get
-        Set(ByVal Value As Form)
-            m_ActiveForm = Value
-        End Set
-    End Property
 
     Private Sub SetIAROARContent(iProgress As String)
 
@@ -1184,63 +1194,66 @@ Public Class Form1
         Print("Opensimulator will load " + file + " when restarted.  This may take time to load.")
     End Sub
 
-    Private Function SaySomething()
+    Private Sub SaySomething()
 
-        Dim Array() As String = {"I was flying a dragon in the Outworldz!",
-                                 "I was chatting with people at OsGrid.org. It's the largest hypergrid-enabled virtual world.",
-                                 "Some friends and I were riding a rollercoaster in the Great Canadian Grid.",
-                                 "I was watching a really pretty particle exhibit on the Metropolis grid.",
-                                 "We were discussing politics in German, Dutch, and French. And we all understood each other!",
-                                 "I was on a hypergrid safari in the mountains of Africa in the Outworldz at Virunga.",
-                                 "I won a race while riding a silly cow at the Outworldz 'Frankie' sim.",
-                                 "The party I was at had a wonderful singer. I can stll hear her voice floating above the sky.",
-                                 "The spaceport at Gravity sim in OsGrid was really hopping. And floating.",
-                                 "I was a mermaid in the Lost Worlds.",
-                                 "I made a pile of prims that you simply will not believe!",
-                                 "I was asked when I was going to straighten out the castle. 'Why? Is it tilted?'",
-                                 "I made a mesh of it",
-                                 "I saw a man without pants attached to a eagle flying up in the air. Always rez before you attach. ",
-                                 "I forgot the dream already, but I do remember I woke up in it.",
-                                 "I had no pants on.  Or shirt, shoes, or hair.  The worst part was there was no facelight! I looked hideous!",
-                                 "I dreamt that I was floating in a river and a NPC crocodile chased me.",
+        Dim Prefix() As String = {" ",
+                                  "Yawns...",
+                                  "Stretches...",
+                                  "Rolls over...",
+                                  "I need coffee before I go to work.",
+                                  "Oooh, its it time to wake up?",
+                                  "Mmmm, I was sleeping.",
+                                  "What a dream that was!",
+                                  "Do you ever dream of better worlds?",
+                                  "You look more beautiful every time that I wake up."
+                                }
+
+        Dim Array() As String = {"", "I dreamt I ate a giant marshmallow. Hey! Where's my pillow??",
+                                  "I dreamt we were both flying a dragon in the Outworldz. You flamed me. I tried to get even. I lost. ",
+                                 "I dreamt we were chatting at OsGrid.org. It's the largest hypergrid-enabled virtual world.",
+                                 "I dreamt some friends and you were riding a rollercoaster in the Great Canadian Grid.",
+                                 "I dreamt I was watching a pretty particle exhibit with you on the Metropolis grid.",
+                                 "I dreamt we were discussing politics in German, Dutch, and French using a free translator.",
+                                 "I dreamt you took the hypergrid safari to visit the mountains of Africa in the Virunga sim.",
+                                 "I dreamt you won a race while riding a silly cow at the Outworldz 'Frankie' sim.",
+                                 "I dreamt you are wonderful singer. I loved to hear your voice singing into the voice-chat system.",
+                                 "The spaceport at Gravity sim in OsGrid was really hopping. And floating. And then I fell. ",
+                                 "I was dreaming that you were a mermaid in the Lost Worlds.",
+                                 "I deamt that you made a pile of prims that you simply will not believe!",
+                                 "I was asked when I was going to straighten out the castle. You said, 'Why? Is it tilted?'",
+                                 "I dreamt you made a 'mesh' of it.",
+                                 "I dreamt I saw a man without a shirt attached to a eagle flying up in the air. Always rez before you attach!",
+                                 "I forgot the dream already. I remember I woke up in it.",
+                                 "I was thinking I had no clothes on.  No shirt, shoes, or hair.  The worst part was there was no facelight! I looked hideous!",
+                                 "I dreamt that I was floating in a river and a scripted mesh crocodile chased me.",
                                  "My friend started doing an interpretive dance and clicked the wrong color of pose ball, and I was like, 'OH SHES GAY!'",
-                                 "I dreamt I drove our car into the ocean. I found a pose ball, and grabbed onto it.",
-                                 "There was a NPC zebra in my bathtub!",
-                                 "Last night, I had a dreamed an ant was my best friend and then I woke up.  ",
-                                 "I dreamed that there were NPCs with yellow dinosaur heads attacking my house, so I decided to fly away. ",
-                                 "Last night, I saw a dream that there were pimples all over my face.  So I switched skins and looked perfect!",
-                                 "I had a dream where I had lost my blue snow boots, so I was asking everybody where I got them on the hypergrid.",
-                                 "My cousin logged in and she knew my avatar name! I need to make an alt now.",
-                                 "I had a dream that i was sitting on my roof with my crush and we stood up and fell off. "
+                                 "I dreamt I drove our car into the ocean. You found a pose ball, and we both grabbed onto it.",
+                                 "There was a animated mesh zebra in my bathtub!",
+                                 "I had dreamed an fairy was my best friend.",
+                                 "I dreamed that there were non players characters attacking my house, so I decided to fly away. ",
+                                 "I had a dream that there were pimples all over my face.  So I switched skins and looked perfect!",
+                                 "I had a dream where I had lost my free snow boots, so I was asking everybody where I got them on the hypergrid.",
+                                 "I remember that my awful cousin logged in and she knew my avatar name! I need to make an alt now.",
+                                 "I had a dream that i was sitting on my roof with my crush and we stood up and both fell off. But I hit Pg Up and flew away."
                                 }
         Randomize()
 
-        Dim value As Integer = CInt(Int((Array.Length - 1) * Rnd()))
-        Debug.Print(Array(value))
-        Return Array(value)
-    End Function
+        Dim value1 As Integer = CInt(Int((Prefix.Length - 1) * Rnd()))
+        Dim value2 As Integer = CInt(Int((Array.Length - 1) * Rnd()))
+        Dim whattosay = Prefix(value1) + vbCrLf + Array(value1) + "...and then I woke up."
+        Print(whattosay)
+
+    End Sub
 
     Private Sub Diagnose(iProgress As Integer)
 
         Log("Info:Starting Diagnostic server")
 
-        ws.StartWebServer()
         Dim isPortOpen As String = ""
         Try
             isPortOpen = client.DownloadString("http://www.outworldz.com/Dreamworld/probe.plx?Port=" + My.Settings.LoopBack + "&_=" + Random())
         Catch ex As Exception
             Log("Dang:The Outworldz web site cannot find a path back")
-            ' attempt to close the blocking web server
-            Try
-                isPortOpen = client.DownloadString("http://localhost:" + My.Settings.LoopBack + "/test.htm")
-            Catch
-                Log("Dang: localhost is down")
-            End Try
-
-            Try
-                ws.StopWebServer()
-            Catch
-            End Try
         End Try
 
 
@@ -1248,12 +1261,10 @@ Public Class Form1
             Log("Warn:Port " + My.Settings.PublicPort + " is not open")
             Print("Port " + My.Settings.PublicPort + " is not open, so Hypergrid is not available.  Opensimulator will continue in standalone mode.")
         Else
-            Log("Info:Hypergird port " + My.Settings.PublicPort + "is open")
-            Print("Hypergrid Ports are open!  You can share your Dream World with others.")
+            Log("Info:Hypergird test passed")
+            Print("Hypergrid test passed")
         End If
-
-        Loopback(iProgress)    ' test the loopback on the router. If it fails, use localhost, no Hg
-
+        ProgressBar1.Value = iProgress
 
     End Sub
 
@@ -1323,10 +1334,45 @@ Public Class Form1
     End Sub
 
     Private Sub DiagnosticsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles DiagnosticsToolStripMenuItem.Click
+        ProgressBar1.BackColor = Color.LightGreen
         ProgressBar1.Value = 0
         OpenPorts(25) ' Open router ports
-        Diagnose(100)
+        Diagnose(50)
+        Loopback(100)    ' test the loopback on the router. If it fails, use localhost, no Hg
     End Sub
+
+    Private Function PostURL(URL As String, postdata As String)
+        Dim s As HttpWebRequest
+        Dim enc As UTF8Encoding
+        Dim postdatabytes As Byte()
+
+        s = HttpWebRequest.Create(URL)
+        enc = New System.Text.UTF8Encoding()
+        postdatabytes = enc.GetBytes(postdata)
+        s.Method = "POST"
+        s.ContentType = "application/x-www-form-urlencoded"
+        s.ContentLength = postdatabytes.Length
+
+        Using stream = s.GetRequestStream()
+            stream.Write(postdatabytes, 0, postdatabytes.Length)
+        End Using
+        Return s.GetResponse()
+    End Function
+
+    Private Sub ConsoleToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ConsoleTool.Click
+        ActualForm = New ConsoleForm ' Bring the form into memory 
+        ' Set the new form's desktop location so it appears below and 
+        ' to the right of the current form.
+
+        ConsoleForm.SetDesktopLocation(200, 200)
+
+        ConsoleForm.Activate()
+        ConsoleForm.Visible = True
+    End Sub
+
+
+#End Region
+
 End Class
 
 

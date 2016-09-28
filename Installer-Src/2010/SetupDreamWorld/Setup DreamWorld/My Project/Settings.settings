@@ -59,7 +59,7 @@
     <Setting Name="AutobackupInterval" Type="System.String" Scope="User">
       <Value Profile="(Default)">1400</Value>
     </Setting>
-    <Setting Name="KeepForDays" Type="System.String" Scope="User">
+    <Setting Name="KeepForDays" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">30</Value>
     </Setting>
     <Setting Name="Password" Type="System.String" Scope="User">
@@ -73,6 +73,12 @@
     </Setting>
     <Setting Name="AdminEmail" Type="System.String" Scope="User">
       <Value Profile="(Default)">email@somewhere.com</Value>
+    </Setting>
+    <Setting Name="ConsoleUser" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Console</Value>
+    </Setting>
+    <Setting Name="ConsolePass" Type="System.String" Scope="User">
+      <Value Profile="(Default)">secret</Value>
     </Setting>
   </Settings>
 </SettingsFile>

@@ -285,9 +285,9 @@ Namespace My
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("30")>  _
-        Public Property KeepForDays() As String
+        Public Property KeepForDays() As Integer
             Get
-                Return CType(Me("KeepForDays"),String)
+                Return CType(Me("KeepForDays"),Integer)
             End Get
             Set
                 Me("KeepForDays") = value
@@ -339,6 +339,30 @@ Namespace My
             End Get
             Set
                 Me("AdminEmail") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("Console")>  _
+        Public Property ConsoleUser() As String
+            Get
+                Return CType(Me("ConsoleUser"),String)
+            End Get
+            Set
+                Me("ConsoleUser") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("secret")>  _
+        Public Property ConsolePass() As String
+            Get
+                Return CType(Me("ConsolePass"),String)
+            End Get
+            Set
+                Me("ConsolePass") = value
             End Set
         End Property
     End Class

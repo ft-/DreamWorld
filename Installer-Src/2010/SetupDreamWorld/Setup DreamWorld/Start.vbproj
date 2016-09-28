@@ -142,14 +142,21 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="ApplicationEvents.vb" />
-    <Compile Include="Class1.vb" />
-    <Compile Include="Class2.vb" />
-    <Compile Include="Form2.Designer.vb">
-      <DependentUpon>Form2.vb</DependentUpon>
+    <Compile Include="ClassUPnP.vb" />
+    <Compile Include="ClassWebServer.vb" />
+    <Compile Include="Console.Designer.vb">
+      <DependentUpon>Console.vb</DependentUpon>
     </Compile>
-    <Compile Include="Form2.vb">
+    <Compile Include="Console.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="FormAdvanced.Designer.vb">
+      <DependentUpon>FormAdvanced.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormAdvanced.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Module1.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -171,8 +178,11 @@
     <EmbeddedResource Include="..\..\..\Setup.resx">
       <DependentUpon>Setup.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Form2.resx">
-      <DependentUpon>Form2.vb</DependentUpon>
+    <EmbeddedResource Include="Console.resx">
+      <DependentUpon>Console.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormAdvanced.resx">
+      <DependentUpon>FormAdvanced.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>

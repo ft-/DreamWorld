@@ -55,6 +55,7 @@ Partial Class Form1
         Me.mnuOsGrid = New System.Windows.Forms.ToolStripMenuItem()
         Me.HypergridorgToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.AdvancedSettingsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ConsoleTool = New System.Windows.Forms.ToolStripMenuItem()
         Me.HelpToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuLogin = New System.Windows.Forms.ToolStripMenuItem()
         Me.AdminUIToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
@@ -148,7 +149,7 @@ Partial Class Form1
         '
         'mnuSettings
         '
-        Me.mnuSettings.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ConsoleToolStripMenuItem1, Me.ViewerToolStripMenuItem, Me.VUI, Me.AvatarToolStripMenuItem, Me.GridToolStripMenuItem, Me.AdvancedSettingsToolStripMenuItem})
+        Me.mnuSettings.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ConsoleToolStripMenuItem1, Me.ViewerToolStripMenuItem, Me.VUI, Me.AvatarToolStripMenuItem, Me.GridToolStripMenuItem, Me.AdvancedSettingsToolStripMenuItem, Me.ConsoleTool})
         Me.mnuSettings.Name = "mnuSettings"
         Me.mnuSettings.Size = New System.Drawing.Size(61, 20)
         Me.mnuSettings.Text = "Settings"
@@ -298,19 +299,19 @@ Partial Class Form1
         Me.mnuHyperGrid.Checked = True
         Me.mnuHyperGrid.CheckState = System.Windows.Forms.CheckState.Checked
         Me.mnuHyperGrid.Name = "mnuHyperGrid"
-        Me.mnuHyperGrid.Size = New System.Drawing.Size(152, 22)
+        Me.mnuHyperGrid.Size = New System.Drawing.Size(148, 22)
         Me.mnuHyperGrid.Text = "HyperGrid"
         '
         'mnuOsGrid
         '
         Me.mnuOsGrid.Name = "mnuOsGrid"
-        Me.mnuOsGrid.Size = New System.Drawing.Size(152, 22)
+        Me.mnuOsGrid.Size = New System.Drawing.Size(148, 22)
         Me.mnuOsGrid.Text = "OsGrid.org"
         '
         'HypergridorgToolStripMenuItem
         '
         Me.HypergridorgToolStripMenuItem.Name = "HypergridorgToolStripMenuItem"
-        Me.HypergridorgToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.HypergridorgToolStripMenuItem.Size = New System.Drawing.Size(148, 22)
         Me.HypergridorgToolStripMenuItem.Text = "Hypergrid.org"
         '
         'AdvancedSettingsToolStripMenuItem
@@ -319,6 +320,13 @@ Partial Class Form1
         Me.AdvancedSettingsToolStripMenuItem.Name = "AdvancedSettingsToolStripMenuItem"
         Me.AdvancedSettingsToolStripMenuItem.Size = New System.Drawing.Size(172, 22)
         Me.AdvancedSettingsToolStripMenuItem.Text = "Advanced Settings"
+        '
+        'ConsoleTool
+        '
+        Me.ConsoleTool.Image = Global.DreamWorld.My.Resources.Resources.document_connection
+        Me.ConsoleTool.Name = "ConsoleTool"
+        Me.ConsoleTool.Size = New System.Drawing.Size(172, 22)
+        Me.ConsoleTool.Text = "Console"
         '
         'HelpToolStripMenuItem
         '
@@ -527,4 +535,5 @@ Partial Class Form1
     Friend WithEvents HypergridorgToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents CHeckForUpdatesToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents DiagnosticsToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents ConsoleTool As ToolStripMenuItem
 End Class
