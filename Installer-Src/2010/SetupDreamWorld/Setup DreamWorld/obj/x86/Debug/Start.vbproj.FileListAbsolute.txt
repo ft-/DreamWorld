@@ -43,3 +43,10 @@ C:\Opensim\DreamWorld-GitHub\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld
 C:\Opensim\DreamWorld-GitHub\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Debug\Start.xml
 C:\Opensim\DreamWorld-GitHub\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Debug\Start.pdb
 C:\Opensim\DreamWorld-GitHub\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Debug\DreamWorld.ConsoleForm.resources
+C:\Users\fred.LAN\Desktop\dw2\DreamWorld\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\bin\Debug\Start.exe.config
+C:\Users\fred.LAN\Desktop\dw2\DreamWorld\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Debug\Interop.IWshRuntimeLibrary.dll
+C:\Users\fred.LAN\Desktop\dw2\DreamWorld\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Debug\Interop.NATUPNPLib.dll
+C:\Users\fred.LAN\Desktop\dw2\DreamWorld\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Debug\Start.vbproj.ResolveComReference.cache
+C:\Users\fred.LAN\Desktop\dw2\DreamWorld\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Debug\Start.exe
+C:\Users\fred.LAN\Desktop\dw2\DreamWorld\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Debug\Start.xml
+C:\Users\fred.LAN\Desktop\dw2\DreamWorld\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Debug\Start.pdb

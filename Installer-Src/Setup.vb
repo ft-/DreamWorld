@@ -1370,6 +1370,10 @@ Public Class Form1
         ConsoleForm.Visible = True
     End Sub
 
+    Private Sub mnuSettings_Click(sender As Object, e As EventArgs) Handles mnuSettings.Click
+
+    End Sub
+
 
 #End Region
 

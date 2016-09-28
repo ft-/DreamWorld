@@ -1,0 +1,1 @@
+This file lets Dream World know it has been installed and to benchmark the network loopback
