@@ -80,5 +80,11 @@
     <Setting Name="ConsolePass" Type="System.String" Scope="User">
       <Value Profile="(Default)">secret</Value>
     </Setting>
+    <Setting Name="Diagnostics" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="RegionPort" Type="System.String" Scope="User">
+      <Value Profile="(Default)">8004</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

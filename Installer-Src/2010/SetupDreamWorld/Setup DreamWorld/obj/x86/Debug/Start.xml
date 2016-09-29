@@ -207,25 +207,25 @@ Start
   Looks up a localized resource of type System.Drawing.Bitmap.
 </summary>
 </member>
-<member name="T:DreamWorld.UPnP.Protocol">
+<member name="T:DreamWorld.UPNP.Protocol">
  <summary>
  The different supported protocols
  </summary>
  <remarks></remarks>
 </member>
-<member name="F:DreamWorld.UPnP.Protocol.TCP">
+<member name="F:DreamWorld.UPNP.Protocol.TCP">
  <summary>
  Transmission Control Protocol
  </summary>
  <remarks></remarks>
 </member>
-<member name="F:DreamWorld.UPnP.Protocol.UDP">
+<member name="F:DreamWorld.UPNP.Protocol.UDP">
  <summary>
  User Datagram Protocol
  </summary>
  <remarks></remarks>
 </member>
-<member name="P:DreamWorld.UPnP.UPnPEnabled">
+<member name="P:DreamWorld.UPNP.UPNPEnabled">
  <summary>
  Returns if UPnP is enabled.
  </summary>
@@ -233,25 +233,25 @@ Start
  <returns></returns>
  <remarks></remarks>
 </member>
-<member name="M:DreamWorld.UPnP.#ctor">
+<member name="M:DreamWorld.UPNP.#ctor">
  <summary>
  The UPnP Managed Class
  </summary>
  <remarks></remarks>
 </member>
-<member name="M:DreamWorld.UPnP.GetStaticMappings">
+<member name="M:DreamWorld.UPNP.GetStaticMappings">
  <summary>
  Returns all static port mappings
  </summary>
  <remarks></remarks>
 </member>
-<member name="M:DreamWorld.UPnP.GetDynamicMappings">
+<member name="M:DreamWorld.UPNP.GetDynamicMappings">
  <summary>
  Returns all dynamic port mappings
  </summary>
  <remarks></remarks>
 </member>
-<member name="M:DreamWorld.UPnP.Add(System.String,System.Int32,DreamWorld.UPnP.Protocol,System.String)">
+<member name="M:DreamWorld.UPNP.Add(System.String,System.Int32,DreamWorld.UPNP.Protocol,System.String)">
  <summary>
  Adds a port mapping to the UPnP enabled device.
  </summary>
@@ -264,7 +264,7 @@ Start
  <exception cref="T:System.ArgumentException">This exception is thrown when any of the supplied arguments are invalid.</exception>
  <remarks></remarks>
 </member>
-<member name="M:DreamWorld.UPnP.Remove(System.Int32,DreamWorld.UPnP.Protocol)">
+<member name="M:DreamWorld.UPNP.Remove(System.Int32,DreamWorld.UPNP.Protocol)">
  <summary>
  Removes a port mapping from the UPnP enabled device.
  </summary>
@@ -275,7 +275,7 @@ Start
  <exception cref="T:System.ArgumentException">This exception is thrown when the port [or protocol] is invalid.</exception>
  <remarks></remarks>
 </member>
-<member name="M:DreamWorld.UPnP.Exists(System.Int32,DreamWorld.UPnP.Protocol)">
+<member name="M:DreamWorld.UPNP.Exists(System.Int32,DreamWorld.UPNP.Protocol)">
  <summary>
  Checks to see if a port exists in the mapping.
  </summary>
@@ -286,14 +286,14 @@ Start
  <exception cref="T:System.ArgumentException">This exception is thrown when the port [or protocol] is invalid.</exception>
  <remarks></remarks>
 </member>
-<member name="M:DreamWorld.UPnP.LocalIP">
+<member name="M:DreamWorld.UPNP.LocalIP">
  <summary>
  Attempts to locate the local IP address of this computer.
  </summary>
  <returns>String</returns>
  <remarks></remarks>
 </member>
-<member name="M:DreamWorld.UPnP.IsPrivateIP(System.String)">
+<member name="M:DreamWorld.UPNP.IsPrivateIP(System.String)">
  <summary>
  Checks to see if an IP address is a local IP address.
  </summary>
@@ -301,20 +301,20 @@ Start
  <returns>Boolean</returns>
  <remarks></remarks>
 </member>
-<member name="M:DreamWorld.UPnP.Dispose(System.Boolean)">
+<member name="M:DreamWorld.UPNP.Dispose(System.Boolean)">
  <summary>
  Disposes of the UPnP class
  </summary>
  <param name="disposing">True or False makes no difference.</param>
  <remarks></remarks>
 </member>
-<member name="M:DreamWorld.UPnP.Dispose">
+<member name="M:DreamWorld.UPNP.Dispose">
  <summary>
  Dispose!
  </summary>
  <remarks></remarks>
 </member>
-<member name="M:DreamWorld.UPnP.Print">
+<member name="M:DreamWorld.UPNP.Print">
  <summary>
  Prints out some debugging information to use.
  </summary>

@@ -2,7 +2,7 @@
 Imports System.Net
 Imports System.Runtime.InteropServices
 
-Public Class UPnP
+Public Class UPNP
     Implements IDisposable
 
     Private upnpnat As NATUPNPLib.UPnPNAT
@@ -38,7 +38,7 @@ Public Class UPnP
     ''' <value></value>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public ReadOnly Property UPnPEnabled As Boolean
+    Public ReadOnly Property UPNPEnabled As Boolean
         Get
             Return staticEnabled = True OrElse dynamicEnabled = True
         End Get

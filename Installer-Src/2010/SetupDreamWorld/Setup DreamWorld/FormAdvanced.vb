@@ -49,6 +49,7 @@
         Password.Text = My.Settings.Password
         AdminLast.Text = My.Settings.AdminLast
         AdminFirst.Text = My.Settings.AdminFirst
+        RegionPort.Text = My.Settings.RegionPort
 
     End Sub
 
@@ -118,6 +119,10 @@
         My.Settings.PublicPort = PublicPort.Text
         My.Settings.Save()
     End Sub
+    Private Sub RegionPort_TextChanged(sender As Object, e As EventArgs) Handles RegionPort.TextChanged
+        My.Settings.RegionPort = RegionPort.Text
+        My.Settings.Save()
+    End Sub
 
     Private Sub Form2_Closed(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Closed
         'My.Settings.Save()
@@ -177,4 +182,6 @@
         My.Settings.Password = Password.Text
         My.Settings.Save()
     End Sub
+
+
 End Class

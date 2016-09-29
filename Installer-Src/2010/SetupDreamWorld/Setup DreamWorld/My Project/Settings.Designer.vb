@@ -365,6 +365,30 @@ Namespace My
                 Me("ConsolePass") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public Property Diagnostics() As Boolean
+            Get
+                Return CType(Me("Diagnostics"),Boolean)
+            End Get
+            Set
+                Me("Diagnostics") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("8004")>  _
+        Public Property RegionPort() As String
+            Get
+                Return CType(Me("RegionPort"),String)
+            End Get
+            Set
+                Me("RegionPort") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

@@ -5,7 +5,7 @@ Imports System.IO
 Imports System.Net.Sockets
 Imports IWshRuntimeLibrary
 Imports IniParser
-
+Imports System.Threading
 Imports Ionic.Zip
 
 ' Copyright 2014 Fred Beckhusen  
@@ -13,8 +13,9 @@ Imports Ionic.Zip
 ' that ALL the licenses in the text files are followed and included in all copies
 
 ' Command line args:
-'     'clean' makes it wipe out Opensim files that are not needed for zipping
-'    'debug' forces this to use the \Dreamworlds folder for testing 
+'     '-clean' makes it wipe out Opensim files that are not needed for zipping
+'     '-debug' forces this to use the \Dreamworlds folder for testing 
+'     '-nodiag' skips all the diagnostics and UPnP. requires ports to be manually opened
 
 Public Class Form1
 
@@ -22,7 +23,7 @@ Public Class Form1
     Dim gCurDir    ' Holds the current folder that we are running in
     Dim gCurSlashDir As String '  holds the current directory info in Unix format
     Dim isRunning As Boolean
-    Private Declare Sub Sleep Lib "kernel32.dll" (ByVal Millisecond As Integer)
+
     Dim ws As Net
 
     Dim ContentLoading As String = ""
@@ -65,9 +66,14 @@ Public Class Form1
 #Region "Methods"
     Private Sub Form1_Closed(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Closed
         Log("Info:Exit")
+        ProgressBar1.Value = 90
         Print("Hold fast to your dreams ...")
         ExitAll()
+        ProgressBar1.Value = 25
         Print("I'll tell you my next dream when I wake up.")
+        Sleep(1000)
+        ProgressBar1.Value = 0
+        Print("Zzzzzz....")
         Sleep(1000)
     End Sub
 
@@ -99,13 +105,15 @@ Public Class Form1
 
         If arguments.Length > 1 Then
             ' for debugging when compiling
-            If arguments(1) = "clean" Then
+            If arguments(1) = "-clean" Then
                 ' Clean up the file system
                 CleanAll()
-            ElseIf arguments(1) = "debug" Then
+            ElseIf arguments(1) = "-debug" Then
                 MyFolder = "\DreamWorld" ' for testing, as the compiler buries itself in ../../../debug
                 Log("Info:Using Debug folder \Dreamworld")
                 gCurSlashDir = "/DreamWorld"
+            ElseIf arguments(1) = "-nodiag" Then
+                My.Settings.Diagnostics = False
             End If
         End If
 
@@ -114,9 +122,10 @@ Public Class Form1
         ProgressBar1.Visible = True
         ProgressBar1.Value = 5
         Sleep(5000)
-
+        Log("Info: Loading Web Server")
         ws = Net.getWebServer
-        ws.StartServer()
+        Log("Info: Starting Web Server")
+        ws.StartServer(MyFolder)
 
         ProgressBar1.Value = 10
         GetPubIP(15)
@@ -126,17 +135,14 @@ Public Class Form1
         MnuContent.Visible = True
         InstallGridXML(40)
 
-        If Not System.IO.File.Exists(MyFolder & "\DreamworldFiles\Init.txt") Then
-            OpenPorts(45) ' Open router ports
-            Diagnose(50)
-            Loopback(60)    ' test the loopback on the router. If it fails, use localhost, no Hg
-            Print("Diagnostics can be re-run in Help->Diagnostics at any time")
-            Sleep(1000)
-        End If
+        OpenPorts(45) ' Open router ports
+        Diagnose(50)
+        Loopback(60)    ' test the loopback on the router. If it fails, use localhost, no Hg
+        Print("Diagnostics can be re-run in Help->Diagnostics at any time")
+        Sleep(1000)
 
         If System.IO.File.Exists(MyFolder & "\DreamworldFiles\Init.txt") Then
             ' Find out if the viewer is installed, make a file we can benchmark to
-
             Buttons(StartButton)
             ProgressBar1.Value = 100
             Print("Dream World is ready to start.")
@@ -205,7 +211,10 @@ Public Class Form1
         Try
             My.Computer.FileSystem.DeleteFile(MyFolder & "\DreamWorldFiles\DreamWorld.log")
         Catch
-            Log("Info:Could not find the DreamWorld Log file")
+        End Try
+        Try
+            My.Computer.FileSystem.DeleteFile(MyFolder & "\DreamworldFiles\Server.log")
+        Catch ex As Exception
         End Try
 
         ' Set up the progres bar for 0-100
@@ -252,7 +261,7 @@ Public Class Form1
             Log("Error:MySql port probe failed on port 3307")
             Return False
         End Try
-        Log("Info:MySql is Up")
+        
         CheckPort = True
 
     End Function
@@ -322,7 +331,7 @@ Public Class Form1
     End Sub
 
     Private Sub mnuLogin_Click(sender As System.Object, e As System.EventArgs) Handles mnuLogin.Click
-        Print("'Dream World' has a password='123'. You can also use 'Help->Web Interface' to create a new avatar or change passwords.")
+        Print("You can use 'Help->Web Interface' to create a new avatar or change passwords.")
     End Sub
 
     Private Sub mnuAbout_Click(sender As System.Object, e As System.EventArgs) Handles mnuAbout.Click
@@ -436,7 +445,6 @@ Public Class Form1
         parser.Parser.Configuration.SkipInvalidLines = True
         Dim Data = parser.ReadFile(filepath)
         Try
-            Dim oldvalue = Data(section)(key)
             Data(section)(key) = value ' replace it and save it
             Log("Info:Writing section '" + section + "' in file '" + filepath + "' in key '" + key + "' with value of '" + value + "'")
             parser.WriteFile(filepath, Data)
@@ -600,13 +608,15 @@ Public Class Form1
         SetIni(MyFolder + "\DreamWorldFiles\" + My.Settings.GridFolder + "\bin\Regions\RegionConfig.ini", "DreamWorld", "SizeY", My.Settings.SizeY, ";")
         SetIni(MyFolder + "\DreamWorldFiles\" + My.Settings.GridFolder + "\bin\Regions\RegionConfig.ini", "DreamWorld", "SizeX", My.Settings.SizeX, ";")
 
+
+
         Log("Info:Public IP is " + My.Settings.PublicIP)
         SetIni(MyFolder + "\DreamWorldFiles\" + My.Settings.GridFolder + "\bin\Regions\RegionConfig.ini", "DreamWorld", "ExternalHostName", My.Settings.PublicIP, ";")
         SetIni(MyFolder + "\DreamWorldFiles\" + My.Settings.GridFolder + "\bin\Opensim.ini", "Const", "BaseURL", My.Settings.PublicIP, ";")
 
         Log("Info:Public Port is " + My.Settings.PublicPort)
         SetIni(MyFolder + "\DreamWorldFiles\" + My.Settings.GridFolder + "\bin\Opensim.ini", "Const", "PublicPort", My.Settings.PublicPort, ";")
-        SetIni(MyFolder + "\DreamWorldFiles\" + My.Settings.GridFolder + "\bin\Regions\RegionConfig.ini", "DreamWorld", "InternalPort", My.Settings.PublicPort, ";")
+        SetIni(MyFolder + "\DreamWorldFiles\" + My.Settings.GridFolder + "\bin\Regions\RegionConfig.ini", "DreamWorld", "InternalPort", My.Settings.RegionPort, ";")
 
         Log("Info:Wifi Port is " + My.Settings.WifiPort)
         SetIni(MyFolder + "\DreamWorldFiles\" + My.Settings.GridFolder + "\bin\Opensim.ini", "Const", "WifiPort", My.Settings.WifiPort, ";")
@@ -621,11 +631,43 @@ Public Class Form1
 
         ProgressBar1.Value = iProgress
     End Sub
+    Function CloseFirewall() As Boolean
+        Log("uPnp:Cose")
+        Dim MyUPnPMap As New UPNP
 
+        Try
+            If MyUPnPMap.Exists(My.Settings.PublicPort, UPNP.Protocol.UDP) Then
+                MyUPnPMap.Remove(UPNP.LocalIP, My.Settings.PublicPort)
+            End If
+
+            If MyUPnPMap.Exists(My.Settings.PublicPort, UPNP.Protocol.TCP) Then
+                MyUPnPMap.Remove(UPNP.LocalIP, My.Settings.PublicPort)
+            End If
+
+            If MyUPnPMap.Exists(My.Settings.WifiPort, UPNP.Protocol.TCP) Then
+                MyUPnPMap.Remove(UPNP.LocalIP, My.Settings.WifiPort)
+            End If
+
+            If MyUPnPMap.Exists(My.Settings.LoopBack, UPNP.Protocol.TCP) Then
+                Log("uPnp:LoopBack.TCP Added ")
+                MyUPnPMap.Remove(UPNP.LocalIP, My.Settings.LoopBack)
+            End If
+
+            If MyUPnPMap.Exists(My.Settings.RegionPort, UPNP.Protocol.TCP) Then
+                Log("uPnp:LoopBack.TCP Added ")
+                MyUPnPMap.Remove(UPNP.LocalIP, My.Settings.RegionPort)
+            End If
+
+        Catch e As Exception
+            Log("uPnp:UPnP Exception caught: " + e.Message)
+            Return False
+        End Try
+        Return True 'successfully added
+    End Function
     Function AllowFirewall() As Boolean
         Log("uPnp:probing")
-        Dim MyUPnPMap As New UPnP
-        Dim portcount = 0
+        Dim MyUPnPMap As New UPNP
+
         Try
             If MyUPnPMap.Exists(My.Settings.PublicPort, UPnP.Protocol.UDP) Then
                 Log("uPnp:PublicPort.UDP exists")
@@ -652,8 +694,23 @@ Public Class Form1
                 Log("uPnp:LoopBack.TCP exists")
             Else
                 Log("uPnp:LoopBack.TCP Added ")
-                MyUPnPMap.Add(UPnP.LocalIP, My.Settings.LoopBack, UPnP.Protocol.TCP, "Opensim Probe")
+                MyUPnPMap.Add(UPNP.LocalIP, My.Settings.LoopBack, UPNP.Protocol.TCP, "Opensim Region")
             End If
+
+            If MyUPnPMap.Exists(My.Settings.RegionPort, UPNP.Protocol.TCP) Then
+                Log("uPnp:Regionport.TCP exists")
+            Else
+                Log("uPnp:LoopBack.TCP Added ")
+                MyUPnPMap.Add(UPNP.LocalIP, My.Settings.RegionPort, UPNP.Protocol.TCP, "Opensim Region")
+            End If
+
+            If MyUPnPMap.Exists(My.Settings.RegionPort, UPNP.Protocol.UDP) Then
+                Log("uPnp:Regionport.UDP exists")
+            Else
+                Log("uPnp:LoopBack.UDP Added ")
+                MyUPnPMap.Add(UPNP.LocalIP, My.Settings.RegionPort, UPNP.Protocol.UDP, "Opensim Region")
+            End If
+
         Catch e As Exception
             Log("uPnp:UPnP Exception caught: " + e.Message)
             Return False
@@ -705,9 +762,9 @@ Public Class Form1
         If (Running) Then
             Dim webAddress As String = "http://127.0.0.1:" + My.Settings.PublicPort
             Process.Start(webAddress)
-            Print("Log in as 'Wifi Admin' with a password of '" + My.Settings.Password + "'to add users")
+            Print("Log in as '" + My.Settings.AdminFirst + " " + My.Settings.AdminLast + "' with a password of '" + My.Settings.Password + "'to add user accounts.")
         Else
-            Print("Opensim is not running")
+            Print("Opensim is not running. Cannot open the Web Interface.")
         End If
     End Sub
     Private Sub SimContent(thing As String, type As String)
@@ -843,6 +900,8 @@ Public Class Form1
 
         ws.StopWebServer()
 
+        CloseFirewall()
+
         Try
             RemoveGrid()    ' puts Onlook back to default
         Catch
@@ -904,25 +963,26 @@ Public Class Form1
             Mysql = CheckPort("127.0.0.1", My.Settings.MySqlPort)
         End While
         ProgressBar1.Value = progress
+
     End Sub
     Private Sub GetPubIP(iProgress As Integer)
 
-        ' Print("Getting Public IP")
         ' Set Public Port
         Try
             My.Settings.PublicIP = client.DownloadString("https://api.ipify.org")
+            Log("Public IP=" + My.Settings.PublicIP)
         Catch ex As Exception
             Print("Cannot reach the Internet? Proceeding locally")
             My.Settings.PublicIP = "127.0.0.1"
         End Try
-
         ProgressBar1.Value = iProgress
+
     End Sub
     Private Sub Loopback(progress As Integer)
 
         Print("Testing Network for Compatibility")
         If CheckPort(My.Settings.PublicIP, My.Settings.LoopBack) Then
-            Print("Test Passed")
+            Print("Loopback worked")
         Else
             Application.DoEvents()
             Print("Hypergrid travel requires a router with 'loopback'. It seems to be missing from yours. See the Help section for 'Loopback' and how to enable it in Windows. Opensim can still continue, but without Hypergrid.")
@@ -1029,12 +1089,18 @@ Public Class Form1
         ActualForm = New AdvancedForm ' Bring the form into memory 
         ' Set the new form's desktop location so it appears below and 
         ' to the right of the current form.
-
         ActualForm.SetDesktopLocation(300, 200)
-
         ActualForm.Activate()
         ActualForm.Visible = True
+    End Sub
 
+    Private Sub ConsoleToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ConsoleTool.Click
+        ActualForm = New ConsoleForm ' Bring the form into memory 
+        ' Set the new form's desktop location so it appears below and 
+        ' to the right of the current form.
+        ConsoleForm.SetDesktopLocation(200, 200)
+        ConsoleForm.Activate()
+        ConsoleForm.Visible = True
     End Sub
 
     Private Sub InstallGridXML(iProgress As Integer)
@@ -1135,8 +1201,8 @@ Public Class Form1
         Dim ContentAvailable As Boolean = True
         While ContentAvailable
             line = oarreader.ReadLine()
-            Debug.Print(line)
             If line <> Nothing Then
+                Log(line)
                 Dim OarMenu As New ToolStripMenuItem
                 OarMenu.Text = line
                 OarMenu.ToolTipText = "CLick to load this content the next time the simulator is started"
@@ -1162,8 +1228,8 @@ Public Class Form1
         ContentAvailable = True
         While ContentAvailable
             line = iarreader.ReadLine()
-            Debug.Print(line)
             If line <> Nothing Then
+                Log(line)
                 Dim IarMenu As New ToolStripMenuItem
                 IarMenu.Text = line
                 IarMenu.ToolTipText = "CLick to load this content the next time the simulator is started"
@@ -1196,10 +1262,10 @@ Public Class Form1
 
     Private Sub SaySomething()
 
-        Dim Prefix() As String = {" ",
-                                  "Yawns...",
-                                  "Stretches...",
-                                  "Rolls over...",
+        Dim Prefix() As String = {
+                                  "Yawns ...",
+                                  "Stretches ...",
+                                  "Rolls over ...",
                                   "I need coffee before I go to work.",
                                   "Oooh, its it time to wake up?",
                                   "Mmmm, I was sleeping.",
@@ -1208,7 +1274,7 @@ Public Class Form1
                                   "You look more beautiful every time that I wake up."
                                 }
 
-        Dim Array() As String = {"", "I dreamt I ate a giant marshmallow. Hey! Where's my pillow??",
+        Dim Array() As String = {"I dreamt I ate a giant marshmallow. Hey! Where's my pillow??",
                                   "I dreamt we were both flying a dragon in the Outworldz. You flamed me. I tried to get even. I lost. ",
                                  "I dreamt we were chatting at OsGrid.org. It's the largest hypergrid-enabled virtual world.",
                                  "I dreamt some friends and you were riding a rollercoaster in the Great Canadian Grid.",
@@ -1233,14 +1299,13 @@ Public Class Form1
                                  "I dreamed that there were non players characters attacking my house, so I decided to fly away. ",
                                  "I had a dream that there were pimples all over my face.  So I switched skins and looked perfect!",
                                  "I had a dream where I had lost my free snow boots, so I was asking everybody where I got them on the hypergrid.",
-                                 "I remember that my awful cousin logged in and she knew my avatar name! I need to make an alt now.",
                                  "I had a dream that i was sitting on my roof with my crush and we stood up and both fell off. But I hit Pg Up and flew away."
                                 }
         Randomize()
 
         Dim value1 As Integer = CInt(Int((Prefix.Length - 1) * Rnd()))
         Dim value2 As Integer = CInt(Int((Array.Length - 1) * Rnd()))
-        Dim whattosay = Prefix(value1) + vbCrLf + Array(value1) + "...and then I woke up."
+        Dim whattosay = Prefix(value1) + vbCrLf + vbCrLf + Array(value2) + " ... and then I woke up."
         Print(whattosay)
 
     End Sub
@@ -1256,12 +1321,11 @@ Public Class Form1
             Log("Dang:The Outworldz web site cannot find a path back")
         End Try
 
-
         If isPortOpen <> "yes" Then
+            Log(isPortOpen)
             Log("Warn:Port " + My.Settings.PublicPort + " is not open")
             Print("Port " + My.Settings.PublicPort + " is not open, so Hypergrid is not available.  Opensimulator will continue in standalone mode.")
         Else
-            Log("Info:Hypergird test passed")
             Print("Hypergrid test passed")
         End If
         ProgressBar1.Value = iProgress
@@ -1271,9 +1335,7 @@ Public Class Form1
     Private Function Download()
 
         Dim fileName As String = "DreamWorld.zip"
-
         Try
-
             Dim remoteUri As String = "http://www.outworldz.com/download/"
             Dim myStringWebResource As String = Nothing
             ' Create a new WebClient instance.
@@ -1305,6 +1367,8 @@ Public Class Form1
             Next
         End Using
 
+        ' !! need to copy and rename start.ex_ with another program AFTER we exit
+
         Try
             My.Computer.FileSystem.DeleteFile(MyFolder + "/DreamWorld.zip")
         Catch
@@ -1327,7 +1391,7 @@ Public Class Form1
         Dim MyVer As Single = My.Settings.Version
 
         If newVer > MyVer Then
-            Print("I am Dream World version " + My.Settings.Version + vbCrLf + "A more dreamy version " + Update + " is available." + vbCrLf + vbCrLf + "http//www.Outworldz.com/Download")
+            Print("I am Dream World version " + My.Settings.Version + vbCrLf + "A more dreamy version " + Update + " is available.")
         Else
             Print("I am the dreamiest version available.")
         End If
@@ -1337,8 +1401,11 @@ Public Class Form1
         ProgressBar1.BackColor = Color.LightGreen
         ProgressBar1.Value = 0
         OpenPorts(25) ' Open router ports
+        Sleep(2)
         Diagnose(50)
+        Sleep(2)
         Loopback(100)    ' test the loopback on the router. If it fails, use localhost, no Hg
+
     End Sub
 
     Private Function PostURL(URL As String, postdata As String)
@@ -1359,24 +1426,11 @@ Public Class Form1
         Return s.GetResponse()
     End Function
 
-    Private Sub ConsoleToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ConsoleTool.Click
-        ActualForm = New ConsoleForm ' Bring the form into memory 
-        ' Set the new form's desktop location so it appears below and 
-        ' to the right of the current form.
-
-        ConsoleForm.SetDesktopLocation(200, 200)
-
-        ConsoleForm.Activate()
-        ConsoleForm.Visible = True
+    Sub Sleep(value As Integer)
+        Thread.Sleep(value)
     End Sub
-
-    Private Sub mnuSettings_Click(sender As Object, e As EventArgs) Handles mnuSettings.Click
-
-    End Sub
-
 
 #End Region
 
 End Class
-
 

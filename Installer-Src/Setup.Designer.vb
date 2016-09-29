@@ -326,7 +326,7 @@ Partial Class Form1
         Me.ConsoleTool.Image = Global.DreamWorld.My.Resources.Resources.document_connection
         Me.ConsoleTool.Name = "ConsoleTool"
         Me.ConsoleTool.Size = New System.Drawing.Size(172, 22)
-        Me.ConsoleTool.Text = "Console"
+        Me.ConsoleTool.Text = "Wifi Console"
         '
         'HelpToolStripMenuItem
         '

@@ -48,12 +48,14 @@ Partial Class AdvancedForm
         Me.AutoBackupInterval = New System.Windows.Forms.ComboBox()
         Me.AutoBackup = New System.Windows.Forms.CheckBox()
         Me.Web = New System.Windows.Forms.GroupBox()
+        Me.Label12 = New System.Windows.Forms.Label()
+        Me.AdminLast = New System.Windows.Forms.TextBox()
+        Me.AdminFirst = New System.Windows.Forms.TextBox()
+        Me.Label11 = New System.Windows.Forms.Label()
         Me.Label10 = New System.Windows.Forms.Label()
         Me.Password = New System.Windows.Forms.TextBox()
-        Me.Label11 = New System.Windows.Forms.Label()
-        Me.AdminFirst = New System.Windows.Forms.TextBox()
-        Me.AdminLast = New System.Windows.Forms.TextBox()
-        Me.Label12 = New System.Windows.Forms.Label()
+        Me.Label13 = New System.Windows.Forms.Label()
+        Me.RegionPort = New System.Windows.Forms.TextBox()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -140,6 +142,8 @@ Partial Class AdvancedForm
         '
         'GroupBox2
         '
+        Me.GroupBox2.Controls.Add(Me.Label13)
+        Me.GroupBox2.Controls.Add(Me.RegionPort)
         Me.GroupBox2.Controls.Add(Me.Mysql)
         Me.GroupBox2.Controls.Add(Me.Label)
         Me.GroupBox2.Controls.Add(Me.Label7)
@@ -152,14 +156,14 @@ Partial Class AdvancedForm
         Me.GroupBox2.Controls.Add(Me.Label5)
         Me.GroupBox2.Location = New System.Drawing.Point(223, 12)
         Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Size = New System.Drawing.Size(157, 149)
+        Me.GroupBox2.Size = New System.Drawing.Size(157, 177)
         Me.GroupBox2.TabIndex = 5
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Ports"
         '
         'Mysql
         '
-        Me.Mysql.Location = New System.Drawing.Point(16, 114)
+        Me.Mysql.Location = New System.Drawing.Point(17, 141)
         Me.Mysql.Name = "Mysql"
         Me.Mysql.Size = New System.Drawing.Size(47, 20)
         Me.Mysql.TabIndex = 11
@@ -167,7 +171,7 @@ Partial Class AdvancedForm
         'Label
         '
         Me.Label.AutoSize = True
-        Me.Label.Location = New System.Drawing.Point(68, 117)
+        Me.Label.Location = New System.Drawing.Point(69, 144)
         Me.Label.Name = "Label"
         Me.Label.Size = New System.Drawing.Size(36, 13)
         Me.Label.TabIndex = 10
@@ -176,7 +180,7 @@ Partial Class AdvancedForm
         'Label7
         '
         Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(69, 97)
+        Me.Label7.Location = New System.Drawing.Point(69, 124)
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(25, 13)
         Me.Label7.TabIndex = 9
@@ -184,14 +188,14 @@ Partial Class AdvancedForm
         '
         'WifiPort
         '
-        Me.WifiPort.Location = New System.Drawing.Point(17, 92)
+        Me.WifiPort.Location = New System.Drawing.Point(17, 119)
         Me.WifiPort.Name = "WifiPort"
         Me.WifiPort.Size = New System.Drawing.Size(47, 20)
         Me.WifiPort.TabIndex = 8
         '
         'PublicPort
         '
-        Me.PublicPort.Location = New System.Drawing.Point(17, 48)
+        Me.PublicPort.Location = New System.Drawing.Point(17, 51)
         Me.PublicPort.Name = "PublicPort"
         Me.PublicPort.Size = New System.Drawing.Size(47, 20)
         Me.PublicPort.TabIndex = 0
@@ -215,7 +219,7 @@ Partial Class AdvancedForm
         'Label4
         '
         Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(68, 72)
+        Me.Label4.Location = New System.Drawing.Point(68, 76)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(40, 13)
         Me.Label4.TabIndex = 4
@@ -223,7 +227,7 @@ Partial Class AdvancedForm
         '
         'PrivatePort
         '
-        Me.PrivatePort.Location = New System.Drawing.Point(17, 70)
+        Me.PrivatePort.Location = New System.Drawing.Point(17, 74)
         Me.PrivatePort.Name = "PrivatePort"
         Me.PrivatePort.Size = New System.Drawing.Size(47, 20)
         Me.PrivatePort.TabIndex = 1
@@ -231,7 +235,7 @@ Partial Class AdvancedForm
         'Label5
         '
         Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(69, 51)
+        Me.Label5.Location = New System.Drawing.Point(69, 54)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(39, 13)
         Me.Label5.TabIndex = 5
@@ -311,6 +315,38 @@ Partial Class AdvancedForm
         Me.Web.TabStop = False
         Me.Web.Text = "Web Interface"
         '
+        'Label12
+        '
+        Me.Label12.AutoSize = True
+        Me.Label12.Location = New System.Drawing.Point(6, 60)
+        Me.Label12.Name = "Label12"
+        Me.Label12.Size = New System.Drawing.Size(58, 13)
+        Me.Label12.TabIndex = 13
+        Me.Label12.Text = "Last Name"
+        '
+        'AdminLast
+        '
+        Me.AdminLast.Location = New System.Drawing.Point(9, 76)
+        Me.AdminLast.Name = "AdminLast"
+        Me.AdminLast.Size = New System.Drawing.Size(100, 20)
+        Me.AdminLast.TabIndex = 12
+        '
+        'AdminFirst
+        '
+        Me.AdminFirst.Location = New System.Drawing.Point(9, 39)
+        Me.AdminFirst.Name = "AdminFirst"
+        Me.AdminFirst.Size = New System.Drawing.Size(100, 20)
+        Me.AdminFirst.TabIndex = 11
+        '
+        'Label11
+        '
+        Me.Label11.AutoSize = True
+        Me.Label11.Location = New System.Drawing.Point(6, 23)
+        Me.Label11.Name = "Label11"
+        Me.Label11.Size = New System.Drawing.Size(57, 13)
+        Me.Label11.TabIndex = 10
+        Me.Label11.Text = "First Name"
+        '
         'Label10
         '
         Me.Label10.AutoSize = True
@@ -327,41 +363,25 @@ Partial Class AdvancedForm
         Me.Password.Size = New System.Drawing.Size(100, 20)
         Me.Password.TabIndex = 8
         '
-        'Label11
+        'Label13
         '
-        Me.Label11.AutoSize = True
-        Me.Label11.Location = New System.Drawing.Point(6, 23)
-        Me.Label11.Name = "Label11"
-        Me.Label11.Size = New System.Drawing.Size(57, 13)
-        Me.Label11.TabIndex = 10
-        Me.Label11.Text = "First Name"
+        Me.Label13.AutoSize = True
+        Me.Label13.Location = New System.Drawing.Point(68, 98)
+        Me.Label13.Name = "Label13"
+        Me.Label13.Size = New System.Drawing.Size(41, 13)
+        Me.Label13.TabIndex = 13
+        Me.Label13.Text = "Region"
         '
-        'AdminFirst
+        'RegionPort
         '
-        Me.AdminFirst.Location = New System.Drawing.Point(9, 39)
-        Me.AdminFirst.Name = "AdminFirst"
-        Me.AdminFirst.Size = New System.Drawing.Size(100, 20)
-        Me.AdminFirst.TabIndex = 11
-        '
-        'AdminLast
-        '
-        Me.AdminLast.Location = New System.Drawing.Point(9, 76)
-        Me.AdminLast.Name = "AdminLast"
-        Me.AdminLast.Size = New System.Drawing.Size(100, 20)
-        Me.AdminLast.TabIndex = 12
-        '
-        'Label12
-        '
-        Me.Label12.AutoSize = True
-        Me.Label12.Location = New System.Drawing.Point(6, 60)
-        Me.Label12.Name = "Label12"
-        Me.Label12.Size = New System.Drawing.Size(58, 13)
-        Me.Label12.TabIndex = 13
-        Me.Label12.Text = "Last Name"
+        Me.RegionPort.Location = New System.Drawing.Point(17, 96)
+        Me.RegionPort.Name = "RegionPort"
+        Me.RegionPort.Size = New System.Drawing.Size(47, 20)
+        Me.RegionPort.TabIndex = 12
         '
         'AdvancedForm
         '
-        Me.ClientSize = New System.Drawing.Size(729, 170)
+        Me.ClientSize = New System.Drawing.Size(729, 201)
         Me.Controls.Add(Me.Web)
         Me.Controls.Add(Me.GroupBox3)
         Me.Controls.Add(Me.GroupBox2)
@@ -411,4 +431,6 @@ Partial Class AdvancedForm
     Friend WithEvents AdminLast As TextBox
     Friend WithEvents AdminFirst As TextBox
     Friend WithEvents Label11 As Label
+    Friend WithEvents Label13 As Label
+    Friend WithEvents RegionPort As TextBox
 End Class

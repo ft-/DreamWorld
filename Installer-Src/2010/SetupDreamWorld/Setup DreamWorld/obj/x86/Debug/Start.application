@@ -3,12 +3,7 @@
   <assemblyIdentity name="Start.application" version="1.0.0.2" publicKeyToken="0000000000000000" language="en-US" processorArchitecture="x86" xmlns="urn:schemas-microsoft-com:asm.v1" />
   <description asmv2:publisher="Outworldz.com" asmv2:product="DreamWorld Installer" asmv2:supportUrl="http://www.outworldz.com/DreamWorld" co.v1:errorReportUrl="http://www.outworldz.com/DreamWorld/error.htm" xmlns="urn:schemas-microsoft-com:asm.v1" />
   <deployment install="true">
-    <subscription>
-      <update>
-        <expiration maximumAge="0" unit="days" />
-      </update>
-    </subscription>
-    <deploymentProvider codebase="http://www.outworldz.com/DreamWorld/Updates/Start.exe/Start.application" />
+    <deploymentProvider codebase="http://www.outworldz.com/DreamWorld/Updates/Start.application" />
   </deployment>
   <compatibleFrameworks xmlns="urn:schemas-microsoft-com:clickonce.v2">
     <framework targetVersion="4.0" profile="Full" supportedRuntime="4.0.30319" />
@@ -21,7 +16,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>lKdJK2fFNryNPzVy76Wr4xj8ZA4=</dsig:DigestValue>
+        <dsig:DigestValue>zNfsLYBPMliKrLnmvipZ360e/ic=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

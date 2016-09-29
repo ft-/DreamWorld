@@ -13,12 +13,13 @@ Public Class Net
     Private WebThread As Thread
     Private Shared blnFlag As Boolean
     Private Shared singleWebserver As Net
+    Private gMyFolder As String
 
     Private Sub New()
         'create a singleton
     End Sub
-    Public Sub StartServer()
-
+    Public Sub StartServer(MyFolder As String)
+        gMyFolder = MyFolder
         Try
             WebThread = New Thread(AddressOf looper)
             WebThread.Start()
@@ -32,7 +33,7 @@ Public Class Net
         Try
             LocalTCPListener = New TcpListener(GetIPAddress(), My.Settings.LoopBack)
         Catch ex As Exception
-            Debug.Print(ex.Message)
+            Form1.Log(ex.Message)
             Return True
         End Try
 
@@ -48,21 +49,21 @@ Public Class Net
                 Continue While  ' skip To Next iteration Of Loop
             End If
             Dim client As TcpClient = LocalTCPListener.AcceptTcpClient()
-            Debug.Print("******** Accepted client ***********")
+            Log("******** Accepted client ***********")
 
             Dim stream As NetworkStream = client.GetStream() ' Get a stream object for reading and writing
 
-            Debug.Print([String].Format("Received: {0}", data))
+            Log([String].Format("Received: {0}", data))
 
             stream.Write(msg, 0, msg.Length) ' Send back a response.
-            Debug.Print([String].Format("Sent: {0}", data))
+            Log([String].Format("Sent: {0}", data))
 
             ' Shutdown and end connection
             client.Close()
         End While
 
         LocalTCPListener.Stop()
-
+        Log("Stopped Listener")
         Return False
     End Function
 
@@ -75,14 +76,12 @@ Public Class Net
             End If
         End With
         GetIPAddress = oAddr
-
     End Function
 
     Public Sub StopWebServer()
-
         listen = False
         WebThread.Join()
-
+        Log("Stopped Webserver")
     End Sub
 
     Friend Shared Function getWebServer() As Net
@@ -94,5 +93,17 @@ Public Class Net
             Return singleWebserver
         End If
     End Function
+
+    Public Function Log(message As String)
+        Try
+            Using outputFile As New StreamWriter(gMyFolder & "\DreamworldFiles\Server.log", True)
+                outputFile.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + message)
+            End Using
+        Catch
+        End Try
+        Return True
+
+    End Function
+
 
 End Class

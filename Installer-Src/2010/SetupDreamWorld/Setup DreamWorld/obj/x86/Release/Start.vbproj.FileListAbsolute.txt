@@ -72,3 +72,8 @@ C:\Users\fred.LAN\Desktop\dw2\DreamWorld\Installer-Src\2010\SetupDreamWorld\Setu
 C:\Users\fred.LAN\Desktop\dw2\DreamWorld\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Release\DreamWorld.AdvancedForm.resources
 C:\Users\fred.LAN\Desktop\dw2\DreamWorld\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Release\DreamWorld.Resources.resources
 C:\Users\fred.LAN\Desktop\dw2\DreamWorld\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Release\Start.vbproj.GenerateResource.Cache
+C:\Opensim\DreamWorld-GitHub\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\bin\Release\Start.exe.manifest
+C:\Opensim\DreamWorld-GitHub\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\bin\Release\Start.application
+C:\Opensim\DreamWorld-GitHub\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Release\Start.TrustInfo.xml
+C:\Opensim\DreamWorld-GitHub\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Release\Start.exe.manifest
+C:\Opensim\DreamWorld-GitHub\Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Release\Start.application

@@ -33,8 +33,7 @@ Public Class ConsoleForm
 
     Private Sub Console1_Closed(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Closed
 
-        Dim Session As String = ""
-        Session = PostURL("http://127.0.0.1:" + My.Settings.PublicPort + "/CloseSession/", "")
+        PostURL("http://127.0.0.1:" + My.Settings.PublicPort + "/CloseSession/", "")
         gSessionID = Nothing
 
     End Sub
