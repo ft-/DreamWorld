@@ -26,7 +26,7 @@ Public Class Form1
 
     Dim ws As Net
 
-    Dim ContentLoading As String = ""
+    Dim ContentLoading As Boolean = False
     Dim client As New System.Net.WebClient
     Dim pMySql As Process = New Process()
     Dim pOpensim As Process = New Process()
@@ -138,14 +138,14 @@ Public Class Form1
         OpenPorts(45) ' Open router ports
         Diagnose(50)
         Loopback(60)    ' test the loopback on the router. If it fails, use localhost, no Hg
-        Print("Diagnostics can be re-run in Help->Diagnostics at any time")
+        Print("Diagnostics can be re-run in the Help menu 'Diagnostics' at any time")
         Sleep(1000)
 
         If System.IO.File.Exists(MyFolder & "\DreamworldFiles\Init.txt") Then
             ' Find out if the viewer is installed, make a file we can benchmark to
             Buttons(StartButton)
             ProgressBar1.Value = 100
-            Print("Dream World is ready to start.")
+            Print("Dream World Opensimulator is ready to start.")
             Log("Info:Ready to start")
         Else
             Print("Installing Desktop Icon")
@@ -207,6 +207,8 @@ Public Class Form1
 
     End Sub
     Private Sub StartButton_Click(sender As System.Object, e As System.EventArgs) Handles StartButton.Click
+
+        ContentLoading = False
         ProgressBar1.ForeColor = Color.LightGreen
         Try
             My.Computer.FileSystem.DeleteFile(MyFolder & "\DreamWorldFiles\DreamWorld.log")
@@ -246,7 +248,6 @@ Public Class Form1
 
         ' done with bootup
         ProgressBar1.Value = 100
-
 
     End Sub
 
@@ -744,6 +745,7 @@ Public Class Form1
     End Function
 
     Private Sub BusyButton_Click(sender As Object, e As EventArgs) Handles BusyButton.Click
+
         Print("Stopping")
         Application.DoEvents()
         KillAll()
@@ -768,23 +770,18 @@ Public Class Form1
         End If
     End Sub
     Private Sub SimContent(thing As String, type As String)
-        ' remove the console startup file
-        Try
-            My.Computer.FileSystem.DeleteFile(MyFolder & "\DreamworldFiles\" + My.Settings.GridFolder & "\bin\startup_commands.txt")
-        Catch ex As Exception
-            Log("Info:no Opensim startup commands located")
-        End Try
-        Try
-            If type = "iar" Then
-                Using outputFile As New StreamWriter(MyFolder & "\DreamworldFiles\" + My.Settings.GridFolder & "\bin\startup_commands.txt", True)
-                    outputFile.WriteLine("load iar --merge Dream World / 123 " + Chr(34) + thing + Chr(34))
-                    outputFile.WriteLine("alert New content is loaded")
-                End Using
-            ElseIf type = "oar" Then
-                Using outputFile As New StreamWriter(MyFolder & "\DreamworldFiles\" + My.Settings.GridFolder & "\bin\startup_commands.txt", True)
 
+        ' remove the console startup file
+        ContentLoading = False
+        ClearOar()
+
+        Try
+            If type = "oar" Then
+                Using outputFile As New StreamWriter(MyFolder & "\DreamworldFiles\" + My.Settings.GridFolder & "\bin\startup_commands.txt", True)
+                    outputFile.WriteLine("alert New content is loading")
                     outputFile.WriteLine("load " + type + "  " + Chr(34) + thing + Chr(34))
                     outputFile.WriteLine("alert New content is loaded")
+                    ContentLoading = True
                 End Using
             End If
         Catch
@@ -792,15 +789,27 @@ Public Class Form1
             Log("Error:iar or oar file write failure")
         End Try
     End Sub
+    Private Sub IARContent(user As String, password As String, thing As String)
+        ' remove the console startup file
+
+        ContentLoading = False
+        ClearOar()
+
+        Try
+            Using outputFile As New StreamWriter(MyFolder & "\DreamworldFiles\" + My.Settings.GridFolder & "\bin\startup_commands.txt", True)
+                outputFile.WriteLine("load iar --merge " + user + " / " + password + " " + Chr(34) + thing + Chr(34))
+                outputFile.WriteLine("alert IAR content is loaded")
+                ContentLoading = True
+            End Using
+        Catch
+            ProgressBar1.ForeColor = Color.Magenta
+            Log("Error:iar or oar file write failure")
+        End Try
+    End Sub
 
     Private Sub KillAll()
-        If ContentLoading.Length = 0 Then
-            ' remove the console startup file
-            Try
-                My.Computer.FileSystem.DeleteFile(MyFolder & "\DreamworldFiles\" + My.Settings.GridFolder & "\bin\startup_commands.txt")
-            Catch ex As Exception
-            End Try
-        End If
+
+        ClearOar()
 
         pOpensim.Close()
         Sleep(1000)
@@ -839,25 +848,30 @@ Public Class Form1
             Dim extension = Path.GetExtension(pathname)
             extension = Mid(extension, 2, 5)
             If extension.ToLower = "iar" Then
-                SimContent(pathname, extension)
-                Log("Info:Load iar " + pathname)
-                Print("Opensim will load your file when it is restarted. This may take time to load. You will find it in your inventory.")
-                ContentLoading = pathname
+                Dim user = InputBox("User name that wil get this IAR?")
+                Dim password = InputBox("Password for user " + user)
+                If user.Length And password.Length Then
+                    IARContent(user, password, pathname)
+                    Log("Info:Load iar " + pathname)
+                    Print("Opensim will load your file when it is restarted. This may take time to load. You will find it in your inventory.")
+                End If
             ElseIf extension.ToLower = "oar" Then
                 SimContent(pathname, extension)
                 Log("Info:Load oar " + pathname)
                 Print("Opensim will load your file when it is restarted. This may take time to load.")
-                ContentLoading = pathname
             ElseIf extension.ToLower = ".gz" Then
                 Log("Info:Load oar " + pathname)
                 SimContent(pathname, extension)
                 Log("Info:Load gz " + pathname)
                 Print("Opensim will load your file when it is restarted. This may take time to load.")
-                ContentLoading = pathname
+            ElseIf extension.ToLower = ".tgz" Then
+                Log("Info:Load oar " + pathname)
+                SimContent(pathname, extension)
+                Log("Info:Load tgz " + pathname)
+                Print("Opensim will load your file when it is restarted. This may take time to load.")
             Else
                 Log("Info:Unrecognized file type:" + extension)
-                Print("Unrecognized file type:" + extension + ".  Drag and drop any OAR or IAR files to load them when the sim starts")
-                ContentLoading = ""
+                Print("Unrecognized file type:" + extension + ".  Drag and drop any OAR,GZ,TGZ, or IAR files to load them when the sim starts")
             End If
         Next
     End Sub
@@ -999,11 +1013,11 @@ Public Class Form1
         Dim pi As ProcessStartInfo = New ProcessStartInfo()
         pi.WorkingDirectory = MyFolder & "\DreamWorldFiles\" & My.Settings.GridFolder & "\bin\"
 
-        If ContentLoading.Length Then
+        If ContentLoading Then
             Log("Info:Opensim console is forced visible")
             pi.Arguments = ""
             pi.WindowStyle = ProcessWindowStyle.Normal
-            Print("Please wait for the console to show 'LOGINS ENABLED'. It will take a while to load " + ContentLoading)
+            Print("Please wait for the console to show 'LOGINS ENABLED'. It will take a while to load. ")
         ElseIf mnuHide.Checked Then
             Log("Info:Opensim console is hidden")
             pi.Arguments = "-console rest -background True "
@@ -1063,7 +1077,6 @@ Public Class Form1
                 Up = ""
             End Try
         End While
-        ContentLoading = "" ' the server is now loaded, so flip the content switch off. 
         ProgressBar1.Value = iProgress
 
     End Sub
@@ -1216,7 +1229,7 @@ Public Class Form1
         End While
 
 
-        Print("Dreaming new clothes and items for your avatar")
+        Print("Dreaming up some clothes and items for your avatar")
         Dim iars As String = ""
         Try
             iars = client.DownloadString("http://www.outworldz.com/Dreamworld/Content.plx?type=IAR&_=" + Random())
@@ -1295,7 +1308,7 @@ Public Class Form1
                                  "My friend started doing an interpretive dance and clicked the wrong color of pose ball, and I was like, 'OH SHES GAY!'",
                                  "I dreamt I drove our car into the ocean. You found a pose ball, and we both grabbed onto it.",
                                  "There was a animated mesh zebra in my bathtub!",
-                                 "I had dreamed an fairy was my best friend.",
+                                 "I had dreamed a fairy was my best friend.",
                                  "I dreamed that there were non players characters attacking my house, so I decided to fly away. ",
                                  "I had a dream that there were pimples all over my face.  So I switched skins and looked perfect!",
                                  "I had a dream where I had lost my free snow boots, so I was asking everybody where I got them on the hypergrid.",
@@ -1430,6 +1443,16 @@ Public Class Form1
         Thread.Sleep(value)
     End Sub
 
+    Sub ClearOar()
+        If Not ContentLoading Then
+            ' remove the console startup file
+            Try
+                My.Computer.FileSystem.DeleteFile(MyFolder & "\DreamworldFiles\" + My.Settings.GridFolder & "\bin\startup_commands.txt")
+            Catch ex As Exception
+                Log("Info:no Opensim startup commands located")
+            End Try
+        End If
+    End Sub
 #End Region
 
 End Class

@@ -79,14 +79,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Start.exe" size="251936">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Start.exe" size="253472">
       <assemblyIdentity name="Start" version="1.0.0.0" language="neutral" processorArchitecture="x86" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>lv9ke9v1dCuj28E3HcDavEMH7KU=</dsig:DigestValue>
+        <dsig:DigestValue>S2pRmxX5iYLm6UUmJIJKVxkMlqI=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -99,13 +99,13 @@
       <dsig:DigestValue>dMAFYe1I1ZNGySkBQksOawh2rZY=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="Start.exe.config" size="5293">
+  <file name="Start.exe.config" size="5416">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-      <dsig:DigestValue>yTDpv+2HpDM9bpdBtIkqGntJkZ4=</dsig:DigestValue>
+      <dsig:DigestValue>d3D1augz66+yuTjextVnxIvqB/M=</dsig:DigestValue>
     </hash>
   </file>
   <compatibility xmlns="urn:schemas-microsoft-com:compatibility.v1">
