@@ -1,0 +1,27 @@
+C:\Opensim\DreamWorld-GitHub\Setup Program\Updater\bin\Debug\Updater.exe.config
+C:\Opensim\DreamWorld-GitHub\Updater\Updater\bin\Debug\Updater.exe.config
+C:\Opensim\DreamWorld-GitHub\Updater\Updater\obj\Debug\WindowsApplication1.Update.resources
+C:\Opensim\DreamWorld-GitHub\Updater\Updater\obj\Debug\WindowsApplication1.Resources.resources
+C:\Opensim\DreamWorld-GitHub\Updater\Updater\obj\Debug\Updater.vbproj.GenerateResource.Cache
+C:\Opensim\DreamWorld-GitHub\Updater\Updater\obj\Debug\Updater.xml
+C:\Opensim\DreamWorld-GitHub\Updater\Updater\bin\Debug\Updater.exe
+C:\Opensim\DreamWorld-GitHub\Updater\Updater\bin\Debug\Updater.pdb
+C:\Opensim\DreamWorld-GitHub\Updater\Updater\bin\Debug\Updater.xml
+C:\Opensim\DreamWorld-GitHub\Updater\Updater\bin\Debug\DotNetZip.dll
+C:\Opensim\DreamWorld-GitHub\Updater\Updater\bin\Debug\DotNetZip.xml
+C:\Opensim\DreamWorld-GitHub\Updater\Updater\obj\Debug\Updater.exe
+C:\Opensim\DreamWorld-GitHub\Updater\Updater\obj\Debug\Updater.pdb
+C:\Opensim\DreamWorld-GitHub\Updater\Updater\obj\Debug\Updater.vbprojResolveAssemblyReference.cache
+C:\Opensim\Outworldz-Github\Updater-Src\Updater\bin\Debug\Updater.exe.config
+C:\Opensim\Outworldz-Github\Updater-Src\Updater\obj\Debug\Updater.exe
+C:\Opensim\Outworldz-Github\Updater-Src\Updater\obj\Debug\Updater.xml
+C:\Opensim\Outworldz-Github\Updater-Src\Updater\obj\Debug\Updater.pdb
+C:\Opensim\Outworldz-Github\Updater-Src\Updater\bin\Debug\Updater.exe
+C:\Opensim\Outworldz-Github\Updater-Src\Updater\bin\Debug\Updater.pdb
+C:\Opensim\Outworldz-Github\Updater-Src\Updater\bin\Debug\Updater.xml
+C:\Opensim\Outworldz-Github\Updater-Src\Updater\bin\Debug\DotNetZip.dll
+C:\Opensim\Outworldz-Github\Updater-Src\Updater\bin\Debug\DotNetZip.xml
+C:\Opensim\Outworldz-Github\Updater-Src\Updater\obj\Debug\Updater.vbprojResolveAssemblyReference.cache
+C:\Opensim\Outworldz-Github\Updater-Src\Updater\obj\Debug\WindowsApplication1.Update.resources
+C:\Opensim\Outworldz-Github\Updater-Src\Updater\obj\Debug\WindowsApplication1.Resources.resources
+C:\Opensim\Outworldz-Github\Updater-Src\Updater\obj\Debug\Updater.vbproj.GenerateResource.Cache

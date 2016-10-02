@@ -31,6 +31,8 @@ Partial Class AdvancedForm
         Me.SizeY = New System.Windows.Forms.TextBox()
         Me.SizeX = New System.Windows.Forms.TextBox()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
+        Me.Label13 = New System.Windows.Forms.Label()
+        Me.RegionPort = New System.Windows.Forms.TextBox()
         Me.Mysql = New System.Windows.Forms.TextBox()
         Me.Label = New System.Windows.Forms.Label()
         Me.Label7 = New System.Windows.Forms.Label()
@@ -54,8 +56,8 @@ Partial Class AdvancedForm
         Me.Label11 = New System.Windows.Forms.Label()
         Me.Label10 = New System.Windows.Forms.Label()
         Me.Password = New System.Windows.Forms.TextBox()
-        Me.Label13 = New System.Windows.Forms.Label()
-        Me.RegionPort = New System.Windows.Forms.TextBox()
+        Me.ChatSpeed = New System.Windows.Forms.ComboBox()
+        Me.Label14 = New System.Windows.Forms.Label()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -156,10 +158,26 @@ Partial Class AdvancedForm
         Me.GroupBox2.Controls.Add(Me.Label5)
         Me.GroupBox2.Location = New System.Drawing.Point(223, 12)
         Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Size = New System.Drawing.Size(157, 177)
+        Me.GroupBox2.Size = New System.Drawing.Size(141, 177)
         Me.GroupBox2.TabIndex = 5
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Ports"
+        '
+        'Label13
+        '
+        Me.Label13.AutoSize = True
+        Me.Label13.Location = New System.Drawing.Point(68, 98)
+        Me.Label13.Name = "Label13"
+        Me.Label13.Size = New System.Drawing.Size(41, 13)
+        Me.Label13.TabIndex = 13
+        Me.Label13.Text = "Region"
+        '
+        'RegionPort
+        '
+        Me.RegionPort.Location = New System.Drawing.Point(17, 96)
+        Me.RegionPort.Name = "RegionPort"
+        Me.RegionPort.Size = New System.Drawing.Size(47, 20)
+        Me.RegionPort.TabIndex = 12
         '
         'Mysql
         '
@@ -248,7 +266,7 @@ Partial Class AdvancedForm
         Me.GroupBox3.Controls.Add(Me.Label8)
         Me.GroupBox3.Controls.Add(Me.AutoBackupInterval)
         Me.GroupBox3.Controls.Add(Me.AutoBackup)
-        Me.GroupBox3.Location = New System.Drawing.Point(386, 13)
+        Me.GroupBox3.Location = New System.Drawing.Point(370, 40)
         Me.GroupBox3.Name = "GroupBox3"
         Me.GroupBox3.Size = New System.Drawing.Size(180, 148)
         Me.GroupBox3.TabIndex = 6
@@ -363,25 +381,30 @@ Partial Class AdvancedForm
         Me.Password.Size = New System.Drawing.Size(100, 20)
         Me.Password.TabIndex = 8
         '
-        'Label13
+        'ChatSpeed
         '
-        Me.Label13.AutoSize = True
-        Me.Label13.Location = New System.Drawing.Point(68, 98)
-        Me.Label13.Name = "Label13"
-        Me.Label13.Size = New System.Drawing.Size(41, 13)
-        Me.Label13.TabIndex = 13
-        Me.Label13.Text = "Region"
+        Me.ChatSpeed.FormattingEnabled = True
+        Me.ChatSpeed.Items.AddRange(New Object() {"Sleepy", "Awake", "After Coffee", "Too much Coffee"})
+        Me.ChatSpeed.Location = New System.Drawing.Point(436, 14)
+        Me.ChatSpeed.Name = "ChatSpeed"
+        Me.ChatSpeed.Size = New System.Drawing.Size(121, 21)
+        Me.ChatSpeed.TabIndex = 9
         '
-        'RegionPort
+        'Label14
         '
-        Me.RegionPort.Location = New System.Drawing.Point(17, 96)
-        Me.RegionPort.Name = "RegionPort"
-        Me.RegionPort.Size = New System.Drawing.Size(47, 20)
-        Me.RegionPort.TabIndex = 12
+        Me.Label14.AutoSize = True
+        Me.Label14.Location = New System.Drawing.Point(385, 17)
+        Me.Label14.Name = "Label14"
+        Me.Label14.Size = New System.Drawing.Size(31, 17)
+        Me.Label14.TabIndex = 15
+        Me.Label14.Text = "Chat:"
+        Me.Label14.UseCompatibleTextRendering = True
         '
         'AdvancedForm
         '
         Me.ClientSize = New System.Drawing.Size(729, 201)
+        Me.Controls.Add(Me.Label14)
+        Me.Controls.Add(Me.ChatSpeed)
         Me.Controls.Add(Me.Web)
         Me.Controls.Add(Me.GroupBox3)
         Me.Controls.Add(Me.GroupBox2)
@@ -397,6 +420,7 @@ Partial Class AdvancedForm
         Me.Web.ResumeLayout(False)
         Me.Web.PerformLayout()
         Me.ResumeLayout(False)
+        Me.PerformLayout()
 
     End Sub
     Friend WithEvents CheckBox256 As CheckBox
@@ -433,4 +457,6 @@ Partial Class AdvancedForm
     Friend WithEvents Label11 As Label
     Friend WithEvents Label13 As Label
     Friend WithEvents RegionPort As TextBox
+    Friend WithEvents ChatSpeed As ComboBox
+    Friend WithEvents Label14 As Label
 End Class

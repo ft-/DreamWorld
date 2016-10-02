@@ -224,18 +224,6 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("1.0")>  _
-        Public Property Version() As String
-            Get
-                Return CType(Me("Version"),String)
-            End Get
-            Set
-                Me("Version") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("9000")>  _
         Public Property WifiPort() As String
             Get
@@ -389,6 +377,18 @@ Namespace My
                 Me("RegionPort") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("1500")>  _
+        Public Property ChatTime() As Integer
+            Get
+                Return CType(Me("ChatTime"),Integer)
+            End Get
+            Set
+                Me("ChatTime") = value
+            End Set
+        End Property
     End Class
 End Namespace
 
@@ -400,9 +400,9 @@ Namespace My
     Friend Module MySettingsProperty
         
         <Global.System.ComponentModel.Design.HelpKeywordAttribute("My.Settings")>  _
-        Friend ReadOnly Property Settings() As Global.DreamWorld.My.MySettings
+        Friend ReadOnly Property Settings() As Global.Outworldz.My.MySettings
             Get
-                Return Global.DreamWorld.My.MySettings.Default
+                Return Global.Outworldz.My.MySettings.Default
             End Get
         End Property
     End Module

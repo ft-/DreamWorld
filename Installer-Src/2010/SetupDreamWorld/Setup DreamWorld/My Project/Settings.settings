@@ -44,9 +44,6 @@
     <Setting Name="SizeY" Type="System.String" Scope="User">
       <Value Profile="(Default)">256</Value>
     </Setting>
-    <Setting Name="Version" Type="System.String" Scope="User">
-      <Value Profile="(Default)">1.0</Value>
-    </Setting>
     <Setting Name="WifiPort" Type="System.String" Scope="User">
       <Value Profile="(Default)">9000</Value>
     </Setting>
@@ -85,6 +82,9 @@
     </Setting>
     <Setting Name="RegionPort" Type="System.String" Scope="User">
       <Value Profile="(Default)">8004</Value>
+    </Setting>
+    <Setting Name="ChatTime" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">1500</Value>
     </Setting>
   </Settings>
 </SettingsFile>

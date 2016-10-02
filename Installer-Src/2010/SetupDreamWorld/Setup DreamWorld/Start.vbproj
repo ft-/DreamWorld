@@ -8,8 +8,8 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{477B5A22-3713-4698-B432-D66DE7E2C0B1}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <StartupObject>DreamWorld.My.MyApplication</StartupObject>
-    <RootNamespace>DreamWorld</RootNamespace>
+    <StartupObject>Outworldz.My.MyApplication</StartupObject>
+    <RootNamespace>Outworldz</RootNamespace>
     <AssemblyName>Start</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>WindowsForms</MyType>

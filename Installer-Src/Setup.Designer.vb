@@ -72,6 +72,8 @@ Partial Class Form1
         Me.WebBrowser3 = New System.Windows.Forms.WebBrowser()
         Me.ProgressBar1 = New System.Windows.Forms.ProgressBar()
         Me.BusyButton = New System.Windows.Forms.Button()
+        Me.UpdaterGo = New System.Windows.Forms.Button()
+        Me.UpdaterCancel = New System.Windows.Forms.Button()
         Me.MenuStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -129,8 +131,7 @@ Partial Class Form1
         Me.TextBox1.Multiline = True
         Me.TextBox1.Name = "TextBox1"
         Me.TextBox1.ReadOnly = True
-        Me.TextBox1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.TextBox1.Size = New System.Drawing.Size(381, 149)
+        Me.TextBox1.Size = New System.Drawing.Size(369, 149)
         Me.TextBox1.TabIndex = 22
         Me.TextBox1.Text = "Lorem Ipsum"
         '
@@ -157,10 +158,10 @@ Partial Class Form1
         'ConsoleToolStripMenuItem1
         '
         Me.ConsoleToolStripMenuItem1.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuHide, Me.mnuShow})
-        Me.ConsoleToolStripMenuItem1.Image = Global.DreamWorld.My.Resources.Resources.window_add
+        Me.ConsoleToolStripMenuItem1.Image = Global.Outworldz.My.Resources.Resources.window_add
         Me.ConsoleToolStripMenuItem1.Name = "ConsoleToolStripMenuItem1"
         Me.ConsoleToolStripMenuItem1.Size = New System.Drawing.Size(172, 22)
-        Me.ConsoleToolStripMenuItem1.Text = "Console"
+        Me.ConsoleToolStripMenuItem1.Text = "Opensim Console"
         '
         'mnuHide
         '
@@ -179,7 +180,7 @@ Partial Class Form1
         'ViewerToolStripMenuItem
         '
         Me.ViewerToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuOnlook, Me.mnuOther})
-        Me.ViewerToolStripMenuItem.Image = Global.DreamWorld.My.Resources.Resources.window_environment
+        Me.ViewerToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.window_environment
         Me.ViewerToolStripMenuItem.Name = "ViewerToolStripMenuItem"
         Me.ViewerToolStripMenuItem.Size = New System.Drawing.Size(172, 22)
         Me.ViewerToolStripMenuItem.Text = "Viewer Type"
@@ -201,42 +202,42 @@ Partial Class Form1
         '
         'KokuaToolStripMenuItem
         '
-        Me.KokuaToolStripMenuItem.Image = Global.DreamWorld.My.Resources.Resources.TPV_Kokua_Icon
+        Me.KokuaToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.TPV_Kokua_Icon
         Me.KokuaToolStripMenuItem.Name = "KokuaToolStripMenuItem"
         Me.KokuaToolStripMenuItem.Size = New System.Drawing.Size(130, 22)
         Me.KokuaToolStripMenuItem.Text = "Kokua"
         '
         'CatznipToolStripMenuItem
         '
-        Me.CatznipToolStripMenuItem.Image = Global.DreamWorld.My.Resources.Resources.TPV_Catznip_2_Icon
+        Me.CatznipToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.TPV_Catznip_2_Icon
         Me.CatznipToolStripMenuItem.Name = "CatznipToolStripMenuItem"
         Me.CatznipToolStripMenuItem.Size = New System.Drawing.Size(130, 22)
         Me.CatznipToolStripMenuItem.Text = "Catznip"
         '
         'SingularityToolStripMenuItem
         '
-        Me.SingularityToolStripMenuItem.Image = Global.DreamWorld.My.Resources.Resources.TPV_Singularity_Icon
+        Me.SingularityToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.TPV_Singularity_Icon
         Me.SingularityToolStripMenuItem.Name = "SingularityToolStripMenuItem"
         Me.SingularityToolStripMenuItem.Size = New System.Drawing.Size(130, 22)
         Me.SingularityToolStripMenuItem.Text = "Singularity"
         '
         'FirestormToolStripMenuItem
         '
-        Me.FirestormToolStripMenuItem.Image = Global.DreamWorld.My.Resources.Resources.TPV_Firestorm_Icon
+        Me.FirestormToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.TPV_Firestorm_Icon
         Me.FirestormToolStripMenuItem.Name = "FirestormToolStripMenuItem"
         Me.FirestormToolStripMenuItem.Size = New System.Drawing.Size(130, 22)
         Me.FirestormToolStripMenuItem.Text = "Firestorm"
         '
         'AlchemyToolStripMenuItem
         '
-        Me.AlchemyToolStripMenuItem.Image = Global.DreamWorld.My.Resources.Resources.TPV_Alchemy_2_Icon
+        Me.AlchemyToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.TPV_Alchemy_2_Icon
         Me.AlchemyToolStripMenuItem.Name = "AlchemyToolStripMenuItem"
         Me.AlchemyToolStripMenuItem.Size = New System.Drawing.Size(130, 22)
         Me.AlchemyToolStripMenuItem.Text = "Alchemy"
         '
         'UKanDoToolStripMenuItem
         '
-        Me.UKanDoToolStripMenuItem.Image = Global.DreamWorld.My.Resources.Resources.TPV_UKanDo_Icon
+        Me.UKanDoToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.TPV_UKanDo_Icon
         Me.UKanDoToolStripMenuItem.Name = "UKanDoToolStripMenuItem"
         Me.UKanDoToolStripMenuItem.Size = New System.Drawing.Size(130, 22)
         Me.UKanDoToolStripMenuItem.Text = "UKanDo"
@@ -244,7 +245,7 @@ Partial Class Form1
         'VUI
         '
         Me.VUI.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuEasy, Me.mnuFull})
-        Me.VUI.Image = Global.DreamWorld.My.Resources.Resources.window_edit
+        Me.VUI.Image = Global.Outworldz.My.Resources.Resources.window_edit
         Me.VUI.Name = "VUI"
         Me.VUI.Size = New System.Drawing.Size(172, 22)
         Me.VUI.Text = "Viewer UI"
@@ -266,7 +267,7 @@ Partial Class Form1
         'AvatarToolStripMenuItem
         '
         Me.AvatarToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuNoAvatar, Me.mnuYesAvatar})
-        Me.AvatarToolStripMenuItem.Image = Global.DreamWorld.My.Resources.Resources.users1
+        Me.AvatarToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.users1
         Me.AvatarToolStripMenuItem.Name = "AvatarToolStripMenuItem"
         Me.AvatarToolStripMenuItem.Size = New System.Drawing.Size(172, 22)
         Me.AvatarToolStripMenuItem.Text = "Avatar Visible?"
@@ -288,7 +289,7 @@ Partial Class Form1
         'GridToolStripMenuItem
         '
         Me.GridToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuHyperGrid, Me.mnuOsGrid, Me.HypergridorgToolStripMenuItem})
-        Me.GridToolStripMenuItem.Image = Global.DreamWorld.My.Resources.Resources.document_connection
+        Me.GridToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.document_connection
         Me.GridToolStripMenuItem.Name = "GridToolStripMenuItem"
         Me.GridToolStripMenuItem.Size = New System.Drawing.Size(172, 22)
         Me.GridToolStripMenuItem.Text = "Grid"
@@ -316,14 +317,14 @@ Partial Class Form1
         '
         'AdvancedSettingsToolStripMenuItem
         '
-        Me.AdvancedSettingsToolStripMenuItem.Image = Global.DreamWorld.My.Resources.Resources.earth_network
+        Me.AdvancedSettingsToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.earth_network
         Me.AdvancedSettingsToolStripMenuItem.Name = "AdvancedSettingsToolStripMenuItem"
         Me.AdvancedSettingsToolStripMenuItem.Size = New System.Drawing.Size(172, 22)
         Me.AdvancedSettingsToolStripMenuItem.Text = "Advanced Settings"
         '
         'ConsoleTool
         '
-        Me.ConsoleTool.Image = Global.DreamWorld.My.Resources.Resources.document_connection
+        Me.ConsoleTool.Image = Global.Outworldz.My.Resources.Resources.document_connection
         Me.ConsoleTool.Name = "ConsoleTool"
         Me.ConsoleTool.Size = New System.Drawing.Size(172, 22)
         Me.ConsoleTool.Text = "Wifi Console"
@@ -338,42 +339,42 @@ Partial Class Form1
         'mnuLogin
         '
         Me.mnuLogin.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None
-        Me.mnuLogin.Image = Global.DreamWorld.My.Resources.Resources.about
+        Me.mnuLogin.Image = Global.Outworldz.My.Resources.Resources.about
         Me.mnuLogin.Name = "mnuLogin"
         Me.mnuLogin.Size = New System.Drawing.Size(183, 22)
         Me.mnuLogin.Text = "How to  Login"
         '
         'AdminUIToolStripMenuItem1
         '
-        Me.AdminUIToolStripMenuItem1.Image = Global.DreamWorld.My.Resources.Resources.document_view
+        Me.AdminUIToolStripMenuItem1.Image = Global.Outworldz.My.Resources.Resources.document_view
         Me.AdminUIToolStripMenuItem1.Name = "AdminUIToolStripMenuItem1"
         Me.AdminUIToolStripMenuItem1.Size = New System.Drawing.Size(183, 22)
         Me.AdminUIToolStripMenuItem1.Text = "Web Interface"
         '
         'ToolStripMenuItem1
         '
-        Me.ToolStripMenuItem1.Image = Global.DreamWorld.My.Resources.Resources.replace2
+        Me.ToolStripMenuItem1.Image = Global.Outworldz.My.Resources.Resources.replace2
         Me.ToolStripMenuItem1.Name = "ToolStripMenuItem1"
         Me.ToolStripMenuItem1.Size = New System.Drawing.Size(183, 22)
         Me.ToolStripMenuItem1.Text = "Help on Ports"
         '
         'LoopBackToolStripMenuItem
         '
-        Me.LoopBackToolStripMenuItem.Image = Global.DreamWorld.My.Resources.Resources.refresh
+        Me.LoopBackToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.refresh
         Me.LoopBackToolStripMenuItem.Name = "LoopBackToolStripMenuItem"
         Me.LoopBackToolStripMenuItem.Size = New System.Drawing.Size(183, 22)
         Me.LoopBackToolStripMenuItem.Text = "Help on LoopBack "
         '
         'CHeckForUpdatesToolStripMenuItem
         '
-        Me.CHeckForUpdatesToolStripMenuItem.Image = Global.DreamWorld.My.Resources.Resources.download1
+        Me.CHeckForUpdatesToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.download1
         Me.CHeckForUpdatesToolStripMenuItem.Name = "CHeckForUpdatesToolStripMenuItem"
         Me.CHeckForUpdatesToolStripMenuItem.Size = New System.Drawing.Size(183, 22)
         Me.CHeckForUpdatesToolStripMenuItem.Text = "Check for Updates"
         '
         'DiagnosticsToolStripMenuItem
         '
-        Me.DiagnosticsToolStripMenuItem.Image = Global.DreamWorld.My.Resources.Resources.flash
+        Me.DiagnosticsToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.flash
         Me.DiagnosticsToolStripMenuItem.Name = "DiagnosticsToolStripMenuItem"
         Me.DiagnosticsToolStripMenuItem.Size = New System.Drawing.Size(183, 22)
         Me.DiagnosticsToolStripMenuItem.Text = "Network Diagnostics"
@@ -381,7 +382,7 @@ Partial Class Form1
         'mnuAbout
         '
         Me.mnuAbout.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None
-        Me.mnuAbout.Image = Global.DreamWorld.My.Resources.Resources.question_and_answer
+        Me.mnuAbout.Image = Global.Outworldz.My.Resources.Resources.question_and_answer
         Me.mnuAbout.Name = "mnuAbout"
         Me.mnuAbout.Size = New System.Drawing.Size(183, 22)
         Me.mnuAbout.Text = "About"
@@ -404,21 +405,21 @@ Partial Class Form1
         '
         'IslandToolStripMenuItem
         '
-        Me.IslandToolStripMenuItem.Image = Global.DreamWorld.My.Resources.Resources.box_tall
+        Me.IslandToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.box_tall
         Me.IslandToolStripMenuItem.Name = "IslandToolStripMenuItem"
         Me.IslandToolStripMenuItem.Size = New System.Drawing.Size(187, 22)
         Me.IslandToolStripMenuItem.Text = "Load New Island"
         '
         'ClothingInventoryToolStripMenuItem
         '
-        Me.ClothingInventoryToolStripMenuItem.Image = Global.DreamWorld.My.Resources.Resources.user1_into
+        Me.ClothingInventoryToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.user1_into
         Me.ClothingInventoryToolStripMenuItem.Name = "ClothingInventoryToolStripMenuItem"
         Me.ClothingInventoryToolStripMenuItem.Size = New System.Drawing.Size(187, 22)
         Me.ClothingInventoryToolStripMenuItem.Text = "Avatar Parts"
         '
         'MoreContentToolStripMenuItem
         '
-        Me.MoreContentToolStripMenuItem.Image = Global.DreamWorld.My.Resources.Resources.download
+        Me.MoreContentToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.download
         Me.MoreContentToolStripMenuItem.Name = "MoreContentToolStripMenuItem"
         Me.MoreContentToolStripMenuItem.Size = New System.Drawing.Size(187, 22)
         Me.MoreContentToolStripMenuItem.Text = "Free Islands and Parts"
@@ -435,7 +436,7 @@ Partial Class Form1
         '
         Me.ProgressBar1.Location = New System.Drawing.Point(12, 29)
         Me.ProgressBar1.Name = "ProgressBar1"
-        Me.ProgressBar1.Size = New System.Drawing.Size(358, 11)
+        Me.ProgressBar1.Size = New System.Drawing.Size(373, 10)
         Me.ProgressBar1.TabIndex = 24
         '
         'BusyButton
@@ -447,6 +448,26 @@ Partial Class Form1
         Me.BusyButton.Text = "Busy"
         Me.BusyButton.UseVisualStyleBackColor = True
         '
+        'UpdaterGo
+        '
+        Me.UpdaterGo.Font = New System.Drawing.Font("Tahoma", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.UpdaterGo.Location = New System.Drawing.Point(56, 112)
+        Me.UpdaterGo.Name = "UpdaterGo"
+        Me.UpdaterGo.Size = New System.Drawing.Size(101, 50)
+        Me.UpdaterGo.TabIndex = 25
+        Me.UpdaterGo.Text = "Update"
+        Me.UpdaterGo.UseVisualStyleBackColor = True
+        '
+        'UpdaterCancel
+        '
+        Me.UpdaterCancel.Font = New System.Drawing.Font("Tahoma", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.UpdaterCancel.Location = New System.Drawing.Point(231, 112)
+        Me.UpdaterCancel.Name = "UpdaterCancel"
+        Me.UpdaterCancel.Size = New System.Drawing.Size(101, 50)
+        Me.UpdaterCancel.TabIndex = 26
+        Me.UpdaterCancel.Text = "Cancel"
+        Me.UpdaterCancel.UseVisualStyleBackColor = True
+        '
         'Form1
         '
         Me.AllowDrop = True
@@ -454,6 +475,8 @@ Partial Class Form1
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.White
         Me.ClientSize = New System.Drawing.Size(393, 194)
+        Me.Controls.Add(Me.UpdaterCancel)
+        Me.Controls.Add(Me.UpdaterGo)
         Me.Controls.Add(Me.ProgressBar1)
         Me.Controls.Add(Me.WebBrowser3)
         Me.Controls.Add(Me.TextBox1)
@@ -469,7 +492,7 @@ Partial Class Form1
         Me.MaximizeBox = False
         Me.Name = "Form1"
         Me.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.Text = "DreamWorld Opensimulator"
+        Me.Text = "Outworldz Opensimulator"
         Me.MenuStrip1.ResumeLayout(False)
         Me.MenuStrip1.PerformLayout()
         Me.ResumeLayout(False)
@@ -536,4 +559,6 @@ Partial Class Form1
     Friend WithEvents CHeckForUpdatesToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents DiagnosticsToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ConsoleTool As ToolStripMenuItem
+    Friend WithEvents UpdaterGo As Button
+    Friend WithEvents UpdaterCancel As Button
 End Class

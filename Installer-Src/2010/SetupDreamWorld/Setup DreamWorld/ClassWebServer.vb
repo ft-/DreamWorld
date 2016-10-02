@@ -96,7 +96,7 @@ Public Class Net
 
     Public Function Log(message As String)
         Try
-            Using outputFile As New StreamWriter(gMyFolder & "\DreamworldFiles\Server.log", True)
+            Using outputFile As New StreamWriter(gMyFolder & "\OutworldzFiles\Diagnostics.log", True)
                 outputFile.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + message)
             End Using
         Catch

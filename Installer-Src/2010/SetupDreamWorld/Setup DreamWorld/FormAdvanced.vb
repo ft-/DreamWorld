@@ -2,6 +2,10 @@
     Friend WithEvents Label1 As Label
     Public Property Form2 As Object
 
+    Dim Sleepy As Integer = 1500
+    Dim Awake As Integer = 1000
+    Dim Coffee As Integer = 500
+    Dim Toomuch As Integer = 0
 
     Private Sub Loaded(sender As Object, e As EventArgs) Handles Me.Load
 
@@ -41,6 +45,19 @@
         Else
             AutoBackupInterval.SelectedIndex = 3
         End If
+
+        Dim Chattime = My.Settings.ChatTime
+
+        If Chattime = Sleepy Then
+            ChatSpeed.SelectedIndex = 0
+        ElseIf Chattime = Awake Then
+            ChatSpeed.SelectedIndex = 1
+        ElseIf Chattime = Coffee Then
+            ChatSpeed.SelectedIndex = 2
+        Else
+            ChatSpeed.SelectedIndex = 3
+        End If
+
 
         DiagPort.Text = My.Settings.LoopBack
         WifiPort.Text = My.Settings.WifiPort
@@ -183,5 +200,19 @@
         My.Settings.Save()
     End Sub
 
+    Private Sub ChatSpeed_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ChatSpeed.SelectedIndexChanged
 
+        Dim text = ChatSpeed.SelectedItem.ToString()
+        Dim ChatTime As Integer = 1500
+
+        If text = "Sleepy" Then ChatTime = 1500
+        If text = "Awake" Then ChatTime = 1000
+        If text = "After Coffee" Then ChatTime = 500
+        If text = "Too much Coffee" Then ChatTime = 0
+
+        My.Settings.ChatTime = ChatTime
+        Form1.gChatTime = ChatTime
+        My.Settings.Save()
+
+    End Sub
 End Class
