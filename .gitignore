@@ -11,3 +11,4 @@ OutworldzFiles/Init.txt
 OutworldzFiles/Outworldz.log
 OutworldzFiles/HyperGrid/bin/assetcache/*.*
 OutworldzFiles/HyperGrid/bin/assetcache
+OutworldzFiles/mysql/data/*.err
