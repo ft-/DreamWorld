@@ -1,2 +1,10 @@
-
 Thumbs.db
+OutworldzFiles/mysql/data/opensim/*.*
+OutworldzFiles/Diagnostics.log
+OutworldzFiles/HyperGrid/bin/OpenSimConsoleHistory.txt
+OutworldzFiles/HyperGrid/bin/OpenSim.log
+OutworldzFiles/HyperGrid/bin/assetcache/*.*
+OutworldzFiles/addins-registry/*.*
+OutworldzFiles/HyperGrid/bin/maptiles/*.*
+OutworldzFiles/Init.txt
+OutworldzFiles/Outworldz.log
