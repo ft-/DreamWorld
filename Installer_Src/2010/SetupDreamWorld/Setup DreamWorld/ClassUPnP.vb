@@ -66,6 +66,10 @@ Public Class UPNP
     Private Sub GetStaticMappings()
         Try
             staticMapping = upnpnat.StaticPortMappingCollection()
+            If staticMapping Is Nothing Then
+                staticEnabled = False
+            End If
+
         Catch ex As NotImplementedException
             staticEnabled = False
         End Try
@@ -78,6 +82,9 @@ Public Class UPNP
     Private Sub GetDynamicMappings()
         Try
             dynamicMapping = upnpnat.DynamicPortMappingCollection()
+            If dynamicMapping Is Nothing Then
+                dynamicEnabled = False
+            End If
         Catch ex As NotImplementedException
             dynamicEnabled = False
         End Try
