@@ -82,7 +82,7 @@ Public Class Form1
     Private Sub Form1_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 
         Buttons(BusyButton)
-
+        Randomize()
         ' hide updater
         UpdaterGo.Visible = False
         UpdaterCancel.Visible = False
@@ -165,6 +165,8 @@ Public Class Form1
 
             CheckForUpdates(False) ' don't text if no update
 
+            PaintImage()
+
         Else
             Print("Installing Desktop Icon")
             Create_ShortCut(MyFolder & "\Start.exe")
@@ -216,7 +218,11 @@ Public Class Form1
             ProgressBar1.Value = 100
             Print("Ready to Launch! Click 'Start' to begin the dreaming in the Outworldz.")
             Buttons(StartButton)
+
+            PaintImage()
+
         End If
+
 
     End Sub
     Private Sub StartButton_Click(sender As System.Object, e As System.EventArgs) Handles StartButton.Click
@@ -336,6 +342,7 @@ Public Class Form1
 
     Private Sub Print(Value As String)
         Log("Info:" + Value)
+        TextBox1.Visible = True
         TextBox1.Text = Value
         Application.DoEvents()
         Sleep(gChatTime)  ' time to read
@@ -427,7 +434,7 @@ Public Class Form1
     End Sub
 
     Private Function Random() As String
-        Randomize()
+
         Dim value As Integer = CInt(Int((6000 * Rnd()) + 1))
         Random = Str(value)
     End Function
@@ -461,8 +468,9 @@ Public Class Form1
         Dim parser = New FileIniDataParser()
         parser.Parser.Configuration.CommentString = delim ' Opensim uses semicolons
         parser.Parser.Configuration.SkipInvalidLines = True
-        Dim Data = parser.ReadFile(filepath)
+
         Try
+            Dim Data = parser.ReadFile(filepath)
             Data(section)(key) = value ' replace it and save it
             Log("Info:Writing section '" + section + "' in file '" + filepath + "' in key '" + key + "' with value of '" + value + "'")
             parser.WriteFile(filepath, Data)
@@ -739,7 +747,7 @@ Public Class Form1
     End Function
 
     Private Function OpenPorts(progress As Integer)
-        Print("The human is instructed to wait while I check out this cute router I see ...")
+        Print("The human is instructed to wait while I check out this nice little router ...")
         Try
             If AllowFirewall() Then ' open uPNP port
                 DiagLog("uPnp:Ok")
@@ -833,7 +841,7 @@ Public Class Form1
         Running = False
     End Sub
 
-    Private Sub TextBox1_DragDrop(sender As System.Object, e As System.Windows.Forms.DragEventArgs) Handles TextBox1.DragDrop
+    Private Sub TextBox1_DragDrop(sender As System.Object, e As System.Windows.Forms.DragEventArgs)
         Dim files() As String = e.Data.GetData(DataFormats.FileDrop)
         For Each pathname In files
             pathname.Replace("\", "/")
@@ -868,7 +876,7 @@ Public Class Form1
         Next
     End Sub
 
-    Private Sub TextBox1_DragEnter(sender As System.Object, e As System.Windows.Forms.DragEventArgs) Handles TextBox1.DragEnter
+    Private Sub TextBox1_DragEnter(sender As System.Object, e As System.Windows.Forms.DragEventArgs)
         If e.Data.GetDataPresent(DataFormats.FileDrop) Then
             e.Effect = DragDropEffects.Copy
         End If
@@ -1313,42 +1321,41 @@ Public Class Form1
                                   "Nooo  is it already time to wake up?",
                                   "Mmmm, I was sleeping...",
                                   "What a dream that was!",
-                                  "Do you ever dream of better worlds? I just did.",
-                                  ""
+                                  "Do you ever dream of better worlds? I just did."
                                 }
 
         Dim Array() As String = {"I dreamt I ate a giant marshmallow. Hey! Where's my pillow??",
-                                  "I dreamt we were both flying a dragon in the Outworldz. You flamed me. I tried to get even. I lost. ",
-                                 "I dreamt we were chatting at OsGrid.org. It's the largest hypergrid-enabled virtual world.",
-                                 "I dreamt some friends and you were riding a rollercoaster in the Great Canadian Grid.",
-                                 "I dreamt I was watching a pretty particle exhibit with you on the Metropolis grid.",
-                                 "I dreamt we were discussing politics in German, Dutch, and French using a free translator.",
-                                 "I dreamt you took the hypergrid safari to visit the mountains of Africa in the Virunga sim.",
-                                 "I dreamt you won a race while riding a silly cow at the Outworldz 'Frankie' sim.",
-                                 "I dreamt you are wonderful singer. I loved to hear your voice singing into the voice-chat system.",
-                                 "The spaceport at Gravity sim in OsGrid was really hopping. And floating. And then I fell. ",
-                                 "I was dreaming that you were a mermaid in the Lost Worlds.",
-                                 "I deamt that you made a pile of prims that you simply will not believe!",
-                                 "I was asked when I was going to straighten out the castle. You said, 'Why? Is it tilted?'",
-                                 "I dreamt you made a 'mesh' of it.",
-                                 "I dreamt I saw a man without a shirt attached to a eagle flying up in the air. Always rez before you attach!",
-                                 "I forgot the dream already. I remember I woke up in it.",
-                                 "I was thinking I had no clothes on.  No shirt, shoes, or hair.  The worst part was there was no facelight! I looked hideous!",
-                                 "I dreamt that I was floating in a river and a scripted mesh crocodile chased me.",
-                                 "I dreamt I drove our car into the ocean. You found a pose ball, and we both grabbed onto it.",
-                                 "There was a animated mesh zebra in my bathtub!",
-                                 "I had dreamed a fairy was my best friend.",
-                                 "I dreamed that there were non players characters attacking my house, so I decided to fly away. ",
-                                 "I had a dream that there were pimples all over my face.  So I switched skins and looked perfect!",
-                                 "I had a dream where I had lost my free snow boots, so I was asking everybody where I got them on the hypergrid.",
-                                 "I had a dream that i was sitting on my roof with my crush and we stood up and both fell off. But I hit Pg Up and flew away.",
-                                 ""
-                                }
+                 "I dreamt we were both flying a dragon in the Outworldz. You flamed me. I tried to get even. I lost. ",
+                 "I dreamt we were chatting at OsGrid.org. It's the largest hypergrid-enabled virtual world.",
+                 "I dreamt some friends and you were riding a rollercoaster in the Great Canadian Grid.",
+                 "I dreamt I was watching a pretty particle exhibit with you on the Metropolis grid.",
+                 "I dreamt we were discussing politics in German, Dutch, and French using a free translator.",
+                 "I dreamt you took the hypergrid safari to visit the mountains of Africa in the Virunga sim.",
+                 "I dreamt you won a race while riding a silly cow at the Outworldz 'Frankie' sim.",
+                 "I dreamt you are wonderful singer. I loved to hear your voice singing into the voice-chat system.",
+                 "I remember in my dream that the spaceport at Gravity sim in OsGrid was really hopping. And floating. And then I fell. ",
+                 "I was dreaming that you were a mermaid in the Lost Worlds.",
+                 "I deamt that you made a pile of prims that you simply will not believe!",
+                 "I was asked when I was going to straighten out the castle. You said, 'Why? Is it tilted?'",
+                 "I dreamt you made a 'mesh' of it.",
+                 "I dreamt I saw a man without a shirt attached to a eagle flying up in the air. Always rez before you attach!",
+                 "I forgot the dream already. I remember I woke up in it.",
+                 "I was thinking I had no clothes on. No shirt, shoes, or hair. The worst part was there was no facelight! I looked hideous!",
+                 "I dreamt that I was floating in a riverand a scripted mesh crocodile chased me.",
+                 "I dreamt I drove our car into the ocean. You found a pose ball, and we both grabbed onto it.",
+                 "I dreamed again that there was a animated mesh zebra in my bathtub.",
+                 "I had dreamed a fairy was my best friend.",
+                 "I dreamed that there were non player characters attacking my house, so I decided to fly away. ",
+                 "I had a dream that there were pimples all over my face. So I switched skins and looked perfect!",
+                 "I had a dream where I had lost my free snow boots, so I was asking everybody where I got them on the hypergrid.",
+                 "I had a dream that we were sitting on my roof and we stood up and  both fell off. But I hit Pg Up and flew away."
+                  }
+
         Randomize()
 
         Dim value1 As Integer = CInt(Int((Prefix.Length - 1) * Rnd()))
         Dim value2 As Integer = CInt(Int((Array.Length - 1) * Rnd()))
-        Dim whattosay = Prefix(value1) + vbCrLf + vbCrLf + Array(value2) + " ... and then I woke up."
+        Dim whattosay = Prefix(value1) + vbCrLf + vbCrLf + Array(value2) + vbCrLf + "... And then I woke up."
         Print(whattosay)
 
     End Sub
@@ -1512,6 +1519,19 @@ Public Class Form1
             End If
         End If
 
+    End Sub
+
+    Private Sub PaintImage()
+        Try
+            Dim myWebClient As New WebClient()
+
+            myWebClient.DownloadFile("http://www.outworldz.com/Outworldz_Installer/wallpaper.plx?r=" + Random(), "wallpaper.bmp")
+            Dim yImage = New Bitmap("wallpaper.bmp")
+            PictureBox1.Image = yImage
+            TextBox1.Visible = False
+        Catch ex As Exception
+            Log("Warn:" + ex.Message)
+        End Try
     End Sub
 #End Region
 

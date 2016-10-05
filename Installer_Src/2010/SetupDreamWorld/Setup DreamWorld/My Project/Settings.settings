@@ -27,7 +27,7 @@
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="SimName" Type="System.String" Scope="User">
-      <Value Profile="(Default)">DreamWorld</Value>
+      <Value Profile="(Default)">Outworldz</Value>
     </Setting>
     <Setting Name="CoordX" Type="System.String" Scope="User">
       <Value Profile="(Default)">2000</Value>
@@ -45,7 +45,7 @@
       <Value Profile="(Default)">256</Value>
     </Setting>
     <Setting Name="WifiPort" Type="System.String" Scope="User">
-      <Value Profile="(Default)">9000</Value>
+      <Value Profile="(Default)">8000</Value>
     </Setting>
     <Setting Name="LoopBack" Type="System.String" Scope="User">
       <Value Profile="(Default)">8001</Value>
@@ -84,7 +84,7 @@
       <Value Profile="(Default)">8004</Value>
     </Setting>
     <Setting Name="ChatTime" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">1500</Value>
+      <Value Profile="(Default)">500</Value>
     </Setting>
   </Settings>
 </SettingsFile>

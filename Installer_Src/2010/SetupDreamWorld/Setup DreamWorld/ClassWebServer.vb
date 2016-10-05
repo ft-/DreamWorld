@@ -22,6 +22,7 @@ Public Class Net
         gMyFolder = MyFolder
         Try
             WebThread = New Thread(AddressOf looper)
+            WebThread.SetApartmentState(ApartmentState.STA)
             WebThread.Start()
         Catch ex As Exception
             Debug.Print(ex.Message)

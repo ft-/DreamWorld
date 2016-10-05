@@ -152,7 +152,7 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("DreamWorld")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("Outworldz")>  _
         Public Property SimName() As String
             Get
                 Return CType(Me("SimName"),String)
@@ -224,7 +224,7 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("9000")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("8000")>  _
         Public Property WifiPort() As String
             Get
                 Return CType(Me("WifiPort"),String)
@@ -380,7 +380,7 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("1500")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("500")>  _
         Public Property ChatTime() As Integer
             Get
                 Return CType(Me("ChatTime"),Integer)
