@@ -575,10 +575,10 @@ Public Class Form1
         ' Viewer UI shows the full viewer UI
         If My.Settings.ViewerEase Then
             Log("Info:Viewer set to Easy")
-            SetIni("SpecialUIModule", "enabled", "false")
+            SetIni("SpecialUIModule", "enabled", "true")
         Else
             Log("Info:Viewer set to Normal")
-            SetIni("SpecialUIModule", "enabled", "true")
+            SetIni("SpecialUIModule", "enabled", "false")
         End If
 
 

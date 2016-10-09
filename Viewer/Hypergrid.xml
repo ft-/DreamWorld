@@ -36,37 +36,5 @@
         <key>website</key>
             <string />
         </map>
-        <map>
-        <key>auto_update</key>
-            <boolean>0</boolean>
-        <key>gridname</key>
-            <string>Enter Login URL</string>
-        <key>gridnick</key>
-            <string>none</string>
-        <key>helperuri</key>
-            <string>http://</string>
-        <key>inventory_links</key>
-            <boolean>0</boolean>
-        <key>locked</key>
-            <boolean>1</boolean>
-        <key>loginpage</key>
-            <string>http://diva.github.io/onlook.html</string>
-        <key>loginuri</key>
-            <string>http://invalid</string>
-        <key>password</key>
-            <string />
-        <key>platform</key>
-            <string>OpenSim</string>
-        <key>register</key>
-            <string />
-        <key>render_compat</key>
-            <boolean>1</boolean>
-        <key>search</key>
-            <string />
-        <key>support</key>
-            <string />
-        <key>website</key>
-            <string />
-        </map>
     </array>
 </llsd>
