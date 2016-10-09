@@ -22,6 +22,7 @@ Partial Class AdvancedForm
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Me.CheckBox256 = New System.Windows.Forms.CheckBox()
         Me.CheckBox512 = New System.Windows.Forms.CheckBox()
         Me.CheckBox1024 = New System.Windows.Forms.CheckBox()
@@ -73,6 +74,7 @@ Partial Class AdvancedForm
         Me.SmtpUsername = New System.Windows.Forms.TextBox()
         Me.AccountConfirmationRequired = New System.Windows.Forms.CheckBox()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -91,6 +93,7 @@ Partial Class AdvancedForm
         Me.CheckBox256.Size = New System.Drawing.Size(75, 17)
         Me.CheckBox256.TabIndex = 1
         Me.CheckBox256.Text = "256 X 256"
+        Me.ToolTip1.SetToolTip(Me.CheckBox256, "Second Life sized single sim")
         Me.CheckBox256.UseVisualStyleBackColor = True
         '
         'CheckBox512
@@ -101,6 +104,7 @@ Partial Class AdvancedForm
         Me.CheckBox512.Size = New System.Drawing.Size(75, 17)
         Me.CheckBox512.TabIndex = 2
         Me.CheckBox512.Text = "512 X 512"
+        Me.ToolTip1.SetToolTip(Me.CheckBox512, "Two By Two (4 sims)")
         Me.CheckBox512.UseVisualStyleBackColor = True
         '
         'CheckBox1024
@@ -111,6 +115,7 @@ Partial Class AdvancedForm
         Me.CheckBox1024.Size = New System.Drawing.Size(87, 17)
         Me.CheckBox1024.TabIndex = 3
         Me.CheckBox1024.Text = "1024 X 1024"
+        Me.ToolTip1.SetToolTip(Me.CheckBox1024, "4 X 4 ( 16 sims)")
         Me.CheckBox1024.UseVisualStyleBackColor = True
         '
         'GroupBox1
@@ -153,6 +158,7 @@ Partial Class AdvancedForm
         Me.SizeY.Name = "SizeY"
         Me.SizeY.Size = New System.Drawing.Size(33, 20)
         Me.SizeY.TabIndex = 1
+        Me.ToolTip1.SetToolTip(Me.SizeY, "256 or higher")
         '
         'SizeX
         '
@@ -160,6 +166,7 @@ Partial Class AdvancedForm
         Me.SizeX.Name = "SizeX"
         Me.SizeX.Size = New System.Drawing.Size(33, 20)
         Me.SizeX.TabIndex = 0
+        Me.ToolTip1.SetToolTip(Me.SizeX, "256 or higher")
         '
         'GroupBox2
         '
@@ -195,6 +202,7 @@ Partial Class AdvancedForm
         Me.RegionPort.Name = "RegionPort"
         Me.RegionPort.Size = New System.Drawing.Size(47, 20)
         Me.RegionPort.TabIndex = 12
+        Me.ToolTip1.SetToolTip(Me.RegionPort, "Thr Region Port must be open to the internet for Hypergrid to work")
         '
         'Mysql
         '
@@ -202,6 +210,8 @@ Partial Class AdvancedForm
         Me.Mysql.Name = "Mysql"
         Me.Mysql.Size = New System.Drawing.Size(47, 20)
         Me.Mysql.TabIndex = 11
+        Me.ToolTip1.SetToolTip(Me.Mysql, "MySQL port is normally 3306. I add one so it will not intyerfere with other insta" &
+        "llations.")
         '
         'Label
         '
@@ -218,6 +228,7 @@ Partial Class AdvancedForm
         Me.PublicPort.Name = "PublicPort"
         Me.PublicPort.Size = New System.Drawing.Size(47, 20)
         Me.PublicPort.TabIndex = 0
+        Me.ToolTip1.SetToolTip(Me.PublicPort, "The Public port for your hypergrid. Usually 8002 ot 9000")
         '
         'DiagPort
         '
@@ -225,6 +236,8 @@ Partial Class AdvancedForm
         Me.DiagPort.Name = "DiagPort"
         Me.DiagPort.Size = New System.Drawing.Size(47, 20)
         Me.DiagPort.TabIndex = 7
+        Me.ToolTip1.SetToolTip(Me.DiagPort, "This port will be opened briefly to allow Hypertgrid to be tested before Opensim " &
+        "runs.")
         '
         'Label6
         '
@@ -250,6 +263,7 @@ Partial Class AdvancedForm
         Me.PrivatePort.Name = "PrivatePort"
         Me.PrivatePort.Size = New System.Drawing.Size(47, 20)
         Me.PrivatePort.TabIndex = 1
+        Me.ToolTip1.SetToolTip(Me.PrivatePort, "A Private Port used only on the LAN, never the WAN")
         '
         'Label5
         '
@@ -289,6 +303,7 @@ Partial Class AdvancedForm
         Me.AutoBackupKeepFilesForDays.Name = "AutoBackupKeepFilesForDays"
         Me.AutoBackupKeepFilesForDays.Size = New System.Drawing.Size(47, 20)
         Me.AutoBackupKeepFilesForDays.TabIndex = 13
+        Me.ToolTip1.SetToolTip(Me.AutoBackupKeepFilesForDays, "Backaups older than this number will be deleted")
         '
         'Label8
         '
@@ -308,6 +323,7 @@ Partial Class AdvancedForm
         Me.AutoBackupInterval.Name = "AutoBackupInterval"
         Me.AutoBackupInterval.Size = New System.Drawing.Size(121, 21)
         Me.AutoBackupInterval.TabIndex = 4
+        Me.ToolTip1.SetToolTip(Me.AutoBackupInterval, "The sim nust run this long and it will back up")
         '
         'AutoBackup
         '
@@ -317,6 +333,7 @@ Partial Class AdvancedForm
         Me.AutoBackup.Size = New System.Drawing.Size(65, 17)
         Me.AutoBackup.TabIndex = 2
         Me.AutoBackup.Text = "Enabled"
+        Me.ToolTip1.SetToolTip(Me.AutoBackup, "Saves OAR files periodically")
         Me.AutoBackup.UseVisualStyleBackColor = True
         '
         'Web
@@ -351,6 +368,7 @@ Partial Class AdvancedForm
         Me.AdminEmail.Name = "AdminEmail"
         Me.AdminEmail.Size = New System.Drawing.Size(100, 20)
         Me.AdminEmail.TabIndex = 14
+        Me.ToolTip1.SetToolTip(Me.AdminEmail, "An email will be sent is someone registers for your grid")
         '
         'Label12
         '
@@ -367,6 +385,7 @@ Partial Class AdvancedForm
         Me.AdminLast.Name = "AdminLast"
         Me.AdminLast.Size = New System.Drawing.Size(100, 20)
         Me.AdminLast.TabIndex = 12
+        Me.ToolTip1.SetToolTip(Me.AdminLast, "Last Name for Administering your grid")
         '
         'AdminFirst
         '
@@ -374,6 +393,7 @@ Partial Class AdvancedForm
         Me.AdminFirst.Name = "AdminFirst"
         Me.AdminFirst.Size = New System.Drawing.Size(100, 20)
         Me.AdminFirst.TabIndex = 11
+        Me.ToolTip1.SetToolTip(Me.AdminFirst, "First Name for Administering your grid")
         '
         'Label11
         '
@@ -399,6 +419,8 @@ Partial Class AdvancedForm
         Me.Password.Name = "Password"
         Me.Password.Size = New System.Drawing.Size(100, 20)
         Me.Password.TabIndex = 8
+        Me.ToolTip1.SetToolTip(Me.Password, "Password for Administering your grid")
+        Me.Password.UseSystemPasswordChar = True
         '
         'AllowGod
         '
@@ -408,6 +430,7 @@ Partial Class AdvancedForm
         Me.AllowGod.Size = New System.Drawing.Size(105, 17)
         Me.AllowGod.TabIndex = 16
         Me.AllowGod.Text = "Allow Grid gods?"
+        Me.ToolTip1.SetToolTip(Me.AllowGod, "Enable all God Functions ")
         Me.AllowGod.UseVisualStyleBackColor = True
         '
         'GroupBox4
@@ -490,6 +513,7 @@ Partial Class AdvancedForm
         Me.TimerInterval.Name = "TimerInterval"
         Me.TimerInterval.Size = New System.Drawing.Size(39, 20)
         Me.TimerInterval.TabIndex = 24
+        Me.ToolTip1.SetToolTip(Me.TimerInterval, "The cycle time for the wall paper - in seconds")
         '
         'ChatSpeed
         '
@@ -499,6 +523,7 @@ Partial Class AdvancedForm
         Me.ChatSpeed.Name = "ChatSpeed"
         Me.ChatSpeed.Size = New System.Drawing.Size(121, 21)
         Me.ChatSpeed.TabIndex = 22
+        Me.ToolTip1.SetToolTip(Me.ChatSpeed, "The speed the sleepy chat occurs")
         '
         'GroupBox6
         '
@@ -538,6 +563,8 @@ Partial Class AdvancedForm
         Me.SmtpPassword.Name = "SmtpPassword"
         Me.SmtpPassword.Size = New System.Drawing.Size(100, 20)
         Me.SmtpPassword.TabIndex = 19
+        Me.ToolTip1.SetToolTip(Me.SmtpPassword, "Gmail Passeord")
+        Me.SmtpPassword.UseSystemPasswordChar = True
         '
         'SmtpUsername
         '
@@ -545,6 +572,7 @@ Partial Class AdvancedForm
         Me.SmtpUsername.Name = "SmtpUsername"
         Me.SmtpUsername.Size = New System.Drawing.Size(100, 20)
         Me.SmtpUsername.TabIndex = 18
+        Me.ToolTip1.SetToolTip(Me.SmtpUsername, "A Gmail email name to send email from")
         '
         'AccountConfirmationRequired
         '
@@ -554,6 +582,7 @@ Partial Class AdvancedForm
         Me.AccountConfirmationRequired.Size = New System.Drawing.Size(136, 17)
         Me.AccountConfirmationRequired.TabIndex = 17
         Me.AccountConfirmationRequired.Text = "Confirmation Required?"
+        Me.ToolTip1.SetToolTip(Me.AccountConfirmationRequired, "If checked, you must log into the web interface and approve the new users.")
         Me.AccountConfirmationRequired.UseVisualStyleBackColor = True
         '
         'PictureBox1
@@ -565,6 +594,7 @@ Partial Class AdvancedForm
         Me.PictureBox1.Size = New System.Drawing.Size(93, 82)
         Me.PictureBox1.TabIndex = 24
         Me.PictureBox1.TabStop = False
+        Me.ToolTip1.SetToolTip(Me.PictureBox1, "Hi! eail me : fred@mitsi.com")
         '
         'AdvancedForm
         '
@@ -648,4 +678,5 @@ Partial Class AdvancedForm
     Friend WithEvents SmtpPassword As TextBox
     Friend WithEvents SmtpUsername As TextBox
     Friend WithEvents PictureBox1 As PictureBox
+    Friend WithEvents ToolTip1 As ToolTip
 End Class

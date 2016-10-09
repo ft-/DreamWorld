@@ -138,7 +138,7 @@ Partial Class Form1
         'mnuExit
         '
         Me.mnuExit.Name = "mnuExit"
-        Me.mnuExit.Size = New System.Drawing.Size(92, 22)
+        Me.mnuExit.Size = New System.Drawing.Size(152, 22)
         Me.mnuExit.Text = "Exit"
         '
         'mnuSettings
@@ -155,6 +155,7 @@ Partial Class Form1
         Me.ConsoleToolStripMenuItem1.Name = "ConsoleToolStripMenuItem1"
         Me.ConsoleToolStripMenuItem1.Size = New System.Drawing.Size(172, 22)
         Me.ConsoleToolStripMenuItem1.Text = "Opensim Console"
+        Me.ConsoleToolStripMenuItem1.ToolTipText = "The Opensim Dos Box can be minimized automatically"
         '
         'mnuHide
         '
@@ -177,20 +178,21 @@ Partial Class Form1
         Me.ViewerToolStripMenuItem.Name = "ViewerToolStripMenuItem"
         Me.ViewerToolStripMenuItem.Size = New System.Drawing.Size(172, 22)
         Me.ViewerToolStripMenuItem.Text = "Viewer Type"
+        Me.ViewerToolStripMenuItem.ToolTipText = "Onlook is a easy to use and efficient viewer"
         '
         'mnuOnlook
         '
         Me.mnuOnlook.Checked = True
         Me.mnuOnlook.CheckState = System.Windows.Forms.CheckState.Checked
         Me.mnuOnlook.Name = "mnuOnlook"
-        Me.mnuOnlook.Size = New System.Drawing.Size(113, 22)
+        Me.mnuOnlook.Size = New System.Drawing.Size(152, 22)
         Me.mnuOnlook.Text = "Onlook"
         '
         'mnuOther
         '
         Me.mnuOther.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.KokuaToolStripMenuItem, Me.CatznipToolStripMenuItem, Me.SingularityToolStripMenuItem, Me.FirestormToolStripMenuItem, Me.AlchemyToolStripMenuItem, Me.UKanDoToolStripMenuItem})
         Me.mnuOther.Name = "mnuOther"
-        Me.mnuOther.Size = New System.Drawing.Size(113, 22)
+        Me.mnuOther.Size = New System.Drawing.Size(152, 22)
         Me.mnuOther.Text = "Other "
         '
         'KokuaToolStripMenuItem
@@ -242,19 +244,20 @@ Partial Class Form1
         Me.VUI.Name = "VUI"
         Me.VUI.Size = New System.Drawing.Size(172, 22)
         Me.VUI.Text = "Viewer UI"
+        Me.VUI.ToolTipText = "New users should select Easy Mode"
         '
         'mnuEasy
         '
         Me.mnuEasy.Checked = True
         Me.mnuEasy.CheckState = System.Windows.Forms.CheckState.Checked
         Me.mnuEasy.Name = "mnuEasy"
-        Me.mnuEasy.Size = New System.Drawing.Size(97, 22)
+        Me.mnuEasy.Size = New System.Drawing.Size(152, 22)
         Me.mnuEasy.Text = "Easy"
         '
         'mnuFull
         '
         Me.mnuFull.Name = "mnuFull"
-        Me.mnuFull.Size = New System.Drawing.Size(97, 22)
+        Me.mnuFull.Size = New System.Drawing.Size(152, 22)
         Me.mnuFull.Text = "Full"
         '
         'AvatarToolStripMenuItem
@@ -264,19 +267,20 @@ Partial Class Form1
         Me.AvatarToolStripMenuItem.Name = "AvatarToolStripMenuItem"
         Me.AvatarToolStripMenuItem.Size = New System.Drawing.Size(172, 22)
         Me.AvatarToolStripMenuItem.Text = "Avatar Visible?"
+        Me.AvatarToolStripMenuItem.ToolTipText = "The avatar can be hidden. Use the arrow keys and PG Up/Dwon to view"
         '
         'mnuNoAvatar
         '
         Me.mnuNoAvatar.Checked = True
         Me.mnuNoAvatar.CheckState = System.Windows.Forms.CheckState.Checked
         Me.mnuNoAvatar.Name = "mnuNoAvatar"
-        Me.mnuNoAvatar.Size = New System.Drawing.Size(91, 22)
+        Me.mnuNoAvatar.Size = New System.Drawing.Size(152, 22)
         Me.mnuNoAvatar.Text = "No"
         '
         'mnuYesAvatar
         '
         Me.mnuYesAvatar.Name = "mnuYesAvatar"
-        Me.mnuYesAvatar.Size = New System.Drawing.Size(91, 22)
+        Me.mnuYesAvatar.Size = New System.Drawing.Size(152, 22)
         Me.mnuYesAvatar.Text = "Yes"
         '
         'GridToolStripMenuItem
@@ -314,6 +318,7 @@ Partial Class Form1
         Me.AdvancedSettingsToolStripMenuItem.Name = "AdvancedSettingsToolStripMenuItem"
         Me.AdvancedSettingsToolStripMenuItem.Size = New System.Drawing.Size(172, 22)
         Me.AdvancedSettingsToolStripMenuItem.Text = "Advanced Settings"
+        Me.AdvancedSettingsToolStripMenuItem.ToolTipText = "Deep stuff."
         '
         'HelpToolStripMenuItem
         '
@@ -328,6 +333,7 @@ Partial Class Form1
         Me.ShowHyperGridAddressToolStripMenuItem.Name = "ShowHyperGridAddressToolStripMenuItem"
         Me.ShowHyperGridAddressToolStripMenuItem.Size = New System.Drawing.Size(205, 22)
         Me.ShowHyperGridAddressToolStripMenuItem.Text = "Show HyperGrid Address"
+        Me.ShowHyperGridAddressToolStripMenuItem.ToolTipText = "You can give this address out to oepple and they can visit your grid"
         '
         'mnuLogin
         '
@@ -336,6 +342,7 @@ Partial Class Form1
         Me.mnuLogin.Name = "mnuLogin"
         Me.mnuLogin.Size = New System.Drawing.Size(205, 22)
         Me.mnuLogin.Text = "How to  Login"
+        Me.mnuLogin.ToolTipText = "User ID and default Password"
         '
         'AdminUIToolStripMenuItem1
         '
@@ -343,13 +350,15 @@ Partial Class Form1
         Me.AdminUIToolStripMenuItem1.Name = "AdminUIToolStripMenuItem1"
         Me.AdminUIToolStripMenuItem1.Size = New System.Drawing.Size(205, 22)
         Me.AdminUIToolStripMenuItem1.Text = "Web Interface"
+        Me.AdminUIToolStripMenuItem1.ToolTipText = "The WIfi Interface can be used to add new users"
         '
         'ToolStripMenuItem1
         '
         Me.ToolStripMenuItem1.Image = Global.Outworldz.My.Resources.Resources.replace2
         Me.ToolStripMenuItem1.Name = "ToolStripMenuItem1"
         Me.ToolStripMenuItem1.Size = New System.Drawing.Size(205, 22)
-        Me.ToolStripMenuItem1.Text = "Help on Ports"
+        Me.ToolStripMenuItem1.Text = "Help on Port Forwarding"
+        Me.ToolStripMenuItem1.ToolTipText = "Web Help for Port Forwarding"
         '
         'LoopBackToolStripMenuItem
         '
@@ -357,6 +366,7 @@ Partial Class Form1
         Me.LoopBackToolStripMenuItem.Name = "LoopBackToolStripMenuItem"
         Me.LoopBackToolStripMenuItem.Size = New System.Drawing.Size(205, 22)
         Me.LoopBackToolStripMenuItem.Text = "Help on LoopBack "
+        Me.LoopBackToolStripMenuItem.ToolTipText = "How to fix Loopback on Windows"
         '
         'CHeckForUpdatesToolStripMenuItem
         '
@@ -371,6 +381,7 @@ Partial Class Form1
         Me.DiagnosticsToolStripMenuItem.Name = "DiagnosticsToolStripMenuItem"
         Me.DiagnosticsToolStripMenuItem.Size = New System.Drawing.Size(205, 22)
         Me.DiagnosticsToolStripMenuItem.Text = "Network Diagnostics"
+        Me.DiagnosticsToolStripMenuItem.ToolTipText = "Re-Run the installation diagnostics"
         '
         'CheckDatabaseToolStripMenuItem
         '
@@ -378,6 +389,7 @@ Partial Class Form1
         Me.CheckDatabaseToolStripMenuItem.Name = "CheckDatabaseToolStripMenuItem"
         Me.CheckDatabaseToolStripMenuItem.Size = New System.Drawing.Size(205, 22)
         Me.CheckDatabaseToolStripMenuItem.Text = "Check Database"
+        Me.CheckDatabaseToolStripMenuItem.ToolTipText = "Repairs corrupt MySQL table"
         '
         'mnuAbout
         '
@@ -409,6 +421,7 @@ Partial Class Form1
         Me.IslandToolStripMenuItem.Name = "IslandToolStripMenuItem"
         Me.IslandToolStripMenuItem.Size = New System.Drawing.Size(187, 22)
         Me.IslandToolStripMenuItem.Text = "Load New Island"
+        Me.IslandToolStripMenuItem.ToolTipText = "OAR files are backups of entire Islands"
         '
         'ClothingInventoryToolStripMenuItem
         '
@@ -416,6 +429,7 @@ Partial Class Form1
         Me.ClothingInventoryToolStripMenuItem.Name = "ClothingInventoryToolStripMenuItem"
         Me.ClothingInventoryToolStripMenuItem.Size = New System.Drawing.Size(187, 22)
         Me.ClothingInventoryToolStripMenuItem.Text = "Avatar Parts"
+        Me.ClothingInventoryToolStripMenuItem.ToolTipText = "IAR files are baclups of inventory items"
         '
         'MoreContentToolStripMenuItem
         '
@@ -423,6 +437,7 @@ Partial Class Form1
         Me.MoreContentToolStripMenuItem.Name = "MoreContentToolStripMenuItem"
         Me.MoreContentToolStripMenuItem.Size = New System.Drawing.Size(187, 22)
         Me.MoreContentToolStripMenuItem.Text = "Free Islands and Parts"
+        Me.MoreContentToolStripMenuItem.ToolTipText = "Outworldz has a entirely free content."
         '
         'LoadBackupToolStripMenuItem
         '
@@ -430,6 +445,7 @@ Partial Class Form1
         Me.LoadBackupToolStripMenuItem.Name = "LoadBackupToolStripMenuItem"
         Me.LoadBackupToolStripMenuItem.Size = New System.Drawing.Size(187, 22)
         Me.LoadBackupToolStripMenuItem.Text = "Load Backup"
+        Me.LoadBackupToolStripMenuItem.ToolTipText = "Choose a OAR backup firl to restore"
         '
         'WebBrowser3
         '

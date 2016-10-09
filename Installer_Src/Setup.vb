@@ -974,7 +974,7 @@ Public Class Form1
     Private Sub MoreContentToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles MoreContentToolStripMenuItem.Click
         Dim webAddress As String = "http://www.outworldz.com/cgi/freesculpts.plx"
         Process.Start(webAddress)
-        Print("Drag and drop OAR or IAR files here to load them whenever the sim starts")
+        Print("Drag and drop Backup.Oar, or any OAR or IAR files to load into your Sim")
     End Sub
     Private Sub ExitAll()
 
@@ -1362,14 +1362,14 @@ Public Class Form1
         file = "http://www.Outworldz.com/Outworldz_Installer/OAR/" + file 'make a real URL
         LoadOARContent(file)
         sender.checked = True
-        Print("Opensimulator will load " + file + " when restarted.  This may take time to load.")
+        Print("Opensimulator will load " + file + ".  This may take time to load.")
     End Sub
     Private Sub IarClick(sender As Object, e As EventArgs)
         Dim file = Mid(sender.text, 1, InStr(sender.text, "|") - 2)
         file = "http://www.Outworldz.com/Outworldz_Installer/IAR/" + file 'make a real URL
         LoadIARContent(file)
         sender.checked = True
-        Print("Opensimulator will load " + file + " when restarted.  This may take time to load.")
+        Print("Opensimulator will load " + file + ".  This may take time to load.")
     End Sub
 
     Private Sub SaySomething()
