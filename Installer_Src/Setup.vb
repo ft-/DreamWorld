@@ -162,6 +162,8 @@ Public Class Form1
         gCurSlashDir = MyFolder.Replace("\", "/")    ' because Mysql uses unix like slashes, that's why
 
         SaySomething()
+        ' Diagnose the system
+
 
         ProgressBar1.Visible = True
         ProgressBar1.Value = 5
@@ -174,24 +176,25 @@ Public Class Form1
         ProgressBar1.Value = 10
         GetPubIP(15)
         SetINIFromSettings(20)
-        mnuSettings.Visible = True
-        SetIAROARContent(30) ' load IAR and OAR web content
-        MnuContent.Visible = True
 
-        InstallGridXML(40)
+        ' always open ports
+        OpenPorts(15) ' Open router ports with uPnP
+
+        If Not My.Settings.RunOnce Then
+            My.Settings.RunOnce = True
+            ProbePublicPort(25)
+            Loopback(30)    ' test the loopback on the router. If it fails, use localhost, no Hg
+            If (DiagFailed) Then
+                Print("Hypergrid Diagnostics Failed. These can be re-run at any time. See the Help menu for 'Diagnostics', 'Loopback', and 'Port Forwards'")
+                Sleep(3000)
+            End If
+        End If
+        mnuSettings.Visible = True
+        SetIAROARContent(35) ' load IAR and OAR web content
+        MnuContent.Visible = True
 
         ' Find out if the viewer is installed
         If System.IO.File.Exists(MyFolder & "\OutworldzFiles\Init.txt") Then
-
-            ' Diagnose the system
-            DiagFailed = False
-            OpenPorts(45) ' Open router ports with uPnP
-            ProbePublicPort(50)
-            Loopback(60)    ' test the loopback on the router. If it fails, use localhost, no Hg
-            If (DiagFailed) Then
-                Print("Diagnostics can be re-run in the Help menu 'Diagnostics' at any time")
-                Sleep(3000)
-            End If
 
             StartMySql(100) ' boot up MySql, and wait for it to start listening
 
@@ -214,8 +217,11 @@ Public Class Form1
                 Log("Could not create Init.txt:" + ex.Message)
             End Try
 
+            StartMySql(100) ' boot up MySql, and wait for it to start listening
+
             Dim yesno = MsgBox("Do you want to install the Onlook Viewer? (Newcomers to virtual worlds should choose Yes)", vbYesNo)
             If (yesno = vbYes) Then
+                My.Settings.Onlook = True
                 Print("Installing Onlook Viewer")
                 Dim pi As ProcessStartInfo = New ProcessStartInfo()
                 pi.Arguments = ""
@@ -249,11 +255,12 @@ Public Class Form1
                         toggle = True
                     End If
                 End While
-
+            Else
+                My.Settings.Onlook = False
             End If
         End If
         ProgressBar1.Value = 100
-        Print("Ready to Launch! Click 'Start' to begin ")
+        Print("Ready to Launch! Click 'Start' to begin your adventure in Opensim.")
         Sleep(2000)
 
         Buttons(StartButton)
@@ -283,7 +290,8 @@ Public Class Form1
 
         LogFiles(5) ' clear log fles
         SetINIFromSettings(10)    ' set up the INI files
-        Start_Opensimulator(40) ' Launch the rocket
+        InstallGridXML(15)
+        Start_Opensimulator(30) ' Launch the rocket
         Onlook(100)
 
         Buttons(StopButton)
@@ -509,8 +517,6 @@ Public Class Form1
     End Sub
     Private Sub SetIni(section As String, key As String, value As String)
         ' sets values into any INI file
-
-
         Try
             Log("Info:Writing '" + gINI + " section [" + section + "] " + key + "=" + value)
             Data(section)(key) = value ' replace it and save it
@@ -666,10 +672,14 @@ Public Class Form1
             Log("Info:Onlook viewer mode")
             mnuOther.Checked = False
             mnuOnlook.Checked = True
+            VUI.Visible = True
+            AvatarVisible.Visible = True
         Else
             Log("Info:Other viewer mode")
             mnuOther.Checked = True
             mnuOnlook.Checked = False
+            VUI.Visible = False
+            AvatarVisible.Visible = False
         End If
 
 
@@ -929,6 +939,7 @@ Public Class Form1
         My.Settings.Onlook = True
         My.Settings.Save()
         VUI.Visible = True
+        AvatarVisible.Visible = True
     End Sub
 
     Private Sub OtherToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles mnuOther.Click
@@ -937,6 +948,7 @@ Public Class Form1
         mnuOnlook.Checked = False
         My.Settings.Onlook = False
         VUI.Visible = False
+        AvatarVisible.Visible = False
         My.Settings.Save()
     End Sub
 
@@ -1090,12 +1102,12 @@ Public Class Form1
         End If
 
         ' Wait for Opensim to start listening via wifi
-        Dim Up = ""
+        Dim Up As String
         Try
             Up = client.DownloadString("http://127.0.0.1:" + +My.Settings.PublicPort + "/?r=" + Random())
         Catch ex As Exception
             Up = ""
-            Log("Error: cannot real localhost? " + ex.Message)
+            Log("Error: cannot read localhost? " + ex.Message)
         End Try
 
         While Up.Length = 0

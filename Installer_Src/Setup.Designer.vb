@@ -47,7 +47,7 @@ Partial Class Form1
         Me.VUI = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuEasy = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuFull = New System.Windows.Forms.ToolStripMenuItem()
-        Me.AvatarToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.AvatarVisible = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuNoAvatar = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuYesAvatar = New System.Windows.Forms.ToolStripMenuItem()
         Me.GridToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -138,12 +138,12 @@ Partial Class Form1
         'mnuExit
         '
         Me.mnuExit.Name = "mnuExit"
-        Me.mnuExit.Size = New System.Drawing.Size(152, 22)
+        Me.mnuExit.Size = New System.Drawing.Size(92, 22)
         Me.mnuExit.Text = "Exit"
         '
         'mnuSettings
         '
-        Me.mnuSettings.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ConsoleToolStripMenuItem1, Me.ViewerToolStripMenuItem, Me.VUI, Me.AvatarToolStripMenuItem, Me.GridToolStripMenuItem, Me.AdvancedSettingsToolStripMenuItem})
+        Me.mnuSettings.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ConsoleToolStripMenuItem1, Me.ViewerToolStripMenuItem, Me.VUI, Me.AvatarVisible, Me.GridToolStripMenuItem, Me.AdvancedSettingsToolStripMenuItem})
         Me.mnuSettings.Name = "mnuSettings"
         Me.mnuSettings.Size = New System.Drawing.Size(61, 20)
         Me.mnuSettings.Text = "Settings"
@@ -162,13 +162,13 @@ Partial Class Form1
         Me.mnuHide.Checked = True
         Me.mnuHide.CheckState = System.Windows.Forms.CheckState.Checked
         Me.mnuHide.Name = "mnuHide"
-        Me.mnuHide.Size = New System.Drawing.Size(152, 22)
+        Me.mnuHide.Size = New System.Drawing.Size(103, 22)
         Me.mnuHide.Text = "Hide"
         '
         'mnuShow
         '
         Me.mnuShow.Name = "mnuShow"
-        Me.mnuShow.Size = New System.Drawing.Size(152, 22)
+        Me.mnuShow.Size = New System.Drawing.Size(103, 22)
         Me.mnuShow.Text = "Show"
         '
         'ViewerToolStripMenuItem
@@ -185,14 +185,14 @@ Partial Class Form1
         Me.mnuOnlook.Checked = True
         Me.mnuOnlook.CheckState = System.Windows.Forms.CheckState.Checked
         Me.mnuOnlook.Name = "mnuOnlook"
-        Me.mnuOnlook.Size = New System.Drawing.Size(152, 22)
+        Me.mnuOnlook.Size = New System.Drawing.Size(113, 22)
         Me.mnuOnlook.Text = "Onlook"
         '
         'mnuOther
         '
         Me.mnuOther.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.KokuaToolStripMenuItem, Me.CatznipToolStripMenuItem, Me.SingularityToolStripMenuItem, Me.FirestormToolStripMenuItem, Me.AlchemyToolStripMenuItem, Me.UKanDoToolStripMenuItem})
         Me.mnuOther.Name = "mnuOther"
-        Me.mnuOther.Size = New System.Drawing.Size(152, 22)
+        Me.mnuOther.Size = New System.Drawing.Size(113, 22)
         Me.mnuOther.Text = "Other "
         '
         'KokuaToolStripMenuItem
@@ -251,36 +251,36 @@ Partial Class Form1
         Me.mnuEasy.Checked = True
         Me.mnuEasy.CheckState = System.Windows.Forms.CheckState.Checked
         Me.mnuEasy.Name = "mnuEasy"
-        Me.mnuEasy.Size = New System.Drawing.Size(152, 22)
+        Me.mnuEasy.Size = New System.Drawing.Size(97, 22)
         Me.mnuEasy.Text = "Easy"
         '
         'mnuFull
         '
         Me.mnuFull.Name = "mnuFull"
-        Me.mnuFull.Size = New System.Drawing.Size(152, 22)
+        Me.mnuFull.Size = New System.Drawing.Size(97, 22)
         Me.mnuFull.Text = "Full"
         '
-        'AvatarToolStripMenuItem
+        'AvatarVisible
         '
-        Me.AvatarToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuNoAvatar, Me.mnuYesAvatar})
-        Me.AvatarToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.users1
-        Me.AvatarToolStripMenuItem.Name = "AvatarToolStripMenuItem"
-        Me.AvatarToolStripMenuItem.Size = New System.Drawing.Size(172, 22)
-        Me.AvatarToolStripMenuItem.Text = "Avatar Visible?"
-        Me.AvatarToolStripMenuItem.ToolTipText = "The avatar can be hidden. Use the arrow keys and PG Up/Dwon to view"
+        Me.AvatarVisible.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuNoAvatar, Me.mnuYesAvatar})
+        Me.AvatarVisible.Image = Global.Outworldz.My.Resources.Resources.users1
+        Me.AvatarVisible.Name = "AvatarVisible"
+        Me.AvatarVisible.Size = New System.Drawing.Size(172, 22)
+        Me.AvatarVisible.Text = "Avatar Visible?"
+        Me.AvatarVisible.ToolTipText = "The avatar can be hidden. Use the arrow keys and PG Up/Dwon to view"
         '
         'mnuNoAvatar
         '
         Me.mnuNoAvatar.Checked = True
         Me.mnuNoAvatar.CheckState = System.Windows.Forms.CheckState.Checked
         Me.mnuNoAvatar.Name = "mnuNoAvatar"
-        Me.mnuNoAvatar.Size = New System.Drawing.Size(152, 22)
+        Me.mnuNoAvatar.Size = New System.Drawing.Size(91, 22)
         Me.mnuNoAvatar.Text = "No"
         '
         'mnuYesAvatar
         '
         Me.mnuYesAvatar.Name = "mnuYesAvatar"
-        Me.mnuYesAvatar.Size = New System.Drawing.Size(152, 22)
+        Me.mnuYesAvatar.Size = New System.Drawing.Size(91, 22)
         Me.mnuYesAvatar.Text = "Yes"
         '
         'GridToolStripMenuItem
@@ -297,19 +297,19 @@ Partial Class Form1
         Me.mnuHyperGrid.Checked = True
         Me.mnuHyperGrid.CheckState = System.Windows.Forms.CheckState.Checked
         Me.mnuHyperGrid.Name = "mnuHyperGrid"
-        Me.mnuHyperGrid.Size = New System.Drawing.Size(152, 22)
+        Me.mnuHyperGrid.Size = New System.Drawing.Size(148, 22)
         Me.mnuHyperGrid.Text = "HyperGrid"
         '
         'mnuOsGrid
         '
         Me.mnuOsGrid.Name = "mnuOsGrid"
-        Me.mnuOsGrid.Size = New System.Drawing.Size(152, 22)
+        Me.mnuOsGrid.Size = New System.Drawing.Size(148, 22)
         Me.mnuOsGrid.Text = "OsGrid.org"
         '
         'HypergridorgToolStripMenuItem
         '
         Me.HypergridorgToolStripMenuItem.Name = "HypergridorgToolStripMenuItem"
-        Me.HypergridorgToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.HypergridorgToolStripMenuItem.Size = New System.Drawing.Size(148, 22)
         Me.HypergridorgToolStripMenuItem.Text = "Hypergrid.org"
         '
         'AdvancedSettingsToolStripMenuItem
@@ -581,7 +581,7 @@ Partial Class Form1
     Friend WithEvents VUI As ToolStripMenuItem
     Friend WithEvents mnuEasy As ToolStripMenuItem
     Friend WithEvents mnuFull As ToolStripMenuItem
-    Friend WithEvents AvatarToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents AvatarVisible As ToolStripMenuItem
     Friend WithEvents mnuNoAvatar As ToolStripMenuItem
     Friend WithEvents mnuYesAvatar As ToolStripMenuItem
     Friend WithEvents HelpToolStripMenuItem As ToolStripMenuItem
