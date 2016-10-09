@@ -49,7 +49,20 @@ Public Class Form1
                              My.Resources.wp_To_Piers_Anthony,
                              My.Resources.wp_wavy_love_of_animals,
                              My.Resources.wp_zebra,
-                             My.Resources.wp_Que
+                             My.Resources.wp_Que,
+                             My.Resources.wp_1,
+                             My.Resources.wp_2,
+                             My.Resources.wp_3,
+                             My.Resources.wp_4,
+                             My.Resources.wp_5,
+                             My.Resources.wp_6,
+                             My.Resources.wp_7,
+                             My.Resources.wp_8,
+                             My.Resources.wp_9,
+                             My.Resources.wp_10,
+                             My.Resources.wp_11,
+                             My.Resources.wp_12,
+                             My.Resources.wp_13
                             }
 
     Dim OpensimProcID As Integer
