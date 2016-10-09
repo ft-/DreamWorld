@@ -7,6 +7,7 @@ Imports IWshRuntimeLibrary
 Imports IniParser
 Imports System.Threading
 Imports Ionic.Zip
+Imports System.Timers
 
 ' Copyright 2014 Fred Beckhusen  
 ' Redistribution and use in binary and source form is permitted provided 
@@ -20,20 +21,40 @@ Imports Ionic.Zip
 Public Class Form1
 
 #Region "Declarations"
-    Dim MyVersion As Single = 0.5
+    Dim MyVersion As String = "0.7"
+    Dim DebugPath As String = "C:\Opensim\Outworldz-7"
     Dim remoteUri As String = "http://www.outworldz.com/Outworldz_Installer/" ' requires trailing slash
     Dim gCurDir    ' Holds the current folder that we are running in
     Dim gCurSlashDir As String '  holds the current directory info in Unix format
     Dim isRunning As Boolean = False
     Dim DiagFailed As Boolean = False
     Dim ws As Net
-    Public gChatTime As Integer = 1500
-    Dim ContentLoading As Boolean = False
+    Public gChatTime As Integer = 500
+
     Dim client As New System.Net.WebClient
     Dim pMySql As Process = New Process()
-    Dim pOpensim As Process = New Process()
+    Dim pMySqlDiag As Process = New Process()
+
     Dim pOnlook As Process = New Process()
     Private Shared m_ActiveForm As Form
+    Dim Data As IniParser.Model.IniData
+    Private randomnum As New Random
+    Dim parser = New FileIniDataParser()
+    Dim gINI As String
+    Private images =
+    New List(Of Image) From {My.Resources.tangled,
+                             My.Resources.wp_habitat,
+                             My.Resources.wp_Mooferd,
+                             My.Resources.wp_Inside_in_shadows,
+                             My.Resources.wp_To_Piers_Anthony,
+                             My.Resources.wp_wavy_love_of_animals,
+                             My.Resources.wp_zebra,
+                             My.Resources.wp_Que
+                            }
+
+    Dim OpensimProcID As Integer
+
+
 #End Region
 
 
@@ -73,19 +94,24 @@ Public Class Form1
         ExitAll()
         ProgressBar1.Value = 25
         Print("I'll tell you my next dream when I wake up.")
-        Sleep(1000)
         ProgressBar1.Value = 0
         Print("Zzzzzz....")
-        Sleep(1000)
+        Sleep(500)
     End Sub
 
     Private Sub Form1_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 
         Buttons(BusyButton)
         Randomize()
+
+        zap("mysqld-nt")
+
         ' hide updater
         UpdaterGo.Visible = False
         UpdaterCancel.Visible = False
+
+        Me.Text = "Outworldz V" + MyVersion
+        PictureBox1.Enabled = True
 
         'hide the pulldowns as there is no content yet
         MnuContent.Visible = False
@@ -97,16 +123,17 @@ Public Class Form1
         ProgressBar1.Maximum = 100
         ProgressBar1.Value = 0
 
+        gChatTime = My.Settings.ChatTime
+
         Me.Show()
 
         Me.AllowDrop = True
         TextBox1.AllowDrop = True
+        PictureBox1.AllowDrop = True
 
         Running = False ' true when opensim is running
 
         MyFolder = My.Application.Info.DirectoryPath
-
-        gCurSlashDir = MyFolder.Replace("\", "/")    ' because Mysql uses unix like slashes, that's why
 
         ' I would like to buy an argument
         Dim arguments As String() = Environment.GetCommandLineArgs()
@@ -117,19 +144,20 @@ Public Class Form1
                 ' Clean up the file system
                 CleanAll()
             ElseIf arguments(1) = "-debug" Then
-                MyFolder = "\Outworldz" ' for testing, as the compiler buries itself in ../../../debug
+                MyFolder = DebugPath ' for testing, as the compiler buries itself in ../../../debug
                 Log("Info:Using Debug folder \Outworldz")
-                gCurSlashDir = "/Outworldz"
             ElseIf arguments(1) = "-nodiag" Then
                 My.Settings.Diagnostics = False
             End If
         End If
 
+        gCurSlashDir = MyFolder.Replace("\", "/")    ' because Mysql uses unix like slashes, that's why
+
         SaySomething()
 
         ProgressBar1.Visible = True
         ProgressBar1.Value = 5
-        Sleep(5000)
+        Sleep(4000)
         Log("Info: Loading Web Server")
         ws = Net.getWebServer
         Log("Info: Starting Web Server")
@@ -141,6 +169,7 @@ Public Class Form1
         mnuSettings.Visible = True
         SetIAROARContent(30) ' load IAR and OAR web content
         MnuContent.Visible = True
+
         InstallGridXML(40)
 
         ' Find out if the viewer is installed
@@ -162,18 +191,14 @@ Public Class Form1
             ProgressBar1.Value = 100
             Print("Outworldz Opensimulator is ready to start.")
             Log("Info:Ready to start")
-
             CheckForUpdates(False) ' don't text if no update
-
-            PaintImage()
-
         Else
-            Print("Installing Desktop Icon")
+            'Print("Installing Desktop icon clicky thingy")
             Create_ShortCut(MyFolder & "\Start.exe")
             ProgressBar1.Value = 60
 
             Try
-                ' mark the system as read        
+                ' mark the system as ready        
                 Using outputFile As New StreamWriter(MyFolder & "\OutworldzFiles\Init.txt", True)
                     outputFile.WriteLine("This file lets Outworldz know it has been installed and to benchmark the network loopback")
                 End Using
@@ -181,53 +206,55 @@ Public Class Form1
                 Log("Could not create Init.txt:" + ex.Message)
             End Try
 
-            Print("Installing Onlook Viewer")
-            Dim pi As ProcessStartInfo = New ProcessStartInfo()
-            pi.Arguments = ""
-            pi.FileName = MyFolder & "\Viewer\Onlook.exe"
-            pOnlook.StartInfo = pi
-            Try
-                Log("Info:Launching Onlook installer")
-                pOnlook.Start()
-            Catch ex As Exception
-                Log("Error:Onlook installer failed to load:" + ex.Message)
-            End Try
+            Dim yesno = MsgBox("Do you want to install the Onlook Viewer? (Newcomers to virtual worlds should choose Yes)", vbYesNo)
+            If (yesno = vbYes) Then
+                Print("Installing Onlook Viewer")
+                Dim pi As ProcessStartInfo = New ProcessStartInfo()
+                pi.Arguments = ""
+                pi.FileName = MyFolder & "\Viewer\Onlook.exe"
+                pOnlook.StartInfo = pi
+                Try
+                    Log("Info:Launching Onlook installer")
+                    pOnlook.Start()
+                Catch ex As Exception
+                    Log("Error:Onlook installer failed to load:" + ex.Message)
+                End Try
 
-            ProgressBar1.Value = 62
-            Print("Please Install and Start the Onlook Viewer")
-            Dim toggle As Boolean = False
-            While Not System.IO.File.Exists(xmlPath() + "\AppData\Roaming\Onlook\user_settings\settings_onlook.xml") And ProgressBar1.Value < 99
-                Application.DoEvents()
-                Sleep(4000)
-                If (toggle) Then
-                    Print("Attention needed - please Install and Start the Onlook Viewer ")
-                    toggle = False
-                Else
-                    Print("Start the Onlook Viewer")
-                    toggle = False
-                    toggle = True
-                End If
+                ProgressBar1.Value = 62
+                Print("Please Install and Start the Onlook Viewer")
+                Dim toggle As Boolean = False
+                While Not System.IO.File.Exists(xmlPath() + "\AppData\Roaming\Onlook\user_settings\settings_onlook.xml") And ProgressBar1.Value < 99
+                    Application.DoEvents()
+                    Sleep(4000)
+                    If (toggle) Then
+                        Print("Attention needed - please Install and Start the Onlook Viewer ")
+                        toggle = False
+                    Else
+                        Print("Start the Onlook Viewer")
+                        toggle = False
+                        toggle = True
+                    End If
 
-                ProgressBar1.Value = ProgressBar1.Value + 1
-                If ProgressBar1.Value = 100 Then
-                    Print("You win. Proceeding with Outworldz Installation. You may need to add the grid manually.")
-                    toggle = True
-                End If
-            End While
+                    ProgressBar1.Value = ProgressBar1.Value + 1
+                    If ProgressBar1.Value = 100 Then
+                        Print("You win. Proceeding with Outworldz Installation. You may need to add the grid manually.")
+                        toggle = True
+                    End If
+                End While
 
-            ProgressBar1.Value = 100
-            Print("Ready to Launch! Click 'Start' to begin the dreaming in the Outworldz.")
-            Buttons(StartButton)
-
-            PaintImage()
-
+            End If
         End If
+        ProgressBar1.Value = 100
+        Print("Ready to Launch! Click 'Start' to begin ")
+        Sleep(2000)
 
+        Buttons(StartButton)
+        Timer1.Interval = My.Settings.TimerInterval * 1000
+        Timer1.Start() 'Timer starts functioning
 
     End Sub
     Private Sub StartButton_Click(sender As System.Object, e As System.EventArgs) Handles StartButton.Click
 
-        ContentLoading = False
         Try
             My.Computer.FileSystem.DeleteFile(MyFolder & "\OutworldzFiles\Outworldz.log")
         Catch
@@ -247,13 +274,8 @@ Public Class Form1
         Running = True
 
         LogFiles(5) ' clear log fles
-
         SetINIFromSettings(10)    ' set up the INI files
-
-        OpenPorts(20)
-
         Start_Opensimulator(40) ' Launch the rocket
-
         Onlook(100)
 
         Buttons(StopButton)
@@ -267,6 +289,9 @@ Public Class Form1
 
         ' done with bootup
         ProgressBar1.Value = 100
+
+        Timer1.Interval = My.Settings.TimerInterval * 1000
+        Timer1.Start() 'Timer starts functioning
 
     End Sub
 
@@ -341,11 +366,15 @@ Public Class Form1
     End Sub
 
     Private Sub Print(Value As String)
+
         Log("Info:" + Value)
+
+        PictureBox1.Visible = False
         TextBox1.Visible = True
         TextBox1.Text = Value
         Application.DoEvents()
         Sleep(gChatTime)  ' time to read
+
     End Sub
 
     Private Sub mnuExit_Click(sender As System.Object, e As System.EventArgs) Handles mnuExit.Click
@@ -354,7 +383,7 @@ Public Class Form1
     End Sub
 
     Private Sub mnuLogin_Click(sender As System.Object, e As System.EventArgs) Handles mnuLogin.Click
-        Print("You can use 'Help->Web Interface' to create a new avatar or change passwords.")
+        Print("You can use 'Help->Web Interface' to create a new avatar or change passwords. The default User name is 'Dream World' with a password of '123'")
     End Sub
 
     Private Sub mnuAbout_Click(sender As System.Object, e As System.EventArgs) Handles mnuAbout.Click
@@ -377,7 +406,7 @@ Public Class Form1
         Print("The Opensimulator Console will be shown when Opensim is running.")
         mnuShow.Checked = True
         mnuHide.Checked = False
-        ConsoleTool.Visible = False
+
         My.Settings.ConsoleShow = mnuShow.Checked
 
         My.Settings.Save()
@@ -390,9 +419,6 @@ Public Class Form1
         Print("The Opensimulator Console will not be shown. You can still interact with it with Help->Opensim Console")
         mnuShow.Checked = False
         mnuHide.Checked = True
-
-        ' fkb !! not yet functional 
-        'ConsoleTool.Visible = True
 
         My.Settings.ConsoleShow = mnuShow.Checked
         My.Settings.Save()
@@ -442,7 +468,7 @@ Public Class Form1
     Private Sub WebUIToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs)
         Print("The Web UI lets you add or view settings for the default avatar. ")
         If Running Then
-            Dim webAddress As String = "http://127.0.0.1:" + My.Settings.WifiPort
+            Dim webAddress As String = "http://127.0.0.1:" + My.Settings.PublicPort
             Process.Start(webAddress)
         End If
     End Sub
@@ -455,6 +481,7 @@ Public Class Form1
         Print("")
     End Sub
 
+    ' currently unused
     Private Function GetIni(filepath As String, section As String, key As String) As String
         ' gets values from an INI file
         Dim parser = New FileIniDataParser()
@@ -462,21 +489,27 @@ Public Class Form1
         Dim Data = parser.ReadFile(filepath)
         GetIni = Data(section)(key)
     End Function
-
-    Private Sub SetIni(filepath As String, section As String, key As String, value As String, delim As String)
+    Private Sub LoadIni(filepath As String)
+        Data = parser.ReadFile(filepath)
+        gINI = filepath
+    End Sub
+    Private Sub SetIni(section As String, key As String, value As String, delim As String)
         ' sets values into any INI file
-        Dim parser = New FileIniDataParser()
         parser.Parser.Configuration.CommentString = delim ' Opensim uses semicolons
         parser.Parser.Configuration.SkipInvalidLines = True
-
         Try
-            Dim Data = parser.ReadFile(filepath)
+            Log("Info:Writing '" + gINI + " section [" + section + "] " + key + "=" + value)
             Data(section)(key) = value ' replace it and save it
-            Log("Info:Writing section '" + section + "' in file '" + filepath + "' in key '" + key + "' with value of '" + value + "'")
-            parser.WriteFile(filepath, Data)
         Catch ex As Exception
-            Log("Info:Cannot locate '" + key + "' in section '" + section + "' in file " + filepath + ". This is not good")
-            MsgBox("Cannot locate '" + key + "' in section '" + section + "' in file " + filepath + ". This is not good", vbOK)
+            Log("Info:Cannot locate '" + key + "' in section '" + section + "' in file " + gINI + ". This is not good")
+            MsgBox("Cannot locate '" + key + "' in section '" + section + "' in file " + gINI + ". This is not good", vbOK)
+        End Try
+    End Sub
+    Private Sub SaveINI()
+        Try
+            parser.WriteFile(gINI, Data)
+        Catch ex As Exception
+            Log("Error:" + ex.Message)
         End Try
     End Sub
     Private Sub CleanAll()
@@ -554,7 +587,7 @@ Public Class Form1
 
         Print("Outworldz will connect as a locally hosted hypergridded sim.")
         Log("Outworldz will connect as a locally hosted hypergridded sim.")
-        My.Computer.FileSystem.CopyFile(MyFolder & "\Viewer\grids_sg_HyperGrid.xml", xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml", True)
+
     End Sub
 
     Private Sub SetINIFromSettings(iProgress As Integer)
@@ -567,15 +600,16 @@ Public Class Form1
             Log("Info:Console will not be shown")
         End If
 
+        LoadIni(MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\config-include\MyWorld.ini")
+
         ' Viewer UI shows the full viewer UI
         If My.Settings.ViewerEase Then
             Log("Info:Viewer set to Easy")
-            SetIni(MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\Opensim.ini", "SpecialUIModule", "enabled", "false", ";")
+            SetIni("SpecialUIModule", "enabled", "false", ";")
         Else
             Log("Info:Viewer set to Normal")
-            SetIni(MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\Opensim.ini", "SpecialUIModule", "enabled", "true", ";")
+            SetIni("SpecialUIModule", "enabled", "true", ";")
         End If
-
 
 
         mnuFull.Checked = Not My.Settings.ViewerEase
@@ -584,11 +618,68 @@ Public Class Form1
         'Avatar visible?
         If My.Settings.AvatarShow Then
             Log("Info:Showing the avatar")
-            SetIni(MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\Opensim.ini", "CameraOnlyModeModule", "enabled", "false", ";")
+            SetIni("CameraOnlyModeModule", "enabled", "false", ";")
         Else
             Log("Info:Set to not show avatar")
-            SetIni(MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\Opensim.ini", "CameraOnlyModeModule", "enabled", "true", ";")
+            SetIni("CameraOnlyModeModule", "enabled", "true", ";")
         End If
+
+
+        Log("Info:Saving Wifi Admin for " + My.Settings.AdminFirst + " " + My.Settings.AdminLast)
+        SetIni("WifiService", "AdminFirst", """" + My.Settings.AdminFirst + """", ";")
+        SetIni("WifiService", "AdminLast", """" + My.Settings.AdminLast + """", ";")
+        SetIni("WifiService", "AdminPassword", """" + My.Settings.Password + """", ";")
+        SetIni("WifiService", "AdminPassword", """" + My.Settings.Password + """", ";")
+        SetIni("Network", "ConsoleUser", """" + My.Settings.ConsoleUser + """", ";")
+        SetIni("Network", "ConsolePass", """" + My.Settings.ConsolePass + """", ";")
+
+        If (My.Settings.allow_grid_gods) Then
+            SetIni("Permissions", "allow_grid_gods", "true", ";")
+        Else
+            SetIni("Permissions", "allow_grid_gods", "false", ";")
+        End If
+
+        If (My.Settings.region_owner_is_god) Then
+            SetIni("Permissions", "region_owner_is_god", "true", ";")
+        Else
+            SetIni("Permissions", "region_owner_is_god", "false", ";")
+        End If
+
+
+        If (My.Settings.region_manager_is_god) Then
+            SetIni("Permissions", "region_manager_is_god", "true", ";")
+        Else
+            SetIni("Permissions", "region_manager_is_god", "false", ";")
+        End If
+
+        If (My.Settings.parcel_owner_is_god) Then
+            SetIni("Permissions", "parcel_owner_is_god", "true", ";")
+        Else
+            SetIni("Permissions", "parcel_owner_is_god", "false", ";")
+        End If
+
+        SetIni("WifiService", "AdminEmail", """" + My.Settings.AdminEmail + """", ";")
+
+        If My.Settings.AccountConfirmationRequired Then
+            SetIni("WifiService", "AccountConfirmationRequired", "true", ";")
+        Else
+            SetIni("WifiService", "AccountConfirmationRequired", "false", ";")
+        End If
+
+        ' Autobackup
+        If My.Settings.AutoBackup Then
+            Log("Info:Autobackup is On")
+            SetIni("AutoBackupModule", "AutoBackup", "true", ";")
+        Else
+            Log("Info:Autobackup is Off")
+            SetIni("AutoBackupModule", "AutoBackup", "false", ";")
+        End If
+
+        SetIni("AutoBackupModule", "AutoBackupInterval", My.Settings.AutobackupInterval, ";")
+        SetIni("AutoBackupModule", "AutoBackupKeepFilesForDays", My.Settings.KeepForDays, ";")
+
+        SaveINI()
+
 
         mnuYesAvatar.Checked = My.Settings.AvatarShow
         mnuNoAvatar.Checked = Not My.Settings.AvatarShow
@@ -617,42 +708,24 @@ Public Class Form1
             mnuOnlook.Checked = False
         End If
 
-        ' Autobackup
-        If My.Settings.AutoBackup Then
-            Log("Info:Autobackup is On")
-            SetIni(MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\Opensim.ini", "AutoBackupModule", "AutoBackup", "true", ";")
-        Else
-            Log("Info:Autobackup is Off")
-            SetIni(MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\Opensim.ini", "AutoBackupModule", "AutoBackup", "false", ";")
-        End If
-
-        SetIni(MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\Opensim.ini", "AutoBackupModule", "AutoBackupInterval", My.Settings.AutobackupInterval, ";")
-        SetIni(MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\Opensim.ini", "AutoBackupModule", "AutoBackupKeepFilesForDays", My.Settings.KeepForDays, ";")
 
         ' RegionConfig
-        SetIni(MyFolder + "\OutworldzFiles\" + My.Settings.GridFolder + "\bin\Regions\RegionConfig.ini", "Outworldz", "SizeY", My.Settings.SizeY, ";")
-        SetIni(MyFolder + "\OutworldzFiles\" + My.Settings.GridFolder + "\bin\Regions\RegionConfig.ini", "Outworldz", "SizeX", My.Settings.SizeX, ";")
-
-
+        LoadIni(MyFolder + "\OutworldzFiles\" + My.Settings.GridFolder + "\bin\Regions\RegionConfig.ini")
+        SetIni("Outworldz", "SizeY", My.Settings.SizeY, ";")
+        SetIni("Outworldz", "SizeX", My.Settings.SizeX, ";")
 
         Log("Info:Public IP is " + My.Settings.PublicIP)
-        SetIni(MyFolder + "\OutworldzFiles\" + My.Settings.GridFolder + "\bin\Regions\RegionConfig.ini", "Outworldz", "ExternalHostName", My.Settings.PublicIP, ";")
-        SetIni(MyFolder + "\OutworldzFiles\" + My.Settings.GridFolder + "\bin\Opensim.ini", "Const", "BaseURL", My.Settings.PublicIP, ";")
+        SetIni("Outworldz", "ExternalHostName", My.Settings.PublicIP, ";")
+        SetIni("Outworldz", "InternalPort", My.Settings.RegionPort, ";")
+        SaveINI()
 
+        LoadIni(MyFolder + "\OutworldzFiles\" + My.Settings.GridFolder + "\bin\Opensim.ini")
+        'Opensim.ini main settings only
+        SetIni("Const", "BaseURL", My.Settings.PublicIP, ";")
         Log("Info:Public Port is " + My.Settings.PublicPort)
-        SetIni(MyFolder + "\OutworldzFiles\" + My.Settings.GridFolder + "\bin\Opensim.ini", "Const", "PublicPort", My.Settings.PublicPort, ";")
-        SetIni(MyFolder + "\OutworldzFiles\" + My.Settings.GridFolder + "\bin\Regions\RegionConfig.ini", "Outworldz", "InternalPort", My.Settings.RegionPort, ";")
-
-        Log("Info:Wifi Port is " + My.Settings.WifiPort)
-        SetIni(MyFolder + "\OutworldzFiles\" + My.Settings.GridFolder + "\bin\Opensim.ini", "Const", "WifiPort", My.Settings.WifiPort, ";")
-
-        Log("Info:Saving Wifi Admin for " + My.Settings.AdminFirst + " " + My.Settings.AdminLast)
-        SetIni(MyFolder + "\OutworldzFiles\" + My.Settings.GridFolder + "\bin\config-include\MyWorld.ini", "WifiService", "AdminFirst", """" + My.Settings.AdminFirst + """", ";")
-        SetIni(MyFolder + "\OutworldzFiles\" + My.Settings.GridFolder + "\bin\config-include\MyWorld.ini", "WifiService", "AdminLast", """" + My.Settings.AdminLast + """", ";")
-        SetIni(MyFolder + "\OutworldzFiles\" + My.Settings.GridFolder + "\bin\config-include\MyWorld.ini", "WifiService", "AdminPassword", """" + My.Settings.Password + """", ";")
-        SetIni(MyFolder + "\OutworldzFiles\" + My.Settings.GridFolder + "\bin\config-include\MyWorld.ini", "WifiService", "AdminPassword", """" + My.Settings.Password + """", ";")
-        SetIni(MyFolder + "\OutworldzFiles\" + My.Settings.GridFolder + "\bin\config-include\MyWorld.ini", "Network", "ConsoleUser", """" + My.Settings.ConsoleUser + """", ";")
-        SetIni(MyFolder + "\OutworldzFiles\" + My.Settings.GridFolder + "\bin\config-include\MyWorld.ini", "Network", "ConsolePass", """" + My.Settings.ConsolePass + """", ";")
+        SetIni("Const", "PublicPort", My.Settings.PublicPort, ";")
+        Log("Info:Wifi Port is " + My.Settings.PublicPort)
+        SaveINI()
 
         ProgressBar1.Value = iProgress
     End Sub
@@ -663,17 +736,12 @@ Public Class Form1
         Try
             If MyUPnPMap.Exists(My.Settings.PublicPort, UPNP.Protocol.UDP) Then
                 MyUPnPMap.Remove(UPNP.LocalIP, My.Settings.PublicPort)
-                DiagLog("uPnp:PublicPort.UDP Removed ")
+                DiagLog("uPnp: PublicPort.UDP Removed ")
             End If
 
             If MyUPnPMap.Exists(My.Settings.PublicPort, UPNP.Protocol.TCP) Then
                 MyUPnPMap.Remove(UPNP.LocalIP, My.Settings.PublicPort)
                 DiagLog("uPnp:PublicPort.TCP Removed ")
-            End If
-
-            If MyUPnPMap.Exists(My.Settings.WifiPort, UPNP.Protocol.TCP) Then
-                MyUPnPMap.Remove(UPNP.LocalIP, My.Settings.WifiPort)
-                DiagLog("uPnp:LoopBack.TCP Removed ")
             End If
 
             If MyUPnPMap.Exists(My.Settings.LoopBack, UPNP.Protocol.TCP) Then
@@ -708,13 +776,6 @@ Public Class Form1
                 DiagLog("uPnp:PublicPort.TCP exists")
             Else
                 MyUPnPMap.Add(UPNP.LocalIP, My.Settings.PublicPort, UPNP.Protocol.TCP, "Opensim TCP Public")
-                DiagLog("uPnp:PublicPort.TCP added")
-            End If
-
-            If MyUPnPMap.Exists(My.Settings.WifiPort, UPNP.Protocol.TCP) Then
-                DiagLog("uPnp:WifiPort.TCP exists")
-            Else
-                MyUPnPMap.Add(UPNP.LocalIP, My.Settings.WifiPort, UPNP.Protocol.TCP, "Opensim TCP Wifi")
                 DiagLog("uPnp:PublicPort.TCP added")
             End If
 
@@ -789,98 +850,103 @@ Public Class Form1
         If (Running) Then
             Dim webAddress As String = "http://127.0.0.1:" + My.Settings.PublicPort
             Process.Start(webAddress)
-            Print("Log in as '" + My.Settings.AdminFirst + " " + My.Settings.AdminLast + "' with a password of '" + My.Settings.Password + "'to add user accounts.")
+            Print("Log in as '" + My.Settings.AdminFirst + " " + My.Settings.AdminLast + "' with a password of '" + My.Settings.Password + "' to add user accounts.")
         Else
             Print("Opensim is not running. Cannot open the Web Interface.")
         End If
     End Sub
-    Private Sub SimContent(thing As String, type As String)
-
-        ' remove the console startup file
-        ContentLoading = False
-        ClearOar()
-
+    Private Sub LoadOARContent(thing As String)
         Try
-            If type = "oar" Then
-                Using outputFile As New StreamWriter(MyFolder & "\OutworldzFiles\" + My.Settings.GridFolder & "\bin\startup_commands.txt", True)
-                    outputFile.WriteLine("alert New content is loading")
-                    outputFile.WriteLine("load " + type + "  " + Chr(34) + thing + Chr(34))
-                    outputFile.WriteLine("alert New content is loaded")
-                    ContentLoading = True
-                End Using
-            End If
+            AppActivate(OpensimProcID)
+            thing = thing.Replace("\", "/")    ' because Opensim uses unix-like slashes, that's why
+            My.Computer.Keyboard.SendKeys("alert CPU Intensive Backup Started{ENTER}", True)
+            My.Computer.Keyboard.SendKeys("save oar " + MyFolder + "/OutworldzFiles/Autobackup/Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar{ENTER}", True)
+            My.Computer.Keyboard.SendKeys("alert New content Is loading..{ENTER}", True)
+            My.Computer.Keyboard.SendKeys("load oar " + Chr(34) + thing + Chr(34) + "{ENTER}", True)
+            My.Computer.Keyboard.SendKeys("alert New content just loaded.{ENTER}", True)
+            Me.Focus()
         Catch
-            Log("Error:iar or oar file write failure")
+            Log("Error: startup_commands OAR file write failure")
         End Try
     End Sub
-    Private Sub IARContent(user As String, password As String, thing As String)
+    Private Sub LoadIARContent(thing As String)
         ' remove the console startup file
 
-        ContentLoading = False
-        ClearOar()
+        Dim user = InputBox("User name that will get this IAR?")
+        Dim password = InputBox("Password for user " + user + "?")
+        If user.Length And password.Length Then
 
-        Try
-            Using outputFile As New StreamWriter(MyFolder & "\OutworldzFiles\" + My.Settings.GridFolder & "\bin\startup_commands.txt", True)
-                outputFile.WriteLine("load iar --merge " + user + " / " + password + " " + Chr(34) + thing + Chr(34))
-                outputFile.WriteLine("alert IAR content is loaded")
-                ContentLoading = True
-            End Using
-        Catch
-            Log("Error:iar or oar file write failure")
-        End Try
+            Try
+                My.Computer.Keyboard.SendKeys("load iar --merge " + user + " / " + password + " " + Chr(34) + thing + Chr(34) + "{ENTER}", True)
+                My.Computer.Keyboard.SendKeys("alert IAR content Is loaded{ENTER}", True)
+            Catch
+                Log("Error:startup_commands IAR file write failure")
+            End Try
+
+            Print("Opensim is loading your item. You will find it in your inventory in / soon.")
+        Else
+            Print("Load IAR cancelled - must use the full user name and password.")
+        End If
+
     End Sub
 
     Private Sub KillAll()
-        ClearOar()
-        pOpensim.Close()
-        Sleep(3000)
-        zap("OpenSim")
-        pOnlook.Close()
+        ' close opensim gracefully
+        Try
+            AppActivate(OpensimProcID)
+            My.Computer.Keyboard.SendKeys("quit{ENTER}", True)
+        Catch
+        End Try
 
+        Me.Focus()
+        pOnlook.Close()
         Application.DoEvents()
         Running = False
     End Sub
 
-    Private Sub TextBox1_DragDrop(sender As System.Object, e As System.Windows.Forms.DragEventArgs)
+    Private Sub PictureBox1_DragDrop(sender As System.Object, e As System.Windows.Forms.DragEventArgs) Handles PictureBox1.DragDrop
         Dim files() As String = e.Data.GetData(DataFormats.FileDrop)
         For Each pathname In files
             pathname.Replace("\", "/")
             Dim extension = Path.GetExtension(pathname)
             extension = Mid(extension, 2, 5)
             If extension.ToLower = "iar" Then
-                Dim user = InputBox("User name that wil get this IAR?")
-                Dim password = InputBox("Password for user " + user)
-                If user.Length And password.Length Then
-                    IARContent(user, password, pathname)
-                    Log("Info:Load iar " + pathname)
-                    Print("Opensim will load your file when it is restarted. This may take time to load. You will find it in your inventory.")
-                End If
-            ElseIf extension.ToLower = "oar" Then
-                SimContent(pathname, extension)
-                Log("Info:Load oar " + pathname)
-                Print("Opensim will load your file when it is restarted. This may take time to load.")
-            ElseIf extension.ToLower = ".gz" Then
-                Log("Info:Load oar " + pathname)
-                SimContent(pathname, extension)
-                Log("Info:Load gz " + pathname)
-                Print("Opensim will load your file when it is restarted. This may take time to load.")
-            ElseIf extension.ToLower = ".tgz" Then
-                Log("Info:Load oar " + pathname)
-                SimContent(pathname, extension)
-                Log("Info:Load tgz " + pathname)
-                Print("Opensim will load your file when it is restarted. This may take time to load.")
+                LoadIARContent(pathname)
+            ElseIf extension.ToLower = "oar" Or extension.ToLower = "gz" Or extension.ToLower = "tgz" Then
+                LoadOARContent(pathname)
             Else
-                Log("Info:Unrecognized file type:" + extension)
-                Print("Unrecognized file type:" + extension + ".  Drag and drop any OAR,GZ,TGZ, or IAR files to load them when the sim starts")
+                Print("Unrecognized file type:" + extension + ".  Drag and drop any OAR, GZ, TGZ, or IAR files to load them when the sim starts")
             End If
         Next
     End Sub
 
-    Private Sub TextBox1_DragEnter(sender As System.Object, e As System.Windows.Forms.DragEventArgs)
+    Private Sub PictureBox1_DragEnter(sender As System.Object, e As System.Windows.Forms.DragEventArgs) Handles PictureBox1.DragEnter
         If e.Data.GetDataPresent(DataFormats.FileDrop) Then
             e.Effect = DragDropEffects.Copy
         End If
     End Sub
+    Private Sub TextBox1_DragDrop(sender As System.Object, e As System.Windows.Forms.DragEventArgs) Handles TextBox1.DragDrop
+        Dim files() As String = e.Data.GetData(DataFormats.FileDrop)
+        For Each pathname In files
+            pathname.Replace("\", "/")
+            Dim extension = Path.GetExtension(pathname)
+            extension = Mid(extension, 2, 5)
+            If extension.ToLower = "iar" Then
+                LoadIARContent(pathname)
+            ElseIf extension.ToLower = "oar" Or extension.ToLower = "gz" Or extension.ToLower = "tgz" Then
+                LoadOARContent(pathname)
+            Else
+                Print("Unrecognized file type:" + extension + ".  Drag and drop any OAR, GZ, TGZ, or IAR files to load them when the sim starts")
+            End If
+        Next
+    End Sub
+
+    Private Sub TextBox1_DragEnter(sender As System.Object, e As System.Windows.Forms.DragEventArgs) Handles TextBox1.DragEnter
+        If e.Data.GetDataPresent(DataFormats.FileDrop) Then
+            e.Effect = DragDropEffects.Copy
+        End If
+    End Sub
+
 
     Private Sub OnlookToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles mnuOnlook.Click
         Print("Onlook Viewer will be launched on Startup")
@@ -908,13 +974,13 @@ Public Class Form1
     Private Sub MoreContentToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles MoreContentToolStripMenuItem.Click
         Dim webAddress As String = "http://www.outworldz.com/cgi/freesculpts.plx"
         Process.Start(webAddress)
-        Print(" Drag and drop OAR or IAR files here to load them whenever the sim starts")
+        Print("Drag and drop OAR or IAR files here to load them whenever the sim starts")
     End Sub
     Private Sub ExitAll()
 
         ws.StopWebServer()
 
-        Log("Info:using mysqladmin tio close db")
+        Log("Info:using mysqladmin to close db")
         Dim p As Process = New Process()
         Dim pi As ProcessStartInfo = New ProcessStartInfo()
         pi.Arguments = "-u root shutdown"
@@ -961,9 +1027,11 @@ Public Class Form1
 
         Print("Starting Database")
 
-        SetIni(MyFolder & "\OutworldzFiles\mysql\my.ini", "mysqld", "basedir", """" + gCurSlashDir + "/OutworldzFiles/Mysql" + """", "#")
-        SetIni(MyFolder & "\OutworldzFiles\mysql\My.ini", "mysqld", "datadir", """" + gCurSlashDir + "/OutworldzFiles/Mysql/Data" + """", "#")
-        SetIni(MyFolder & "\OutworldzFiles\mysql\My.ini", "client", "port", My.Settings.MySqlPort, "#")
+        LoadIni(MyFolder & "\OutworldzFiles\mysql\my.ini")
+        SetIni("mysqld", "basedir", """" + gCurSlashDir + "/OutworldzFiles/Mysql" + """", "#")
+        SetIni("mysqld", "datadir", """" + gCurSlashDir + "/OutworldzFiles/Mysql/Data" + """", "#")
+        SetIni("client", "port", My.Settings.MySqlPort, "#")
+        SaveINI()
 
         Dim pi As ProcessStartInfo = New ProcessStartInfo()
         pi.Arguments = "--defaults-file=" + gCurSlashDir + "/OutworldzFiles/mysql/my.ini"
@@ -977,7 +1045,7 @@ Public Class Form1
         ' Check for MySql operation
         Dim Mysql = False
         ' wait for MySql to come up 
-        Mysql = CheckPort("127.0.0.1", My.Settings.MySqlPort) ' !!!
+        Mysql = CheckPort("127.0.0.1", My.Settings.MySqlPort)
         While Not Mysql
             ProgressBar1.Value = ProgressBar1.Value + 1
             Application.DoEvents()
@@ -1037,44 +1105,20 @@ Public Class Form1
     Private Sub Start_Opensimulator(iProgress As Integer)
 
         Print("Starting Opensimulator")
-        Dim pi As ProcessStartInfo = New ProcessStartInfo()
-        pi.WorkingDirectory = MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\"
 
-        If ContentLoading Then
+        If mnuShow.Checked Then
             Log("Info:Opensim console is forced visible")
-            pi.Arguments = ""
-            pi.WindowStyle = ProcessWindowStyle.Normal
             Print("Please wait for the console to show 'LOGINS ENABLED'. It will take a while to load. ")
-        ElseIf mnuHide.Checked Then
-            Log("Info:Opensim console is hidden")
-            pi.Arguments = "-console rest -background True "
-            pi.WindowStyle = ProcessWindowStyle.Hidden
+            Boot(AppWinStyle.NormalFocus)
         Else
-            Log("Info:Opensim console is visible")
-            pi.Arguments = ""
-            pi.WindowStyle = ProcessWindowStyle.Normal
+            Boot(AppWinStyle.MinimizedNoFocus)
+            Log("Info:Opensim console is Minimized")
         End If
-
-        pi.FileName = MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\OpenSim.exe"
-        pOpensim.StartInfo = pi
-
-        Try
-            pOpensim.Start()
-        Catch
-            Dim yesno = MsgBox("Opensim did not start. Do you want to see the log file?", vbYesNo)
-            If (yesno = vbYes) Then
-                Dim Log As String = MyFolder + "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\OpenSim.log"
-                System.Diagnostics.Process.Start("wordpad.exe", Log)
-            End If
-            KillAll()
-            Buttons(StartButton)
-            Return
-        End Try
 
         ' Wait for Opensim to start listening via wifi
         Dim Up = ""
         Try
-            Up = client.DownloadString("http://127.0.0.1:" + +My.Settings.WifiPort + "/?r=" + Random())
+            Up = client.DownloadString("http://127.0.0.1:" + +My.Settings.PublicPort + "/?r=" + Random())
         Catch ex As Exception
             Up = ""
         End Try
@@ -1106,13 +1150,31 @@ Public Class Form1
         ProgressBar1.Value = iProgress
 
     End Sub
+    Sub Boot(Show As AppWinStyle)
+
+        Try
+            ChDir(MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\")
+            OpensimProcID = Shell(MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\OpenSim.exe", Show)
+            ChDir(MyFolder)
+        Catch
+            Dim yesno = MsgBox("Opensim did not start. Do you want to see the log file?", vbYesNo)
+            If (yesno = vbYes) Then
+                Dim Log As String = MyFolder + "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\OpenSim.log"
+                System.Diagnostics.Process.Start("wordpad.exe", Log)
+            End If
+            KillAll()
+            Buttons(StartButton)
+            Return
+        End Try
+    End Sub
+
 
     Private Sub Onlook(progess As Integer)
         If My.Settings.Onlook Then
             Print("Starting Onlook viewer")
             Dim pi As ProcessStartInfo = New ProcessStartInfo()
             pi.Arguments = ""
-            pi.FileName = "C: \Program Files (x86)\Onlook\OnLookViewer.exe"
+            pi.FileName = "C:\Program Files (x86)\Onlook\OnLookViewer.exe"
             pi.WindowStyle = ProcessWindowStyle.Normal
             pOnlook.StartInfo = pi
             Try
@@ -1133,17 +1195,18 @@ Public Class Form1
         ActualForm.Visible = True
     End Sub
 
-    Private Sub ConsoleToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ConsoleTool.Click
-        ActualForm = New ConsoleForm ' Bring the form into memory 
-        ' Set the new form's desktop location so it appears below and 
-        ' to the right of the current form.
-        ConsoleForm.SetDesktopLocation(200, 200)
-        ConsoleForm.Activate()
-        ConsoleForm.Visible = True
-    End Sub
-
     Private Sub InstallGridXML(iProgress As Integer)
 
+
+        If System.IO.File.Exists(xmlPath() + "\AppData\Roaming\Onlook\user_settings\settings_onlook.xml") Then
+            My.Settings.ViewerInstalled = True
+        End If
+
+
+        If Not My.Settings.ViewerInstalled Then
+            Log("Info:OnLook viewer is not installed")
+            Return
+        End If
         ' we have to change the viewer Grid settings if we are on localhost
         Print("Setting Grid Info...")
         Try
@@ -1168,7 +1231,6 @@ Public Class Form1
         Catch
             Log("Error:failed to restore Onlook xml backup")
         End Try
-
     End Sub
 
     Private Sub ToolStripMenuItem1_Click(sender As Object, e As EventArgs) Handles ToolStripMenuItem1.Click
@@ -1255,7 +1317,7 @@ Public Class Form1
                 Log(line)
                 Dim OarMenu As New ToolStripMenuItem
                 OarMenu.Text = line
-                OarMenu.ToolTipText = "CLick to load this content the next time the simulator is started"
+                OarMenu.ToolTipText = "Cick to load this content"
                 OarMenu.DisplayStyle = ToolStripItemDisplayStyle.Text
                 AddHandler OarMenu.Click, New EventHandler(AddressOf OarCick)
                 IslandToolStripMenuItem.Visible = True
@@ -1298,14 +1360,14 @@ Public Class Form1
     Private Sub OarCick(sender As Object, e As EventArgs)
         Dim file = Mid(sender.text, 1, InStr(sender.text, "|") - 2)
         file = "http://www.Outworldz.com/Outworldz_Installer/OAR/" + file 'make a real URL
-        SimContent(file, "oar")
+        LoadOARContent(file)
         sender.checked = True
         Print("Opensimulator will load " + file + " when restarted.  This may take time to load.")
     End Sub
     Private Sub IarClick(sender As Object, e As EventArgs)
         Dim file = Mid(sender.text, 1, InStr(sender.text, "|") - 2)
         file = "http://www.Outworldz.com/Outworldz_Installer/IAR/" + file 'make a real URL
-        SimContent(file, "iar")
+        LoadIARContent(file)
         sender.checked = True
         Print("Opensimulator will load " + file + " when restarted.  This may take time to load.")
     End Sub
@@ -1317,8 +1379,8 @@ Public Class Form1
                                   "Yawns, and stretches ...",
                                   "Wakes up and rolls over ...",
                                   "You look more beautiful every time I wake up.",
-                                  "Zzzz... !!! Ooooh, I need coffee before I go to work.",
-                                  "Nooo  is it already time to wake up?",
+                                  "Zzzz...  Ooooh, I need coffee before I go to work.",
+                                  "Nooo... is it already time to wake up?",
                                   "Mmmm, I was sleeping...",
                                   "What a dream that was!",
                                   "Do you ever dream of better worlds? I just did."
@@ -1355,7 +1417,7 @@ Public Class Form1
 
         Dim value1 As Integer = CInt(Int((Prefix.Length - 1) * Rnd()))
         Dim value2 As Integer = CInt(Int((Array.Length - 1) * Rnd()))
-        Dim whattosay = Prefix(value1) + vbCrLf + vbCrLf + Array(value2) + vbCrLf + "... And then I woke up."
+        Dim whattosay = Prefix(value1) + vbCrLf + vbCrLf + Array(value2) + " ... and then I woke up."
         Print(whattosay)
 
     End Sub
@@ -1422,17 +1484,7 @@ Public Class Form1
         Thread.Sleep(value)
     End Sub
 
-    Sub ClearOar()
-        If Not ContentLoading Then
-            ' remove the console startup file
-            Try
-                My.Computer.FileSystem.DeleteFile(MyFolder & "\OutworldzFiles\" + My.Settings.GridFolder & "\bin\startup_commands.txt")
-            Catch ex As Exception
-                Log("Info:no Opensim startup commands located")
-            End Try
-        End If
 
-    End Sub
     Private Sub CHeckForUpdatesToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CHeckForUpdatesToolStripMenuItem.Click
 
         CheckForUpdates(True) 'be chatty = true
@@ -1448,7 +1500,7 @@ Public Class Form1
         UpdaterGo.Enabled = False
         UpdaterCancel.Visible = False
         Dim fileloaded As String = Download()
-        If (fileloaded.length) Then
+        If (fileloaded.Length) Then
             Dim pUpdate As Process = New Process()
             Dim pi As ProcessStartInfo = New ProcessStartInfo()
             pi.Arguments = ""
@@ -1508,31 +1560,101 @@ Public Class Form1
             Log("Dang:The Outworld web site is down")
         End Try
         If (Update = "") Then Update = "0"
-        If CSng(Update) > MyVersion Then
-            Print("I am Outworldz version " + Str(MyVersion) + vbCrLf + "A dreamier version " + Update + " is available.")
+        If CSng(Update) > CSng(MyVersion) Then
+            Print("I am Outworldz version " + MyVersion + vbCrLf + "A dreamier version " + Update + " is available.")
             UpdaterGo.Visible = True
             UpdaterGo.Enabled = True
             UpdaterCancel.Visible = True
         Else
             If chatty Then
-                Print("I am the dreamiest version available.")
+                Print("I am the dreamiest version available. (V " + MyVersion + ")")
             End If
         End If
 
     End Sub
 
     Private Sub PaintImage()
-        Try
-            Dim myWebClient As New WebClient()
-
-            myWebClient.DownloadFile("http://www.outworldz.com/Outworldz_Installer/wallpaper.plx?r=" + Random(), "wallpaper.bmp")
-            Dim yImage = New Bitmap("wallpaper.bmp")
-            PictureBox1.Image = yImage
+        Dim thisimage = My.Settings.ImageNum
+        If (My.Settings.TimerInterval > 0) Then
+            ProgressBar1.Visible = False
             TextBox1.Visible = False
-        Catch ex As Exception
-            Log("Warn:" + ex.Message)
-        End Try
+            PictureBox1.Enabled = True
+            PictureBox1.Image = images(thisimage)
+            PictureBox1.Visible = True
+
+            My.Settings.ImageNum = My.Settings.ImageNum + 1
+            If (My.Settings.ImageNum > images.Count - 1) Then
+                My.Settings.ImageNum = 0
+            End If
+            My.Settings.Save()
+
+            Timer1.Interval = My.Settings.TimerInterval * 1000
+        End If
     End Sub
+
+    Private Sub Timer1_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Timer1.Tick
+        PaintImage()
+    End Sub
+
+    Private Sub LoadBackupToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles LoadBackupToolStripMenuItem.Click
+
+        ' Create an instance of the open file dialog box.
+        Dim openFileDialog1 As OpenFileDialog = New OpenFileDialog
+
+        ' Set filter options and filter index.
+        openFileDialog1.Filter = "Opensim Backup Files (*.OAR)|(*.IAR)|(*.GZ)|(*.TGZ)|All Files (*.*)|*.*"
+        openFileDialog1.FilterIndex = 1
+        openFileDialog1.Multiselect = False
+
+        ' Call the ShowDialog method to show the dialogbox.
+        Dim UserClickedOK As Boolean = openFileDialog1.ShowDialog
+
+        ' Process input if the user clicked OK.
+        If (UserClickedOK = True) Then
+
+            Dim thing = openFileDialog1.FileName
+            If thing.Length Then
+                thing = thing.Replace("\", "/")    ' because Opensim uses unix-like slashes, that's why
+                AppActivate(OpensimProcID)
+                My.Computer.Keyboard.SendKeys("alert CPU Intensive Backup Started{ENTER}", True)
+                My.Computer.Keyboard.SendKeys("save oar " + MyFolder + "/OutworldzFiles/Autobackup/Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar{ENTER}", True)
+                My.Computer.Keyboard.SendKeys("alert New content is loading..{ENTER}")
+                My.Computer.Keyboard.SendKeys("load oar " + Chr(34) + thing + Chr(34))
+                My.Computer.Keyboard.SendKeys("alert New content just loaded.")
+                Me.Focus()
+
+            End If
+        End If
+
+    End Sub
+
+    Private Sub CheckDatabaseToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CheckDatabaseToolStripMenuItem.Click
+
+        Dim pi As ProcessStartInfo = New ProcessStartInfo()
+
+        ChDir(MyFolder & "\OutworldzFiles\mysql\bin")
+        pi.WindowStyle = ProcessWindowStyle.Normal
+        pi.FileName = "CheckAndRepair.bat"
+        pMySqlDiag.StartInfo = pi
+        pMySqlDiag.Start()
+        pMySqlDiag.WaitForExit()
+        ChDir(MyFolder)
+
+    End Sub
+
+    Private Sub TextBox1_Click(sender As Object, e As EventArgs) Handles TextBox1.Click
+        PaintImage()
+    End Sub
+
+    Private Sub PictureBox1_Click(sender As Object, e As EventArgs) Handles PictureBox1.Click
+        PaintImage()
+    End Sub
+
+    Private Sub ShowHyperGridAddressToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ShowHyperGridAddressToolStripMenuItem.Click
+        Print("Hypergrid address is http://" + My.Settings.PublicIP + ":" + My.Settings.PublicPort)
+    End Sub
+
+
 #End Region
 
 End Class

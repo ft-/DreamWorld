@@ -12,7 +12,7 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="GridFolder" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Hypergrid</Value>
+      <Value Profile="(Default)">Opensim</Value>
     </Setting>
     <Setting Name="AutoBackup" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
@@ -27,7 +27,7 @@
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="SimName" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Outworldz</Value>
+      <Value Profile="(Default)">DreamWorld</Value>
     </Setting>
     <Setting Name="CoordX" Type="System.String" Scope="User">
       <Value Profile="(Default)">2000</Value>
@@ -43,9 +43,6 @@
     </Setting>
     <Setting Name="SizeY" Type="System.String" Scope="User">
       <Value Profile="(Default)">256</Value>
-    </Setting>
-    <Setting Name="WifiPort" Type="System.String" Scope="User">
-      <Value Profile="(Default)">8000</Value>
     </Setting>
     <Setting Name="LoopBack" Type="System.String" Scope="User">
       <Value Profile="(Default)">8001</Value>
@@ -84,7 +81,40 @@
       <Value Profile="(Default)">8004</Value>
     </Setting>
     <Setting Name="ChatTime" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">500</Value>
+      <Value Profile="(Default)">1000</Value>
+    </Setting>
+    <Setting Name="ViewerInstalled" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="ImageNum" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="allow_grid_gods" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="region_owner_is_god" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="region_manager_is_god" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="parcel_owner_is_god" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="TimerInterval" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">60</Value>
+    </Setting>
+    <Setting Name="AccountConfirmationRequired" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="SmtpUsername" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Gmail for notifcation</Value>
+    </Setting>
+    <Setting Name="SmtpPassword" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Gmal password</Value>
+    </Setting>
+    <Setting Name="Language" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
     </Setting>
   </Settings>
 </SettingsFile>

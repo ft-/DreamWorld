@@ -17,7 +17,7 @@
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
     <IsWebBootstrapper>false</IsWebBootstrapper>
-    <PublishUrl>C:\Opensim\</PublishUrl>
+    <PublishUrl>C:\Opensim\DreamWorld-GitHub\Publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
     <UpdateEnabled>true</UpdateEnabled>
@@ -34,8 +34,8 @@
     <ProductName>DreamWorld Installer</ProductName>
     <PublisherName>Outworldz.com</PublisherName>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.4.0.%2a</ApplicationVersion>
+    <ApplicationRevision>2</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>false</BootstrapperEnabled>
@@ -147,12 +147,6 @@
     <Compile Include="ApplicationEvents.vb" />
     <Compile Include="ClassUPnP.vb" />
     <Compile Include="ClassWebServer.vb" />
-    <Compile Include="Console.Designer.vb">
-      <DependentUpon>Console.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Console.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="FormAdvanced.Designer.vb">
       <DependentUpon>FormAdvanced.vb</DependentUpon>
     </Compile>
@@ -179,9 +173,6 @@
   <ItemGroup>
     <EmbeddedResource Include="..\..\..\Setup.resx">
       <DependentUpon>Setup.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Console.resx">
-      <DependentUpon>Console.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormAdvanced.resx">
       <DependentUpon>FormAdvanced.vb</DependentUpon>
@@ -254,7 +245,17 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="cubes.ico" />
-    <None Include="Resources\ChinaRed.bmp" />
+    <None Include="Resources\tangled.bmp" />
+    <None Include="Resources\data.png" />
+    <None Include="Resources\BuiltbyFred.jpg" />
+    <None Include="Resources\window_environment1.png" />
+    <Content Include="Resources\wp_habitat.gif" />
+    <Content Include="Resources\wp_Inside_in_shadows.gif" />
+    <Content Include="Resources\wp_Mooferd.gif" />
+    <Content Include="Resources\wp_Que.gif" />
+    <Content Include="Resources\wp_To_Piers_Anthony.gif" />
+    <Content Include="Resources\wp_wavy_love_of_animals.gif" />
+    <Content Include="Resources\wp_zebra.gif" />
     <None Include="Resources\download1.png" />
     <None Include="Resources\TPV-Black_Dragon-Icon.png" />
     <None Include="Resources\TPV-Singularity-Icon.png" />
@@ -293,6 +294,7 @@
     <None Include="Resources\window_add.png" />
     <None Include="Resources\error.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

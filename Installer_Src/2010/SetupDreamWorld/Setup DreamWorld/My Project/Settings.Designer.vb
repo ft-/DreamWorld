@@ -92,7 +92,7 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("Hypergrid")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("Opensim")>  _
         Public Property GridFolder() As String
             Get
                 Return CType(Me("GridFolder"),String)
@@ -152,7 +152,7 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("Outworldz")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("DreamWorld")>  _
         Public Property SimName() As String
             Get
                 Return CType(Me("SimName"),String)
@@ -219,18 +219,6 @@ Namespace My
             End Get
             Set
                 Me("SizeY") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("8000")>  _
-        Public Property WifiPort() As String
-            Get
-                Return CType(Me("WifiPort"),String)
-            End Get
-            Set
-                Me("WifiPort") = value
             End Set
         End Property
         
@@ -380,13 +368,145 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("500")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("1000")>  _
         Public Property ChatTime() As Integer
             Get
                 Return CType(Me("ChatTime"),Integer)
             End Get
             Set
                 Me("ChatTime") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public Property ViewerInstalled() As Boolean
+            Get
+                Return CType(Me("ViewerInstalled"),Boolean)
+            End Get
+            Set
+                Me("ViewerInstalled") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("0")>  _
+        Public Property ImageNum() As Integer
+            Get
+                Return CType(Me("ImageNum"),Integer)
+            End Get
+            Set
+                Me("ImageNum") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public Property allow_grid_gods() As Boolean
+            Get
+                Return CType(Me("allow_grid_gods"),Boolean)
+            End Get
+            Set
+                Me("allow_grid_gods") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public Property region_owner_is_god() As Boolean
+            Get
+                Return CType(Me("region_owner_is_god"),Boolean)
+            End Get
+            Set
+                Me("region_owner_is_god") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public Property region_manager_is_god() As Boolean
+            Get
+                Return CType(Me("region_manager_is_god"),Boolean)
+            End Get
+            Set
+                Me("region_manager_is_god") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public Property parcel_owner_is_god() As Boolean
+            Get
+                Return CType(Me("parcel_owner_is_god"),Boolean)
+            End Get
+            Set
+                Me("parcel_owner_is_god") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("60")>  _
+        Public Property TimerInterval() As Integer
+            Get
+                Return CType(Me("TimerInterval"),Integer)
+            End Get
+            Set
+                Me("TimerInterval") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("True")>  _
+        Public Property AccountConfirmationRequired() As Boolean
+            Get
+                Return CType(Me("AccountConfirmationRequired"),Boolean)
+            End Get
+            Set
+                Me("AccountConfirmationRequired") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("Gmail for notifcation")>  _
+        Public Property SmtpUsername() As String
+            Get
+                Return CType(Me("SmtpUsername"),String)
+            End Get
+            Set
+                Me("SmtpUsername") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("Gmal password")>  _
+        Public Property SmtpPassword() As String
+            Get
+                Return CType(Me("SmtpPassword"),String)
+            End Get
+            Set
+                Me("SmtpPassword") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("0")>  _
+        Public Property Language() As Integer
+            Get
+                Return CType(Me("Language"),Integer)
+            End Get
+            Set
+                Me("Language") = value
             End Set
         End Property
     End Class

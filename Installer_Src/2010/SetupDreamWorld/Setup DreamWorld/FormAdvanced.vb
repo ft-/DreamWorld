@@ -58,15 +58,28 @@
             ChatSpeed.SelectedIndex = 3
         End If
 
-
         DiagPort.Text = My.Settings.LoopBack
-        WifiPort.Text = My.Settings.WifiPort
+
         Mysql.Text = My.Settings.MySqlPort
         AutoBackup.Checked = My.Settings.AutoBackup
         Password.Text = My.Settings.Password
         AdminLast.Text = My.Settings.AdminLast
         AdminFirst.Text = My.Settings.AdminFirst
         RegionPort.Text = My.Settings.RegionPort
+
+        AllowGod.Checked = My.Settings.allow_grid_gods
+        RegionGod.Checked = My.Settings.region_owner_is_god
+        ManagerGod.Checked = My.Settings.region_manager_is_god
+        ParcelGod.Checked = My.Settings.parcel_owner_is_god
+
+        TimerInterval.Text = Str(My.Settings.TimerInterval)
+        AdminEmail.Text = My.Settings.AdminEmail
+
+        AccountConfirmationRequired.Checked = My.Settings.AccountConfirmationRequired
+
+        SmtpPassword.Text = My.Settings.SmtpPassword
+        SmtpUsername.Text = My.Settings.SmtpUsername
+
 
     End Sub
 
@@ -78,7 +91,6 @@
             My.Settings.SizeY = "256"
             SizeX.Text = ""
             SizeY.Text = ""
-            My.Settings.Save()
         End If
 
     End Sub
@@ -91,7 +103,6 @@
             My.Settings.SizeY = "512"
             SizeX.Text = ""
             SizeY.Text = ""
-            My.Settings.Save()
         End If
     End Sub
 
@@ -103,7 +114,6 @@
             My.Settings.SizeY = "1024"
             SizeX.Text = ""
             SizeY.Text = ""
-            My.Settings.Save()
         End If
     End Sub
 
@@ -113,7 +123,6 @@
             CheckBox512.Checked = False
             CheckBox1024.Checked = False
             My.Settings.SizeX = SizeX.Text
-            My.Settings.Save()
         End If
     End Sub
 
@@ -123,47 +132,36 @@
             CheckBox512.Checked = False
             CheckBox1024.Checked = False
             My.Settings.SizeY = SizeY.Text
-            My.Settings.Save()
         End If
     End Sub
 
     Private Sub PrivatePort_TextChanged(sender As Object, e As EventArgs) Handles PrivatePort.TextChanged
         My.Settings.PrivatePort = PrivatePort.Text
-        My.Settings.Save()
     End Sub
 
     Private Sub PublicPort_TextChanged(sender As Object, e As EventArgs) Handles PublicPort.TextChanged
         My.Settings.PublicPort = PublicPort.Text
-        My.Settings.Save()
     End Sub
     Private Sub RegionPort_TextChanged(sender As Object, e As EventArgs) Handles RegionPort.TextChanged
         My.Settings.RegionPort = RegionPort.Text
-        My.Settings.Save()
     End Sub
 
     Private Sub Form2_Closed(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Closed
-        'My.Settings.Save()
+        My.Settings.Save()
         Form1.ActualForm = Nothing
     End Sub
 
-    Private Sub TextBox1_TextChanged(sender As Object, e As EventArgs) Handles WifiPort.TextChanged
-        My.Settings.WifiPort = WifiPort.Text
-        My.Settings.Save()
-    End Sub
 
     Private Sub DiagPort_TextChanged(sender As Object, e As EventArgs) Handles DiagPort.TextChanged
         My.Settings.LoopBack = DiagPort.Text
-        My.Settings.Save()
     End Sub
 
     Private Sub TextBox1_TextChanged_1(sender As Object, e As EventArgs) Handles Mysql.TextChanged
         My.Settings.MySqlPort = Mysql.Text
-        My.Settings.Save()
     End Sub
 
     Private Sub ABEnabled_CheckedChanged(sender As Object, e As EventArgs) Handles AutoBackup.CheckedChanged
         My.Settings.AutoBackup = AutoBackup.Checked
-        My.Settings.Save()
     End Sub
 
     Private Sub AutoBackupInterval_SelectedIndexChanged(sender As Object, e As EventArgs) Handles AutoBackupInterval.SelectedIndexChanged
@@ -175,29 +173,24 @@
         If text = "Weekly" Then Interval = 60 * 24 * 7
 
         My.Settings.AutobackupInterval = Interval
-        My.Settings.Save()
     End Sub
 
     Private Sub AutoBackupKeepFilesForDays_TextChanged(sender As Object, e As EventArgs) Handles AutoBackupKeepFilesForDays.TextChanged
         If Convert.ToInt32(AutoBackupKeepFilesForDays.Text) > 0 Then
             My.Settings.KeepForDays = Convert.ToInt32(AutoBackupKeepFilesForDays.Text)
-            My.Settings.Save()
         End If
     End Sub
 
     Private Sub TextBox1_TextChanged_2(sender As Object, e As EventArgs) Handles AdminFirst.TextChanged
         My.Settings.AdminFirst = AdminFirst.Text
-        My.Settings.Save()
     End Sub
 
     Private Sub AdminLast_TextChanged(sender As Object, e As EventArgs) Handles AdminLast.TextChanged
         My.Settings.AdminLast = AdminLast.Text
-        My.Settings.Save()
     End Sub
 
     Private Sub Password_TextChanged(sender As Object, e As EventArgs) Handles Password.TextChanged
         My.Settings.Password = Password.Text
-        My.Settings.Save()
     End Sub
 
     Private Sub ChatSpeed_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ChatSpeed.SelectedIndexChanged
@@ -212,7 +205,43 @@
 
         My.Settings.ChatTime = ChatTime
         Form1.gChatTime = ChatTime
-        My.Settings.Save()
-
     End Sub
+
+    Private Sub AllowGod_CheckedChanged(sender As Object, e As EventArgs) Handles AllowGod.CheckedChanged
+        My.Settings.allow_grid_gods = AllowGod.Checked
+    End Sub
+
+    Private Sub RegionGod_CheckedChanged(sender As Object, e As EventArgs) Handles RegionGod.CheckedChanged
+        My.Settings.region_owner_is_god = RegionGod.Checked
+    End Sub
+
+    Private Sub ManagerGod_CheckedChanged(sender As Object, e As EventArgs) Handles ManagerGod.CheckedChanged
+        My.Settings.region_manager_is_god = ManagerGod.Checked
+    End Sub
+
+    Private Sub ParcelGod_CheckedChanged(sender As Object, e As EventArgs) Handles ParcelGod.CheckedChanged
+        My.Settings.parcel_owner_is_god = ParcelGod.Checked
+    End Sub
+
+    Private Sub TimerInterval_TextChanged(sender As Object, e As EventArgs) Handles TimerInterval.TextChanged
+        My.Settings.TimerInterval = CInt(TimerInterval.Text)
+    End Sub
+
+    Private Sub TextBox1_TextChanged_3(sender As Object, e As EventArgs) Handles AdminEmail.TextChanged
+        My.Settings.AdminEmail = AdminEmail.Text
+    End Sub
+
+    Private Sub AccountConfirmationRequired_CheckedChanged(sender As Object, e As EventArgs) Handles AccountConfirmationRequired.CheckedChanged
+        My.Settings.AccountConfirmationRequired = AccountConfirmationRequired.Checked
+    End Sub
+
+    Private Sub SmtpUsername_TextChanged(sender As Object, e As EventArgs) Handles SmtpUsername.TextChanged
+        My.Settings.SmtpUsername = SmtpUsername.Text
+    End Sub
+
+    Private Sub SmtpPassword_TextChanged(sender As Object, e As EventArgs) Handles SmtpPassword.TextChanged
+        My.Settings.SmtpPassword = SmtpPassword.Text
+    End Sub
+
+
 End Class

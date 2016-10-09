@@ -118,11 +118,11 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="gear_pause" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\gear_pause.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="TPV-Black_Dragon-Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\TPV-Black_Dragon-Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="about" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\about.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="TPV-Catznip-2-Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\TPV-Catznip-2-Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="disk_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\disk_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -154,11 +154,23 @@
   <data name="user2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\user2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="wp_Inside_in_shadows" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\wp_Inside_in_shadows.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="recycle" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\recycle.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="data" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\data.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="window_edit" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\window_edit.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="tangled1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\tangled.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="about" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\about.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="window_add" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\window_add.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -172,6 +184,9 @@
   <data name="window_environment" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\window_environment.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="BuiltbyFred" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\BuiltbyFred.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="question_and_answer" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\question_and_answer.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -181,20 +196,35 @@
   <data name="users1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\users1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="disk_blue1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\disk_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="wp_wavy_love_of_animals" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\wp_wavy_love_of_animals.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="wp_Mooferd" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\wp_Mooferd.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="wp_Que" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\wp_Que.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="download" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\download.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="wp_zebra" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\wp_zebra.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="TPV-Kokua-Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\TPV-Kokua-Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="gear_pause" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\gear_pause.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="error" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\error.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="replace2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\replace2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="wp_habitat" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\wp_habitat.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="document_connection" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\document_connection.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -211,8 +241,8 @@
   <data name="earth_network" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\earth_network.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="TPV-Black_Dragon-Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\TPV-Black_Dragon-Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="disk_blue1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\disk_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="server_client" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\server_client.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -220,8 +250,11 @@
   <data name="flash" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\flash.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="TPV-Catznip-2-Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\TPV-Catznip-2-Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="tangled" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\tangled.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="wp_To_Piers_Anthony" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\wp_To_Piers_Anthony.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="TPV-UKanDo-Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\TPV-UKanDo-Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -229,7 +262,7 @@
   <data name="TPV-Firestorm-Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\TPV-Firestorm-Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="ChinaRed" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ChinaRed.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="window_environment1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\window_environment1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

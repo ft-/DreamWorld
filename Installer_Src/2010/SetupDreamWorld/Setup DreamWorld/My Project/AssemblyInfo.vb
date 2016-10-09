@@ -12,7 +12,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyTitle("DreamWorld")>
 <Assembly: AssemblyDescription("Virtual World installer for Opensimulator")>
 <Assembly: AssemblyCompany("Outworldz.com")>
-<Assembly: AssemblyProduct("Outworldz")>
+<Assembly: AssemblyProduct("DreamWorld")>
 <Assembly: AssemblyCopyright("Copyright ©  2013")>
 <Assembly: AssemblyTrademark("")>
 

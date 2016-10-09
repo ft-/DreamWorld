@@ -1,0 +1,14 @@
+###############################################
+#	           ATTENTION                  #
+#                                             #
+#                                             #
+###                                         ###
+#   MEGA-REGIONS HAVE BEEN MARKED DEPRECATED  #
+# AND WILL BE DISCONTINUED IN THE NEXT RELEASE#
+#     Don't miss variable-sized regions!      #
+#     See here how to update your world:      #
+#                                             #
+#    http://metaverseink.com/blog/?p=552      #
+#                                             #
+#                                             #
+###############################################

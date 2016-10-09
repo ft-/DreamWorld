@@ -123,9 +123,9 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
-        Friend ReadOnly Property ChinaRed() As System.Drawing.Bitmap
+        Friend ReadOnly Property BuiltbyFred() As System.Drawing.Bitmap
             Get
-                Dim obj As Object = ResourceManager.GetObject("ChinaRed", resourceCulture)
+                Dim obj As Object = ResourceManager.GetObject("BuiltbyFred", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -136,6 +136,16 @@ Namespace My.Resources
         Friend ReadOnly Property cube_blue() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("cube_blue", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property data() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("data", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -276,6 +286,26 @@ Namespace My.Resources
         Friend ReadOnly Property server_client() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("server_client", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property tangled() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("tangled", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property tangled1() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("tangled1", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -436,6 +466,86 @@ Namespace My.Resources
         Friend ReadOnly Property window_environment() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("window_environment", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property window_environment1() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("window_environment1", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property wp_habitat() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("wp_habitat", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property wp_Inside_in_shadows() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("wp_Inside_in_shadows", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property wp_Mooferd() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("wp_Mooferd", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property wp_Que() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("wp_Que", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property wp_To_Piers_Anthony() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("wp_To_Piers_Anthony", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property wp_wavy_love_of_animals() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("wp_wavy_love_of_animals", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property wp_zebra() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("wp_zebra", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property

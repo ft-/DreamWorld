@@ -18,7 +18,7 @@
         <key>locked</key>
             <boolean>0</boolean>
         <key>loginpage</key>
-            <string>http://127.0.0.1:8002/wifi/</string>
+            <string>http://www.outworldz.com/Outworldz_installer/Welcome.htm</string>
         <key>loginuri</key>
             <string>http://127.0.0.1:8002/</string>
         <key>password</key>
