@@ -22,7 +22,7 @@ Public Class Form1
 
 #Region "Declarations"
     Dim MyVersion As String = "0.8"
-    Dim DebugPath As String = "C:\Outworldz"
+    Dim DebugPath As String = "C:\Opensim\Outworldz"
     Dim remoteUri As String = "http://www.outworldz.com/Outworldz_Installer/" ' requires trailing slash
     Dim gCurDir As String   ' Holds the current folder that we are running in
     Dim gCurSlashDir As String '  holds the current directory info in Unix format
@@ -39,7 +39,7 @@ Public Class Form1
     Private Shared m_ActiveForm As Form
     Dim Data As IniParser.Model.IniData
     Private randomnum As New Random
-    Dim parser As FileIniDataParser = New FileIniDataParser()
+    Dim parser As FileIniDataParser
     Dim gINI As String
     Private images =
     New List(Of Image) From {My.Resources.tangled,
@@ -490,21 +490,27 @@ Public Class Form1
     End Sub
 
     ' currently unused
-    Private Function GetIni(filepath As String, section As String, key As String) As String
+    Private Function GetIni(filepath As String, section As String, key As String, delim As String) As String
         ' gets values from an INI file
         Dim parser = New FileIniDataParser()
-        parser.Parser.Configuration.CommentString = ";" ' Opensim uses semicolons
+        parser.Parser.Configuration.SkipInvalidLines = True
+        parser.Parser.Configuration.CommentString = delim ' Opensim uses semicolons
+
         Dim Data = parser.ReadFile(filepath)
         GetIni = Data(section)(key)
     End Function
-    Private Sub LoadIni(filepath As String)
+    Private Sub LoadIni(filepath As String, delim As String)
+        parser = New FileIniDataParser()
+        parser.Parser.Configuration.SkipInvalidLines = True
+        parser.Parser.Configuration.CommentString = delim ' Opensim uses semicolons
+
         Data = parser.ReadFile(filepath)
         gINI = filepath
     End Sub
-    Private Sub SetIni(section As String, key As String, value As String, delim As String)
+    Private Sub SetIni(section As String, key As String, value As String)
         ' sets values into any INI file
-        parser.Parser.Configuration.CommentString = delim ' Opensim uses semicolons
-        parser.Parser.Configuration.SkipInvalidLines = True
+
+
         Try
             Log("Info:Writing '" + gINI + " section [" + section + "] " + key + "=" + value)
             Data(section)(key) = value ' replace it and save it
@@ -558,15 +564,15 @@ Public Class Form1
             Log("Info:Console will not be shown")
         End If
 
-        LoadIni(MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\config-include\MyWorld.ini")
+        LoadIni(MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\config-include\MyWorld.ini", ";")
 
         ' Viewer UI shows the full viewer UI
         If My.Settings.ViewerEase Then
             Log("Info:Viewer set to Easy")
-            SetIni("SpecialUIModule", "enabled", "false", ";")
+            SetIni("SpecialUIModule", "enabled", "false")
         Else
             Log("Info:Viewer set to Normal")
-            SetIni("SpecialUIModule", "enabled", "true", ";")
+            SetIni("SpecialUIModule", "enabled", "true")
         End If
 
 
@@ -576,65 +582,65 @@ Public Class Form1
         'Avatar visible?
         If My.Settings.AvatarShow Then
             Log("Info:Showing the avatar")
-            SetIni("CameraOnlyModeModule", "enabled", "false", ";")
+            SetIni("CameraOnlyModeModule", "enabled", "false")
         Else
             Log("Info:Set to not show avatar")
-            SetIni("CameraOnlyModeModule", "enabled", "true", ";")
+            SetIni("CameraOnlyModeModule", "enabled", "true")
         End If
 
 
         Log("Info:Saving Wifi Admin for " + My.Settings.AdminFirst + " " + My.Settings.AdminLast)
-        SetIni("WifiService", "AdminFirst", """" + My.Settings.AdminFirst + """", ";")
-        SetIni("WifiService", "AdminLast", """" + My.Settings.AdminLast + """", ";")
-        SetIni("WifiService", "AdminPassword", """" + My.Settings.Password + """", ";")
-        SetIni("WifiService", "AdminPassword", """" + My.Settings.Password + """", ";")
-        SetIni("Network", "ConsoleUser", """" + My.Settings.ConsoleUser + """", ";")
-        SetIni("Network", "ConsolePass", """" + My.Settings.ConsolePass + """", ";")
+        SetIni("WifiService", "AdminFirst", """" + My.Settings.AdminFirst + """")
+        SetIni("WifiService", "AdminLast", """" + My.Settings.AdminLast + """")
+        SetIni("WifiService", "AdminPassword", """" + My.Settings.Password + """")
+        SetIni("WifiService", "AdminPassword", """" + My.Settings.Password + """")
+        SetIni("Network", "ConsoleUser", """" + My.Settings.ConsoleUser + """")
+        SetIni("Network", "ConsolePass", """" + My.Settings.ConsolePass + """")
 
         If (My.Settings.allow_grid_gods) Then
-            SetIni("Permissions", "allow_grid_gods", "true", ";")
+            SetIni("Permissions", "allow_grid_gods", "true")
         Else
-            SetIni("Permissions", "allow_grid_gods", "false", ";")
+            SetIni("Permissions", "allow_grid_gods", "false")
         End If
 
         If (My.Settings.region_owner_is_god) Then
-            SetIni("Permissions", "region_owner_is_god", "true", ";")
+            SetIni("Permissions", "region_owner_is_god", "true")
         Else
-            SetIni("Permissions", "region_owner_is_god", "false", ";")
+            SetIni("Permissions", "region_owner_is_god", "false")
         End If
 
 
         If (My.Settings.region_manager_is_god) Then
-            SetIni("Permissions", "region_manager_is_god", "true", ";")
+            SetIni("Permissions", "region_manager_is_god", "true")
         Else
-            SetIni("Permissions", "region_manager_is_god", "false", ";")
+            SetIni("Permissions", "region_manager_is_god", "false")
         End If
 
         If (My.Settings.parcel_owner_is_god) Then
-            SetIni("Permissions", "parcel_owner_is_god", "true", ";")
+            SetIni("Permissions", "parcel_owner_is_god", "true")
         Else
-            SetIni("Permissions", "parcel_owner_is_god", "false", ";")
+            SetIni("Permissions", "parcel_owner_is_god", "false")
         End If
 
-        SetIni("WifiService", "AdminEmail", """" + My.Settings.AdminEmail + """", ";")
+        SetIni("WifiService", "AdminEmail", """" + My.Settings.AdminEmail + """")
 
         If My.Settings.AccountConfirmationRequired Then
-            SetIni("WifiService", "AccountConfirmationRequired", "true", ";")
+            SetIni("WifiService", "AccountConfirmationRequired", "true")
         Else
-            SetIni("WifiService", "AccountConfirmationRequired", "false", ";")
+            SetIni("WifiService", "AccountConfirmationRequired", "false")
         End If
 
         ' Autobackup
         If My.Settings.AutoBackup Then
             Log("Info:Autobackup is On")
-            SetIni("AutoBackupModule", "AutoBackup", "true", ";")
+            SetIni("AutoBackupModule", "AutoBackup", "true")
         Else
             Log("Info:Autobackup is Off")
-            SetIni("AutoBackupModule", "AutoBackup", "false", ";")
+            SetIni("AutoBackupModule", "AutoBackup", "false")
         End If
 
-        SetIni("AutoBackupModule", "AutoBackupInterval", My.Settings.AutobackupInterval, ";")
-        SetIni("AutoBackupModule", "AutoBackupKeepFilesForDays", My.Settings.KeepForDays, ";")
+        SetIni("AutoBackupModule", "AutoBackupInterval", My.Settings.AutobackupInterval)
+        SetIni("AutoBackupModule", "AutoBackupKeepFilesForDays", My.Settings.KeepForDays)
 
         SaveINI()
 
@@ -668,20 +674,20 @@ Public Class Form1
 
 
         ' RegionConfig
-        LoadIni(MyFolder + "\OutworldzFiles\" + My.Settings.GridFolder + "\bin\Regions\RegionConfig.ini")
-        SetIni("Outworldz", "SizeY", My.Settings.SizeY, ";")
-        SetIni("Outworldz", "SizeX", My.Settings.SizeX, ";")
+        LoadIni(MyFolder + "\OutworldzFiles\" + My.Settings.GridFolder + "\bin\Regions\RegionConfig.ini", ";")
+        SetIni("Outworldz", "SizeY", My.Settings.SizeY)
+        SetIni("Outworldz", "SizeX", My.Settings.SizeX)
 
-        Log("Info:Public IP is " + My.Settings.PublicIP)
-        SetIni("Outworldz", "ExternalHostName", My.Settings.PublicIP, ";")
-        SetIni("Outworldz", "InternalPort", My.Settings.RegionPort, ";")
+        Log("Info: Public IP Is " + My.Settings.PublicIP)
+        SetIni("Outworldz", "ExternalHostName", My.Settings.PublicIP)
+        SetIni("Outworldz", "InternalPort", My.Settings.RegionPort)
         SaveINI()
 
-        LoadIni(MyFolder + "\OutworldzFiles\" + My.Settings.GridFolder + "\bin\Opensim.ini")
+        LoadIni(MyFolder + "\OutworldzFiles\" + My.Settings.GridFolder + "\bin\Opensim.ini", ";")
         'Opensim.ini main settings only
-        SetIni("Const", "BaseURL", My.Settings.PublicIP, ";")
-        Log("Info:Public Port is " + My.Settings.PublicPort)
-        SetIni("Const", "PublicPort", My.Settings.PublicPort, ";")
+        SetIni("Const", "BaseURL", My.Settings.PublicIP)
+        Log("InfoPublic Port Is " + My.Settings.PublicPort)
+        SetIni("Const", "PublicPort", My.Settings.PublicPort)
         Log("Info:Wifi Port is " + My.Settings.PublicPort)
         SaveINI()
 
@@ -995,10 +1001,10 @@ Public Class Form1
 
         Print("Starting Database")
 
-        LoadIni(MyFolder & "\OutworldzFiles\mysql\my.ini")
-        SetIni("mysqld", "basedir", """" + gCurSlashDir + "/OutworldzFiles/Mysql" + """", "#")
-        SetIni("mysqld", "datadir", """" + gCurSlashDir + "/OutworldzFiles/Mysql/Data" + """", "#")
-        SetIni("client", "port", My.Settings.MySqlPort, "#")
+        LoadIni(MyFolder & "\OutworldzFiles\mysql\my.ini", "#")
+        SetIni("mysqld", "basedir", """" + gCurSlashDir + "/OutworldzFiles/Mysql" + """")
+        SetIni("mysqld", "datadir", """" + gCurSlashDir + "/OutworldzFiles/Mysql/Data" + """")
+        SetIni("client", "port", My.Settings.MySqlPort)
         SaveINI()
 
         Dim pi As ProcessStartInfo = New ProcessStartInfo()

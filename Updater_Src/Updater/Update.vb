@@ -13,8 +13,8 @@ Imports System.Threading
 Public Class Update
 
     Dim Version As String = "1.0"
-    'Dim Type As String = "Update"  ' possible server-side choices are "Update" and "Installer"
-    Dim Type As String = "Install"  ' possible server-side choices are "Update" and "Installer"
+    Dim Type As String = "Update"  ' possible server-side choices are "Update" and "Installer"
+    'Dim Type As String = "Install"  ' possible server-side choices are "Update" and "Installer"
 
     Dim gCurDir = Nothing   ' Holds the current folder that we are running in
     Dim gFileName As String = Nothing
@@ -35,8 +35,8 @@ Public Class Update
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
         Log("Version " + Version)
-        TextBox1.Visible = False
-        Me.Text = "Outworldz " + Type + " Version " + Version
+
+        Me.Text = "Outworldz " + Type + " V " + Version
         MyFolder = My.Application.Info.DirectoryPath
         ' I would like to buy an argument
         Dim arguments As String() = Environment.GetCommandLineArgs()
@@ -52,35 +52,22 @@ Public Class Update
         Label2.Text = ""
         Label3.Text = ""
 
-        ProgressBar1.Maximum = 100
-        ProgressBar1.Minimum = 0
-        ProgressBar1.Visible = False
-
-        ProgressBar1.Visible = False
-        btnDownload.Text = Type
-        btnCancel.Visible = False
-
-    End Sub
-
-    Private Sub btnDownload_Click(sender As Object, e As EventArgs) Handles btnDownload.Click
-        btnDownload.Visible = False
         btnCancel.Visible = True
 
-        ProgressBar1.Visible = True
         Dim filename = Nothing
         Try
             Dim client As New System.Net.WebClient
             filename = client.DownloadString("http://www.outworldz.com/Outworldz_Installer/GetUpdate.plx?t=" + Type + "&r= " + Random())
         Catch ex As Exception
-            Print("Drat!  The Outworldz web site won't talk to me.  No " + Type + "file found")
-            ProgressBar1.Value = 100
+            Label1.Text = "Drat!  The Outworldz web site won't talk to me.  No " + Type + "file found"
+
         End Try
 
         gFileName = "http://www.outworldz.com/Outworldz_Installer/Grid/" + filename
         If filename.length Then
             BackgroundWorker1.RunWorkerAsync() 'Start download
         Else
-            Print("Drat!  The Outworldz web site won't talk to me.  No " + Type + "file found")
+            Label1.Text = "Drat!  The Outworldz web site won't talk to me.  No " + Type + "file found"
         End If
     End Sub
 
@@ -94,7 +81,7 @@ Public Class Update
         Try
             Label1.Text = "Downloading Update, please wait..."
             'Label3.Text = "File Size: " & Math.Round((length / 1024), 2) & " KB"
-            Label2.Text = "Downloaded " & Math.Round((position / 1024), 2) & " KB of " & Math.Round((length / 1024), 2) & "KB (" & ProgressBar1.Value & "%)"
+            Label2.Text = "Downloaded " & Math.Round((position / 1024), 2) & " KB of " & Math.Round((length / 1024), 2) & "KB "
 
             Application.DoEvents()
             If speed = -1 Then
@@ -103,7 +90,7 @@ Public Class Update
                 Label3.Text = "Speed: " & Math.Round((speed / 1024), 2) & " KB/s"
             End If
 
-            ProgressBar1.Value = percent * 100
+            Application.DoEvents()
         Catch ex As Exception
             MsgBox("Exception: " + ex.Message)
             Log("Exception: " + ex.Message)
@@ -158,6 +145,8 @@ Public Class Update
         Dim readings As Integer = 0
 
         Do
+            Application.DoEvents()
+
             If BackgroundWorker1.CancellationPending Then 'If user abort download
                 Exit Do
             End If
@@ -188,7 +177,6 @@ Public Class Update
             End If
         Loop
 
-        ProgressBar1.Value = 100
         Log("Download Complete")
         Debug.Print("Close stream")
         'Close the streams
@@ -214,18 +202,15 @@ Public Class Update
         btnCancel.Visible = False
         If cancelled Then
             Log("Aborted")
-            Label1.Text = "Cancelled"
             MessageBox.Show("Download aborted", "Aborted", MessageBoxButtons.OK, MessageBoxIcon.Information)
             Label2.Text = ""
             Label3.Text = ""
-            ProgressBar1.Visible = False
-            btnDownload.Visible = True
+            End
         Else
             Thread.Sleep(1000)
             Label1.Text = ""
             Label2.Text = ""
             Label3.Text = ""
-            ProgressBar1.Value = 0
 
             Dim ctr As Integer
             Try
@@ -239,15 +224,13 @@ Public Class Update
                         Label1.Text = "Extracting " + Path.GetFileName(ZipEntry.FileName)
                         Log("Extracting " + Path.GetFileName(ZipEntry.FileName))
                         ZipEntry.Extract(MyFolder, Ionic.Zip.ExtractExistingFileAction.OverwriteSilently)
-                        ProgressBar1.Value = ctr / zip.Entries.Count * 100
                     Next
                 End Using
             Catch ex As Exception
                 Log("Update Aborted: " + ex.Message)
-                Print("Update Aborted: " + ex.Message)
+                Label1.Text = "Update Aborted: " + ex.Message
             End Try
             Log("Extract Complete")
-            ProgressBar1.Value = 100
 
             Try
                 My.Computer.FileSystem.DeleteFile(MyFolder + "\" + "tmp.zip")
@@ -256,7 +239,7 @@ Public Class Update
                 Label1.Text = "Could not delete " + gFileName
             End Try
 
-            Print("Update Complete.  Waking up the Outworldz...")
+            Label1.Text = "Update Complete.  Waking up the Outworldz..."
             Dim newDream As New Process()
             Try
                 newDream.StartInfo.UseShellExecute = False
@@ -266,7 +249,7 @@ Public Class Update
                 Label1.Text = ""
                 Label2.Text = ""
                 Label3.Text = ""
-                Print("How odd, there seems to be nothing to run!")
+                Label1.Text = "How odd, there seems to be nothing to run!"
                 Return
             End Try
             Thread.Sleep(1000)
@@ -280,11 +263,7 @@ Public Class Update
         Random = Str(value)
     End Function
 
-    Private Sub Print(Value As String)
-        TextBox1.Text = Value
-        TextBox1.Visible = True
-        Log(Value)
-    End Sub
+
     Public Function Log(message As String)
         Try
             Using outputFile As New StreamWriter(MyFolder & "\" + Type + ".log", True)
