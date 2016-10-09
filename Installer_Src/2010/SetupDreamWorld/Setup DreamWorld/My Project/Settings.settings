@@ -3,13 +3,13 @@
   <Profiles />
   <Settings>
     <Setting Name="ConsoleShow" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
+      <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="AvatarShow" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="ViewerEase" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
+      <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="GridFolder" Type="System.String" Scope="User">
       <Value Profile="(Default)">Opensim</Value>
@@ -51,10 +51,10 @@
       <Value Profile="(Default)">3307</Value>
     </Setting>
     <Setting Name="AutobackupInterval" Type="System.String" Scope="User">
-      <Value Profile="(Default)">1400</Value>
+      <Value Profile="(Default)">1440</Value>
     </Setting>
     <Setting Name="KeepForDays" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">30</Value>
+      <Value Profile="(Default)">7</Value>
     </Setting>
     <Setting Name="Password" Type="System.String" Scope="User">
       <Value Profile="(Default)">secret</Value>
@@ -74,14 +74,11 @@
     <Setting Name="ConsolePass" Type="System.String" Scope="User">
       <Value Profile="(Default)">secret</Value>
     </Setting>
-    <Setting Name="Diagnostics" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
     <Setting Name="RegionPort" Type="System.String" Scope="User">
       <Value Profile="(Default)">8004</Value>
     </Setting>
     <Setting Name="ChatTime" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">1000</Value>
+      <Value Profile="(Default)">1500</Value>
     </Setting>
     <Setting Name="ViewerInstalled" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
@@ -108,13 +105,10 @@
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="SmtpUsername" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Gmail for notifcation</Value>
+      <Value Profile="(Default)">Gmail for notification</Value>
     </Setting>
     <Setting Name="SmtpPassword" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Gmal password</Value>
-    </Setting>
-    <Setting Name="Language" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">0</Value>
+      <Value Profile="(Default)">Gmail password</Value>
     </Setting>
   </Settings>
 </SettingsFile>

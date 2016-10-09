@@ -14,9 +14,9 @@ Imports System.Timers
 ' that ALL the licenses in the text files are followed and included in all copies
 
 ' Command line args:
-'     '-clean' makes it wipe out Opensim files that are not needed for zipping
+'    
 '     '-debug' forces this to use the \Outworldzs folder for testing 
-'     '-nodiag' skips all the diagnostics and UPnP. requires ports to be manually opened
+'    
 
 Public Class Form1
 
@@ -24,12 +24,12 @@ Public Class Form1
     Dim MyVersion As String = "0.8"
     Dim DebugPath As String = "C:\Outworldz"
     Dim remoteUri As String = "http://www.outworldz.com/Outworldz_Installer/" ' requires trailing slash
-    Dim gCurDir    ' Holds the current folder that we are running in
+    Dim gCurDir As String   ' Holds the current folder that we are running in
     Dim gCurSlashDir As String '  holds the current directory info in Unix format
     Dim isRunning As Boolean = False
     Dim DiagFailed As Boolean = False
     Dim ws As Net
-    Public gChatTime As Integer = 500
+    Public gChatTime As Integer
 
     Dim client As New System.Net.WebClient
     Dim pMySql As Process = New Process()
@@ -39,7 +39,7 @@ Public Class Form1
     Private Shared m_ActiveForm As Form
     Dim Data As IniParser.Model.IniData
     Private randomnum As New Random
-    Dim parser = New FileIniDataParser()
+    Dim parser As FileIniDataParser = New FileIniDataParser()
     Dim gINI As String
     Private images =
     New List(Of Image) From {My.Resources.tangled,
@@ -153,14 +153,9 @@ Public Class Form1
 
         If arguments.Length > 1 Then
             ' for debugging when compiling
-            If arguments(1) = "-clean" Then
-                ' Clean up the file system
-                CleanAll()
-            ElseIf arguments(1) = "-debug" Then
+            If arguments(1) = "-debug" Then
                 MyFolder = DebugPath ' for testing, as the compiler buries itself in ../../../debug
                 Log("Info:Using Debug folder \Outworldz")
-            ElseIf arguments(1) = "-nodiag" Then
-                My.Settings.Diagnostics = False
             End If
         End If
 
@@ -525,57 +520,7 @@ Public Class Form1
             Log("Error:" + ex.Message)
         End Try
     End Sub
-    Private Sub CleanAll()
-        Clean("HyperGrid")
-        Clean("OsGrid")
-    End Sub
-    Private Sub Clean(AGrid As String)
-        Try
-            System.IO.Directory.Delete(MyFolder & "\OutworldzFiles\" & AGrid & "\bin\addin-db-002", True)
-        Catch ex As Exception
-            Log("Info:addin-db-002 was empty")
-        End Try
-        Try
-            System.IO.Directory.Delete(MyFolder & "\OutworldzFiles\" & AGrid & "\bin\assetcache", True)
-        Catch ex As Exception
-            Log("Info:Assetcache had nothing in it")
-        End Try
-        Try
-            System.IO.Directory.Delete(MyFolder & "\OutworldzFiles\" & AGrid & "\bin\DataSnapshot", True)
-        Catch ex As Exception
-            Log("Info:Nothing in DataSnapshot")
-        End Try
 
-        Try
-            System.IO.Directory.Delete(MyFolder & "\OutworldzFiles\" & AGrid & "\bin\ScriptEngines", True)
-        Catch ex As Exception
-            Log("Info:Empty scriptengines")
-        End Try
-        Try
-            System.IO.Directory.Delete(MyFolder & "\OutworldzFiles\" & AGrid & "\bin\MapTiles", True)
-        Catch ex As Exception
-            Log("Info:No Maptiles to delete")
-        End Try
-        Try
-            My.Computer.FileSystem.DeleteFile(MyFolder + "\OutworldzFiles" & AGrid & "\bin\Opensim.log")
-        Catch ex As Exception
-            Log("Info:Opensim.log is empty")
-        End Try
-
-        Try
-            My.Computer.FileSystem.DeleteFile(MyFolder + "\OutworldzFiles\" & AGrid & "\bin\OpenSimConsoleHistory.txt")
-        Catch ex As Exception
-            Log("Info:Console history is empty")
-        End Try
-        Try
-            My.Computer.FileSystem.DeleteFile(MyFolder + "\OutworldzFiles\Init.txt")
-        Catch ex As Exception
-            Log("Info:Never initted")
-        End Try
-
-        MsgBox("Info:System Is Clean")
-        End
-    End Sub
 
     Private Sub mnuOsGrid_Click(sender As Object, e As EventArgs) Handles mnuOsGrid.Click
         My.Settings.GridFolder = "OsGrid"
@@ -869,6 +814,12 @@ Public Class Form1
         End If
     End Sub
     Private Sub LoadOARContent(thing As String)
+
+        If Not isRunning Then
+            Print("Opensim has to be started to load a OAR file")
+            Return
+        End If
+
         Try
             AppActivate(OpensimProcID)
             thing = thing.Replace("\", "/")    ' because Opensim uses unix-like slashes, that's why
@@ -878,12 +829,16 @@ Public Class Form1
             My.Computer.Keyboard.SendKeys("load oar " + Chr(34) + thing + Chr(34) + "{ENTER}", True)
             My.Computer.Keyboard.SendKeys("alert New content just loaded.{ENTER}", True)
             Me.Focus()
-        Catch
-            Log("Error: startup_commands OAR file write failure")
+        Catch ex As Exception
+            Log("Error:" + ex.Message)
         End Try
     End Sub
     Private Sub LoadIARContent(thing As String)
-        ' remove the console startup file
+
+        If Not isRunning Then
+            Print("Opensim has to be started to load an IAR.")
+            Return
+        End If
 
         Dim user = InputBox("User name that will get this IAR?")
         Dim password = InputBox("Password for user " + user + "?")
@@ -892,8 +847,8 @@ Public Class Form1
             Try
                 My.Computer.Keyboard.SendKeys("load iar --merge " + user + " / " + password + " " + Chr(34) + thing + Chr(34) + "{ENTER}", True)
                 My.Computer.Keyboard.SendKeys("alert IAR content Is loaded{ENTER}", True)
-            Catch
-                Log("Error:startup_commands IAR file write failure")
+            Catch ex As Exception
+                Log("Error:" + ex.Message)
             End Try
 
             Print("Opensim is loading your item. You will find it in your inventory in / soon.")
@@ -908,7 +863,8 @@ Public Class Form1
         Try
             AppActivate(OpensimProcID)
             My.Computer.Keyboard.SendKeys("quit{ENTER}", True)
-        Catch
+        Catch ex As Exception
+            Log("Error:" + ex.Message)
         End Try
 
         Me.Focus()
@@ -960,7 +916,6 @@ Public Class Form1
         End If
     End Sub
 
-
     Private Sub OnlookToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles mnuOnlook.Click
         Print("Onlook Viewer will be launched on Startup")
         mnuOther.Checked = False
@@ -1003,15 +958,15 @@ Public Class Form1
         Try
             p.Start()
         Catch
-            Log("Error:mysqladmin failed to stop opensim")
+            Log("Error:mysqladmin failed to stop mysql")
         End Try
 
         CloseFirewall()
 
         Try
             RemoveGrid()    ' puts Onlook back to default
-        Catch
-            Log("Info:grid settings set back to defaults")
+        Catch ex As Exception
+            Log("Info: grid settings set back to defaults" + ex.Message)
         End Try
 
         ' Needed to stop Opensim
@@ -1093,7 +1048,7 @@ Public Class Form1
             My.Settings.PublicIP = client.DownloadString("https://api.ipify.org/?r=" + Random())
             Log("Public IP=" + My.Settings.PublicIP)
         Catch ex As Exception
-            Print("Cannot reach the Internet? Proceeding locally")
+            Print("Cannot reach the Internet? Proceeding locally. " + ex.Message)
             My.Settings.PublicIP = "127.0.0.1"
         End Try
         ProgressBar1.Value = iProgress
@@ -1134,6 +1089,7 @@ Public Class Form1
             Up = client.DownloadString("http://127.0.0.1:" + +My.Settings.PublicPort + "/?r=" + Random())
         Catch ex As Exception
             Up = ""
+            Log("Error: cannot real localhost? " + ex.Message)
         End Try
 
         While Up.Length = 0
@@ -1158,6 +1114,7 @@ Public Class Form1
                 Up = client.DownloadString("http://127.0.0.1:" + My.Settings.PublicPort + "/?r=" + Random())
             Catch ex As Exception
                 Up = ""
+                Log("Error: cannot real localhost? " + ex.Message)
             End Try
         End While
         ProgressBar1.Value = iProgress
@@ -1169,7 +1126,8 @@ Public Class Form1
             ChDir(MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\")
             OpensimProcID = Shell(MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\OpenSim.exe", Show)
             ChDir(MyFolder)
-        Catch
+        Catch ex As Exception
+            Log("Error: Opensim did not start: " + ex.Message)
             Dim yesno = MsgBox("Opensim did not start. Do you want to see the log file?", vbYesNo)
             If (yesno = vbYes) Then
                 Dim Log As String = MyFolder + "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\OpenSim.log"
@@ -1192,8 +1150,8 @@ Public Class Form1
             pOnlook.StartInfo = pi
             Try
                 pOnlook.Start()
-            Catch
-                Log("Error:Onlook failed to launch")
+            Catch ex As Exception
+                Log("Error:Onlook failed to launch:" + ex.Message)
             End Try
         End If
         ProgressBar1.Value = 95
@@ -1231,7 +1189,7 @@ Public Class Form1
         Try
             My.Computer.FileSystem.CopyFile(MyFolder & "\Viewer\Hypergrid.xml", xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml", True)
         Catch ex As Exception
-            Log("Error:Failed to install onlook XML")
+            Log("Error:Failed to install onlook XML:" + ex.Message)
         End Try
         ProgressBar1.Value = iProgress
 
@@ -1241,8 +1199,8 @@ Public Class Form1
         ' restore backup - they may have changed it. Outworldzs is supposed to be simple. If they launch the viewer by itself, they can change grids
         Try
             My.Computer.FileSystem.CopyFile(xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml.bak", xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml", True)
-        Catch
-            Log("Error:failed to restore Onlook xml backup")
+        Catch ex As Exception
+            Log("Error:failed to restore Onlook xml backup:" + ex.Message)
         End Try
     End Sub
 
@@ -1292,6 +1250,7 @@ Public Class Form1
                 outputFile.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + message)
             End Using
         Catch
+
         End Try
         Return True
 
@@ -1300,9 +1259,10 @@ Public Class Form1
     Public Function DiagLog(message As String)
         Try
             Using outputFile As New StreamWriter(MyFolder & "\OutworldzFiles\Diagnostics.log", True)
-                outputFile.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + message)
+                outputFile.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH: mm:ss") + ":" + message)
             End Using
-        Catch
+        Catch ex As Exception
+
         End Try
         Return True
 
@@ -1318,7 +1278,7 @@ Public Class Form1
         Try
             oars = client.DownloadString("http://www.outworldz.com/Outworldz_Installer/Content.plx?type=OAR&r=" + Random())
         Catch ex As Exception
-            Log("No Oars, dang")
+            Log("No Oars, dang, something is wrong with the Internet :-(")
         End Try
 
         Dim oarreader = New System.IO.StringReader(oars)
@@ -1332,7 +1292,7 @@ Public Class Form1
                 OarMenu.Text = line
                 OarMenu.ToolTipText = "Cick to load this content"
                 OarMenu.DisplayStyle = ToolStripItemDisplayStyle.Text
-                AddHandler OarMenu.Click, New EventHandler(AddressOf OarCick)
+                AddHandler OarMenu.Click, New EventHandler(AddressOf OarClick)
                 IslandToolStripMenuItem.Visible = True
                 IslandToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {OarMenu})
             Else
@@ -1346,7 +1306,7 @@ Public Class Form1
         Try
             iars = client.DownloadString("http://www.outworldz.com/Outworldz_Installer/Content.plx?type=IAR&r=" + Random())
         Catch ex As Exception
-            Log("No IARS, dang")
+            Log("No IARS, dang, something is wrong with the Internet :-(")
         End Try
 
         Dim iarreader = New System.IO.StringReader(iars)
@@ -1370,13 +1330,14 @@ Public Class Form1
         ProgressBar1.Value = iProgress
     End Sub
 
-    Private Sub OarCick(sender As Object, e As EventArgs)
-        Dim file = Mid(sender.text, 1, InStr(sender.text, "|") - 2)
-        file = "http://www.Outworldz.com/Outworldz_Installer/OAR/" + file 'make a real URL
-        LoadOARContent(file)
+    Private Sub OarClick(sender As Object, e As EventArgs)
+        Dim File = Mid(sender.text, 1, InStr(sender.text, "|") - 2)
+        File = "http://www.Outworldz.com/Outworldz_Installer/OAR/" + File 'make a real URL
+        LoadOARContent(File)
         sender.checked = True
-        Print("Opensimulator will load " + file + ".  This may take time to load.")
+        Print("Opensimulator will load " + File + ".  This may take time to load.")
     End Sub
+
     Private Sub IarClick(sender As Object, e As EventArgs)
         Dim file = Mid(sender.text, 1, InStr(sender.text, "|") - 2)
         file = "http://www.Outworldz.com/Outworldz_Installer/IAR/" + file 'make a real URL
@@ -1399,31 +1360,31 @@ Public Class Form1
                                   "Do you ever dream of better worlds? I just did."
                                 }
 
-        Dim Array() As String = {"I dreamt I ate a giant marshmallow. Hey! Where's my pillow??",
-                 "I dreamt we were both flying a dragon in the Outworldz. You flamed me. I tried to get even. I lost. ",
+        Dim Array() As String = {
+                 "I dreamt we were both flying a dragon in the Outworldz. You flamed me. I tried to get even.  I lost LOL ",
                  "I dreamt we were chatting at OsGrid.org. It's the largest hypergrid-enabled virtual world.",
                  "I dreamt some friends and you were riding a rollercoaster in the Great Canadian Grid.",
                  "I dreamt I was watching a pretty particle exhibit with you on the Metropolis grid.",
-                 "I dreamt we were discussing politics in German, Dutch, and French using a free translator.",
+                 "I dreamt we We walked into a bar discussing politics in Hebrew and Arabic using a free translator.",
                  "I dreamt you took the hypergrid safari to visit the mountains of Africa in the Virunga sim.",
                  "I dreamt you won a race while riding a silly cow at the Outworldz 'Frankie' sim.",
                  "I dreamt you are wonderful singer. I loved to hear your voice singing into the voice-chat system.",
                  "I remember in my dream that the spaceport at Gravity sim in OsGrid was really hopping. And floating. And then I fell. ",
                  "I was dreaming that you were a mermaid in the Lost Worlds.",
                  "I deamt that you made a pile of prims that you simply will not believe!",
-                 "I was asked when I was going to straighten out the castle. You said, 'Why? Is it tilted?'",
+                 "I dreamed that I asked when you were going to straighten out the castle. You said, 'Why? Is it tilted?'",
                  "I dreamt you made a 'mesh' of it.",
-                 "I dreamt I saw a man without a shirt attached to a eagle flying up in the air. Always rez before you attach!",
+                 "I dreamt I saw a man without any pants firmly attached to an eagle flying in the air. Always rez before you attach!",
                  "I forgot the dream already. I remember I woke up in it.",
                  "I was thinking I had no clothes on. No shirt, shoes, or hair. The worst part was there was no facelight! I looked hideous!",
-                 "I dreamt that I was floating in a riverand a scripted mesh crocodile chased me.",
-                 "I dreamt I drove our car into the ocean. You found a pose ball, and we both grabbed onto it.",
-                 "I dreamed again that there was a animated mesh zebra in my bathtub.",
+                 "I dreamt that I was floating in a river and a scripted mesh crocodile chased me.",
+                 "I dreamt I drove our car into the ocean. You found a pose ball, and we both grabbed onto it and we we saved.",
+                 "I dreamed that there was a animated mesh zebra in my bathtub.",
                  "I had dreamed a fairy was my best friend.",
-                 "I dreamed that there were non player characters attacking my house, so I decided to fly away. ",
+                 "I dreamed that there were non-player characters living in my house, so I decided to fly away. ",
                  "I had a dream that there were pimples all over my face. So I switched skins and looked perfect!",
-                 "I had a dream where I had lost my free snow boots, so I was asking everybody where I got them on the hypergrid.",
-                 "I had a dream that we were sitting on my roof and we stood up and  both fell off. But I hit Pg Up and flew away."
+                 "I had a dream where I had lost my free mesh boots, so I was asking everybody where I got them on the hypergrid.",
+                 "I had a dream that we were sitting on my roof and we stood up and  both fell off. But I hit Page Up and flew away."
                   }
 
         Randomize()

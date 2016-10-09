@@ -56,7 +56,7 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("True")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
         Public Property ConsoleShow() As Boolean
             Get
                 Return CType(Me("ConsoleShow"),Boolean)
@@ -80,7 +80,7 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("True")>  _
         Public Property ViewerEase() As Boolean
             Get
                 Return CType(Me("ViewerEase"),Boolean)
@@ -248,7 +248,7 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("1400")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("1440")>  _
         Public Property AutobackupInterval() As String
             Get
                 Return CType(Me("AutobackupInterval"),String)
@@ -260,7 +260,7 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("30")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("7")>  _
         Public Property KeepForDays() As Integer
             Get
                 Return CType(Me("KeepForDays"),Integer)
@@ -344,18 +344,6 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
-        Public Property Diagnostics() As Boolean
-            Get
-                Return CType(Me("Diagnostics"),Boolean)
-            End Get
-            Set
-                Me("Diagnostics") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("8004")>  _
         Public Property RegionPort() As String
             Get
@@ -368,7 +356,7 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("1000")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("1500")>  _
         Public Property ChatTime() As Integer
             Get
                 Return CType(Me("ChatTime"),Integer)
@@ -476,7 +464,7 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("Gmail for notifcation")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("Gmail for notification")>  _
         Public Property SmtpUsername() As String
             Get
                 Return CType(Me("SmtpUsername"),String)
@@ -488,25 +476,13 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("Gmal password")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("Gmail password")>  _
         Public Property SmtpPassword() As String
             Get
                 Return CType(Me("SmtpPassword"),String)
             End Get
             Set
                 Me("SmtpPassword") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("0")>  _
-        Public Property Language() As Integer
-            Get
-                Return CType(Me("Language"),Integer)
-            End Get
-            Set
-                Me("Language") = value
             End Set
         End Property
     End Class
