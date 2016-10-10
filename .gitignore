@@ -27,7 +27,6 @@ OutworldzFiles/mysql/data/*.err
 *.userprefs
 ~*
 *~
-bin/
 obj/
 Release/
 Debug/
