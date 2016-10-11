@@ -12,7 +12,7 @@ Imports System.Threading
 
 Public Class Update
 
-    Dim Version As String = "1.0"
+    Dim Version As String = "1.1"
     Dim Type As String = "Update"  ' possible server-side choices are "Update" and "Installer"
     'Dim Type As String = "Install"  ' possible server-side choices are "Update" and "Installer"
 
