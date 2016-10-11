@@ -3,3 +3,11 @@ ib_logfile* filter=lfs diff=lfs merge=lfs -text
 *ibdata1 filter=lfs diff=lfs merge=lfs -text
 ibdata1 filter=lfs diff=lfs merge=lfs -text
 
+# Denote all files that are truly binary and should not be modified.
+*.png binary
+*ibdata* binary
+in_logfile binary
+
+core.autocrlf true
+
+
