@@ -509,6 +509,18 @@ Namespace My
                 Me("SkipUpdateCheck") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public Property DiagFailed() As String
+            Get
+                Return CType(Me("DiagFailed"),String)
+            End Get
+            Set
+                Me("DiagFailed") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

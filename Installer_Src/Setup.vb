@@ -21,13 +21,13 @@ Imports System.Timers
 Public Class Form1
 
 #Region "Declarations"
-    Dim MyVersion As String = "0.85"
+    Dim MyVersion As String = "0.86"
     Dim DebugPath As String = "C:\Opensim\Outworldz"
     Dim remoteUri As String = "http://www.outworldz.com/Outworldz_Installer/" ' requires trailing slash
     Dim gCurDir As String   ' Holds the current folder that we are running in
     Dim gCurSlashDir As String '  holds the current directory info in Unix format
     Dim isRunning As Boolean = False
-    Dim DiagFailed As Boolean = False
+
     Dim ws As Net
     Public gChatTime As Integer
 
@@ -190,7 +190,8 @@ Public Class Form1
             My.Settings.RunOnce = True
             ProbePublicPort(25)
             Loopback(30)    ' test the loopback on the router. If it fails, use localhost, no Hg
-            If (DiagFailed) Then
+            If (My.Settings.DiagFailed) Then
+                My.Settings.PublicIP = "127.0.0.1"
                 Print("Hypergrid Diagnostics Failed. These can be re-run at any time. See the Help menu for 'Diagnostics', 'Loopback', and 'Port Forwards'")
                 Sleep(3000)
             End If
@@ -1067,6 +1068,13 @@ Public Class Form1
     End Sub
     Private Sub GetPubIP(iProgress As Integer)
 
+        If (My.Settings.DiagFailed) Then
+            My.Settings.PublicIP = "127.0.0.1"
+            Print("Using Local LAN for IP address.  See the Help menu for 'Diagnostics', 'Loopback', and 'Port Forwards'")
+            Sleep(2000)
+            Return
+        End If
+
         ' Set Public Port
         Try
             My.Settings.PublicIP = client.DownloadString("https://api.ipify.org/?r=" + Random())
@@ -1081,11 +1089,9 @@ Public Class Form1
     Private Sub Loopback(progress As Integer)
 
         'Print("Opensim needs to be able to loop back to itself. ")
-        If CheckPort(My.Settings.PublicIP, My.Settings.LoopBack) Then
-            Print("Yay it works!  The Hypergrid is whispering in my ear. Let's go!")
-        Else
+        If Not CheckPort(My.Settings.PublicIP, My.Settings.LoopBack) Then
             Application.DoEvents()
-            DiagFailed = True
+            My.Settings.DiagFailed = True
             Print("Hypergrid travel requires a router with 'loopback'. It seems to be missing from yours. See the Help section for 'Loopback' and how to enable it in Windows. Opensim can still continue, but without Hypergrid.")
             MsgBox("See Info on screen about Loopback. Opensim can still continue, but without Hypergrid", vbExclamation)
             My.Settings.PublicIP = "127.0.0.1" ' dang it, we cannot go to the hypergird
@@ -1429,13 +1435,15 @@ Public Class Form1
             isPortOpen = client.DownloadString("http://www.outworldz.com/Outworldz_Installer/probe.plx?Port=" + My.Settings.LoopBack + "&r=" + Random())
         Catch ex As Exception
             DiagLog("Dang:The Outworldz web site cannot find a path back")
-            DiagFailed = True
+            My.Settings.DiagFailed = True
+            My.Settings.PublicIP = "127.0.0.1"
         End Try
 
         If isPortOpen <> "yes" Then
             DiagLog(isPortOpen)
             DiagLog("Warn:Port " + My.Settings.PublicPort + " is not open")
-            DiagFailed = True
+            My.Settings.DiagFailed = True
+            My.Settings.PublicIP = "127.0.0.1"
             Print("Port " + My.Settings.PublicPort + " is not open, so Hypergrid is not available :-(   Opensimulator is set for standalone ops. This can possibly be fixed by 'Port Forwards' in your router in the Help menu")
         Else
             Print("Hypergrid seems to be possible.  One more check..")
@@ -1446,14 +1454,15 @@ Public Class Form1
 
     Private Sub DiagnosticsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles DiagnosticsToolStripMenuItem.Click
 
-        DiagFailed = False
+        My.Settings.DiagFailed = False
         ProgressBar1.Value = 0
         OpenPorts(25) ' Open router ports
         Sleep(1)
         ProbePublicPort(50)
         Sleep(1)
         Loopback(100)    ' test the loopback on the router. If it fails, use localhost, no Hg
-        If DiagFailed = True Then
+        If My.Settings.DiagFailed = True Then
+            My.Settings.PublicIP = "127.0.0.1"
             Print("Network tests failed")
         Else
             Print("Tests passed")
