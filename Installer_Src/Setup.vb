@@ -21,7 +21,7 @@ Imports System.Timers
 Public Class Form1
 
 #Region "Declarations"
-    Dim MyVersion As String = "0.81"
+    Dim MyVersion As String = "0.85"
     Dim DebugPath As String = "C:\Opensim\Outworldz"
     Dim remoteUri As String = "http://www.outworldz.com/Outworldz_Installer/" ' requires trailing slash
     Dim gCurDir As String   ' Holds the current folder that we are running in
@@ -1026,7 +1026,7 @@ Public Class Form1
         SaveINI()
 
         Dim pi As ProcessStartInfo = New ProcessStartInfo()
-        pi.Arguments = "--defaults-file=" + gCurSlashDir + "/OutworldzFiles/mysql/my.ini"
+        pi.Arguments = "--defaults-file=" + Chr(34) + gCurSlashDir + "/OutworldzFiles/mysql/my.ini" + Chr(34)
         pi.WindowStyle = ProcessWindowStyle.Hidden
         pi.FileName = MyFolder & "\OutworldzFiles\mysql\bin\mysqld-nt.exe"
         pMySql.StartInfo = pi
