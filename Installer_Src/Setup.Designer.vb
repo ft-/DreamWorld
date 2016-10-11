@@ -473,20 +473,20 @@ Partial Class Form1
         '
         'UpdaterGo
         '
-        Me.UpdaterGo.Font = New System.Drawing.Font("Tahoma", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.UpdaterGo.Location = New System.Drawing.Point(46, 144)
+        Me.UpdaterGo.Font = New System.Drawing.Font("Tahoma", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.UpdaterGo.Location = New System.Drawing.Point(62, 169)
         Me.UpdaterGo.Name = "UpdaterGo"
-        Me.UpdaterGo.Size = New System.Drawing.Size(84, 39)
+        Me.UpdaterGo.Size = New System.Drawing.Size(115, 30)
         Me.UpdaterGo.TabIndex = 25
-        Me.UpdaterGo.Text = "Update"
+        Me.UpdaterGo.Text = "Update Available"
         Me.UpdaterGo.UseVisualStyleBackColor = True
         '
         'UpdaterCancel
         '
-        Me.UpdaterCancel.Font = New System.Drawing.Font("Tahoma", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.UpdaterCancel.Location = New System.Drawing.Point(177, 142)
+        Me.UpdaterCancel.Font = New System.Drawing.Font("Tahoma", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.UpdaterCancel.Location = New System.Drawing.Point(200, 169)
         Me.UpdaterCancel.Name = "UpdaterCancel"
-        Me.UpdaterCancel.Size = New System.Drawing.Size(76, 43)
+        Me.UpdaterCancel.Size = New System.Drawing.Size(51, 30)
         Me.UpdaterCancel.TabIndex = 26
         Me.UpdaterCancel.Text = "Skip"
         Me.UpdaterCancel.UseVisualStyleBackColor = True

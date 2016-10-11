@@ -21,7 +21,7 @@ Imports System.Timers
 Public Class Form1
 
 #Region "Declarations"
-    Dim MyVersion As String = "0.8"
+    Dim MyVersion As String = "0.81"
     Dim DebugPath As String = "C:\Opensim\Outworldz"
     Dim remoteUri As String = "http://www.outworldz.com/Outworldz_Installer/" ' requires trailing slash
     Dim gCurDir As String   ' Holds the current folder that we are running in
@@ -165,9 +165,15 @@ Public Class Form1
         ' Diagnose the system
 
 
+
         ProgressBar1.Visible = True
         ProgressBar1.Value = 5
         Sleep(4000)
+
+        If Not My.Settings.SkipUpdateCheck Then
+            CheckForUpdates(True) ' don't text if no update
+        End If
+
         Log("Info: Loading Web Server")
         ws = Net.getWebServer
         Log("Info: Starting Web Server")
@@ -202,7 +208,7 @@ Public Class Form1
             ProgressBar1.Value = 100
             Print("Outworldz Opensimulator is ready to start.")
             Log("Info:Ready to start")
-            CheckForUpdates(False) ' don't text if no update
+
         Else
             'Print("Installing Desktop icon clicky thingy")
             Create_ShortCut(MyFolder & "\Start.exe")
@@ -211,7 +217,7 @@ Public Class Form1
             Try
                 ' mark the system as ready        
                 Using outputFile As New StreamWriter(MyFolder & "\OutworldzFiles\Init.txt", True)
-                    outputFile.WriteLine("This file lets Outworldz know it has been installed and to benchmark the network loopback")
+                    outputFile.WriteLine("This file lets Outworldz know it has been installed")
                 End Using
             Catch ex As Exception
                 Log("Could not create Init.txt:" + ex.Message)
@@ -319,7 +325,7 @@ Public Class Form1
         Try
             ClientSocket.Connect(ServerAddress, Port)
         Catch ex As Exception
-            Log("Error:MySql port probe failed on port " + My.Settings.MySqlPort)
+            Log("Error: port probe failed on port " + My.Settings.MySqlPort)
             Return False
         End Try
 
@@ -1047,7 +1053,7 @@ Public Class Form1
                     Next
                 End If
 
-                KillAll()
+                'KillAll()
                 Buttons(StartButton)
                 Return
             End If
@@ -1383,7 +1389,7 @@ Public Class Form1
                  "I dreamt we were chatting at OsGrid.org. It's the largest hypergrid-enabled virtual world.",
                  "I dreamt some friends and you were riding a rollercoaster in the Great Canadian Grid.",
                  "I dreamt I was watching a pretty particle exhibit with you on the Metropolis grid.",
-                 "I dreamt we We walked into a bar discussing politics in Hebrew and Arabic using a free translator.",
+                 "I dreamt we walked into a bar discussing politics in Hebrew and Arabic using a free translator.",
                  "I dreamt you took the hypergrid safari to visit the mountains of Africa in the Virunga sim.",
                  "I dreamt you won a race while riding a silly cow at the Outworldz 'Frankie' sim.",
                  "I dreamt you are wonderful singer. I loved to hear your voice singing into the voice-chat system.",
@@ -1396,13 +1402,13 @@ Public Class Form1
                  "I forgot the dream already. I remember I woke up in it.",
                  "I was thinking I had no clothes on. No shirt, shoes, or hair. The worst part was there was no facelight! I looked hideous!",
                  "I dreamt that I was floating in a river and a scripted mesh crocodile chased me.",
-                 "I dreamt I drove our car into the ocean. You found a pose ball, and we both grabbed onto it and we we saved.",
+                 "I dreamt I drove our car into the ocean. You found a pose ball, and we both grabbed onto it and were saved.",
                  "I dreamed that there was a animated mesh zebra in my bathtub.",
                  "I had dreamed a fairy was my best friend.",
                  "I dreamed that there were non-player characters living in my house, so I decided to fly away. ",
                  "I had a dream that there were pimples all over my face. So I switched skins and looked perfect!",
                  "I had a dream where I had lost my free mesh boots, so I was asking everybody where I got them on the hypergrid.",
-                 "I had a dream that we were sitting on my roof and we stood up and  both fell off. But I hit Page Up and flew away."
+                 "I had a dream that we were sitting on my roof and we stood up and both fell off. But I hit Page Up and flew away."
                   }
 
         Randomize()
@@ -1485,6 +1491,9 @@ Public Class Form1
     Private Sub UpdaterCancel_Click(sender As Object, e As EventArgs) Handles UpdaterCancel.Click
         UpdaterGo.Visible = False
         UpdaterCancel.Visible = False
+        My.Settings.SkipUpdateCheck = True
+        Print("Update scan is off. You can still check for updates in the Help Menu.")
+
     End Sub
 
     Private Sub UpdaterGo_Click(sender As Object, e As EventArgs) Handles UpdaterGo.Click
