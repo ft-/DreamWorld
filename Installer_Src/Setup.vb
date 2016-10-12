@@ -9,14 +9,14 @@ Imports System.Threading
 Imports Ionic.Zip
 Imports System.Timers
 
-' Copyright 2014 Fred Beckhusen  
-' Redistribution and use in binary and source form is permitted provided 
+' Copyright 2014 Fred Beckhusen
+' Redistribution and use in binary and source form is permitted provided
 ' that ALL the licenses in the text files are followed and included in all copies
 
 ' Command line args:
-'    
-'     '-debug' forces this to use the \Outworldzs folder for testing 
-'    
+'
+'     '-debug' forces this to use the \Outworldzs folder for testing
+'
 
 Public Class Form1
 
@@ -216,7 +216,7 @@ Public Class Form1
             ProgressBar1.Value = 60
 
             Try
-                ' mark the system as ready        
+                ' mark the system as ready
                 Using outputFile As New StreamWriter(MyFolder & "\OutworldzFiles\Init.txt", True)
                     outputFile.WriteLine("This file lets Outworldz know it has been installed")
                 End Using
@@ -1014,7 +1014,7 @@ Public Class Form1
     End Sub
 
     Private Sub StartMySql(progress As Integer)
-        ' Start MySql in background.  
+        ' Start MySql in background.
 
         Dim StartValue = ProgressBar1.Value
 
@@ -1037,7 +1037,7 @@ Public Class Form1
 
         ' Check for MySql operation
         Dim Mysql = False
-        ' wait for MySql to come up 
+        ' wait for MySql to come up
         Mysql = CheckPort("127.0.0.1", My.Settings.MySqlPort)
         While Not Mysql
             ProgressBar1.Value = ProgressBar1.Value + 1
@@ -1188,8 +1188,8 @@ Public Class Form1
     End Sub
 
     Private Sub AdvancedSettingsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AdvancedSettingsToolStripMenuItem.Click
-        ActualForm = New AdvancedForm ' Bring the form into memory 
-        ' Set the new form's desktop location so it appears below and 
+        ActualForm = New AdvancedForm ' Bring the form into memory
+        ' Set the new form's desktop location so it appears below and
         ' to the right of the current form.
         ActualForm.SetDesktopLocation(300, 200)
         ActualForm.Activate()
@@ -1347,7 +1347,7 @@ Public Class Form1
                 Log(line)
                 Dim IarMenu As New ToolStripMenuItem
                 IarMenu.Text = line
-                IarMenu.ToolTipText = "CLick to load this content the next time the simulator is started"
+                IarMenu.ToolTipText = "Click to load this content the next time the simulator is started"
                 IarMenu.DisplayStyle = ToolStripItemDisplayStyle.Text
                 AddHandler IarMenu.Click, New EventHandler(AddressOf IarClick)
                 ClothingInventoryToolStripMenuItem.Visible = True
@@ -1612,7 +1612,7 @@ Public Class Form1
         Dim openFileDialog1 As OpenFileDialog = New OpenFileDialog
 
         ' Set filter options and filter index.
-        openFileDialog1.Filter = "Opensim Backup Files (*.OAR)|(*.IAR)|(*.GZ)|(*.TGZ)|All Files (*.*)|*.*"
+        openFileDialog1.Filter = "Opensim Backup Files (*.OAR)|(*.oar)|(*.IAR)|(*.iar)|(*.GZ)|(*.gz)|(*.TGZ)|(*.tgz)|All Files (*.*)|*.*"
         openFileDialog1.FilterIndex = 1
         openFileDialog1.Multiselect = False
 
@@ -1668,4 +1668,3 @@ Public Class Form1
 #End Region
 
 End Class
-
