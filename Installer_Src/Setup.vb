@@ -8,65 +8,76 @@ Imports IniParser
 Imports System.Threading
 Imports Ionic.Zip
 Imports System.Timers
+#Region "Copyright"
+' Copyright 2014 Fred Beckhusen for Outworldz.com
+' https://opensource.org/licenses/MIT 
+'Permission Is hereby granted, free Of charge, to any person obtaining a copy of this software 
+' And associated documentation files (the "Software"), to deal in the Software without restriction, 
+'including without limitation the rights To use, copy, modify, merge, publish, distribute, sublicense,
+'And/Or sell copies Of the Software, And To permit persons To whom the Software Is furnished To 
+'Do so, subject To the following conditions:
 
-' Copyright 2014 Fred Beckhusen
-' Redistribution and use in binary and source form is permitted provided
-' that ALL the licenses in the text files are followed and included in all copies
+'The above copyright notice And this permission notice shall be included In all copies Or '
+'substantial portions Of the Software.
 
-' Command line args:
-'
-'     '-debug' forces this to use the \Outworldzs folder for testing
-'
+'THE SOFTWARE Is PROVIDED "AS IS", WITHOUT WARRANTY Of ANY KIND, EXPRESS Or IMPLIED, 
+' INCLUDING BUT Not LIMITED To THE WARRANTIES Of MERCHANTABILITY, FITNESS For A PARTICULAR 
+'PURPOSE And NONINFRINGEMENT.In NO Event SHALL THE AUTHORS Or COPYRIGHT HOLDERS BE LIABLE 
+'For ANY CLAIM, DAMAGES Or OTHER LIABILITY, WHETHER In AN ACTION Of CONTRACT, TORT Or 
+'OTHERWISE, ARISING FROM, OUT Of Or In CONNECTION With THE SOFTWARE Or THE USE Or OTHER 
+'DEALINGS In THE SOFTWARE.
+
+
+#End Region
 
 Public Class Form1
 
+    ' Command line args:
+    '
+    '     '-debug' forces this to use the \Outworldzs folder for testing
+    '
+
 #Region "Declarations"
-    Dim MyVersion As String = "0.86"
+    Dim MyVersion As String = "0.87"
     Dim DebugPath As String = "C:\Opensim\Outworldz"
     Dim remoteUri As String = "http://www.outworldz.com/Outworldz_Installer/" ' requires trailing slash
     Dim gCurDir As String   ' Holds the current folder that we are running in
     Dim gCurSlashDir As String '  holds the current directory info in Unix format
     Dim isRunning As Boolean = False
-
+    Dim Arnd = New Random()
     Dim ws As Net
     Public gChatTime As Integer
 
     Dim client As New System.Net.WebClient
     Dim pMySql As Process = New Process()
     Dim pMySqlDiag As Process = New Process()
-
     Dim pOnlook As Process = New Process()
     Private Shared m_ActiveForm As Form
     Dim Data As IniParser.Model.IniData
     Private randomnum As New Random
     Dim parser As FileIniDataParser
     Dim gINI As String
-    Private images =
-    New List(Of Image) From {My.Resources.tangled,
-                             My.Resources.wp_habitat,
-                             My.Resources.wp_Mooferd,
-                             My.Resources.wp_Inside_in_shadows,
-                             My.Resources.wp_To_Piers_Anthony,
-                             My.Resources.wp_wavy_love_of_animals,
-                             My.Resources.wp_zebra,
-                             My.Resources.wp_Que,
-                             My.Resources.wp_1,
-                             My.Resources.wp_2,
-                             My.Resources.wp_3,
-                             My.Resources.wp_4,
-                             My.Resources.wp_5,
-                             My.Resources.wp_6,
-                             My.Resources.wp_7,
-                             My.Resources.wp_8,
-                             My.Resources.wp_9,
-                             My.Resources.wp_10,
-                             My.Resources.wp_11,
-                             My.Resources.wp_12,
-                             My.Resources.wp_13
-                            }
-
     Dim OpensimProcID As Integer
-
+    Private images =
+    New List(Of Image) From {My.Resources.tangled, My.Resources.wp_habitat, My.Resources.wp_Mooferd,
+                             My.Resources.wp_Inside_in_shadows, My.Resources.wp_To_Piers_Anthony,
+                             My.Resources.wp_wavy_love_of_animals, My.Resources.wp_zebra,
+                             My.Resources.wp_Que, My.Resources.wp_1, My.Resources.wp_2,
+                             My.Resources.wp_3, My.Resources.wp_4, My.Resources.wp_5,
+                             My.Resources.wp_6, My.Resources.wp_7, My.Resources.wp_8,
+                             My.Resources.wp_9, My.Resources.wp_10, My.Resources.wp_11,
+                             My.Resources.wp_12, My.Resources.wp_13, My.Resources.wp_14,
+                             My.Resources.wp_15, My.Resources.wp_16, My.Resources.wp_17,
+                             My.Resources.wp_18, My.Resources.wp_19, My.Resources.wp_20,
+                             My.Resources.wp_21, My.Resources.wp_22, My.Resources.wp_23,
+                             My.Resources.wp_24, My.Resources.wp_25, My.Resources.wp_26,
+                             My.Resources.wp_27, My.Resources.wp_28, My.Resources.wp_29,
+                             My.Resources.wp_30, My.Resources.wp_31, My.Resources.wp_32,
+                             My.Resources.wp_33, My.Resources.wp_34, My.Resources.wp_35,
+                             My.Resources.wp_36, My.Resources.wp_37, My.Resources.wp_38,
+                             My.Resources.wp_39, My.Resources.wp_40, My.Resources.wp_41,
+                             My.Resources.wp_42
+                            }
 
 #End Region
 
@@ -162,9 +173,6 @@ Public Class Form1
         gCurSlashDir = MyFolder.Replace("\", "/")    ' because Mysql uses unix like slashes, that's why
 
         SaySomething()
-        ' Diagnose the system
-
-
 
         ProgressBar1.Visible = True
         ProgressBar1.Value = 5
@@ -197,7 +205,7 @@ Public Class Form1
             End If
         End If
         mnuSettings.Visible = True
-        SetIAROARContent(35) ' load IAR and OAR web content
+        SetIAROARContent(50) ' load IAR and OAR web content
         MnuContent.Visible = True
 
         ' Find out if the viewer is installed
@@ -213,7 +221,7 @@ Public Class Form1
         Else
             'Print("Installing Desktop icon clicky thingy")
             Create_ShortCut(MyFolder & "\Start.exe")
-            ProgressBar1.Value = 60
+            ProgressBar1.Value = 50
 
             Try
                 ' mark the system as ready
@@ -241,12 +249,12 @@ Public Class Form1
                     Log("Error:Onlook installer failed to load:" + ex.Message)
                 End Try
 
-                ProgressBar1.Value = 62
+                ProgressBar1.Value = 0
                 Print("Please Install and Start the Onlook Viewer")
                 Dim toggle As Boolean = False
                 While Not System.IO.File.Exists(xmlPath() + "\AppData\Roaming\Onlook\user_settings\settings_onlook.xml") And ProgressBar1.Value < 99
                     Application.DoEvents()
-                    Sleep(4000)
+                    Sleep(2000)
                     If (toggle) Then
                         Print("Attention needed - please Install and Start the Onlook Viewer ")
                         toggle = False
@@ -600,7 +608,6 @@ Public Class Form1
             Log("Info:Set to not show avatar")
             SetIni("CameraOnlyModeModule", "enabled", "true")
         End If
-
 
         Log("Info:Saving Wifi Admin for " + My.Settings.AdminFirst + " " + My.Settings.AdminLast)
         SetIni("WifiService", "AdminFirst", """" + My.Settings.AdminFirst + """")
@@ -1033,7 +1040,7 @@ Public Class Form1
         pMySql.StartInfo = pi
         pMySql.Start()
 
-        ProgressBar1.Value = progress / 2
+        ProgressBar1.Value = 50
 
         ' Check for MySql operation
         Dim Mysql = False
@@ -1044,7 +1051,7 @@ Public Class Form1
             Application.DoEvents()
 
             Dim MysqlLog As String = MyFolder + "\OutworldzFiles\mysql\data"
-            If ProgressBar1.Value > StartValue + 10 Then ' about 30 seconds when it fails
+            If ProgressBar1.Value = StartValue Then ' about 30 seconds when it fails
                 Dim yesno = MsgBox("The database did not start. Do you want to see the log file?", vbYesNo)
                 If (yesno = vbYes) Then
                     Dim files() As String
@@ -1068,6 +1075,11 @@ Public Class Form1
     End Sub
     Private Sub GetPubIP(iProgress As Integer)
 
+        If My.Settings.DnsName.Length Then
+            My.Settings.PublicIP = My.Settings.DnsName
+            Print("HG Address is " + My.Settings.DnsName)
+            Return
+        End If
         If (My.Settings.DiagFailed) Then
             My.Settings.PublicIP = "127.0.0.1"
             Print("Using Local LAN for IP address.  See the Help menu for 'Diagnostics', 'Loopback', and 'Port Forwards'")
@@ -1584,19 +1596,16 @@ Public Class Form1
     End Sub
 
     Private Sub PaintImage()
-        Dim thisimage = My.Settings.ImageNum
+
         If (My.Settings.TimerInterval > 0) Then
+
+            Dim randomFruit = images(Arnd.Next(0, images.Count))
+
             ProgressBar1.Visible = False
             TextBox1.Visible = False
             PictureBox1.Enabled = True
-            PictureBox1.Image = images(thisimage)
+            PictureBox1.Image = randomFruit
             PictureBox1.Visible = True
-
-            My.Settings.ImageNum = My.Settings.ImageNum + 1
-            If (My.Settings.ImageNum > images.Count - 1) Then
-                My.Settings.ImageNum = 0
-            End If
-            My.Settings.Save()
 
             Timer1.Interval = My.Settings.TimerInterval * 1000
         End If

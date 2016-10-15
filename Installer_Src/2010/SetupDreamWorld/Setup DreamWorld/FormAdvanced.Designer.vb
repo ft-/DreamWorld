@@ -75,6 +75,8 @@ Partial Class AdvancedForm
         Me.AccountConfirmationRequired = New System.Windows.Forms.CheckBox()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
+        Me.DnsName = New System.Windows.Forms.TextBox()
+        Me.Label7 = New System.Windows.Forms.Label()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -127,7 +129,7 @@ Partial Class AdvancedForm
         Me.GroupBox1.Controls.Add(Me.CheckBox256)
         Me.GroupBox1.Controls.Add(Me.SizeY)
         Me.GroupBox1.Controls.Add(Me.SizeX)
-        Me.GroupBox1.Location = New System.Drawing.Point(22, 13)
+        Me.GroupBox1.Location = New System.Drawing.Point(3, 2)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Size = New System.Drawing.Size(195, 126)
         Me.GroupBox1.TabIndex = 4
@@ -170,6 +172,8 @@ Partial Class AdvancedForm
         '
         'GroupBox2
         '
+        Me.GroupBox2.Controls.Add(Me.Label7)
+        Me.GroupBox2.Controls.Add(Me.DnsName)
         Me.GroupBox2.Controls.Add(Me.Label13)
         Me.GroupBox2.Controls.Add(Me.RegionPort)
         Me.GroupBox2.Controls.Add(Me.Mysql)
@@ -180,9 +184,9 @@ Partial Class AdvancedForm
         Me.GroupBox2.Controls.Add(Me.Label4)
         Me.GroupBox2.Controls.Add(Me.PrivatePort)
         Me.GroupBox2.Controls.Add(Me.Label5)
-        Me.GroupBox2.Location = New System.Drawing.Point(639, 19)
+        Me.GroupBox2.Location = New System.Drawing.Point(620, 8)
         Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Size = New System.Drawing.Size(134, 160)
+        Me.GroupBox2.Size = New System.Drawing.Size(134, 175)
         Me.GroupBox2.TabIndex = 5
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Ports"
@@ -281,7 +285,7 @@ Partial Class AdvancedForm
         Me.GroupBox3.Controls.Add(Me.Label8)
         Me.GroupBox3.Controls.Add(Me.AutoBackupInterval)
         Me.GroupBox3.Controls.Add(Me.AutoBackup)
-        Me.GroupBox3.Location = New System.Drawing.Point(223, 18)
+        Me.GroupBox3.Location = New System.Drawing.Point(204, 7)
         Me.GroupBox3.Name = "GroupBox3"
         Me.GroupBox3.Size = New System.Drawing.Size(180, 121)
         Me.GroupBox3.TabIndex = 6
@@ -346,7 +350,7 @@ Partial Class AdvancedForm
         Me.Web.Controls.Add(Me.Label11)
         Me.Web.Controls.Add(Me.Label10)
         Me.Web.Controls.Add(Me.Password)
-        Me.Web.Location = New System.Drawing.Point(409, 19)
+        Me.Web.Location = New System.Drawing.Point(390, 8)
         Me.Web.Name = "Web"
         Me.Web.Size = New System.Drawing.Size(214, 120)
         Me.Web.TabIndex = 8
@@ -439,7 +443,7 @@ Partial Class AdvancedForm
         Me.GroupBox4.Controls.Add(Me.ManagerGod)
         Me.GroupBox4.Controls.Add(Me.RegionGod)
         Me.GroupBox4.Controls.Add(Me.AllowGod)
-        Me.GroupBox4.Location = New System.Drawing.Point(22, 149)
+        Me.GroupBox4.Location = New System.Drawing.Point(3, 138)
         Me.GroupBox4.Name = "GroupBox4"
         Me.GroupBox4.Size = New System.Drawing.Size(195, 118)
         Me.GroupBox4.TabIndex = 18
@@ -482,7 +486,7 @@ Partial Class AdvancedForm
         Me.GroupBox5.Controls.Add(Me.Label15)
         Me.GroupBox5.Controls.Add(Me.TimerInterval)
         Me.GroupBox5.Controls.Add(Me.ChatSpeed)
-        Me.GroupBox5.Location = New System.Drawing.Point(223, 151)
+        Me.GroupBox5.Location = New System.Drawing.Point(204, 140)
         Me.GroupBox5.Name = "GroupBox5"
         Me.GroupBox5.Size = New System.Drawing.Size(180, 116)
         Me.GroupBox5.TabIndex = 22
@@ -532,7 +536,7 @@ Partial Class AdvancedForm
         Me.GroupBox6.Controls.Add(Me.SmtpPassword)
         Me.GroupBox6.Controls.Add(Me.SmtpUsername)
         Me.GroupBox6.Controls.Add(Me.AccountConfirmationRequired)
-        Me.GroupBox6.Location = New System.Drawing.Point(409, 151)
+        Me.GroupBox6.Location = New System.Drawing.Point(390, 140)
         Me.GroupBox6.Name = "GroupBox6"
         Me.GroupBox6.Size = New System.Drawing.Size(214, 116)
         Me.GroupBox6.TabIndex = 23
@@ -589,12 +593,30 @@ Partial Class AdvancedForm
         '
         Me.PictureBox1.BackgroundImage = Global.Outworldz.My.Resources.Resources.BuiltbyFred
         Me.PictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.PictureBox1.Location = New System.Drawing.Point(654, 185)
+        Me.PictureBox1.Location = New System.Drawing.Point(636, 189)
         Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(93, 82)
+        Me.PictureBox1.Size = New System.Drawing.Size(87, 67)
         Me.PictureBox1.TabIndex = 24
         Me.PictureBox1.TabStop = False
         Me.ToolTip1.SetToolTip(Me.PictureBox1, "Hi! eail me : fred@mitsi.com")
+        '
+        'DnsName
+        '
+        Me.DnsName.Location = New System.Drawing.Point(6, 150)
+        Me.DnsName.Name = "DnsName"
+        Me.DnsName.Size = New System.Drawing.Size(122, 20)
+        Me.DnsName.TabIndex = 14
+        Me.ToolTip1.SetToolTip(Me.DnsName, "MySQL port is normally 3306. I add one so it will not intyerfere with other insta" &
+        "llations.")
+        '
+        'Label7
+        '
+        Me.Label7.AutoSize = True
+        Me.Label7.Location = New System.Drawing.Point(6, 134)
+        Me.Label7.Name = "Label7"
+        Me.Label7.Size = New System.Drawing.Size(120, 13)
+        Me.Label7.TabIndex = 15
+        Me.Label7.Text = "DNS Name (if available)"
         '
         'AdvancedForm
         '
@@ -679,4 +701,6 @@ Partial Class AdvancedForm
     Friend WithEvents SmtpUsername As TextBox
     Friend WithEvents PictureBox1 As PictureBox
     Friend WithEvents ToolTip1 As ToolTip
+    Friend WithEvents Label7 As Label
+    Friend WithEvents DnsName As TextBox
 End Class

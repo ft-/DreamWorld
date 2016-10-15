@@ -89,7 +89,7 @@
     <ManifestKeyFile>Fred.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <GenerateManifests>true</GenerateManifests>
+    <GenerateManifests>false</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
     <SignManifests>false</SignManifests>
@@ -267,6 +267,35 @@
     <None Include="Resources\wp_11.gif" />
     <None Include="Resources\wp_12.gif" />
     <None Include="Resources\wp_13.gif" />
+    <None Include="Resources\wp_14.png" />
+    <None Include="Resources\wp_16.png" />
+    <None Include="Resources\wp_17.png" />
+    <None Include="Resources\wp_18.png" />
+    <None Include="Resources\wp_19.png" />
+    <None Include="Resources\wp_21.png" />
+    <None Include="Resources\wp_22.png" />
+    <None Include="Resources\wp_23.png" />
+    <None Include="Resources\wp_25.png" />
+    <None Include="Resources\wp_26.png" />
+    <None Include="Resources\wp_27.png" />
+    <None Include="Resources\wp_28.png" />
+    <None Include="Resources\wp_29.png" />
+    <None Include="Resources\wp_30.png" />
+    <None Include="Resources\wp_31.png" />
+    <None Include="Resources\wp_32.png" />
+    <None Include="Resources\wp_33.png" />
+    <None Include="Resources\wp_34.png" />
+    <None Include="Resources\wp_35.png" />
+    <None Include="Resources\wp_36.png" />
+    <None Include="Resources\wp_37.png" />
+    <None Include="Resources\wp_38.png" />
+    <None Include="Resources\wp_39.png" />
+    <None Include="Resources\wp_40.png" />
+    <None Include="Resources\wp_41.png" />
+    <None Include="Resources\wp_20.png" />
+    <None Include="Resources\wp_15.png" />
+    <None Include="Resources\wp_24.png" />
+    <None Include="Resources\wp_42.gif" />
     <Content Include="Resources\wp_habitat.gif" />
     <Content Include="Resources\wp_Inside_in_shadows.gif" />
     <Content Include="Resources\wp_Mooferd.gif" />

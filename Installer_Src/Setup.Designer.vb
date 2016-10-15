@@ -547,6 +547,8 @@ Partial Class Form1
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MainMenuStrip = Me.MenuStrip1
         Me.MaximizeBox = False
+        Me.MaximumSize = New System.Drawing.Size(336, 246)
+        Me.MinimumSize = New System.Drawing.Size(336, 246)
         Me.Name = "Form1"
         Me.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.Text = "Outworldz Opensimulator"

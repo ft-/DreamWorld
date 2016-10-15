@@ -80,6 +80,8 @@
         SmtpPassword.Text = My.Settings.SmtpPassword
         SmtpUsername.Text = My.Settings.SmtpUsername
 
+        DnsName.Text = My.Settings.DnsName
+
 
     End Sub
 
@@ -243,5 +245,8 @@
         My.Settings.SmtpPassword = SmtpPassword.Text
     End Sub
 
+    Private Sub DnsName_TextChanged(sender As Object, e As EventArgs) Handles DnsName.TextChanged
+        My.Settings.DnsName = DnsName.Text
 
+    End Sub
 End Class

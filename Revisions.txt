@@ -1,0 +1,15 @@
+Dreamworld dates by to 2012 when it was used on a DVD and thumb drive to make a "Dream World" for a charity to give out as a thank you for donations.
+
+This re-release updates it from the original Sim On A Stick format into a standalone app.
+
+0.80 2016-10-09 Initial release
+0.81 2016-10-10 Move updater to initial stage to get past crashes
+0.82 2016-10-11  fix was made to OpenSim in bin/OpenSim.exe.config on 23-Nov-2013 (git master a68d1fa) adding the following line to the <runtime> section…
+					<loadFromRemoteSources enabled="true" />
+				Updater to version 1.1 to fix progress bar.
+0.83 2016-10-11 MySQl now runs when file path contains quotes.
+0.84 2016-10-12 Diags run just once
+0.85 2016-10-12 Upper/Lower case OAR files now work
+0.86 2016-12-13 Added more images
+0.87 2016-12-14 Admin panal accepts a DNS/DynDNS name
+
