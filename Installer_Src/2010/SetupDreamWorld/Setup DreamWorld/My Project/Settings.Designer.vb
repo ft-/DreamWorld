@@ -533,6 +533,18 @@ Namespace My
                 Me("DnsName") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("True")>  _
+        Public Property WebStats() As Boolean
+            Get
+                Return CType(Me("WebStats"),Boolean)
+            End Get
+            Set
+                Me("WebStats") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

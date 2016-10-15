@@ -81,7 +81,7 @@
         SmtpUsername.Text = My.Settings.SmtpUsername
 
         DnsName.Text = My.Settings.DnsName
-
+        WebStats.Checked = My.Settings.WebStats
 
     End Sub
 
@@ -248,5 +248,9 @@
     Private Sub DnsName_TextChanged(sender As Object, e As EventArgs) Handles DnsName.TextChanged
         My.Settings.DnsName = DnsName.Text
 
+    End Sub
+
+    Private Sub CheckBox1_CheckedChanged(sender As Object, e As EventArgs) Handles WebStats.CheckedChanged
+        My.Settings.WebStats = WebStats.Checked
     End Sub
 End Class

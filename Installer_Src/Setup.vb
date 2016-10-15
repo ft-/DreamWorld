@@ -890,6 +890,12 @@ Public Class Form1
 
     Private Sub KillAll()
         ' close opensim gracefully
+
+        pOnlook.CloseMainWindow()
+        pOnlook.Close()
+
+        Application.DoEvents()
+
         Try
             AppActivate(OpensimProcID)
             My.Computer.Keyboard.SendKeys("quit{ENTER}", True)
@@ -898,8 +904,7 @@ Public Class Form1
         End Try
 
         Me.Focus()
-        pOnlook.Close()
-        Application.DoEvents()
+
         Running = False
     End Sub
 
@@ -1410,7 +1415,7 @@ Public Class Form1
                  "I dreamt we walked into a bar discussing politics in Hebrew and Arabic using a free translator.",
                  "I dreamt you took the hypergrid safari to visit the mountains of Africa in the Virunga sim.",
                  "I dreamt you won a race while riding a silly cow at the Outworldz 'Frankie' sim.",
-                 "I dreamt you are wonderful singer. I loved to hear your voice singing into the voice-chat system.",
+                 "I dreamt you are a wonderful singer. I loved to hear your voice singing into the voice-chat system.",
                  "I remember in my dream that the spaceport at Gravity sim in OsGrid was really hopping. And floating. And then I fell. ",
                  "I was dreaming that you were a mermaid in the Lost Worlds.",
                  "I deamt that you made a pile of prims that you simply will not believe!",
@@ -1671,6 +1676,15 @@ Public Class Form1
 
     Private Sub ShowHyperGridAddressToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ShowHyperGridAddressToolStripMenuItem.Click
         Print("Hypergrid address is http://" + My.Settings.PublicIP + ":" + My.Settings.PublicPort)
+    End Sub
+
+    Private Sub WebStatsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles WebStatsToolStripMenuItem.Click
+        If (Running) Then
+            Dim webAddress As String = "http://127.0.0.1:" + My.Settings.PublicPort + "/SStats/"
+            Process.Start(webAddress)
+        Else
+            Print("Opensim is not running. Cannot open the Web Interface.")
+        End If
     End Sub
 
 

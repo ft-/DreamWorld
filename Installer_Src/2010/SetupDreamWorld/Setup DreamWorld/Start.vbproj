@@ -89,7 +89,7 @@
     <ManifestKeyFile>Fred.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <GenerateManifests>false</GenerateManifests>
+    <GenerateManifests>true</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
     <SignManifests>false</SignManifests>
@@ -296,6 +296,7 @@
     <None Include="Resources\wp_15.png" />
     <None Include="Resources\wp_24.png" />
     <None Include="Resources\wp_42.gif" />
+    <None Include="Resources\document_chart.png" />
     <Content Include="Resources\wp_habitat.gif" />
     <Content Include="Resources\wp_Inside_in_shadows.gif" />
     <Content Include="Resources\wp_Mooferd.gif" />

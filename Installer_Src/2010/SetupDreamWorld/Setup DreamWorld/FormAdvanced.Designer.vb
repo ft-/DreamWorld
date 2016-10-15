@@ -32,6 +32,8 @@ Partial Class AdvancedForm
         Me.SizeY = New System.Windows.Forms.TextBox()
         Me.SizeX = New System.Windows.Forms.TextBox()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
+        Me.Label7 = New System.Windows.Forms.Label()
+        Me.DnsName = New System.Windows.Forms.TextBox()
         Me.Label13 = New System.Windows.Forms.Label()
         Me.RegionPort = New System.Windows.Forms.TextBox()
         Me.Mysql = New System.Windows.Forms.TextBox()
@@ -75,8 +77,8 @@ Partial Class AdvancedForm
         Me.AccountConfirmationRequired = New System.Windows.Forms.CheckBox()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
-        Me.DnsName = New System.Windows.Forms.TextBox()
-        Me.Label7 = New System.Windows.Forms.Label()
+        Me.WebStats = New System.Windows.Forms.CheckBox()
+        Me.GroupBox7 = New System.Windows.Forms.GroupBox()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -85,6 +87,7 @@ Partial Class AdvancedForm
         Me.GroupBox5.SuspendLayout()
         Me.GroupBox6.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.GroupBox7.SuspendLayout()
         Me.SuspendLayout()
         '
         'CheckBox256
@@ -190,6 +193,24 @@ Partial Class AdvancedForm
         Me.GroupBox2.TabIndex = 5
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Ports"
+        '
+        'Label7
+        '
+        Me.Label7.AutoSize = True
+        Me.Label7.Location = New System.Drawing.Point(6, 134)
+        Me.Label7.Name = "Label7"
+        Me.Label7.Size = New System.Drawing.Size(120, 13)
+        Me.Label7.TabIndex = 15
+        Me.Label7.Text = "DNS Name (if available)"
+        '
+        'DnsName
+        '
+        Me.DnsName.Location = New System.Drawing.Point(6, 150)
+        Me.DnsName.Name = "DnsName"
+        Me.DnsName.Size = New System.Drawing.Size(122, 20)
+        Me.DnsName.TabIndex = 14
+        Me.ToolTip1.SetToolTip(Me.DnsName, "MySQL port is normally 3306. I add one so it will not intyerfere with other insta" &
+        "llations.")
         '
         'Label13
         '
@@ -593,34 +614,38 @@ Partial Class AdvancedForm
         '
         Me.PictureBox1.BackgroundImage = Global.Outworldz.My.Resources.Resources.BuiltbyFred
         Me.PictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.PictureBox1.Location = New System.Drawing.Point(636, 189)
+        Me.PictureBox1.Location = New System.Drawing.Point(777, 15)
         Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(87, 67)
+        Me.PictureBox1.Size = New System.Drawing.Size(75, 67)
         Me.PictureBox1.TabIndex = 24
         Me.PictureBox1.TabStop = False
         Me.ToolTip1.SetToolTip(Me.PictureBox1, "Hi! eail me : fred@mitsi.com")
         '
-        'DnsName
+        'WebStats
         '
-        Me.DnsName.Location = New System.Drawing.Point(6, 150)
-        Me.DnsName.Name = "DnsName"
-        Me.DnsName.Size = New System.Drawing.Size(122, 20)
-        Me.DnsName.TabIndex = 14
-        Me.ToolTip1.SetToolTip(Me.DnsName, "MySQL port is normally 3306. I add one so it will not intyerfere with other insta" &
-        "llations.")
+        Me.WebStats.AutoSize = True
+        Me.WebStats.Location = New System.Drawing.Point(17, 29)
+        Me.WebStats.Name = "WebStats"
+        Me.WebStats.Size = New System.Drawing.Size(65, 17)
+        Me.WebStats.TabIndex = 25
+        Me.WebStats.Text = "Enabled"
+        Me.ToolTip1.SetToolTip(Me.WebStats, "SHows Sim Stats on the web")
+        Me.WebStats.UseVisualStyleBackColor = True
         '
-        'Label7
+        'GroupBox7
         '
-        Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(6, 134)
-        Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(120, 13)
-        Me.Label7.TabIndex = 15
-        Me.Label7.Text = "DNS Name (if available)"
+        Me.GroupBox7.Controls.Add(Me.WebStats)
+        Me.GroupBox7.Location = New System.Drawing.Point(628, 195)
+        Me.GroupBox7.Name = "GroupBox7"
+        Me.GroupBox7.Size = New System.Drawing.Size(126, 52)
+        Me.GroupBox7.TabIndex = 26
+        Me.GroupBox7.TabStop = False
+        Me.GroupBox7.Text = "WebStats"
         '
         'AdvancedForm
         '
-        Me.ClientSize = New System.Drawing.Size(802, 276)
+        Me.ClientSize = New System.Drawing.Size(909, 276)
+        Me.Controls.Add(Me.GroupBox7)
         Me.Controls.Add(Me.PictureBox1)
         Me.Controls.Add(Me.GroupBox6)
         Me.Controls.Add(Me.GroupBox5)
@@ -646,6 +671,8 @@ Partial Class AdvancedForm
         Me.GroupBox6.ResumeLayout(False)
         Me.GroupBox6.PerformLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.GroupBox7.ResumeLayout(False)
+        Me.GroupBox7.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -703,4 +730,6 @@ Partial Class AdvancedForm
     Friend WithEvents ToolTip1 As ToolTip
     Friend WithEvents Label7 As Label
     Friend WithEvents DnsName As TextBox
+    Friend WithEvents WebStats As CheckBox
+    Friend WithEvents GroupBox7 As GroupBox
 End Class
