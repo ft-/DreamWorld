@@ -252,5 +252,6 @@
 
     Private Sub CheckBox1_CheckedChanged(sender As Object, e As EventArgs) Handles WebStats.CheckedChanged
         My.Settings.WebStats = WebStats.Checked
+        Form1.WebStatsToolStripMenuItem.Visible = WebStats.Checked
     End Sub
 End Class
