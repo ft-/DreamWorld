@@ -38,7 +38,7 @@ Public Class Form1
     '
 
 #Region "Declarations"
-    Dim MyVersion As String = "0.88"
+    Dim MyVersion As String = "0.87"
     Dim DebugPath As String = "C:\Opensim\Outworldz"
     Dim remoteUri As String = "http://www.outworldz.com/Outworldz_Installer/" ' requires trailing slash
     Dim gCurDir As String   ' Holds the current folder that we are running in
@@ -873,7 +873,7 @@ Public Class Form1
         Dim user = InputBox("User name that will get this IAR?")
         Dim password = InputBox("Password for user " + user + "?")
         If user.Length And password.Length Then
-
+            AppActivate(OpensimProcID)
             Try
                 My.Computer.Keyboard.SendKeys("load iar --merge " + user + " / " + password + " " + Chr(34) + thing + Chr(34) + "{ENTER}", True)
                 My.Computer.Keyboard.SendKeys("alert IAR content Is loaded{ENTER}", True)
