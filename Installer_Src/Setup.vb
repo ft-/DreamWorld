@@ -1128,7 +1128,7 @@ Public Class Form1
         ' Wait for Opensim to start listening via wifi
         Dim Up As String
         Try
-            Up = client.DownloadString("http://127.0.0.1:" + +My.Settings.PublicPort + "/?r=" + Random())
+            Up = client.DownloadString("http://127.0.0.1:" + My.Settings.PublicPort + "/?r=" + Random())
         Catch ex As Exception
             Up = ""
             Log("Error: cannot read localhost? " + ex.Message)
