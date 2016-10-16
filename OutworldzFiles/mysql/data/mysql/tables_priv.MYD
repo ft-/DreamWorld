@@ -198,5 +198,4 @@ Version: '5.5.8'  socket: ''  port: 3307  MySQL Community Server (GPL)
 161015 14:42:53 [ERROR] Native table 'performance_schema'.'cond_instances' has the wrong structure
 161015 14:42:53 [ERROR] Native table 'performance_schema'.'file_instances' has the wrong structure
 161015 14:42:53 [Note] Event Scheduler: Loaded 0 events
-161015 14:42:53 [Note] C:\Opensim\Outworldz-10\Dreamworld\OutworldzFiles\mysql\bin\mysqld-nt.exe: ready for connections.
-Version: '5.5.8'  socket: ''  port: 3307  MySQL Community Server (GPL)
+161015 14:42:53 [Note] C:\Opensim\Outworldz-10\Dreamworld\Outwor

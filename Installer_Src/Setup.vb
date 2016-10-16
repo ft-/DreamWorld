@@ -39,7 +39,7 @@ Public Class Form1
 
 #Region "Declarations"
     Dim MyVersion As String = "0.9"
-    Dim DebugPath As String = "C:\Opensim\Outworldz"
+    Dim DebugPath As String = "C:\Opensim\Outworldz-10"
     Dim remoteUri As String = "http://www.outworldz.com/Outworldz_Installer/" ' requires trailing slash
     Dim gCurDir As String   ' Holds the current folder that we are running in
     Dim gCurSlashDir As String '  holds the current directory info in Unix format
