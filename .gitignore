@@ -30,3 +30,6 @@ OutworldzFiles/mysql/data/*.err
 obj/
 Release/
 Debug/
+
+Opensim_0.9_src/
+

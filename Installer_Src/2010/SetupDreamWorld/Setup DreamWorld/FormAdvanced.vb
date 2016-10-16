@@ -82,6 +82,7 @@
 
         DnsName.Text = My.Settings.DnsName
         WebStats.Checked = My.Settings.WebStats
+        HttpPort.Text = My.Settings.HttpPort
 
     End Sub
 
@@ -253,5 +254,9 @@
     Private Sub CheckBox1_CheckedChanged(sender As Object, e As EventArgs) Handles WebStats.CheckedChanged
         My.Settings.WebStats = WebStats.Checked
         Form1.WebStatsToolStripMenuItem.Visible = WebStats.Checked
+    End Sub
+
+    Private Sub HttpPort_TextChanged(sender As Object, e As EventArgs) Handles HttpPort.TextChanged
+        My.Settings.HttpPort = HttpPort.Text
     End Sub
 End Class

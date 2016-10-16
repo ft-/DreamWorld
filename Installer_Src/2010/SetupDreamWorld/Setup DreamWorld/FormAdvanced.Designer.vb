@@ -79,6 +79,8 @@ Partial Class AdvancedForm
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.WebStats = New System.Windows.Forms.CheckBox()
         Me.GroupBox7 = New System.Windows.Forms.GroupBox()
+        Me.HttpPort = New System.Windows.Forms.TextBox()
+        Me.Label19 = New System.Windows.Forms.Label()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -175,6 +177,8 @@ Partial Class AdvancedForm
         '
         'GroupBox2
         '
+        Me.GroupBox2.Controls.Add(Me.Label19)
+        Me.GroupBox2.Controls.Add(Me.HttpPort)
         Me.GroupBox2.Controls.Add(Me.Label7)
         Me.GroupBox2.Controls.Add(Me.DnsName)
         Me.GroupBox2.Controls.Add(Me.Label13)
@@ -189,7 +193,7 @@ Partial Class AdvancedForm
         Me.GroupBox2.Controls.Add(Me.Label5)
         Me.GroupBox2.Location = New System.Drawing.Point(620, 8)
         Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Size = New System.Drawing.Size(134, 175)
+        Me.GroupBox2.Size = New System.Drawing.Size(134, 239)
         Me.GroupBox2.TabIndex = 5
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Ports"
@@ -197,7 +201,7 @@ Partial Class AdvancedForm
         'Label7
         '
         Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(6, 134)
+        Me.Label7.Location = New System.Drawing.Point(6, 181)
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(120, 13)
         Me.Label7.TabIndex = 15
@@ -205,7 +209,7 @@ Partial Class AdvancedForm
         '
         'DnsName
         '
-        Me.DnsName.Location = New System.Drawing.Point(6, 150)
+        Me.DnsName.Location = New System.Drawing.Point(9, 200)
         Me.DnsName.Name = "DnsName"
         Me.DnsName.Size = New System.Drawing.Size(122, 20)
         Me.DnsName.TabIndex = 14
@@ -215,7 +219,7 @@ Partial Class AdvancedForm
         'Label13
         '
         Me.Label13.AutoSize = True
-        Me.Label13.Location = New System.Drawing.Point(67, 87)
+        Me.Label13.Location = New System.Drawing.Point(60, 124)
         Me.Label13.Name = "Label13"
         Me.Label13.Size = New System.Drawing.Size(41, 13)
         Me.Label13.TabIndex = 13
@@ -223,15 +227,15 @@ Partial Class AdvancedForm
         '
         'RegionPort
         '
-        Me.RegionPort.Location = New System.Drawing.Point(16, 85)
+        Me.RegionPort.Location = New System.Drawing.Point(9, 122)
         Me.RegionPort.Name = "RegionPort"
         Me.RegionPort.Size = New System.Drawing.Size(47, 20)
         Me.RegionPort.TabIndex = 12
-        Me.ToolTip1.SetToolTip(Me.RegionPort, "Thr Region Port must be open to the internet for Hypergrid to work")
+        Me.ToolTip1.SetToolTip(Me.RegionPort, "Thr Region Port must be open to the internet for Hypergrid to work. Default:8004")
         '
         'Mysql
         '
-        Me.Mysql.Location = New System.Drawing.Point(14, 107)
+        Me.Mysql.Location = New System.Drawing.Point(10, 30)
         Me.Mysql.Name = "Mysql"
         Me.Mysql.Size = New System.Drawing.Size(47, 20)
         Me.Mysql.TabIndex = 11
@@ -241,7 +245,7 @@ Partial Class AdvancedForm
         'Label
         '
         Me.Label.AutoSize = True
-        Me.Label.Location = New System.Drawing.Point(67, 110)
+        Me.Label.Location = New System.Drawing.Point(61, 33)
         Me.Label.Name = "Label"
         Me.Label.Size = New System.Drawing.Size(36, 13)
         Me.Label.TabIndex = 10
@@ -249,25 +253,25 @@ Partial Class AdvancedForm
         '
         'PublicPort
         '
-        Me.PublicPort.Location = New System.Drawing.Point(16, 40)
+        Me.PublicPort.Location = New System.Drawing.Point(9, 77)
         Me.PublicPort.Name = "PublicPort"
         Me.PublicPort.Size = New System.Drawing.Size(47, 20)
         Me.PublicPort.TabIndex = 0
-        Me.ToolTip1.SetToolTip(Me.PublicPort, "The Public port for your hypergrid. Usually 8002 ot 9000")
+        Me.ToolTip1.SetToolTip(Me.PublicPort, "The Public port for your hypergrid. Default 8002")
         '
         'DiagPort
         '
-        Me.DiagPort.Location = New System.Drawing.Point(16, 17)
+        Me.DiagPort.Location = New System.Drawing.Point(9, 54)
         Me.DiagPort.Name = "DiagPort"
         Me.DiagPort.Size = New System.Drawing.Size(47, 20)
         Me.DiagPort.TabIndex = 7
         Me.ToolTip1.SetToolTip(Me.DiagPort, "This port will be opened briefly to allow Hypertgrid to be tested before Opensim " &
-        "runs.")
+        "runs. Default is 8001")
         '
         'Label6
         '
         Me.Label6.AutoSize = True
-        Me.Label6.Location = New System.Drawing.Point(67, 20)
+        Me.Label6.Location = New System.Drawing.Point(60, 57)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(57, 13)
         Me.Label6.TabIndex = 6
@@ -276,7 +280,7 @@ Partial Class AdvancedForm
         'Label4
         '
         Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(67, 65)
+        Me.Label4.Location = New System.Drawing.Point(60, 102)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(40, 13)
         Me.Label4.TabIndex = 4
@@ -284,16 +288,16 @@ Partial Class AdvancedForm
         '
         'PrivatePort
         '
-        Me.PrivatePort.Location = New System.Drawing.Point(16, 63)
+        Me.PrivatePort.Location = New System.Drawing.Point(9, 100)
         Me.PrivatePort.Name = "PrivatePort"
         Me.PrivatePort.Size = New System.Drawing.Size(47, 20)
         Me.PrivatePort.TabIndex = 1
-        Me.ToolTip1.SetToolTip(Me.PrivatePort, "A Private Port used only on the LAN, never the WAN")
+        Me.ToolTip1.SetToolTip(Me.PrivatePort, "A Private Port used only on the LAN, never the WAN. Default: 8003")
         '
         'Label5
         '
         Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(68, 43)
+        Me.Label5.Location = New System.Drawing.Point(61, 80)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(39, 13)
         Me.Label5.TabIndex = 5
@@ -635,12 +639,30 @@ Partial Class AdvancedForm
         'GroupBox7
         '
         Me.GroupBox7.Controls.Add(Me.WebStats)
-        Me.GroupBox7.Location = New System.Drawing.Point(628, 195)
+        Me.GroupBox7.Location = New System.Drawing.Point(771, 140)
         Me.GroupBox7.Name = "GroupBox7"
         Me.GroupBox7.Size = New System.Drawing.Size(126, 52)
         Me.GroupBox7.TabIndex = 26
         Me.GroupBox7.TabStop = False
         Me.GroupBox7.Text = "WebStats"
+        '
+        'HttpPort
+        '
+        Me.HttpPort.Location = New System.Drawing.Point(10, 145)
+        Me.HttpPort.Name = "HttpPort"
+        Me.HttpPort.Size = New System.Drawing.Size(47, 20)
+        Me.HttpPort.TabIndex = 16
+        Me.ToolTip1.SetToolTip(Me.HttpPort, "HTTP Port. Default: 9000")
+        '
+        'Label19
+        '
+        Me.Label19.AutoSize = True
+        Me.Label19.Location = New System.Drawing.Point(62, 148)
+        Me.Label19.Name = "Label19"
+        Me.Label19.Size = New System.Drawing.Size(36, 13)
+        Me.Label19.TabIndex = 17
+        Me.Label19.Text = "HTTP"
+        Me.ToolTip1.SetToolTip(Me.Label19, "Default is 9000")
         '
         'AdvancedForm
         '
@@ -732,4 +754,6 @@ Partial Class AdvancedForm
     Friend WithEvents DnsName As TextBox
     Friend WithEvents WebStats As CheckBox
     Friend WithEvents GroupBox7 As GroupBox
+    Friend WithEvents Label19 As Label
+    Friend WithEvents HttpPort As TextBox
 End Class

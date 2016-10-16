@@ -15,3 +15,4 @@ This re-release updates it from the original Sim On A Stick format into a standa
 0.87 2016-10-14 Admin panel accepts a DNS/DynDNS name, *.OAR and *.oar  case sensitive fixes
 0.88 2016-10-15 Stats enabled at http://localhost:8002/SStats/ - hid webstats toolstrip if Admin menu is unchecked, Onlook closes with app
 0.89 2016-10-15 IAR load did not work: needed an AppActivate
+0.90 2016-10-16 Opensim 0.9 and 0.8.2.1!

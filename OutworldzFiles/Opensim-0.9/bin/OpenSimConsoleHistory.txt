@@ -1,0 +1,5 @@
+bupass permissions 
+bypass permissions
+bypass permissions true
+bypass permissions false
+save oar Y:/inetpub/Secondlife/Outworldz_Installer/OAR/Garden_By_The_Sea_by_Waving_Girl.oar

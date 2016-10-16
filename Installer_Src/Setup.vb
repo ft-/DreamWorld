@@ -38,7 +38,7 @@ Public Class Form1
     '
 
 #Region "Declarations"
-    Dim MyVersion As String = "0.87"
+    Dim MyVersion As String = "0.9"
     Dim DebugPath As String = "C:\Opensim\Outworldz"
     Dim remoteUri As String = "http://www.outworldz.com/Outworldz_Installer/" ' requires trailing slash
     Dim gCurDir As String   ' Holds the current folder that we are running in
@@ -189,12 +189,11 @@ Public Class Form1
 
         ProgressBar1.Value = 10
         GetPubIP(15)
-        SetINIFromSettings(20)
-
-        ' always open ports
-        OpenPorts(15) ' Open router ports with uPnP
 
         If Not My.Settings.RunOnce Then
+            SetINIFromSettings(20)
+            ' always open ports
+            OpenPorts(15) ' Open router ports with uPnP
             My.Settings.RunOnce = True
             ProbePublicPort(25)
             Loopback(30)    ' test the loopback on the router. If it fails, use localhost, no Hg
@@ -215,7 +214,7 @@ Public Class Form1
 
             Buttons(StartButton)
             ProgressBar1.Value = 100
-            Print("Outworldz Opensimulator is ready to start.")
+            'Print("Outworldz Opensimulator is ready to start.")
             Log("Info:Ready to start")
 
         Else
@@ -276,7 +275,6 @@ Public Class Form1
         End If
         ProgressBar1.Value = 100
         Print("Ready to Launch! Click 'Start' to begin your adventure in Opensim.")
-        Sleep(2000)
 
         Buttons(StartButton)
         Timer1.Interval = My.Settings.TimerInterval * 1000
@@ -304,6 +302,7 @@ Public Class Form1
         Running = True
 
         LogFiles(5) ' clear log fles
+        OpenPorts(8) ' Open router ports with uPnP
         SetINIFromSettings(10)    ' set up the INI files
         InstallGridXML(15)
         Start_Opensimulator(30) ' Launch the rocket
@@ -540,6 +539,7 @@ Public Class Form1
             MsgBox("Cannot locate '" + key + "' in section '" + section + "' in file " + gINI + ". This is not good", vbOK)
         End Try
     End Sub
+
     Private Sub SaveINI()
         Try
             parser.WriteFile(gINI, Data)
@@ -548,28 +548,23 @@ Public Class Form1
         End Try
     End Sub
 
-
-    Private Sub mnuOsGrid_Click(sender As Object, e As EventArgs) Handles mnuOsGrid.Click
-        My.Settings.GridFolder = "OsGrid"
+    Private Sub mnu9_Click(sender As Object, e As EventArgs) Handles mnu9.Click
+        My.Settings.GridFolder = "Opensim-0.9"
         My.Settings.GridFolder = My.Settings.GridFolder
         My.Settings.Save()
-        mnuOsGrid.Checked = True
+        ViewWebUI.Visible = False
+        mnu9.Checked = True
         mnuHyperGrid.Checked = False
-        Print("Outworldz will connect to OsGrid.org. You must log in with an Avatar name registered with OsGrid.org. You must also 'Port Forward' your router to this machine on port 8000 for Tcp and Udp traffic")
-        Try
-            My.Computer.FileSystem.CopyFile(MyFolder & "\Viewer\grids_sg_OsGrid.xml", xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml", True)
-        Catch
-            Log("Error:Cannot copy " + MyFolder & "\Viewer\grids_sg_OsGrid.xml to " + xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml")
-        End Try
+        Print("Outworldz rev is set to 0.9")
     End Sub
 
     Private Sub mnuHyperGrid_Click(sender As Object, e As EventArgs) Handles mnuHyperGrid.Click
-        My.Settings.GridFolder = "HyperGrid"
+        My.Settings.GridFolder = "Opensim"
         My.Settings.GridFolder = My.Settings.GridFolder
         My.Settings.Save()
-        mnuOsGrid.Checked = False
+        mnu9.Checked = False
         mnuHyperGrid.Checked = True
-
+        ViewWebUI.Visible = True
         Print("Outworldz will connect as a locally hosted hypergridded sim.")
         Log("Outworldz will connect as a locally hosted hypergridded sim.")
 
@@ -579,13 +574,34 @@ Public Class Form1
         'mnuShow shows the DOS box for Opensimulator
         mnuShow.Checked = My.Settings.ConsoleShow
         mnuHide.Checked = Not My.Settings.ConsoleShow
+
         If My.Settings.ConsoleShow Then
             Log("Info:Console will be shown")
         Else
             Log("Info:Console will not be shown")
         End If
+        mnuFull.Checked = Not My.Settings.ViewerEase
+        mnuEasy.Checked = My.Settings.ViewerEase
 
-        LoadIni(MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\config-include\MyWorld.ini", ";")
+        mnuYesAvatar.Checked = My.Settings.AvatarShow
+        mnuNoAvatar.Checked = Not My.Settings.AvatarShow
+
+        ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+        ' Diva 0.8.2 used MyWorld.ini all other versions use StandaloneCommon.ini
+        If My.Settings.GridFolder = "Opensim-0.9" Then
+            ViewWebUI.Visible = False
+            LoadIni(MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\config-include\StandaloneCommon.ini", ";")
+        Else
+            ViewWebUI.Visible = True
+            LoadIni(MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\config-include\MyWorld.ini", ";")
+        End If
+
+        If My.Settings.WebStats Then
+            SetIni("WebStats", "enabled", "true")
+        Else
+            SetIni("WebStats", "enabled", "false")
+        End If
 
         ' Viewer UI shows the full viewer UI
         If My.Settings.ViewerEase Then
@@ -596,10 +612,6 @@ Public Class Form1
             SetIni("SpecialUIModule", "enabled", "false")
         End If
 
-
-        mnuFull.Checked = Not My.Settings.ViewerEase
-        mnuEasy.Checked = My.Settings.ViewerEase
-
         'Avatar visible?
         If My.Settings.AvatarShow Then
             Log("Info:Showing the avatar")
@@ -608,14 +620,6 @@ Public Class Form1
             Log("Info:Set to not show avatar")
             SetIni("CameraOnlyModeModule", "enabled", "true")
         End If
-
-        Log("Info:Saving Wifi Admin for " + My.Settings.AdminFirst + " " + My.Settings.AdminLast)
-        SetIni("WifiService", "AdminFirst", """" + My.Settings.AdminFirst + """")
-        SetIni("WifiService", "AdminLast", """" + My.Settings.AdminLast + """")
-        SetIni("WifiService", "AdminPassword", """" + My.Settings.Password + """")
-        SetIni("WifiService", "AdminPassword", """" + My.Settings.Password + """")
-        SetIni("Network", "ConsoleUser", """" + My.Settings.ConsoleUser + """")
-        SetIni("Network", "ConsolePass", """" + My.Settings.ConsolePass + """")
 
         If (My.Settings.allow_grid_gods) Then
             SetIni("Permissions", "allow_grid_gods", "true")
@@ -629,7 +633,6 @@ Public Class Form1
             SetIni("Permissions", "region_owner_is_god", "false")
         End If
 
-
         If (My.Settings.region_manager_is_god) Then
             SetIni("Permissions", "region_manager_is_god", "true")
         Else
@@ -642,12 +645,14 @@ Public Class Form1
             SetIni("Permissions", "parcel_owner_is_god", "false")
         End If
 
-        SetIni("WifiService", "AdminEmail", """" + My.Settings.AdminEmail + """")
+        If My.Settings.GridFolder <> "Opensim-0.9" Then
+            SetIni("WifiService", "AdminEmail", """" + My.Settings.AdminEmail + """")
 
-        If My.Settings.AccountConfirmationRequired Then
-            SetIni("WifiService", "AccountConfirmationRequired", "true")
-        Else
-            SetIni("WifiService", "AccountConfirmationRequired", "false")
+            If My.Settings.AccountConfirmationRequired Then
+                SetIni("WifiService", "AccountConfirmationRequired", "true")
+            Else
+                SetIni("WifiService", "AccountConfirmationRequired", "false")
+            End If
         End If
 
         ' Autobackup
@@ -664,38 +669,35 @@ Public Class Form1
 
         SaveINI()
 
-
-        mnuYesAvatar.Checked = My.Settings.AvatarShow
-        mnuNoAvatar.Checked = Not My.Settings.AvatarShow
+        ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
         ' Grid
         If My.Settings.GridFolder = "HyperGrid" Then
-            Log("Info:Local Hypergrid enabled")
+            Log("Info: 0.8.2.1 enabled")
             mnuHyperGrid.Checked = True
-            mnuOsGrid.Checked = False
-        End If
-
-        If My.Settings.GridFolder = "OsGrid" Then
-            Log("osgrid enabled")
+            mnu9.Checked = False
+        Else
+            Log("0.9 enabled")
             mnuHyperGrid.Checked = False
-            mnuOsGrid.Checked = True
+            mnu9.Checked = True
         End If
 
         'Onlook viewer
         If My.Settings.Onlook = True Then
-            Log("Info:Onlook viewer mode")
+            Log("InfoOnlook viewer mode")
             mnuOther.Checked = False
             mnuOnlook.Checked = True
             VUI.Visible = True
             AvatarVisible.Visible = True
         Else
-            Log("Info:Other viewer mode")
+            Log("Info: Other viewer mode")
             mnuOther.Checked = True
             mnuOnlook.Checked = False
             VUI.Visible = False
             AvatarVisible.Visible = False
         End If
 
+        ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
         ' RegionConfig
         LoadIni(MyFolder + "\OutworldzFiles\" + My.Settings.GridFolder + "\bin\Regions\RegionConfig.ini", ";")
@@ -707,12 +709,21 @@ Public Class Form1
         SetIni("Outworldz", "InternalPort", My.Settings.RegionPort)
         SaveINI()
 
+        ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+        ' Opensim.ini
         LoadIni(MyFolder + "\OutworldzFiles\" + My.Settings.GridFolder + "\bin\Opensim.ini", ";")
         'Opensim.ini main settings only
+
         SetIni("Const", "BaseURL", My.Settings.PublicIP)
-        Log("InfoPublic Port Is " + My.Settings.PublicPort)
-        SetIni("Const", "PublicPort", My.Settings.PublicPort)
-        Log("Info:Wifi Port is " + My.Settings.PublicPort)
+        Log("Info: Port Is " + My.Settings.PublicPort)
+
+        SetIni("Const", "PrivatePort", My.Settings.PrivatePort)
+        Log("Info: PrivatePort Is " + My.Settings.PrivatePort)
+
+        SetIni("Network", "http_listener_port", My.Settings.HttpPort)
+        Log("Info: HttpPort Is " + My.Settings.PublicIP)
+
         SaveINI()
 
         ProgressBar1.Value = iProgress
@@ -729,67 +740,81 @@ Public Class Form1
 
             If MyUPnPMap.Exists(My.Settings.PublicPort, UPNP.Protocol.TCP) Then
                 MyUPnPMap.Remove(UPNP.LocalIP, My.Settings.PublicPort)
-                DiagLog("uPnp:PublicPort.TCP Removed ")
+                DiagLog("uPnp: PublicPort.TCP Removed ")
             End If
 
             If MyUPnPMap.Exists(My.Settings.LoopBack, UPNP.Protocol.TCP) Then
                 MyUPnPMap.Remove(UPNP.LocalIP, My.Settings.LoopBack)
-                DiagLog("uPnp:LoopBack.TCP Removed ")
+                DiagLog("uPnp: Loopback.TCP Removed ")
             End If
 
             If MyUPnPMap.Exists(My.Settings.RegionPort, UPNP.Protocol.TCP) Then
                 MyUPnPMap.Remove(UPNP.LocalIP, My.Settings.RegionPort)
-                DiagLog("uPnp:LoopBack.TCP Removed ")
+                DiagLog("uPnp: Loopback.TCP Removed ")
+            End If
+
+            If MyUPnPMap.Exists(My.Settings.HttpPort, UPNP.Protocol.TCP) Then
+                MyUPnPMap.Remove(UPNP.LocalIP, My.Settings.HttpPort)
+                DiagLog("uPnp: HttpPort.TCP Removed ")
             End If
 
         Catch e As Exception
-            Log("uPnp:UPnP Exception caught: " + e.Message)
+            Log("uPnp: UPNP Exception caught:  " + e.Message)
             Return False
         End Try
         Return True 'successfully added
     End Function
     Function AllowFirewall() As Boolean
-        Log("uPnp:probing")
+        Log("uPnpprobing")
         Dim MyUPnPMap As New UPNP
 
         Try
             If MyUPnPMap.Exists(My.Settings.PublicPort, UPNP.Protocol.UDP) Then
-                DiagLog("uPnp:PublicPort.UDP exists")
+                DiagLog("uPnp: PublicPort.UDP exists")
             Else
                 MyUPnPMap.Add(UPNP.LocalIP, My.Settings.PublicPort, UPNP.Protocol.UDP, "Opensim UDP Public")
-                DiagLog("uPnp:PublicPort.UDP added")
+                DiagLog("uPnp: PublicPort.UDP added")
             End If
 
             If MyUPnPMap.Exists(My.Settings.PublicPort, UPNP.Protocol.TCP) Then
-                DiagLog("uPnp:PublicPort.TCP exists")
+                DiagLog("uPnp: PublicPort.TCP exists")
             Else
                 MyUPnPMap.Add(UPNP.LocalIP, My.Settings.PublicPort, UPNP.Protocol.TCP, "Opensim TCP Public")
-                DiagLog("uPnp:PublicPort.TCP added")
+                DiagLog("uPnp: PublicPort.TCP added")
             End If
 
             If MyUPnPMap.Exists(My.Settings.LoopBack, UPNP.Protocol.TCP) Then
-                DiagLog("uPnp:LoopBack.TCP exists")
+                DiagLog("uPnp: Loopback.TCP exists")
             Else
                 MyUPnPMap.Add(UPNP.LocalIP, My.Settings.LoopBack, UPNP.Protocol.TCP, "Opensim TCP Region")
-                DiagLog("uPnp:LoopBack.TCP Added ")
+                DiagLog("uPnp: Loopback.TCP Added ")
             End If
 
             If MyUPnPMap.Exists(My.Settings.RegionPort, UPNP.Protocol.TCP) Then
-                DiagLog("uPnp:Regionport.TCP exists")
+                DiagLog("uPnp: Regionport.TCP exists")
             Else
-                Log("uPnp:LoopBack.TCP Added ")
-                MyUPnPMap.Add(UPNP.LocalIP, My.Settings.RegionPort, UPNP.Protocol.TCP, "Opensim UDP Region")
+                Log("uPnp: Loopback.TCP Added ")
+                MyUPnPMap.Add(UPNP.LocalIP, My.Settings.RegionPort, UPNP.Protocol.TCP, "Opensim TCP Region")
             End If
 
             If MyUPnPMap.Exists(My.Settings.RegionPort, UPNP.Protocol.UDP) Then
-                DiagLog("uPnp:Regionport.UDP exists")
+                DiagLog("uPnp: Regionport.UDP exists")
             Else
-                MyUPnPMap.Add(UPNP.LocalIP, My.Settings.RegionPort, UPNP.Protocol.UDP, "Opensim Region")
-                DiagLog("uPnp:LoopBack.UDP Added ")
+                MyUPnPMap.Add(UPNP.LocalIP, My.Settings.RegionPort, UPNP.Protocol.UDP, "Opensim UDP Region")
+                DiagLog("uPnp: Loopback.UDP Added ")
             End If
 
+
+            If MyUPnPMap.Exists(My.Settings.HttpPort, UPNP.Protocol.TCP) Then
+                DiagLog("uPnp: HttpPort.TCP exists")
+            Else
+                Log("uPnp: HttpPort.TCP Added ")
+                MyUPnPMap.Add(UPNP.LocalIP, My.Settings.HttpPort, UPNP.Protocol.TCP, "Opensim TCP Http")
+            End If
+
+
         Catch e As Exception
-            DiagLog("uPnp:UPnP Exception caught: " + e.Message)
+            DiagLog("uPnp: UPNP Exception caught:  " + e.Message)
             Return False
         End Try
         Return True 'successfully added
@@ -799,20 +824,20 @@ Public Class Form1
         Print("The human is instructed to wait while I check out this nice little router ...")
         Try
             If AllowFirewall() Then ' open uPNP port
-                DiagLog("uPnp:Ok")
+                DiagLog("uPnpOk")
                 ProgressBar1.Value = progress
                 Print("Okay! looking good ...")
                 Return True
             Else
-                DiagLog("uPnP:fail")
+                DiagLog("uPnP: fail")
                 ProgressBar1.Value = progress
-                Print("UPnP Port forwarding is not enabled.  Ports can be manually opened in the router to compensate.")
+                Print("UPnP Port forwarding Is Not enabled.  Ports can be manually opened in the router to compensate.")
                 Return False
             End If
         Catch e As Exception
-            DiagLog("Error:uPnP Exception:" + e.Message)
+            DiagLog("Error: UPNP Exception: " + e.Message)
             ProgressBar1.Value = progress
-            Print("Router is blocking a port so hypergrid may not be available")
+            Print("Router Is blocking a port so hypergrid may Not be available")
             Return False
         End Try
         ProgressBar1.Value = progress
@@ -824,8 +849,8 @@ Public Class Form1
         Application.DoEvents()
         KillAll()
         Buttons(StartButton)
-        Print("Opensim is Stopped")
-        Log("Info:Stopped")
+        Print("Opensim Is Stopped")
+        Log("InfoStopped")
     End Sub
 
     Private Function xmlPath() As String
@@ -834,9 +859,9 @@ Public Class Form1
         Return Mid(appData, 1, InStr(appData, "AppData") - 1)
     End Function
 
-    Private Sub AdminUIToolStripMenuItem1_Click(sender As Object, e As EventArgs) Handles AdminUIToolStripMenuItem1.Click
+    Private Sub AdminUIToolStripMenuItem1_Click(sender As Object, e As EventArgs) Handles ViewWebUI.Click
         If (Running) Then
-            Dim webAddress As String = "http://127.0.0.1:" + My.Settings.PublicPort
+            Dim webAddress As String = "http: //127.0.0.1:" + My.Settings.PublicPort
             Process.Start(webAddress)
             Print("Log in as '" + My.Settings.AdminFirst + " " + My.Settings.AdminLast + "' with a password of '" + My.Settings.Password + "' to add user accounts.")
         Else
@@ -1075,7 +1100,7 @@ Public Class Form1
             End If
 
             ' check again
-            Sleep(1000)
+            Sleep(2000)
             Mysql = CheckPort("127.0.0.1", My.Settings.MySqlPort)
         End While
         ProgressBar1.Value = progress
@@ -1133,10 +1158,16 @@ Public Class Form1
             Log("Info:Opensim console is Minimized")
         End If
 
+        Dim ProbePort As String
+        If My.Settings.GridFolder = "Opensim-0.9" Then
+            ProbePort = My.Settings.HttpPort
+        Else
+            ProbePort = My.Settings.PublicPort
+        End If
         ' Wait for Opensim to start listening via wifi
         Dim Up As String
         Try
-            Up = client.DownloadString("http://127.0.0.1:" + My.Settings.PublicPort + "/?r=" + Random())
+            Up = client.DownloadString("http://127.0.0.1:" + ProbePort + "/?r=" + Random())
         Catch ex As Exception
             Up = ""
             Log("Error: cannot read localhost? " + ex.Message)
@@ -1161,9 +1192,12 @@ Public Class Form1
             Sleep(4000)
 
             Try
-                Up = client.DownloadString("http://127.0.0.1:" + My.Settings.PublicPort + "/?r=" + Random())
+                Up = client.DownloadString("http://127.0.0.1:" + ProbePort + "/?r=" + Random())
             Catch ex As Exception
                 Up = ""
+                If InStr(ex.Message, "404") Then
+                    Up = "Done"
+                End If
                 Log("Error: cannot real localhost? " + ex.Message)
             End Try
         End While

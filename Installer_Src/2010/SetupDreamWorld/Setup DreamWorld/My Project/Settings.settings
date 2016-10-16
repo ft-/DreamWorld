@@ -125,5 +125,8 @@
     <Setting Name="WebStats" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
+    <Setting Name="HttpPort" Type="System.String" Scope="User">
+      <Value Profile="(Default)">8005</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
