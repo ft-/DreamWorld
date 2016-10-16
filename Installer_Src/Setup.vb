@@ -313,7 +313,6 @@ Public Class Form1
             Log("Info:PublicIP = 127.0.0.1")
             Print("Access to the Hypergrid is disabled because of your router. See Help->Loopback to see why.")
         Else
-            Log("Info:Ready for login")
             Print("Outworldz is ready for you to log in. Hypergrid address is " + My.Settings.PublicIP + ":" + My.Settings.PublicPort)
         End If
 
@@ -398,7 +397,6 @@ Public Class Form1
     Private Sub Print(Value As String)
 
         Log("Info:" + Value)
-
         PictureBox1.Visible = False
         TextBox1.Visible = True
         TextBox1.Text = Value
@@ -490,7 +488,6 @@ Public Class Form1
     End Sub
 
     Private Function Random() As String
-
         Dim value As Integer = CInt(Int((6000 * Rnd()) + 1))
         Random = Str(value)
     End Function
@@ -550,7 +547,6 @@ Public Class Form1
 
     Private Sub mnu9_Click(sender As Object, e As EventArgs) Handles mnu9.Click
         My.Settings.GridFolder = "Opensim-0.9"
-        My.Settings.GridFolder = My.Settings.GridFolder
         My.Settings.Save()
         ViewWebUI.Visible = False
         mnu9.Checked = True
@@ -560,13 +556,11 @@ Public Class Form1
 
     Private Sub mnuHyperGrid_Click(sender As Object, e As EventArgs) Handles mnuHyperGrid.Click
         My.Settings.GridFolder = "Opensim"
-        My.Settings.GridFolder = My.Settings.GridFolder
         My.Settings.Save()
         mnu9.Checked = False
         mnuHyperGrid.Checked = True
         ViewWebUI.Visible = True
-        Print("Outworldz will connect as a locally hosted hypergridded sim.")
-        Log("Outworldz will connect as a locally hosted hypergridded sim.")
+        Print("Outworldz rev is set to 0.8.2.1")
 
     End Sub
 
@@ -804,14 +798,12 @@ Public Class Form1
                 DiagLog("uPnp: Loopback.UDP Added ")
             End If
 
-
             If MyUPnPMap.Exists(My.Settings.HttpPort, UPNP.Protocol.TCP) Then
                 DiagLog("uPnp: HttpPort.TCP exists")
             Else
                 Log("uPnp: HttpPort.TCP Added ")
                 MyUPnPMap.Add(UPNP.LocalIP, My.Settings.HttpPort, UPNP.Protocol.TCP, "Opensim TCP Http")
             End If
-
 
         Catch e As Exception
             DiagLog("uPnp: UPNP Exception caught:  " + e.Message)
