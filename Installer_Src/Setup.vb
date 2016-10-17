@@ -38,8 +38,8 @@ Public Class Form1
     '
 
 #Region "Declarations"
-    Dim MyVersion As String = "0.9"
-    Dim DebugPath As String = "C:\Opensim\Outworldz-10"
+    Dim MyVersion As String = "0.92"
+    Dim DebugPath As String = "C:\Opensim\Outworldz"
     Dim remoteUri As String = "http://www.outworldz.com/Outworldz_Installer/" ' requires trailing slash
     Dim gCurDir As String   ' Holds the current folder that we are running in
     Dim gCurSlashDir As String '  holds the current directory info in Unix format
@@ -853,7 +853,7 @@ Public Class Form1
 
     Private Sub AdminUIToolStripMenuItem1_Click(sender As Object, e As EventArgs) Handles ViewWebUI.Click
         If (Running) Then
-            Dim webAddress As String = "http: //127.0.0.1:" + My.Settings.PublicPort
+            Dim webAddress As String = "http://127.0.0.1:" + My.Settings.PublicPort
             Process.Start(webAddress)
             Print("Log in as '" + My.Settings.AdminFirst + " " + My.Settings.AdminLast + "' with a password of '" + My.Settings.Password + "' to add user accounts.")
         Else
