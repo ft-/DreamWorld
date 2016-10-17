@@ -277,8 +277,12 @@ Public Class Form1
         Print("Ready to Launch! Click 'Start' to begin your adventure in Opensim.")
 
         Buttons(StartButton)
-        Timer1.Interval = My.Settings.TimerInterval * 1000
-        Timer1.Start() 'Timer starts functioning
+
+        If (My.Settings.TimerInterval > 0) Then
+            Timer1.Interval = My.Settings.TimerInterval * 1000
+            Timer1.Start() 'Timer starts functioning
+        End If
+
 
     End Sub
     Private Sub StartButton_Click(sender As System.Object, e As System.EventArgs) Handles StartButton.Click
@@ -319,8 +323,11 @@ Public Class Form1
         ' done with bootup
         ProgressBar1.Value = 100
 
-        Timer1.Interval = My.Settings.TimerInterval * 1000
-        Timer1.Start() 'Timer starts functioning
+        If (My.Settings.TimerInterval > 0) Then
+            Timer1.Interval = My.Settings.TimerInterval * 1000
+            Timer1.Start() 'Timer starts functioning
+        End If
+
 
     End Sub
 
@@ -1076,7 +1083,7 @@ Public Class Form1
             Application.DoEvents()
 
             Dim MysqlLog As String = MyFolder + "\OutworldzFiles\mysql\data"
-            If ProgressBar1.Value = StartValue Then ' about 30 seconds when it fails
+            If ProgressBar1.Value = 99 Then ' about 30 seconds when it fails
                 Dim yesno = MsgBox("The database did not start. Do you want to see the log file?", vbYesNo)
                 If (yesno = vbYes) Then
                     Dim files() As String
