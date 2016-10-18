@@ -38,7 +38,7 @@ Public Class Form1
     '
 
 #Region "Declarations"
-    Dim MyVersion As String = "0.92"
+    Dim MyVersion As String = "0.93"
     Dim DebugPath As String = "C:\Opensim\Outworldz"
     Dim remoteUri As String = "http://www.outworldz.com/Outworldz_Installer/" ' requires trailing slash
     Dim gCurDir As String   ' Holds the current folder that we are running in
@@ -704,8 +704,6 @@ Public Class Form1
         LoadIni(MyFolder + "\OutworldzFiles\" + My.Settings.GridFolder + "\bin\Regions\RegionConfig.ini", ";")
         SetIni("Outworldz", "SizeY", My.Settings.SizeY)
         SetIni("Outworldz", "SizeX", My.Settings.SizeX)
-
-        Log("Info: Public IP Is " + My.Settings.PublicIP)
         SetIni("Outworldz", "ExternalHostName", My.Settings.PublicIP)
         SetIni("Outworldz", "InternalPort", My.Settings.RegionPort)
         SaveINI()
@@ -717,14 +715,9 @@ Public Class Form1
         'Opensim.ini main settings only
 
         SetIni("Const", "BaseURL", My.Settings.PublicIP)
-        Log("Info: Port Is " + My.Settings.PublicPort)
-
         SetIni("Const", "PrivatePort", My.Settings.PrivatePort)
-        Log("Info: PrivatePort Is " + My.Settings.PrivatePort)
-
+        SetIni("Const", "PublicPort", My.Settings.PublicPort)
         SetIni("Network", "http_listener_port", My.Settings.HttpPort)
-        Log("Info: HttpPort Is " + My.Settings.PublicIP)
-
         SaveINI()
 
         ProgressBar1.Value = iProgress
@@ -1482,10 +1475,16 @@ Public Class Form1
     Private Sub ProbePublicPort(iProgress As Integer)
 
         Log("Info:Starting Diagnostic server")
+        Dim ProbePort As String
+        If isRunning Then
+            ProbePort = My.Settings.LoopBack
+        Else
+            ProbePort = My.Settings.PublicPort
+        End If
 
         Dim isPortOpen As String = ""
         Try
-            isPortOpen = client.DownloadString("http://www.outworldz.com/Outworldz_Installer/probe.plx?Port=" + My.Settings.LoopBack + "&r=" + Random())
+            isPortOpen = client.DownloadString("http://www.outworldz.com/Outworldz_Installer/probe.plx?Port=" + ProbePort + "&r=" + Random())
         Catch ex As Exception
             DiagLog("Dang:The Outworldz web site cannot find a path back")
             My.Settings.DiagFailed = True
@@ -1494,12 +1493,12 @@ Public Class Form1
 
         If isPortOpen <> "yes" Then
             DiagLog(isPortOpen)
-            DiagLog("Warn:Port " + My.Settings.PublicPort + " is not open")
+            DiagLog("Warn:Port " + ProbePort + " is not forwarded to this machine")
             My.Settings.DiagFailed = True
             My.Settings.PublicIP = "127.0.0.1"
-            Print("Port " + My.Settings.PublicPort + " is not open, so Hypergrid is not available :-(   Opensimulator is set for standalone ops. This can possibly be fixed by 'Port Forwards' in your router in the Help menu")
+            Print("Port " + ProbePort + " is not forwarded to this machine, so Hypergrid may not be available. Opensimulator is set for standalone ops. This can possibly be fixed by 'Port Forwards' in your router in the Help menu")
         Else
-            Print("Hypergrid seems to be possible.  One more check..")
+            Print("Hypergrid seems to be possible, so far")
         End If
         ProgressBar1.Value = iProgress
 

@@ -548,7 +548,7 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("8005")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("8002")>  _
         Public Property HttpPort() As String
             Get
                 Return CType(Me("HttpPort"),String)
