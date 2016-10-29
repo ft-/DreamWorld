@@ -38,7 +38,7 @@ Public Class Form1
     '
 
 #Region "Declarations"
-    Dim MyVersion As String = "0.95"
+    Dim MyVersion As String = "0.96"
 
     Dim DebugPath As String = "C:\Opensim\Outworldz"
     Dim remoteUri As String = "http://www.outworldz.com/Outworldz_Installer/" ' requires trailing slash
@@ -878,7 +878,7 @@ Public Class Form1
                 My.Computer.Keyboard.SendKeys("save oar " + MyFolder + "/OutworldzFiles/Autobackup/Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar{ENTER}", True)
             End If
             My.Computer.Keyboard.SendKeys("alert New content Is loading..{ENTER}", True)
-            My.Computer.Keyboard.SendKeys("load oar " + Chr(34) + thing + Chr(34) + "{ENTER}", True)
+            My.Computer.Keyboard.SendKeys("load oar --force-terrain " + Chr(34) + thing + Chr(34) + "{ENTER}", True)
             My.Computer.Keyboard.SendKeys("alert New content just loaded. {ENTER}", True)
             Me.Focus()
         Catch ex As Exception
@@ -1681,7 +1681,7 @@ Public Class Form1
 
             ' Set filter options and filter index.
             openFileDialog1.InitialDirectory = MyFolder + "/OutworldzFiles/Autobackup"
-            openFileDialog1.Filter = "Opensim Backup Files (*.OAR)|(*.oar)|(*.IAR)|(*.iar)|(*.GZ)|(*.gz)|(*.TGZ)|(*.tgz)|All Files (*.*)|*.*"
+            openFileDialog1.Filter = "Opensim OAR(*.OAR)|*.oar;*.gz;*.tgz|Inventory IAR (*.iar)|*.iar)|All Files (*.*)|*.*"
             openFileDialog1.FilterIndex = 1
             openFileDialog1.Multiselect = False
 
@@ -1700,7 +1700,7 @@ Public Class Form1
                         My.Computer.Keyboard.SendKeys("save oar " + MyFolder + "/OutworldzFiles/Autobackup/Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar{ENTER}", True)
                     End If
                     My.Computer.Keyboard.SendKeys("alert New content is loading..{ENTER}")
-                    My.Computer.Keyboard.SendKeys("load oar " + Chr(34) + thing + Chr(34))
+                    My.Computer.Keyboard.SendKeys("load oar --force-terrain" + Chr(34) + thing + Chr(34))
                     My.Computer.Keyboard.SendKeys("alert New content just loaded.")
                     Me.Focus()
                 End If
@@ -1759,8 +1759,8 @@ Public Class Form1
             ' Display message, title, and default value.
             myValue = InputBox(Message, title, defaultValue)
             ' If user has clicked Cancel, set myValue to defaultValue 
-            If myValue Is "" Then Return
-
+            If myValue.length = 0 Then Return
+            AppActivate(OpensimProcID)
             My.Computer.Keyboard.SendKeys("alert CPU Intensive Backup Started{ENTER}", True)
             My.Computer.Keyboard.SendKeys("save oar " + MyFolder + "/OutworldzFiles/Autobackup" + myValue + "{ENTER}", True)
             Print("Saving " + myValue + " to " + MyFolder + "/OutworldzFiles/Autobackup")
