@@ -55,9 +55,12 @@ Public Class Net
             Dim stream As NetworkStream = client.GetStream() ' Get a stream object for reading and writing
 
             Log([String].Format("Received: {0}", data))
-
-            stream.Write(msg, 0, msg.Length) ' Send back a response.
-            Log([String].Format("Sent: {0}", data))
+            Try
+                stream.Write(msg, 0, msg.Length) ' Send back a response.
+                Debug.Print([String].Format("Sent: {0}", data))
+                Log([String].Format("Sent: {0}", data))
+            Catch
+            End Try
 
             ' Shutdown and end connection
             client.Close()

@@ -1,18 +1,21 @@
 Revision History:
 Outworldz "Dreamworldz" started in 2012 when it was used on a DVD and thumb drive to make a "Dream World" for a charity to give out as a thank you for donations.
 
-This re-release updates it from the original Sim On A Stick format into a standalone app using 0.8.2.1 Diva Distro.  It removes the Mowes APP, PHP, and Apache (not needed).
+This re-release updates it from the original Sim On A Stick format into a standalone app using 0.8.2.1 Diva Distro and 0.9.0 dev.  It removes the Mowes App that points to a hacked web site, PHP, and Apache (none of them are needed and are security risks).
 
 0.80 2016-10-09 Initial release
 0.81 2016-10-10 Move updater to initial stage to get past crashes
-0.82 2016-10-11 Fix was made to OpenSim in bin/OpenSim.exe.config on 23-Nov-2013 (git master a68d1fa) adding the following line to the <runtime> section: <loadFromRemoteSources enabled="true" />
+0.82 2016-10-11 Fix was made to OpenSim in bin/OpenSim.exe.config on 23-Nov-2013 (git master a68d1fa) adding the following line to the runtime section:
+                 loadFromRemoteSources enabled="true" 
                  Updater to version 1.1 to fix progress bar.
 0.83 2016-10-11 MySQL now runs when file path contains quotes.
 0.84 2016-10-12 Diags run just once
 0.85 2016-10-12 Upper/Lower case OAR files now work
 0.86 2016-10-14 Added more images
 0.87 2016-10-14 Admin panel accepts a DNS/DynDNS name, *.OAR and *.oar  case sensitive fixes
-0.88 2016-10-15 Stats enabled at http://localhost:8002/SStats/ - hid webstats toolstrip if Admin menu is unchecked, Onlook closes with app
+0.88 2016-10-15 Stats enabled at localhost:8002/SStats/ - hid webstats toolstrip if Admin menu is unchecked, Onlook closes with app
 0.89 2016-10-15 IAR load did not work: needed an AppActivate
 0.90 2016-10-16 Opensim 0.9 and 0.8.2.1 merged
 0.93 2016-10-17 Public Port was not being properly set in Opensim.ini
+0.94 2016-10-25 Manual backup menu, Prompt for auto backup when loading an OAR. Diagnostics test improvement on port 8001. 
+0.95 2016-10-27 Creates a StartManually.bat program in mysql/bin to aid anyone needing to test the db manually. Cleaned up the my.ini file

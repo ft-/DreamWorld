@@ -32,6 +32,8 @@ Partial Class AdvancedForm
         Me.SizeY = New System.Windows.Forms.TextBox()
         Me.SizeX = New System.Windows.Forms.TextBox()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
+        Me.Label19 = New System.Windows.Forms.Label()
+        Me.HttpPort = New System.Windows.Forms.TextBox()
         Me.Label7 = New System.Windows.Forms.Label()
         Me.DnsName = New System.Windows.Forms.TextBox()
         Me.Label13 = New System.Windows.Forms.Label()
@@ -79,8 +81,6 @@ Partial Class AdvancedForm
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.WebStats = New System.Windows.Forms.CheckBox()
         Me.GroupBox7 = New System.Windows.Forms.GroupBox()
-        Me.HttpPort = New System.Windows.Forms.TextBox()
-        Me.Label19 = New System.Windows.Forms.Label()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -197,6 +197,24 @@ Partial Class AdvancedForm
         Me.GroupBox2.TabIndex = 5
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Ports"
+        '
+        'Label19
+        '
+        Me.Label19.AutoSize = True
+        Me.Label19.Location = New System.Drawing.Point(62, 148)
+        Me.Label19.Name = "Label19"
+        Me.Label19.Size = New System.Drawing.Size(36, 13)
+        Me.Label19.TabIndex = 17
+        Me.Label19.Text = "HTTP"
+        Me.ToolTip1.SetToolTip(Me.Label19, "Default is 9000")
+        '
+        'HttpPort
+        '
+        Me.HttpPort.Location = New System.Drawing.Point(10, 145)
+        Me.HttpPort.Name = "HttpPort"
+        Me.HttpPort.Size = New System.Drawing.Size(47, 20)
+        Me.HttpPort.TabIndex = 16
+        Me.ToolTip1.SetToolTip(Me.HttpPort, "HTTP Port. Default: 9000")
         '
         'Label7
         '
@@ -566,7 +584,7 @@ Partial Class AdvancedForm
         Me.GroupBox6.Size = New System.Drawing.Size(214, 116)
         Me.GroupBox6.TabIndex = 23
         Me.GroupBox6.TabStop = False
-        Me.GroupBox6.Text = "Grid Rgistrations"
+        Me.GroupBox6.Text = "Grid Registrations"
         '
         'Label18
         '
@@ -645,24 +663,6 @@ Partial Class AdvancedForm
         Me.GroupBox7.TabIndex = 26
         Me.GroupBox7.TabStop = False
         Me.GroupBox7.Text = "WebStats"
-        '
-        'HttpPort
-        '
-        Me.HttpPort.Location = New System.Drawing.Point(10, 145)
-        Me.HttpPort.Name = "HttpPort"
-        Me.HttpPort.Size = New System.Drawing.Size(47, 20)
-        Me.HttpPort.TabIndex = 16
-        Me.ToolTip1.SetToolTip(Me.HttpPort, "HTTP Port. Default: 9000")
-        '
-        'Label19
-        '
-        Me.Label19.AutoSize = True
-        Me.Label19.Location = New System.Drawing.Point(62, 148)
-        Me.Label19.Name = "Label19"
-        Me.Label19.Size = New System.Drawing.Size(36, 13)
-        Me.Label19.TabIndex = 17
-        Me.Label19.Text = "HTTP"
-        Me.ToolTip1.SetToolTip(Me.Label19, "Default is 9000")
         '
         'AdvancedForm
         '

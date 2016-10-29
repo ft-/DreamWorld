@@ -81,6 +81,7 @@ Partial Class Form1
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
         Me.OpenFileDialog2 = New System.Windows.Forms.OpenFileDialog()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.SaveBackupToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuStrip1.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -274,13 +275,13 @@ Partial Class Form1
         Me.mnuNoAvatar.Checked = True
         Me.mnuNoAvatar.CheckState = System.Windows.Forms.CheckState.Checked
         Me.mnuNoAvatar.Name = "mnuNoAvatar"
-        Me.mnuNoAvatar.Size = New System.Drawing.Size(152, 22)
+        Me.mnuNoAvatar.Size = New System.Drawing.Size(91, 22)
         Me.mnuNoAvatar.Text = "No"
         '
         'mnuYesAvatar
         '
         Me.mnuYesAvatar.Name = "mnuYesAvatar"
-        Me.mnuYesAvatar.Size = New System.Drawing.Size(152, 22)
+        Me.mnuYesAvatar.Size = New System.Drawing.Size(91, 22)
         Me.mnuYesAvatar.Text = "Yes"
         '
         'ChooseVersion
@@ -410,7 +411,7 @@ Partial Class Form1
         '
         'MnuContent
         '
-        Me.MnuContent.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.IslandToolStripMenuItem, Me.ClothingInventoryToolStripMenuItem, Me.MoreContentToolStripMenuItem, Me.LoadBackupToolStripMenuItem})
+        Me.MnuContent.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.IslandToolStripMenuItem, Me.ClothingInventoryToolStripMenuItem, Me.MoreContentToolStripMenuItem, Me.LoadBackupToolStripMenuItem, Me.SaveBackupToolStripMenuItem})
         Me.MnuContent.Name = "MnuContent"
         Me.MnuContent.Size = New System.Drawing.Size(62, 20)
         Me.MnuContent.Text = "Content"
@@ -445,7 +446,7 @@ Partial Class Form1
         Me.LoadBackupToolStripMenuItem.Name = "LoadBackupToolStripMenuItem"
         Me.LoadBackupToolStripMenuItem.Size = New System.Drawing.Size(187, 22)
         Me.LoadBackupToolStripMenuItem.Text = "Load Backup"
-        Me.LoadBackupToolStripMenuItem.ToolTipText = "Choose a OAR backup firl to restore"
+        Me.LoadBackupToolStripMenuItem.ToolTipText = "Choose a OAR backup file to restore"
         '
         'WebBrowser3
         '
@@ -523,6 +524,13 @@ Partial Class Form1
         Me.PictureBox1.Size = New System.Drawing.Size(320, 180)
         Me.PictureBox1.TabIndex = 27
         Me.PictureBox1.TabStop = False
+        '
+        'SaveBackupToolStripMenuItem
+        '
+        Me.SaveBackupToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.box_tall
+        Me.SaveBackupToolStripMenuItem.Name = "SaveBackupToolStripMenuItem"
+        Me.SaveBackupToolStripMenuItem.Size = New System.Drawing.Size(187, 22)
+        Me.SaveBackupToolStripMenuItem.Text = "Save Backup"
         '
         'Form1
         '
@@ -627,4 +635,5 @@ Partial Class Form1
     Friend WithEvents CheckDatabaseToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ShowHyperGridAddressToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents WebStatsToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents SaveBackupToolStripMenuItem As ToolStripMenuItem
 End Class

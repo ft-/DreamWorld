@@ -1,7 +1,7 @@
 @echo off
 echo Checking MySql Database
-mysqlcheck.exe -u root mysql
+mysqlcheck.exe --port 3307 -u root mysql 
 set /p fixmysql=Repair Mysql[y/n]?:
-IF "%fixmysql%" == "y" mysqlcheck.exe -u root -r Mysql
+IF "%fixmysql%" == "y" mysqlcheck.exe --port 3307 -u root -r Mysql
 set /p temp="Press enter to exit"
 

@@ -38,7 +38,8 @@ Public Class Form1
     '
 
 #Region "Declarations"
-    Dim MyVersion As String = "0.93"
+    Dim MyVersion As String = "0.95"
+
     Dim DebugPath As String = "C:\Opensim\Outworldz"
     Dim remoteUri As String = "http://www.outworldz.com/Outworldz_Installer/" ' requires trailing slash
     Dim gCurDir As String   ' Holds the current folder that we are running in
@@ -128,7 +129,7 @@ Public Class Form1
         Buttons(BusyButton)
         Randomize()
 
-        zap("mysqld-nt")
+        zap("mysqld")
 
         ' hide updater
         UpdaterGo.Visible = False
@@ -863,18 +864,22 @@ Public Class Form1
     Private Sub LoadOARContent(thing As String)
 
         If Not isRunning Then
-            Print("Opensim has to be started to load a OAR file")
+            Print("Opensim has to be started to load an OAR file.")
             Return
         End If
+
+        Dim backMeUp = MsgBox("Make a backup first?", vbYesNo)
 
         Try
             AppActivate(OpensimProcID)
             thing = thing.Replace("\", "/")    ' because Opensim uses unix-like slashes, that's why
-            My.Computer.Keyboard.SendKeys("alert CPU Intensive Backup Started{ENTER}", True)
-            My.Computer.Keyboard.SendKeys("save oar " + MyFolder + "/OutworldzFiles/Autobackup/Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar{ENTER}", True)
+            If backMeUp = vbYes Then
+                My.Computer.Keyboard.SendKeys("alert CPU Intensive Backup Started{ENTER}", True)
+                My.Computer.Keyboard.SendKeys("save oar " + MyFolder + "/OutworldzFiles/Autobackup/Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar{ENTER}", True)
+            End If
             My.Computer.Keyboard.SendKeys("alert New content Is loading..{ENTER}", True)
             My.Computer.Keyboard.SendKeys("load oar " + Chr(34) + thing + Chr(34) + "{ENTER}", True)
-            My.Computer.Keyboard.SendKeys("alert New content just loaded.{ENTER}", True)
+            My.Computer.Keyboard.SendKeys("alert New content just loaded. {ENTER}", True)
             Me.Focus()
         Catch ex As Exception
             Log("Error:" + ex.Message)
@@ -1052,16 +1057,31 @@ Public Class Form1
 
         Print("Starting Database")
 
+        ' create test programs
+        ' slants the other way:
+        Dim testProgram As String = MyFolder & "\OutworldzFiles\mysql\bin\StartManually.bat"
+        Try
+            My.Computer.FileSystem.DeleteFile(testProgram)
+        Catch
+        End Try
+        Try
+            Using outputFile As New StreamWriter(testProgram, True)
+                outputFile.WriteLine("@rem A program to run Mysql manually for troubleshooting." + vbCrLf + "mysqld.exe --defaults-file=" + """" + gCurSlashDir + "/OutworldzFiles/mysql/my.ini" + """")
+            End Using
+        Catch
+        End Try
+
         LoadIni(MyFolder & "\OutworldzFiles\mysql\my.ini", "#")
         SetIni("mysqld", "basedir", """" + gCurSlashDir + "/OutworldzFiles/Mysql" + """")
         SetIni("mysqld", "datadir", """" + gCurSlashDir + "/OutworldzFiles/Mysql/Data" + """")
+        SetIni("mysqld", "port", My.Settings.MySqlPort) ' 0.95 missing server port
         SetIni("client", "port", My.Settings.MySqlPort)
         SaveINI()
 
         Dim pi As ProcessStartInfo = New ProcessStartInfo()
         pi.Arguments = "--defaults-file=" + Chr(34) + gCurSlashDir + "/OutworldzFiles/mysql/my.ini" + Chr(34)
         pi.WindowStyle = ProcessWindowStyle.Hidden
-        pi.FileName = MyFolder & "\OutworldzFiles\mysql\bin\mysqld-nt.exe"
+        pi.FileName = MyFolder & "\OutworldzFiles\mysql\bin\mysqld.exe"
         pMySql.StartInfo = pi
         pMySql.Start()
 
@@ -1245,13 +1265,16 @@ Public Class Form1
     Private Sub InstallGridXML(iProgress As Integer)
 
 
-        If System.IO.File.Exists(xmlPath() + "\AppData\Roaming\Onlook\user_settings\settings_onlook.xml") Then
+
+        ' setup Onlook
+
+        If System.IO.File.Exists(xmlPath() + " \ AppData \ Roaming \ Onlook() \ user_settings \ settings_onlook.xml") Then
             My.Settings.ViewerInstalled = True
         End If
 
 
         If Not My.Settings.ViewerInstalled Then
-            Log("Info:OnLook viewer is not installed")
+            Log("Info: Onlook viewer is not installed")
             Return
         End If
         ' we have to change the viewer Grid settings if we are on localhost
@@ -1476,11 +1499,7 @@ Public Class Form1
 
         Log("Info:Starting Diagnostic server")
         Dim ProbePort As String
-        If isRunning Then
-            ProbePort = My.Settings.LoopBack
-        Else
-            ProbePort = My.Settings.PublicPort
-        End If
+        ProbePort = My.Settings.LoopBack
 
         Dim isPortOpen As String = ""
         Try
@@ -1509,9 +1528,9 @@ Public Class Form1
         My.Settings.DiagFailed = False
         ProgressBar1.Value = 0
         OpenPorts(25) ' Open router ports
-        Sleep(1)
+        'Sleep(1)
         ProbePublicPort(50)
-        Sleep(1)
+        'Sleep(1)
         Loopback(100)    ' test the loopback on the router. If it fails, use localhost, no Hg
         If My.Settings.DiagFailed = True Then
             My.Settings.PublicIP = "127.0.0.1"
@@ -1656,34 +1675,40 @@ Public Class Form1
     End Sub
 
     Private Sub LoadBackupToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles LoadBackupToolStripMenuItem.Click
+        If (Running) Then
+            ' Create an instance of the open file dialog box.
+            Dim openFileDialog1 As OpenFileDialog = New OpenFileDialog
 
-        ' Create an instance of the open file dialog box.
-        Dim openFileDialog1 As OpenFileDialog = New OpenFileDialog
+            ' Set filter options and filter index.
+            openFileDialog1.InitialDirectory = MyFolder + "/OutworldzFiles/Autobackup"
+            openFileDialog1.Filter = "Opensim Backup Files (*.OAR)|(*.oar)|(*.IAR)|(*.iar)|(*.GZ)|(*.gz)|(*.TGZ)|(*.tgz)|All Files (*.*)|*.*"
+            openFileDialog1.FilterIndex = 1
+            openFileDialog1.Multiselect = False
 
-        ' Set filter options and filter index.
-        openFileDialog1.Filter = "Opensim Backup Files (*.OAR)|(*.oar)|(*.IAR)|(*.iar)|(*.GZ)|(*.gz)|(*.TGZ)|(*.tgz)|All Files (*.*)|*.*"
-        openFileDialog1.FilterIndex = 1
-        openFileDialog1.Multiselect = False
+            ' Call the ShowDialog method to show the dialogbox.
+            Dim UserClickedOK As Boolean = openFileDialog1.ShowDialog
 
-        ' Call the ShowDialog method to show the dialogbox.
-        Dim UserClickedOK As Boolean = openFileDialog1.ShowDialog
-
-        ' Process input if the user clicked OK.
-        If (UserClickedOK = True) Then
-
-            Dim thing = openFileDialog1.FileName
-            If thing.Length Then
-                thing = thing.Replace("\", "/")    ' because Opensim uses unix-like slashes, that's why
-                AppActivate(OpensimProcID)
-                My.Computer.Keyboard.SendKeys("alert CPU Intensive Backup Started{ENTER}", True)
-                My.Computer.Keyboard.SendKeys("save oar " + MyFolder + "/OutworldzFiles/Autobackup/Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar{ENTER}", True)
-                My.Computer.Keyboard.SendKeys("alert New content is loading..{ENTER}")
-                My.Computer.Keyboard.SendKeys("load oar " + Chr(34) + thing + Chr(34))
-                My.Computer.Keyboard.SendKeys("alert New content just loaded.")
-                Me.Focus()
-
+            ' Process input if the user clicked OK.
+            If UserClickedOK = True Then
+                Dim backMeUp = MsgBox("Make a backup and then load the new content?", vbYesNo)
+                Dim thing = openFileDialog1.FileName
+                If thing.Length Then
+                    thing = thing.Replace("\", "/")    ' because Opensim uses unix-like slashes, that's why
+                    AppActivate(OpensimProcID)
+                    If backMeUp = vbYes Then
+                        My.Computer.Keyboard.SendKeys("alert CPU Intensive Backup Started{ENTER}", True)
+                        My.Computer.Keyboard.SendKeys("save oar " + MyFolder + "/OutworldzFiles/Autobackup/Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar{ENTER}", True)
+                    End If
+                    My.Computer.Keyboard.SendKeys("alert New content is loading..{ENTER}")
+                    My.Computer.Keyboard.SendKeys("load oar " + Chr(34) + thing + Chr(34))
+                    My.Computer.Keyboard.SendKeys("alert New content just loaded.")
+                    Me.Focus()
+                End If
             End If
+        Else
+            Print("Opensim is not running. Cannot open the Web Interface.")
         End If
+
 
     End Sub
 
@@ -1719,6 +1744,28 @@ Public Class Form1
             Process.Start(webAddress)
         Else
             Print("Opensim is not running. Cannot open the Web Interface.")
+        End If
+    End Sub
+
+    Private Sub SaveBackupToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles SaveBackupToolStripMenuItem.Click
+        If (Running) Then
+            Dim Message, title, defaultValue As String
+            Dim myValue As Object
+            ' Set prompt.
+            Message = "Enter a name for your backup:"
+            title = "Backup to OAR"
+            defaultValue = "*.oar"   ' Set default value.
+
+            ' Display message, title, and default value.
+            myValue = InputBox(Message, title, defaultValue)
+            ' If user has clicked Cancel, set myValue to defaultValue 
+            If myValue Is "" Then Return
+
+            My.Computer.Keyboard.SendKeys("alert CPU Intensive Backup Started{ENTER}", True)
+            My.Computer.Keyboard.SendKeys("save oar " + MyFolder + "/OutworldzFiles/Autobackup" + myValue + "{ENTER}", True)
+            Print("Saving " + myValue + " to " + MyFolder + "/OutworldzFiles/Autobackup")
+        Else
+            Print("Opensim is not running. Cannot make a backup now.")
         End If
     End Sub
 

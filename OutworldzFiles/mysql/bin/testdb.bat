@@ -1,1 +1,0 @@
-mysqld-nt.exe --defaults-file=C:/Outworldz/OutworldzFiles/mysql/my.ini
