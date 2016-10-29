@@ -83,10 +83,11 @@
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>4D24000993484E9D91096FA55319C0F55F09C6D1</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>076FB211DAD6ABF8C929A51E7F65D4F18584A321</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>Fred.pfx</ManifestKeyFile>
+    <ManifestKeyFile>
+    </ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>true</GenerateManifests>

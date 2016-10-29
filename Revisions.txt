@@ -19,3 +19,4 @@ This re-release updates it from the original Sim On A Stick format into a standa
 0.93 2016-10-17 Public Port was not being properly set in Opensim.ini
 0.94 2016-10-25 Manual backup menu, Prompt for auto backup when loading an OAR. Diagnostics test improvement on port 8001. 
 0.95 2016-10-27 Creates a StartManually.bat program in mysql/bin to aid anyone needing to test the db manually. Cleaned up the my.ini file
+0.96 2016-10-29 Load Oar case sensistive OAR;TGZ;GZ names work now.Terrains textures were not loaded  now uses --force terrain switch 

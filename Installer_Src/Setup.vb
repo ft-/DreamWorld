@@ -874,7 +874,7 @@ Public Class Form1
             AppActivate(OpensimProcID)
             thing = thing.Replace("\", "/")    ' because Opensim uses unix-like slashes, that's why
             If backMeUp = vbYes Then
-                My.Computer.Keyboard.SendKeys("alert CPU Intensive Backup Started{ENTER}", True)
+                My.Computer.Keyboard.SendKeys("alert CPU Intensive Backup Started {ENTER}", True)
                 My.Computer.Keyboard.SendKeys("save oar " + MyFolder + "/OutworldzFiles/Autobackup/Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar{ENTER}", True)
             End If
             My.Computer.Keyboard.SendKeys("alert New content Is loading..{ENTER}", True)
@@ -1700,8 +1700,8 @@ Public Class Form1
                         My.Computer.Keyboard.SendKeys("save oar " + MyFolder + "/OutworldzFiles/Autobackup/Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar{ENTER}", True)
                     End If
                     My.Computer.Keyboard.SendKeys("alert New content is loading..{ENTER}")
-                    My.Computer.Keyboard.SendKeys("load oar --force-terrain" + Chr(34) + thing + Chr(34))
-                    My.Computer.Keyboard.SendKeys("alert New content just loaded.")
+                    My.Computer.Keyboard.SendKeys("load oar --force-terrain" + Chr(34) + thing + Chr(34) + "{ENTER}")
+                    My.Computer.Keyboard.SendKeys("alert New content just loaded." + "{ENTER}")
                     Me.Focus()
                 End If
             End If
@@ -1762,7 +1762,7 @@ Public Class Form1
             If myValue.length = 0 Then Return
             AppActivate(OpensimProcID)
             My.Computer.Keyboard.SendKeys("alert CPU Intensive Backup Started{ENTER}", True)
-            My.Computer.Keyboard.SendKeys("save oar " + MyFolder + "/OutworldzFiles/Autobackup" + myValue + "{ENTER}", True)
+            My.Computer.Keyboard.SendKeys("save oar " + MyFolder + "/OutworldzFiles/Autobackup/" + myValue + "{ENTER}", True)
             Print("Saving " + myValue + " to " + MyFolder + "/OutworldzFiles/Autobackup")
         Else
             Print("Opensim is not running. Cannot make a backup now.")
