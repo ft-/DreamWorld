@@ -292,6 +292,15 @@ Public Class Form1
                 My.Settings.Onlook = False
             End If
         End If
+
+        ' close the viewer so the grid will repopulate
+        Try
+            pOnlook.CloseMainWindow()
+            pOnlook.Close()
+        Catch
+        End Try
+
+
         ProgressBar1.Value = 100
         Print("Ready to Launch! Click 'Start' to begin your adventure in Opensim.")
 
@@ -328,9 +337,12 @@ Public Class Form1
         OpenPorts(8) ' Open router ports with uPnP
         SetINIFromSettings(10)    ' set up the INI files
         InstallGridXML(15)
-        Start_Opensimulator(30) ' Launch the rocket
-        Onlook(100)
+        If Not Start_Opensimulator(30) Then ' Launch the rocket
+            KillAll()
 
+            Return
+        End If
+        Onlook(100)
         Buttons(StopButton)
         If My.Settings.PublicIP = "127.0.0.1" Then
             Log("Info:PublicIP = 127.0.0.1")
@@ -842,13 +854,13 @@ Public Class Form1
             Else
                 DiagLog("uPnP: fail")
                 ProgressBar1.Value = progress
-                Print("UPnP Port forwarding Is Not enabled.  Ports can be manually opened in the router to compensate.")
+                'Print("UPnP Port forwarding Is Not enabled.  Ports can be manually opened in the router to compensate.")
                 Return False
             End If
         Catch e As Exception
             DiagLog("Error: UPNP Exception: " + e.Message)
             ProgressBar1.Value = progress
-            Print("Router Is blocking a port so hypergrid may Not be available")
+            'Print("Router Is blocking a port so hypergrid may Not be available")
             Return False
         End Try
         ProgressBar1.Value = progress
@@ -930,8 +942,6 @@ Public Class Form1
 
     Private Sub KillAll()
         ' close opensim gracefully
-
-
 
         Try
             pOnlook.CloseMainWindow()
@@ -1043,6 +1053,8 @@ Public Class Form1
         Catch
             Log("Error:mysqladmin failed to stop mysql")
         End Try
+
+        Sleep(2)
 
         CloseFirewall()
 
@@ -1179,21 +1191,24 @@ Public Class Form1
 
     End Sub
 
-    Private Sub Start_Opensimulator(iProgress As Integer)
+    Private Function Start_Opensimulator(iProgress As Integer)
 
         Print("Starting Opensimulator")
 
         ChooseVersion.Visible = False ' cannot change grid while running
-
+        Dim ItWorked As Boolean
         If mnuShow.Checked Then
             Log("Info:Opensim console is forced visible")
             Print("Please wait for the console to show 'LOGINS ENABLED'. It will take a while to load. ")
-            Boot(AppWinStyle.NormalFocus)
+            ItWorked = Boot(AppWinStyle.NormalFocus)
         Else
-            Boot(AppWinStyle.MinimizedNoFocus)
+            ItWorked = Boot(AppWinStyle.MinimizedNoFocus)
             Log("Info:Opensim console is Minimized")
         End If
 
+        If Not ItWorked Then
+            Return False
+        End If
         Dim ProbePort As String
         If My.Settings.GridFolder = "Opensim-0.9" Then
             ProbePort = My.Settings.HttpPort
@@ -1201,8 +1216,7 @@ Public Class Form1
             ProbePort = My.Settings.PublicPort
         End If
 
-
-        ' Wait for Opensim to start listening via wifi
+        ' Wait for Opensim to start listening 
         Dim Up As String
         Try
             Up = client.DownloadString("http://127.0.0.1:" + ProbePort + "/?r=" + Random())
@@ -1224,7 +1238,7 @@ Public Class Form1
                     System.Diagnostics.Process.Start("wordpad.exe", Log)
                 End If
                 Buttons(StartButton)
-                Return
+                Return False
             End If
             Application.DoEvents()
             Sleep(4000)
@@ -1240,26 +1254,24 @@ Public Class Form1
         End While
         Log("Opensim loop end on port " + CStr(ProbePort))
         ProgressBar1.Value = iProgress
+        Return True
 
-    End Sub
-    Sub Boot(Show As AppWinStyle)
+    End Function
+    Private Function Boot(Show As AppWinStyle)
 
         Try
             ChDir(MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\")
             OpensimProcID = Shell(MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\OpenSim.exe", Show)
             ChDir(MyFolder)
         Catch ex As Exception
-            Log("Error: Opensim did not start: " + ex.Message)
-            Dim yesno = MsgBox("Opensim did not start. Do you want to see the log file?", vbYesNo)
-            If (yesno = vbYes) Then
-                Dim Log As String = MyFolder + "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\OpenSim.log"
-                System.Diagnostics.Process.Start("wordpad.exe", Log)
-            End If
+            Print("Error: Opensim did not start: " + ex.Message)
+
             KillAll()
             Buttons(StartButton)
-            Return
+            Return False
         End Try
-    End Sub
+        Return True
+    End Function
 
 
     Private Sub Onlook(progess As Integer)
@@ -1519,13 +1531,21 @@ Public Class Form1
 
     Private Sub ProbePublicPort(iProgress As Integer)
 
+
         Log("Info:Starting Diagnostic server")
         Dim ProbePort As String
         ProbePort = My.Settings.LoopBack
 
         Dim isPortOpen As String = ""
+        Dim SimVersion As String
+        If (My.Settings.GridFolder = "Opensim") Then
+            SimVersion = "0.8.2.1"
+        Else
+            SimVersion = "0.9.1"
+        End If
+
         Try
-            isPortOpen = client.DownloadString("http://www.outworldz.com/Outworldz_Installer/probe.plx?Port=" + ProbePort + "&r=" + Machine())
+            isPortOpen = client.DownloadString("http://www.outworldz.com/cgi/probetest.plx?Port=" + ProbePort + "&r=" + Machine + "&" + "V=" + MyVersion + "&OV=" + SimVersion)
         Catch ex As Exception
             DiagLog("Dang:The Outworldz web site cannot find a path back")
             My.Settings.DiagFailed = True
@@ -1541,6 +1561,8 @@ Public Class Form1
         Else
             Print("Hypergrid seems to be possible, so far")
         End If
+
+
         ProgressBar1.Value = iProgress
 
     End Sub
@@ -1562,23 +1584,6 @@ Public Class Form1
         End If
     End Sub
 
-    Private Function PostURL(URL As String, postdata As String)
-        Dim s As HttpWebRequest
-        Dim enc As UTF8Encoding
-        Dim postdatabytes As Byte()
-
-        s = HttpWebRequest.Create(URL)
-        enc = New System.Text.UTF8Encoding()
-        postdatabytes = enc.GetBytes(postdata)
-        s.Method = "POST"
-        s.ContentType = "application/x-www-form-urlencoded"
-        s.ContentLength = postdatabytes.Length
-
-        Using stream = s.GetRequestStream()
-            stream.Write(postdatabytes, 0, postdatabytes.Length)
-        End Using
-        Return s.GetResponse()
-    End Function
 
     Sub Sleep(value As Integer)
         Thread.Sleep(value)
