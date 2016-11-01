@@ -38,7 +38,7 @@ Public Class Form1
     '
 
 #Region "Declarations"
-    Dim MyVersion As String = "0.96"
+    Dim MyVersion As String = "0.97"
 
     Dim DebugPath As String = "C:\Opensim\Outworldz"
     Dim remoteUri As String = "http://www.outworldz.com/Outworldz_Installer/" ' requires trailing slash
@@ -157,6 +157,7 @@ Public Class Form1
         PictureBox1.AllowDrop = True
 
         Running = False ' true when opensim is running
+        ChooseVersion.Visible = True ' cannot change grid while running
 
         MyFolder = My.Application.Info.DirectoryPath
 
@@ -263,8 +264,8 @@ Public Class Form1
                         toggle = False
                         toggle = True
                     End If
+                    BumpProgress()
 
-                    ProgressBar1.Value = ProgressBar1.Value + 1
                     If ProgressBar1.Value = 100 Then
                         Print("You win. Proceeding with Outworldz Installation. You may need to add the grid manually.")
                         toggle = True
@@ -297,7 +298,7 @@ Public Class Form1
         Catch ex As Exception
         End Try
 
-        ' Set up the progres bar for 0-100
+        ' Set up the progress bar for 0-100
         ProgressBar1.Visible = True
         ProgressBar1.Minimum = 0
         ProgressBar1.Maximum = 100
@@ -674,7 +675,7 @@ Public Class Form1
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
         ' Grid
-        If My.Settings.GridFolder = "HyperGrid" Then
+        If My.Settings.GridFolder = "Opensim" Then
             Log("Info: 0.8.2.1 enabled")
             mnuHyperGrid.Checked = True
             mnu9.Checked = False
@@ -913,6 +914,8 @@ Public Class Form1
     Private Sub KillAll()
         ' close opensim gracefully
 
+
+
         Try
             pOnlook.CloseMainWindow()
             pOnlook.Close()
@@ -930,6 +933,7 @@ Public Class Form1
 
         Me.Focus()
 
+        ChooseVersion.Visible = True ' cannot change grid while running
         Running = False
     End Sub
 
@@ -1092,7 +1096,8 @@ Public Class Form1
         ' wait for MySql to come up
         Mysql = CheckPort("127.0.0.1", My.Settings.MySqlPort)
         While Not Mysql
-            ProgressBar1.Value = ProgressBar1.Value + 1
+
+            BumpProgress()
             Application.DoEvents()
 
             Dim MysqlLog As String = MyFolder + "\OutworldzFiles\mysql\data"
@@ -1118,11 +1123,11 @@ Public Class Form1
         ProgressBar1.Value = progress
 
     End Sub
-    Private Sub GetPubIP(iProgress As Integer)
+    Public Sub GetPubIP(iProgress As Integer)
 
         If My.Settings.DnsName.Length Then
             My.Settings.PublicIP = My.Settings.DnsName
-            Print("HG Address is " + My.Settings.DnsName)
+            'Print("HG Address is " + My.Settings.DnsName)
             Return
         End If
         If (My.Settings.DiagFailed) Then
@@ -1161,6 +1166,8 @@ Public Class Form1
 
         Print("Starting Opensimulator")
 
+        ChooseVersion.Visible = False ' cannot change grid while running
+
         If mnuShow.Checked Then
             Log("Info:Opensim console is forced visible")
             Print("Please wait for the console to show 'LOGINS ENABLED'. It will take a while to load. ")
@@ -1176,18 +1183,20 @@ Public Class Form1
         Else
             ProbePort = My.Settings.PublicPort
         End If
+
+
         ' Wait for Opensim to start listening via wifi
         Dim Up As String
         Try
             Up = client.DownloadString("http://127.0.0.1:" + ProbePort + "/?r=" + Random())
         Catch ex As Exception
             Up = ""
-            Log("Error: cannot read localhost? " + ex.Message)
         End Try
 
-        While Up.Length = 0
+        While Up.Length = 0 And Running
             Application.DoEvents()
-            ProgressBar1.Value = ProgressBar1.Value + 1
+            BumpProgress()
+
             If ProgressBar1.Value > 90 Then
                 Print("Opensim failed to start")
                 KillAll()
@@ -1210,9 +1219,9 @@ Public Class Form1
                 If InStr(ex.Message, "404") Then
                     Up = "Done"
                 End If
-                Log("Error: cannot real localhost? " + ex.Message)
             End Try
         End While
+        Log("Opensim loop end on port " + CStr(ProbePort))
         ProgressBar1.Value = iProgress
 
     End Sub
@@ -1264,14 +1273,10 @@ Public Class Form1
 
     Private Sub InstallGridXML(iProgress As Integer)
 
-
-
         ' setup Onlook
-
-        If System.IO.File.Exists(xmlPath() + " \ AppData \ Roaming \ Onlook() \ user_settings \ settings_onlook.xml") Then
+        If System.IO.File.Exists(xmlPath() + "\AppData\Roaming\Onlook\user_settings\settings_onlook.xml") Then
             My.Settings.ViewerInstalled = True
         End If
-
 
         If Not My.Settings.ViewerInstalled Then
             Log("Info: Onlook viewer is not installed")
@@ -1641,14 +1646,14 @@ Public Class Form1
             Log("Dang:The Outworld web site is down")
         End Try
         If (Update = "") Then Update = "0"
-        If CSng(Update) > CSng(MyVersion) Then
+        If Convert.ToSingle(Update) > Convert.ToSingle(MyVersion) Then
             Print("I am Outworldz version " + MyVersion + vbCrLf + "A dreamier version " + Update + " is available.")
             UpdaterGo.Visible = True
             UpdaterGo.Enabled = True
             UpdaterCancel.Visible = True
         Else
             If chatty Then
-                Print("I am the dreamiest version available. (V " + MyVersion + ")")
+                Print("I am the dreamiest version available, at V " + MyVersion)
             End If
         End If
 
@@ -1769,6 +1774,12 @@ Public Class Form1
         End If
     End Sub
 
+    Private Sub BumpProgress()
+        If ProgressBar1.Value < 100 Then
+            ProgressBar1.Value = ProgressBar1.Value + 1
+        End If
+
+    End Sub
 
 #End Region
 

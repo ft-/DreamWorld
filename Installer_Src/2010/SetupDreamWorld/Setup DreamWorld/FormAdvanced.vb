@@ -248,6 +248,7 @@
 
     Private Sub DnsName_TextChanged(sender As Object, e As EventArgs) Handles DnsName.TextChanged
         My.Settings.DnsName = DnsName.Text
+        Form1.GetPubIP(100)
 
     End Sub
 

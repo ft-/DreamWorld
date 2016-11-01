@@ -6,8 +6,8 @@ This re-release updates it from the original Sim On A Stick format into a standa
 0.80 2016-10-09 Initial release
 0.81 2016-10-10 Move updater to initial stage to get past crashes
 0.82 2016-10-11 Fix was made to OpenSim in bin/OpenSim.exe.config on 23-Nov-2013 (git master a68d1fa) adding the following line to the runtime section:
-                 loadFromRemoteSources enabled="true" 
-                 Updater to version 1.1 to fix progress bar.
+                loadFromRemoteSources enabled="true" 
+                Updater to version 1.1 to fix progress bar.
 0.83 2016-10-11 MySQL now runs when file path contains quotes.
 0.84 2016-10-12 Diags run just once
 0.85 2016-10-12 Upper/Lower case OAR files now work
@@ -17,6 +17,15 @@ This re-release updates it from the original Sim On A Stick format into a standa
 0.89 2016-10-15 IAR load did not work: needed an AppActivate
 0.90 2016-10-16 Opensim 0.9 and 0.8.2.1 merged
 0.93 2016-10-17 Public Port was not being properly set in Opensim.ini
-0.94 2016-10-25 Manual backup menu, Prompt for auto backup when loading an OAR. Diagnostics test improvement on port 8001. 
+0.94 2016-10-25 Manual backup menu
+				Prompt for auto backup when loading an OAR. 
+				Diagnostics test improvement on port 8001. 
 0.95 2016-10-27 Creates a StartManually.bat program in mysql/bin to aid anyone needing to test the db manually. Cleaned up the my.ini file
-0.96 2016-10-29 Load Oar case sensistive OAR;TGZ;GZ names work now.Terrains textures were not loaded  now uses --force terrain switch 
+0.96 2016-10-29 Load Oar case sensistive OAR;TGZ;GZ names work now.
+				Terrains textures were not loaded  now uses --force terrain switch 
+0.97 2016-10-31 Compiled 0.9.1 	- ignore prims with shape type none #7c4f2b048f4d74b3132486e8d7a6887c73d6562d
+			    Fixed Version 0.96 vs .96 bug - caught by Fearghus McMahon - type casting of string to single was wrong
+				Opensim would switch back to 0.8.2.1 from 0.9.0 - Old name Hypergrid now is Opensim
+				OfflineMessageURL red error on startup fixed - Thank you, AI Austin for blogging this.
+				When Advanced menu grid name is changed no longer requires a reboot
+				Cannot change grid while running
