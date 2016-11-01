@@ -84,6 +84,20 @@ Public Class Form1
 
 
 #Region "Properties"
+
+    ' Save a random machine ID - we don't want any data to be sent that's personal or identifiable,  but it needs to be unique
+    Public Property Machine() As String
+        Get
+            Return My.Settings.MachineID
+        End Get
+        Set(ByVal Value As String)
+            If (My.Settings.MachineID = "") Then
+                My.Settings.MachineID = Value
+                My.Settings.Save()
+            End If
+        End Set
+    End Property
+
     Public Property Running() As Boolean
         Get
             Return isRunning
@@ -127,9 +141,12 @@ Public Class Form1
     Private Sub Form1_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 
         Buttons(BusyButton)
-        Randomize()
 
-        zap("mysqld")
+        ' Save a random machine ID - we don't want any data to be sent that's personal or identifiable,  but it needs to be unique
+        Randomize()
+        Machine() = Random()
+
+        zap("mysqld") ' kill any left over mysql daemons
 
         ' hide updater
         UpdaterGo.Visible = False
@@ -497,7 +514,7 @@ Public Class Form1
     End Sub
 
     Private Function Random() As String
-        Dim value As Integer = CInt(Int((6000 * Rnd()) + 1))
+        Dim value As Integer = CInt(Int((600000000 * Rnd()) + 1))
         Random = Str(value)
     End Function
 
@@ -1508,7 +1525,7 @@ Public Class Form1
 
         Dim isPortOpen As String = ""
         Try
-            isPortOpen = client.DownloadString("http://www.outworldz.com/Outworldz_Installer/probe.plx?Port=" + ProbePort + "&r=" + Random())
+            isPortOpen = client.DownloadString("http://www.outworldz.com/Outworldz_Installer/probe.plx?Port=" + ProbePort + "&r=" + Machine())
         Catch ex As Exception
             DiagLog("Dang:The Outworldz web site cannot find a path back")
             My.Settings.DiagFailed = True
@@ -1780,6 +1797,7 @@ Public Class Form1
         End If
 
     End Sub
+
 
 #End Region
 
