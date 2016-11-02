@@ -293,10 +293,9 @@ Public Class Form1
             End If
         End If
 
-        ' close the viewer so the grid will repopulate
+        ' close the viewer so the grid will repopulate next time it opens
         Try
-            pOnlook.CloseMainWindow()
-            pOnlook.Close()
+            zap("OnlookViewer")
         Catch
         End Try
 
@@ -375,6 +374,7 @@ Public Class Form1
         End Try
 
         If ClientSocket.Connected Then
+            Log("Okay: port probe success on port " + My.Settings.MySqlPort)
             Return True
         End If
         CheckPort = False

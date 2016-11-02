@@ -23,9 +23,10 @@ This re-release updates it from the original Sim On A Stick format into a standa
 0.95 2016-10-27 Creates a StartManually.bat program in mysql/bin to aid anyone needing to test the db manually. Cleaned up the my.ini file
 0.96 2016-10-29 Load Oar case sensistive OAR;TGZ;GZ names work now.
 				Terrains textures were not loaded  now uses --force terrain switch 
-0.97 2016-10-31 Compiled 0.9.1 	- ignore prims with shape type none #7c4f2b048f4d74b3132486e8d7a6887c73d6562d
+0.97 2016-10-31 Compiled 0.9.1 	#7c4f2b048f4d74b3132486e8d7a6887c73d6562d
 			    Fixed Version 0.96 vs .96 bug - caught by Fearghus McMahon - type casting of string to single was wrong
-				Opensim would switch back to 0.8.2.1 from 0.9.0 - Old name Hypergrid now is Opensim
+				Opensim would switch back to 0.8.2.1 from 0.9.0 - Hypergrid => Opensim renamed
 				OfflineMessageURL red error on startup fixed - Thank you, AI Austin for blogging this.
-				When Advanced menu grid name is changed no longer requires a reboot
-				Cannot change grid while running
+				Onlook restarts on install and sets grid vars  - Thanks for the extensive help, shaunkmaloney@craftgrid.com
+				When Advanced menu grid name is changed it no longer requires a restart, can no longer change grid while running
+				
