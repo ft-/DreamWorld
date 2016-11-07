@@ -12,7 +12,7 @@ Imports System.Threading
 
 Public Class Update
 
-    Dim Version As String = "1.2"
+    Dim Version As String = "1.3"
     'Dim Type As String = "Update"  ' possible server-side choices are "Update" and "Installer"
     Dim Type As String = "Install"  ' possible server-side choices are "Update" and "Installer"
 
@@ -53,6 +53,8 @@ Public Class Update
         Label3.Text = ""
 
         btnCancel.Visible = True
+
+        StopMYSQL()
 
         Dim filename = Nothing
         Try
@@ -274,6 +276,24 @@ Public Class Update
         Return True
 
     End Function
+
+
+    Private Sub StopMYSQL()
+
+        Log("Info:using mysqladmin to close db")
+        Dim p As Process = New Process()
+        Dim pi As ProcessStartInfo = New ProcessStartInfo()
+        pi.Arguments = "-u root shutdown"
+        pi.FileName = MyFolder + "\OutworldzFiles\mysql\bin\mysqladmin.exe"
+        pi.WindowStyle = ProcessWindowStyle.Minimized
+        p.StartInfo = pi
+        Try
+            p.Start()
+        Catch
+            Log("Error:mysqladmin failed to stop mysql")
+        End Try
+
+    End Sub
 
 End Class
 
