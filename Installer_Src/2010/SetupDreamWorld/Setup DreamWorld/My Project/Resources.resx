@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="error" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="error_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\error.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="wp_39" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -151,10 +151,10 @@
   <data name="wp_30" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\wp_30.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="TPV-Alchemy-2-Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="TPV_Alchemy_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\TPV-Alchemy-2-Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="TPV-UKanDo-Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="TPV_UKanDo_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\TPV-UKanDo-Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="box_tall" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -175,7 +175,7 @@
   <data name="wp_8" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\wp_8.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="TPV-Singularity-Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="TPV_Singularity_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\TPV-Singularity-Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="wp_habitat" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -190,7 +190,7 @@
   <data name="recycle" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\recycle.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="exit" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="exit_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\exit.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="wp_41" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -232,7 +232,7 @@
   <data name="document_view" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\document_view.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="TPV-Firestorm-Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="TPV_Firestorm_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\TPV-Firestorm-Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="window_add" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -244,7 +244,7 @@
   <data name="wp_10" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\wp_10.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="TPV-Kokua-Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="TPV_Kokua_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\TPV-Kokua-Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="wp_12" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -262,7 +262,7 @@
   <data name="document_connection" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\document_connection.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="TPV-Catznip-2-Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="TPV_Catznip_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\TPV-Catznip-2-Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="tangled" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -331,7 +331,7 @@
   <data name="wp_3" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\wp_3.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="TPV-Black_Dragon-Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="TPV_Black_Dragon_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\TPV-Black_Dragon-Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="wp_16" type="System.Resources.ResXFileRef, System.Windows.Forms">

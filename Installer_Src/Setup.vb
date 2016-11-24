@@ -38,7 +38,7 @@ Public Class Form1
     '
 
 #Region "Declarations"
-    Dim MyVersion As String = "0.97"
+    Dim MyVersion As String = "0.98"
 
     Dim DebugPath As String = "C:\Opensim\Outworldz"
     Dim remoteUri As String = "http://www.outworldz.com/Outworldz_Installer/" ' requires trailing slash
@@ -197,33 +197,28 @@ Public Class Form1
         ProgressBar1.Value = 5
         Sleep(4000)
 
-        If Not My.Settings.SkipUpdateCheck Then
-            CheckForUpdates(True) ' don't text if no update
-        End If
-
         Log("Info: Loading Web Server")
         ws = Net.getWebServer
         Log("Info: Starting Web Server")
         ws.StartServer(MyFolder)
 
         ProgressBar1.Value = 10
-        GetPubIP(15)
+        GetPubIP(20)
+        ' always open ports
+        OpenPorts(30) ' Open router ports with uPnP
+        SetINIFromSettings(40)
 
         If Not My.Settings.RunOnce Then
-            SetINIFromSettings(20)
-            ' always open ports
-            OpenPorts(15) ' Open router ports with uPnP
             My.Settings.RunOnce = True
-            ProbePublicPort(25)
-            Loopback(30)    ' test the loopback on the router. If it fails, use localhost, no Hg
-            If (My.Settings.DiagFailed) Then
-                My.Settings.PublicIP = "127.0.0.1"
-                Print("Hypergrid Diagnostics Failed. These can be re-run at any time. See the Help menu for 'Diagnostics', 'Loopback', and 'Port Forwards'")
-                Sleep(3000)
-            End If
+            DoDiag()
         End If
+
+        If Not My.Settings.SkipUpdateCheck Then
+            CheckForUpdates()
+        End If
+
         mnuSettings.Visible = True
-        SetIAROARContent(50) ' load IAR and OAR web content
+        SetIAROARContent(60) ' load IAR and OAR web content
         MnuContent.Visible = True
 
         ' Find out if the viewer is installed
@@ -288,17 +283,17 @@ Public Class Form1
                         toggle = True
                     End If
                 End While
+
+                ' close the viewer so the grid will repopulate next time it opens
+                Try
+                    zap("OnlookViewer")
+                Catch
+                End Try
+
             Else
                 My.Settings.Onlook = False
             End If
         End If
-
-        ' close the viewer so the grid will repopulate next time it opens
-        Try
-            zap("OnlookViewer")
-        Catch
-        End Try
-
 
         ProgressBar1.Value = 100
         Print("Ready to Launch! Click 'Start' to begin your adventure in Opensim.")
@@ -338,7 +333,6 @@ Public Class Form1
         InstallGridXML(15)
         If Not Start_Opensimulator(30) Then ' Launch the rocket
             KillAll()
-
             Return
         End If
         Onlook(100)
@@ -527,7 +521,7 @@ Public Class Form1
 
     Private Function Random() As String
         Dim value As Integer = CInt(Int((600000000 * Rnd()) + 1))
-        Random = Str(value)
+        Random = System.Convert.ToString(value)
     End Function
 
     Private Sub WebUIToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs)
@@ -844,21 +838,27 @@ Public Class Form1
     End Function
 
     Private Function OpenPorts(progress As Integer)
-        Print("The human is instructed to wait while I check out this nice little router ...")
+        ' Print("The human is instructed to wait while I check out this nice little router ...")
         Try
             If AllowFirewall() Then ' open uPNP port
                 DiagLog("uPnpOk")
+                Print("uPnP works ...")
+                My.Settings.UPnPDiag = True
+                My.Settings.Save()
                 ProgressBar1.Value = progress
-                Print("Okay! looking good ...")
                 Return True
             Else
                 DiagLog("uPnP: fail")
+                My.Settings.UPnPDiag = False
+                My.Settings.Save()
                 ProgressBar1.Value = progress
                 'Print("UPnP Port forwarding Is Not enabled.  Ports can be manually opened in the router to compensate.")
                 Return False
             End If
         Catch e As Exception
             DiagLog("Error: UPNP Exception: " + e.Message)
+            My.Settings.UPnPDiag = False
+            My.Settings.Save()
             ProgressBar1.Value = progress
             'Print("Router Is blocking a port so hypergrid may Not be available")
             Return False
@@ -1146,7 +1146,7 @@ Public Class Form1
             End If
 
             ' check again
-            Sleep(2000)
+            Sleep(1000)
             Mysql = CheckPort("127.0.0.1", My.Settings.MySqlPort)
         End While
         ProgressBar1.Value = progress
@@ -1159,21 +1159,16 @@ Public Class Form1
             'Print("HG Address is " + My.Settings.DnsName)
             Return
         End If
-        If (My.Settings.DiagFailed) Then
-            My.Settings.PublicIP = "127.0.0.1"
-            Print("Using Local LAN for IP address.  See the Help menu for 'Diagnostics', 'Loopback', and 'Port Forwards'")
-            Sleep(2000)
-            Return
-        End If
 
         ' Set Public Port
         Try
-            My.Settings.PublicIP = client.DownloadString("https://api.ipify.org/?r=" + Random())
+            My.Settings.PublicIP = client.DownloadString("http://api.ipify.org/?r=" + Random())
             Log("Public IP=" + My.Settings.PublicIP)
         Catch ex As Exception
             Print("Cannot reach the Internet? Proceeding locally. " + ex.Message)
             My.Settings.PublicIP = "127.0.0.1"
         End Try
+
         ProgressBar1.Value = iProgress
 
     End Sub
@@ -1186,6 +1181,10 @@ Public Class Form1
             Print("Hypergrid travel requires a router with 'loopback'. It seems to be missing from yours. See the Help section for 'Loopback' and how to enable it in Windows. Opensim can still continue, but without Hypergrid.")
             MsgBox("See Info on screen about Loopback. Opensim can still continue, but without Hypergrid", vbExclamation)
             My.Settings.PublicIP = "127.0.0.1" ' dang it, we cannot go to the hypergird
+            My.Settings.LoopBackDiag = False
+        Else
+            My.Settings.LoopBackDiag = True
+            Print("Loopback test passed")
         End If
         ProgressBar1.Value = progress
 
@@ -1252,7 +1251,7 @@ Public Class Form1
                 End If
             End Try
         End While
-        Log("Opensim loop end on port " + CStr(ProbePort))
+        Log("Opensim loop end on port " + System.Convert.ToString(ProbePort))
         ProgressBar1.Value = iProgress
         Return True
 
@@ -1531,21 +1530,17 @@ Public Class Form1
 
     Private Sub ProbePublicPort(iProgress As Integer)
 
-
         Log("Info:Starting Diagnostic server")
-        Dim ProbePort As String
-        ProbePort = My.Settings.LoopBack
+        GetPubIP(iProgress / 2)
 
         Dim isPortOpen As String = ""
-        Dim SimVersion As String
-        If (My.Settings.GridFolder = "Opensim") Then
-            SimVersion = "0.8.2.1"
-        Else
-            SimVersion = "0.9.1"
-        End If
-
         Try
-            isPortOpen = client.DownloadString("http://www.outworldz.com/cgi/probetest.plx?Port=" + ProbePort + "&r=" + Machine + "&" + "V=" + MyVersion + "&OV=" + SimVersion)
+            ' collect some stats and test loopback with a HTTP_ GET to the webserver.
+            ' Send unique, anonymous random ID, both of the versions of Opensim and this program, and the diagnostics test results 
+            ' See my privacy policy at http://www.outworldz.com/privacy.htm
+
+            Dim Data As String = GetPostData()
+            isPortOpen = client.DownloadString("http://www.outworldz.com/cgi/probetest.plx?Port=" + My.Settings.LoopBack + Data)
         Catch ex As Exception
             DiagLog("Dang:The Outworldz web site cannot find a path back")
             My.Settings.DiagFailed = True
@@ -1554,14 +1549,11 @@ Public Class Form1
 
         If isPortOpen <> "yes" Then
             DiagLog(isPortOpen)
-            DiagLog("Warn:Port " + ProbePort + " is not forwarded to this machine")
+            DiagLog("Warn:Port " + My.Settings.LoopBack + " is not forwarded to this machine")
             My.Settings.DiagFailed = True
             My.Settings.PublicIP = "127.0.0.1"
-            Print("Port " + ProbePort + " is not forwarded to this machine, so Hypergrid may not be available. Opensimulator is set for standalone ops. This can possibly be fixed by 'Port Forwards' in your router in the Help menu")
-        Else
-            Print("Hypergrid seems to be possible, so far")
+            Print("Port " + My.Settings.LoopBack + " is not forwarded to this machine, so Hypergrid may not be available. Opensimulator is set for standalone ops. This can possibly be fixed by 'Port Forwards' in your router in the Help menu")
         End If
-
 
         ProgressBar1.Value = iProgress
 
@@ -1569,33 +1561,27 @@ Public Class Form1
 
     Private Sub DiagnosticsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles DiagnosticsToolStripMenuItem.Click
 
-        My.Settings.DiagFailed = False
         ProgressBar1.Value = 0
-        OpenPorts(25) ' Open router ports
-        'Sleep(1)
-        ProbePublicPort(50)
-        'Sleep(1)
-        Loopback(100)    ' test the loopback on the router. If it fails, use localhost, no Hg
+        DoDiag()
         If My.Settings.DiagFailed = True Then
             My.Settings.PublicIP = "127.0.0.1"
-            Print("Network tests failed")
+            Print("Hypergrid Diagnostics Failed. These can be re-run at any time. See the Help menu for 'Diagnostics', 'Loopback', and 'Port Forwards'")
+            Sleep(3000)
         Else
-            Print("Tests passed")
+            Print("Tests passed, Hypergrid should be working.")
         End If
+        ProgressBar1.Value = 100
     End Sub
-
 
     Sub Sleep(value As Integer)
         Thread.Sleep(value)
     End Sub
 
-
-    Private Sub CHeckForUpdatesToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CHeckForUpdatesToolStripMenuItem.Click
-
-        CheckForUpdates(True) 'be chatty = true
-
+    Private Sub CheckForUpdatesToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CHeckForUpdatesToolStripMenuItem.Click
+        CheckForUpdates()
     End Sub
     Private Sub UpdaterCancel_Click(sender As Object, e As EventArgs) Handles UpdaterCancel.Click
+
         UpdaterGo.Visible = False
         UpdaterCancel.Visible = False
         My.Settings.SkipUpdateCheck = True
@@ -1624,7 +1610,7 @@ Public Class Form1
             End Try
             End ' quit program
         Else
-            Print("Uh Oh!  The files I need could not be found online. The gnomes have absconded with them!   Please check again, some other time.")
+            Print("Uh Oh!  The files I need could not be found online. The gnomes have absconded with them!   Please check later.")
             UpdaterGo.Visible = False
             UpdaterGo.Enabled = True
         End If
@@ -1659,11 +1645,14 @@ Public Class Form1
 
     End Function
 
-    Sub CheckForUpdates(chatty As Boolean)
+    Sub CheckForUpdates()
 
         Dim Update As String = ""
+        Dim isPortOpen As String = ""
+        Dim Data As String = GetPostData()
+
         Try
-            Update = client.DownloadString(remoteUri + "/Update.plx?Ver=" + Str(MyVersion) + "&r=" + Random())
+            Update = client.DownloadString(remoteUri + "/Update.plx?Ver=" + Str(MyVersion) + Data)
         Catch ex As Exception
             Log("Dang:The Outworld web site is down")
         End Try
@@ -1674,14 +1663,12 @@ Public Class Form1
             UpdaterGo.Enabled = True
             UpdaterCancel.Visible = True
         Else
-            If chatty Then
-                Print("I am the dreamiest version available, at V " + MyVersion)
-            End If
+            Print("I am the dreamiest version available, at V " + MyVersion)
         End If
 
     End Sub
 
-    Private Sub PaintImage()
+    Public Sub PaintImage()
 
         If (My.Settings.TimerInterval > 0) Then
 
@@ -1694,7 +1681,10 @@ Public Class Form1
             PictureBox1.Visible = True
 
             Timer1.Interval = My.Settings.TimerInterval * 1000
+        Else
+            PictureBox1.Visible = False
         End If
+
     End Sub
 
     Private Sub Timer1_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Timer1.Tick
@@ -1800,10 +1790,41 @@ Public Class Form1
         If ProgressBar1.Value < 100 Then
             ProgressBar1.Value = ProgressBar1.Value + 1
         End If
-
     End Sub
 
+    Private Sub DoDiag()
+        My.Settings.DiagFailed = False
+        Loopback(40)   ' test the loopback on the router. If it fails, use localhost, no Hg possible
+        ProbePublicPort(50) ' see if Public loopback works
+    End Sub
 
+    Private Function GetPostData()
+
+        Dim SimVersion As String
+        If (My.Settings.GridFolder = "Opensim") Then
+            SimVersion = "0.8.2.1"
+        Else
+            SimVersion = "0.9.1"
+        End If
+        Dim UpNp As String = "Fail"
+        If My.Settings.UPnPDiag Then
+            UpNp = "Pass"
+        End If
+        Dim Loopb As String = "Fail"
+        If My.Settings.LoopBackDiag Then
+            Loopb = "Pass"
+        End If
+
+        Dim data
+        data = "&r=" + Machine _
+            + "&V=" + MyVersion _
+            + "&OV=" + SimVersion _
+            + "&UpNp=" + UpNp _
+            + "&Loop=" + Loopb _
+            + "&x=" + Random()
+        Return data
+
+    End Function
 #End Region
 
 End Class

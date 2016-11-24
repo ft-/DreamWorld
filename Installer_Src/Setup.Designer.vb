@@ -205,7 +205,7 @@ Partial Class Form1
         '
         'CatznipToolStripMenuItem
         '
-        Me.CatznipToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.TPV_Catznip_2_Icon
+        Me.CatznipToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.TPV_Catznip_Icon
         Me.CatznipToolStripMenuItem.Name = "CatznipToolStripMenuItem"
         Me.CatznipToolStripMenuItem.Size = New System.Drawing.Size(130, 22)
         Me.CatznipToolStripMenuItem.Text = "Catznip"
@@ -226,7 +226,7 @@ Partial Class Form1
         '
         'AlchemyToolStripMenuItem
         '
-        Me.AlchemyToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.TPV_Alchemy_2_Icon
+        Me.AlchemyToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.TPV_Alchemy_Icon
         Me.AlchemyToolStripMenuItem.Name = "AlchemyToolStripMenuItem"
         Me.AlchemyToolStripMenuItem.Size = New System.Drawing.Size(130, 22)
         Me.AlchemyToolStripMenuItem.Text = "Alchemy"

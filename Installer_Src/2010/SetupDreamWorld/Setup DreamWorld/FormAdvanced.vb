@@ -228,6 +228,9 @@
 
     Private Sub TimerInterval_TextChanged(sender As Object, e As EventArgs) Handles TimerInterval.TextChanged
         My.Settings.TimerInterval = CInt(TimerInterval.Text)
+        If (My.Settings.TimerInterval > 0) Then
+            Form1.PaintImage()
+        End If
     End Sub
 
     Private Sub TextBox1_TextChanged_3(sender As Object, e As EventArgs) Handles AdminEmail.TextChanged

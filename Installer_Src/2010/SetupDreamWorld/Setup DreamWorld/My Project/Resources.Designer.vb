@@ -63,26 +63,6 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
-        Friend ReadOnly Property _error() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("error", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized resource of type System.Drawing.Bitmap.
-        '''</summary>
-        Friend ReadOnly Property _exit() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("exit", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized resource of type System.Drawing.Bitmap.
-        '''</summary>
         Friend ReadOnly Property about() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("about", resourceCulture)
@@ -233,6 +213,26 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
+        Friend ReadOnly Property error_icon() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("error_icon", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property exit_icon() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("exit_icon", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
         Friend ReadOnly Property flash() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("flash", resourceCulture)
@@ -313,9 +313,9 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
-        Friend ReadOnly Property TPV_Alchemy_2_Icon() As System.Drawing.Bitmap
+        Friend ReadOnly Property TPV_Alchemy_Icon() As System.Drawing.Bitmap
             Get
-                Dim obj As Object = ResourceManager.GetObject("TPV-Alchemy-2-Icon", resourceCulture)
+                Dim obj As Object = ResourceManager.GetObject("TPV_Alchemy_Icon", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -325,7 +325,7 @@ Namespace My.Resources
         '''</summary>
         Friend ReadOnly Property TPV_Black_Dragon_Icon() As System.Drawing.Bitmap
             Get
-                Dim obj As Object = ResourceManager.GetObject("TPV-Black_Dragon-Icon", resourceCulture)
+                Dim obj As Object = ResourceManager.GetObject("TPV_Black_Dragon_Icon", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -333,9 +333,9 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
-        Friend ReadOnly Property TPV_Catznip_2_Icon() As System.Drawing.Bitmap
+        Friend ReadOnly Property TPV_Catznip_Icon() As System.Drawing.Bitmap
             Get
-                Dim obj As Object = ResourceManager.GetObject("TPV-Catznip-2-Icon", resourceCulture)
+                Dim obj As Object = ResourceManager.GetObject("TPV_Catznip_Icon", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -345,7 +345,7 @@ Namespace My.Resources
         '''</summary>
         Friend ReadOnly Property TPV_Firestorm_Icon() As System.Drawing.Bitmap
             Get
-                Dim obj As Object = ResourceManager.GetObject("TPV-Firestorm-Icon", resourceCulture)
+                Dim obj As Object = ResourceManager.GetObject("TPV_Firestorm_Icon", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -355,7 +355,7 @@ Namespace My.Resources
         '''</summary>
         Friend ReadOnly Property TPV_Kokua_Icon() As System.Drawing.Bitmap
             Get
-                Dim obj As Object = ResourceManager.GetObject("TPV-Kokua-Icon", resourceCulture)
+                Dim obj As Object = ResourceManager.GetObject("TPV_Kokua_Icon", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -365,7 +365,7 @@ Namespace My.Resources
         '''</summary>
         Friend ReadOnly Property TPV_Singularity_Icon() As System.Drawing.Bitmap
             Get
-                Dim obj As Object = ResourceManager.GetObject("TPV-Singularity-Icon", resourceCulture)
+                Dim obj As Object = ResourceManager.GetObject("TPV_Singularity_Icon", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -375,7 +375,7 @@ Namespace My.Resources
         '''</summary>
         Friend ReadOnly Property TPV_UKanDo_Icon() As System.Drawing.Bitmap
             Get
-                Dim obj As Object = ResourceManager.GetObject("TPV-UKanDo-Icon", resourceCulture)
+                Dim obj As Object = ResourceManager.GetObject("TPV_UKanDo_Icon", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property

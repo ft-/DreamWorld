@@ -696,12 +696,6 @@
     ;; then you might want to try setting this to false.
     ; mesh_sculpted_prim = true
 
-    ;# {use_NINJA_physics_joints} {[Startup]physics:OpenDynamicsEngine} {Use jointed (NINJA) physics?} {true false} false
-    ;; If you would like physics joints to be enabled through a special naming
-    ;; convention in the client, set this to true.
-    ;; (see NINJA Physics, http://opensimulator.org/wiki/NINJA_Physics)
-    ; use_NINJA_physics_joints = false
-
 [RemoteAdmin]
     ;; This is the remote admin module, which uses XMLRPC requests to
     ;; manage regions from a web interface.
@@ -925,6 +919,13 @@
     ;; by scripts have changed.
     ; DeleteScriptsOnStartup = true
 
+    ;# {CompactMemOnLoad} {} {compacts memory on each script load at startup?} {true false} false
+    ;; forces calls to memory garbage collector before loading each script DLL during region startup.
+    ;; Peak memory usage is reduced and region starts with a more compacted memory allocation.
+    ;; But this costs a lot of time, so region load will take a lot longer.
+    ;; it is more usefull if there are no previously compiled scripts DLLs (as with DeleteScriptsOnStartup = true)
+    ;CompactMemOnLoad = false
+    
     ;# {DefaultCompileLanguage} {Enabled:true} {Default script language?} {lsl vb cs} lsl
     ;; Default language for scripts
     ; DefaultCompileLanguage = "lsl"
@@ -1131,17 +1132,21 @@
 	
 	;; several options to control NPCs creation
 	
+    ;# {AllowNotOwned} {} {allow NPCs to be created not Owned} {true false} true
 	;; allow NPCs to be created not Owned {true false} default: true
-    ; AllowNotOwned = false
+    ; AllowNotOwned = true
 	
+    ;# {AllowSenseAsAvatar} {} {allow NPCs to set to be sensed as Avatars} {true false} true
 	;; allow NPCs to set to be sensed as Avatars {true false} default: true
-    ; AllowSenseAsAvatar = false
+    ; AllowSenseAsAvatar = true
 	
+    ;# {AllowCloneOtherAvatars} {} {allow NPCs to created cloning any avatar in region} {true false} true
 	;; allow NPCs to created cloning any avatar in region {true false} default: true
-    ; AllowCloneOtherAvatars = false
+    ; AllowCloneOtherAvatars = true
 	
+    ;# {NoNPCGroup} {} {if true NPCs will have no group title, if false display "- NPC -"} {true false} true
 	;; if true NPCs will have no group title, if false display "- NPC -" for easy identification {true false} default: true
-    ; NoNPCGroup = false 
+    ; NoNPCGroup = true 
 
 
 [Terrain]

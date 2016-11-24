@@ -6,10 +6,10 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="AvatarShow" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
+      <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="ViewerEase" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
+      <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="GridFolder" Type="System.String" Scope="User">
       <Value Profile="(Default)">Opensim</Value>
@@ -116,7 +116,7 @@
     <Setting Name="SkipUpdateCheck" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="DiagFailed" Type="System.String" Scope="User">
+    <Setting Name="DiagFailed" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="DnsName" Type="System.String" Scope="User">
@@ -130,6 +130,12 @@
     </Setting>
     <Setting Name="MachineID" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="LoopBackDiag" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="UPnPDiag" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>
 </SettingsFile>
