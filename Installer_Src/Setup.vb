@@ -38,7 +38,7 @@ Public Class Form1
     '
 
 #Region "Declarations"
-    Dim MyVersion As String = "0.98"
+    Dim MyVersion As String = "0.99"
 
     Dim DebugPath As String = "C:\Opensim\Outworldz"
     Dim remoteUri As String = "http://www.outworldz.com/Outworldz_Installer/" ' requires trailing slash
@@ -79,7 +79,7 @@ Public Class Form1
                              My.Resources.wp_39, My.Resources.wp_40, My.Resources.wp_41,
                              My.Resources.wp_42
                             }
-    Dim Debug = False
+    Dim Debug = False       ' toggled by -debug flag on command line
 
 #End Region
 
