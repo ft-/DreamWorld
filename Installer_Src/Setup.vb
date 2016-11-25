@@ -79,6 +79,7 @@ Public Class Form1
                              My.Resources.wp_39, My.Resources.wp_40, My.Resources.wp_41,
                              My.Resources.wp_42
                             }
+    Dim Debug = False
 
 #End Region
 
@@ -184,6 +185,7 @@ Public Class Form1
         If arguments.Length > 1 Then
             ' for debugging when compiling
             If arguments(1) = "-debug" Then
+                Debug = True
                 MyFolder = DebugPath ' for testing, as the compiler buries itself in ../../../debug
                 Log("Info:Using Debug folder \Outworldz")
             End If
@@ -207,6 +209,10 @@ Public Class Form1
         ' always open ports
         OpenPorts(30) ' Open router ports with uPnP
         SetINIFromSettings(40)
+
+        If Debug Then
+            DoDiag()
+        End If
 
         If Not My.Settings.RunOnce Then
             My.Settings.RunOnce = True
@@ -328,6 +334,10 @@ Public Class Form1
         Running = True
 
         LogFiles(5) ' clear log fles
+        If My.Settings.DiagFailed = True Then
+            My.Settings.PublicIP = "127.0.0.1"
+        End If
+
         OpenPorts(8) ' Open router ports with uPnP
         SetINIFromSettings(10)    ' set up the INI files
         InstallGridXML(15)
@@ -337,12 +347,8 @@ Public Class Form1
         End If
         Onlook(100)
         Buttons(StopButton)
-        If My.Settings.PublicIP = "127.0.0.1" Then
-            Log("Info:PublicIP = 127.0.0.1")
-            Print("Access to the Hypergrid is disabled because of your router. See Help->Loopback to see why.")
-        Else
-            Print("Outworldz is ready for you to log in. Hypergrid address is " + My.Settings.PublicIP + ":" + My.Settings.PublicPort)
-        End If
+
+        Print("Outworldz is ready for you to log in. Hypergrid address is " + My.Settings.PublicIP + ":" + My.Settings.PublicPort)
 
         ' done with bootup
         ProgressBar1.Value = 100
@@ -364,6 +370,7 @@ Public Class Form1
             ClientSocket.Connect(ServerAddress, Port)
         Catch ex As Exception
             Log("Error: port probe failed on port " + My.Settings.MySqlPort)
+
             Return False
         End Try
 
@@ -842,7 +849,7 @@ Public Class Form1
         Try
             If AllowFirewall() Then ' open uPNP port
                 DiagLog("uPnpOk")
-                Print("uPnP works ...")
+                'Print("uPnP works ...")
                 My.Settings.UPnPDiag = True
                 My.Settings.Save()
                 ProgressBar1.Value = progress
@@ -860,7 +867,7 @@ Public Class Form1
             My.Settings.UPnPDiag = False
             My.Settings.Save()
             ProgressBar1.Value = progress
-            'Print("Router Is blocking a port so hypergrid may Not be available")
+            'Print("Router Is blocking a port so hypergrid may not be available")
             Return False
         End Try
         ProgressBar1.Value = progress
@@ -875,12 +882,6 @@ Public Class Form1
         Print("Opensim Is Stopped")
         Log("InfoStopped")
     End Sub
-
-    Private Function xmlPath() As String
-        ' gets the path to the %APPDATA% folder on windows so we can seek out the Onlook folders
-        Dim appData As String = My.Computer.FileSystem.SpecialDirectories.CurrentUserApplicationData
-        Return Mid(appData, 1, InStr(appData, "AppData") - 1)
-    End Function
 
     Private Sub AdminUIToolStripMenuItem1_Click(sender As Object, e As EventArgs) Handles ViewWebUI.Click
         If (Running) Then
@@ -904,12 +905,12 @@ Public Class Form1
             AppActivate(OpensimProcID)
             thing = thing.Replace("\", "/")    ' because Opensim uses unix-like slashes, that's why
             If backMeUp = vbYes Then
-                My.Computer.Keyboard.SendKeys("alert CPU Intensive Backup Started {ENTER}", True)
-                My.Computer.Keyboard.SendKeys("save oar " + MyFolder + "/OutworldzFiles/Autobackup/Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar{ENTER}", True)
+                SendKeys.SendWait("alert CPU Intensive Backup Started {ENTER}")
+                SendKeys.SendWait("save oar " + MyFolder + "/OutworldzFiles/Autobackup/Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar{ENTER}")
             End If
-            My.Computer.Keyboard.SendKeys("alert New content Is loading..{ENTER}", True)
-            My.Computer.Keyboard.SendKeys("load oar --force-terrain " + Chr(34) + thing + Chr(34) + "{ENTER}", True)
-            My.Computer.Keyboard.SendKeys("alert New content just loaded. {ENTER}", True)
+            SendKeys.SendWait("alert New content Is loading..{ENTER}")
+            SendKeys.SendWait("load oar --force-terrain " + Chr(34) + thing + Chr(34) + "{ENTER}")
+            SendKeys.SendWait("alert New content just loaded. {ENTER}")
             Me.Focus()
         Catch ex As Exception
             Log("Error:" + ex.Message)
@@ -927,8 +928,8 @@ Public Class Form1
         If user.Length And password.Length Then
             AppActivate(OpensimProcID)
             Try
-                My.Computer.Keyboard.SendKeys("load iar --merge " + user + " / " + password + " " + Chr(34) + thing + Chr(34) + "{ENTER}", True)
-                My.Computer.Keyboard.SendKeys("alert IAR content Is loaded{ENTER}", True)
+                SendKeys.SendWait("load iar --merge " + user + " / " + password + " " + Chr(34) + thing + Chr(34) + "{ENTER}")
+                SendKeys.SendWait("alert IAR content Is loaded{ENTER}")
             Catch ex As Exception
                 Log("Error:" + ex.Message)
             End Try
@@ -953,7 +954,7 @@ Public Class Form1
 
         Try
             AppActivate(OpensimProcID)
-            My.Computer.Keyboard.SendKeys("quit{ENTER}", True)
+            SendKeys.SendWait("quit{ENTER}")
         Catch ex As Exception
             Log("Error:" + ex.Message)
         End Try
@@ -1156,7 +1157,6 @@ Public Class Form1
 
         If My.Settings.DnsName.Length Then
             My.Settings.PublicIP = My.Settings.DnsName
-            'Print("HG Address is " + My.Settings.DnsName)
             Return
         End If
 
@@ -1166,9 +1166,8 @@ Public Class Form1
             Log("Public IP=" + My.Settings.PublicIP)
         Catch ex As Exception
             Print("Cannot reach the Internet? Proceeding locally. " + ex.Message)
-            My.Settings.PublicIP = "127.0.0.1"
+            My.Settings.DiagFailed = True
         End Try
-
         ProgressBar1.Value = iProgress
 
     End Sub
@@ -1179,8 +1178,6 @@ Public Class Form1
             Application.DoEvents()
             My.Settings.DiagFailed = True
             Print("Hypergrid travel requires a router with 'loopback'. It seems to be missing from yours. See the Help section for 'Loopback' and how to enable it in Windows. Opensim can still continue, but without Hypergrid.")
-            MsgBox("See Info on screen about Loopback. Opensim can still continue, but without Hypergrid", vbExclamation)
-            My.Settings.PublicIP = "127.0.0.1" ' dang it, we cannot go to the hypergird
             My.Settings.LoopBackDiag = False
         Else
             My.Settings.LoopBackDiag = True
@@ -1297,34 +1294,6 @@ Public Class Form1
         ActualForm.SetDesktopLocation(300, 200)
         ActualForm.Activate()
         ActualForm.Visible = True
-    End Sub
-
-    Private Sub InstallGridXML(iProgress As Integer)
-
-        ' setup Onlook
-        If System.IO.File.Exists(xmlPath() + "\AppData\Roaming\Onlook\user_settings\settings_onlook.xml") Then
-            My.Settings.ViewerInstalled = True
-        End If
-
-        If Not My.Settings.ViewerInstalled Then
-            Log("Info: Onlook viewer is not installed")
-            Return
-        End If
-        ' we have to change the viewer Grid settings if we are on localhost
-        Print("Setting Grid Info...")
-        Try
-            My.Computer.FileSystem.CopyFile(xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml", xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml.xml.bak", True)
-        Catch
-            Log("Error:Failed to back up onlook XML")
-        End Try
-
-        Try
-            My.Computer.FileSystem.CopyFile(MyFolder & "\Viewer\Hypergrid.xml", xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml", True)
-        Catch ex As Exception
-            Log("Error:Failed to install onlook XML:" + ex.Message)
-        End Try
-        ProgressBar1.Value = iProgress
-
     End Sub
 
     Private Sub RemoveGrid()
@@ -1544,7 +1513,6 @@ Public Class Form1
         Catch ex As Exception
             DiagLog("Dang:The Outworldz web site cannot find a path back")
             My.Settings.DiagFailed = True
-            My.Settings.PublicIP = "127.0.0.1"
         End Try
 
         If isPortOpen <> "yes" Then
@@ -1713,12 +1681,12 @@ Public Class Form1
                     thing = thing.Replace("\", "/")    ' because Opensim uses unix-like slashes, that's why
                     AppActivate(OpensimProcID)
                     If backMeUp = vbYes Then
-                        My.Computer.Keyboard.SendKeys("alert CPU Intensive Backup Started{ENTER}", True)
-                        My.Computer.Keyboard.SendKeys("save oar " + MyFolder + "/OutworldzFiles/Autobackup/Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar{ENTER}", True)
+                        SendKeys.SendWait("alert CPU Intensive Backup Started{ENTER}")
+                        SendKeys.SendWait("save oar " + MyFolder + "/OutworldzFiles/Autobackup/Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar{ENTER}")
                     End If
-                    My.Computer.Keyboard.SendKeys("alert New content is loading..{ENTER}")
-                    My.Computer.Keyboard.SendKeys("load oar --force-terrain" + Chr(34) + thing + Chr(34) + "{ENTER}")
-                    My.Computer.Keyboard.SendKeys("alert New content just loaded." + "{ENTER}")
+                    SendKeys.SendWait("alert New content is loading..{ENTER}")
+                    SendKeys.SendWait("load oar --force-terrain" + Chr(34) + thing + Chr(34) + "{ENTER}")
+                    SendKeys.SendWait("alert New content just loaded." + "{ENTER}")
                     Me.Focus()
                 End If
             End If
@@ -1778,8 +1746,8 @@ Public Class Form1
             ' If user has clicked Cancel, set myValue to defaultValue 
             If myValue.length = 0 Then Return
             AppActivate(OpensimProcID)
-            My.Computer.Keyboard.SendKeys("alert CPU Intensive Backup Started{ENTER}", True)
-            My.Computer.Keyboard.SendKeys("save oar " + MyFolder + "/OutworldzFiles/Autobackup/" + myValue + "{ENTER}", True)
+            SendKeys.SendWait("alert CPU Intensive Backup Started{ENTER}")
+            SendKeys.SendWait("save oar " + MyFolder + "/OutworldzFiles/Autobackup/" + myValue + "{ENTER}")
             Print("Saving " + myValue + " to " + MyFolder + "/OutworldzFiles/Autobackup")
         Else
             Print("Opensim is not running. Cannot make a backup now.")
@@ -1793,8 +1761,10 @@ Public Class Form1
     End Sub
 
     Private Sub DoDiag()
+        Print("Running Network Diagnostics")
         My.Settings.DiagFailed = False
-        GetPubIP(35) ' 0.99
+        CheckLocalHost()
+        GetPubIP(37) ' 0.99
         Loopback(40)   ' test the loopback on the router. If it fails, use localhost, no Hg possible
         ProbePublicPort(50) ' see if Public loopback works
     End Sub
@@ -1826,6 +1796,101 @@ Public Class Form1
         Return data
 
     End Function
+
+    Private Function xmlPath() As String
+        ' gets the path to the %APPDATA% folder on windows so we can seek out the Onlook folders
+        Dim appData As String = My.Computer.FileSystem.SpecialDirectories.CurrentUserApplicationData
+        Return Mid(appData, 1, InStr(appData, "AppData") - 1)
+    End Function
+
+
+    Private Sub InstallGridXML(iProgress As Integer)
+
+        ' setup Onlook
+        If System.IO.File.Exists(xmlPath() + "\AppData\Roaming\Onlook\user_settings\settings_onlook.xml") Then
+            My.Settings.ViewerInstalled = True
+        End If
+
+        If Not My.Settings.ViewerInstalled Then
+            Log("Info: Onlook viewer is not installed")
+            Return
+        End If
+        ' we have to change the viewer Grid settings if we are on localhost
+        Print("Setting Grid Info...")
+
+
+        Dim Opensim8XML As String = "<llsd>
+    <array>
+        <map>
+        <key>default_grids_version</key>
+            <integer>22</integer>
+        </map>
+        <map>
+        <key>auto_update</key>
+            <boolean>0</boolean>
+        <key>gridname</key>
+            <string>DreamWorld</string>
+        <key>gridnick</key>
+            <string>dreamworld</string>
+        <key>helperuri</key>
+            <string>http://</string>
+        <key>inventory_links</key>
+            <boolean>0</boolean>
+        <key>locked</key>
+            <boolean>0</boolean>
+        <key>loginpage</key>
+            <string>http://www.outworldz.com/Outworldz_installer/Welcome.htm</string>
+        <key>loginuri</key>
+            <string>http://" + My.Settings.PublicIP + ":" + My.Settings.PublicPort + "/</string>
+        <key>password</key>
+            <string>http://127.0.0.1:8002/wifi/forgotpassword</string>
+        <key>platform</key>
+            <string>OpenSim</string>
+        <key>register</key>
+            <string>http://127.0.0.1:8002/wifi/user/account</string>
+        <key>render_compat</key>
+            <boolean>1</boolean>
+        <key>search</key>
+            <string>http://search.metaverseink.com/opensim/results.jsp?</string>
+        <key>support</key>
+            <string />
+        <key>website</key>
+            <string />
+        </map>
+    </array>
+</llsd>
+"
+
+        Try
+            My.Computer.FileSystem.CopyFile(xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml", xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml.bak", True)
+        Catch
+            Log("Error:Failed to back up onlook XML")
+        End Try
+
+        Try
+            My.Computer.FileSystem.DeleteFile(xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml")
+            Using outputFile As New StreamWriter(xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml", True)
+                outputFile.WriteLine(Opensim8XML)
+                ' outputFile.Close()
+            End Using
+
+            'My.Computer.FileSystem.CopyFile(MyFolder & "\Viewer\Hypergrid.xml", xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml", True)
+        Catch ex As Exception
+            Log("Error:Failed to install onlook XML:" + ex.Message)
+        End Try
+        ProgressBar1.Value = iProgress
+
+    End Sub
+
+    Private Sub CheckLocalHost()
+        Dim Local = CheckPort("127.0.0.1", My.Settings.LoopBack)
+        If Not Local Then
+            Print("Localhost is blocked")
+            My.Settings.DiagFailed = True
+        End If
+    End Sub
+
+
 #End Region
 
 End Class
