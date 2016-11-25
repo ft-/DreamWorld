@@ -91,9 +91,8 @@ Compiliation:  You need to use Microsoft Visual Basic 1010 to 2015.  Navigate to
 Navigate to Debug->Build Start. The app should compile.   Navigate to "Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\bin\Release" and copy Start.exe  to \DreamworldFiles to be ready for production.   The zip file it downloads from my web site is all of these filess EXCEPT start.exe.
 
 Command line:
-You can run Start.exe with the command line option 'clean' and it will delete extra data that Opensim does not need in a distribution, such as cache and script folders.  
 
-Running it with a start parameter of 'debug' will force the compiler to run out of  the folder "\DreamWorld" to aid in debugging
+Running it with a start parameter of '-debug' will force the compiler to run out of  the folder "\DreamWorld" to aid in debugging
 
 fred@mitsi.com
 ~ Ferd/Fred

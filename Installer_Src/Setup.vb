@@ -1794,6 +1794,7 @@ Public Class Form1
 
     Private Sub DoDiag()
         My.Settings.DiagFailed = False
+        GetPubIP(35) ' 0.99
         Loopback(40)   ' test the loopback on the router. If it fails, use localhost, no Hg possible
         ProbePublicPort(50) ' see if Public loopback works
     End Sub
