@@ -30,5 +30,5 @@ This re-release updates it from the original Sim On A Stick format into a standa
 				Onlook restarts on install and sets grid vars  - Thanks for the extensive help, shaunkmaloney@craftgrid.com
 				When Advanced menu grid name is changed it no longer requires a restart, can no longer change grid while running
 0.98 2016-11-20	https:://api.ipify.com lost their SSL cert, so it is now on port 80.  Backdrop is hidden if timer = 0
-0.99 2016-11-25 Public IP set to localhost if diags fails
+0.99 2016-11-25 Public IP set to localhost if diags fails, Keyboard Wait SendKeys to make Opensim command more reliable, Onlook Viewer XML adapts to Public IP
 
