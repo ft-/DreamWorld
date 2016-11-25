@@ -954,7 +954,7 @@ Public Class Form1
 
         Try
             AppActivate(OpensimProcID)
-            SendKeys.SendWait("quit{ENTER}")
+            SendKeys.Send("quit{ENTER}")
         Catch ex As Exception
             Log("Error:" + ex.Message)
         End Try
