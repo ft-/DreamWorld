@@ -369,13 +369,13 @@ Public Class Form1
         Try
             ClientSocket.Connect(ServerAddress, Port)
         Catch ex As Exception
-            Log("Error: port probe failed on port " + My.Settings.MySqlPort)
+            Log("Error: port probe failed on port " + Convert.ToInt16(Port)) ' was mysqlport only
 
             Return False
         End Try
 
         If ClientSocket.Connected Then
-            Log("Okay: port probe success on port " + My.Settings.MySqlPort)
+            Log("Okay: port probe success on port " + Convert.ToInt16(Port)) ' was mysqlport only
             Return True
         End If
         CheckPort = False
@@ -1124,7 +1124,7 @@ Public Class Form1
         ' Check for MySql operation
         Dim Mysql = False
         ' wait for MySql to come up
-        Mysql = CheckPort("127.0.0.1", My.Settings.MySqlPort)
+        Mysql = CheckPort("127.0.0.1", Convert.ToInt16(My.Settings.MySqlPort))
         While Not Mysql
 
             BumpProgress()
@@ -1148,7 +1148,7 @@ Public Class Form1
 
             ' check again
             Sleep(1000)
-            Mysql = CheckPort("127.0.0.1", My.Settings.MySqlPort)
+            Mysql = CheckPort("127.0.0.1", Convert.ToInt16(My.Settings.MySqlPort))
         End While
         ProgressBar1.Value = progress
 
@@ -1174,7 +1174,7 @@ Public Class Form1
     Private Sub Loopback(progress As Integer)
 
         'Print("Opensim needs to be able to loop back to itself. ")
-        If Not CheckPort(My.Settings.PublicIP, My.Settings.LoopBack) Then
+        If Not CheckPort(My.Settings.PublicIP, Convert.ToInt16(My.Settings.LoopBack)) Then
             Application.DoEvents()
             My.Settings.DiagFailed = True
             Print("Hypergrid travel requires a router with 'loopback'. It seems to be missing from yours. See the Help section for 'Loopback' and how to enable it in Windows. Opensim can still continue, but without Hypergrid.")
@@ -1883,7 +1883,7 @@ Public Class Form1
     End Sub
 
     Private Sub CheckLocalHost()
-        Dim Local = CheckPort("127.0.0.1", My.Settings.LoopBack)
+        Dim Local = CheckPort("127.0.0.1", Convert.ToInt16(My.Settings.LoopBack))
         If Not Local Then
             Print("Localhost is blocked")
             My.Settings.DiagFailed = True
