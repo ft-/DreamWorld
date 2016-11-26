@@ -48,7 +48,7 @@
       <Value Profile="(Default)">8001</Value>
     </Setting>
     <Setting Name="MySqlPort" Type="System.String" Scope="User">
-      <Value Profile="(Default)">3307</Value>
+      <Value Profile="(Default)">3308</Value>
     </Setting>
     <Setting Name="AutobackupInterval" Type="System.String" Scope="User">
       <Value Profile="(Default)">1440</Value>
@@ -136,6 +136,18 @@
     </Setting>
     <Setting Name="UPnPDiag" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="DBName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">opensim</Value>
+    </Setting>
+    <Setting Name="DBUserID" Type="System.String" Scope="User">
+      <Value Profile="(Default)">opensimuser</Value>
+    </Setting>
+    <Setting Name="DBPassword" Type="System.String" Scope="User">
+      <Value Profile="(Default)">opensimpassword</Value>
+    </Setting>
+    <Setting Name="DBSource" Type="System.String" Scope="User">
+      <Value Profile="(Default)">localhost</Value>
     </Setting>
   </Settings>
 </SettingsFile>

@@ -38,14 +38,14 @@ Partial Class AdvancedForm
         Me.DnsName = New System.Windows.Forms.TextBox()
         Me.Label13 = New System.Windows.Forms.Label()
         Me.RegionPort = New System.Windows.Forms.TextBox()
-        Me.Mysql = New System.Windows.Forms.TextBox()
-        Me.Label = New System.Windows.Forms.Label()
         Me.PublicPort = New System.Windows.Forms.TextBox()
         Me.DiagPort = New System.Windows.Forms.TextBox()
         Me.Label6 = New System.Windows.Forms.Label()
         Me.Label4 = New System.Windows.Forms.Label()
         Me.PrivatePort = New System.Windows.Forms.TextBox()
         Me.Label5 = New System.Windows.Forms.Label()
+        Me.DbPort = New System.Windows.Forms.TextBox()
+        Me.Label = New System.Windows.Forms.Label()
         Me.GroupBox3 = New System.Windows.Forms.GroupBox()
         Me.Label9 = New System.Windows.Forms.Label()
         Me.AutoBackupKeepFilesForDays = New System.Windows.Forms.TextBox()
@@ -77,10 +77,18 @@ Partial Class AdvancedForm
         Me.SmtpPassword = New System.Windows.Forms.TextBox()
         Me.SmtpUsername = New System.Windows.Forms.TextBox()
         Me.AccountConfirmationRequired = New System.Windows.Forms.CheckBox()
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.WebStats = New System.Windows.Forms.CheckBox()
+        Me.DbName = New System.Windows.Forms.TextBox()
+        Me.DbUsername = New System.Windows.Forms.TextBox()
+        Me.DbPassword = New System.Windows.Forms.TextBox()
+        Me.DbConnection = New System.Windows.Forms.TextBox()
         Me.GroupBox7 = New System.Windows.Forms.GroupBox()
+        Me.GroupBox8 = New System.Windows.Forms.GroupBox()
+        Me.Label23 = New System.Windows.Forms.Label()
+        Me.Label22 = New System.Windows.Forms.Label()
+        Me.Label21 = New System.Windows.Forms.Label()
+        Me.Label20 = New System.Windows.Forms.Label()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -88,8 +96,8 @@ Partial Class AdvancedForm
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox5.SuspendLayout()
         Me.GroupBox6.SuspendLayout()
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox7.SuspendLayout()
+        Me.GroupBox8.SuspendLayout()
         Me.SuspendLayout()
         '
         'CheckBox256
@@ -183,8 +191,6 @@ Partial Class AdvancedForm
         Me.GroupBox2.Controls.Add(Me.DnsName)
         Me.GroupBox2.Controls.Add(Me.Label13)
         Me.GroupBox2.Controls.Add(Me.RegionPort)
-        Me.GroupBox2.Controls.Add(Me.Mysql)
-        Me.GroupBox2.Controls.Add(Me.Label)
         Me.GroupBox2.Controls.Add(Me.PublicPort)
         Me.GroupBox2.Controls.Add(Me.DiagPort)
         Me.GroupBox2.Controls.Add(Me.Label6)
@@ -201,7 +207,7 @@ Partial Class AdvancedForm
         'Label19
         '
         Me.Label19.AutoSize = True
-        Me.Label19.Location = New System.Drawing.Point(62, 148)
+        Me.Label19.Location = New System.Drawing.Point(71, 118)
         Me.Label19.Name = "Label19"
         Me.Label19.Size = New System.Drawing.Size(36, 13)
         Me.Label19.TabIndex = 17
@@ -210,7 +216,7 @@ Partial Class AdvancedForm
         '
         'HttpPort
         '
-        Me.HttpPort.Location = New System.Drawing.Point(10, 145)
+        Me.HttpPort.Location = New System.Drawing.Point(19, 115)
         Me.HttpPort.Name = "HttpPort"
         Me.HttpPort.Size = New System.Drawing.Size(47, 20)
         Me.HttpPort.TabIndex = 16
@@ -237,7 +243,7 @@ Partial Class AdvancedForm
         'Label13
         '
         Me.Label13.AutoSize = True
-        Me.Label13.Location = New System.Drawing.Point(60, 124)
+        Me.Label13.Location = New System.Drawing.Point(69, 94)
         Me.Label13.Name = "Label13"
         Me.Label13.Size = New System.Drawing.Size(41, 13)
         Me.Label13.TabIndex = 13
@@ -245,33 +251,15 @@ Partial Class AdvancedForm
         '
         'RegionPort
         '
-        Me.RegionPort.Location = New System.Drawing.Point(9, 122)
+        Me.RegionPort.Location = New System.Drawing.Point(18, 92)
         Me.RegionPort.Name = "RegionPort"
         Me.RegionPort.Size = New System.Drawing.Size(47, 20)
         Me.RegionPort.TabIndex = 12
         Me.ToolTip1.SetToolTip(Me.RegionPort, "Thr Region Port must be open to the internet for Hypergrid to work. Default:8004")
         '
-        'Mysql
-        '
-        Me.Mysql.Location = New System.Drawing.Point(10, 30)
-        Me.Mysql.Name = "Mysql"
-        Me.Mysql.Size = New System.Drawing.Size(47, 20)
-        Me.Mysql.TabIndex = 11
-        Me.ToolTip1.SetToolTip(Me.Mysql, "MySQL port is normally 3306. I add one so it will not intyerfere with other insta" &
-        "llations.")
-        '
-        'Label
-        '
-        Me.Label.AutoSize = True
-        Me.Label.Location = New System.Drawing.Point(61, 33)
-        Me.Label.Name = "Label"
-        Me.Label.Size = New System.Drawing.Size(36, 13)
-        Me.Label.TabIndex = 10
-        Me.Label.Text = "MySql"
-        '
         'PublicPort
         '
-        Me.PublicPort.Location = New System.Drawing.Point(9, 77)
+        Me.PublicPort.Location = New System.Drawing.Point(18, 47)
         Me.PublicPort.Name = "PublicPort"
         Me.PublicPort.Size = New System.Drawing.Size(47, 20)
         Me.PublicPort.TabIndex = 0
@@ -279,7 +267,7 @@ Partial Class AdvancedForm
         '
         'DiagPort
         '
-        Me.DiagPort.Location = New System.Drawing.Point(9, 54)
+        Me.DiagPort.Location = New System.Drawing.Point(18, 24)
         Me.DiagPort.Name = "DiagPort"
         Me.DiagPort.Size = New System.Drawing.Size(47, 20)
         Me.DiagPort.TabIndex = 7
@@ -289,7 +277,7 @@ Partial Class AdvancedForm
         'Label6
         '
         Me.Label6.AutoSize = True
-        Me.Label6.Location = New System.Drawing.Point(60, 57)
+        Me.Label6.Location = New System.Drawing.Point(69, 27)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(57, 13)
         Me.Label6.TabIndex = 6
@@ -298,7 +286,7 @@ Partial Class AdvancedForm
         'Label4
         '
         Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(60, 102)
+        Me.Label4.Location = New System.Drawing.Point(69, 72)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(40, 13)
         Me.Label4.TabIndex = 4
@@ -306,7 +294,7 @@ Partial Class AdvancedForm
         '
         'PrivatePort
         '
-        Me.PrivatePort.Location = New System.Drawing.Point(9, 100)
+        Me.PrivatePort.Location = New System.Drawing.Point(18, 70)
         Me.PrivatePort.Name = "PrivatePort"
         Me.PrivatePort.Size = New System.Drawing.Size(47, 20)
         Me.PrivatePort.TabIndex = 1
@@ -315,11 +303,29 @@ Partial Class AdvancedForm
         'Label5
         '
         Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(61, 80)
+        Me.Label5.Location = New System.Drawing.Point(70, 50)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(39, 13)
         Me.Label5.TabIndex = 5
         Me.Label5.Text = "Public "
+        '
+        'DbPort
+        '
+        Me.DbPort.Location = New System.Drawing.Point(6, 38)
+        Me.DbPort.Name = "DbPort"
+        Me.DbPort.Size = New System.Drawing.Size(47, 20)
+        Me.DbPort.TabIndex = 11
+        Me.ToolTip1.SetToolTip(Me.DbPort, "MySQL port is normally 3306. I add one so it will not intyerfere with other insta" &
+        "llations.")
+        '
+        'Label
+        '
+        Me.Label.AutoSize = True
+        Me.Label.Location = New System.Drawing.Point(117, 38)
+        Me.Label.Name = "Label"
+        Me.Label.Size = New System.Drawing.Size(26, 13)
+        Me.Label.TabIndex = 10
+        Me.Label.Text = "Port"
         '
         'GroupBox3
         '
@@ -632,21 +638,10 @@ Partial Class AdvancedForm
         Me.ToolTip1.SetToolTip(Me.AccountConfirmationRequired, "If checked, you must log into the web interface and approve the new users.")
         Me.AccountConfirmationRequired.UseVisualStyleBackColor = True
         '
-        'PictureBox1
-        '
-        Me.PictureBox1.BackgroundImage = Global.Outworldz.My.Resources.Resources.BuiltbyFred
-        Me.PictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.PictureBox1.Location = New System.Drawing.Point(777, 15)
-        Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(75, 67)
-        Me.PictureBox1.TabIndex = 24
-        Me.PictureBox1.TabStop = False
-        Me.ToolTip1.SetToolTip(Me.PictureBox1, "Hi! eail me : fred@mitsi.com")
-        '
         'WebStats
         '
         Me.WebStats.AutoSize = True
-        Me.WebStats.Location = New System.Drawing.Point(17, 29)
+        Me.WebStats.Location = New System.Drawing.Point(20, 19)
         Me.WebStats.Name = "WebStats"
         Me.WebStats.Size = New System.Drawing.Size(65, 17)
         Me.WebStats.TabIndex = 25
@@ -654,21 +649,112 @@ Partial Class AdvancedForm
         Me.ToolTip1.SetToolTip(Me.WebStats, "SHows Sim Stats on the web")
         Me.WebStats.UseVisualStyleBackColor = True
         '
+        'DbName
+        '
+        Me.DbName.Location = New System.Drawing.Point(6, 61)
+        Me.DbName.Name = "DbName"
+        Me.DbName.Size = New System.Drawing.Size(107, 20)
+        Me.DbName.TabIndex = 12
+        Me.ToolTip1.SetToolTip(Me.DbName, "MySQL port is normally 3306. I add one so it will not intyerfere with other insta" &
+        "llations.")
+        '
+        'DbUsername
+        '
+        Me.DbUsername.Location = New System.Drawing.Point(6, 83)
+        Me.DbUsername.Name = "DbUsername"
+        Me.DbUsername.Size = New System.Drawing.Size(107, 20)
+        Me.DbUsername.TabIndex = 14
+        Me.ToolTip1.SetToolTip(Me.DbUsername, "MySQL port is normally 3306. I add one so it will not intyerfere with other insta" &
+        "llations.")
+        '
+        'DbPassword
+        '
+        Me.DbPassword.Location = New System.Drawing.Point(6, 105)
+        Me.DbPassword.Name = "DbPassword"
+        Me.DbPassword.Size = New System.Drawing.Size(107, 20)
+        Me.DbPassword.TabIndex = 15
+        Me.ToolTip1.SetToolTip(Me.DbPassword, "MySQL port is normally 3306. I add one so it will not intyerfere with other insta" &
+        "llations.")
+        '
+        'DbConnection
+        '
+        Me.DbConnection.Location = New System.Drawing.Point(6, 17)
+        Me.DbConnection.Name = "DbConnection"
+        Me.DbConnection.Size = New System.Drawing.Size(105, 20)
+        Me.DbConnection.TabIndex = 18
+        Me.ToolTip1.SetToolTip(Me.DbConnection, "MySQL port is normally 3306. I add one so it will not intyerfere with other insta" &
+        "llations.")
+        '
         'GroupBox7
         '
         Me.GroupBox7.Controls.Add(Me.WebStats)
-        Me.GroupBox7.Location = New System.Drawing.Point(771, 140)
+        Me.GroupBox7.Location = New System.Drawing.Point(771, 150)
         Me.GroupBox7.Name = "GroupBox7"
-        Me.GroupBox7.Size = New System.Drawing.Size(126, 52)
+        Me.GroupBox7.Size = New System.Drawing.Size(97, 48)
         Me.GroupBox7.TabIndex = 26
         Me.GroupBox7.TabStop = False
         Me.GroupBox7.Text = "WebStats"
         '
+        'GroupBox8
+        '
+        Me.GroupBox8.Controls.Add(Me.Label23)
+        Me.GroupBox8.Controls.Add(Me.DbConnection)
+        Me.GroupBox8.Controls.Add(Me.Label22)
+        Me.GroupBox8.Controls.Add(Me.Label21)
+        Me.GroupBox8.Controls.Add(Me.DbPassword)
+        Me.GroupBox8.Controls.Add(Me.DbUsername)
+        Me.GroupBox8.Controls.Add(Me.Label20)
+        Me.GroupBox8.Controls.Add(Me.DbName)
+        Me.GroupBox8.Controls.Add(Me.Label)
+        Me.GroupBox8.Controls.Add(Me.DbPort)
+        Me.GroupBox8.Location = New System.Drawing.Point(771, 8)
+        Me.GroupBox8.Name = "GroupBox8"
+        Me.GroupBox8.Size = New System.Drawing.Size(189, 131)
+        Me.GroupBox8.TabIndex = 27
+        Me.GroupBox8.TabStop = False
+        Me.GroupBox8.Text = "Database"
+        '
+        'Label23
+        '
+        Me.Label23.AutoSize = True
+        Me.Label23.Location = New System.Drawing.Point(117, 17)
+        Me.Label23.Name = "Label23"
+        Me.Label23.Size = New System.Drawing.Size(61, 13)
+        Me.Label23.TabIndex = 19
+        Me.Label23.Text = "Connection"
+        '
+        'Label22
+        '
+        Me.Label22.AutoSize = True
+        Me.Label22.Location = New System.Drawing.Point(119, 105)
+        Me.Label22.Name = "Label22"
+        Me.Label22.Size = New System.Drawing.Size(53, 13)
+        Me.Label22.TabIndex = 17
+        Me.Label22.Text = "Password"
+        '
+        'Label21
+        '
+        Me.Label21.AutoSize = True
+        Me.Label21.Location = New System.Drawing.Point(119, 83)
+        Me.Label21.Name = "Label21"
+        Me.Label21.Size = New System.Drawing.Size(55, 13)
+        Me.Label21.TabIndex = 16
+        Me.Label21.Text = "Username"
+        '
+        'Label20
+        '
+        Me.Label20.AutoSize = True
+        Me.Label20.Location = New System.Drawing.Point(119, 61)
+        Me.Label20.Name = "Label20"
+        Me.Label20.Size = New System.Drawing.Size(53, 13)
+        Me.Label20.TabIndex = 13
+        Me.Label20.Text = "Database"
+        '
         'AdvancedForm
         '
-        Me.ClientSize = New System.Drawing.Size(909, 276)
+        Me.ClientSize = New System.Drawing.Size(976, 261)
+        Me.Controls.Add(Me.GroupBox8)
         Me.Controls.Add(Me.GroupBox7)
-        Me.Controls.Add(Me.PictureBox1)
         Me.Controls.Add(Me.GroupBox6)
         Me.Controls.Add(Me.GroupBox5)
         Me.Controls.Add(Me.GroupBox4)
@@ -676,6 +762,8 @@ Partial Class AdvancedForm
         Me.Controls.Add(Me.GroupBox3)
         Me.Controls.Add(Me.GroupBox2)
         Me.Controls.Add(Me.GroupBox1)
+        Me.MaximizeBox = False
+        Me.MinimizeBox = False
         Me.Name = "AdvancedForm"
         Me.Text = "Advanced"
         Me.GroupBox1.ResumeLayout(False)
@@ -692,9 +780,10 @@ Partial Class AdvancedForm
         Me.GroupBox5.PerformLayout()
         Me.GroupBox6.ResumeLayout(False)
         Me.GroupBox6.PerformLayout()
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox7.ResumeLayout(False)
         Me.GroupBox7.PerformLayout()
+        Me.GroupBox8.ResumeLayout(False)
+        Me.GroupBox8.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -713,7 +802,7 @@ Partial Class AdvancedForm
     Friend WithEvents Label5 As Label
     Friend WithEvents Label6 As Label
     Friend WithEvents DiagPort As TextBox
-    Friend WithEvents Mysql As TextBox
+    Friend WithEvents DbPort As TextBox
     Friend WithEvents Label As Label
     Friend WithEvents GroupBox3 As GroupBox
     Friend WithEvents AutoBackup As CheckBox
@@ -748,7 +837,6 @@ Partial Class AdvancedForm
     Friend WithEvents Label14 As Label
     Friend WithEvents SmtpPassword As TextBox
     Friend WithEvents SmtpUsername As TextBox
-    Friend WithEvents PictureBox1 As PictureBox
     Friend WithEvents ToolTip1 As ToolTip
     Friend WithEvents Label7 As Label
     Friend WithEvents DnsName As TextBox
@@ -756,4 +844,13 @@ Partial Class AdvancedForm
     Friend WithEvents GroupBox7 As GroupBox
     Friend WithEvents Label19 As Label
     Friend WithEvents HttpPort As TextBox
+    Friend WithEvents GroupBox8 As GroupBox
+    Friend WithEvents Label21 As Label
+    Friend WithEvents DbPassword As TextBox
+    Friend WithEvents DbUsername As TextBox
+    Friend WithEvents Label20 As Label
+    Friend WithEvents DbName As TextBox
+    Friend WithEvents Label22 As Label
+    Friend WithEvents Label23 As Label
+    Friend WithEvents DbConnection As TextBox
 End Class

@@ -60,7 +60,7 @@
 
         DiagPort.Text = My.Settings.LoopBack
 
-        Mysql.Text = My.Settings.MySqlPort
+        DbPort.Text = My.Settings.MySqlPort
         AutoBackup.Checked = My.Settings.AutoBackup
         Password.Text = My.Settings.Password
         AdminLast.Text = My.Settings.AdminLast
@@ -83,6 +83,11 @@
         DnsName.Text = My.Settings.DnsName
         WebStats.Checked = My.Settings.WebStats
         HttpPort.Text = My.Settings.HttpPort
+
+        DbConnection.Text = My.Settings.DBSource
+        DbName.Text = My.Settings.DBName
+        DbUsername.Text = My.Settings.DBUserID
+        DbPassword.Text = My.Settings.DBPassword
 
     End Sub
 
@@ -159,8 +164,8 @@
         My.Settings.LoopBack = DiagPort.Text
     End Sub
 
-    Private Sub TextBox1_TextChanged_1(sender As Object, e As EventArgs) Handles Mysql.TextChanged
-        My.Settings.MySqlPort = Mysql.Text
+    Private Sub TextBox1_TextChanged_1(sender As Object, e As EventArgs) Handles DbPort.TextChanged
+        My.Settings.MySqlPort = DbPort.Text
     End Sub
 
     Private Sub ABEnabled_CheckedChanged(sender As Object, e As EventArgs) Handles AutoBackup.CheckedChanged
@@ -251,7 +256,7 @@
 
     Private Sub DnsName_TextChanged(sender As Object, e As EventArgs) Handles DnsName.TextChanged
         My.Settings.DnsName = DnsName.Text
-        Form1.GetPubIP(100)
+        Form1.GetPubIP()
 
     End Sub
 
@@ -262,5 +267,21 @@
 
     Private Sub HttpPort_TextChanged(sender As Object, e As EventArgs) Handles HttpPort.TextChanged
         My.Settings.HttpPort = HttpPort.Text
+    End Sub
+
+    Private Sub DatabaseNameUser_TextChanged(sender As Object, e As EventArgs) Handles DbName.TextChanged
+        My.Settings.DBName = DbName.Text
+    End Sub
+
+    Private Sub DbConnection_TextChanged(sender As Object, e As EventArgs) Handles DbConnection.TextChanged
+        My.Settings.DBSource = DbConnection.Text
+    End Sub
+
+    Private Sub DbUsername_TextChanged(sender As Object, e As EventArgs) Handles DbUsername.TextChanged
+        My.Settings.DBUserID = DbUsername.Text
+    End Sub
+
+    Private Sub DbPassword_TextChanged(sender As Object, e As EventArgs) Handles DbPassword.TextChanged
+        My.Settings.DBPassword = DbPassword.Text
     End Sub
 End Class

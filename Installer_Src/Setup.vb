@@ -79,7 +79,8 @@ Public Class Form1
                              My.Resources.wp_39, My.Resources.wp_40, My.Resources.wp_41,
                              My.Resources.wp_42
                             }
-    Dim Debug = False       ' toggled by -debug flag on command line
+    Dim gDebug = False       ' toggled by -debug flag on command line
+    Dim gContentAvailable As Boolean = False ' assume there is no OAR and IAR data available
 
 #End Region
 
@@ -128,26 +129,35 @@ Public Class Form1
 
 #Region "Methods"
     Private Sub Form1_Closed(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Closed
-        Log("Info:Exit")
+        Log("Info:FormClosed")
         ProgressBar1.Value = 90
         Print("Hold fast to your dreams ...")
         ExitAll()
         ProgressBar1.Value = 25
         Print("I'll tell you my next dream when I wake up.")
-        ProgressBar1.Value = 0
+        StopMysql()
         Print("Zzzzzz....")
-        Sleep(500)
+        ProgressBar1.Value = 0
+        Sleep(1)
+    End Sub
+
+    Private Sub mnuExit_Click(sender As System.Object, e As System.EventArgs) Handles mnuExit.Click
+        Log("Info:Exiting")
+        End
     End Sub
 
     Private Sub Form1_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 
-        Buttons(BusyButton)
+        'hide progress
+        ProgressBar1.Visible = True
+        ProgressBar1.Minimum = 0
+        ProgressBar1.Maximum = 100
+        ProgressBar1.Value = 0
 
+        Buttons(BusyButton)
         ' Save a random machine ID - we don't want any data to be sent that's personal or identifiable,  but it needs to be unique
         Randomize()
         Machine() = Random()
-
-        zap("mysqld") ' kill any left over mysql daemons
 
         ' hide updater
         UpdaterGo.Visible = False
@@ -160,15 +170,7 @@ Public Class Form1
         MnuContent.Visible = False
         mnuSettings.Visible = False
 
-        'hide progress
-        ProgressBar1.Visible = False
-        ProgressBar1.Minimum = 0
-        ProgressBar1.Maximum = 100
-        ProgressBar1.Value = 0
-
         gChatTime = My.Settings.ChatTime
-
-        Me.Show()
 
         Me.AllowDrop = True
         TextBox1.AllowDrop = True
@@ -185,34 +187,34 @@ Public Class Form1
         If arguments.Length > 1 Then
             ' for debugging when compiling
             If arguments(1) = "-debug" Then
-                Debug = True
+                gDebug = True
                 MyFolder = DebugPath ' for testing, as the compiler buries itself in ../../../debug
-                Log("Info:Using Debug folder \Outworldz")
             End If
         End If
-
         gCurSlashDir = MyFolder.Replace("\", "/")    ' because Mysql uses unix like slashes, that's why
 
         SaySomething()
 
-        ProgressBar1.Visible = True
-        ProgressBar1.Value = 5
-        Sleep(4000)
+        Me.Show()
+        ProgressBar1.Value = 100
+        ProgressBar1.Value = 0
+
+        ClearLogFiles() ' clear log fles
 
         Log("Info: Loading Web Server")
         ws = Net.getWebServer
         Log("Info: Starting Web Server")
         ws.StartServer(MyFolder)
+        BumpProgress10()
 
-        ProgressBar1.Value = 10
-        GetPubIP(20)
+        GetPubIP()
+
         ' always open ports
-        OpenPorts(30) ' Open router ports with uPnP
-        SetINIFromSettings(40)
+        OpenPorts() ' Open router ports with uPnP
 
-        If Debug Then
-            DoDiag()
-        End If
+        SetINIFromMySettings()
+
+        If gDebug Then DoDiag()
 
         If Not My.Settings.RunOnce Then
             My.Settings.RunOnce = True
@@ -224,13 +226,10 @@ Public Class Form1
         End If
 
         mnuSettings.Visible = True
-        SetIAROARContent(60) ' load IAR and OAR web content
-        MnuContent.Visible = True
+        SetIAROARContent() ' load IAR and OAR web content
 
         ' Find out if the viewer is installed
         If System.IO.File.Exists(MyFolder & "\OutworldzFiles\Init.txt") Then
-
-            StartMySql(100) ' boot up MySql, and wait for it to start listening
 
             Buttons(StartButton)
             ProgressBar1.Value = 100
@@ -238,9 +237,9 @@ Public Class Form1
             Log("Info:Ready to start")
 
         Else
-            'Print("Installing Desktop icon clicky thingy")
+            Print("Installing Desktop icon clicky thingy")
             Create_ShortCut(MyFolder & "\Start.exe")
-            ProgressBar1.Value = 50
+            BumpProgress10()
 
             Try
                 ' mark the system as ready
@@ -250,8 +249,6 @@ Public Class Form1
             Catch ex As Exception
                 Log("Could not create Init.txt:" + ex.Message)
             End Try
-
-            StartMySql(100) ' boot up MySql, and wait for it to start listening
 
             Dim yesno = MsgBox("Do you want to install the Onlook Viewer? (Newcomers to virtual worlds should choose Yes)", vbYesNo)
             If (yesno = vbYes) Then
@@ -302,7 +299,8 @@ Public Class Form1
         End If
 
         ProgressBar1.Value = 100
-        Print("Ready to Launch! Click 'Start' to begin your adventure in Opensim.")
+        Application.DoEvents()
+        Print("Ready to Launch! Click 'Start' to begin your adventure in Opensimulator.")
 
         Buttons(StartButton)
 
@@ -311,44 +309,41 @@ Public Class Form1
             Timer1.Start() 'Timer starts functioning
         End If
 
-
     End Sub
     Private Sub StartButton_Click(sender As System.Object, e As System.EventArgs) Handles StartButton.Click
 
-        Try
-            My.Computer.FileSystem.DeleteFile(MyFolder & "\OutworldzFiles\Outworldz.log")
-        Catch
-        End Try
-        Try
-            My.Computer.FileSystem.DeleteFile(MyFolder & "\OutworldzFiles\Server.log")
-        Catch ex As Exception
-        End Try
-
-        ' Set up the progress bar for 0-100
-        ProgressBar1.Visible = True
-        ProgressBar1.Minimum = 0
-        ProgressBar1.Maximum = 100
         ProgressBar1.Value = 0
 
         Buttons(BusyButton)
         Running = True
+        MnuContent.Visible = True
 
-        LogFiles(5) ' clear log fles
         If My.Settings.DiagFailed = True Then
             My.Settings.PublicIP = "127.0.0.1"
         End If
 
-        OpenPorts(8) ' Open router ports with uPnP
-        SetINIFromSettings(10)    ' set up the INI files
-        InstallGridXML(15)
-        If Not Start_Opensimulator(30) Then ' Launch the rocket
+        OpenPorts() ' Open router ports with uPnP
+        SetINIFromMySettings()    ' set up the INI files
+        SaveOnlookXMLData()
+
+        StartMySQL() ' boot up MySql, and wait for it to start listening
+
+        If Not Start_Opensimulator() Then ' Launch the rocket
             KillAll()
             Return
         End If
-        Onlook(100)
+        Onlook()
+
+        ' show the IAR and OAR menu when we are up 
+        If gContentAvailable Then
+            IslandToolStripMenuItem.Visible = True
+            ClothingInventoryToolStripMenuItem.Visible = True
+        End If
+
         Buttons(StopButton)
 
-        Print("Outworldz is ready for you to log in. Hypergrid address is " + My.Settings.PublicIP + ":" + My.Settings.PublicPort)
+        Print("Outworldz is ready for you to log in." + vbCrLf + vbCrLf _
+              + " Hypergrid address is " + My.Settings.PublicIP + ":" + My.Settings.PublicPort)
 
         ' done with bootup
         ProgressBar1.Value = 100
@@ -358,23 +353,21 @@ Public Class Form1
             Timer1.Start() 'Timer starts functioning
         End If
 
-
     End Sub
 
-    Private Function CheckPort(ServerAddress As String, Port As Integer) As Boolean
+    Private Function CheckPort(ServerAddress As String, Port As String) As Boolean
 
-        ' tried to probe MySQL port. If available, return true
+        Dim iPort As Integer = Convert.ToInt16(Port)
         Dim ClientSocket As New TcpClient
 
         Try
-            ClientSocket.Connect(ServerAddress, Port)
+            ClientSocket.Connect(ServerAddress, iPort)
         Catch ex As Exception
-            Log("Error: port probe failed on port " + Convert.ToString(Port)) ' was mysqlport only
             Return False
         End Try
 
         If ClientSocket.Connected Then
-            Log("Okay: port probe success on port " + Convert.ToString(Port)) ' was mysqlport only
+            Log("Okay: port probe success on port " + Convert.ToString(iPort))
             Return True
         End If
         CheckPort = False
@@ -399,11 +392,9 @@ Public Class Form1
         Dim result As Integer = MessageBox.Show("Do you want to Abort?", "caption", MessageBoxButtons.YesNo)
         If result = DialogResult.Yes Then
             Print("Stopping")
-            ProgressBar1.Value = 100
             KillAll()
             Buttons(StartButton)
             Print("Stopped")
-            ProgressBar1.Value = 0
         End If
     End Sub
 
@@ -441,11 +432,6 @@ Public Class Form1
         Application.DoEvents()
         Sleep(gChatTime)  ' time to read
 
-    End Sub
-
-    Private Sub mnuExit_Click(sender As System.Object, e As System.EventArgs) Handles mnuExit.Click
-        Log("Info:Exiting")
-        End
     End Sub
 
     Private Sub mnuLogin_Click(sender As System.Object, e As System.EventArgs) Handles mnuLogin.Click
@@ -602,7 +588,8 @@ Public Class Form1
 
     End Sub
 
-    Private Sub SetINIFromSettings(iProgress As Integer)
+    Private Sub SetINIFromMySettings()
+
         'mnuShow shows the DOS box for Opensimulator
         mnuShow.Checked = My.Settings.ConsoleShow
         mnuHide.Checked = Not My.Settings.ConsoleShow
@@ -612,11 +599,22 @@ Public Class Form1
         Else
             Log("Info:Console will not be shown")
         End If
+
         mnuFull.Checked = Not My.Settings.ViewerEase
         mnuEasy.Checked = My.Settings.ViewerEase
+        If mnuFull.Checked Then
+            Log("Info:Onlook Menu is set to Full UI")
+        Else
+            Log("Info:Onlook Menu is set to Minimum")
+        End If
 
         mnuYesAvatar.Checked = My.Settings.AvatarShow
         mnuNoAvatar.Checked = Not My.Settings.AvatarShow
+        If mnuYesAvatar.Checked Then
+            Log("Info:Avatar will be visible")
+        Else
+            Log("Info:Avatar will not be visible")
+        End If
 
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
@@ -629,10 +627,22 @@ Public Class Form1
             LoadIni(MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\config-include\MyWorld.ini", ";")
         End If
 
+        ' set MySql
+        Dim ConnectionString = """" _
+            + "Data Source=" + My.Settings.DBSource _
+            + ";Database=" + My.Settings.DBName _
+            + ";Port=" + My.Settings.MySqlPort _
+            + ";User ID=" + My.Settings.DBUserID _
+            + ";Password=" + My.Settings.DBPassword _
+            + ";Old Guids=True;Allow Zero Datetime=True;" _
+            + """"
+
+        SetIni("DatabaseService", "ConnectionString", ConnectionString)
+
         If My.Settings.WebStats Then
-            SetIni("WebStats", "enabled", "true")
+            SetIni("WebStats", "enabled", "True")
         Else
-            SetIni("WebStats", "enabled", "false")
+            SetIni("WebStats", "enabled", "False")
         End If
 
         ' Viewer UI shows the full viewer UI
@@ -750,10 +760,10 @@ Public Class Form1
         SetIni("Const", "PublicPort", My.Settings.PublicPort)
         SetIni("Network", "http_listener_port", My.Settings.HttpPort)
         SaveINI()
+        BumpProgress10()
 
-        ProgressBar1.Value = iProgress
     End Sub
-    Function CloseFirewall() As Boolean
+    Function CloseRouterPorts() As Boolean
 
         Dim MyUPnPMap As New UPNP
 
@@ -790,6 +800,7 @@ Public Class Form1
         Return True 'successfully added
     End Function
     Function AllowFirewall() As Boolean
+
         Log("uPnpprobing")
         Dim MyUPnPMap As New UPNP
 
@@ -843,7 +854,9 @@ Public Class Form1
         Return True 'successfully added
     End Function
 
-    Private Function OpenPorts(progress As Integer)
+    Private Function OpenPorts()
+
+        If Running = False Then Return True
         ' Print("The human is instructed to wait while I check out this nice little router ...")
         Try
             If AllowFirewall() Then ' open uPNP port
@@ -851,25 +864,24 @@ Public Class Form1
                 'Print("uPnP works ...")
                 My.Settings.UPnPDiag = True
                 My.Settings.Save()
-                ProgressBar1.Value = progress
+                BumpProgress10()
                 Return True
             Else
                 DiagLog("uPnP: fail")
                 My.Settings.UPnPDiag = False
                 My.Settings.Save()
-                ProgressBar1.Value = progress
                 'Print("UPnP Port forwarding Is Not enabled.  Ports can be manually opened in the router to compensate.")
+                BumpProgress10()
                 Return False
             End If
         Catch e As Exception
             DiagLog("Error: UPNP Exception: " + e.Message)
             My.Settings.UPnPDiag = False
             My.Settings.Save()
-            ProgressBar1.Value = progress
-            'Print("Router Is blocking a port so hypergrid may not be available")
+            BumpProgress10()
             Return False
         End Try
-        ProgressBar1.Value = progress
+
     End Function
 
     Private Sub BusyButton_Click(sender As Object, e As EventArgs) Handles BusyButton.Click
@@ -879,7 +891,8 @@ Public Class Form1
         KillAll()
         Buttons(StartButton)
         Print("Opensim Is Stopped")
-        Log("InfoStopped")
+        Log("Info:Stopped")
+
     End Sub
 
     Private Sub AdminUIToolStripMenuItem1_Click(sender As Object, e As EventArgs) Handles ViewWebUI.Click
@@ -893,6 +906,7 @@ Public Class Form1
     End Sub
     Private Sub LoadOARContent(thing As String)
 
+        If Running = False Then Return
         If Not isRunning Then
             Print("Opensim has to be started to load an OAR file.")
             Return
@@ -917,6 +931,7 @@ Public Class Form1
     End Sub
     Private Sub LoadIARContent(thing As String)
 
+        If Running = False Then Return
         If Not isRunning Then
             Print("Opensim has to be started to load an IAR.")
             Return
@@ -929,6 +944,7 @@ Public Class Form1
             Try
                 SendKeys.SendWait("load iar --merge " + user + " / " + password + " " + Chr(34) + thing + Chr(34) + "{ENTER}")
                 SendKeys.SendWait("alert IAR content Is loaded{ENTER}")
+                Me.Focus()
             Catch ex As Exception
                 Log("Error:" + ex.Message)
             End Try
@@ -941,30 +957,43 @@ Public Class Form1
     End Sub
 
     Private Sub KillAll()
-        ' close opensim gracefully
 
+        ProgressBar1.Value = 100
+        ' close everything as gracefully as possible.
         Try
             pOnlook.CloseMainWindow()
             pOnlook.Close()
         Catch
         End Try
 
+        ProgressBar1.Value = 67
+
         Application.DoEvents()
 
         Try
             AppActivate(OpensimProcID)
             SendKeys.Send("quit{ENTER}")
+            Me.Focus()
         Catch ex As Exception
             Log("Error:" + ex.Message)
         End Try
 
-        Me.Focus()
+        ws.StopWebServer()
+        ProgressBar1.Value = 33
+
+        CloseRouterPorts()
 
         ChooseVersion.Visible = True ' cannot change grid while running
+        ' cannot load OAR or IAR, either
+        IslandToolStripMenuItem.Visible = False
+        ClothingInventoryToolStripMenuItem.Visible = False
+        MnuContent.Visible = False
         Running = False
+        ProgressBar1.Value = 0
     End Sub
 
     Private Sub PictureBox1_DragDrop(sender As System.Object, e As System.Windows.Forms.DragEventArgs) Handles PictureBox1.DragDrop
+
         Dim files() As String = e.Data.GetData(DataFormats.FileDrop)
         For Each pathname In files
             pathname.Replace("\", "/")
@@ -978,6 +1007,7 @@ Public Class Form1
                 Print("Unrecognized file type:" + extension + ".  Drag and drop any OAR, GZ, TGZ, or IAR files to load them when the sim starts")
             End If
         Next
+
     End Sub
 
     Private Sub PictureBox1_DragEnter(sender As System.Object, e As System.Windows.Forms.DragEventArgs) Handles PictureBox1.DragEnter
@@ -1039,24 +1069,8 @@ Public Class Form1
     End Sub
     Private Sub ExitAll()
 
-        ws.StopWebServer()
-
-        Log("Info:using mysqladmin to close db")
-        Dim p As Process = New Process()
-        Dim pi As ProcessStartInfo = New ProcessStartInfo()
-        pi.Arguments = "-u root shutdown"
-        pi.FileName = MyFolder + "\OutworldzFiles\mysql\bin\mysqladmin.exe"
-        pi.WindowStyle = ProcessWindowStyle.Minimized
-        p.StartInfo = pi
-        Try
-            p.Start()
-        Catch
-            Log("Error:mysqladmin failed to stop mysql")
-        End Try
-
-        Sleep(2)
-
-        CloseFirewall()
+        ' Kill ALL Running processes
+        KillAll()
 
         Try
             RemoveGrid()    ' puts Onlook back to default
@@ -1064,98 +1078,31 @@ Public Class Form1
             Log("Info: grid settings set back to defaults" + ex.Message)
         End Try
 
-        ' Needed to stop Opensim
-        KillAll()
+
+
     End Sub
-    Private Sub LogFiles(progress As Integer)
+    Private Sub ClearLogFiles()
         ' clear out the log files
         Try
             My.Computer.FileSystem.DeleteFile(MyFolder + "\OutworldzFiles" & My.Settings.GridFolder & "\bin\Opensim.log")
         Catch ex As Exception
             Log("Info:Opensim Log file did not exist")
         End Try
-
+        BumpProgress()
         Try
             My.Computer.FileSystem.DeleteFile(MyFolder + "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\OpenSimConsoleHistory.txt")
         Catch ex As Exception
             Log("Info:Console history was not empty")
         End Try
-        ProgressBar1.Value = progress
+        BumpProgress()
     End Sub
 
-    Private Sub StartMySql(progress As Integer)
-        ' Start MySql in background.
 
-        Dim StartValue = ProgressBar1.Value
-
-        Print("Starting Database")
-
-        ' create test programs
-        ' slants the other way:
-        Dim testProgram As String = MyFolder & "\OutworldzFiles\mysql\bin\StartManually.bat"
-        Try
-            My.Computer.FileSystem.DeleteFile(testProgram)
-        Catch
-        End Try
-        Try
-            Using outputFile As New StreamWriter(testProgram, True)
-                outputFile.WriteLine("@rem A program to run Mysql manually for troubleshooting." + vbCrLf + "mysqld.exe --defaults-file=" + """" + gCurSlashDir + "/OutworldzFiles/mysql/my.ini" + """")
-            End Using
-        Catch
-        End Try
-
-        LoadIni(MyFolder & "\OutworldzFiles\mysql\my.ini", "#")
-        SetIni("mysqld", "basedir", """" + gCurSlashDir + "/OutworldzFiles/Mysql" + """")
-        SetIni("mysqld", "datadir", """" + gCurSlashDir + "/OutworldzFiles/Mysql/Data" + """")
-        SetIni("mysqld", "port", My.Settings.MySqlPort) ' 0.95 missing server port
-        SetIni("client", "port", My.Settings.MySqlPort)
-        SaveINI()
-
-        Dim pi As ProcessStartInfo = New ProcessStartInfo()
-        pi.Arguments = "--defaults-file=" + Chr(34) + gCurSlashDir + "/OutworldzFiles/mysql/my.ini" + Chr(34)
-        pi.WindowStyle = ProcessWindowStyle.Hidden
-        pi.FileName = MyFolder & "\OutworldzFiles\mysql\bin\mysqld.exe"
-        pMySql.StartInfo = pi
-        pMySql.Start()
-
-        ProgressBar1.Value = 50
-
-        ' Check for MySql operation
-        Dim Mysql = False
-        ' wait for MySql to come up
-        Mysql = CheckPort("127.0.0.1", Convert.ToInt16(My.Settings.MySqlPort))
-        While Not Mysql
-
-            BumpProgress()
-            Application.DoEvents()
-
-            Dim MysqlLog As String = MyFolder + "\OutworldzFiles\mysql\data"
-            If ProgressBar1.Value = 99 Then ' about 30 seconds when it fails
-                Dim yesno = MsgBox("The database did not start. Do you want to see the log file?", vbYesNo)
-                If (yesno = vbYes) Then
-                    Dim files() As String
-                    files = Directory.GetFiles(MysqlLog, "*.err", SearchOption.TopDirectoryOnly)
-                    For Each FileName As String In files
-                        System.Diagnostics.Process.Start("wordpad.exe", FileName)
-                    Next
-                End If
-
-                'KillAll()
-                Buttons(StartButton)
-                Return
-            End If
-
-            ' check again
-            Sleep(1000)
-            Mysql = CheckPort("127.0.0.1", Convert.ToInt16(My.Settings.MySqlPort))
-        End While
-        ProgressBar1.Value = progress
-
-    End Sub
-    Public Sub GetPubIP(iProgress As Integer)
+    Public Sub GetPubIP()
 
         If My.Settings.DnsName.Length Then
             My.Settings.PublicIP = My.Settings.DnsName
+            BumpProgress10()
             Return
         End If
 
@@ -1167,13 +1114,13 @@ Public Class Form1
             Print("Cannot reach the Internet? Proceeding locally. " + ex.Message)
             My.Settings.DiagFailed = True
         End Try
-        ProgressBar1.Value = iProgress
+        BumpProgress10()
 
     End Sub
-    Private Sub Loopback(progress As Integer)
+    Private Sub Loopback()
 
         'Print("Opensim needs to be able to loop back to itself. ")
-        If Not CheckPort(My.Settings.PublicIP, Convert.ToInt16(My.Settings.LoopBack)) Then
+        If Not CheckPort(My.Settings.PublicIP, My.Settings.LoopBack) Then
             Application.DoEvents()
             My.Settings.DiagFailed = True
             Print("Hypergrid travel requires a router with 'loopback'. It seems to be missing from yours. See the Help section for 'Loopback' and how to enable it in Windows. Opensim can still continue, but without Hypergrid.")
@@ -1182,12 +1129,11 @@ Public Class Form1
             My.Settings.LoopBackDiag = True
             Print("Loopback test passed")
         End If
-        ProgressBar1.Value = progress
 
     End Sub
 
-    Private Function Start_Opensimulator(iProgress As Integer)
-
+    Private Function Start_Opensimulator()
+        If Running = False Then Return True
         Print("Starting Opensimulator")
 
         ChooseVersion.Visible = False ' cannot change grid while running
@@ -1218,12 +1164,13 @@ Public Class Form1
         Catch ex As Exception
             Up = ""
         End Try
-
+        Dim counter = 0
         While Up.Length = 0 And Running
             Application.DoEvents()
             BumpProgress()
-
-            If ProgressBar1.Value > 90 Then
+            counter = counter + 1
+            ' wait a couple of minutes for it to start
+            If counter > 120 Then
                 Print("Opensim failed to start")
                 KillAll()
                 Buttons(StartButton)
@@ -1236,7 +1183,7 @@ Public Class Form1
                 Return False
             End If
             Application.DoEvents()
-            Sleep(4000)
+            Sleep(1000)
 
             Try
                 Up = client.DownloadString("http://127.0.0.1:" + ProbePort + "/?r=" + Random())
@@ -1247,8 +1194,8 @@ Public Class Form1
                 End If
             End Try
         End While
-        Log("Opensim loop end on port " + System.Convert.ToString(ProbePort))
-        ProgressBar1.Value = iProgress
+
+
         Return True
 
     End Function
@@ -1268,8 +1215,8 @@ Public Class Form1
         Return True
     End Function
 
-
-    Private Sub Onlook(progess As Integer)
+    Private Sub Onlook()
+        If Running = False Then Return
         If My.Settings.Onlook Then
             Print("Starting Onlook viewer")
             Dim pi As ProcessStartInfo = New ProcessStartInfo()
@@ -1283,7 +1230,7 @@ Public Class Form1
                 Log("Error:Onlook failed to launch:" + ex.Message)
             End Try
         End If
-        ProgressBar1.Value = 95
+
     End Sub
 
     Private Sub AdvancedSettingsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AdvancedSettingsToolStripMenuItem.Click
@@ -1368,7 +1315,8 @@ Public Class Form1
 
     End Function
 
-    Private Sub SetIAROARContent(iProgress As String)
+    Private Sub SetIAROARContent()
+
 
         IslandToolStripMenuItem.Visible = False
         ClothingInventoryToolStripMenuItem.Visible = False
@@ -1379,12 +1327,13 @@ Public Class Form1
             oars = client.DownloadString("http://www.outworldz.com/Outworldz_Installer/Content.plx?type=OAR&r=" + Random())
         Catch ex As Exception
             Log("No Oars, dang, something is wrong with the Internet :-(")
+            Return
         End Try
 
         Dim oarreader = New System.IO.StringReader(oars)
         Dim line As String = ""
-        Dim ContentAvailable As Boolean = True
-        While ContentAvailable
+        Dim ContentSeen As Boolean = False
+        While Not ContentSeen
             line = oarreader.ReadLine()
             If line <> Nothing Then
                 Log(line)
@@ -1395,11 +1344,12 @@ Public Class Form1
                 AddHandler OarMenu.Click, New EventHandler(AddressOf OarClick)
                 IslandToolStripMenuItem.Visible = True
                 IslandToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {OarMenu})
+                gContentAvailable = True
             Else
-                ContentAvailable = False
+                ContentSeen = True
             End If
         End While
-
+        BumpProgress10()
 
         Print("Dreaming up some clothes and items for your avatar")
         Dim iars As String = ""
@@ -1407,11 +1357,12 @@ Public Class Form1
             iars = client.DownloadString("http://www.outworldz.com/Outworldz_Installer/Content.plx?type=IAR&r=" + Random())
         Catch ex As Exception
             Log("No IARS, dang, something is wrong with the Internet :-(")
+            Return
         End Try
 
         Dim iarreader = New System.IO.StringReader(iars)
-        ContentAvailable = True
-        While ContentAvailable
+        ContentSeen = False
+        While Not ContentSeen
             line = iarreader.ReadLine()
             If line <> Nothing Then
                 Log(line)
@@ -1422,12 +1373,13 @@ Public Class Form1
                 AddHandler IarMenu.Click, New EventHandler(AddressOf IarClick)
                 ClothingInventoryToolStripMenuItem.Visible = True
                 ClothingInventoryToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {IarMenu})
+                gContentAvailable = True
             Else
-                ContentAvailable = False
+                ContentSeen = True
             End If
         End While
-
-        ProgressBar1.Value = iProgress
+        MnuContent.Visible = True
+        BumpProgress10()
     End Sub
 
     Private Sub OarClick(sender As Object, e As EventArgs)
@@ -1496,10 +1448,10 @@ Public Class Form1
 
     End Sub
 
-    Private Sub ProbePublicPort(iProgress As Integer)
+    Private Sub ProbePublicPort()
 
         Log("Info:Starting Diagnostic server")
-        GetPubIP(iProgress / 2)
+        GetPubIP()
 
         Dim isPortOpen As String = ""
         Try
@@ -1521,8 +1473,7 @@ Public Class Form1
             My.Settings.PublicIP = "127.0.0.1"
             Print("Port " + My.Settings.LoopBack + " is not forwarded to this machine, so Hypergrid may not be available. Opensimulator is set for standalone ops. This can possibly be fixed by 'Port Forwards' in your router in the Help menu")
         End If
-
-        ProgressBar1.Value = iProgress
+        BumpProgress10()
 
     End Sub
 
@@ -1632,21 +1583,19 @@ Public Class Form1
         Else
             Print("I am the dreamiest version available, at V " + MyVersion)
         End If
+        BumpProgress10()
 
     End Sub
 
     Public Sub PaintImage()
 
         If (My.Settings.TimerInterval > 0) Then
-
             Dim randomFruit = images(Arnd.Next(0, images.Count))
-
             ProgressBar1.Visible = False
             TextBox1.Visible = False
             PictureBox1.Enabled = True
             PictureBox1.Image = randomFruit
             PictureBox1.Visible = True
-
             Timer1.Interval = My.Settings.TimerInterval * 1000
         Else
             PictureBox1.Visible = False
@@ -1747,6 +1696,7 @@ Public Class Form1
             AppActivate(OpensimProcID)
             SendKeys.SendWait("alert CPU Intensive Backup Started{ENTER}")
             SendKeys.SendWait("save oar " + MyFolder + "/OutworldzFiles/Autobackup/" + myValue + "{ENTER}")
+            Me.Focus()
             Print("Saving " + myValue + " to " + MyFolder + "/OutworldzFiles/Autobackup")
         Else
             Print("Opensim is not running. Cannot make a backup now.")
@@ -1758,14 +1708,20 @@ Public Class Form1
             ProgressBar1.Value = ProgressBar1.Value + 1
         End If
     End Sub
+    Private Sub BumpProgress10()
+        If ProgressBar1.Value < 100 Then
+            ProgressBar1.Value = ProgressBar1.Value + 10
+        End If
+    End Sub
 
     Private Sub DoDiag()
         Print("Running Network Diagnostics")
         My.Settings.DiagFailed = False
         CheckLocalHost()
-        GetPubIP(37) ' 0.99
-        Loopback(40)   ' test the loopback on the router. If it fails, use localhost, no Hg possible
-        ProbePublicPort(50) ' see if Public loopback works
+        GetPubIP() ' 0.99
+        Loopback()   ' test the loopback on the router. If it fails, use localhost, no Hg possible
+        ProbePublicPort() ' see if Public loopback works
+
     End Sub
 
     Private Function GetPostData()
@@ -1802,8 +1758,7 @@ Public Class Form1
         Return Mid(appData, 1, InStr(appData, "AppData") - 1)
     End Function
 
-
-    Private Sub InstallGridXML(iProgress As Integer)
+    Private Sub SaveOnlookXMLData()
 
         ' setup Onlook
         If System.IO.File.Exists(xmlPath() + "\AppData\Roaming\Onlook\user_settings\settings_onlook.xml") Then
@@ -1877,18 +1832,118 @@ Public Class Form1
         Catch ex As Exception
             Log("Error:Failed to install onlook XML:" + ex.Message)
         End Try
-        ProgressBar1.Value = iProgress
 
     End Sub
 
     Private Sub CheckLocalHost()
-        Dim Local = CheckPort("127.0.0.1", Convert.ToInt16(My.Settings.LoopBack))
+        Dim Local = CheckPort("127.0.0.1", My.Settings.LoopBack)
         If Not Local Then
             Print("Localhost is blocked")
             My.Settings.DiagFailed = True
         End If
     End Sub
 
+    Private Function StartMySQL()
+        ' Start MySql in background.
+        Dim StartValue = ProgressBar1.Value
+
+        ' SAVE INI file
+        LoadIni(MyFolder & "\OutworldzFiles\mysql\my.ini", "#")
+        SetIni("mysqld", "basedir", """" + gCurSlashDir + "/OutworldzFiles/Mysql" + """")
+        SetIni("mysqld", "datadir", """" + gCurSlashDir + "/OutworldzFiles/Mysql/Data" + """")
+        SetIni("mysqld", "port", My.Settings.MySqlPort)
+        SetIni("client", "port", My.Settings.MySqlPort)
+        SaveINI()
+
+        BumpProgress()
+
+        ' Check for MySql operation
+        Dim Mysql = False
+        ' wait for MySql to come up
+        Mysql = CheckPort("127.0.0.1", My.Settings.MySqlPort)
+        If Mysql Then
+            Return True
+        End If
+
+        Print("Starting Database")
+
+        ' create test program - only the first time
+        ' slants the other way:
+        Dim testProgram As String = MyFolder & "\OutworldzFiles\mysql\bin\StartManually.bat"
+        Try
+            My.Computer.FileSystem.DeleteFile(testProgram)
+        Catch
+        End Try
+        Try
+            Using outputFile As New StreamWriter(testProgram, True)
+                outputFile.WriteLine("@rem A program to run Mysql manually for troubleshooting." + vbCrLf _
+                                     + "mysqld.exe --defaults-file=" + """" + gCurSlashDir + "/OutworldzFiles/mysql/my.ini" + """")
+            End Using
+        Catch
+        End Try
+
+        BumpProgress()
+
+        ' mYsql was not running, so lets start it up.
+        Dim pi As ProcessStartInfo = New ProcessStartInfo()
+        pi.Arguments = "--defaults-file=" + Chr(34) + gCurSlashDir + "/OutworldzFiles/mysql/my.ini" + Chr(34)
+        pi.WindowStyle = ProcessWindowStyle.Hidden
+        pi.FileName = MyFolder & "\OutworldzFiles\mysql\bin\mysqld.exe"
+        pMySql.StartInfo = pi
+        pMySql.Start()
+
+        BumpProgress()
+
+        ' wait for MySql to come up
+        Mysql = CheckPort("127.0.0.1", My.Settings.MySqlPort)
+        While Not Mysql
+
+            BumpProgress()
+            Application.DoEvents()
+
+            Dim MysqlLog As String = MyFolder + "\OutworldzFiles\mysql\data"
+            If ProgressBar1.Value = 99 Then ' about 30 seconds when it fails
+
+                Dim yesno = MsgBox("The database did not start. Do you want to see the log file?", vbYesNo)
+                If (yesno = vbYes) Then
+                    Dim files() As String
+                    files = Directory.GetFiles(MysqlLog, "*.err", SearchOption.TopDirectoryOnly)
+                    For Each FileName As String In files
+                        System.Diagnostics.Process.Start("wordpad.exe", FileName)
+                    Next
+                End If
+
+                Buttons(StartButton)
+                Return False
+            End If
+
+            ' check again
+            Sleep(1000)
+            Mysql = CheckPort("127.0.0.1", My.Settings.MySqlPort)
+        End While
+        Return True
+    End Function
+
+    Private Sub StopMysql()
+
+        If pMySql.Handle Then
+
+            Log("Info:using mysqladmin to close db")
+            Dim p As Process = New Process()
+            Dim pi As ProcessStartInfo = New ProcessStartInfo()
+            pi.Arguments = "-u root shutdown"
+            pi.FileName = MyFolder + "\OutworldzFiles\mysql\bin\mysqladmin.exe"
+            pi.WindowStyle = ProcessWindowStyle.Minimized
+            p.StartInfo = pi
+            Try
+                p.Start()
+                p.WaitForExit()
+            Catch
+                Log("Error:mysqladmin failed to stop mysql")
+            End Try
+        End If
+
+    End Sub
 
 #End Region
 
