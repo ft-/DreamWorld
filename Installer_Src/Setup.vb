@@ -369,13 +369,12 @@ Public Class Form1
         Try
             ClientSocket.Connect(ServerAddress, Port)
         Catch ex As Exception
-            Log("Error: port probe failed on port " + Convert.ToInt16(Port)) ' was mysqlport only
-
+            Log("Error: port probe failed on port " + Convert.ToString(Port)) ' was mysqlport only
             Return False
         End Try
 
         If ClientSocket.Connected Then
-            Log("Okay: port probe success on port " + Convert.ToInt16(Port)) ' was mysqlport only
+            Log("Okay: port probe success on port " + Convert.ToString(Port)) ' was mysqlport only
             Return True
         End If
         CheckPort = False
