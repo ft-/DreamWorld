@@ -38,6 +38,7 @@ Public Class Form1
     '
 
 #Region "Declarations"
+
     Dim MyVersion As String = "1.0"
     Dim DebugPath As String = "C:\Opensim\Outworldz"
     Dim Domain As String = "http://www.outworldz.com"
@@ -83,7 +84,6 @@ Public Class Form1
 
 #End Region
 
-
 #Region "Properties"
 
     ' Save a random machine ID - we don't want any data to be sent that's personal or identifiable,  but it needs to be unique
@@ -124,26 +124,10 @@ Public Class Form1
             m_ActiveForm = Value
         End Set
     End Property
+
 #End Region
 
-#Region "Methods"
-    Private Sub Form1_Closed(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Closed
-        Log("Info:FormClosed")
-        ProgressBar1.Value = 90
-        Print("Hold fast to your dreams ...")
-        ExitAll()
-        ProgressBar1.Value = 25
-        Print("I'll tell you my next dream when I wake up.")
-        StopMysql()
-        Print("Zzzzzz....")
-        ProgressBar1.Value = 0
-        Sleep(1)
-    End Sub
-
-    Private Sub mnuExit_Click(sender As System.Object, e As System.EventArgs) Handles mnuExit.Click
-        Log("Info:Exiting")
-        End
-    End Sub
+#Region "StartStop"
 
     Private Sub Form1_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 
@@ -308,6 +292,7 @@ Public Class Form1
         End If
 
     End Sub
+
     Private Sub StartButton_Click(sender As System.Object, e As System.EventArgs) Handles StartButton.Click
 
         ProgressBar1.Value = 0
@@ -355,24 +340,84 @@ Public Class Form1
 
     End Sub
 
-    Private Function CheckPort(ServerAddress As String, Port As String) As Boolean
+    Private Sub Form1_Closed(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Closed
+        Log("Info:FormClosed")
+        ProgressBar1.Value = 90
+        Print("Hold fast to your dreams ...")
+        ExitAll()
+        ProgressBar1.Value = 25
+        Print("I'll tell you my next dream when I wake up.")
+        StopMysql()
+        Print("Zzzzzz....")
+        ProgressBar1.Value = 0
+        Sleep(1)
+    End Sub
 
-        Dim iPort As Integer = Convert.ToInt16(Port)
-        Dim ClientSocket As New TcpClient
+    Private Sub mnuExit_Click(sender As System.Object, e As System.EventArgs) Handles mnuExit.Click
+        Log("Info:Exiting")
+        End
+    End Sub
+
+    Private Sub ExitAll()
+
+        ' Kill ALL Running processes
+        KillAll()
 
         Try
-            ClientSocket.Connect(ServerAddress, iPort)
+            RemoveGrid()    ' puts Onlook back to default
         Catch ex As Exception
-            Return False
+            Log("Info: grid settings set back to defaults" + ex.Message)
         End Try
 
-        If ClientSocket.Connected Then
-            Log("Okay: port probe success on port " + Convert.ToString(iPort))
-            Return True
-        End If
-        CheckPort = False
+    End Sub
 
-    End Function
+    Private Sub ShutdownNowToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs)
+        Print("Stopping")
+        Application.DoEvents()
+        KillAll()
+        Buttons(StartButton)
+        Print("")
+    End Sub
+
+    Private Sub KillAll()
+
+        ProgressBar1.Value = 100
+        ' close everything as gracefully as possible.
+        Try
+            pOnlook.CloseMainWindow()
+            pOnlook.WaitForExit()
+            pOnlook.Close()
+        Catch ex As Exception
+            Log("Warn: Could not stop Onlook:" + ex.Message)
+        End Try
+
+        ProgressBar1.Value = 67
+
+        Application.DoEvents()
+
+        Try
+            AppActivate(OpensimProcID)
+            SendKeys.Send("quit{ENTER}")
+            Me.Focus()
+        Catch ex As Exception
+            Log("Error:" + ex.Message)
+        End Try
+
+        ws.StopWebServer()
+        ProgressBar1.Value = 33
+
+        CloseRouterPorts()
+
+        ChooseVersion.Visible = True ' cannot change grid while running
+        ' cannot load OAR or IAR, either
+        IslandToolStripMenuItem.Visible = False
+        ClothingInventoryToolStripMenuItem.Visible = False
+        MnuContent.Visible = False
+        Running = False
+        Me.AllowDrop = False
+
+        ProgressBar1.Value = 0
+    End Sub
 
     Private Function zap(processName As String) As Boolean
         ' Kill process by name
@@ -386,6 +431,10 @@ Public Class Form1
         Next
         zap = True
     End Function
+#End Region
+
+#Region "Menus"
+
 
     Private Sub Busy_Click(sender As System.Object, e As System.EventArgs)
         ' Busy click shuts us down
@@ -524,13 +573,6 @@ Public Class Form1
         End If
     End Sub
 
-    Private Sub ShutdownNowToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs)
-        Print("Stopping")
-        Application.DoEvents()
-        KillAll()
-        Buttons(StartButton)
-        Print("")
-    End Sub
 
     ' currently unused
     Private Function GetIni(filepath As String, section As String, key As String, delim As String) As String
@@ -542,6 +584,7 @@ Public Class Form1
         Dim Data = parser.ReadFile(filepath)
         GetIni = Data(section)(key)
     End Function
+
     Private Sub LoadIni(filepath As String, delim As String)
         parser = New FileIniDataParser()
         parser.Parser.Configuration.SkipInvalidLines = True
@@ -763,126 +806,6 @@ Public Class Form1
         BumpProgress10()
 
     End Sub
-    Function CloseRouterPorts() As Boolean
-
-        Dim MyUPnPMap As New UPNP
-
-        Try
-            If MyUPnPMap.Exists(My.Settings.PublicPort, UPNP.Protocol.UDP) Then
-                MyUPnPMap.Remove(UPNP.LocalIP, My.Settings.PublicPort)
-                DiagLog("uPnp: PublicPort.UDP Removed ")
-            End If
-
-            If MyUPnPMap.Exists(My.Settings.PublicPort, UPNP.Protocol.TCP) Then
-                MyUPnPMap.Remove(UPNP.LocalIP, My.Settings.PublicPort)
-                DiagLog("uPnp: PublicPort.TCP Removed ")
-            End If
-
-            If MyUPnPMap.Exists(My.Settings.LoopBack, UPNP.Protocol.TCP) Then
-                MyUPnPMap.Remove(UPNP.LocalIP, My.Settings.LoopBack)
-                DiagLog("uPnp: Loopback.TCP Removed ")
-            End If
-
-            If MyUPnPMap.Exists(My.Settings.RegionPort, UPNP.Protocol.TCP) Then
-                MyUPnPMap.Remove(UPNP.LocalIP, My.Settings.RegionPort)
-                DiagLog("uPnp: Loopback.TCP Removed ")
-            End If
-
-            If MyUPnPMap.Exists(My.Settings.HttpPort, UPNP.Protocol.TCP) Then
-                MyUPnPMap.Remove(UPNP.LocalIP, My.Settings.HttpPort)
-                DiagLog("uPnp: HttpPort.TCP Removed ")
-            End If
-
-        Catch e As Exception
-            Log("uPnp: UPNP Exception caught:  " + e.Message)
-            Return False
-        End Try
-        Return True 'successfully added
-    End Function
-    Function AllowFirewall() As Boolean
-
-        Log("uPnpprobing")
-        Dim MyUPnPMap As New UPNP
-
-        Try
-            If MyUPnPMap.Exists(My.Settings.PublicPort, UPNP.Protocol.UDP) Then
-                DiagLog("uPnp: PublicPort.UDP exists")
-            Else
-                MyUPnPMap.Add(UPNP.LocalIP, My.Settings.PublicPort, UPNP.Protocol.UDP, "Opensim UDP Public")
-                DiagLog("uPnp: PublicPort.UDP added")
-            End If
-
-            If MyUPnPMap.Exists(My.Settings.PublicPort, UPNP.Protocol.TCP) Then
-                DiagLog("uPnp: PublicPort.TCP exists")
-            Else
-                MyUPnPMap.Add(UPNP.LocalIP, My.Settings.PublicPort, UPNP.Protocol.TCP, "Opensim TCP Public")
-                DiagLog("uPnp: PublicPort.TCP added")
-            End If
-
-            If MyUPnPMap.Exists(My.Settings.LoopBack, UPNP.Protocol.TCP) Then
-                DiagLog("uPnp: Loopback.TCP exists")
-            Else
-                MyUPnPMap.Add(UPNP.LocalIP, My.Settings.LoopBack, UPNP.Protocol.TCP, "Opensim TCP Region")
-                DiagLog("uPnp: Loopback.TCP Added ")
-            End If
-
-            If MyUPnPMap.Exists(My.Settings.RegionPort, UPNP.Protocol.TCP) Then
-                DiagLog("uPnp: Regionport.TCP exists")
-            Else
-                Log("uPnp: Loopback.TCP Added ")
-                MyUPnPMap.Add(UPNP.LocalIP, My.Settings.RegionPort, UPNP.Protocol.TCP, "Opensim TCP Region")
-            End If
-
-            If MyUPnPMap.Exists(My.Settings.RegionPort, UPNP.Protocol.UDP) Then
-                DiagLog("uPnp: Regionport.UDP exists")
-            Else
-                MyUPnPMap.Add(UPNP.LocalIP, My.Settings.RegionPort, UPNP.Protocol.UDP, "Opensim UDP Region")
-                DiagLog("uPnp: Loopback.UDP Added ")
-            End If
-
-            If MyUPnPMap.Exists(My.Settings.HttpPort, UPNP.Protocol.TCP) Then
-                DiagLog("uPnp: HttpPort.TCP exists")
-            Else
-                Log("uPnp: HttpPort.TCP Added ")
-                MyUPnPMap.Add(UPNP.LocalIP, My.Settings.HttpPort, UPNP.Protocol.TCP, "Opensim TCP Http")
-            End If
-
-        Catch e As Exception
-            DiagLog("uPnp: UPNP Exception caught:  " + e.Message)
-            Return False
-        End Try
-        Return True 'successfully added
-    End Function
-
-    Private Function OpenPorts()
-
-        If Running = False Then Return True
-        ' Print("The human is instructed to wait while I check out this nice little router ...")
-        Try
-            If AllowFirewall() Then ' open uPNP port
-                DiagLog("uPnpOk")
-                'Print("uPnP works ...")
-                My.Settings.UPnPDiag = True
-                My.Settings.Save()
-                BumpProgress10()
-                Return True
-            Else
-                DiagLog("uPnP: fail")
-                My.Settings.UPnPDiag = False
-                My.Settings.Save()
-                'Print("UPnP Port forwarding Is Not enabled.  Ports can be manually opened in the router to compensate.")
-                BumpProgress10()
-                Return False
-            End If
-        Catch e As Exception
-            DiagLog("Error: UPNP Exception: " + e.Message)
-            My.Settings.UPnPDiag = False
-            My.Settings.Save()
-            BumpProgress10()
-            Return False
-        End Try
-
-    End Function
 
     Private Sub BusyButton_Click(sender As Object, e As EventArgs) Handles BusyButton.Click
 
@@ -904,122 +827,6 @@ Public Class Form1
             Print("Opensim is not running. Cannot open the Web Interface.")
         End If
     End Sub
-    Private Sub LoadOARContent(thing As String)
-
-        If Running = False Then Return
-        If Not isRunning Then
-            Print("Opensim has to be started to load an OAR file.")
-            Return
-        End If
-
-        Dim backMeUp = MsgBox("Make a backup first?", vbYesNo)
-
-        Try
-            AppActivate(OpensimProcID)
-            thing = thing.Replace("\", "/")    ' because Opensim uses unix-like slashes, that's why
-            If backMeUp = vbYes Then
-                SendKeys.SendWait("alert CPU Intensive Backup Started {ENTER}")
-                SendKeys.SendWait("save oar " + MyFolder + "/OutworldzFiles/Autobackup/Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar{ENTER}")
-            End If
-            SendKeys.SendWait("alert New content Is loading..{ENTER}")
-            SendKeys.SendWait("load oar --force-terrain --force-parcels " + Chr(34) + thing + Chr(34) + "{ENTER}")
-            SendKeys.SendWait("alert New content just loaded. {ENTER}")
-            Me.Focus()
-        Catch ex As Exception
-            Log("Error:" + ex.Message)
-        End Try
-    End Sub
-    Private Sub LoadIARContent(thing As String)
-
-        If Running = False Then Return
-        If Not isRunning Then
-            Print("Opensim has to be started to load an IAR.")
-            Return
-        End If
-
-        Dim user = InputBox("User name that will get this IAR?")
-        Dim password = InputBox("Password for user " + user + "?")
-        If user.Length And password.Length Then
-            AppActivate(OpensimProcID)
-            Try
-                SendKeys.SendWait("load iar --merge " + user + " / " + password + " " + Chr(34) + thing + Chr(34) + "{ENTER}")
-                SendKeys.SendWait("alert IAR content Is loaded{ENTER}")
-                Me.Focus()
-            Catch ex As Exception
-                Log("Error:" + ex.Message)
-            End Try
-
-            Print("Opensim is loading your item. You will find it in your inventory in / soon.")
-        Else
-            Print("Load IAR cancelled - must use the full user name and password.")
-        End If
-
-    End Sub
-
-    Private Sub KillAll()
-
-        ProgressBar1.Value = 100
-        ' close everything as gracefully as possible.
-        Try
-            pOnlook.CloseMainWindow()
-            pOnlook.WaitForExit()
-            pOnlook.Close()
-        Catch ex As Exception
-            Log("Warn: Could not stop Onlook:" + ex.Message)
-        End Try
-
-        ProgressBar1.Value = 67
-
-        Application.DoEvents()
-
-        Try
-            AppActivate(OpensimProcID)
-            SendKeys.Send("quit{ENTER}")
-            Me.Focus()
-        Catch ex As Exception
-            Log("Error:" + ex.Message)
-        End Try
-
-        ws.StopWebServer()
-        ProgressBar1.Value = 33
-
-        CloseRouterPorts()
-
-        ChooseVersion.Visible = True ' cannot change grid while running
-        ' cannot load OAR or IAR, either
-        IslandToolStripMenuItem.Visible = False
-        ClothingInventoryToolStripMenuItem.Visible = False
-        MnuContent.Visible = False
-        Running = False
-        Me.AllowDrop = False
-
-        ProgressBar1.Value = 0
-    End Sub
-
-    Private Sub PictureBox1_DragDrop(sender As System.Object, e As System.Windows.Forms.DragEventArgs) Handles PictureBox1.DragDrop
-
-        Dim files() As String = e.Data.GetData(DataFormats.FileDrop)
-        For Each pathname In files
-            pathname.Replace("\", "/")
-            Dim extension = Path.GetExtension(pathname)
-            extension = Mid(extension, 2, 5)
-            If extension.ToLower = "iar" Then
-                LoadIARContent(pathname)
-            ElseIf extension.ToLower = "oar" Or extension.ToLower = "gz" Or extension.ToLower = "tgz" Then
-                LoadOARContent(pathname)
-            Else
-                Print("Unrecognized file type:" + extension + ".  Drag and drop any OAR, GZ, TGZ, or IAR files to load them when the sim starts")
-            End If
-        Next
-
-    End Sub
-
-    Private Sub PictureBox1_DragEnter(sender As System.Object, e As System.Windows.Forms.DragEventArgs) Handles PictureBox1.DragEnter
-        If e.Data.GetDataPresent(DataFormats.FileDrop) Then
-            e.Effect = DragDropEffects.Copy
-        End If
-    End Sub
-
 
     Private Sub OnlookToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles mnuOnlook.Click
         Print("Onlook Viewer will be launched on Startup")
@@ -1051,70 +858,24 @@ Public Class Form1
         Process.Start(webAddress)
         Print("Drag and drop Backup.Oar, or any OAR or IAR files to load into your Sim")
     End Sub
-    Private Sub ExitAll()
 
-        ' Kill ALL Running processes
-        KillAll()
-
-        Try
-            RemoveGrid()    ' puts Onlook back to default
-        Catch ex As Exception
-            Log("Info: grid settings set back to defaults" + ex.Message)
-        End Try
-
-
-
-    End Sub
-    Private Sub ClearLogFiles()
-        ' clear out the log files
-        Try
-            My.Computer.FileSystem.DeleteFile(MyFolder + "\OutworldzFiles" & My.Settings.GridFolder & "\bin\Opensim.log")
-        Catch ex As Exception
-            Log("Info:Opensim Log file did not exist")
-        End Try
-        BumpProgress()
-        Try
-            My.Computer.FileSystem.DeleteFile(MyFolder + "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\OpenSimConsoleHistory.txt")
-        Catch ex As Exception
-            Log("Info:Console history was not empty")
-        End Try
-        BumpProgress()
+    Private Sub AdvancedSettingsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AdvancedSettingsToolStripMenuItem.Click
+        ActualForm = New AdvancedForm ' Bring the form into memory
+        ' Set the new form's desktop location so it appears below and
+        ' to the right of the current form.
+        ActualForm.SetDesktopLocation(300, 200)
+        ActualForm.Activate()
+        ActualForm.Visible = True
     End Sub
 
-
-    Public Sub GetPubIP()
-
-        If My.Settings.DnsName.Length Then
-            My.Settings.PublicIP = My.Settings.DnsName
-            BumpProgress10()
-            Return
-        End If
-
-        ' Set Public Port
-        Try
-            My.Settings.PublicIP = client.DownloadString("http://api.ipify.org/?r=" + Random())
-            Log("Public IP=" + My.Settings.PublicIP)
-        Catch ex As Exception
-            Print("Cannot reach the Internet? Proceeding locally. " + ex.Message)
-            My.Settings.DiagFailed = True
-        End Try
-        BumpProgress10()
-
+    Private Sub ToolStripMenuItem1_Click(sender As Object, e As EventArgs) Handles ToolStripMenuItem1.Click
+        Dim webAddress As String = Domain + "/Outworldz_Installer/PortForwarding.htm"
+        Process.Start(webAddress)
     End Sub
-    Private Sub Loopback()
+#End Region
 
-        'Print("Opensim needs to be able to loop back to itself. ")
-        If Not CheckPort(My.Settings.PublicIP, My.Settings.LoopBack) Then
-            Application.DoEvents()
-            My.Settings.DiagFailed = True
-            Print("Hypergrid travel requires a router with 'loopback'. It seems to be missing from yours. See the Help section for 'Loopback' and how to enable it in Windows. Opensim can still continue, but without Hypergrid.")
-            My.Settings.LoopBackDiag = False
-        Else
-            My.Settings.LoopBackDiag = True
-            Print("Loopback test passed")
-        End If
+#Region "Opensimulator"
 
-    End Sub
 
     Private Function Start_Opensimulator()
         If Running = False Then Return True
@@ -1178,8 +939,6 @@ Public Class Form1
                 End If
             End Try
         End While
-
-
         Return True
 
     End Function
@@ -1199,46 +958,9 @@ Public Class Form1
         Return True
     End Function
 
-    Private Sub Onlook()
-        If Running = False Then Return
-        If My.Settings.Onlook Then
-            Print("Starting Onlook viewer")
-            Dim pi As ProcessStartInfo = New ProcessStartInfo()
-            pi.Arguments = ""
-            pi.FileName = "C:\Program Files (x86)\Onlook\OnLookViewer.exe"
-            pi.WindowStyle = ProcessWindowStyle.Normal
-            pOnlook.StartInfo = pi
-            Try
-                pOnlook.Start()
-            Catch ex As Exception
-                Log("Error:Onlook failed to launch:" + ex.Message)
-            End Try
-        End If
+#End Region
 
-    End Sub
-
-    Private Sub AdvancedSettingsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AdvancedSettingsToolStripMenuItem.Click
-        ActualForm = New AdvancedForm ' Bring the form into memory
-        ' Set the new form's desktop location so it appears below and
-        ' to the right of the current form.
-        ActualForm.SetDesktopLocation(300, 200)
-        ActualForm.Activate()
-        ActualForm.Visible = True
-    End Sub
-
-    Private Sub RemoveGrid()
-        ' restore backup - they may have changed it. Outworldzs is supposed to be simple. If they launch the viewer by itself, they can change grids
-        Try
-            My.Computer.FileSystem.CopyFile(xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml.bak", xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml", True)
-        Catch ex As Exception
-            Log("Error:failed to restore Onlook xml backup:" + ex.Message)
-        End Try
-    End Sub
-
-    Private Sub ToolStripMenuItem1_Click(sender As Object, e As EventArgs) Handles ToolStripMenuItem1.Click
-        Dim webAddress As String = Domain + "/Outworldz_Installer/PortForwarding.htm"
-        Process.Start(webAddress)
-    End Sub
+#Region "Viewers"
 
     Private Sub SingularityToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles SingularityToolStripMenuItem.Click
         Dim webAddress As String = "http://www.singularityviewer.org/"
@@ -1274,6 +996,24 @@ Public Class Form1
         Dim webAddress As String = "https://bitbucket.org/NiranV/black-dragon-viewer/wiki/Home"
         Process.Start(webAddress)
     End Sub
+#End Region
+
+#Region "Logging"
+    Private Sub ClearLogFiles()
+        ' clear out the log files
+        Try
+            My.Computer.FileSystem.DeleteFile(MyFolder + "\OutworldzFiles" & My.Settings.GridFolder & "\bin\Opensim.log")
+        Catch ex As Exception
+            Log("Info:Opensim Log file did not exist")
+        End Try
+        BumpProgress()
+        Try
+            My.Computer.FileSystem.DeleteFile(MyFolder + "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\OpenSimConsoleHistory.txt")
+        Catch ex As Exception
+            Log("Info:Console history was not empty")
+        End Try
+        BumpProgress()
+    End Sub
 
     Public Function Log(message As String)
         Try
@@ -1298,10 +1038,253 @@ Public Class Form1
         Return True
 
     End Function
+#End Region
+
+#Region "Subs"
+
+    Private Sub SaySomething()
+
+        Dim Prefix() As String = {
+                                  "Mmmm?  Yawns ...",
+                                  "Yawns, and stretches ...",
+                                  "Wakes up and rolls over ...",
+                                  "You look more beautiful every time I wake up.",
+                                  "Zzzz...  Ooooh, I need coffee before I go to work.",
+                                  "Nooo... is it already time to wake up?",
+                                  "Mmmm, I was sleeping...",
+                                  "What a dream that was!",
+                                  "Do you ever dream of better worlds? I just did."
+                                }
+
+        Dim Array() As String = {
+                 "I dreamt we were both flying a dragon in the Outworldz. You flamed me. I tried to get even.  I lost LOL ",
+                 "I dreamt we were chatting at OsGrid.org. It's the largest hypergrid-enabled virtual world.",
+                 "I dreamt some friends and you were riding a rollercoaster in the Great Canadian Grid.",
+                 "I dreamt I was watching a pretty particle exhibit with you on the Metropolis grid.",
+                 "I dreamt we walked into a bar discussing politics in Hebrew and Arabic using a free translator.",
+                 "I dreamt you took the hypergrid safari to visit the mountains of Africa in the Virunga sim.",
+                 "I dreamt you won a race while riding a silly cow at the Outworldz 'Frankie' sim.",
+                 "I dreamt you are a wonderful singer. I loved to hear your voice singing into the voice-chat system.",
+                 "I remember in my dream that the spaceport at Gravity sim in OsGrid was really hopping. And floating. And then I fell. ",
+                 "I was dreaming that you were a mermaid in the Lost Worlds.",
+                 "I deamt that you made a pile of prims that you simply will not believe!",
+                 "I dreamed that I asked when you were going to straighten out the castle. You said, 'Why? Is it tilted?'",
+                 "I dreamt you made a 'mesh' of it.",
+                 "I dreamt I saw a man without any pants firmly attached to an eagle flying in the air. Always rez before you attach!",
+                 "I forgot the dream already. I remember I woke up in it.",
+                 "I was thinking I had no clothes on. No shirt, shoes, or hair. The worst part was there was no facelight! I looked hideous!",
+                 "I dreamt that I was floating in a river and a scripted mesh crocodile chased me.",
+                 "I dreamt I drove our car into the ocean. You found a pose ball, and we both grabbed onto it and were saved.",
+                 "I dreamed that there was a animated mesh zebra in my bathtub.",
+                 "I had dreamed a fairy was my best friend.",
+                 "I dreamed that there were non-player characters living in my house, so I decided to fly away. ",
+                 "I had a dream that there were pimples all over my face. So I switched skins and looked perfect!",
+                 "I had a dream where I had lost my free mesh boots, so I was asking everybody where I got them on the hypergrid.",
+                 "I had a dream that we were sitting on my roof and we stood up and both fell off. But I hit Page Up and flew away."
+                  }
+
+        Randomize()
+
+        Dim value1 As Integer = CInt(Int((Prefix.Length - 1) * Rnd()))
+        Dim value2 As Integer = CInt(Int((Array.Length - 1) * Rnd()))
+        Dim whattosay = Prefix(value1) + vbCrLf + vbCrLf + Array(value2) + " ... and then I woke up."
+        Print(whattosay)
+
+    End Sub
+
+    Sub Sleep(value As Integer)
+        Thread.Sleep(value)
+    End Sub
+
+    Public Sub PaintImage()
+
+        If (My.Settings.TimerInterval > 0) Then
+            Dim randomFruit = images(Arnd.Next(0, images.Count))
+            ProgressBar1.Visible = False
+            TextBox1.Visible = False
+            PictureBox1.Enabled = True
+            PictureBox1.Image = randomFruit
+            PictureBox1.Visible = True
+            Timer1.Interval = My.Settings.TimerInterval * 1000
+        Else
+            PictureBox1.Visible = False
+        End If
+
+    End Sub
+
+    Private Sub Timer1_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Timer1.Tick
+        PaintImage()
+    End Sub
+
+    Private Sub LoadBackupToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles LoadBackupToolStripMenuItem.Click
+        If (Running) Then
+            ' Create an instance of the open file dialog box.
+            Dim openFileDialog1 As OpenFileDialog = New OpenFileDialog
+
+            ' Set filter options and filter index.
+            openFileDialog1.InitialDirectory = MyFolder + "/OutworldzFiles/Autobackup"
+            openFileDialog1.Filter = "Opensim OAR(*.OAR)|*.oar;*.gz;*.tgz|Inventory IAR (*.iar)|*.iar)|All Files (*.*)|*.*"
+            openFileDialog1.FilterIndex = 1
+            openFileDialog1.Multiselect = False
+
+            ' Call the ShowDialog method to show the dialogbox.
+            Dim UserClickedOK As Boolean = openFileDialog1.ShowDialog
+
+            ' Process input if the user clicked OK.
+            If UserClickedOK = True Then
+                Dim backMeUp = MsgBox("Make a backup and then load the new content?", vbYesNo)
+                Dim thing = openFileDialog1.FileName
+                If thing.Length Then
+                    thing = thing.Replace("\", "/")    ' because Opensim uses unix-like slashes, that's why
+                    AppActivate(OpensimProcID)
+                    If backMeUp = vbYes Then
+                        SendKeys.SendWait("alert CPU Intensive Backup Started{ENTER}")
+                        SendKeys.SendWait("save oar --perm=CT " + MyFolder + "/OutworldzFiles/Autobackup/Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar{ENTER}")
+                    End If
+                    SendKeys.SendWait("alert New content is loading..{ENTER}")
+                    SendKeys.SendWait("load oar --force-terrain --force-parcels " + Chr(34) + thing + Chr(34) + "{ENTER}")
+                    SendKeys.SendWait("alert New content just loaded." + "{ENTER}")
+                    Me.Focus()
+                End If
+            End If
+        Else
+            Print("Opensim is not running. Cannot open the Web Interface.")
+        End If
+
+
+    End Sub
+
+    Private Sub PictureBox1_Click(sender As Object, e As EventArgs) Handles PictureBox1.Click
+        PaintImage()
+    End Sub
+
+    Private Sub ShowHyperGridAddressToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ShowHyperGridAddressToolStripMenuItem.Click
+        Print("Hypergrid address is http://" + My.Settings.PublicIP + ":" + My.Settings.PublicPort)
+    End Sub
+
+    Private Sub WebStatsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles WebStatsToolStripMenuItem.Click
+        If (Running) Then
+            Dim webAddress As String = "http://127.0.0.1:" + My.Settings.PublicPort + "/SStats/"
+            Process.Start(webAddress)
+        Else
+            Print("Opensim is not running. Cannot open the Web Interface.")
+        End If
+    End Sub
+
+    Private Sub SaveBackupToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles SaveBackupToolStripMenuItem.Click
+        If (Running) Then
+            Dim Message, title, defaultValue As String
+            Dim myValue As Object
+            ' Set prompt.
+            Message = "Enter a name for your backup:"
+            title = "Backup to OAR"
+            defaultValue = "*.oar"   ' Set default value.
+
+            ' Display message, title, and default value.
+            myValue = InputBox(Message, title, defaultValue)
+            ' If user has clicked Cancel, set myValue to defaultValue 
+            If myValue.length = 0 Then Return
+            AppActivate(OpensimProcID)
+            SendKeys.SendWait("alert CPU Intensive Backup Started{ENTER}")
+            SendKeys.SendWait("save oar " + MyFolder + "/OutworldzFiles/Autobackup/" + myValue + "{ENTER}")
+            Me.Focus()
+            Print("Saving " + myValue + " to " + MyFolder + "/OutworldzFiles/Autobackup")
+        Else
+            Print("Opensim is not running. Cannot make a backup now.")
+        End If
+    End Sub
+
+    Private Sub BumpProgress()
+        If ProgressBar1.Value < 100 Then
+            ProgressBar1.Value = ProgressBar1.Value + 1
+        End If
+    End Sub
+    Private Sub BumpProgress10()
+        If ProgressBar1.Value < 90 Then
+            ProgressBar1.Value = ProgressBar1.Value + 10
+        End If
+    End Sub
+#End Region
+
+#Region "IAROAR"
+
+    Private Sub LoadOARContent(thing As String)
+
+        If Running = False Then Return
+        If Not isRunning Then
+            Print("Opensim has to be started to load an OAR file.")
+            Return
+        End If
+
+        Dim backMeUp = MsgBox("Make a backup first?", vbYesNo)
+
+        Try
+            AppActivate(OpensimProcID)
+            thing = thing.Replace("\", "/")    ' because Opensim uses unix-like slashes, that's why
+            If backMeUp = vbYes Then
+                SendKeys.SendWait("alert CPU Intensive Backup Started {ENTER}")
+                SendKeys.SendWait("save oar " + MyFolder + "/OutworldzFiles/Autobackup/Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar{ENTER}")
+            End If
+            SendKeys.SendWait("alert New content Is loading..{ENTER}")
+            SendKeys.SendWait("load oar --force-terrain --force-parcels " + Chr(34) + thing + Chr(34) + "{ENTER}")
+            SendKeys.SendWait("alert New content just loaded. {ENTER}")
+            Me.Focus()
+        Catch ex As Exception
+            Log("Error:" + ex.Message)
+        End Try
+    End Sub
+    Private Sub LoadIARContent(thing As String)
+
+        If Running = False Then Return
+        If Not isRunning Then
+            Print("Opensim has to be started to load an IAR.")
+            Return
+        End If
+
+        Dim user = InputBox("User name that will get this IAR?")
+        Dim password = InputBox("Password for user " + user + "?")
+        If user.Length And password.Length Then
+            AppActivate(OpensimProcID)
+            Try
+                SendKeys.SendWait("load iar --merge " + user + " / " + password + " " + Chr(34) + thing + Chr(34) + "{ENTER}")
+                SendKeys.SendWait("alert IAR content Is loaded{ENTER}")
+                Me.Focus()
+            Catch ex As Exception
+                Log("Error:" + ex.Message)
+            End Try
+
+            Print("Opensim is loading your item. You will find it in your inventory in / soon.")
+        Else
+            Print("Load IAR cancelled - must use the full user name and password.")
+        End If
+
+    End Sub
+
+    Private Sub PictureBox1_DragDrop(sender As System.Object, e As System.Windows.Forms.DragEventArgs) Handles PictureBox1.DragDrop
+
+        Dim files() As String = e.Data.GetData(DataFormats.FileDrop)
+        For Each pathname In files
+            pathname.Replace("\", "/")
+            Dim extension = Path.GetExtension(pathname)
+            extension = Mid(extension, 2, 5)
+            If extension.ToLower = "iar" Then
+                LoadIARContent(pathname)
+            ElseIf extension.ToLower = "oar" Or extension.ToLower = "gz" Or extension.ToLower = "tgz" Then
+                LoadOARContent(pathname)
+            Else
+                Print("Unrecognized file type:" + extension + ".  Drag and drop any OAR, GZ, TGZ, or IAR files to load them when the sim starts")
+            End If
+        Next
+
+    End Sub
+
+    Private Sub PictureBox1_DragEnter(sender As System.Object, e As System.Windows.Forms.DragEventArgs) Handles PictureBox1.DragEnter
+        If e.Data.GetDataPresent(DataFormats.FileDrop) Then
+            e.Effect = DragDropEffects.Copy
+        End If
+    End Sub
 
     Private Sub SetIAROARContent()
-
-
         IslandToolStripMenuItem.Visible = False
         ClothingInventoryToolStripMenuItem.Visible = False
 
@@ -1381,103 +1364,10 @@ Public Class Form1
         sender.checked = True
         Print("Opensimulator will load " + file + ".  This may take time to load.")
     End Sub
+#End Region
 
-    Private Sub SaySomething()
+#Region "Updates"
 
-        Dim Prefix() As String = {
-                                  "Mmmm?  Yawns ...",
-                                  "Yawns, and stretches ...",
-                                  "Wakes up and rolls over ...",
-                                  "You look more beautiful every time I wake up.",
-                                  "Zzzz...  Ooooh, I need coffee before I go to work.",
-                                  "Nooo... is it already time to wake up?",
-                                  "Mmmm, I was sleeping...",
-                                  "What a dream that was!",
-                                  "Do you ever dream of better worlds? I just did."
-                                }
-
-        Dim Array() As String = {
-                 "I dreamt we were both flying a dragon in the Outworldz. You flamed me. I tried to get even.  I lost LOL ",
-                 "I dreamt we were chatting at OsGrid.org. It's the largest hypergrid-enabled virtual world.",
-                 "I dreamt some friends and you were riding a rollercoaster in the Great Canadian Grid.",
-                 "I dreamt I was watching a pretty particle exhibit with you on the Metropolis grid.",
-                 "I dreamt we walked into a bar discussing politics in Hebrew and Arabic using a free translator.",
-                 "I dreamt you took the hypergrid safari to visit the mountains of Africa in the Virunga sim.",
-                 "I dreamt you won a race while riding a silly cow at the Outworldz 'Frankie' sim.",
-                 "I dreamt you are a wonderful singer. I loved to hear your voice singing into the voice-chat system.",
-                 "I remember in my dream that the spaceport at Gravity sim in OsGrid was really hopping. And floating. And then I fell. ",
-                 "I was dreaming that you were a mermaid in the Lost Worlds.",
-                 "I deamt that you made a pile of prims that you simply will not believe!",
-                 "I dreamed that I asked when you were going to straighten out the castle. You said, 'Why? Is it tilted?'",
-                 "I dreamt you made a 'mesh' of it.",
-                 "I dreamt I saw a man without any pants firmly attached to an eagle flying in the air. Always rez before you attach!",
-                 "I forgot the dream already. I remember I woke up in it.",
-                 "I was thinking I had no clothes on. No shirt, shoes, or hair. The worst part was there was no facelight! I looked hideous!",
-                 "I dreamt that I was floating in a river and a scripted mesh crocodile chased me.",
-                 "I dreamt I drove our car into the ocean. You found a pose ball, and we both grabbed onto it and were saved.",
-                 "I dreamed that there was a animated mesh zebra in my bathtub.",
-                 "I had dreamed a fairy was my best friend.",
-                 "I dreamed that there were non-player characters living in my house, so I decided to fly away. ",
-                 "I had a dream that there were pimples all over my face. So I switched skins and looked perfect!",
-                 "I had a dream where I had lost my free mesh boots, so I was asking everybody where I got them on the hypergrid.",
-                 "I had a dream that we were sitting on my roof and we stood up and both fell off. But I hit Page Up and flew away."
-                  }
-
-        Randomize()
-
-        Dim value1 As Integer = CInt(Int((Prefix.Length - 1) * Rnd()))
-        Dim value2 As Integer = CInt(Int((Array.Length - 1) * Rnd()))
-        Dim whattosay = Prefix(value1) + vbCrLf + vbCrLf + Array(value2) + " ... and then I woke up."
-        Print(whattosay)
-
-    End Sub
-
-    Private Sub ProbePublicPort()
-
-        Log("Info:Starting Diagnostic server")
-        GetPubIP()
-
-        Dim isPortOpen As String = ""
-        Try
-            ' collect some stats and test loopback with a HTTP_ GET to the webserver.
-            ' Send unique, anonymous random ID, both of the versions of Opensim and this program, and the diagnostics test results 
-            ' See my privacy policy at http://www.outworldz.com/privacy.htm
-
-            Dim Data As String = GetPostData()
-            isPortOpen = client.DownloadString(Domain + "/cgi/probetest.plx?Port=" + My.Settings.LoopBack + Data)
-        Catch ex As Exception
-            DiagLog("Dang:The Outworldz web site cannot find a path back")
-            My.Settings.DiagFailed = True
-        End Try
-
-        If isPortOpen <> "yes" Then
-            DiagLog(isPortOpen)
-            DiagLog("Warn:Port " + My.Settings.LoopBack + " is not forwarded to this machine")
-            My.Settings.DiagFailed = True
-            My.Settings.PublicIP = "127.0.0.1"
-            Print("Port " + My.Settings.LoopBack + " is not forwarded to this machine, so Hypergrid may not be available. Opensimulator is set for standalone ops. This can possibly be fixed by 'Port Forwards' in your router in the Help menu")
-        End If
-        BumpProgress10()
-
-    End Sub
-
-    Private Sub DiagnosticsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles DiagnosticsToolStripMenuItem.Click
-
-        ProgressBar1.Value = 0
-        DoDiag()
-        If My.Settings.DiagFailed = True Then
-            My.Settings.PublicIP = "127.0.0.1"
-            Print("Hypergrid Diagnostics Failed. These can be re-run at any time. See the Help menu for 'Diagnostics', 'Loopback', and 'Port Forwards'")
-            Sleep(3000)
-        Else
-            Print("Tests passed, Hypergrid should be working.")
-        End If
-        ProgressBar1.Value = 100
-    End Sub
-
-    Sub Sleep(value As Integer)
-        Thread.Sleep(value)
-    End Sub
 
     Private Sub CheckForUpdatesToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CHeckForUpdatesToolStripMenuItem.Click
         CheckForUpdates()
@@ -1571,174 +1461,34 @@ Public Class Form1
 
     End Sub
 
-    Public Sub PaintImage()
+#End Region
 
-        If (My.Settings.TimerInterval > 0) Then
-            Dim randomFruit = images(Arnd.Next(0, images.Count))
-            ProgressBar1.Visible = False
-            TextBox1.Visible = False
-            PictureBox1.Enabled = True
-            PictureBox1.Image = randomFruit
-            PictureBox1.Visible = True
-            Timer1.Interval = My.Settings.TimerInterval * 1000
-        Else
-            PictureBox1.Visible = False
+#Region "Onlook"
+    Private Sub RemoveGrid()
+        ' restore backup - they may have changed it. Outworldzs is supposed to be simple. If they launch the viewer by itself, they can change grids
+        Try
+            My.Computer.FileSystem.CopyFile(xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml.bak", xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml", True)
+        Catch ex As Exception
+            Log("Error:failed to restore Onlook xml backup:" + ex.Message)
+        End Try
+    End Sub
+    Private Sub Onlook()
+        If Running = False Then Return
+        If My.Settings.Onlook Then
+            Print("Starting Onlook viewer")
+            Dim pi As ProcessStartInfo = New ProcessStartInfo()
+            pi.Arguments = ""
+            pi.FileName = "C:\Program Files (x86)\Onlook\OnLookViewer.exe"
+            pi.WindowStyle = ProcessWindowStyle.Normal
+            pOnlook.StartInfo = pi
+            Try
+                pOnlook.Start()
+            Catch ex As Exception
+                Log("Error:Onlook failed to launch:" + ex.Message)
+            End Try
         End If
 
     End Sub
-
-    Private Sub Timer1_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Timer1.Tick
-        PaintImage()
-    End Sub
-
-    Private Sub LoadBackupToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles LoadBackupToolStripMenuItem.Click
-        If (Running) Then
-            ' Create an instance of the open file dialog box.
-            Dim openFileDialog1 As OpenFileDialog = New OpenFileDialog
-
-            ' Set filter options and filter index.
-            openFileDialog1.InitialDirectory = MyFolder + "/OutworldzFiles/Autobackup"
-            openFileDialog1.Filter = "Opensim OAR(*.OAR)|*.oar;*.gz;*.tgz|Inventory IAR (*.iar)|*.iar)|All Files (*.*)|*.*"
-            openFileDialog1.FilterIndex = 1
-            openFileDialog1.Multiselect = False
-
-            ' Call the ShowDialog method to show the dialogbox.
-            Dim UserClickedOK As Boolean = openFileDialog1.ShowDialog
-
-            ' Process input if the user clicked OK.
-            If UserClickedOK = True Then
-                Dim backMeUp = MsgBox("Make a backup and then load the new content?", vbYesNo)
-                Dim thing = openFileDialog1.FileName
-                If thing.Length Then
-                    thing = thing.Replace("\", "/")    ' because Opensim uses unix-like slashes, that's why
-                    AppActivate(OpensimProcID)
-                    If backMeUp = vbYes Then
-                        SendKeys.SendWait("alert CPU Intensive Backup Started{ENTER}")
-                        SendKeys.SendWait("save oar --perm=CT " + MyFolder + "/OutworldzFiles/Autobackup/Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar{ENTER}")
-                    End If
-                    SendKeys.SendWait("alert New content is loading..{ENTER}")
-                    SendKeys.SendWait("load oar --force-terrain --force-parcels " + Chr(34) + thing + Chr(34) + "{ENTER}")
-                    SendKeys.SendWait("alert New content just loaded." + "{ENTER}")
-                    Me.Focus()
-                End If
-            End If
-        Else
-            Print("Opensim is not running. Cannot open the Web Interface.")
-        End If
-
-
-    End Sub
-
-    Private Sub CheckDatabaseToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CheckDatabaseToolStripMenuItem.Click
-
-        Dim pi As ProcessStartInfo = New ProcessStartInfo()
-
-        ChDir(MyFolder & "\OutworldzFiles\mysql\bin")
-        pi.WindowStyle = ProcessWindowStyle.Normal
-        pi.FileName = "CheckAndRepair.bat"
-        pi.Arguments = My.Settings.MySqlPort
-        pMySqlDiag.StartInfo = pi
-        pMySqlDiag.Start()
-        pMySqlDiag.WaitForExit()
-        pMySqlDiag.Close()
-        ChDir(MyFolder)
-
-    End Sub
-
-    Private Sub PictureBox1_Click(sender As Object, e As EventArgs) Handles PictureBox1.Click
-        PaintImage()
-    End Sub
-
-    Private Sub ShowHyperGridAddressToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ShowHyperGridAddressToolStripMenuItem.Click
-        Print("Hypergrid address is http://" + My.Settings.PublicIP + ":" + My.Settings.PublicPort)
-    End Sub
-
-    Private Sub WebStatsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles WebStatsToolStripMenuItem.Click
-        If (Running) Then
-            Dim webAddress As String = "http://127.0.0.1:" + My.Settings.PublicPort + "/SStats/"
-            Process.Start(webAddress)
-        Else
-            Print("Opensim is not running. Cannot open the Web Interface.")
-        End If
-    End Sub
-
-    Private Sub SaveBackupToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles SaveBackupToolStripMenuItem.Click
-        If (Running) Then
-            Dim Message, title, defaultValue As String
-            Dim myValue As Object
-            ' Set prompt.
-            Message = "Enter a name for your backup:"
-            title = "Backup to OAR"
-            defaultValue = "*.oar"   ' Set default value.
-
-            ' Display message, title, and default value.
-            myValue = InputBox(Message, title, defaultValue)
-            ' If user has clicked Cancel, set myValue to defaultValue 
-            If myValue.length = 0 Then Return
-            AppActivate(OpensimProcID)
-            SendKeys.SendWait("alert CPU Intensive Backup Started{ENTER}")
-            SendKeys.SendWait("save oar " + MyFolder + "/OutworldzFiles/Autobackup/" + myValue + "{ENTER}")
-            Me.Focus()
-            Print("Saving " + myValue + " to " + MyFolder + "/OutworldzFiles/Autobackup")
-        Else
-            Print("Opensim is not running. Cannot make a backup now.")
-        End If
-    End Sub
-
-    Private Sub BumpProgress()
-        If ProgressBar1.Value < 100 Then
-            ProgressBar1.Value = ProgressBar1.Value + 1
-        End If
-    End Sub
-    Private Sub BumpProgress10()
-        If ProgressBar1.Value < 90 Then
-            ProgressBar1.Value = ProgressBar1.Value + 10
-        End If
-    End Sub
-
-    Private Sub DoDiag()
-        Print("Running Network Diagnostics")
-        My.Settings.DiagFailed = False
-        CheckLocalHost()
-        GetPubIP()   '
-        Loopback()   ' test the loopback on the router. If it fails, use localhost, no Hg possible
-        ProbePublicPort() ' see if Public loopback works
-
-    End Sub
-
-    Private Function GetPostData()
-
-        Dim SimVersion As String
-        If (My.Settings.GridFolder = "Opensim") Then
-            SimVersion = "0.8.2.1"
-        Else
-            SimVersion = "0.9.1"
-        End If
-        Dim UpNp As String = "Fail"
-        If My.Settings.UPnPDiag Then
-            UpNp = "Pass"
-        End If
-        Dim Loopb As String = "Fail"
-        If My.Settings.LoopBackDiag Then
-            Loopb = "Pass"
-        End If
-
-        Dim data
-        data = "&r=" + Machine _
-            + "&V=" + MyVersion _
-            + "&OV=" + SimVersion _
-            + "&UpNp=" + UpNp _
-            + "&Loop=" + Loopb _
-            + "&x=" + Random()
-        Return data
-
-    End Function
-
-    Private Function xmlPath() As String
-        ' gets the path to the %APPDATA% folder on windows so we can seek out the Onlook folders
-        Dim appData As String = My.Computer.FileSystem.SpecialDirectories.CurrentUserApplicationData
-        Return Mid(appData, 1, InStr(appData, "AppData") - 1)
-    End Function
 
     Private Sub SaveOnlookXMLData()
 
@@ -1817,6 +1567,171 @@ Public Class Form1
 
     End Sub
 
+#End Region
+
+#Region "Diagnostics"
+    Private Function OpenPorts()
+
+        If Running = False Then Return True
+        ' Print("The human is instructed to wait while I check out this nice little router ...")
+        Try
+            If AllowFirewall() Then ' open uPNP port
+                DiagLog("uPnpOk")
+                'Print("uPnP works ...")
+                My.Settings.UPnPDiag = True
+                My.Settings.Save()
+                BumpProgress10()
+                Return True
+            Else
+                DiagLog("uPnP: fail")
+                My.Settings.UPnPDiag = False
+                My.Settings.Save()
+                'Print("UPnP Port forwarding Is Not enabled.  Ports can be manually opened in the router to compensate.")
+                BumpProgress10()
+                Return False
+            End If
+        Catch e As Exception
+            DiagLog("Error: UPNP Exception: " + e.Message)
+            My.Settings.UPnPDiag = False
+            My.Settings.Save()
+            BumpProgress10()
+            Return False
+        End Try
+
+    End Function
+    Private Function CheckPort(ServerAddress As String, Port As String) As Boolean
+
+        Dim iPort As Integer = Convert.ToInt16(Port)
+        Dim ClientSocket As New TcpClient
+
+        Try
+            ClientSocket.Connect(ServerAddress, iPort)
+        Catch ex As Exception
+            Return False
+        End Try
+
+        If ClientSocket.Connected Then
+            Log("Okay: port probe success on port " + Convert.ToString(iPort))
+            Return True
+        End If
+        CheckPort = False
+
+    End Function
+    Public Sub GetPubIP()
+
+        If My.Settings.DnsName.Length Then
+            My.Settings.PublicIP = My.Settings.DnsName
+            BumpProgress10()
+            Return
+        End If
+
+        ' Set Public Port
+        Try
+            My.Settings.PublicIP = client.DownloadString("http://api.ipify.org/?r=" + Random())
+            Log("Public IP=" + My.Settings.PublicIP)
+        Catch ex As Exception
+            Print("Cannot reach the Internet? Proceeding locally. " + ex.Message)
+            My.Settings.DiagFailed = True
+        End Try
+        BumpProgress10()
+
+    End Sub
+    Private Sub Loopback()
+
+        'Print("Opensim needs to be able to loop back to itself. ")
+        If Not CheckPort(My.Settings.PublicIP, My.Settings.LoopBack) Then
+            Application.DoEvents()
+            My.Settings.DiagFailed = True
+            Print("Hypergrid travel requires a router with 'loopback'. It seems to be missing from yours. See the Help section for 'Loopback' and how to enable it in Windows. Opensim can still continue, but without Hypergrid.")
+            My.Settings.LoopBackDiag = False
+        Else
+            My.Settings.LoopBackDiag = True
+            Print("Loopback test passed")
+        End If
+
+    End Sub
+    Private Sub DiagnosticsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles DiagnosticsToolStripMenuItem.Click
+
+        ProgressBar1.Value = 0
+        DoDiag()
+        If My.Settings.DiagFailed = True Then
+            My.Settings.PublicIP = "127.0.0.1"
+            Print("Hypergrid Diagnostics Failed. These can be re-run at any time. See the Help menu for 'Diagnostics', 'Loopback', and 'Port Forwards'")
+            Sleep(3000)
+        Else
+            Print("Tests passed, Hypergrid should be working.")
+        End If
+        ProgressBar1.Value = 100
+    End Sub
+    Private Sub ProbePublicPort()
+
+        Log("Info:Starting Diagnostic server")
+        GetPubIP()
+
+        Dim isPortOpen As String = ""
+        Try
+            ' collect some stats and test loopback with a HTTP_ GET to the webserver.
+            ' Send unique, anonymous random ID, both of the versions of Opensim and this program, and the diagnostics test results 
+            ' See my privacy policy at http://www.outworldz.com/privacy.htm
+
+            Dim Data As String = GetPostData()
+            isPortOpen = client.DownloadString(Domain + "/cgi/probetest.plx?Port=" + My.Settings.LoopBack + Data)
+        Catch ex As Exception
+            DiagLog("Dang:The Outworldz web site cannot find a path back")
+            My.Settings.DiagFailed = True
+        End Try
+
+        If isPortOpen <> "yes" Then
+            DiagLog(isPortOpen)
+            DiagLog("Warn:Port " + My.Settings.LoopBack + " is not forwarded to this machine")
+            My.Settings.DiagFailed = True
+            My.Settings.PublicIP = "127.0.0.1"
+            Print("Port " + My.Settings.LoopBack + " is not forwarded to this machine, so Hypergrid may not be available. Opensimulator is set for standalone ops. This can possibly be fixed by 'Port Forwards' in your router in the Help menu")
+        End If
+        BumpProgress10()
+
+    End Sub
+    Private Sub DoDiag()
+        Print("Running Network Diagnostics")
+        My.Settings.DiagFailed = False
+        CheckLocalHost()
+        GetPubIP()   '
+        Loopback()   ' test the loopback on the router. If it fails, use localhost, no Hg possible
+        ProbePublicPort() ' see if Public loopback works
+
+    End Sub
+    Private Function GetPostData()
+
+        Dim SimVersion As String
+        If (My.Settings.GridFolder = "Opensim") Then
+            SimVersion = "0.8.2.1"
+        Else
+            SimVersion = "0.9.1"
+        End If
+        Dim UpNp As String = "Fail"
+        If My.Settings.UPnPDiag Then
+            UpNp = "Pass"
+        End If
+        Dim Loopb As String = "Fail"
+        If My.Settings.LoopBackDiag Then
+            Loopb = "Pass"
+        End If
+
+        Dim data
+        data = "&r=" + Machine _
+            + "&V=" + MyVersion _
+            + "&OV=" + SimVersion _
+            + "&UpNp=" + UpNp _
+            + "&Loop=" + Loopb _
+            + "&x=" + Random()
+        Return data
+
+    End Function
+    Private Function xmlPath() As String
+        ' gets the path to the %APPDATA% folder on windows so we can seek out the Onlook folders
+        Dim appData As String = My.Computer.FileSystem.SpecialDirectories.CurrentUserApplicationData
+        Return Mid(appData, 1, InStr(appData, "AppData") - 1)
+    End Function
     Private Sub CheckLocalHost()
         Dim Local = CheckPort("127.0.0.1", My.Settings.LoopBack)
         If Not Local Then
@@ -1824,7 +1739,115 @@ Public Class Form1
             My.Settings.DiagFailed = True
         End If
     End Sub
+    Function CloseRouterPorts() As Boolean
 
+        Dim MyUPnPMap As New UPNP
+
+        Try
+            If MyUPnPMap.Exists(My.Settings.PublicPort, UPNP.Protocol.UDP) Then
+                MyUPnPMap.Remove(UPNP.LocalIP, My.Settings.PublicPort)
+                DiagLog("uPnp: PublicPort.UDP Removed ")
+            End If
+
+            If MyUPnPMap.Exists(My.Settings.PublicPort, UPNP.Protocol.TCP) Then
+                MyUPnPMap.Remove(UPNP.LocalIP, My.Settings.PublicPort)
+                DiagLog("uPnp: PublicPort.TCP Removed ")
+            End If
+
+            If MyUPnPMap.Exists(My.Settings.LoopBack, UPNP.Protocol.TCP) Then
+                MyUPnPMap.Remove(UPNP.LocalIP, My.Settings.LoopBack)
+                DiagLog("uPnp: Loopback.TCP Removed ")
+            End If
+
+            If MyUPnPMap.Exists(My.Settings.RegionPort, UPNP.Protocol.TCP) Then
+                MyUPnPMap.Remove(UPNP.LocalIP, My.Settings.RegionPort)
+                DiagLog("uPnp: Loopback.TCP Removed ")
+            End If
+
+            If MyUPnPMap.Exists(My.Settings.HttpPort, UPNP.Protocol.TCP) Then
+                MyUPnPMap.Remove(UPNP.LocalIP, My.Settings.HttpPort)
+                DiagLog("uPnp: HttpPort.TCP Removed ")
+            End If
+
+        Catch e As Exception
+            Log("uPnp: UPNP Exception caught:  " + e.Message)
+            Return False
+        End Try
+        Return True 'successfully added
+    End Function
+    Function AllowFirewall() As Boolean
+
+        Log("uPnpprobing")
+        Dim MyUPnPMap As New UPNP
+
+        Try
+            If MyUPnPMap.Exists(My.Settings.PublicPort, UPNP.Protocol.UDP) Then
+                DiagLog("uPnp: PublicPort.UDP exists")
+            Else
+                MyUPnPMap.Add(UPNP.LocalIP, My.Settings.PublicPort, UPNP.Protocol.UDP, "Opensim UDP Public")
+                DiagLog("uPnp: PublicPort.UDP added")
+            End If
+
+            If MyUPnPMap.Exists(My.Settings.PublicPort, UPNP.Protocol.TCP) Then
+                DiagLog("uPnp: PublicPort.TCP exists")
+            Else
+                MyUPnPMap.Add(UPNP.LocalIP, My.Settings.PublicPort, UPNP.Protocol.TCP, "Opensim TCP Public")
+                DiagLog("uPnp: PublicPort.TCP added")
+            End If
+
+            If MyUPnPMap.Exists(My.Settings.LoopBack, UPNP.Protocol.TCP) Then
+                DiagLog("uPnp: Loopback.TCP exists")
+            Else
+                MyUPnPMap.Add(UPNP.LocalIP, My.Settings.LoopBack, UPNP.Protocol.TCP, "Opensim TCP Region")
+                DiagLog("uPnp: Loopback.TCP Added ")
+            End If
+
+            If MyUPnPMap.Exists(My.Settings.RegionPort, UPNP.Protocol.TCP) Then
+                DiagLog("uPnp: Regionport.TCP exists")
+            Else
+                Log("uPnp: Loopback.TCP Added ")
+                MyUPnPMap.Add(UPNP.LocalIP, My.Settings.RegionPort, UPNP.Protocol.TCP, "Opensim TCP Region")
+            End If
+
+            If MyUPnPMap.Exists(My.Settings.RegionPort, UPNP.Protocol.UDP) Then
+                DiagLog("uPnp: Regionport.UDP exists")
+            Else
+                MyUPnPMap.Add(UPNP.LocalIP, My.Settings.RegionPort, UPNP.Protocol.UDP, "Opensim UDP Region")
+                DiagLog("uPnp: Loopback.UDP Added ")
+            End If
+
+            If MyUPnPMap.Exists(My.Settings.HttpPort, UPNP.Protocol.TCP) Then
+                DiagLog("uPnp: HttpPort.TCP exists")
+            Else
+                Log("uPnp: HttpPort.TCP Added ")
+                MyUPnPMap.Add(UPNP.LocalIP, My.Settings.HttpPort, UPNP.Protocol.TCP, "Opensim TCP Http")
+            End If
+
+        Catch e As Exception
+            DiagLog("uPnp: UPNP Exception caught:  " + e.Message)
+            Return False
+        End Try
+        Return True 'successfully added
+    End Function
+#End Region
+
+#Region "MySQl"
+
+    Private Sub CheckDatabaseToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CheckDatabaseToolStripMenuItem.Click
+
+        Dim pi As ProcessStartInfo = New ProcessStartInfo()
+
+        ChDir(MyFolder & "\OutworldzFiles\mysql\bin")
+        pi.WindowStyle = ProcessWindowStyle.Normal
+        pi.FileName = "CheckAndRepair.bat"
+        pi.Arguments = My.Settings.MySqlPort
+        pMySqlDiag.StartInfo = pi
+        pMySqlDiag.Start()
+        pMySqlDiag.WaitForExit()
+        pMySqlDiag.Close()
+        ChDir(MyFolder)
+
+    End Sub
     Private Function StartMySQL()
         ' Start MySql in background.
         Dim StartValue = ProgressBar1.Value
