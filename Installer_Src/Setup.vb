@@ -25,7 +25,7 @@ Imports System.Timers
 'PURPOSE And NONINFRINGEMENT.In NO Event SHALL THE AUTHORS Or COPYRIGHT HOLDERS BE LIABLE 
 'For ANY CLAIM, DAMAGES Or OTHER LIABILITY, WHETHER In AN ACTION Of CONTRACT, TORT Or 
 'OTHERWISE, ARISING FROM, OUT Of Or In CONNECTION With THE SOFTWARE Or THE USE Or OTHER 
-'DEALINGS In THE SOFTWARE.
+'DEALINGS IN THE SOFTWARE.
 
 
 #End Region
@@ -34,14 +34,13 @@ Public Class Form1
 
     ' Command line args:
     '
-    '     '-debug' forces this to use the \Outworldzs folder for testing
+    '     '-debug' forces this to use the DebugPath folder for testing
     '
 
 #Region "Declarations"
-    Dim MyVersion As String = "0.99"
-
+    Dim MyVersion As String = "1.0"
     Dim DebugPath As String = "C:\Opensim\Outworldz"
-    Dim remoteUri As String = "http://www.outworldz.com/Outworldz_Installer/" ' requires trailing slash
+    Dim Domain As String = "http://www.outworldz.com"
     Dim gCurDir As String   ' Holds the current folder that we are running in
     Dim gCurSlashDir As String '  holds the current directory info in Unix format
     Dim isRunning As Boolean = False
@@ -172,7 +171,6 @@ Public Class Form1
 
         gChatTime = My.Settings.ChatTime
 
-        Me.AllowDrop = True
         TextBox1.AllowDrop = True
         PictureBox1.AllowDrop = True
 
@@ -343,7 +341,7 @@ Public Class Form1
         Buttons(StopButton)
 
         Print("Outworldz is ready for you to log in." + vbCrLf + vbCrLf _
-              + " Hypergrid address is " + My.Settings.PublicIP + ":" + My.Settings.PublicPort)
+              + " Hypergrid address is http://" + My.Settings.PublicIP + ":" + My.Settings.PublicPort)
 
         ' done with bootup
         ProgressBar1.Value = 100
@@ -352,6 +350,8 @@ Public Class Form1
             Timer1.Interval = My.Settings.TimerInterval * 1000
             Timer1.Start() 'Timer starts functioning
         End If
+
+        Me.AllowDrop = True
 
     End Sub
 
@@ -439,8 +439,8 @@ Public Class Form1
     End Sub
 
     Private Sub mnuAbout_Click(sender As System.Object, e As System.EventArgs) Handles mnuAbout.Click
-        Print("(c) 2014 www.Outworldz.com")
-        Dim webAddress As String = "http://www.outworldz.com/Outworldz_Installer"
+        Print("(c) 2014" + Domain)
+        Dim webAddress As String = Domain + "/Outworldz_Installer"
         Process.Start(webAddress)
     End Sub
 
@@ -922,7 +922,7 @@ Public Class Form1
                 SendKeys.SendWait("save oar " + MyFolder + "/OutworldzFiles/Autobackup/Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar{ENTER}")
             End If
             SendKeys.SendWait("alert New content Is loading..{ENTER}")
-            SendKeys.SendWait("load oar --force-terrain " + Chr(34) + thing + Chr(34) + "{ENTER}")
+            SendKeys.SendWait("load oar --force-terrain --force-parcels " + Chr(34) + thing + Chr(34) + "{ENTER}")
             SendKeys.SendWait("alert New content just loaded. {ENTER}")
             Me.Focus()
         Catch ex As Exception
@@ -962,8 +962,10 @@ Public Class Form1
         ' close everything as gracefully as possible.
         Try
             pOnlook.CloseMainWindow()
+            pOnlook.WaitForExit()
             pOnlook.Close()
-        Catch
+        Catch ex As Exception
+            Log("Warn: Could not stop Onlook:" + ex.Message)
         End Try
 
         ProgressBar1.Value = 67
@@ -989,6 +991,8 @@ Public Class Form1
         ClothingInventoryToolStripMenuItem.Visible = False
         MnuContent.Visible = False
         Running = False
+        Me.AllowDrop = False
+
         ProgressBar1.Value = 0
     End Sub
 
@@ -1015,27 +1019,7 @@ Public Class Form1
             e.Effect = DragDropEffects.Copy
         End If
     End Sub
-    Private Sub TextBox1_DragDrop(sender As System.Object, e As System.Windows.Forms.DragEventArgs) Handles TextBox1.DragDrop
-        Dim files() As String = e.Data.GetData(DataFormats.FileDrop)
-        For Each pathname In files
-            pathname.Replace("\", "/")
-            Dim extension = Path.GetExtension(pathname)
-            extension = Mid(extension, 2, 5)
-            If extension.ToLower = "iar" Then
-                LoadIARContent(pathname)
-            ElseIf extension.ToLower = "oar" Or extension.ToLower = "gz" Or extension.ToLower = "tgz" Then
-                LoadOARContent(pathname)
-            Else
-                Print("Unrecognized file type:" + extension + ".  Drag and drop any OAR, GZ, TGZ, or IAR files to load them when the sim starts")
-            End If
-        Next
-    End Sub
 
-    Private Sub TextBox1_DragEnter(sender As System.Object, e As System.Windows.Forms.DragEventArgs) Handles TextBox1.DragEnter
-        If e.Data.GetDataPresent(DataFormats.FileDrop) Then
-            e.Effect = DragDropEffects.Copy
-        End If
-    End Sub
 
     Private Sub OnlookToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles mnuOnlook.Click
         Print("Onlook Viewer will be launched on Startup")
@@ -1058,12 +1042,12 @@ Public Class Form1
     End Sub
 
     Private Sub LoopBackToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles LoopBackToolStripMenuItem.Click
-        Dim webAddress As String = "http://www.outworldz.com/Outworldz_Installer/Loopback.htm"
+        Dim webAddress As String = Domain + "/Outworldz_Installer/Loopback.htm"
         Process.Start(webAddress)
     End Sub
 
     Private Sub MoreContentToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles MoreContentToolStripMenuItem.Click
-        Dim webAddress As String = "http://www.outworldz.com/cgi/freesculpts.plx"
+        Dim webAddress As String = Domain + "/cgi/freesculpts.plx"
         Process.Start(webAddress)
         Print("Drag and drop Backup.Oar, or any OAR or IAR files to load into your Sim")
     End Sub
@@ -1252,7 +1236,7 @@ Public Class Form1
     End Sub
 
     Private Sub ToolStripMenuItem1_Click(sender As Object, e As EventArgs) Handles ToolStripMenuItem1.Click
-        Dim webAddress As String = "http://www.outworldz.com/Outworldz_Installer/PortForwarding.htm"
+        Dim webAddress As String = Domain + "/Outworldz_Installer/PortForwarding.htm"
         Process.Start(webAddress)
     End Sub
 
@@ -1324,7 +1308,7 @@ Public Class Form1
         Print("Dreaming up new content for your sim")
         Dim oars As String = ""
         Try
-            oars = client.DownloadString("http://www.outworldz.com/Outworldz_Installer/Content.plx?type=OAR&r=" + Random())
+            oars = client.DownloadString(Domain + "/Outworldz_Installer/Content.plx?type=OAR&r=" + Random())
         Catch ex As Exception
             Log("No Oars, dang, something is wrong with the Internet :-(")
             Return
@@ -1354,7 +1338,7 @@ Public Class Form1
         Print("Dreaming up some clothes and items for your avatar")
         Dim iars As String = ""
         Try
-            iars = client.DownloadString("http://www.outworldz.com/Outworldz_Installer/Content.plx?type=IAR&r=" + Random())
+            iars = client.DownloadString(Domain + "/Outworldz_Installer/Content.plx?type=IAR&r=" + Random())
         Catch ex As Exception
             Log("No IARS, dang, something is wrong with the Internet :-(")
             Return
@@ -1384,7 +1368,7 @@ Public Class Form1
 
     Private Sub OarClick(sender As Object, e As EventArgs)
         Dim File = Mid(sender.text, 1, InStr(sender.text, "|") - 2)
-        File = "http://www.Outworldz.com/Outworldz_Installer/OAR/" + File 'make a real URL
+        File = Domain + "/Outworldz_Installer/OAR/" + File 'make a real URL
         LoadOARContent(File)
         sender.checked = True
         Print("Opensimulator will load " + File + ".  This may take time to load.")
@@ -1392,7 +1376,7 @@ Public Class Form1
 
     Private Sub IarClick(sender As Object, e As EventArgs)
         Dim file = Mid(sender.text, 1, InStr(sender.text, "|") - 2)
-        file = "http://www.Outworldz.com/Outworldz_Installer/IAR/" + file 'make a real URL
+        file = Domain + "/Outworldz_Installer/IAR/" + file 'make a real URL
         LoadIARContent(file)
         sender.checked = True
         Print("Opensimulator will load " + file + ".  This may take time to load.")
@@ -1460,7 +1444,7 @@ Public Class Form1
             ' See my privacy policy at http://www.outworldz.com/privacy.htm
 
             Dim Data As String = GetPostData()
-            isPortOpen = client.DownloadString("http://www.outworldz.com/cgi/probetest.plx?Port=" + My.Settings.LoopBack + Data)
+            isPortOpen = client.DownloadString(Domain + "/cgi/probetest.plx?Port=" + My.Settings.LoopBack + Data)
         Catch ex As Exception
             DiagLog("Dang:The Outworldz web site cannot find a path back")
             My.Settings.DiagFailed = True
@@ -1545,7 +1529,7 @@ Public Class Form1
         End Try
 
         Try
-            fileName = client.DownloadString(remoteUri + "GetUpdater.plx?r=" + Random())
+            fileName = client.DownloadString(Domain + "/Outworldz_Installer/GetUpdater.plx?r=" + Random())
         Catch
             Return ""
         End Try
@@ -1554,7 +1538,7 @@ Public Class Form1
             Dim myWebClient As New WebClient()
             Print("Downloading new updater, this will take a moment")
             ' The DownloadFile() method downloads the Web resource and saves it into the current file-system folder.
-            myWebClient.DownloadFile(remoteUri + fileName, fileName)
+            myWebClient.DownloadFile(Domain + "/Outworldz_Installer/ " + fileName, fileName)
         Catch e As Exception
             Log("Warn:" + e.Message)
             Return ""
@@ -1570,7 +1554,7 @@ Public Class Form1
         Dim Data As String = GetPostData()
 
         Try
-            Update = client.DownloadString(remoteUri + "/Update.plx?Ver=" + Str(MyVersion) + Data)
+            Update = client.DownloadString(Domain + "/Outworldz_Installer/Update.plx?Ver=" + Str(MyVersion) + Data)
         Catch ex As Exception
             Log("Dang:The Outworld web site is down")
         End Try
@@ -1630,10 +1614,10 @@ Public Class Form1
                     AppActivate(OpensimProcID)
                     If backMeUp = vbYes Then
                         SendKeys.SendWait("alert CPU Intensive Backup Started{ENTER}")
-                        SendKeys.SendWait("save oar " + MyFolder + "/OutworldzFiles/Autobackup/Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar{ENTER}")
+                        SendKeys.SendWait("save oar --perm=CT " + MyFolder + "/OutworldzFiles/Autobackup/Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar{ENTER}")
                     End If
                     SendKeys.SendWait("alert New content is loading..{ENTER}")
-                    SendKeys.SendWait("load oar --force-terrain" + Chr(34) + thing + Chr(34) + "{ENTER}")
+                    SendKeys.SendWait("load oar --force-terrain --force-parcels " + Chr(34) + thing + Chr(34) + "{ENTER}")
                     SendKeys.SendWait("alert New content just loaded." + "{ENTER}")
                     Me.Focus()
                 End If
@@ -1652,15 +1636,13 @@ Public Class Form1
         ChDir(MyFolder & "\OutworldzFiles\mysql\bin")
         pi.WindowStyle = ProcessWindowStyle.Normal
         pi.FileName = "CheckAndRepair.bat"
+        pi.Arguments = My.Settings.MySqlPort
         pMySqlDiag.StartInfo = pi
         pMySqlDiag.Start()
         pMySqlDiag.WaitForExit()
+        pMySqlDiag.Close()
         ChDir(MyFolder)
 
-    End Sub
-
-    Private Sub TextBox1_Click(sender As Object, e As EventArgs) Handles TextBox1.Click
-        PaintImage()
     End Sub
 
     Private Sub PictureBox1_Click(sender As Object, e As EventArgs) Handles PictureBox1.Click
@@ -1709,7 +1691,7 @@ Public Class Form1
         End If
     End Sub
     Private Sub BumpProgress10()
-        If ProgressBar1.Value < 100 Then
+        If ProgressBar1.Value < 90 Then
             ProgressBar1.Value = ProgressBar1.Value + 10
         End If
     End Sub
@@ -1718,7 +1700,7 @@ Public Class Form1
         Print("Running Network Diagnostics")
         My.Settings.DiagFailed = False
         CheckLocalHost()
-        GetPubIP() ' 0.99
+        GetPubIP()   '
         Loopback()   ' test the loopback on the router. If it fails, use localhost, no Hg possible
         ProbePublicPort() ' see if Public loopback works
 
@@ -1793,7 +1775,7 @@ Public Class Form1
         <key>locked</key>
             <boolean>0</boolean>
         <key>loginpage</key>
-            <string>http://www.outworldz.com/Outworldz_installer/Welcome.htm</string>
+            <string>" + Domain + "/Outworldz_installer/Welcome.htm</string>
         <key>loginuri</key>
             <string>http://" + My.Settings.PublicIP + ":" + My.Settings.PublicPort + "/</string>
         <key>password</key>
@@ -1926,22 +1908,20 @@ Public Class Form1
 
     Private Sub StopMysql()
 
-        If pMySql.Handle Then
-
-            Log("Info:using mysqladmin to close db")
-            Dim p As Process = New Process()
-            Dim pi As ProcessStartInfo = New ProcessStartInfo()
-            pi.Arguments = "-u root shutdown"
-            pi.FileName = MyFolder + "\OutworldzFiles\mysql\bin\mysqladmin.exe"
-            pi.WindowStyle = ProcessWindowStyle.Minimized
-            p.StartInfo = pi
-            Try
-                p.Start()
-                p.WaitForExit()
-            Catch
-                Log("Error:mysqladmin failed to stop mysql")
-            End Try
-        End If
+        Log("Info:using mysqladmin to close db")
+        Dim p As Process = New Process()
+        Dim pi As ProcessStartInfo = New ProcessStartInfo()
+        pi.Arguments = "-u root shutdown"
+        pi.FileName = MyFolder + "\OutworldzFiles\mysql\bin\mysqladmin.exe"
+        pi.WindowStyle = ProcessWindowStyle.Minimized
+        p.StartInfo = pi
+        Try
+            p.Start()
+            p.WaitForExit()
+            p.Close()
+        Catch
+            Log("Error:mysqladmin failed to stop mysql")
+        End Try
 
     End Sub
 

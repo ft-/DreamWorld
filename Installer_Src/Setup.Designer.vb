@@ -71,17 +71,17 @@ Partial Class Form1
         Me.ClothingInventoryToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MoreContentToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.LoadBackupToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.SaveBackupToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.WebBrowser3 = New System.Windows.Forms.WebBrowser()
         Me.ProgressBar1 = New System.Windows.Forms.ProgressBar()
         Me.BusyButton = New System.Windows.Forms.Button()
         Me.UpdaterGo = New System.Windows.Forms.Button()
         Me.UpdaterCancel = New System.Windows.Forms.Button()
-        Me.TextBox1 = New System.Windows.Forms.Label()
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
         Me.OpenFileDialog2 = New System.Windows.Forms.OpenFileDialog()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
-        Me.SaveBackupToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.TextBox1 = New System.Windows.Forms.RichTextBox()
         Me.MenuStrip1.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -448,6 +448,13 @@ Partial Class Form1
         Me.LoadBackupToolStripMenuItem.Text = "Load Backup"
         Me.LoadBackupToolStripMenuItem.ToolTipText = "Choose a OAR backup file to restore"
         '
+        'SaveBackupToolStripMenuItem
+        '
+        Me.SaveBackupToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.box_tall
+        Me.SaveBackupToolStripMenuItem.Name = "SaveBackupToolStripMenuItem"
+        Me.SaveBackupToolStripMenuItem.Size = New System.Drawing.Size(187, 22)
+        Me.SaveBackupToolStripMenuItem.Text = "Save Backup"
+        '
         'WebBrowser3
         '
         Me.WebBrowser3.Location = New System.Drawing.Point(339, 341)
@@ -492,17 +499,6 @@ Partial Class Form1
         Me.UpdaterCancel.Text = "Skip"
         Me.UpdaterCancel.UseVisualStyleBackColor = True
         '
-        'TextBox1
-        '
-        Me.TextBox1.BackColor = System.Drawing.Color.Transparent
-        Me.TextBox1.Font = New System.Drawing.Font("Verdana", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TextBox1.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(64, Byte), Integer))
-        Me.TextBox1.Location = New System.Drawing.Point(12, 46)
-        Me.TextBox1.Name = "TextBox1"
-        Me.TextBox1.Size = New System.Drawing.Size(297, 155)
-        Me.TextBox1.TabIndex = 28
-        Me.TextBox1.Text = "Label1"
-        '
         'Timer1
         '
         '
@@ -525,12 +521,15 @@ Partial Class Form1
         Me.PictureBox1.TabIndex = 27
         Me.PictureBox1.TabStop = False
         '
-        'SaveBackupToolStripMenuItem
+        'TextBox1
         '
-        Me.SaveBackupToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.box_tall
-        Me.SaveBackupToolStripMenuItem.Name = "SaveBackupToolStripMenuItem"
-        Me.SaveBackupToolStripMenuItem.Size = New System.Drawing.Size(187, 22)
-        Me.SaveBackupToolStripMenuItem.Text = "Save Backup"
+        Me.TextBox1.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.TextBox1.Font = New System.Drawing.Font("Verdana", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TextBox1.Location = New System.Drawing.Point(12, 49)
+        Me.TextBox1.Name = "TextBox1"
+        Me.TextBox1.Size = New System.Drawing.Size(296, 150)
+        Me.TextBox1.TabIndex = 29
+        Me.TextBox1.Text = ""
         '
         'Form1
         '
@@ -539,10 +538,10 @@ Partial Class Form1
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.White
         Me.ClientSize = New System.Drawing.Size(320, 207)
+        Me.Controls.Add(Me.ProgressBar1)
+        Me.Controls.Add(Me.PictureBox1)
         Me.Controls.Add(Me.UpdaterGo)
         Me.Controls.Add(Me.UpdaterCancel)
-        Me.Controls.Add(Me.TextBox1)
-        Me.Controls.Add(Me.ProgressBar1)
         Me.Controls.Add(Me.WebBrowser3)
         Me.Controls.Add(Me.BusyButton)
         Me.Controls.Add(Me.StopButton)
@@ -551,7 +550,7 @@ Partial Class Form1
         Me.Controls.Add(Me.WebBrowser2)
         Me.Controls.Add(Me.WebBrowser1)
         Me.Controls.Add(Me.MenuStrip1)
-        Me.Controls.Add(Me.PictureBox1)
+        Me.Controls.Add(Me.TextBox1)
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MainMenuStrip = Me.MenuStrip1
         Me.MaximizeBox = False
@@ -627,7 +626,6 @@ Partial Class Form1
     Friend WithEvents UpdaterGo As Button
     Friend WithEvents UpdaterCancel As Button
     Friend WithEvents PictureBox1 As PictureBox
-    Friend WithEvents TextBox1 As Label
     Friend WithEvents Timer1 As Timer
     Friend WithEvents LoadBackupToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents OpenFileDialog1 As OpenFileDialog
@@ -636,4 +634,5 @@ Partial Class Form1
     Friend WithEvents ShowHyperGridAddressToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents WebStatsToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents SaveBackupToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents TextBox1 As RichTextBox
 End Class
