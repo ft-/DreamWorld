@@ -895,12 +895,8 @@ Public Class Form1
         If Not ItWorked Then
             Return False
         End If
-        Dim ProbePort As String
-        If My.Settings.GridFolder = "Opensim-0.9" Then
-            ProbePort = My.Settings.HttpPort
-        Else
-            ProbePort = My.Settings.PublicPort
-        End If
+        Dim ProbePort As String = My.Settings.HttpPort
+
 
         ' Wait for Opensim to start listening 
         Dim Up As String
