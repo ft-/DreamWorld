@@ -82,7 +82,6 @@
 
         DnsName.Text = My.Settings.DnsName
         WebStats.Checked = My.Settings.WebStats
-        HttpPort.Text = My.Settings.HttpPort
 
         DbConnection.Text = My.Settings.DBSource
         DbName.Text = My.Settings.DBName
@@ -265,9 +264,7 @@
         Form1.WebStatsToolStripMenuItem.Visible = WebStats.Checked
     End Sub
 
-    Private Sub HttpPort_TextChanged(sender As Object, e As EventArgs) Handles HttpPort.TextChanged
-        My.Settings.HttpPort = HttpPort.Text
-    End Sub
+
 
     Private Sub DatabaseNameUser_TextChanged(sender As Object, e As EventArgs) Handles DbName.TextChanged
         My.Settings.DBName = DbName.Text

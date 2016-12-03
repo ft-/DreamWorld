@@ -12,7 +12,7 @@ This application requires 1 to 2 GB of free disk space and a good 3-D graphics c
 The next time you wish to log in, click the icon on your desktop and click "Start"
 
 Administration:
-When using the web interface, use user "Wifi Administrator" and the password "secret". With this you can control extra users.  
+When using the web interface, use user "Wifi Admin" and the password "secret". With this you can control extra users.  
 
 If you close the browser window, you can get back to it with an AdminPanel icon. You can can this panel use to create new users, examine inventory, and view the console status.
 

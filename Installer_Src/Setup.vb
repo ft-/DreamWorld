@@ -39,7 +39,7 @@ Public Class Form1
 
 #Region "Declarations"
 
-    Dim MyVersion As String = "1.0"
+    Dim MyVersion As String = "1.1"
     Dim DebugPath As String = "C:\Opensim\Outworldz"
     Dim Domain As String = "http://www.outworldz.com"
     Dim gCurDir As String   ' Holds the current folder that we are running in
@@ -196,7 +196,7 @@ Public Class Form1
 
         SetINIFromMySettings()
 
-        If gDebug Then DoDiag()
+        'If gDebug Then DoDiag()
 
         If Not My.Settings.RunOnce Then
             My.Settings.RunOnce = True
@@ -801,7 +801,7 @@ Public Class Form1
         SetIni("Const", "BaseURL", My.Settings.PublicIP)
         SetIni("Const", "PrivatePort", My.Settings.PrivatePort)
         SetIni("Const", "PublicPort", My.Settings.PublicPort)
-        SetIni("Network", "http_listener_port", My.Settings.HttpPort)
+        SetIni("Network", "http_listener_port", My.Settings.PublicPort)
         SaveINI()
         BumpProgress10()
 
@@ -895,13 +895,11 @@ Public Class Form1
         If Not ItWorked Then
             Return False
         End If
-        Dim ProbePort As String = My.Settings.HttpPort
-
 
         ' Wait for Opensim to start listening 
         Dim Up As String
         Try
-            Up = client.DownloadString("http://127.0.0.1:" + ProbePort + "/?r=" + Random())
+            Up = client.DownloadString("http://127.0.0.1:" + My.Settings.PublicPort + "/?r=" + Random())
         Catch ex As Exception
             Up = ""
         End Try
@@ -927,7 +925,7 @@ Public Class Form1
             Sleep(1000)
 
             Try
-                Up = client.DownloadString("http://127.0.0.1:" + ProbePort + "/?r=" + Random())
+                Up = client.DownloadString("http://127.0.0.1:" + My.Settings.PublicPort + "/?r=" + Random())
             Catch ex As Exception
                 Up = ""
                 If InStr(ex.Message, "404") Then
@@ -1424,7 +1422,7 @@ Public Class Form1
             Dim myWebClient As New WebClient()
             Print("Downloading new updater, this will take a moment")
             ' The DownloadFile() method downloads the Web resource and saves it into the current file-system folder.
-            myWebClient.DownloadFile(Domain + "/Outworldz_Installer/ " + fileName, fileName)
+            myWebClient.DownloadFile(Domain + "/Outworldz_Installer/" + fileName, fileName)
         Catch e As Exception
             Log("Warn:" + e.Message)
             Return ""
@@ -1760,10 +1758,7 @@ Public Class Form1
                 DiagLog("uPnp: Loopback.TCP Removed ")
             End If
 
-            If MyUPnPMap.Exists(My.Settings.HttpPort, UPNP.Protocol.TCP) Then
-                MyUPnPMap.Remove(UPNP.LocalIP, My.Settings.HttpPort)
-                DiagLog("uPnp: HttpPort.TCP Removed ")
-            End If
+
 
         Catch e As Exception
             Log("uPnp: UPNP Exception caught:  " + e.Message)
@@ -1812,12 +1807,6 @@ Public Class Form1
                 DiagLog("uPnp: Loopback.UDP Added ")
             End If
 
-            If MyUPnPMap.Exists(My.Settings.HttpPort, UPNP.Protocol.TCP) Then
-                DiagLog("uPnp: HttpPort.TCP exists")
-            Else
-                Log("uPnp: HttpPort.TCP Added ")
-                MyUPnPMap.Add(UPNP.LocalIP, My.Settings.HttpPort, UPNP.Protocol.TCP, "Opensim TCP Http")
-            End If
 
         Catch e As Exception
             DiagLog("uPnp: UPNP Exception caught:  " + e.Message)

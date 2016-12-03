@@ -32,8 +32,6 @@ Partial Class AdvancedForm
         Me.SizeY = New System.Windows.Forms.TextBox()
         Me.SizeX = New System.Windows.Forms.TextBox()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
-        Me.Label19 = New System.Windows.Forms.Label()
-        Me.HttpPort = New System.Windows.Forms.TextBox()
         Me.Label7 = New System.Windows.Forms.Label()
         Me.DnsName = New System.Windows.Forms.TextBox()
         Me.Label13 = New System.Windows.Forms.Label()
@@ -185,8 +183,6 @@ Partial Class AdvancedForm
         '
         'GroupBox2
         '
-        Me.GroupBox2.Controls.Add(Me.Label19)
-        Me.GroupBox2.Controls.Add(Me.HttpPort)
         Me.GroupBox2.Controls.Add(Me.Label7)
         Me.GroupBox2.Controls.Add(Me.DnsName)
         Me.GroupBox2.Controls.Add(Me.Label13)
@@ -199,33 +195,15 @@ Partial Class AdvancedForm
         Me.GroupBox2.Controls.Add(Me.Label5)
         Me.GroupBox2.Location = New System.Drawing.Point(620, 8)
         Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Size = New System.Drawing.Size(134, 239)
+        Me.GroupBox2.Size = New System.Drawing.Size(134, 190)
         Me.GroupBox2.TabIndex = 5
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Ports"
         '
-        'Label19
-        '
-        Me.Label19.AutoSize = True
-        Me.Label19.Location = New System.Drawing.Point(71, 118)
-        Me.Label19.Name = "Label19"
-        Me.Label19.Size = New System.Drawing.Size(36, 13)
-        Me.Label19.TabIndex = 17
-        Me.Label19.Text = "HTTP"
-        Me.ToolTip1.SetToolTip(Me.Label19, "Default is 9000")
-        '
-        'HttpPort
-        '
-        Me.HttpPort.Location = New System.Drawing.Point(19, 115)
-        Me.HttpPort.Name = "HttpPort"
-        Me.HttpPort.Size = New System.Drawing.Size(47, 20)
-        Me.HttpPort.TabIndex = 16
-        Me.ToolTip1.SetToolTip(Me.HttpPort, "HTTP Port. Default: 9000")
-        '
         'Label7
         '
         Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(6, 181)
+        Me.Label7.Location = New System.Drawing.Point(8, 130)
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(120, 13)
         Me.Label7.TabIndex = 15
@@ -233,7 +211,7 @@ Partial Class AdvancedForm
         '
         'DnsName
         '
-        Me.DnsName.Location = New System.Drawing.Point(9, 200)
+        Me.DnsName.Location = New System.Drawing.Point(4, 153)
         Me.DnsName.Name = "DnsName"
         Me.DnsName.Size = New System.Drawing.Size(122, 20)
         Me.DnsName.TabIndex = 14
@@ -404,7 +382,7 @@ Partial Class AdvancedForm
         Me.Web.Size = New System.Drawing.Size(214, 120)
         Me.Web.TabIndex = 8
         Me.Web.TabStop = False
-        Me.Web.Text = "Web Interface"
+        Me.Web.Text = "Web Interface (0.9.1)"
         '
         'Label17
         '
@@ -590,7 +568,7 @@ Partial Class AdvancedForm
         Me.GroupBox6.Size = New System.Drawing.Size(214, 116)
         Me.GroupBox6.TabIndex = 23
         Me.GroupBox6.TabStop = False
-        Me.GroupBox6.Text = "Grid Registrations"
+        Me.GroupBox6.Text = "Grid Registrations (0.9.1)"
         '
         'Label18
         '
@@ -688,9 +666,9 @@ Partial Class AdvancedForm
         'GroupBox7
         '
         Me.GroupBox7.Controls.Add(Me.WebStats)
-        Me.GroupBox7.Location = New System.Drawing.Point(771, 150)
+        Me.GroupBox7.Location = New System.Drawing.Point(624, 204)
         Me.GroupBox7.Name = "GroupBox7"
-        Me.GroupBox7.Size = New System.Drawing.Size(97, 48)
+        Me.GroupBox7.Size = New System.Drawing.Size(130, 48)
         Me.GroupBox7.TabIndex = 26
         Me.GroupBox7.TabStop = False
         Me.GroupBox7.Text = "WebStats"
@@ -842,8 +820,6 @@ Partial Class AdvancedForm
     Friend WithEvents DnsName As TextBox
     Friend WithEvents WebStats As CheckBox
     Friend WithEvents GroupBox7 As GroupBox
-    Friend WithEvents Label19 As Label
-    Friend WithEvents HttpPort As TextBox
     Friend WithEvents GroupBox8 As GroupBox
     Friend WithEvents Label21 As Label
     Friend WithEvents DbPassword As TextBox

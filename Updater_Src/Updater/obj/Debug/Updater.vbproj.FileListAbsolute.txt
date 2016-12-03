@@ -79,3 +79,16 @@ C:\Opensim\Outworldz-9\Dreamworld\Updater_Src\Updater\obj\Debug\Updater.vbproj.G
 C:\Opensim\Outworldz-9\Dreamworld\Updater_Src\Updater\obj\Debug\Install.TrustInfo.xml
 C:\Opensim\Outworldz-9\Dreamworld\Updater_Src\Updater\obj\Debug\Install.exe.manifest
 C:\Opensim\Outworldz-9\Dreamworld\Updater_Src\Updater\obj\Debug\Install.application
+C:\Opensim\Outworldz-1.0\Updater_Src\Updater\bin\Debug\Updater.exe.config
+C:\Opensim\Outworldz-1.0\Updater_Src\Updater\bin\Debug\Updater.exe
+C:\Opensim\Outworldz-1.0\Updater_Src\Updater\bin\Debug\Updater.pdb
+C:\Opensim\Outworldz-1.0\Updater_Src\Updater\bin\Debug\Updater.xml
+C:\Opensim\Outworldz-1.0\Updater_Src\Updater\bin\Debug\DotNetZip.dll
+C:\Opensim\Outworldz-1.0\Updater_Src\Updater\bin\Debug\DotNetZip.xml
+C:\Opensim\Outworldz-1.0\Updater_Src\Updater\obj\Debug\Updater.vbprojResolveAssemblyReference.cache
+C:\Opensim\Outworldz-1.0\Updater_Src\Updater\obj\Debug\Outworldz.Update.resources
+C:\Opensim\Outworldz-1.0\Updater_Src\Updater\obj\Debug\Outworldz.Resources.resources
+C:\Opensim\Outworldz-1.0\Updater_Src\Updater\obj\Debug\Updater.vbproj.GenerateResource.Cache
+C:\Opensim\Outworldz-1.0\Updater_Src\Updater\obj\Debug\Updater.exe
+C:\Opensim\Outworldz-1.0\Updater_Src\Updater\obj\Debug\Updater.xml
+C:\Opensim\Outworldz-1.0\Updater_Src\Updater\obj\Debug\Updater.pdb

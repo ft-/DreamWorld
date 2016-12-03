@@ -13,8 +13,8 @@ Imports System.Threading
 Public Class Update
 
     Dim Version As String = "1.3"
-    'Dim Type As String = "Update"  ' possible server-side choices are "Update" and "Installer"
-    Dim Type As String = "Install"  ' possible server-side choices are "Update" and "Installer"
+    Dim Type As String = "Update"  ' possible server-side choices are "Update" and "Installer"
+    'Dim Type As String = "Install"  ' possible server-side choices are "Update" and "Installer"
 
     Dim gCurDir = Nothing   ' Holds the current folder that we are running in
     Dim gFileName As String = Nothing
@@ -154,7 +154,7 @@ Public Class Update
             End If
             speedtimer.Start()
 
-            Dim readBytes(16000) As Byte
+            Dim readBytes(4096) As Byte
             Dim bytesread As Integer = theResponse.GetResponseStream.Read(readBytes, 0, 4096)
 
             nRead += bytesread
@@ -172,8 +172,8 @@ Public Class Update
             speedtimer.Stop()
 
             readings += 1
-            If readings >= 5 Then 'For increase precision, the speed it's calculated only every five cycles
-                currentspeed = 20480 / (speedtimer.ElapsedMilliseconds / 1000)
+            If readings >= 50 Then 'For increase precision, the speed it's calculated only every fifty cycles
+                currentspeed = bytesread / (speedtimer.ElapsedMilliseconds / 1000)
                 speedtimer.Reset()
                 readings = 0
             End If
