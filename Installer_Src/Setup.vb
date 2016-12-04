@@ -798,7 +798,7 @@ Public Class Form1
         LoadIni(MyFolder + "\OutworldzFiles\" + My.Settings.GridFolder + "\bin\Opensim.ini", ";")
         'Opensim.ini main settings only
 
-        SetIni("Const", "BaseURL", My.Settings.PublicIP)
+        SetIni("Const", "BaseURL", """" + "http://" + My.Settings.PublicIP + """")
         SetIni("Const", "PrivatePort", My.Settings.PrivatePort)
         SetIni("Const", "PublicPort", My.Settings.PublicPort)
         SetIni("Network", "http_listener_port", My.Settings.PublicPort)
