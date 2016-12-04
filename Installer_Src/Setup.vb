@@ -39,7 +39,7 @@ Public Class Form1
 
 #Region "Declarations"
 
-    Dim MyVersion As String = "1.1"
+    Dim MyVersion As String = "1.2"
     Dim DebugPath As String = "C:\Opensim\Outworldz"
     Dim Domain As String = "http://www.outworldz.com"
     Dim gCurDir As String   ' Holds the current folder that we are running in
