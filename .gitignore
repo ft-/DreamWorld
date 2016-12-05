@@ -1,17 +1,23 @@
-Thumbs.db
-OutworldzFiles/mysql/data/opensim/*.*
+Opensim_0.9_src/
+/Signed_Binaries
+OutworldzFiles/mysql/data/opensim
+OutworldzFiles/mysql/data/ib_logfile0
+OutworldzFiles/mysql/data/ib_logfile1
+OutworldzFiles/mysql/data/ibdata1
 OutworldzFiles/Diagnostics.log
-OutworldzFiles/HyperGrid/bin/OpenSimConsoleHistory.txt
-OutworldzFiles/HyperGrid/bin/OpenSim.log
-git rm
-OutworldzFiles/addins-registry/*.*
+OutworldzFiles/Opensim/bin/OpenSimConsoleHistory.txt
+OutworldzFiles/Opensim/bin/OpenSim.log
+OutworldzFiles/Opensim/bin/LocalUserStatistics.db
 OutworldzFiles/addins-registry/
-OutworldzFiles/HyperGrid/bin/maptiles/*.*
 OutworldzFiles/Init.txt
 OutworldzFiles/Outworldz.log
-OutworldzFiles/HyperGrid/bin/assetcache/*.*
-OutworldzFiles/HyperGrid/bin/assetcache
+OutworldzFiles/Opensim/bin/assetcache
+OutworldzFiles/Opensim/bin/ScriptEngines
+OutworldzFiles/Opensim/bin/j2kDecodeCache
+OutworldzFiles/Opensim/bin/maptiles
 OutworldzFiles/mysql/data/*.err
+
+Thumbs.db
 .vs/*
 *.suo
 *.autosave
@@ -31,5 +37,3 @@ obj/
 Release/
 Debug/
 
-Opensim_0.9_src/
-Signed_Binaries/*
