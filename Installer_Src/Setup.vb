@@ -42,6 +42,7 @@ Public Class Form1
     Dim MyVersion As String = "1.2"
     Dim DebugPath As String = "C:\Opensim\Outworldz"
     Dim Domain As String = "http://www.outworldz.com"
+
     Dim gCurDir As String   ' Holds the current folder that we are running in
     Dim gCurSlashDir As String '  holds the current directory info in Unix format
     Dim isRunning As Boolean = False
@@ -87,6 +88,15 @@ Public Class Form1
 #Region "Properties"
 
     ' Save a random machine ID - we don't want any data to be sent that's personal or identifiable,  but it needs to be unique
+    Public Property Splashpage() As String
+        Get
+            Return My.Settings.SplashPage
+        End Get
+        Set(ByVal Value As String)
+            My.Settings.SplashPage = Value
+            My.Settings.Save()
+        End Set
+    End Property
     Public Property Machine() As String
         Get
             Return My.Settings.MachineID
@@ -175,6 +185,12 @@ Public Class Form1
         End If
         gCurSlashDir = MyFolder.Replace("\", "/")    ' because Mysql uses unix like slashes, that's why
 
+
+        If (My.Settings.SplashPage = "") Then
+            My.Settings.SplashPage = Domain + "/Outworldz_installer/Welcome.htm"
+            My.Settings.Save()
+        End If
+
         SaySomething()
 
         Me.Show()
@@ -189,10 +205,10 @@ Public Class Form1
         ws.StartServer(MyFolder)
         BumpProgress10()
 
-        GetPubIP()
+        GetPubIP() ' force ip to to DnsName if we have one or else public
 
         ' always open ports
-        OpenPorts() ' Open router ports with uPnP
+        OpenPorts()
 
         SetINIFromMySettings()
 
@@ -1519,7 +1535,9 @@ Public Class Form1
         <key>locked</key>
             <boolean>0</boolean>
         <key>loginpage</key>
-            <string>" + Domain + "/Outworldz_installer/Welcome.htm</string>
+            <string>"
+        + gSplashPage 
+        + "</string>
         <key>loginuri</key>
             <string>http://" + My.Settings.PublicIP + ":" + My.Settings.PublicPort + "/</string>
         <key>password</key>
@@ -1624,7 +1642,7 @@ Public Class Form1
             My.Settings.PublicIP = client.DownloadString("http://api.ipify.org/?r=" + Random())
             Log("Public IP=" + My.Settings.PublicIP)
         Catch ex As Exception
-            Print("Cannot reach the Internet? Proceeding locally. " + ex.Message)
+            Print("Hmm, I cannot reach the Internet? Uh. Okay, continuing." + ex.Message)
             My.Settings.DiagFailed = True
         End Try
         BumpProgress10()
@@ -1729,8 +1747,8 @@ Public Class Form1
     Private Sub CheckLocalHost()
         Dim Local = CheckPort("127.0.0.1", My.Settings.LoopBack)
         If Not Local Then
-            Print("Localhost is blocked")
-            My.Settings.DiagFailed = True
+            Print("Diagnostic server failed to start. Continuing")
+            'My.Settings.DiagFailed = True
         End If
     End Sub
     Function CloseRouterPorts() As Boolean
