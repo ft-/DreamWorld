@@ -27,6 +27,7 @@ Partial Class AdvancedForm
         Me.CheckBox512 = New System.Windows.Forms.CheckBox()
         Me.CheckBox1024 = New System.Windows.Forms.CheckBox()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.CheckBox1 = New System.Windows.Forms.CheckBox()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.SizeY = New System.Windows.Forms.TextBox()
@@ -34,8 +35,6 @@ Partial Class AdvancedForm
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
         Me.Label7 = New System.Windows.Forms.Label()
         Me.DnsName = New System.Windows.Forms.TextBox()
-        Me.Label13 = New System.Windows.Forms.Label()
-        Me.RegionPort = New System.Windows.Forms.TextBox()
         Me.PublicPort = New System.Windows.Forms.TextBox()
         Me.DiagPort = New System.Windows.Forms.TextBox()
         Me.Label6 = New System.Windows.Forms.Label()
@@ -88,6 +87,7 @@ Partial Class AdvancedForm
         Me.Label22 = New System.Windows.Forms.Label()
         Me.Label21 = New System.Windows.Forms.Label()
         Me.Label20 = New System.Windows.Forms.Label()
+        Me.RegionButton1 = New System.Windows.Forms.Button()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -133,6 +133,7 @@ Partial Class AdvancedForm
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.CheckBox1)
         Me.GroupBox1.Controls.Add(Me.Label3)
         Me.GroupBox1.Controls.Add(Me.CheckBox1024)
         Me.GroupBox1.Controls.Add(Me.CheckBox512)
@@ -146,6 +147,16 @@ Partial Class AdvancedForm
         Me.GroupBox1.TabIndex = 4
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Sim Size"
+        '
+        'CheckBox1
+        '
+        Me.CheckBox1.AutoSize = True
+        Me.CheckBox1.Location = New System.Drawing.Point(20, 16)
+        Me.CheckBox1.Name = "CheckBox1"
+        Me.CheckBox1.Size = New System.Drawing.Size(81, 17)
+        Me.CheckBox1.TabIndex = 4
+        Me.CheckBox1.Text = "CheckBox1"
+        Me.CheckBox1.UseVisualStyleBackColor = True
         '
         'Label3
         '
@@ -183,10 +194,9 @@ Partial Class AdvancedForm
         '
         'GroupBox2
         '
+        Me.GroupBox2.Controls.Add(Me.RegionButton1)
         Me.GroupBox2.Controls.Add(Me.Label7)
         Me.GroupBox2.Controls.Add(Me.DnsName)
-        Me.GroupBox2.Controls.Add(Me.Label13)
-        Me.GroupBox2.Controls.Add(Me.RegionPort)
         Me.GroupBox2.Controls.Add(Me.PublicPort)
         Me.GroupBox2.Controls.Add(Me.DiagPort)
         Me.GroupBox2.Controls.Add(Me.Label6)
@@ -217,23 +227,6 @@ Partial Class AdvancedForm
         Me.DnsName.TabIndex = 14
         Me.ToolTip1.SetToolTip(Me.DnsName, "MySQL port is normally 3306. I add one so it will not interfere with other instal" &
         "lations.")
-        '
-        'Label13
-        '
-        Me.Label13.AutoSize = True
-        Me.Label13.Location = New System.Drawing.Point(69, 94)
-        Me.Label13.Name = "Label13"
-        Me.Label13.Size = New System.Drawing.Size(41, 13)
-        Me.Label13.TabIndex = 13
-        Me.Label13.Text = "Region"
-        '
-        'RegionPort
-        '
-        Me.RegionPort.Location = New System.Drawing.Point(18, 92)
-        Me.RegionPort.Name = "RegionPort"
-        Me.RegionPort.Size = New System.Drawing.Size(47, 20)
-        Me.RegionPort.TabIndex = 12
-        Me.ToolTip1.SetToolTip(Me.RegionPort, "Thr Region Port must be open to the internet for Hypergrid to work. Default:8004")
         '
         'PublicPort
         '
@@ -389,12 +382,12 @@ Partial Class AdvancedForm
         Me.Web.Size = New System.Drawing.Size(214, 239)
         Me.Web.TabIndex = 8
         Me.Web.TabStop = False
-        Me.Web.Text = "Web Interface Admin (0.8.2.1 only)"
+        Me.Web.Text = "Wifi Interface Admin (0.8.2.1 only)"
         '
         'Label19
         '
         Me.Label19.AutoSize = True
-        Me.Label19.Location = New System.Drawing.Point(3, 196)
+        Me.Label19.Location = New System.Drawing.Point(0, 191)
         Me.Label19.Name = "Label19"
         Me.Label19.Size = New System.Drawing.Size(101, 13)
         Me.Label19.TabIndex = 22
@@ -420,7 +413,7 @@ Partial Class AdvancedForm
         '
         'SplashPage
         '
-        Me.SplashPage.Location = New System.Drawing.Point(9, 213)
+        Me.SplashPage.Location = New System.Drawing.Point(6, 208)
         Me.SplashPage.Name = "SplashPage"
         Me.SplashPage.Size = New System.Drawing.Size(199, 20)
         Me.SplashPage.TabIndex = 16
@@ -472,11 +465,11 @@ Partial Class AdvancedForm
         'AccountConfirmationRequired
         '
         Me.AccountConfirmationRequired.AutoSize = True
-        Me.AccountConfirmationRequired.Location = New System.Drawing.Point(69, 114)
+        Me.AccountConfirmationRequired.Location = New System.Drawing.Point(88, 114)
         Me.AccountConfirmationRequired.Name = "AccountConfirmationRequired"
-        Me.AccountConfirmationRequired.Size = New System.Drawing.Size(136, 17)
+        Me.AccountConfirmationRequired.Size = New System.Drawing.Size(90, 17)
         Me.AccountConfirmationRequired.TabIndex = 17
-        Me.AccountConfirmationRequired.Text = "Confirmation Required?"
+        Me.AccountConfirmationRequired.Text = "Confirmation?"
         Me.ToolTip1.SetToolTip(Me.AccountConfirmationRequired, "If checked, you must log into the web interface and approve the new users.")
         Me.AccountConfirmationRequired.UseVisualStyleBackColor = True
         '
@@ -738,6 +731,15 @@ Partial Class AdvancedForm
         Me.Label20.TabIndex = 13
         Me.Label20.Text = "Database"
         '
+        'RegionButton1
+        '
+        Me.RegionButton1.Location = New System.Drawing.Point(11, 108)
+        Me.RegionButton1.Name = "RegionButton1"
+        Me.RegionButton1.Size = New System.Drawing.Size(108, 23)
+        Me.RegionButton1.TabIndex = 16
+        Me.RegionButton1.Text = "Configure Regions"
+        Me.RegionButton1.UseVisualStyleBackColor = True
+        '
         'AdvancedForm
         '
         Me.ClientSize = New System.Drawing.Size(976, 261)
@@ -802,8 +804,6 @@ Partial Class AdvancedForm
     Friend WithEvents AdminLast As TextBox
     Friend WithEvents AdminFirst As TextBox
     Friend WithEvents Label11 As Label
-    Friend WithEvents Label13 As Label
-    Friend WithEvents RegionPort As TextBox
     Friend WithEvents AllowGod As CheckBox
     Friend WithEvents GroupBox4 As GroupBox
     Friend WithEvents ManagerGod As CheckBox
@@ -837,4 +837,6 @@ Partial Class AdvancedForm
     Friend WithEvents DbConnection As TextBox
     Friend WithEvents SplashPage As TextBox
     Friend WithEvents Label19 As Label
+    Friend WithEvents CheckBox1 As CheckBox
+    Friend WithEvents RegionButton1 As Button
 End Class

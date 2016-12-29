@@ -190,6 +190,14 @@ Public Class Form1
         gCurSlashDir = MyFolder.Replace("\", "/")    ' because Mysql uses unix like slashes, that's why
 
 
+        Try
+            My.Computer.FileSystem.RenameFile(MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\Regions\" + My.Settings.SimName + ".ini", "Outworldz.ini")
+            My.Settings.Save()
+        Catch ex As Exception
+        End Try
+
+        FormRegion.GetAllRegions()
+
         If (My.Settings.SplashPage = "") Then
             My.Settings.SplashPage = Domain + "/Outworldz_installer/Welcome.htm"
             My.Settings.Save()
@@ -593,18 +601,6 @@ Public Class Form1
         End If
     End Sub
 
-
-    ' currently unused
-    Private Function GetIni(filepath As String, section As String, key As String, delim As String) As String
-        ' gets values from an INI file
-        Dim parser = New FileIniDataParser()
-        parser.Parser.Configuration.SkipInvalidLines = True
-        parser.Parser.Configuration.CommentString = delim ' Opensim uses semicolons
-
-        Dim Data = parser.ReadFile(filepath)
-        GetIni = Data(section)(key)
-    End Function
-
     Private Sub LoadIni(filepath As String, delim As String)
         parser = New FileIniDataParser()
         parser.Parser.Configuration.SkipInvalidLines = True
@@ -805,12 +801,21 @@ Public Class Form1
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
         ' RegionConfig
-        LoadIni(MyFolder + "\OutworldzFiles\" + My.Settings.GridFolder + "\bin\Regions\RegionConfig.ini", ";")
-        SetIni("Outworldz", "SizeY", My.Settings.SizeY)
-        SetIni("Outworldz", "SizeX", My.Settings.SizeX)
-        SetIni("Outworldz", "ExternalHostName", My.Settings.PublicIP)
-        SetIni("Outworldz", "InternalPort", My.Settings.RegionPort)
-        SaveINI()
+        Dim counter = 1
+        While counter <= 4
+            Try
+                Dim SimName = FormRegion.GetIni(counter).RegionName
+                LoadIni(MyFolder + "\OutworldzFiles\" + My.Settings.GridFolder + "\bin\Regions\" + SimName + ".ini", ";")
+                SetIni("Outworldz", "SizeY", FormRegion.GetIni(counter).SizeY)
+                SetIni("Outworldz", "SizeX", FormRegion.GetIni(counter).SizeX)
+                SetIni("Outworldz", "ExternalHostName", My.Settings.PublicIP)
+                SetIni("Outworldz", "InternalPort", My.Settings.RegionPort)
+                SaveINI()
+            Catch ex As Exception
+                Log("Info: Sim not made yet: " + Convert.ToString(counter))
+            End Try
+            counter = counter + 1
+        End While
 
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
@@ -818,10 +823,10 @@ Public Class Form1
         LoadIni(MyFolder + "\OutworldzFiles\" + My.Settings.GridFolder + "\bin\Opensim.ini", ";")
         'Opensim.ini main settings only
 
-        SetIni("Const", "BaseURL", """" + "http://" + My.Settings.PublicIP + """")
+        SetIni("Const", "BaseURL", """" + "http: //" + My.Settings.PublicIP + """")
         SetIni("Const", "PrivatePort", My.Settings.PrivatePort)
         SetIni("Const", "PublicPort", My.Settings.PublicPort)
-        SetIni("Network", "http_listener_port", My.Settings.PublicPort)
+
         SaveINI()
         BumpProgress10()
 
