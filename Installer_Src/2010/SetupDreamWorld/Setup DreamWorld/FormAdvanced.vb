@@ -1,4 +1,15 @@
-﻿Public Class AdvancedForm
+﻿Imports IniParser
+Imports System.IO
+
+
+Public Class AdvancedForm
+#Region "Declarations"
+
+
+#End Region
+
+#Region "Functions"
+
     Friend WithEvents Label1 As Label
     Public Property Form2 As Object
 
@@ -6,16 +17,8 @@
     Dim Awake As Integer = 1000
     Dim Coffee As Integer = 500
     Dim Toomuch As Integer = 0
-    Private Shared m_ActiveForm As Form
 
-    Public Shared Property ActualForm() As Form
-        Get
-            ActualForm = m_ActiveForm
-        End Get
-        Set(ByVal Value As Form)
-            m_ActiveForm = Value
-        End Set
-    End Property
+    Private Shared ActualForm(0) As FormRegion
 
     Private Sub Loaded(sender As Object, e As EventArgs) Handles Me.Load
 
@@ -215,11 +218,39 @@
     End Sub
 
     Private Sub RegionButton1_Click(sender As Object, e As EventArgs) Handles RegionButton1.Click
-        ActualForm = New FormRegion ' Bring the form into memory
-        ' Set the new form's desktop location so it appears below and
-        ' to the right of the current form.
-        ActualForm.SetDesktopLocation(300, 200)
-        ActualForm.Activate()
-        ActualForm.Visible = True
+
+        Dim X As Integer = 300
+        Dim Y As Integer = 200
+        Dim fname As String
+
+        Dim counter As Integer = 1
+        While counter <= Form1.aRegion.Length
+            Try
+                fname = Form1.aRegion(counter).RegionName
+
+                Array.Resize(ActualForm, ActualForm.Length + 1)
+                Dim index = ActualForm.Length - 1
+                ActualForm(index) = New FormRegion ' Bring one form into memory 
+
+                ' Set the new form's desktop location so it appears below and
+                ' to the right of the current form.
+                ActualForm(index).SetDesktopLocation(X, Y)
+                ActualForm(index).Init(counter)
+                ActualForm(index).Activate()
+                ActualForm(index).Visible = True
+
+                Application.DoEvents()
+            Catch ex As Exception
+                Dim str = ex.Message
+            End Try
+
+            counter = counter + 1
+            Y += 100
+            X += 100
+        End While
     End Sub
+
+
+#End Region
+
 End Class

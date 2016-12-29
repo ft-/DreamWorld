@@ -1,13 +1,4 @@
 ﻿
-Imports System.Net
-Imports System.Text
-Imports System.IO
-Imports System.Net.Sockets
-Imports IWshRuntimeLibrary
-Imports IniParser
-Imports System.Threading
-Imports Ionic.Zip
-Imports System.Timers
 #Region "Copyright"
 ' Copyright 2014 Fred Beckhusen for Outworldz.com
 ' https://opensource.org/licenses/MIT 
@@ -25,10 +16,20 @@ Imports System.Timers
 'PURPOSE And NONINFRINGEMENT.In NO Event SHALL THE AUTHORS Or COPYRIGHT HOLDERS BE LIABLE 
 'For ANY CLAIM, DAMAGES Or OTHER LIABILITY, WHETHER In AN ACTION Of CONTRACT, TORT Or 
 'OTHERWISE, ARISING FROM, OUT Of Or In CONNECTION With THE SOFTWARE Or THE USE Or OTHER 
-'DEALINGS IN THE SOFTWARE.
-
+'DEALINGS IN THE SOFTWARE.Imports System
 
 #End Region
+
+Imports System.Net
+Imports System.IO
+
+Imports System.Text
+Imports System.Net.Sockets
+Imports IWshRuntimeLibrary
+Imports IniParser
+Imports System.Threading
+Imports Ionic.Zip
+Imports System.Timers
 
 Public Class Form1
 
@@ -85,6 +86,19 @@ Public Class Form1
                             }
     Dim gDebug = False       ' toggled by -debug flag on command line
     Dim gContentAvailable As Boolean = False ' assume there is no OAR and IAR data available
+
+    Public aRegion(0) As Object
+    Private Class Region_data
+        Public RegionName As String
+        Public UUID As String
+        Public CoordX As Integer
+        Public CoordY As String
+        Public RegionPort As Integer
+        Public SizeX As Integer
+        Public SizeY As Integer
+    End Class
+
+
 
 #End Region
 
@@ -191,12 +205,11 @@ Public Class Form1
 
 
         Try
-            My.Computer.FileSystem.RenameFile(MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\Regions\" + My.Settings.SimName + ".ini", "Outworldz.ini")
-            My.Settings.Save()
+            My.Computer.FileSystem.RenameFile(MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\Regions\RegionConfig.ini", "Outworldz.ini")
         Catch ex As Exception
         End Try
 
-        FormRegion.GetAllRegions()
+        GetAllRegions()
 
         If (My.Settings.SplashPage = "") Then
             My.Settings.SplashPage = Domain + "/Outworldz_installer/Welcome.htm"
@@ -463,7 +476,6 @@ Public Class Form1
 
 #Region "Menus"
 
-
     Private Sub Busy_Click(sender As System.Object, e As System.EventArgs)
         ' Busy click shuts us down
         Dim result As Integer = MessageBox.Show("Do you want to Abort?", "caption", MessageBoxButtons.YesNo)
@@ -601,32 +613,6 @@ Public Class Form1
         End If
     End Sub
 
-    Private Sub LoadIni(filepath As String, delim As String)
-        parser = New FileIniDataParser()
-        parser.Parser.Configuration.SkipInvalidLines = True
-        parser.Parser.Configuration.CommentString = delim ' Opensim uses semicolons
-
-        Data = parser.ReadFile(filepath)
-        gINI = filepath
-    End Sub
-    Private Sub SetIni(section As String, key As String, value As String)
-        ' sets values into any INI file
-        Try
-            Log("Info:Writing '" + gINI + " section [" + section + "] " + key + "=" + value)
-            Data(section)(key) = value ' replace it and save it
-        Catch ex As Exception
-            Log("Info:Cannot locate '" + key + "' in section '" + section + "' in file " + gINI + ". This is not good")
-            MsgBox("Cannot locate '" + key + "' in section '" + section + "' in file " + gINI + ". This is not good", vbOK)
-        End Try
-    End Sub
-
-    Private Sub SaveINI()
-        Try
-            parser.WriteFile(gINI, Data)
-        Catch ex As Exception
-            Log("Error:" + ex.Message)
-        End Try
-    End Sub
 
     Private Sub mnu9_Click(sender As Object, e As EventArgs) Handles mnu9.Click
         My.Settings.GridFolder = "Opensim-0.9"
@@ -646,6 +632,48 @@ Public Class Form1
         Print("Outworldz rev is set to 0.8.2.1")
 
     End Sub
+
+#End Region
+
+#Region "INI"
+
+    Private Sub LoadIni(filepath As String, delim As String)
+        parser = New FileIniDataParser()
+        parser.Parser.Configuration.SkipInvalidLines = True
+        parser.Parser.Configuration.CommentString = delim ' Opensim uses semicolons
+
+        Data = parser.ReadFile(filepath)
+        gINI = filepath
+    End Sub
+
+    Private Sub SetIni(section As String, key As String, value As String)
+        ' sets values into any INI file
+        Try
+            Log("Info:Writing '" + gINI + " section [" + section + "] " + key + "=" + value)
+            Data(section)(key) = value ' replace it and save it
+        Catch ex As Exception
+            Log("Info:Cannot locate '" + key + "' in section '" + section + "' in file " + gINI + ". This is not good")
+            MsgBox("Cannot locate '" + key + "' in section '" + section + "' in file " + gINI + ". This is not good", vbOK)
+        End Try
+    End Sub
+
+    Private Sub SaveINI()
+        Try
+            parser.WriteFile(gINI, Data)
+        Catch ex As Exception
+            Log("Error:" + ex.Message)
+        End Try
+    End Sub
+
+    Public Function GetIni(filepath As String, section As String, key As String, delim As String) As String
+        ' gets values from an INI file
+        Dim parser = New FileIniDataParser()
+        parser.Parser.Configuration.SkipInvalidLines = True
+        parser.Parser.Configuration.CommentString = delim ' Opensim uses semicolons
+
+        Dim Data = parser.ReadFile(filepath)
+        GetIni = Stripqq(Data(section)(key))
+    End Function
 
     Private Sub SetINIFromMySettings()
 
@@ -798,39 +826,49 @@ Public Class Form1
             AvatarVisible.Visible = False
         End If
 
-        ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-        ' RegionConfig
-        Dim counter = 1
-        While counter <= 4
-            Try
-                Dim SimName = FormRegion.GetIni(counter).RegionName
-                LoadIni(MyFolder + "\OutworldzFiles\" + My.Settings.GridFolder + "\bin\Regions\" + SimName + ".ini", ";")
-                SetIni("Outworldz", "SizeY", FormRegion.GetIni(counter).SizeY)
-                SetIni("Outworldz", "SizeX", FormRegion.GetIni(counter).SizeX)
-                SetIni("Outworldz", "ExternalHostName", My.Settings.PublicIP)
-                SetIni("Outworldz", "InternalPort", My.Settings.RegionPort)
-                SaveINI()
-            Catch ex As Exception
-                Log("Info: Sim not made yet: " + Convert.ToString(counter))
-            End Try
-            counter = counter + 1
-        End While
-
-        ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-        ' Opensim.ini
-        LoadIni(MyFolder + "\OutworldzFiles\" + My.Settings.GridFolder + "\bin\Opensim.ini", ";")
-        'Opensim.ini main settings only
-
-        SetIni("Const", "BaseURL", """" + "http: //" + My.Settings.PublicIP + """")
-        SetIni("Const", "PrivatePort", My.Settings.PrivatePort)
-        SetIni("Const", "PublicPort", My.Settings.PublicPort)
-
-        SaveINI()
-        BumpProgress10()
-
     End Sub
+
+#End Region
+#Region "Regions"
+
+    Public Sub GetAllRegions()
+
+        Dim files() As String
+        Dim ini As String = MyFolder + "\OutworldzFiles\" + My.Settings.GridFolder + "\bin\Regions\"
+
+        files = Directory.GetFiles(ini, "*.ini", SearchOption.TopDirectoryOnly)
+        For Each FileName As String In files
+            Try
+                Array.Resize(aRegion, aRegion.Length + 1)
+                Dim index = aRegion.Length - 1
+                aRegion(index) = New Region_data
+                Dim pos = InStrRev(FileName, "\")
+                Dim name As String = Mid(FileName, pos + 1)
+                Dim fname = Mid(name, 1, Len(name) - 4)
+                Dim longName = MyFolder + "\OutworldzFiles\" + My.Settings.GridFolder + "\bin\Regions\" + name
+
+                aRegion(index).RegionName = fname
+                aRegion(index).UUID = GetIni(longName, fname, "RegionUUID", ";")
+                aRegion(index).SizeX = Convert.ToInt16(GetIni(longName, fname, "SizeX", ";"))
+                aRegion(index).SizeY = Convert.ToInt16(GetIni(longName, fname, "SizeY", ";"))
+                aRegion(index).RegionPort = Convert.ToInt16(GetIni(longName, fname, "InternalPort", ";"))
+
+                ' Location is int,int format.
+                Dim C = GetIni(longName, fname, "Location", ";")
+                Dim parts As String() = C.Split(New Char() {","c}) ' split at the comma
+                aRegion(index).CoordX = parts(0)
+                aRegion(index).CoordY = parts(1)
+
+
+            Catch ex As Exception
+                Log(ex.Message)
+            End Try
+        Next
+    End Sub
+
+#End Region
+
+#Region "ToolBars"
 
     Private Sub BusyButton_Click(sender As Object, e As EventArgs) Handles BusyButton.Click
 
@@ -900,7 +938,6 @@ Public Class Form1
 #End Region
 
 #Region "Opensimulator"
-
 
     Private Function Start_Opensimulator()
         If Running = False Then Return True
@@ -1223,6 +1260,11 @@ Public Class Form1
             ProgressBar1.Value = ProgressBar1.Value + 10
         End If
     End Sub
+
+    Private Function Stripqq(input As String)
+        Return Replace(input, """", "")
+    End Function
+
 #End Region
 
 #Region "IAROAR"
@@ -1957,6 +1999,7 @@ Public Class Form1
         End Try
 
     End Sub
+
 
 #End Region
 

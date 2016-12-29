@@ -23,16 +23,8 @@ Partial Class AdvancedForm
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Me.CheckBox256 = New System.Windows.Forms.CheckBox()
-        Me.CheckBox512 = New System.Windows.Forms.CheckBox()
-        Me.CheckBox1024 = New System.Windows.Forms.CheckBox()
-        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
-        Me.CheckBox1 = New System.Windows.Forms.CheckBox()
-        Me.Label3 = New System.Windows.Forms.Label()
-        Me.Label2 = New System.Windows.Forms.Label()
-        Me.SizeY = New System.Windows.Forms.TextBox()
-        Me.SizeX = New System.Windows.Forms.TextBox()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
+        Me.RegionButton1 = New System.Windows.Forms.Button()
         Me.Label7 = New System.Windows.Forms.Label()
         Me.DnsName = New System.Windows.Forms.TextBox()
         Me.PublicPort = New System.Windows.Forms.TextBox()
@@ -87,8 +79,6 @@ Partial Class AdvancedForm
         Me.Label22 = New System.Windows.Forms.Label()
         Me.Label21 = New System.Windows.Forms.Label()
         Me.Label20 = New System.Windows.Forms.Label()
-        Me.RegionButton1 = New System.Windows.Forms.Button()
-        Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
         Me.Web.SuspendLayout()
@@ -97,100 +87,6 @@ Partial Class AdvancedForm
         Me.GroupBox7.SuspendLayout()
         Me.GroupBox8.SuspendLayout()
         Me.SuspendLayout()
-        '
-        'CheckBox256
-        '
-        Me.CheckBox256.AutoSize = True
-        Me.CheckBox256.Location = New System.Drawing.Point(23, 19)
-        Me.CheckBox256.Name = "CheckBox256"
-        Me.CheckBox256.Size = New System.Drawing.Size(75, 17)
-        Me.CheckBox256.TabIndex = 1
-        Me.CheckBox256.Text = "256 X 256"
-        Me.ToolTip1.SetToolTip(Me.CheckBox256, "Second Life sized single sim")
-        Me.CheckBox256.UseVisualStyleBackColor = True
-        '
-        'CheckBox512
-        '
-        Me.CheckBox512.AutoSize = True
-        Me.CheckBox512.Location = New System.Drawing.Point(23, 43)
-        Me.CheckBox512.Name = "CheckBox512"
-        Me.CheckBox512.Size = New System.Drawing.Size(75, 17)
-        Me.CheckBox512.TabIndex = 2
-        Me.CheckBox512.Text = "512 X 512"
-        Me.ToolTip1.SetToolTip(Me.CheckBox512, "Two By Two (4 sims)")
-        Me.CheckBox512.UseVisualStyleBackColor = True
-        '
-        'CheckBox1024
-        '
-        Me.CheckBox1024.AutoSize = True
-        Me.CheckBox1024.Location = New System.Drawing.Point(23, 67)
-        Me.CheckBox1024.Name = "CheckBox1024"
-        Me.CheckBox1024.Size = New System.Drawing.Size(87, 17)
-        Me.CheckBox1024.TabIndex = 3
-        Me.CheckBox1024.Text = "1024 X 1024"
-        Me.ToolTip1.SetToolTip(Me.CheckBox1024, "4 X 4 ( 16 sims)")
-        Me.CheckBox1024.UseVisualStyleBackColor = True
-        '
-        'GroupBox1
-        '
-        Me.GroupBox1.Controls.Add(Me.CheckBox1)
-        Me.GroupBox1.Controls.Add(Me.Label3)
-        Me.GroupBox1.Controls.Add(Me.CheckBox1024)
-        Me.GroupBox1.Controls.Add(Me.CheckBox512)
-        Me.GroupBox1.Controls.Add(Me.Label2)
-        Me.GroupBox1.Controls.Add(Me.CheckBox256)
-        Me.GroupBox1.Controls.Add(Me.SizeY)
-        Me.GroupBox1.Controls.Add(Me.SizeX)
-        Me.GroupBox1.Location = New System.Drawing.Point(3, 2)
-        Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(195, 126)
-        Me.GroupBox1.TabIndex = 4
-        Me.GroupBox1.TabStop = False
-        Me.GroupBox1.Text = "Sim Size"
-        '
-        'CheckBox1
-        '
-        Me.CheckBox1.AutoSize = True
-        Me.CheckBox1.Location = New System.Drawing.Point(20, 16)
-        Me.CheckBox1.Name = "CheckBox1"
-        Me.CheckBox1.Size = New System.Drawing.Size(81, 17)
-        Me.CheckBox1.TabIndex = 4
-        Me.CheckBox1.Text = "CheckBox1"
-        Me.CheckBox1.UseVisualStyleBackColor = True
-        '
-        'Label3
-        '
-        Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(86, 97)
-        Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(14, 13)
-        Me.Label3.TabIndex = 3
-        Me.Label3.Text = "Y"
-        '
-        'Label2
-        '
-        Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(20, 97)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(14, 13)
-        Me.Label2.TabIndex = 2
-        Me.Label2.Text = "X"
-        '
-        'SizeY
-        '
-        Me.SizeY.Location = New System.Drawing.Point(106, 94)
-        Me.SizeY.Name = "SizeY"
-        Me.SizeY.Size = New System.Drawing.Size(33, 20)
-        Me.SizeY.TabIndex = 1
-        Me.ToolTip1.SetToolTip(Me.SizeY, "256 or higher")
-        '
-        'SizeX
-        '
-        Me.SizeX.Location = New System.Drawing.Point(40, 94)
-        Me.SizeX.Name = "SizeX"
-        Me.SizeX.Size = New System.Drawing.Size(33, 20)
-        Me.SizeX.TabIndex = 0
-        Me.ToolTip1.SetToolTip(Me.SizeX, "256 or higher")
         '
         'GroupBox2
         '
@@ -209,6 +105,15 @@ Partial Class AdvancedForm
         Me.GroupBox2.TabIndex = 5
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Ports"
+        '
+        'RegionButton1
+        '
+        Me.RegionButton1.Location = New System.Drawing.Point(11, 108)
+        Me.RegionButton1.Name = "RegionButton1"
+        Me.RegionButton1.Size = New System.Drawing.Size(108, 23)
+        Me.RegionButton1.TabIndex = 16
+        Me.RegionButton1.Text = "Configure Regions"
+        Me.RegionButton1.UseVisualStyleBackColor = True
         '
         'Label7
         '
@@ -305,7 +210,7 @@ Partial Class AdvancedForm
         Me.GroupBox3.Controls.Add(Me.Label8)
         Me.GroupBox3.Controls.Add(Me.AutoBackupInterval)
         Me.GroupBox3.Controls.Add(Me.AutoBackup)
-        Me.GroupBox3.Location = New System.Drawing.Point(204, 7)
+        Me.GroupBox3.Location = New System.Drawing.Point(12, 11)
         Me.GroupBox3.Name = "GroupBox3"
         Me.GroupBox3.Size = New System.Drawing.Size(180, 121)
         Me.GroupBox3.TabIndex = 6
@@ -576,7 +481,7 @@ Partial Class AdvancedForm
         Me.GroupBox5.Controls.Add(Me.Label15)
         Me.GroupBox5.Controls.Add(Me.TimerInterval)
         Me.GroupBox5.Controls.Add(Me.ChatSpeed)
-        Me.GroupBox5.Location = New System.Drawing.Point(204, 140)
+        Me.GroupBox5.Location = New System.Drawing.Point(198, 16)
         Me.GroupBox5.Name = "GroupBox5"
         Me.GroupBox5.Size = New System.Drawing.Size(180, 116)
         Me.GroupBox5.TabIndex = 22
@@ -731,15 +636,6 @@ Partial Class AdvancedForm
         Me.Label20.TabIndex = 13
         Me.Label20.Text = "Database"
         '
-        'RegionButton1
-        '
-        Me.RegionButton1.Location = New System.Drawing.Point(11, 108)
-        Me.RegionButton1.Name = "RegionButton1"
-        Me.RegionButton1.Size = New System.Drawing.Size(108, 23)
-        Me.RegionButton1.TabIndex = 16
-        Me.RegionButton1.Text = "Configure Regions"
-        Me.RegionButton1.UseVisualStyleBackColor = True
-        '
         'AdvancedForm
         '
         Me.ClientSize = New System.Drawing.Size(976, 261)
@@ -750,13 +646,10 @@ Partial Class AdvancedForm
         Me.Controls.Add(Me.Web)
         Me.Controls.Add(Me.GroupBox3)
         Me.Controls.Add(Me.GroupBox2)
-        Me.Controls.Add(Me.GroupBox1)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "AdvancedForm"
         Me.Text = "Advanced"
-        Me.GroupBox1.ResumeLayout(False)
-        Me.GroupBox1.PerformLayout()
         Me.GroupBox2.ResumeLayout(False)
         Me.GroupBox2.PerformLayout()
         Me.GroupBox3.ResumeLayout(False)
@@ -774,14 +667,6 @@ Partial Class AdvancedForm
         Me.ResumeLayout(False)
 
     End Sub
-    Friend WithEvents CheckBox256 As CheckBox
-    Friend WithEvents CheckBox512 As CheckBox
-    Friend WithEvents CheckBox1024 As CheckBox
-    Friend WithEvents GroupBox1 As GroupBox
-    Friend WithEvents Label2 As Label
-    Friend WithEvents SizeY As TextBox
-    Friend WithEvents SizeX As TextBox
-    Friend WithEvents Label3 As Label
     Friend WithEvents GroupBox2 As GroupBox
     Friend WithEvents PublicPort As TextBox
     Friend WithEvents Label4 As Label
@@ -837,6 +722,5 @@ Partial Class AdvancedForm
     Friend WithEvents DbConnection As TextBox
     Friend WithEvents SplashPage As TextBox
     Friend WithEvents Label19 As Label
-    Friend WithEvents CheckBox1 As CheckBox
     Friend WithEvents RegionButton1 As Button
 End Class

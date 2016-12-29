@@ -4,246 +4,317 @@ Imports System.IO
 
 Public Class FormRegion
 
+    Inherits System.Windows.Forms.Form
+
 #Region "Declarations"
-
-    Dim aRegion(4) As Object
-
     Private Class Region_data
         Public RegionName As String
         Public UUID As String
         Public CoordX As Integer
-        Public CoordY As Integer
-        Public RegionPort As String
-        Public SizeX As String
-        Public SizeY As String
-        Public CoordXY As String
+        Public CoordY As String
+        Public RegionPort As Integer
+        Public SizeX As Integer
+        Public SizeY As Integer
     End Class
+    Dim gNum As Integer = 1 ' pointer to this Object
+    Dim MyRegion As New Region_data
+
+
 #End Region
 
 #Region "Functions"
 
-    Public Function GetIni(num As Integer)
-        Return aRegion(num)
-    End Function
+    Public Sub Init(num As Integer)
 
-    Private Sub FormRegion_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        GetAllRegions()
-    End Sub
+        gNum = num
 
-    Private Sub FormRegion_Closed(sender As Object, e As EventArgs) Handles Me.Closed
-        SaveRegion(aRegion(1))
-        SaveRegion(aRegion(2))
-        SaveRegion(aRegion(3))
-        SaveRegion(aRegion(4))
-    End Sub
+        InitializeComponent()
 
-    Private Function oValidate(oRegion As Object)
-        If Len(oRegion.UUID) <> 36 Then
-            Form1.Log("region UUID is invalid: " + oRegion.UUID)
-            Return False
+        MyRegion.RegionName = Form1.aRegion(num).RegionName
+        MyRegion.UUID = Form1.aRegion(num).UUID
+        MyRegion.CoordX = Form1.aRegion(num).CoordX
+        MyRegion.CoordY = Form1.aRegion(num).CoordY
+        MyRegion.RegionPort = Form1.aRegion(num).RegionPort
+        MyRegion.SizeY = Form1.aRegion(num).SizeY
+        MyRegion.SizeX = Form1.aRegion(num).SizeX
+
+        Me.Show()
+
+
+        Me.Text = "Region " + MyRegion.RegionName
+
+        bRegionName.Text = "hiya!"
+
+        Application.DoEvents()
+
+        Return
+
+        If MyRegion.SizeY = 256 And MyRegion.SizeX = 256 Then
+            bCheckBox256.Checked = True
+            bCheckBox512.Checked = False
+            bCheckBox1024.Checked = False
+            bSizeX.Text = ""
+            bSizeY.Text = ""
         End If
 
-        If Convert.ToInt16(oRegion.CoordX) = 0 Or Convert.ToInt16(oRegion.CoordX) > 10000 Then
-            Form1.Log("Region CoordX is zero")
-            Return False
+        If MyRegion.SizeY = 512 And MyRegion.SizeX = 512 Then
+            bCheckBox256.Checked = False
+            bCheckBox512.Checked = True
+            bCheckBox1024.Checked = False
+            bSizeX.Text = ""
+            bSizeY.Text = ""
         End If
 
-        If Convert.ToInt16(oRegion.CoordY) = 0 Or Convert.ToInt16(oRegion.CoordY) > 10000 Then
-            Form1.Log("Region CoordY is incorrect:" + oRegion.CoordY)
-            Return False
+        If MyRegion.SizeY = 1024 And MyRegion.SizeX = 1024 Then
+            bCheckBox256.Checked = False
+            bCheckBox512.Checked = False
+            bCheckBox1024.Checked = True
+            bSizeX.Text = ""
+            bSizeY.Text = ""
         End If
 
-        If Convert.ToInt16(oRegion.RegionPort) = 0 Then
-            Form1.Log("Region RegionPort is zero")
-            Return False
+        If MyRegion.SizeX <> 0 Then
+            bCheckBox256.Checked = False
+            bCheckBox512.Checked = False
+            bCheckBox1024.Checked = False
+            bSizeX.Text = Convert.ToString(MyRegion.SizeX)
         End If
 
-        If Convert.ToInt16(oRegion.SizeX) = 0 Then
-            Form1.Log("Region SizeX is zero")
-            Return False
-        End If
-        If Convert.ToInt16(oRegion.SizeY) = 0 Then
-            Form1.Log("Region SizeY is zero")
-            Return False
+        If MyRegion.SizeY <> 0 Then
+            bCheckBox256.Checked = False
+            bCheckBox512.Checked = False
+            bCheckBox1024.Checked = False
+            bSizeY.Text = Convert.ToString(MyRegion.SizeY)
         End If
 
-        Return True
-    End Function
-
-    Private Function GetIni(filepath As String, section As String, key As String, delim As String) As String
-        ' gets values from an INI file
-        Dim parser = New FileIniDataParser()
-        parser.Parser.Configuration.SkipInvalidLines = True
-        parser.Parser.Configuration.CommentString = delim ' Opensim uses semicolons
-
-        Dim Data = parser.ReadFile(filepath)
-        GetIni = Data(section)(key)
-    End Function
-
-    Private Sub SaveRegion(oRegion As Object)
-        If oValidate(oRegion) Then
-            WriteRegion(oRegion)
+        If MyRegion.RegionName <> "" Then
+            bRegionName.Text = MyRegion.RegionName
         End If
-    End Sub
 
-    Public Sub GetAllRegions()
-        ' read all Region INI files
+        If MyRegion.CoordX <> 0 Then
+            bCoordX.Text = MyRegion.CoordX
+        End If
 
-        Dim counter As Integer = 1
-        Dim files() As String
-        Dim ini As String = Form1.MyFolder + "\OutworldzFiles\" + My.Settings.GridFolder + "\bin\Regions\"
+        If MyRegion.CoordY <> 0 Then
+            bCoordX.Text = MyRegion.CoordY
+        End If
 
-        files = Directory.GetFiles(ini, "*.ini", SearchOption.TopDirectoryOnly)
-        For Each FileName As String In files
-            Try
-                aRegion(counter) = New Region_data
-                Dim pos = InStrRev(FileName, "\")
-                Dim name As String = Mid(FileName, pos + 1)
-                Dim fname = Mid(name, 1, Len(name) - 4)
 
-                aRegion(counter).RegionName = fname
-                aRegion(counter).UUID = GetIni(Form1.MyFolder + "\OutworldzFiles\" + My.Settings.GridFolder + "\bin\Regions\" + name, fname, "RegionUUID", ";")
-                aRegion(counter).CoordXY = Stripqq(GetIni(Form1.MyFolder + "\OutworldzFiles\" + My.Settings.GridFolder + "\bin\Regions\" + name, fname, "Location", ";"))
-                aRegion(counter).SizeX = Stripqq(GetIni(Form1.MyFolder + "\OutworldzFiles\" + My.Settings.GridFolder + "\bin\Regions\" + name, fname, "SizeX", ";"))
-            Catch ex As Exception
-                Form1.Log(ex.Message)
-            End Try
-
-            counter = counter + 1
-        Next
 
     End Sub
 
-    Private Function Stripqq(input As String)
-        Return Replace(input, """", "")
+    Private Sub Form1_FormClosing(ByVal sender As System.Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
+        Dim message = RegionValidate()
+        If Len(message) Then
+            Dim v = MsgBox(message + vbCrLf + "Discard Changes?", vbYesNo)
+            If v = vbNo Then
+                e.Cancel = True
+            End If
+        Else
+            WriteRegion()
+        End If
+    End Sub
+
+    Private Function RegionValidate()
+
+        Dim Message As String
+
+        If Len(MyRegion.RegionName) = 0 Then
+            Message = "Region Name must not be blank"
+            Form1.Log(Message)
+            Return Message
+        End If
+
+        ' UUID
+        If Len(MyRegion.UUID) <> 36 Then
+            Message = "Region UUID is invalid: " + MyRegion.UUID
+            Form1.Log(Message)
+            Return Message
+        End If
+
+        ' global coords
+        If Convert.ToInt16(MyRegion.CoordX) = 0 Then
+            Message = "Region CoordX is zero"
+            Form1.Log(Message)
+            Return Message
+        End If
+        If Convert.ToInt16(MyRegion.CoordX) > 10000 Then
+            Message = "Region CoordX is too big"
+            Form1.Log(Message)
+            Return Message
+        End If
+        If Convert.ToInt16(MyRegion.CoordY) = 0 Then
+            Message = "Region CoordY is zero"
+            Form1.Log(Message)
+            Return Message
+        End If
+        If Convert.ToInt16(MyRegion.CoordY) > 10000 Then
+            Message = "Region CoordY is too big"
+            Form1.Log(Message)
+            Return Message
+        End If
+
+        If Convert.ToInt16(MyRegion.RegionPort) = 0 Then
+            Message = "Region Port cannot be zero or undefined"
+            Form1.Log(Message)
+            Return Message
+        End If
+
+        ' Size
+        If Convert.ToInt16(MyRegion.SizeX) = 0 Then
+            Message = ("Region bSizeX is zero")
+            Form1.Log(Message)
+            Return Message
+        End If
+        If Convert.ToInt16(MyRegion.SizeY) = 0 Then
+            Message = "Region bSizeY is zero"
+            Form1.Log(Message)
+            Return Message
+        End If
+
+        Return ""
     End Function
-    Private Sub WriteRegion(r As Object)
+
+    Private Sub WriteRegion()
 
         Dim size As String
 
-        If r.SizeX = "256" And r.SizeY = "256" Then
+        If MyRegion.SizeX = "256" And MyRegion.SizeY = "256" Then
             size = "256,256"
-        ElseIf r.SizeX = "512" And r.SizeY = "512" Then
+        ElseIf MyRegion.SizeX = "512" And MyRegion.SizeY = "512" Then
             size = "512,512"
-        ElseIf r.SizeX = "1024" And r.SizeY = "1024" Then
+        ElseIf MyRegion.SizeX = "1024" And MyRegion.SizeY = "1024" Then
             size = "1024,1024"
         Else
-            size = r.SizeX + "," + r.SizeY
+            size = MyRegion.SizeX + "," + MyRegion.SizeY
         End If
 
         ' make a new UUID is there is none
-        If Len(r.UUID) <> 36 Then r.UUID = Guid.NewGuid()
+        If Len(MyRegion.UUID) <> 36 Then MyRegion.UUID = Convert.ToString(Guid.NewGuid())
 
         Dim RegionText As String = "; * Regions configuration file " + vbCrLf _
-    + "; * This Is Your World. Change this And it will break. See Setting->Region instead." + vbCrLf _
+    + "; * This Is Your World. Change This And It Will break. See Advance->[Region Settings] instead." + vbCrLf _
     + "; Automatically changed by Dreamworld - do Not change this file!" + vbCrLf _
-    + "[" + r.RegionName + "]" + vbCrLf _
-    + "RegionUUID = " + """" + r.UUID + """" + vbCrLf _
-    + "Location = " + """" + r.CoordXY + """" + vbCrLf _
+    + "[" + MyRegion.RegionName + "]" + vbCrLf _
+    + "RegionUUID = " + """" + MyRegion.UUID + """" + vbCrLf _
+    + "Location = " + """" + Convert.ToString(MyRegion.CoordX) + "," + Convert.ToString(MyRegion.CoordY) + """" + vbCrLf _
     + "InternalAddress = " + """" + "0.0.0.0" + """" + vbCrLf _
-    + "InternalPort =" + r.RegionPort + vbCrLf _
+    + "InternalPort =" + Convert.ToString(MyRegion.RegionPort) + vbCrLf _
     + "AllowAlternatePorts = False" + vbCrLf _
     + "ExternalHostName = " + My.Settings.PublicIP _
-    + "SizeX = " + r.SizeX + vbCrLf _
-    + "SizeY = " + r.SizeY + vbCrLf
+    + "SizeX = " + Convert.ToString(MyRegion.SizeX) + vbCrLf _
+    + "SizeY = " + Convert.ToString(MyRegion.SizeY) + vbCrLf
 
         ' save the Region File
 
         Try
-            My.Computer.FileSystem.DeleteFile(Form1.MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\Regions\" + r.RegionName + ".ini")
+            My.Computer.FileSystem.DeleteFile(Form1.MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\Regions\" + MyRegion.RegionName + ".ini")
             Try
                 'Save the INI file
-                Using outputFile As New StreamWriter(Form1.MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\Regions\" + r.RegionName + ".ini", True)
+                Using outputFile As New StreamWriter(Form1.MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\Regions\" + MyRegion.RegionName + ".ini", True)
                     outputFile.WriteLine(RegionText)
                 End Using
             Catch ex As Exception
-                Form1.Log("Could not create Region file " + ex.Message)
+                Form1.Log("Could not create Region file " + MyRegion.RegionName + ":" + ex.Message)
             End Try
         Catch ex As Exception
             Form1.Log("Info: Region file did not exist")
         End Try
 
+
+        Form1.aRegion(gNum).RegionName = MyRegion.RegionName
+        Form1.aRegion(gNum).UUID = MyRegion.UUID
+        Form1.aRegion(gNum).CoordX = MyRegion.CoordX
+        Form1.aRegion(gNum).CoordY = MyRegion.CoordY
+        Form1.aRegion(gNum).RegionPort = MyRegion.RegionPort
+        Form1.aRegion(gNum).SizeY = MyRegion.SizeY
+        Form1.aRegion(gNum).SizeX = MyRegion.SizeX
+
     End Sub
 
 #End Region
+
 #Region "Checkboxes"
 
-    Private Sub CheckBox256_CheckedChanged(sender As Object, e As EventArgs) Handles R1CheckBox256.CheckedChanged
+    Private Sub CheckBox256_CheckedChanged(sender As Object, e As EventArgs) Handles bCheckBox256.CheckedChanged
         If CheckBox256.Checked = True Then
-            R1CheckBox512.Checked = False
-            R1CheckBox1024.Checked = False
-            My.Settings.SizeX = "256"
-            My.Settings.SizeY = "256"
-            R1SizeX.Text = ""
-            R1SizeY.Text = ""
+            bCheckBox512.Checked = False
+            bCheckBox256.Checked = False
+            MyRegion.SizeX = 256
+            MyRegion.SizeY = 256
+            bSizeX.Text = ""
+            bSizeY.Text = ""
         End If
 
     End Sub
 
-    Private Sub CheckBox512_CheckedChanged(sender As Object, e As EventArgs) Handles R1CheckBox512.CheckedChanged
-        If R1CheckBox512.Checked = True Then
-            CheckBox256.Checked = False
-            R1CheckBox1024.Checked = False
-            My.Settings.SizeX = "512"
-            My.Settings.SizeY = "512"
-            R1SizeX.Text = ""
-            R1SizeY.Text = ""
+    Private Sub CheckBox512_CheckedChanged(sender As Object, e As EventArgs) Handles bCheckBox512.CheckedChanged
+        If bCheckBox512.Checked = True Then
+            bCheckBox256.Checked = False
+            bCheckBox256.Checked = False
+            MyRegion.SizeX = 512
+            MyRegion.SizeY = 512
+            bSizeX.Text = ""
+            bSizeY.Text = ""
         End If
 
     End Sub
 
-    Private Sub CheckBox1024_CheckedChanged(sender As Object, e As EventArgs) Handles R1CheckBox1024.CheckedChanged
-        If R1CheckBox1024.Checked = True Then
-            CheckBox256.Checked = False
-            R1CheckBox512.Checked = False
-            My.Settings.SizeX = "1024"
-            My.Settings.SizeY = "1024"
-            R1SizeX.Text = ""
-            R1SizeY.Text = ""
+    Private Sub CheckBox1024_CheckedChanged(sender As Object, e As EventArgs) Handles bCheckBox256.CheckedChanged
+        If bCheckBox256.Checked = True Then
+            bCheckBox256.Checked = False
+            bCheckBox512.Checked = False
+            MyRegion.SizeX = 1024
+            MyRegion.SizeY = 1024
+            bSizeX.Text = ""
+            bSizeY.Text = ""
         End If
 
     End Sub
 
-    Private Sub SizeX_TextChanged(sender As Object, e As EventArgs) Handles R1SizeX.TextChanged
-        If R1SizeX.Text <> "" Then
-            CheckBox256.Checked = False
-            R1CheckBox512.Checked = False
-            R1CheckBox1024.Checked = False
-            My.Settings.SizeX = R1SizeX.Text
+    Private Sub SizeX_TextChanged(sender As Object, e As EventArgs) Handles bSizeX.TextChanged
+        If bSizeX.Text <> "" Then
+            bCheckBox256.Checked = False
+            bCheckBox512.Checked = False
+            bCheckBox256.Checked = False
+            My.Settings.SizeX = Convert.ToInt16(bSizeX.Text)
         End If
 
     End Sub
 
-    Private Sub SizeY_TextChanged(sender As Object, e As EventArgs) Handles R1SizeY.TextChanged
-        If R1SizeY.Text <> "" Then
-            CheckBox256.Checked = False
-            R1CheckBox512.Checked = False
-            R1CheckBox1024.Checked = False
-            My.Settings.SizeY = R1SizeY.Text
+    Private Sub SizeY_TextChanged(sender As Object, e As EventArgs) Handles bSizeY.TextChanged
+        If bSizeY.Text <> "" Then
+            bCheckBox256.Checked = False
+            bCheckBox512.Checked = False
+            bCheckBox256.Checked = False
+            My.Settings.SizeY = Convert.ToInt16(bSizeY.Text)
         End If
     End Sub
-    Private Sub RegionPort_TextChanged(sender As Object, e As EventArgs) Handles R1RegionPort.TextChanged
-        aRegion(1).RegionPort = R1RegionPort.Text
+    Private Sub RegionPort_TextChanged(sender As Object, e As EventArgs) Handles bRegionPort.TextChanged
+        MyRegion.RegionPort = Convert.ToInt16(bRegionPort.Text)
     End Sub
 
-    Private Sub R1RegionName_TextChanged(sender As Object, e As EventArgs) Handles R1RegionName.TextChanged
+    Private Sub RegionName_TextChanged(sender As Object, e As EventArgs) Handles bRegionName.TextChanged
 
-        If Len(R1RegionName.Text) > 0 Then
+        If Len(bRegionName.Text) > 0 Then
             Try
-                My.Computer.FileSystem.RenameFile(Form1.MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\Regions\", R1RegionName.Text + ".ini")
+                Dim oldname = Form1.aRegion(gNum).RegionName
+                '  My.Computer.FileSystem.RenameFile(Form1.MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\Regions\" + oldname + ".ini", bRegionName.Text + ".ini")
             Catch ex As Exception
-                MsgBox("Not a valid name for a region", vbAbort)
+                Dim str = ex.Message
             End Try
         End If
     End Sub
 
-    Private Sub TextBox3_TextChanged(sender As Object, e As EventArgs) Handles R1CoordX.TextChanged
-        aRegion(1).CoordX = R1CoordX.Text
+    Private Sub TextBox3_TextChanged(sender As Object, e As EventArgs) Handles bCoordX.TextChanged
+        MyRegion.CoordX = Convert.ToInt16(bCoordX.Text)
+        'MsgBox(bCoordX.Text)
     End Sub
 
-    Private Sub TextBox2_TextChanged(sender As Object, e As EventArgs) Handles R1CoordY.TextChanged
-        aRegion(1).CoordY = R1CoordY.Text
+    Private Sub TextBox2_TextChanged(sender As Object, e As EventArgs) Handles bCoordY.TextChanged
+        MyRegion.CoordY = Convert.ToInt16(bCoordY.Text)
     End Sub
+
 
 #End Region
 
