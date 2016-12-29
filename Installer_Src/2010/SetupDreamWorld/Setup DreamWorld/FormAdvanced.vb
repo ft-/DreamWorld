@@ -87,6 +87,7 @@
         DbName.Text = My.Settings.DBName
         DbUsername.Text = My.Settings.DBUserID
         DbPassword.Text = My.Settings.DBPassword
+        SplashPage.Text = My.Settings.SplashPage
 
     End Sub
 
@@ -264,8 +265,6 @@
         Form1.WebStatsToolStripMenuItem.Visible = WebStats.Checked
     End Sub
 
-
-
     Private Sub DatabaseNameUser_TextChanged(sender As Object, e As EventArgs) Handles DbName.TextChanged
         My.Settings.DBName = DbName.Text
     End Sub
@@ -280,5 +279,9 @@
 
     Private Sub DbPassword_TextChanged(sender As Object, e As EventArgs) Handles DbPassword.TextChanged
         My.Settings.DBPassword = DbPassword.Text
+    End Sub
+
+    Private Sub TextBox1_TextChanged(sender As Object, e As EventArgs) Handles SplashPage.TextChanged
+        My.Settings.SplashPage = SplashPage.Text
     End Sub
 End Class

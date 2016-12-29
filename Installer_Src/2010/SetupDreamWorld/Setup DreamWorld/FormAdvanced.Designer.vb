@@ -51,9 +51,16 @@ Partial Class AdvancedForm
         Me.AutoBackupInterval = New System.Windows.Forms.ComboBox()
         Me.AutoBackup = New System.Windows.Forms.CheckBox()
         Me.Web = New System.Windows.Forms.GroupBox()
+        Me.Label19 = New System.Windows.Forms.Label()
+        Me.SmtpPassword = New System.Windows.Forms.TextBox()
+        Me.Label18 = New System.Windows.Forms.Label()
+        Me.SplashPage = New System.Windows.Forms.TextBox()
+        Me.Label14 = New System.Windows.Forms.Label()
         Me.Label17 = New System.Windows.Forms.Label()
+        Me.SmtpUsername = New System.Windows.Forms.TextBox()
         Me.AdminEmail = New System.Windows.Forms.TextBox()
         Me.Label12 = New System.Windows.Forms.Label()
+        Me.AccountConfirmationRequired = New System.Windows.Forms.CheckBox()
         Me.AdminLast = New System.Windows.Forms.TextBox()
         Me.AdminFirst = New System.Windows.Forms.TextBox()
         Me.Label11 = New System.Windows.Forms.Label()
@@ -69,12 +76,6 @@ Partial Class AdvancedForm
         Me.Label15 = New System.Windows.Forms.Label()
         Me.TimerInterval = New System.Windows.Forms.TextBox()
         Me.ChatSpeed = New System.Windows.Forms.ComboBox()
-        Me.GroupBox6 = New System.Windows.Forms.GroupBox()
-        Me.Label18 = New System.Windows.Forms.Label()
-        Me.Label14 = New System.Windows.Forms.Label()
-        Me.SmtpPassword = New System.Windows.Forms.TextBox()
-        Me.SmtpUsername = New System.Windows.Forms.TextBox()
-        Me.AccountConfirmationRequired = New System.Windows.Forms.CheckBox()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.WebStats = New System.Windows.Forms.CheckBox()
         Me.DbName = New System.Windows.Forms.TextBox()
@@ -93,7 +94,6 @@ Partial Class AdvancedForm
         Me.Web.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox5.SuspendLayout()
-        Me.GroupBox6.SuspendLayout()
         Me.GroupBox7.SuspendLayout()
         Me.GroupBox8.SuspendLayout()
         Me.SuspendLayout()
@@ -195,7 +195,7 @@ Partial Class AdvancedForm
         Me.GroupBox2.Controls.Add(Me.Label5)
         Me.GroupBox2.Location = New System.Drawing.Point(620, 8)
         Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Size = New System.Drawing.Size(134, 190)
+        Me.GroupBox2.Size = New System.Drawing.Size(134, 233)
         Me.GroupBox2.TabIndex = 5
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Ports"
@@ -203,7 +203,7 @@ Partial Class AdvancedForm
         'Label7
         '
         Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(8, 130)
+        Me.Label7.Location = New System.Drawing.Point(8, 185)
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(120, 13)
         Me.Label7.TabIndex = 15
@@ -211,12 +211,12 @@ Partial Class AdvancedForm
         '
         'DnsName
         '
-        Me.DnsName.Location = New System.Drawing.Point(4, 153)
+        Me.DnsName.Location = New System.Drawing.Point(6, 207)
         Me.DnsName.Name = "DnsName"
         Me.DnsName.Size = New System.Drawing.Size(122, 20)
         Me.DnsName.TabIndex = 14
-        Me.ToolTip1.SetToolTip(Me.DnsName, "MySQL port is normally 3306. I add one so it will not intyerfere with other insta" &
-        "llations.")
+        Me.ToolTip1.SetToolTip(Me.DnsName, "MySQL port is normally 3306. I add one so it will not interfere with other instal" &
+        "lations.")
         '
         'Label13
         '
@@ -369,9 +369,16 @@ Partial Class AdvancedForm
         '
         'Web
         '
+        Me.Web.Controls.Add(Me.Label19)
+        Me.Web.Controls.Add(Me.SmtpPassword)
+        Me.Web.Controls.Add(Me.Label18)
+        Me.Web.Controls.Add(Me.SplashPage)
+        Me.Web.Controls.Add(Me.Label14)
         Me.Web.Controls.Add(Me.Label17)
+        Me.Web.Controls.Add(Me.SmtpUsername)
         Me.Web.Controls.Add(Me.AdminEmail)
         Me.Web.Controls.Add(Me.Label12)
+        Me.Web.Controls.Add(Me.AccountConfirmationRequired)
         Me.Web.Controls.Add(Me.AdminLast)
         Me.Web.Controls.Add(Me.AdminFirst)
         Me.Web.Controls.Add(Me.Label11)
@@ -379,10 +386,54 @@ Partial Class AdvancedForm
         Me.Web.Controls.Add(Me.Password)
         Me.Web.Location = New System.Drawing.Point(390, 8)
         Me.Web.Name = "Web"
-        Me.Web.Size = New System.Drawing.Size(214, 120)
+        Me.Web.Size = New System.Drawing.Size(214, 239)
         Me.Web.TabIndex = 8
         Me.Web.TabStop = False
-        Me.Web.Text = "Web Interface (0.9.1)"
+        Me.Web.Text = "Web Interface Admin (0.8.2.1 only)"
+        '
+        'Label19
+        '
+        Me.Label19.AutoSize = True
+        Me.Label19.Location = New System.Drawing.Point(3, 196)
+        Me.Label19.Name = "Label19"
+        Me.Label19.Size = New System.Drawing.Size(101, 13)
+        Me.Label19.TabIndex = 22
+        Me.Label19.Text = "Splash Screen URL"
+        '
+        'SmtpPassword
+        '
+        Me.SmtpPassword.Location = New System.Drawing.Point(88, 162)
+        Me.SmtpPassword.Name = "SmtpPassword"
+        Me.SmtpPassword.Size = New System.Drawing.Size(100, 20)
+        Me.SmtpPassword.TabIndex = 19
+        Me.ToolTip1.SetToolTip(Me.SmtpPassword, "Gmail Passeord")
+        Me.SmtpPassword.UseSystemPasswordChar = True
+        '
+        'Label18
+        '
+        Me.Label18.AutoSize = True
+        Me.Label18.Location = New System.Drawing.Point(6, 165)
+        Me.Label18.Name = "Label18"
+        Me.Label18.Size = New System.Drawing.Size(82, 13)
+        Me.Label18.TabIndex = 21
+        Me.Label18.Text = "Gmail Password"
+        '
+        'SplashPage
+        '
+        Me.SplashPage.Location = New System.Drawing.Point(9, 213)
+        Me.SplashPage.Name = "SplashPage"
+        Me.SplashPage.Size = New System.Drawing.Size(199, 20)
+        Me.SplashPage.TabIndex = 16
+        Me.ToolTip1.SetToolTip(Me.SplashPage, "The page that appears when you log in")
+        '
+        'Label14
+        '
+        Me.Label14.AutoSize = True
+        Me.Label14.Location = New System.Drawing.Point(6, 144)
+        Me.Label14.Name = "Label14"
+        Me.Label14.Size = New System.Drawing.Size(61, 13)
+        Me.Label14.TabIndex = 20
+        Me.Label14.Text = "Gmail Email"
         '
         'Label17
         '
@@ -393,9 +444,17 @@ Partial Class AdvancedForm
         Me.Label17.TabIndex = 15
         Me.Label17.Text = "Email"
         '
+        'SmtpUsername
+        '
+        Me.SmtpUsername.Location = New System.Drawing.Point(88, 137)
+        Me.SmtpUsername.Name = "SmtpUsername"
+        Me.SmtpUsername.Size = New System.Drawing.Size(100, 20)
+        Me.SmtpUsername.TabIndex = 18
+        Me.ToolTip1.SetToolTip(Me.SmtpUsername, "A Gmail email name to send email from")
+        '
         'AdminEmail
         '
-        Me.AdminEmail.Location = New System.Drawing.Point(69, 88)
+        Me.AdminEmail.Location = New System.Drawing.Point(88, 88)
         Me.AdminEmail.Name = "AdminEmail"
         Me.AdminEmail.Size = New System.Drawing.Size(100, 20)
         Me.AdminEmail.TabIndex = 14
@@ -410,9 +469,20 @@ Partial Class AdvancedForm
         Me.Label12.TabIndex = 13
         Me.Label12.Text = "Last Name"
         '
+        'AccountConfirmationRequired
+        '
+        Me.AccountConfirmationRequired.AutoSize = True
+        Me.AccountConfirmationRequired.Location = New System.Drawing.Point(69, 114)
+        Me.AccountConfirmationRequired.Name = "AccountConfirmationRequired"
+        Me.AccountConfirmationRequired.Size = New System.Drawing.Size(136, 17)
+        Me.AccountConfirmationRequired.TabIndex = 17
+        Me.AccountConfirmationRequired.Text = "Confirmation Required?"
+        Me.ToolTip1.SetToolTip(Me.AccountConfirmationRequired, "If checked, you must log into the web interface and approve the new users.")
+        Me.AccountConfirmationRequired.UseVisualStyleBackColor = True
+        '
         'AdminLast
         '
-        Me.AdminLast.Location = New System.Drawing.Point(69, 42)
+        Me.AdminLast.Location = New System.Drawing.Point(88, 42)
         Me.AdminLast.Name = "AdminLast"
         Me.AdminLast.Size = New System.Drawing.Size(100, 20)
         Me.AdminLast.TabIndex = 12
@@ -420,7 +490,7 @@ Partial Class AdvancedForm
         '
         'AdminFirst
         '
-        Me.AdminFirst.Location = New System.Drawing.Point(69, 20)
+        Me.AdminFirst.Location = New System.Drawing.Point(88, 20)
         Me.AdminFirst.Name = "AdminFirst"
         Me.AdminFirst.Size = New System.Drawing.Size(100, 20)
         Me.AdminFirst.TabIndex = 11
@@ -446,7 +516,7 @@ Partial Class AdvancedForm
         '
         'Password
         '
-        Me.Password.Location = New System.Drawing.Point(69, 66)
+        Me.Password.Location = New System.Drawing.Point(88, 66)
         Me.Password.Name = "Password"
         Me.Password.Size = New System.Drawing.Size(100, 20)
         Me.Password.TabIndex = 8
@@ -556,66 +626,6 @@ Partial Class AdvancedForm
         Me.ChatSpeed.TabIndex = 22
         Me.ToolTip1.SetToolTip(Me.ChatSpeed, "The speed the sleepy chat occurs")
         '
-        'GroupBox6
-        '
-        Me.GroupBox6.Controls.Add(Me.Label18)
-        Me.GroupBox6.Controls.Add(Me.Label14)
-        Me.GroupBox6.Controls.Add(Me.SmtpPassword)
-        Me.GroupBox6.Controls.Add(Me.SmtpUsername)
-        Me.GroupBox6.Controls.Add(Me.AccountConfirmationRequired)
-        Me.GroupBox6.Location = New System.Drawing.Point(390, 140)
-        Me.GroupBox6.Name = "GroupBox6"
-        Me.GroupBox6.Size = New System.Drawing.Size(214, 116)
-        Me.GroupBox6.TabIndex = 23
-        Me.GroupBox6.TabStop = False
-        Me.GroupBox6.Text = "Grid Registrations (0.9.1)"
-        '
-        'Label18
-        '
-        Me.Label18.AutoSize = True
-        Me.Label18.Location = New System.Drawing.Point(124, 68)
-        Me.Label18.Name = "Label18"
-        Me.Label18.Size = New System.Drawing.Size(82, 13)
-        Me.Label18.TabIndex = 21
-        Me.Label18.Text = "Gmail Password"
-        '
-        'Label14
-        '
-        Me.Label14.AutoSize = True
-        Me.Label14.Location = New System.Drawing.Point(124, 45)
-        Me.Label14.Name = "Label14"
-        Me.Label14.Size = New System.Drawing.Size(61, 13)
-        Me.Label14.TabIndex = 20
-        Me.Label14.Text = "Gmail Email"
-        '
-        'SmtpPassword
-        '
-        Me.SmtpPassword.Location = New System.Drawing.Point(17, 68)
-        Me.SmtpPassword.Name = "SmtpPassword"
-        Me.SmtpPassword.Size = New System.Drawing.Size(100, 20)
-        Me.SmtpPassword.TabIndex = 19
-        Me.ToolTip1.SetToolTip(Me.SmtpPassword, "Gmail Passeord")
-        Me.SmtpPassword.UseSystemPasswordChar = True
-        '
-        'SmtpUsername
-        '
-        Me.SmtpUsername.Location = New System.Drawing.Point(17, 42)
-        Me.SmtpUsername.Name = "SmtpUsername"
-        Me.SmtpUsername.Size = New System.Drawing.Size(100, 20)
-        Me.SmtpUsername.TabIndex = 18
-        Me.ToolTip1.SetToolTip(Me.SmtpUsername, "A Gmail email name to send email from")
-        '
-        'AccountConfirmationRequired
-        '
-        Me.AccountConfirmationRequired.AutoSize = True
-        Me.AccountConfirmationRequired.Location = New System.Drawing.Point(17, 19)
-        Me.AccountConfirmationRequired.Name = "AccountConfirmationRequired"
-        Me.AccountConfirmationRequired.Size = New System.Drawing.Size(136, 17)
-        Me.AccountConfirmationRequired.TabIndex = 17
-        Me.AccountConfirmationRequired.Text = "Confirmation Required?"
-        Me.ToolTip1.SetToolTip(Me.AccountConfirmationRequired, "If checked, you must log into the web interface and approve the new users.")
-        Me.AccountConfirmationRequired.UseVisualStyleBackColor = True
-        '
         'WebStats
         '
         Me.WebStats.AutoSize = True
@@ -666,7 +676,7 @@ Partial Class AdvancedForm
         'GroupBox7
         '
         Me.GroupBox7.Controls.Add(Me.WebStats)
-        Me.GroupBox7.Location = New System.Drawing.Point(624, 204)
+        Me.GroupBox7.Location = New System.Drawing.Point(777, 199)
         Me.GroupBox7.Name = "GroupBox7"
         Me.GroupBox7.Size = New System.Drawing.Size(130, 48)
         Me.GroupBox7.TabIndex = 26
@@ -733,7 +743,6 @@ Partial Class AdvancedForm
         Me.ClientSize = New System.Drawing.Size(976, 261)
         Me.Controls.Add(Me.GroupBox8)
         Me.Controls.Add(Me.GroupBox7)
-        Me.Controls.Add(Me.GroupBox6)
         Me.Controls.Add(Me.GroupBox5)
         Me.Controls.Add(Me.GroupBox4)
         Me.Controls.Add(Me.Web)
@@ -756,8 +765,6 @@ Partial Class AdvancedForm
         Me.GroupBox4.PerformLayout()
         Me.GroupBox5.ResumeLayout(False)
         Me.GroupBox5.PerformLayout()
-        Me.GroupBox6.ResumeLayout(False)
-        Me.GroupBox6.PerformLayout()
         Me.GroupBox7.ResumeLayout(False)
         Me.GroupBox7.PerformLayout()
         Me.GroupBox8.ResumeLayout(False)
@@ -807,7 +814,6 @@ Partial Class AdvancedForm
     Friend WithEvents Label15 As Label
     Friend WithEvents TimerInterval As TextBox
     Friend WithEvents ChatSpeed As ComboBox
-    Friend WithEvents GroupBox6 As GroupBox
     Friend WithEvents Label17 As Label
     Friend WithEvents AdminEmail As TextBox
     Friend WithEvents AccountConfirmationRequired As CheckBox
@@ -829,4 +835,6 @@ Partial Class AdvancedForm
     Friend WithEvents Label22 As Label
     Friend WithEvents Label23 As Label
     Friend WithEvents DbConnection As TextBox
+    Friend WithEvents SplashPage As TextBox
+    Friend WithEvents Label19 As Label
 End Class

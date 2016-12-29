@@ -39,7 +39,7 @@ Public Class Form1
 
 #Region "Declarations"
 
-    Dim MyVersion As String = "1.2"
+    Dim MyVersion As String = "1.3"
     Dim DebugPath As String = "C:\Opensim\Outworldz"
     Dim Domain As String = "http://www.outworldz.com"
 
@@ -51,14 +51,17 @@ Public Class Form1
     Public gChatTime As Integer
 
     Dim client As New System.Net.WebClient
+
+    ' Processes
     Dim pMySql As Process = New Process()
     Dim pMySqlDiag As Process = New Process()
     Dim pOnlook As Process = New Process()
+
     Private Shared m_ActiveForm As Form
     Dim Data As IniParser.Model.IniData
     Private randomnum As New Random
     Dim parser As FileIniDataParser
-    Dim gINI As String
+    Dim gINI As String  ' the name of the current INI file we are writing
     Dim OpensimProcID As Integer
     Private images =
     New List(Of Image) From {My.Resources.tangled, My.Resources.wp_habitat, My.Resources.wp_Mooferd,
@@ -87,7 +90,6 @@ Public Class Form1
 
 #Region "Properties"
 
-    ' Save a random machine ID - we don't want any data to be sent that's personal or identifiable,  but it needs to be unique
     Public Property Splashpage() As String
         Get
             Return My.Settings.SplashPage
@@ -97,6 +99,8 @@ Public Class Form1
             My.Settings.Save()
         End Set
     End Property
+
+    ' Save a random machine ID - we don't want any data to be sent that's personal or identifiable,  but it needs to be unique
     Public Property Machine() As String
         Get
             Return My.Settings.MachineID
@@ -1474,14 +1478,7 @@ Public Class Form1
 #End Region
 
 #Region "Onlook"
-    Private Sub RemoveGrid()
-        ' restore backup - they may have changed it. Outworldzs is supposed to be simple. If they launch the viewer by itself, they can change grids
-        Try
-            My.Computer.FileSystem.CopyFile(xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml.bak", xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml", True)
-        Catch ex As Exception
-            Log("Error:failed to restore Onlook xml backup:" + ex.Message)
-        End Try
-    End Sub
+
     Private Sub Onlook()
         If Running = False Then Return
         If My.Settings.Onlook Then
@@ -1535,9 +1532,7 @@ Public Class Form1
         <key>locked</key>
             <boolean>0</boolean>
         <key>loginpage</key>
-            <string>"
-        + gSplashPage 
-        + "</string>
+            <string>" + Splashpage + "</string>
         <key>loginuri</key>
             <string>http://" + My.Settings.PublicIP + ":" + My.Settings.PublicPort + "/</string>
         <key>password</key>
@@ -1578,7 +1573,21 @@ Public Class Form1
         End Try
 
     End Sub
+    Private Sub RemoveGrid()
 
+        ' restore backup - they may have changed it. Outworldzs is supposed to be simple. If they launch the viewer by itself, they can change grids
+        Try
+            My.Computer.FileSystem.CopyFile(xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml.bak", xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml", True)
+        Catch ex As Exception
+            Log("Error:failed to restore Onlook xml backup:" + ex.Message)
+        End Try
+    End Sub
+    Private Function xmlPath() As String
+
+        ' gets the path to the %APPDATA% folder on windows so we can seek out the Onlook folders
+        Dim appData As String = My.Computer.FileSystem.SpecialDirectories.CurrentUserApplicationData
+        Return Mid(appData, 1, InStr(appData, "AppData") - 1)
+    End Function
 #End Region
 
 #Region "Diagnostics"
@@ -1739,16 +1748,11 @@ Public Class Form1
         Return data
 
     End Function
-    Private Function xmlPath() As String
-        ' gets the path to the %APPDATA% folder on windows so we can seek out the Onlook folders
-        Dim appData As String = My.Computer.FileSystem.SpecialDirectories.CurrentUserApplicationData
-        Return Mid(appData, 1, InStr(appData, "AppData") - 1)
-    End Function
+
     Private Sub CheckLocalHost()
         Dim Local = CheckPort("127.0.0.1", My.Settings.LoopBack)
         If Not Local Then
-            Print("Diagnostic server failed to start. Continuing")
-            'My.Settings.DiagFailed = True
+            DiagLog("Diagnostic server failed to start or Localhost port " + My.Settings.LoopBack + " is blocked")
         End If
     End Sub
     Function CloseRouterPorts() As Boolean
@@ -1775,8 +1779,6 @@ Public Class Form1
                 MyUPnPMap.Remove(UPNP.LocalIP, My.Settings.RegionPort)
                 DiagLog("uPnp: Loopback.TCP Removed ")
             End If
-
-
 
         Catch e As Exception
             Log("uPnp: UPNP Exception caught:  " + e.Message)
