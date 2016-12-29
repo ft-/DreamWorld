@@ -33,6 +33,7 @@ ExternalHostName = SYSTEMIP
 
 ; * Default region landing point used when no teleport coords are specified
 ; DefaultLanding = <128,128,30>
+
 ; *
 ; * Prim data
 ; * This allows limiting the sizes of prims and the region prim count
