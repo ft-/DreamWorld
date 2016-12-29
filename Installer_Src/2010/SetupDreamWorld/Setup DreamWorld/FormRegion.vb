@@ -47,7 +47,7 @@ Public Class FormRegion
 
         Application.DoEvents()
 
-        Return
+        '        Return
 
         If MyRegion.SizeY = 256 And MyRegion.SizeX = 256 Then
             bCheckBox256.Checked = True
