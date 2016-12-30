@@ -421,6 +421,7 @@ Public Class FormRegion
             End If
         Else
             WriteRegion()
+            changed = False
         End If
     End Sub
 

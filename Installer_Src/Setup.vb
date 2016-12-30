@@ -703,9 +703,14 @@ Public Class Form1
         Else
             Log("Info:Avatar will not be visible")
         End If
-
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
+        ' Opensim.ini
+        LoadIni(MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\Opensim.ini", ";")
+        SetIni("Const", "BaseURL", "http://" + My.Settings.PublicIP)
+        SetIni("Const", "PublicPort", My.Settings.PublicPort)
+        SetIni("Const", "PrivatePort", My.Settings.PublicIP)
+        SaveINI()
+        ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
         ' Diva 0.8.2 used MyWorld.ini all other versions use StandaloneCommon.ini
         If My.Settings.GridFolder = "Opensim-0.9" Then
             ViewWebUI.Visible = False
@@ -1247,8 +1252,9 @@ Public Class Form1
                 Dim thing = openFileDialog1.FileName
                 If thing.Length Then
                     thing = thing.Replace("\", "/")    ' because Opensim uses unix-like slashes, that's why
-                    AppActivate(OpensimProcID)
+
                     If backMeUp = vbYes Then
+                        AppActivate(OpensimProcID)
                         SendKeys.SendWait("alert CPU Intensive Backup Started{ENTER}")
                         AppActivate(OpensimProcID)
                         SendKeys.SendWait("save oar --perm=CT " + MyFolder + "/OutworldzFiles/Autobackup/Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar{ENTER}")
@@ -1369,9 +1375,10 @@ Public Class Form1
         Dim user = InputBox("User name that will get this IAR?")
         Dim password = InputBox("Password for user " + user + "?")
         If user.Length And password.Length Then
-            AppActivate(OpensimProcID)
             Try
+                AppActivate(OpensimProcID)
                 SendKeys.SendWait("load iar --merge " + user + " / " + password + " " + Chr(34) + thing + Chr(34) + "{ENTER}")
+                AppActivate(OpensimProcID)
                 SendKeys.SendWait("alert IAR content Is loaded{ENTER}")
                 Me.Focus()
             Catch ex As Exception
