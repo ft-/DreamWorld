@@ -82,6 +82,8 @@ Partial Class Form1
         Me.OpenFileDialog2 = New System.Windows.Forms.OpenFileDialog()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.TextBox1 = New System.Windows.Forms.RichTextBox()
+        Me.LoadInventoryToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.SaveInventoryToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuStrip1.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -411,7 +413,7 @@ Partial Class Form1
         '
         'MnuContent
         '
-        Me.MnuContent.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.IslandToolStripMenuItem, Me.ClothingInventoryToolStripMenuItem, Me.MoreContentToolStripMenuItem, Me.LoadBackupToolStripMenuItem, Me.SaveBackupToolStripMenuItem})
+        Me.MnuContent.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.IslandToolStripMenuItem, Me.ClothingInventoryToolStripMenuItem, Me.MoreContentToolStripMenuItem, Me.LoadBackupToolStripMenuItem, Me.SaveBackupToolStripMenuItem, Me.LoadInventoryToolStripMenuItem, Me.SaveInventoryToolStripMenuItem})
         Me.MnuContent.Name = "MnuContent"
         Me.MnuContent.Size = New System.Drawing.Size(62, 20)
         Me.MnuContent.Text = "Content"
@@ -450,7 +452,7 @@ Partial Class Form1
         '
         'SaveBackupToolStripMenuItem
         '
-        Me.SaveBackupToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.box_tall
+        Me.SaveBackupToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.disk_blue
         Me.SaveBackupToolStripMenuItem.Name = "SaveBackupToolStripMenuItem"
         Me.SaveBackupToolStripMenuItem.Size = New System.Drawing.Size(187, 22)
         Me.SaveBackupToolStripMenuItem.Text = "Save Backup"
@@ -515,7 +517,7 @@ Partial Class Form1
         Me.PictureBox1.BackColor = System.Drawing.Color.White
         Me.PictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.PictureBox1.InitialImage = Nothing
-        Me.PictureBox1.Location = New System.Drawing.Point(0, 27)
+        Me.PictureBox1.Location = New System.Drawing.Point(0, 29)
         Me.PictureBox1.Name = "PictureBox1"
         Me.PictureBox1.Size = New System.Drawing.Size(320, 180)
         Me.PictureBox1.TabIndex = 27
@@ -530,6 +532,20 @@ Partial Class Form1
         Me.TextBox1.Size = New System.Drawing.Size(296, 150)
         Me.TextBox1.TabIndex = 29
         Me.TextBox1.Text = ""
+        '
+        'LoadInventoryToolStripMenuItem
+        '
+        Me.LoadInventoryToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.cube_blue
+        Me.LoadInventoryToolStripMenuItem.Name = "LoadInventoryToolStripMenuItem"
+        Me.LoadInventoryToolStripMenuItem.Size = New System.Drawing.Size(187, 22)
+        Me.LoadInventoryToolStripMenuItem.Text = "Load Inventory"
+        '
+        'SaveInventoryToolStripMenuItem
+        '
+        Me.SaveInventoryToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.disk_blue
+        Me.SaveInventoryToolStripMenuItem.Name = "SaveInventoryToolStripMenuItem"
+        Me.SaveInventoryToolStripMenuItem.Size = New System.Drawing.Size(187, 22)
+        Me.SaveInventoryToolStripMenuItem.Text = "Save Inventory"
         '
         'Form1
         '
@@ -635,4 +651,6 @@ Partial Class Form1
     Friend WithEvents WebStatsToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents SaveBackupToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents TextBox1 As RichTextBox
+    Friend WithEvents LoadInventoryToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents SaveInventoryToolStripMenuItem As ToolStripMenuItem
 End Class

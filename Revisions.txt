@@ -18,20 +18,32 @@ This re-release updates it from the original Sim On A Stick format into a standa
 0.90 2016-10-16 Opensim 0.9 and 0.8.2.1 merged
 0.93 2016-10-17 Public Port was not being properly set in Opensim.ini
 0.94 2016-10-25 Manual backup menu
-				Prompt for auto backup when loading an OAR. 
-				Diagnostics test improvement on port 8001. 
+                Prompt for auto backup when loading an OAR. 
+                Diagnostics test improvement on port 8001. 
 0.95 2016-10-27 Creates a StartManually.bat program in mysql/bin to aid anyone needing to test the db manually. Cleaned up the my.ini file
 0.96 2016-10-29 Load Oar case sensistive OAR;TGZ;GZ names work now.
-				Terrains textures were not loaded  now uses --force terrain switch 
 0.97 2016-10-31 Compiled 0.9.1 	#7c4f2b048f4d74b3132486e8d7a6887c73d6562d
-			    Fixed Version 0.96 vs .96 bug - caught by Fearghus McMahon - type casting of string to single was wrong
-				Opensim would switch back to 0.8.2.1 from 0.9.0 - Hypergrid => Opensim renamed
-				OfflineMessageURL red error on startup fixed - Thank you, AI Austin for blogging this.
-				Onlook restarts on install and sets grid vars  - Thanks for the extensive help, shaunkmaloney@craftgrid.com
-				When Advanced menu grid name is changed it no longer requires a restart, can no longer change grid while running
+                Fixed Version 0.96 vs .96 bug - caught by Fearghus McMahon - type casting of string to single was wrong
+                Opensim would switch back to 0.8.2.1 from 0.9.0 - Hypergrid => Opensim renamed
+                OfflineMessageURL red error on startup fixed - Thank you, AI Austin for blogging this.
+                Onlook restarts on install and sets grid vars  - Thanks for the extensive help, shaunkmaloney@craftgrid.com
+                When Advanced menu grid name is changed it no longer requires a restart, can no longer change grid while running
 0.98 2016-11-20	https:://api.ipify.com lost their SSL cert, so it is now on port 80.  Backdrop is hidden if timer = 0
-0.99 2016-11-25 Public IP set to localhost if diags fails, Keyboard Wait SendKeys to make Opensim command more reliable, Onlook Viewer XML adapts to Public IP
-1.00 2016-11-26 MySQL port=3308, Advanced db Settings Menu. region_default set without CONST so Hypergrid now to/from in 0.8.2.1, 0.9.1 will not HG due to internal issues.
+0.99 2016-11-25 Public IP set to localhost if diags fails
+                Keyboard Wait SendKeys to make Opensim command more reliable
+                Onlook Viewer XML adapts to Public IP
+1.00 2016-11-26 MySQL port=3308 to prevent conflict with Sim on a stick or other distros.
+                Advanced db Settings Menu. 
+                region_default set without CONST so Hypergrid now to/from in 0.8.2.1
+                0.9.1 would not HG due to missing http:// in an INI
 1.1 2016-12-02 Updater was not working correctly due to a space in the URL.
 1.2 2016-12-04 Broken Login URIs everywhere - doubled http:// - emergency patch.
-1.3 2016-12-28 Opensim 0.9.1 73b2c82427cf25
+1.3 2016-12-28 Update Opensim 0.9.1 to #73b2c82427cf25
+               Multiple regions with Add and Configure buttons in Advanced menu
+	       ExternalHostName for LSL is set automatically for HTTP-IN scripts
+               Zero in wallpaper time removes the wallpaper, blank allowed as a zero
+               Added Various Physics choices none, ODE, bullet. bullet in a separate thread, plus ubODE for 0.9.1
+
+
+               
+               

@@ -457,6 +457,8 @@ Public Class Form1
         Me.AllowDrop = False
 
         ProgressBar1.Value = 0
+        Application.DoEvents()
+
     End Sub
 
     Private Function zap(processName As String) As Boolean
@@ -1232,7 +1234,7 @@ Public Class Form1
 
             ' Set filter options and filter index.
             openFileDialog1.InitialDirectory = MyFolder + "/OutworldzFiles/Autobackup"
-            openFileDialog1.Filter = "Opensim OAR(*.OAR)|*.oar;*.gz;*.tgz|Inventory IAR (*.iar)|*.iar)|All Files (*.*)|*.*"
+            openFileDialog1.Filter = "Opensim OAR(*.OAR,*.GZ,*.TGZ)|*.oar;*.gz;*.tgz;*.OAR;*.GZ;*.TGZ|All Files (*.*)|*.*"
             openFileDialog1.FilterIndex = 1
             openFileDialog1.Multiselect = False
 
@@ -1248,10 +1250,14 @@ Public Class Form1
                     AppActivate(OpensimProcID)
                     If backMeUp = vbYes Then
                         SendKeys.SendWait("alert CPU Intensive Backup Started{ENTER}")
+                        AppActivate(OpensimProcID)
                         SendKeys.SendWait("save oar --perm=CT " + MyFolder + "/OutworldzFiles/Autobackup/Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar{ENTER}")
                     End If
+                    AppActivate(OpensimProcID)
                     SendKeys.SendWait("alert New content is loading..{ENTER}")
+                    AppActivate(OpensimProcID)
                     SendKeys.SendWait("load oar --force-terrain --force-parcels " + Chr(34) + thing + Chr(34) + "{ENTER}")
+                    AppActivate(OpensimProcID)
                     SendKeys.SendWait("alert New content just loaded." + "{ENTER}")
                     Me.Focus()
                 End If
@@ -1295,6 +1301,7 @@ Public Class Form1
             If myValue.length = 0 Then Return
             AppActivate(OpensimProcID)
             SendKeys.SendWait("alert CPU Intensive Backup Started{ENTER}")
+            AppActivate(OpensimProcID)
             SendKeys.SendWait("save oar " + MyFolder + "/OutworldzFiles/Autobackup/" + myValue + "{ENTER}")
             Me.Focus()
             Print("Saving " + myValue + " to " + MyFolder + "/OutworldzFiles/Autobackup")
@@ -1337,10 +1344,14 @@ Public Class Form1
             thing = thing.Replace("\", "/")    ' because Opensim uses unix-like slashes, that's why
             If backMeUp = vbYes Then
                 SendKeys.SendWait("alert CPU Intensive Backup Started {ENTER}")
+                AppActivate(OpensimProcID)
                 SendKeys.SendWait("save oar " + MyFolder + "/OutworldzFiles/Autobackup/Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar{ENTER}")
             End If
+            AppActivate(OpensimProcID)
             SendKeys.SendWait("alert New content Is loading..{ENTER}")
+            AppActivate(OpensimProcID)
             SendKeys.SendWait("load oar --force-terrain --force-parcels " + Chr(34) + thing + Chr(34) + "{ENTER}")
+            AppActivate(OpensimProcID)
             SendKeys.SendWait("alert New content just loaded. {ENTER}")
             Me.Focus()
         Catch ex As Exception
@@ -1373,6 +1384,31 @@ Public Class Form1
         End If
 
     End Sub
+
+    Private Sub TextBox1_DragDrop(sender As System.Object, e As System.Windows.Forms.DragEventArgs) Handles TextBox1.DragDrop
+
+        Dim files() As String = e.Data.GetData(DataFormats.FileDrop)
+        For Each pathname In files
+            pathname.Replace("\", "/")
+            Dim extension = Path.GetExtension(pathname)
+            extension = Mid(extension, 2, 5)
+            If extension.ToLower = "iar" Then
+                LoadIARContent(pathname)
+            ElseIf extension.ToLower = "oar" Or extension.ToLower = "gz" Or extension.ToLower = "tgz" Then
+                LoadOARContent(pathname)
+            Else
+                Print("Unrecognized file type:" + extension + ".  Drag and drop any OAR, GZ, TGZ, or IAR files to load them when the sim starts")
+            End If
+        Next
+
+    End Sub
+
+    Private Sub TextBox1_DragEnter(sender As System.Object, e As System.Windows.Forms.DragEventArgs) Handles TextBox1.DragEnter
+        If e.Data.GetDataPresent(DataFormats.FileDrop) Then
+            e.Effect = DragDropEffects.Copy
+        End If
+    End Sub
+
 
     Private Sub PictureBox1_DragDrop(sender As System.Object, e As System.Windows.Forms.DragEventArgs) Handles PictureBox1.DragDrop
 
@@ -2051,6 +2087,98 @@ Public Class Form1
             Log("Error:mysqladmin failed to stop mysql")
         End Try
 
+    End Sub
+
+    Private Sub LoadInventoryToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles LoadInventoryToolStripMenuItem.Click
+        If (Running) Then
+            ' Create an instance of the open file dialog box.
+            Dim openFileDialog1 As OpenFileDialog = New OpenFileDialog
+
+            ' Set filter options and filter index.
+            openFileDialog1.InitialDirectory = MyFolder + "/"
+            openFileDialog1.Filter = "Inventory IAR (*.iar)|*.iar|*.IAR)|All Files (*.*)|*.*"
+            openFileDialog1.FilterIndex = 1
+            openFileDialog1.Multiselect = False
+
+            ' Call the ShowDialog method to show the dialogbox.
+            Dim UserClickedOK As Boolean = openFileDialog1.ShowDialog
+
+            ' Process input if the user clicked OK.
+            If UserClickedOK = True Then
+                Dim thing = openFileDialog1.FileName
+                If thing.Length Then
+                    thing = thing.Replace("\", "/")    ' because Opensim uses unix-like slashes, that's why
+                    LoadIARContent(thing)
+                End If
+            End If
+        Else
+            Print("Opensim is not running. Cannot open the Web Interface.")
+        End If
+
+    End Sub
+
+    Private Sub SaveInventoryToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles SaveInventoryToolStripMenuItem.Click
+        If (Running) Then
+            Dim Message, title, defaultValue As String
+
+            '''''''''''''''''''''''
+            ' Object Name to back up
+            Dim itemName As String
+            ' Set prompt.
+            Message = "Enter the object name ('/' will  backup everything, and '/Objects/box' will back up box in folder Objects) :"
+            title = "Backup Name?"
+            defaultValue = "/"   ' Set default value.
+
+            ' Display message, title, and default value.
+            itemName = InputBox(Message, title, defaultValue)
+            ' If user has clicked Cancel, set myValue to defaultValue 
+            If itemName.Length = 0 Then Return
+
+            '''''''''''''''''''''''
+            ' Name of the IAR
+            Dim backupName As String
+            Message = "Backup name? :"
+            title = "Backup Name?"
+            defaultValue = "backup.iar"   ' Set default value.
+
+            ' Display message, title, and default value.
+            backupName = InputBox(Message, title, defaultValue)
+            ' If user has clicked Cancel, set myValue to defaultValue 
+            If itemName.Length = 0 Then Return
+
+            '''''''''''''''''''''''
+            ' Avatar
+            Dim Name As String
+            Message = "Avatar FirstName and Lastname:"
+            title = "FirstName LastName"
+            defaultValue = ""   ' Set default value.
+
+            ' Display message, title, and default value.
+            Name = InputBox(Message, title, defaultValue)
+            ' If user has clicked Cancel, set myValue to defaultValue 
+            If Name.Length = 0 Then Return
+
+            '''''''''''''''''''''''
+            ' Password
+            Dim Password As String
+            Message = "Avatar's Password?:"
+            title = "Password needed"
+            defaultValue = ""   ' Set default value.
+
+            ' Display message, title, and default value.
+            Password = InputBox(Message, title, defaultValue)
+
+            '''''''''''''''''''''''
+
+            AppActivate(OpensimProcID)
+            SendKeys.SendWait("alert CPU Intensive Backup Started{ENTER}")
+            AppActivate(OpensimProcID)
+            SendKeys.SendWait("save iar " + Name + " " + itemName + " " + Password + " " + MyFolder + "/OutworldzFiles/Autobackup/" + backupName + "{ENTER}")
+            Me.Focus()
+            Print("Saving " + backupName + " to " + MyFolder + "/OutworldzFiles/Autobackup")
+        Else
+            Print("Opensim is not running. Cannot make a backup now.")
+        End If
     End Sub
 
 
