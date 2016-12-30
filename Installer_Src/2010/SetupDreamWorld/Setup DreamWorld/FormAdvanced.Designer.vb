@@ -24,6 +24,7 @@ Partial Class AdvancedForm
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
+        Me.AddRegion = New System.Windows.Forms.Button()
         Me.RegionButton = New System.Windows.Forms.Button()
         Me.Label7 = New System.Windows.Forms.Label()
         Me.DnsName = New System.Windows.Forms.TextBox()
@@ -79,7 +80,6 @@ Partial Class AdvancedForm
         Me.Label22 = New System.Windows.Forms.Label()
         Me.Label21 = New System.Windows.Forms.Label()
         Me.Label20 = New System.Windows.Forms.Label()
-        Me.AddRegion = New System.Windows.Forms.Button()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
         Me.Web.SuspendLayout()
@@ -93,8 +93,8 @@ Partial Class AdvancedForm
         '
         Me.GroupBox2.Controls.Add(Me.AddRegion)
         Me.GroupBox2.Controls.Add(Me.RegionButton)
-        Me.GroupBox2.Controls.Add(Me.Label7)
         Me.GroupBox2.Controls.Add(Me.DnsName)
+        Me.GroupBox2.Controls.Add(Me.Label7)
         Me.GroupBox2.Controls.Add(Me.PublicPort)
         Me.GroupBox2.Controls.Add(Me.DiagPort)
         Me.GroupBox2.Controls.Add(Me.Label6)
@@ -108,9 +108,18 @@ Partial Class AdvancedForm
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Ports"
         '
+        'AddRegion
+        '
+        Me.AddRegion.Location = New System.Drawing.Point(13, 170)
+        Me.AddRegion.Name = "AddRegion"
+        Me.AddRegion.Size = New System.Drawing.Size(108, 23)
+        Me.AddRegion.TabIndex = 17
+        Me.AddRegion.Text = "Add Region"
+        Me.AddRegion.UseVisualStyleBackColor = True
+        '
         'RegionButton
         '
-        Me.RegionButton.Location = New System.Drawing.Point(11, 108)
+        Me.RegionButton.Location = New System.Drawing.Point(12, 199)
         Me.RegionButton.Name = "RegionButton"
         Me.RegionButton.Size = New System.Drawing.Size(108, 23)
         Me.RegionButton.TabIndex = 16
@@ -120,7 +129,7 @@ Partial Class AdvancedForm
         'Label7
         '
         Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(8, 185)
+        Me.Label7.Location = New System.Drawing.Point(14, 16)
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(120, 13)
         Me.Label7.TabIndex = 15
@@ -128,7 +137,7 @@ Partial Class AdvancedForm
         '
         'DnsName
         '
-        Me.DnsName.Location = New System.Drawing.Point(6, 207)
+        Me.DnsName.Location = New System.Drawing.Point(12, 38)
         Me.DnsName.Name = "DnsName"
         Me.DnsName.Size = New System.Drawing.Size(122, 20)
         Me.DnsName.TabIndex = 14
@@ -137,7 +146,7 @@ Partial Class AdvancedForm
         '
         'PublicPort
         '
-        Me.PublicPort.Location = New System.Drawing.Point(18, 47)
+        Me.PublicPort.Location = New System.Drawing.Point(12, 92)
         Me.PublicPort.Name = "PublicPort"
         Me.PublicPort.Size = New System.Drawing.Size(47, 20)
         Me.PublicPort.TabIndex = 0
@@ -145,7 +154,7 @@ Partial Class AdvancedForm
         '
         'DiagPort
         '
-        Me.DiagPort.Location = New System.Drawing.Point(18, 24)
+        Me.DiagPort.Location = New System.Drawing.Point(12, 69)
         Me.DiagPort.Name = "DiagPort"
         Me.DiagPort.Size = New System.Drawing.Size(47, 20)
         Me.DiagPort.TabIndex = 7
@@ -155,7 +164,7 @@ Partial Class AdvancedForm
         'Label6
         '
         Me.Label6.AutoSize = True
-        Me.Label6.Location = New System.Drawing.Point(69, 27)
+        Me.Label6.Location = New System.Drawing.Point(63, 72)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(57, 13)
         Me.Label6.TabIndex = 6
@@ -164,7 +173,7 @@ Partial Class AdvancedForm
         'Label4
         '
         Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(69, 72)
+        Me.Label4.Location = New System.Drawing.Point(63, 117)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(40, 13)
         Me.Label4.TabIndex = 4
@@ -172,7 +181,7 @@ Partial Class AdvancedForm
         '
         'PrivatePort
         '
-        Me.PrivatePort.Location = New System.Drawing.Point(18, 70)
+        Me.PrivatePort.Location = New System.Drawing.Point(12, 115)
         Me.PrivatePort.Name = "PrivatePort"
         Me.PrivatePort.Size = New System.Drawing.Size(47, 20)
         Me.PrivatePort.TabIndex = 1
@@ -181,7 +190,7 @@ Partial Class AdvancedForm
         'Label5
         '
         Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(70, 50)
+        Me.Label5.Location = New System.Drawing.Point(64, 95)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(39, 13)
         Me.Label5.TabIndex = 5
@@ -269,10 +278,8 @@ Partial Class AdvancedForm
         '
         'Web
         '
-        Me.Web.Controls.Add(Me.Label19)
         Me.Web.Controls.Add(Me.SmtpPassword)
         Me.Web.Controls.Add(Me.Label18)
-        Me.Web.Controls.Add(Me.SplashPage)
         Me.Web.Controls.Add(Me.Label14)
         Me.Web.Controls.Add(Me.Label17)
         Me.Web.Controls.Add(Me.SmtpUsername)
@@ -286,7 +293,7 @@ Partial Class AdvancedForm
         Me.Web.Controls.Add(Me.Password)
         Me.Web.Location = New System.Drawing.Point(390, 8)
         Me.Web.Name = "Web"
-        Me.Web.Size = New System.Drawing.Size(214, 239)
+        Me.Web.Size = New System.Drawing.Size(214, 193)
         Me.Web.TabIndex = 8
         Me.Web.TabStop = False
         Me.Web.Text = "Wifi Interface Admin (0.8.2.1 only)"
@@ -294,11 +301,11 @@ Partial Class AdvancedForm
         'Label19
         '
         Me.Label19.AutoSize = True
-        Me.Label19.Location = New System.Drawing.Point(0, 191)
+        Me.Label19.Location = New System.Drawing.Point(6, 76)
         Me.Label19.Name = "Label19"
-        Me.Label19.Size = New System.Drawing.Size(101, 13)
+        Me.Label19.Size = New System.Drawing.Size(136, 13)
         Me.Label19.TabIndex = 22
-        Me.Label19.Text = "Splash Screen URL"
+        Me.Label19.Text = "Viewer Splash Screen URL"
         '
         'SmtpPassword
         '
@@ -320,9 +327,9 @@ Partial Class AdvancedForm
         '
         'SplashPage
         '
-        Me.SplashPage.Location = New System.Drawing.Point(6, 208)
+        Me.SplashPage.Location = New System.Drawing.Point(6, 94)
         Me.SplashPage.Name = "SplashPage"
-        Me.SplashPage.Size = New System.Drawing.Size(199, 20)
+        Me.SplashPage.Size = New System.Drawing.Size(168, 20)
         Me.SplashPage.TabIndex = 16
         Me.ToolTip1.SetToolTip(Me.SplashPage, "The page that appears when you log in")
         '
@@ -479,9 +486,11 @@ Partial Class AdvancedForm
         '
         'GroupBox5
         '
+        Me.GroupBox5.Controls.Add(Me.Label19)
         Me.GroupBox5.Controls.Add(Me.Label16)
         Me.GroupBox5.Controls.Add(Me.Label15)
         Me.GroupBox5.Controls.Add(Me.TimerInterval)
+        Me.GroupBox5.Controls.Add(Me.SplashPage)
         Me.GroupBox5.Controls.Add(Me.ChatSpeed)
         Me.GroupBox5.Location = New System.Drawing.Point(198, 16)
         Me.GroupBox5.Name = "GroupBox5"
@@ -493,7 +502,7 @@ Partial Class AdvancedForm
         'Label16
         '
         Me.Label16.AutoSize = True
-        Me.Label16.Location = New System.Drawing.Point(45, 64)
+        Me.Label16.Location = New System.Drawing.Point(22, 61)
         Me.Label16.Name = "Label16"
         Me.Label16.Size = New System.Drawing.Size(43, 13)
         Me.Label16.TabIndex = 26
@@ -502,15 +511,15 @@ Partial Class AdvancedForm
         'Label15
         '
         Me.Label15.AutoSize = True
-        Me.Label15.Location = New System.Drawing.Point(11, 49)
+        Me.Label15.Location = New System.Drawing.Point(6, 49)
         Me.Label15.Name = "Label15"
-        Me.Label15.Size = New System.Drawing.Size(135, 13)
+        Me.Label15.Size = New System.Drawing.Size(81, 13)
         Me.Label15.TabIndex = 25
-        Me.Label15.Text = "Wallpaper Time in seconds"
+        Me.Label15.Text = "Wallpaper Time"
         '
         'TimerInterval
         '
-        Me.TimerInterval.Location = New System.Drawing.Point(105, 64)
+        Me.TimerInterval.Location = New System.Drawing.Point(107, 46)
         Me.TimerInterval.Name = "TimerInterval"
         Me.TimerInterval.Size = New System.Drawing.Size(39, 20)
         Me.TimerInterval.TabIndex = 24
@@ -576,9 +585,9 @@ Partial Class AdvancedForm
         'GroupBox7
         '
         Me.GroupBox7.Controls.Add(Me.WebStats)
-        Me.GroupBox7.Location = New System.Drawing.Point(777, 199)
+        Me.GroupBox7.Location = New System.Drawing.Point(390, 207)
         Me.GroupBox7.Name = "GroupBox7"
-        Me.GroupBox7.Size = New System.Drawing.Size(130, 48)
+        Me.GroupBox7.Size = New System.Drawing.Size(214, 48)
         Me.GroupBox7.TabIndex = 26
         Me.GroupBox7.TabStop = False
         Me.GroupBox7.Text = "WebStats"
@@ -637,15 +646,6 @@ Partial Class AdvancedForm
         Me.Label20.Size = New System.Drawing.Size(53, 13)
         Me.Label20.TabIndex = 13
         Me.Label20.Text = "Database"
-        '
-        'AddRegion
-        '
-        Me.AddRegion.Location = New System.Drawing.Point(11, 134)
-        Me.AddRegion.Name = "AddRegion"
-        Me.AddRegion.Size = New System.Drawing.Size(108, 23)
-        Me.AddRegion.TabIndex = 17
-        Me.AddRegion.Text = "Add Region"
-        Me.AddRegion.UseVisualStyleBackColor = True
         '
         'AdvancedForm
         '
