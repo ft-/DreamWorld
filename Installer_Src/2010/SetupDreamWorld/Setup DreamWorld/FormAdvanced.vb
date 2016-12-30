@@ -157,9 +157,17 @@ Public Class AdvancedForm
     End Sub
 
     Private Sub TimerInterval_TextChanged(sender As Object, e As EventArgs) Handles TimerInterval.TextChanged
-        My.Settings.TimerInterval = CInt(TimerInterval.Text)
-        If (My.Settings.TimerInterval > 0) Then
-            Form1.PaintImage()
+        If Len(TimerInterval.Text) > 0 Then
+            My.Settings.TimerInterval = CInt(TimerInterval.Text)
+            If (My.Settings.TimerInterval > 0) Then
+                Form1.PaintImage()
+            Else
+                Form1.PictureBox1.Visible = False
+            End If
+
+        Else
+            Form1.PictureBox1.Visible = False
+            My.Settings.TimerInterval = 0
         End If
     End Sub
 
