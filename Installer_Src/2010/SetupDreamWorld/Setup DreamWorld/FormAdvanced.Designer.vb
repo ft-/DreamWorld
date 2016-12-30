@@ -64,7 +64,6 @@ Partial Class AdvancedForm
         Me.ManagerGod = New System.Windows.Forms.CheckBox()
         Me.RegionGod = New System.Windows.Forms.CheckBox()
         Me.GroupBox5 = New System.Windows.Forms.GroupBox()
-        Me.Label16 = New System.Windows.Forms.Label()
         Me.Label15 = New System.Windows.Forms.Label()
         Me.TimerInterval = New System.Windows.Forms.TextBox()
         Me.ChatSpeed = New System.Windows.Forms.ComboBox()
@@ -80,6 +79,12 @@ Partial Class AdvancedForm
         Me.Label22 = New System.Windows.Forms.Label()
         Me.Label21 = New System.Windows.Forms.Label()
         Me.Label20 = New System.Windows.Forms.Label()
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.PhysicsODE = New System.Windows.Forms.RadioButton()
+        Me.PhysicsBullet = New System.Windows.Forms.RadioButton()
+        Me.PhysicsubODE = New System.Windows.Forms.RadioButton()
+        Me.PhysicsNone = New System.Windows.Forms.RadioButton()
+        Me.PhysicsSeparate = New System.Windows.Forms.RadioButton()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
         Me.Web.SuspendLayout()
@@ -87,6 +92,7 @@ Partial Class AdvancedForm
         Me.GroupBox5.SuspendLayout()
         Me.GroupBox7.SuspendLayout()
         Me.GroupBox8.SuspendLayout()
+        Me.GroupBox1.SuspendLayout()
         Me.SuspendLayout()
         '
         'GroupBox2
@@ -198,7 +204,7 @@ Partial Class AdvancedForm
         '
         'DbPort
         '
-        Me.DbPort.Location = New System.Drawing.Point(6, 38)
+        Me.DbPort.Location = New System.Drawing.Point(6, 41)
         Me.DbPort.Name = "DbPort"
         Me.DbPort.Size = New System.Drawing.Size(47, 20)
         Me.DbPort.TabIndex = 11
@@ -223,7 +229,7 @@ Partial Class AdvancedForm
         Me.GroupBox3.Controls.Add(Me.AutoBackup)
         Me.GroupBox3.Location = New System.Drawing.Point(12, 11)
         Me.GroupBox3.Name = "GroupBox3"
-        Me.GroupBox3.Size = New System.Drawing.Size(180, 121)
+        Me.GroupBox3.Size = New System.Drawing.Size(180, 127)
         Me.GroupBox3.TabIndex = 6
         Me.GroupBox3.TabStop = False
         Me.GroupBox3.Text = "Auto Backup"
@@ -303,9 +309,9 @@ Partial Class AdvancedForm
         Me.Label19.AutoSize = True
         Me.Label19.Location = New System.Drawing.Point(6, 76)
         Me.Label19.Name = "Label19"
-        Me.Label19.Size = New System.Drawing.Size(136, 13)
+        Me.Label19.Size = New System.Drawing.Size(139, 13)
         Me.Label19.TabIndex = 22
-        Me.Label19.Text = "Viewer Splash Screen URL"
+        Me.Label19.Text = "Viewer Splash Screen URL:"
         '
         'SmtpPassword
         '
@@ -487,39 +493,29 @@ Partial Class AdvancedForm
         'GroupBox5
         '
         Me.GroupBox5.Controls.Add(Me.Label19)
-        Me.GroupBox5.Controls.Add(Me.Label16)
         Me.GroupBox5.Controls.Add(Me.Label15)
         Me.GroupBox5.Controls.Add(Me.TimerInterval)
         Me.GroupBox5.Controls.Add(Me.SplashPage)
         Me.GroupBox5.Controls.Add(Me.ChatSpeed)
         Me.GroupBox5.Location = New System.Drawing.Point(198, 16)
         Me.GroupBox5.Name = "GroupBox5"
-        Me.GroupBox5.Size = New System.Drawing.Size(180, 116)
+        Me.GroupBox5.Size = New System.Drawing.Size(180, 122)
         Me.GroupBox5.TabIndex = 22
         Me.GroupBox5.TabStop = False
         Me.GroupBox5.Text = "Personality"
-        '
-        'Label16
-        '
-        Me.Label16.AutoSize = True
-        Me.Label16.Location = New System.Drawing.Point(22, 61)
-        Me.Label16.Name = "Label16"
-        Me.Label16.Size = New System.Drawing.Size(43, 13)
-        Me.Label16.TabIndex = 26
-        Me.Label16.Text = "(0 = off)"
         '
         'Label15
         '
         Me.Label15.AutoSize = True
         Me.Label15.Location = New System.Drawing.Point(6, 49)
         Me.Label15.Name = "Label15"
-        Me.Label15.Size = New System.Drawing.Size(81, 13)
+        Me.Label15.Size = New System.Drawing.Size(116, 13)
         Me.Label15.TabIndex = 25
-        Me.Label15.Text = "Wallpaper Time"
+        Me.Label15.Text = "Wallpaper Time (0=Off)"
         '
         'TimerInterval
         '
-        Me.TimerInterval.Location = New System.Drawing.Point(107, 46)
+        Me.TimerInterval.Location = New System.Drawing.Point(135, 46)
         Me.TimerInterval.Name = "TimerInterval"
         Me.TimerInterval.Size = New System.Drawing.Size(39, 20)
         Me.TimerInterval.TabIndex = 24
@@ -529,9 +525,9 @@ Partial Class AdvancedForm
         '
         Me.ChatSpeed.FormattingEnabled = True
         Me.ChatSpeed.Items.AddRange(New Object() {"Sleepy", "Awake", "After Coffee", "Too much Coffee"})
-        Me.ChatSpeed.Location = New System.Drawing.Point(25, 19)
+        Me.ChatSpeed.Location = New System.Drawing.Point(9, 19)
         Me.ChatSpeed.Name = "ChatSpeed"
-        Me.ChatSpeed.Size = New System.Drawing.Size(121, 21)
+        Me.ChatSpeed.Size = New System.Drawing.Size(165, 21)
         Me.ChatSpeed.TabIndex = 22
         Me.ToolTip1.SetToolTip(Me.ChatSpeed, "The speed the sleepy chat occurs")
         '
@@ -548,7 +544,7 @@ Partial Class AdvancedForm
         '
         'DbName
         '
-        Me.DbName.Location = New System.Drawing.Point(6, 61)
+        Me.DbName.Location = New System.Drawing.Point(6, 65)
         Me.DbName.Name = "DbName"
         Me.DbName.Size = New System.Drawing.Size(107, 20)
         Me.DbName.TabIndex = 12
@@ -557,7 +553,7 @@ Partial Class AdvancedForm
         '
         'DbUsername
         '
-        Me.DbUsername.Location = New System.Drawing.Point(6, 83)
+        Me.DbUsername.Location = New System.Drawing.Point(6, 87)
         Me.DbUsername.Name = "DbUsername"
         Me.DbUsername.Size = New System.Drawing.Size(107, 20)
         Me.DbUsername.TabIndex = 14
@@ -566,7 +562,7 @@ Partial Class AdvancedForm
         '
         'DbPassword
         '
-        Me.DbPassword.Location = New System.Drawing.Point(6, 105)
+        Me.DbPassword.Location = New System.Drawing.Point(6, 109)
         Me.DbPassword.Name = "DbPassword"
         Me.DbPassword.Size = New System.Drawing.Size(107, 20)
         Me.DbPassword.TabIndex = 15
@@ -606,7 +602,7 @@ Partial Class AdvancedForm
         Me.GroupBox8.Controls.Add(Me.DbPort)
         Me.GroupBox8.Location = New System.Drawing.Point(771, 8)
         Me.GroupBox8.Name = "GroupBox8"
-        Me.GroupBox8.Size = New System.Drawing.Size(189, 131)
+        Me.GroupBox8.Size = New System.Drawing.Size(189, 135)
         Me.GroupBox8.TabIndex = 27
         Me.GroupBox8.TabStop = False
         Me.GroupBox8.Text = "Database"
@@ -623,7 +619,7 @@ Partial Class AdvancedForm
         'Label22
         '
         Me.Label22.AutoSize = True
-        Me.Label22.Location = New System.Drawing.Point(119, 105)
+        Me.Label22.Location = New System.Drawing.Point(119, 109)
         Me.Label22.Name = "Label22"
         Me.Label22.Size = New System.Drawing.Size(53, 13)
         Me.Label22.TabIndex = 17
@@ -632,7 +628,7 @@ Partial Class AdvancedForm
         'Label21
         '
         Me.Label21.AutoSize = True
-        Me.Label21.Location = New System.Drawing.Point(119, 83)
+        Me.Label21.Location = New System.Drawing.Point(119, 87)
         Me.Label21.Name = "Label21"
         Me.Label21.Size = New System.Drawing.Size(55, 13)
         Me.Label21.TabIndex = 16
@@ -641,15 +637,89 @@ Partial Class AdvancedForm
         'Label20
         '
         Me.Label20.AutoSize = True
-        Me.Label20.Location = New System.Drawing.Point(119, 61)
+        Me.Label20.Location = New System.Drawing.Point(119, 65)
         Me.Label20.Name = "Label20"
         Me.Label20.Size = New System.Drawing.Size(53, 13)
         Me.Label20.TabIndex = 13
         Me.Label20.Text = "Database"
         '
+        'GroupBox1
+        '
+        Me.GroupBox1.Controls.Add(Me.PhysicsSeparate)
+        Me.GroupBox1.Controls.Add(Me.PhysicsNone)
+        Me.GroupBox1.Controls.Add(Me.PhysicsubODE)
+        Me.GroupBox1.Controls.Add(Me.PhysicsBullet)
+        Me.GroupBox1.Controls.Add(Me.PhysicsODE)
+        Me.GroupBox1.Location = New System.Drawing.Point(207, 145)
+        Me.GroupBox1.Name = "GroupBox1"
+        Me.GroupBox1.Size = New System.Drawing.Size(183, 111)
+        Me.GroupBox1.TabIndex = 28
+        Me.GroupBox1.TabStop = False
+        Me.GroupBox1.Text = "Physics Engine"
+        '
+        'PhysicsODE
+        '
+        Me.PhysicsODE.AutoSize = True
+        Me.PhysicsODE.Location = New System.Drawing.Point(6, 38)
+        Me.PhysicsODE.Name = "PhysicsODE"
+        Me.PhysicsODE.Size = New System.Drawing.Size(136, 17)
+        Me.PhysicsODE.TabIndex = 0
+        Me.PhysicsODE.TabStop = True
+        Me.PhysicsODE.Text = "Open Dynamics Engine"
+        Me.ToolTip1.SetToolTip(Me.PhysicsODE, "ODE is the original physics enfgine for Opensim. It should only be used for backw" &
+        "ards compatibility in 0.8.2.1")
+        Me.PhysicsODE.UseVisualStyleBackColor = True
+        '
+        'PhysicsBullet
+        '
+        Me.PhysicsBullet.AutoSize = True
+        Me.PhysicsBullet.Location = New System.Drawing.Point(6, 74)
+        Me.PhysicsBullet.Name = "PhysicsBullet"
+        Me.PhysicsBullet.Size = New System.Drawing.Size(90, 17)
+        Me.PhysicsBullet.TabIndex = 1
+        Me.PhysicsBullet.TabStop = True
+        Me.PhysicsBullet.Text = "Bullet Physics"
+        Me.PhysicsBullet.UseVisualStyleBackColor = True
+        '
+        'PhysicsubODE
+        '
+        Me.PhysicsubODE.AutoSize = True
+        Me.PhysicsubODE.Location = New System.Drawing.Point(6, 56)
+        Me.PhysicsubODE.Name = "PhysicsubODE"
+        Me.PhysicsubODE.Size = New System.Drawing.Size(60, 17)
+        Me.PhysicsubODE.TabIndex = 2
+        Me.PhysicsubODE.TabStop = True
+        Me.PhysicsubODE.Text = "ubODE"
+        Me.PhysicsubODE.UseVisualStyleBackColor = True
+        '
+        'PhysicsNone
+        '
+        Me.PhysicsNone.AutoSize = True
+        Me.PhysicsNone.Location = New System.Drawing.Point(6, 19)
+        Me.PhysicsNone.Name = "PhysicsNone"
+        Me.PhysicsNone.Size = New System.Drawing.Size(51, 17)
+        Me.PhysicsNone.TabIndex = 3
+        Me.PhysicsNone.TabStop = True
+        Me.PhysicsNone.Text = "None"
+        Me.ToolTip1.SetToolTip(Me.PhysicsNone, "None - Your avatar will not be able to move. USeful in large presentations with O" &
+        "nlook with no Avatar")
+        Me.PhysicsNone.UseVisualStyleBackColor = True
+        '
+        'PhysicsSeparate
+        '
+        Me.PhysicsSeparate.AutoSize = True
+        Me.PhysicsSeparate.Location = New System.Drawing.Point(6, 92)
+        Me.PhysicsSeparate.Name = "PhysicsSeparate"
+        Me.PhysicsSeparate.Size = New System.Drawing.Size(139, 17)
+        Me.PhysicsSeparate.TabIndex = 4
+        Me.PhysicsSeparate.TabStop = True
+        Me.PhysicsSeparate.Text = "Bullet in separate thread"
+        Me.PhysicsSeparate.UseVisualStyleBackColor = True
+        '
         'AdvancedForm
         '
-        Me.ClientSize = New System.Drawing.Size(976, 261)
+        Me.ClientSize = New System.Drawing.Size(976, 263)
+        Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.GroupBox8)
         Me.Controls.Add(Me.GroupBox7)
         Me.Controls.Add(Me.GroupBox5)
@@ -675,6 +745,8 @@ Partial Class AdvancedForm
         Me.GroupBox7.PerformLayout()
         Me.GroupBox8.ResumeLayout(False)
         Me.GroupBox8.PerformLayout()
+        Me.GroupBox1.ResumeLayout(False)
+        Me.GroupBox1.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -706,7 +778,6 @@ Partial Class AdvancedForm
     Friend WithEvents RegionGod As CheckBox
     Friend WithEvents ParcelGod As CheckBox
     Friend WithEvents GroupBox5 As GroupBox
-    Friend WithEvents Label16 As Label
     Friend WithEvents Label15 As Label
     Friend WithEvents TimerInterval As TextBox
     Friend WithEvents ChatSpeed As ComboBox
@@ -735,4 +806,10 @@ Partial Class AdvancedForm
     Friend WithEvents Label19 As Label
     Friend WithEvents RegionButton As Button
     Friend WithEvents AddRegion As Button
+    Friend WithEvents GroupBox1 As GroupBox
+    Friend WithEvents PhysicsNone As RadioButton
+    Friend WithEvents PhysicsubODE As RadioButton
+    Friend WithEvents PhysicsBullet As RadioButton
+    Friend WithEvents PhysicsODE As RadioButton
+    Friend WithEvents PhysicsSeparate As RadioButton
 End Class

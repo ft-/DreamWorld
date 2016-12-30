@@ -653,6 +653,18 @@ Namespace My
                 Me("SplashPage") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("3")>  _
+        Public Property Physics() As Integer
+            Get
+                Return CType(Me("Physics"),Integer)
+            End Get
+            Set
+                Me("Physics") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

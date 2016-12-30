@@ -84,6 +84,25 @@ Public Class AdvancedForm
         DbPassword.Text = My.Settings.DBPassword
         SplashPage.Text = My.Settings.SplashPage
 
+
+        ' physics engines differ between 0.8.2.1 and 0.9.1
+        If My.Settings.GridFolder = "Opensim" And PhysicsubODE.Checked Then
+            My.Settings.Physics = 3 ' They just switched engines, set a default of Bullet, separate thread for 0.8.1
+            PhysicsubODE.Enabled = False
+            PhysicsSeparate.Checked = True
+        End If
+
+
+        Select Case My.Settings.Physics
+            Case 0 : PhysicsNone.Checked = True
+            Case 1 : PhysicsODE.Checked = True
+            Case 2 : PhysicsBullet.Checked = True
+            Case 3 : PhysicsSeparate.Checked = True
+            Case 4 : PhysicsubODE.Checked = True
+            Case Else : PhysicsSeparate.Checked = True
+        End Select
+
+
     End Sub
 
     Private Sub DiagPort_TextChanged(sender As Object, e As EventArgs) Handles DiagPort.TextChanged
@@ -277,6 +296,37 @@ Public Class AdvancedForm
         Catch ex As Exception
             Form1.Log("Info:" + ex.Message)
         End Try
+    End Sub
+
+    Private Sub PhysicsNone_CheckedChanged(sender As Object, e As EventArgs) Handles PhysicsNone.CheckedChanged
+        If PhysicsNone.Checked Then
+            My.Settings.Physics = 0
+        End If
+    End Sub
+
+    Private Sub RadioButton1_CheckedChanged(sender As Object, e As EventArgs) Handles PhysicsODE.CheckedChanged
+        If PhysicsODE.Checked Then
+            My.Settings.Physics = 1
+        End If
+    End Sub
+
+    Private Sub PhysicsBullet_CheckedChanged(sender As Object, e As EventArgs) Handles PhysicsBullet.CheckedChanged
+        If PhysicsBullet.Checked Then
+            My.Settings.Physics = 2
+        End If
+    End Sub
+
+    Private Sub PhysicsSeparate_CheckedChanged(sender As Object, e As EventArgs) Handles PhysicsSeparate.CheckedChanged
+        If PhysicsSeparate.Checked Then
+            My.Settings.Physics = 3
+        End If
+    End Sub
+
+    Private Sub PhysicsubODE_CheckedChanged(sender As Object, e As EventArgs) Handles PhysicsubODE.CheckedChanged
+        If PhysicsubODE.Checked Then
+            My.Settings.Physics = 4
+        End If
+
     End Sub
 
 

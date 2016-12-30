@@ -713,6 +713,48 @@ Public Class Form1
             LoadIni(MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\config-include\MyWorld.ini", ";")
         End If
 
+
+        ' Physics
+        ' choices for meshmerizer, where Ubit's ODE requires a special one
+        ' mesging = ZeroMesher
+        ' meshing = Meshmerizer
+        ' meshing = ubODEMeshmerizer
+
+        ' 0 = physics = none
+        ' 1 = OpenDynamicsEngine
+        ' 2 = physics = BulletSim
+        ' 3 = physics = BulletSim with threads
+        ' 4 = physics = ubODE
+
+        Select Case My.Settings.Physics
+            Case 0
+                SetIni("Startup", "meshing", "ZeroMesher")
+                SetIni("Startup", "physics", "basicphysics")
+                SetIni("Startup", "UseSeparatePhysicsThread", "false")
+            Case 1
+                SetIni("Startup", "meshing", "Meshmerizer")
+                SetIni("Startup", "physics", "OpenDynamicsEngine")
+                SetIni("Startup", "UseSeparatePhysicsThread", "false")
+            Case 2
+                SetIni("Startup", "meshing", "Meshmerizer")
+                SetIni("Startup", "physics", "BulletSim")
+                SetIni("Startup", "UseSeparatePhysicsThread", "false")
+            Case 3
+                SetIni("Startup", "meshing", "Meshmerizer")
+                SetIni("Startup", "physics", "BulletSim")
+                SetIni("Startup", "UseSeparatePhysicsThread", "true")
+            Case 4
+                SetIni("Startup", "meshing", "ubODEMeshmerizer")
+                SetIni("Startup", "physics", "ubODE")
+                SetIni("Startup", "UseSeparatePhysicsThread", "false")
+            Case Else
+                SetIni("Startup", "meshing", "Meshmerizer")
+                SetIni("Startup", "physics", "BulletSim")
+                SetIni("Startup", "UseSeparatePhysicsThread", "true")
+        End Select
+
+
+
         ' set MySql
         Dim ConnectionString = """" _
             + "Data Source=" + My.Settings.DBSource _
