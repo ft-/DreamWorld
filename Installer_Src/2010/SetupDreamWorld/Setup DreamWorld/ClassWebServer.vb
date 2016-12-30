@@ -5,14 +5,13 @@ Imports System.Text
 Imports System.Threading
 Imports System.Xml
 
-Public Class Net
+Public Class NetServer
     Private LocalTCPListener As TcpListener
     Dim listen As Boolean = True
-    Private LocalPort As Integer
     Private LocalAddress As IPAddress
     Private WebThread As Thread
     Private Shared blnFlag As Boolean
-    Private Shared singleWebserver As Net
+    Private Shared singleWebserver As NetServer
     Private gMyFolder As String
 
     Private Sub New()
@@ -88,9 +87,9 @@ Public Class Net
         Log("Stopped Webserver")
     End Sub
 
-    Friend Shared Function getWebServer() As Net
+    Friend Shared Function getWebServer() As NetServer
         If Not blnFlag Then
-            singleWebserver = New Net
+            singleWebserver = New NetServer
             blnFlag = True
             Return singleWebserver
         Else

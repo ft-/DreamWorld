@@ -101,10 +101,10 @@ Public Class UPNP
     ''' <exception cref="ObjectDisposedException">This exception is thrown when this class has been disposed.</exception>
     ''' <exception cref="ArgumentException">This exception is thrown when any of the supplied arguments are invalid.</exception>
     ''' <remarks></remarks>
-    Public Sub Add(ByVal localIP As String, ByVal Port As Integer, ByVal prot As Protocol, ByVal desc As String)
+    Public Sub Add(ByVal localIP As String, ByVal port As Integer, ByVal prot As Protocol, ByVal desc As String)
 
         ' Begin utilizing
-        If Exists(Port, prot) Then Throw New ArgumentException("This mapping already exists!", "Port;prot")
+        If Exists(port, prot) Then Throw New ArgumentException("This mapping already exists!", "Port;prot")
 
         ' Check
         If Not IsPrivateIP(localIP) Then Throw New ArgumentException("This is not a local IP address!", "localIP")
@@ -113,7 +113,7 @@ Public Class UPNP
         If Not staticEnabled Then Throw New ApplicationException("UPnP is not enabled, or there was an error with UPnP Initialization.")
 
         ' Okay, continue on
-        staticMapping.Add(Port, prot.ToString(), Port, localIP, True, desc)
+        staticMapping.Add(port, prot.ToString(), port, localIP, True, desc)
 
     End Sub
 
@@ -126,16 +126,16 @@ Public Class UPNP
     ''' <exception cref="ObjectDisposedException">This exception is thrown when this class has been disposed.</exception>
     ''' <exception cref="ArgumentException">This exception is thrown when the port [or protocol] is invalid.</exception>
     ''' <remarks></remarks>
-    Public Sub Remove(ByVal Port As Integer, ByVal Prot As Protocol)
+    Public Sub Remove(ByVal port As Integer, ByVal prot As Protocol)
 
         ' Begin utilizing
-        If Not Exists(Port, Prot) Then Throw New ArgumentException("This mapping doesn't exist!", "Port;prot")
+        If Not Exists(port, prot) Then Throw New ArgumentException("This mapping doesn't exist!", "port;prot")
 
         ' Final check!
         If Not staticEnabled Then Throw New ApplicationException("UPnP is not enabled, or there was an error with UPnP Initialization.")
 
         ' Okay, continue on
-        staticMapping.Remove(Port, Prot.ToString)
+        staticMapping.Remove(port, prot.ToString)
 
     End Sub
 
@@ -148,7 +148,7 @@ Public Class UPNP
     ''' <exception cref="ObjectDisposedException">This exception is thrown when this class has been disposed.</exception>
     ''' <exception cref="ArgumentException">This exception is thrown when the port [or protocol] is invalid.</exception>
     ''' <remarks></remarks>
-    Public Function Exists(ByVal Port As Integer, ByVal Prot As Protocol) As Boolean
+    Public Function Exists(ByVal port As Integer, ByVal prot As Protocol) As Boolean
 
         ' Final check!
         If Not staticEnabled Then Throw New ApplicationException("UPnP is not enabled, or there was an error with UPnP Initialization.")
@@ -157,7 +157,7 @@ Public Class UPNP
         For Each mapping As NATUPNPLib.IStaticPortMapping In staticMapping
 
             ' Compare
-            If mapping.ExternalPort.Equals(Port) AndAlso mapping.Protocol.ToString.Equals(Prot.ToString) Then
+            If mapping.ExternalPort.Equals(port) AndAlso mapping.Protocol.ToString.Equals(prot.ToString) Then
                 Return True
             End If
 

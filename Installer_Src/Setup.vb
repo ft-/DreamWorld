@@ -48,7 +48,7 @@ Public Class Form1
     Dim gCurSlashDir As String '  holds the current directory info in Unix format
     Dim isRunning As Boolean = False
     Dim Arnd = New Random()
-    Dim ws As Net
+    Dim ws As NetServer
     Public gChatTime As Integer
 
     Dim client As New System.Net.WebClient
@@ -203,7 +203,6 @@ Public Class Form1
         End If
         gCurSlashDir = MyFolder.Replace("\", "/")    ' because Mysql uses unix like slashes, that's why
 
-
         Try
             My.Computer.FileSystem.RenameFile(MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\Regions\RegionConfig.ini", "Outworldz.ini")
         Catch ex As Exception
@@ -224,9 +223,9 @@ Public Class Form1
 
         ClearLogFiles() ' clear log fles
 
-        Log("Info: Loading Web Server")
-        ws = Net.getWebServer
-        Log("Info: Starting Web Server")
+        Log("Info:Loading Web Server")
+        ws = NetServer.getWebServer
+        Log("Info:Starting Web Server")
         ws.StartServer(MyFolder)
         BumpProgress10()
 
@@ -407,7 +406,7 @@ Public Class Form1
         Try
             RemoveGrid()    ' puts Onlook back to default
         Catch ex As Exception
-            Log("Info: grid settings set back to defaults" + ex.Message)
+            Log("Info:grid settings set back to defaults" + ex.Message)
         End Try
 
     End Sub
@@ -799,27 +798,40 @@ Public Class Form1
         SaveINI()
 
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+        'Regions - write all region.ini files with public IP and Public port
+        Dim counter As Integer = 1
+        Dim L = aRegion.GetUpperBound(0)
+        While counter <= L
+            Dim simName = aRegion(counter).RegionName
+            LoadIni(MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\Regions\" + simName + ".ini", ";")
+            SetIni(simName, "InternalPort", aRegion(counter).RegionPort)
+            SetIni(simName, "ExternalHostName", My.Settings.PublicIP)
+            SaveINI()
+            counter += 1
+        End While
+
+        ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
         ' Grid
         If My.Settings.GridFolder = "Opensim" Then
-            Log("Info: 0.8.2.1 enabled")
+            Log("Info:0.8.2.1 enabled")
             mnuHyperGrid.Checked = True
             mnu9.Checked = False
         Else
-            Log("0.9 enabled")
+            Log("Info:0.9.1 enabled")
             mnuHyperGrid.Checked = False
             mnu9.Checked = True
         End If
 
         'Onlook viewer
         If My.Settings.Onlook = True Then
-            Log("InfoOnlook viewer mode")
+            Log("Info:Onlook viewer mode")
             mnuOther.Checked = False
             mnuOnlook.Checked = True
             VUI.Visible = True
             AvatarVisible.Visible = True
         Else
-            Log("Info: Other viewer mode")
+            Log("Info:Other viewer mode")
             mnuOther.Checked = True
             mnuOnlook.Checked = False
             VUI.Visible = False
@@ -829,6 +841,7 @@ Public Class Form1
     End Sub
 
 #End Region
+
 #Region "Regions"
 
     Public Sub GetAllRegions()
@@ -845,7 +858,7 @@ Public Class Form1
                 Dim pos = InStrRev(FileName, "\")
                 Dim name As String = Mid(FileName, pos + 1)
                 Dim fname = Mid(name, 1, Len(name) - 4)
-                Dim longName = MyFolder + "\OutworldzFiles\" + My.Settings.GridFolder + "\bin\Regions\" + name
+                Dim longName = MyFolder + "\OutworldzFiles\" + My.Settings.GridFolder + "\bin\Regions\" + fname + ".ini"
 
                 aRegion(index).RegionName = fname
                 aRegion(index).UUID = GetIni(longName, fname, "RegionUUID", ";")
@@ -858,10 +871,8 @@ Public Class Form1
                 Dim parts As String() = C.Split(New Char() {","c}) ' split at the comma
                 aRegion(index).CoordX = parts(0)
                 aRegion(index).CoordY = parts(1)
-
-
             Catch ex As Exception
-                Log(ex.Message)
+                Log("Err: Parse file " + Name + ":" + ex.Message)
             End Try
         Next
     End Sub
@@ -1552,7 +1563,7 @@ Public Class Form1
         End If
 
         If Not My.Settings.ViewerInstalled Then
-            Log("Info: Onlook viewer is not installed")
+            Log("Info:Onlook viewer is not installed")
             Return
         End If
         ' we have to change the viewer Grid settings if we are on localhost

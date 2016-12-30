@@ -1,7 +1,6 @@
 ﻿Imports IniParser
 Imports System.IO
 
-
 Public Class AdvancedForm
 #Region "Declarations"
 
@@ -11,14 +10,20 @@ Public Class AdvancedForm
 #Region "Functions"
 
     Friend WithEvents Label1 As Label
-    Public Property Form2 As Object
-
     Dim Sleepy As Integer = 1500
     Dim Awake As Integer = 1000
     Dim Coffee As Integer = 500
     Dim Toomuch As Integer = 0
 
-    Private Shared ActualForm(0) As FormRegion
+    Private Class Region_data
+        Public RegionName As String
+        Public UUID As String
+        Public CoordX As Integer
+        Public CoordY As String
+        Public RegionPort As Integer
+        Public SizeX As Integer
+        Public SizeY As Integer
+    End Class
 
     Private Sub Loaded(sender As Object, e As EventArgs) Handles Me.Load
 
@@ -79,11 +84,6 @@ Public Class AdvancedForm
         DbPassword.Text = My.Settings.DBPassword
         SplashPage.Text = My.Settings.SplashPage
 
-    End Sub
-
-    Private Sub Form2_Closed(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Closed
-        My.Settings.Save()
-        Form1.ActualForm = Nothing
     End Sub
 
     Private Sub DiagPort_TextChanged(sender As Object, e As EventArgs) Handles DiagPort.TextChanged
@@ -217,7 +217,7 @@ Public Class AdvancedForm
         My.Settings.PublicPort = PublicPort.Text
     End Sub
 
-    Private Sub RegionButton1_Click(sender As Object, e As EventArgs) Handles RegionButton1.Click
+    Private Sub RegionButton1_Click(sender As Object, e As EventArgs) Handles RegionButton.Click
 
         Dim X As Integer = 300
         Dim Y As Integer = 200
@@ -228,26 +228,47 @@ Public Class AdvancedForm
             Try
                 fname = Form1.aRegion(counter).RegionName
 
-                Array.Resize(ActualForm, ActualForm.Length + 1)
-                Dim index = ActualForm.Length - 1
-                ActualForm(index) = New FormRegion ' Bring one form into memory 
-
-                ' Set the new form's desktop location so it appears below and
-                ' to the right of the current form.
-                ActualForm(index).SetDesktopLocation(X, Y)
-                ActualForm(index).Init(counter)
-                ActualForm(index).Activate()
-                ActualForm(index).Visible = True
-
+                Dim ActualForm As New FormRegion
+                ActualForm.SetDesktopLocation(X, Y)
+                ActualForm.Init(counter)
+                ActualForm.Activate()
+                ActualForm.Visible = True
                 Application.DoEvents()
             Catch ex As Exception
-                Dim str = ex.Message
+                Form1.Log("Info:" + ex.Message)
             End Try
 
             counter = counter + 1
             Y += 100
             X += 100
         End While
+    End Sub
+
+    Private Sub AddRegion_Click(sender As Object, e As EventArgs) Handles AddRegion.Click
+
+        Dim X As Integer = 300
+        Dim Y As Integer = 200
+
+        Array.Resize(Form1.aRegion, Form1.aRegion.Length + 1)
+        Dim index = Form1.aRegion.Length - 1
+        Form1.aRegion(index) = New Region_data
+        Form1.aRegion(index).RegionPort = 0
+        Form1.aRegion(index).CoordX = 0
+        Form1.aRegion(index).CoordY = 0
+        Form1.aRegion(index).SizeX = 256
+        Form1.aRegion(index).SizeY = 256
+        Form1.aRegion(index).UUID = ""
+        Form1.aRegion(index).RegionName = ""
+
+        Try
+            Dim ActualForm As New FormRegion
+            ActualForm.SetDesktopLocation(X, Y)
+            ActualForm.Init(index)
+            ActualForm.Activate()
+            ActualForm.Visible = True
+        Catch ex As Exception
+            Form1.Log("Info:" + ex.Message)
+        End Try
     End Sub
 
 

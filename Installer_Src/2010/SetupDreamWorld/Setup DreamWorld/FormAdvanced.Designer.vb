@@ -24,7 +24,7 @@ Partial Class AdvancedForm
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
-        Me.RegionButton1 = New System.Windows.Forms.Button()
+        Me.RegionButton = New System.Windows.Forms.Button()
         Me.Label7 = New System.Windows.Forms.Label()
         Me.DnsName = New System.Windows.Forms.TextBox()
         Me.PublicPort = New System.Windows.Forms.TextBox()
@@ -79,6 +79,7 @@ Partial Class AdvancedForm
         Me.Label22 = New System.Windows.Forms.Label()
         Me.Label21 = New System.Windows.Forms.Label()
         Me.Label20 = New System.Windows.Forms.Label()
+        Me.AddRegion = New System.Windows.Forms.Button()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
         Me.Web.SuspendLayout()
@@ -90,7 +91,8 @@ Partial Class AdvancedForm
         '
         'GroupBox2
         '
-        Me.GroupBox2.Controls.Add(Me.RegionButton1)
+        Me.GroupBox2.Controls.Add(Me.AddRegion)
+        Me.GroupBox2.Controls.Add(Me.RegionButton)
         Me.GroupBox2.Controls.Add(Me.Label7)
         Me.GroupBox2.Controls.Add(Me.DnsName)
         Me.GroupBox2.Controls.Add(Me.PublicPort)
@@ -106,14 +108,14 @@ Partial Class AdvancedForm
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Ports"
         '
-        'RegionButton1
+        'RegionButton
         '
-        Me.RegionButton1.Location = New System.Drawing.Point(11, 108)
-        Me.RegionButton1.Name = "RegionButton1"
-        Me.RegionButton1.Size = New System.Drawing.Size(108, 23)
-        Me.RegionButton1.TabIndex = 16
-        Me.RegionButton1.Text = "Configure Regions"
-        Me.RegionButton1.UseVisualStyleBackColor = True
+        Me.RegionButton.Location = New System.Drawing.Point(11, 108)
+        Me.RegionButton.Name = "RegionButton"
+        Me.RegionButton.Size = New System.Drawing.Size(108, 23)
+        Me.RegionButton.TabIndex = 16
+        Me.RegionButton.Text = "Configure Regions"
+        Me.RegionButton.UseVisualStyleBackColor = True
         '
         'Label7
         '
@@ -636,6 +638,15 @@ Partial Class AdvancedForm
         Me.Label20.TabIndex = 13
         Me.Label20.Text = "Database"
         '
+        'AddRegion
+        '
+        Me.AddRegion.Location = New System.Drawing.Point(11, 134)
+        Me.AddRegion.Name = "AddRegion"
+        Me.AddRegion.Size = New System.Drawing.Size(108, 23)
+        Me.AddRegion.TabIndex = 17
+        Me.AddRegion.Text = "Add Region"
+        Me.AddRegion.UseVisualStyleBackColor = True
+        '
         'AdvancedForm
         '
         Me.ClientSize = New System.Drawing.Size(976, 261)
@@ -722,5 +733,6 @@ Partial Class AdvancedForm
     Friend WithEvents DbConnection As TextBox
     Friend WithEvents SplashPage As TextBox
     Friend WithEvents Label19 As Label
-    Friend WithEvents RegionButton1 As Button
+    Friend WithEvents RegionButton As Button
+    Friend WithEvents AddRegion As Button
 End Class
