@@ -88,10 +88,16 @@ Public Class AdvancedForm
         ' physics engines differ between 0.8.2.1 and 0.9.1
         If My.Settings.GridFolder = "Opensim" And PhysicsubODE.Checked Then
             My.Settings.Physics = 3 ' They just switched engines, set a default of Bullet, separate thread for 0.8.1
-            PhysicsubODE.Enabled = False
             PhysicsSeparate.Checked = True
         End If
 
+        If My.Settings.GridFolder = "Opensim" Then
+            PhysicsubODE.Enabled = False
+            Web.Enabled = False
+        Else
+            PhysicsubODE.Enabled = True
+            Web.Enabled = True
+        End If
 
         Select Case My.Settings.Physics
             Case 0 : PhysicsNone.Checked = True
@@ -102,6 +108,14 @@ Public Class AdvancedForm
             Case Else : PhysicsSeparate.Checked = True
         End Select
 
+        ' Grid
+        If My.Settings.GridFolder = "Opensim" Then
+            OpensimOld.Checked = True
+            Form1.Log("Info:0.8.2.1 enabled")
+        Else
+            OpensImNew.Checked = True
+            Form1.Log("Info:0.9.1 enabled")
+        End If
 
     End Sub
 
@@ -183,7 +197,6 @@ Public Class AdvancedForm
             Else
                 Form1.PictureBox1.Visible = False
             End If
-
         Else
             Form1.PictureBox1.Visible = False
             My.Settings.TimerInterval = 0
@@ -326,9 +339,19 @@ Public Class AdvancedForm
         If PhysicsubODE.Checked Then
             My.Settings.Physics = 4
         End If
-
     End Sub
 
+    Private Sub OpensImNew_CheckedChanged(sender As Object, e As EventArgs) Handles OpensImNew.CheckedChanged
+        My.Settings.GridFolder = "Opensim-0.9"
+        My.Settings.Save()
+        Form1.ViewWebUI.Visible = False
+    End Sub
+
+    Private Sub OpensimOld_CheckedChanged(sender As Object, e As EventArgs) Handles OpensimOld.CheckedChanged
+        My.Settings.GridFolder = "Opensim"
+        My.Settings.Save()
+        Form1.ViewWebUI.Visible = True
+    End Sub
 
 #End Region
 

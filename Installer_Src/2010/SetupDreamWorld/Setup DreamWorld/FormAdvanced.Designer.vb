@@ -26,8 +26,8 @@ Partial Class AdvancedForm
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
         Me.AddRegion = New System.Windows.Forms.Button()
         Me.RegionButton = New System.Windows.Forms.Button()
-        Me.Label7 = New System.Windows.Forms.Label()
         Me.DnsName = New System.Windows.Forms.TextBox()
+        Me.Label7 = New System.Windows.Forms.Label()
         Me.PublicPort = New System.Windows.Forms.TextBox()
         Me.DiagPort = New System.Windows.Forms.TextBox()
         Me.Label6 = New System.Windows.Forms.Label()
@@ -43,10 +43,8 @@ Partial Class AdvancedForm
         Me.AutoBackupInterval = New System.Windows.Forms.ComboBox()
         Me.AutoBackup = New System.Windows.Forms.CheckBox()
         Me.Web = New System.Windows.Forms.GroupBox()
-        Me.Label19 = New System.Windows.Forms.Label()
         Me.SmtpPassword = New System.Windows.Forms.TextBox()
         Me.Label18 = New System.Windows.Forms.Label()
-        Me.SplashPage = New System.Windows.Forms.TextBox()
         Me.Label14 = New System.Windows.Forms.Label()
         Me.Label17 = New System.Windows.Forms.Label()
         Me.SmtpUsername = New System.Windows.Forms.TextBox()
@@ -58,6 +56,8 @@ Partial Class AdvancedForm
         Me.Label11 = New System.Windows.Forms.Label()
         Me.Label10 = New System.Windows.Forms.Label()
         Me.Password = New System.Windows.Forms.TextBox()
+        Me.Label19 = New System.Windows.Forms.Label()
+        Me.SplashPage = New System.Windows.Forms.TextBox()
         Me.AllowGod = New System.Windows.Forms.CheckBox()
         Me.GroupBox4 = New System.Windows.Forms.GroupBox()
         Me.ParcelGod = New System.Windows.Forms.CheckBox()
@@ -73,6 +73,8 @@ Partial Class AdvancedForm
         Me.DbUsername = New System.Windows.Forms.TextBox()
         Me.DbPassword = New System.Windows.Forms.TextBox()
         Me.DbConnection = New System.Windows.Forms.TextBox()
+        Me.PhysicsODE = New System.Windows.Forms.RadioButton()
+        Me.PhysicsNone = New System.Windows.Forms.RadioButton()
         Me.GroupBox7 = New System.Windows.Forms.GroupBox()
         Me.GroupBox8 = New System.Windows.Forms.GroupBox()
         Me.Label23 = New System.Windows.Forms.Label()
@@ -80,11 +82,12 @@ Partial Class AdvancedForm
         Me.Label21 = New System.Windows.Forms.Label()
         Me.Label20 = New System.Windows.Forms.Label()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
-        Me.PhysicsODE = New System.Windows.Forms.RadioButton()
-        Me.PhysicsBullet = New System.Windows.Forms.RadioButton()
-        Me.PhysicsubODE = New System.Windows.Forms.RadioButton()
-        Me.PhysicsNone = New System.Windows.Forms.RadioButton()
         Me.PhysicsSeparate = New System.Windows.Forms.RadioButton()
+        Me.PhysicsubODE = New System.Windows.Forms.RadioButton()
+        Me.PhysicsBullet = New System.Windows.Forms.RadioButton()
+        Me.GroupBox6 = New System.Windows.Forms.GroupBox()
+        Me.OpensimOld = New System.Windows.Forms.RadioButton()
+        Me.OpensImNew = New System.Windows.Forms.RadioButton()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
         Me.Web.SuspendLayout()
@@ -93,6 +96,7 @@ Partial Class AdvancedForm
         Me.GroupBox7.SuspendLayout()
         Me.GroupBox8.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
+        Me.GroupBox6.SuspendLayout()
         Me.SuspendLayout()
         '
         'GroupBox2
@@ -132,15 +136,6 @@ Partial Class AdvancedForm
         Me.RegionButton.Text = "Configure Regions"
         Me.RegionButton.UseVisualStyleBackColor = True
         '
-        'Label7
-        '
-        Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(14, 16)
-        Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(120, 13)
-        Me.Label7.TabIndex = 15
-        Me.Label7.Text = "DNS Name (if available)"
-        '
         'DnsName
         '
         Me.DnsName.Location = New System.Drawing.Point(12, 38)
@@ -149,6 +144,15 @@ Partial Class AdvancedForm
         Me.DnsName.TabIndex = 14
         Me.ToolTip1.SetToolTip(Me.DnsName, "MySQL port is normally 3306. I add one so it will not interfere with other instal" &
         "lations.")
+        '
+        'Label7
+        '
+        Me.Label7.AutoSize = True
+        Me.Label7.Location = New System.Drawing.Point(14, 16)
+        Me.Label7.Name = "Label7"
+        Me.Label7.Size = New System.Drawing.Size(120, 13)
+        Me.Label7.TabIndex = 15
+        Me.Label7.Text = "DNS Name (if available)"
         '
         'PublicPort
         '
@@ -304,15 +308,6 @@ Partial Class AdvancedForm
         Me.Web.TabStop = False
         Me.Web.Text = "Wifi Interface Admin (0.8.2.1 only)"
         '
-        'Label19
-        '
-        Me.Label19.AutoSize = True
-        Me.Label19.Location = New System.Drawing.Point(6, 76)
-        Me.Label19.Name = "Label19"
-        Me.Label19.Size = New System.Drawing.Size(139, 13)
-        Me.Label19.TabIndex = 22
-        Me.Label19.Text = "Viewer Splash Screen URL:"
-        '
         'SmtpPassword
         '
         Me.SmtpPassword.Location = New System.Drawing.Point(88, 162)
@@ -330,14 +325,6 @@ Partial Class AdvancedForm
         Me.Label18.Size = New System.Drawing.Size(82, 13)
         Me.Label18.TabIndex = 21
         Me.Label18.Text = "Gmail Password"
-        '
-        'SplashPage
-        '
-        Me.SplashPage.Location = New System.Drawing.Point(6, 94)
-        Me.SplashPage.Name = "SplashPage"
-        Me.SplashPage.Size = New System.Drawing.Size(168, 20)
-        Me.SplashPage.TabIndex = 16
-        Me.ToolTip1.SetToolTip(Me.SplashPage, "The page that appears when you log in")
         '
         'Label14
         '
@@ -435,6 +422,23 @@ Partial Class AdvancedForm
         Me.Password.TabIndex = 8
         Me.ToolTip1.SetToolTip(Me.Password, "Password for Administering your grid")
         Me.Password.UseSystemPasswordChar = True
+        '
+        'Label19
+        '
+        Me.Label19.AutoSize = True
+        Me.Label19.Location = New System.Drawing.Point(6, 76)
+        Me.Label19.Name = "Label19"
+        Me.Label19.Size = New System.Drawing.Size(139, 13)
+        Me.Label19.TabIndex = 22
+        Me.Label19.Text = "Viewer Splash Screen URL:"
+        '
+        'SplashPage
+        '
+        Me.SplashPage.Location = New System.Drawing.Point(6, 94)
+        Me.SplashPage.Name = "SplashPage"
+        Me.SplashPage.Size = New System.Drawing.Size(168, 20)
+        Me.SplashPage.TabIndex = 16
+        Me.ToolTip1.SetToolTip(Me.SplashPage, "The page that appears when you log in")
         '
         'AllowGod
         '
@@ -578,6 +582,32 @@ Partial Class AdvancedForm
         Me.ToolTip1.SetToolTip(Me.DbConnection, "MySQL port is normally 3306. I add one so it will not intyerfere with other insta" &
         "llations.")
         '
+        'PhysicsODE
+        '
+        Me.PhysicsODE.AutoSize = True
+        Me.PhysicsODE.Location = New System.Drawing.Point(6, 38)
+        Me.PhysicsODE.Name = "PhysicsODE"
+        Me.PhysicsODE.Size = New System.Drawing.Size(136, 17)
+        Me.PhysicsODE.TabIndex = 0
+        Me.PhysicsODE.TabStop = True
+        Me.PhysicsODE.Text = "Open Dynamics Engine"
+        Me.ToolTip1.SetToolTip(Me.PhysicsODE, "ODE is the original physics enfgine for Opensim. It should only be used for backw" &
+        "ards compatibility in 0.8.2.1")
+        Me.PhysicsODE.UseVisualStyleBackColor = True
+        '
+        'PhysicsNone
+        '
+        Me.PhysicsNone.AutoSize = True
+        Me.PhysicsNone.Location = New System.Drawing.Point(6, 19)
+        Me.PhysicsNone.Name = "PhysicsNone"
+        Me.PhysicsNone.Size = New System.Drawing.Size(51, 17)
+        Me.PhysicsNone.TabIndex = 3
+        Me.PhysicsNone.TabStop = True
+        Me.PhysicsNone.Text = "None"
+        Me.ToolTip1.SetToolTip(Me.PhysicsNone, "None - Your avatar will not be able to move. USeful in large presentations with O" &
+        "nlook with no Avatar")
+        Me.PhysicsNone.UseVisualStyleBackColor = True
+        '
         'GroupBox7
         '
         Me.GroupBox7.Controls.Add(Me.WebStats)
@@ -650,60 +680,12 @@ Partial Class AdvancedForm
         Me.GroupBox1.Controls.Add(Me.PhysicsubODE)
         Me.GroupBox1.Controls.Add(Me.PhysicsBullet)
         Me.GroupBox1.Controls.Add(Me.PhysicsODE)
-        Me.GroupBox1.Location = New System.Drawing.Point(207, 145)
+        Me.GroupBox1.Location = New System.Drawing.Point(771, 145)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Size = New System.Drawing.Size(183, 111)
         Me.GroupBox1.TabIndex = 28
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Physics Engine"
-        '
-        'PhysicsODE
-        '
-        Me.PhysicsODE.AutoSize = True
-        Me.PhysicsODE.Location = New System.Drawing.Point(6, 38)
-        Me.PhysicsODE.Name = "PhysicsODE"
-        Me.PhysicsODE.Size = New System.Drawing.Size(136, 17)
-        Me.PhysicsODE.TabIndex = 0
-        Me.PhysicsODE.TabStop = True
-        Me.PhysicsODE.Text = "Open Dynamics Engine"
-        Me.ToolTip1.SetToolTip(Me.PhysicsODE, "ODE is the original physics enfgine for Opensim. It should only be used for backw" &
-        "ards compatibility in 0.8.2.1")
-        Me.PhysicsODE.UseVisualStyleBackColor = True
-        '
-        'PhysicsBullet
-        '
-        Me.PhysicsBullet.AutoSize = True
-        Me.PhysicsBullet.Location = New System.Drawing.Point(6, 74)
-        Me.PhysicsBullet.Name = "PhysicsBullet"
-        Me.PhysicsBullet.Size = New System.Drawing.Size(90, 17)
-        Me.PhysicsBullet.TabIndex = 1
-        Me.PhysicsBullet.TabStop = True
-        Me.PhysicsBullet.Text = "Bullet Physics"
-        Me.PhysicsBullet.UseVisualStyleBackColor = True
-        '
-        'PhysicsubODE
-        '
-        Me.PhysicsubODE.AutoSize = True
-        Me.PhysicsubODE.Location = New System.Drawing.Point(6, 56)
-        Me.PhysicsubODE.Name = "PhysicsubODE"
-        Me.PhysicsubODE.Size = New System.Drawing.Size(60, 17)
-        Me.PhysicsubODE.TabIndex = 2
-        Me.PhysicsubODE.TabStop = True
-        Me.PhysicsubODE.Text = "ubODE"
-        Me.PhysicsubODE.UseVisualStyleBackColor = True
-        '
-        'PhysicsNone
-        '
-        Me.PhysicsNone.AutoSize = True
-        Me.PhysicsNone.Location = New System.Drawing.Point(6, 19)
-        Me.PhysicsNone.Name = "PhysicsNone"
-        Me.PhysicsNone.Size = New System.Drawing.Size(51, 17)
-        Me.PhysicsNone.TabIndex = 3
-        Me.PhysicsNone.TabStop = True
-        Me.PhysicsNone.Text = "None"
-        Me.ToolTip1.SetToolTip(Me.PhysicsNone, "None - Your avatar will not be able to move. USeful in large presentations with O" &
-        "nlook with no Avatar")
-        Me.PhysicsNone.UseVisualStyleBackColor = True
         '
         'PhysicsSeparate
         '
@@ -716,9 +698,67 @@ Partial Class AdvancedForm
         Me.PhysicsSeparate.Text = "Bullet in separate thread"
         Me.PhysicsSeparate.UseVisualStyleBackColor = True
         '
+        'PhysicsubODE
+        '
+        Me.PhysicsubODE.AutoSize = True
+        Me.PhysicsubODE.Location = New System.Drawing.Point(6, 56)
+        Me.PhysicsubODE.Name = "PhysicsubODE"
+        Me.PhysicsubODE.Size = New System.Drawing.Size(153, 17)
+        Me.PhysicsubODE.TabIndex = 2
+        Me.PhysicsubODE.TabStop = True
+        Me.PhysicsubODE.Text = "Ubit Open Dynamic Engine"
+        Me.PhysicsubODE.UseVisualStyleBackColor = True
+        '
+        'PhysicsBullet
+        '
+        Me.PhysicsBullet.AutoSize = True
+        Me.PhysicsBullet.Location = New System.Drawing.Point(6, 74)
+        Me.PhysicsBullet.Name = "PhysicsBullet"
+        Me.PhysicsBullet.Size = New System.Drawing.Size(90, 17)
+        Me.PhysicsBullet.TabIndex = 1
+        Me.PhysicsBullet.TabStop = True
+        Me.PhysicsBullet.Text = "Bullet Physics"
+        Me.PhysicsBullet.UseVisualStyleBackColor = True
+        '
+        'GroupBox6
+        '
+        Me.GroupBox6.Controls.Add(Me.OpensImNew)
+        Me.GroupBox6.Controls.Add(Me.OpensimOld)
+        Me.GroupBox6.Location = New System.Drawing.Point(207, 145)
+        Me.GroupBox6.Name = "GroupBox6"
+        Me.GroupBox6.Size = New System.Drawing.Size(171, 85)
+        Me.GroupBox6.TabIndex = 29
+        Me.GroupBox6.TabStop = False
+        Me.GroupBox6.Text = "Opensim Version"
+        '
+        'OpensimOld
+        '
+        Me.OpensimOld.AutoSize = True
+        Me.OpensimOld.Location = New System.Drawing.Point(19, 27)
+        Me.OpensimOld.Name = "OpensimOld"
+        Me.OpensimOld.Size = New System.Drawing.Size(107, 17)
+        Me.OpensimOld.TabIndex = 0
+        Me.OpensimOld.TabStop = True
+        Me.OpensimOld.Text = "0.8.2.1 (released)"
+        Me.ToolTip1.SetToolTip(Me.OpensimOld, "Older, stable version")
+        Me.OpensimOld.UseVisualStyleBackColor = True
+        '
+        'OpensImNew
+        '
+        Me.OpensImNew.AutoSize = True
+        Me.OpensImNew.Location = New System.Drawing.Point(19, 51)
+        Me.OpensImNew.Name = "OpensImNew"
+        Me.OpensImNew.Size = New System.Drawing.Size(76, 17)
+        Me.OpensImNew.TabIndex = 1
+        Me.OpensImNew.TabStop = True
+        Me.OpensImNew.Text = "0.9.1 (dev)"
+        Me.ToolTip1.SetToolTip(Me.OpensImNew, "Newer, development version with ubODE")
+        Me.OpensImNew.UseVisualStyleBackColor = True
+        '
         'AdvancedForm
         '
         Me.ClientSize = New System.Drawing.Size(976, 263)
+        Me.Controls.Add(Me.GroupBox6)
         Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.GroupBox8)
         Me.Controls.Add(Me.GroupBox7)
@@ -747,6 +787,8 @@ Partial Class AdvancedForm
         Me.GroupBox8.PerformLayout()
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
+        Me.GroupBox6.ResumeLayout(False)
+        Me.GroupBox6.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -812,4 +854,7 @@ Partial Class AdvancedForm
     Friend WithEvents PhysicsBullet As RadioButton
     Friend WithEvents PhysicsODE As RadioButton
     Friend WithEvents PhysicsSeparate As RadioButton
+    Friend WithEvents GroupBox6 As GroupBox
+    Friend WithEvents OpensImNew As RadioButton
+    Friend WithEvents OpensimOld As RadioButton
 End Class

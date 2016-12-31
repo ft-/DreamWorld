@@ -6,7 +6,7 @@ Imports System.ComponentModel
 Public Class FormRegion
 
 #Region "Declarations"
-
+    ' hold a copy of the Main region data on a per-form basis
     Private Class Region_data
         Public RegionName As String
         Public UUID As String
@@ -19,8 +19,8 @@ Public Class FormRegion
 
     Dim gNum As Integer = 1 ' pointer to this Object
     Dim MyRegion As New Region_data
-    Dim initted As Boolean = False
-    Dim changed_value As Boolean
+    Dim initted As Boolean = False ' needed a flag to see if we are initted as the dialogs change on start.
+    Dim changed_value As Boolean    ' true if we need to save a form
     Public Property changed() As Boolean
         Get
             Return changed_value
@@ -30,15 +30,15 @@ Public Class FormRegion
         End Set
     End Property
 
-
 #End Region
 
 #Region "Functions"
 
     Public Sub Init(num As Integer)
 
-        gNum = num
+        gNum = num  ' from 1 to N regions.
 
+        ' populate the local copy from the main region. We will save it back if the make changes and approve the save
         MyRegion.RegionName = Form1.aRegion(num).RegionName
         MyRegion.UUID = Form1.aRegion(num).UUID
         MyRegion.CoordX = Form1.aRegion(num).CoordX
@@ -47,21 +47,26 @@ Public Class FormRegion
         MyRegion.SizeY = Form1.aRegion(num).SizeY
         MyRegion.SizeX = Form1.aRegion(num).SizeX
 
+        '''''''''''''''''''''''''''''''
+        ' reasonable default section 
 
+        ' viewers cannot yet take anything but auare regions.
         If MyRegion.SizeX <> MyRegion.SizeY Then
             MyRegion.SizeY = MyRegion.SizeX
         End If
 
-        ' make a new UUID if there is none
-        If Len(MyRegion.UUID) <> 36 Then
+        Dim result As Guid
+        ' make a new UUID if there is none or invalid
+        If Not Guid.TryParse(MyRegion.UUID, result) Then
             MyRegion.UUID = Convert.ToString(Guid.NewGuid())
         End If
 
-        ' reasonable defaults
+        ' gack, no region, must be an Add button
         If Len(MyRegion.RegionName) = 0 Then
             MyRegion.SizeY = 256
             MyRegion.SizeX = 256
 
+            ' locate largest X and Y global coords, and Region Port
             Dim MaxX As Integer
             Dim MaxY As Integer
             Dim MaxPort As Integer
@@ -79,18 +84,21 @@ Public Class FormRegion
                 If Y > MaxY Then MaxY = Y
                 counter += 1
             End While
+            'Add somethign to make sure we do not intersect
             MyRegion.RegionPort = MaxPort + 1
-            MyRegion.CoordX = MaxX + 5
-            MyRegion.CoordY = MaxY + 5
+            MyRegion.CoordX = MaxX + 10
+            MyRegion.CoordY = MaxY + 10
         End If
 
-        Me.Text = MyRegion.RegionName
-        RegionName.Text = MyRegion.RegionName
-        UUID.Text = MyRegion.UUID
+        ' save them
+        Me.Text = MyRegion.RegionName ' on screen
+        RegionName.Text = MyRegion.RegionName ' on form
+        UUID.Text = MyRegion.UUID   ' on screen
 
-        Me.Show()
+        Me.Show() ' time to show the results
         Application.DoEvents()
 
+        ' Size buttons
         If MyRegion.SizeY = 256 And MyRegion.SizeX = 256 Then
             RadioButton1.Checked = True
             RadioButton2.Checked = False
@@ -121,12 +129,15 @@ Public Class FormRegion
             SizeY.Text = ""
         Else
             RadioButton1.Checked = False
-            RadioButton1.Checked = False
-            RadioButton1.Checked = False
+            RadioButton2.Checked = False
+            RadioButton3.Checked = False
+            RadioButton4.Checked = False
             SizeX.Text = Convert.ToString(MyRegion.SizeX)
             SizeY.Text = Convert.ToString(MyRegion.SizeY)
         End If
 
+
+        ' global coords
         If MyRegion.CoordX <> 0 Then
             CoordX.Text = MyRegion.CoordX
         End If
@@ -135,6 +146,7 @@ Public Class FormRegion
             CoordY.Text = MyRegion.CoordY
         End If
 
+        ' and port
         If MyRegion.RegionPort <> 0 Then
             RegionPort.Text = MyRegion.RegionPort
         End If
@@ -142,19 +154,29 @@ Public Class FormRegion
 
     End Sub
 
+    Public Shared Function FilenameIsOK(ByVal fileName As String) As Boolean
+        ' check for invalid chars in file name for INI file
+        Dim file As String = Path.GetFileName(fileName)
+        Dim directory As String = Path.GetDirectoryName(fileName)
+
+        Return Not (file.Intersect(Path.GetInvalidFileNameChars()).Any() _
+                OrElse
+                directory.Intersect(Path.GetInvalidPathChars()).Any())
+    End Function
 
     Private Function RegionValidate()
 
         Dim Message As String
 
         If Len(MyRegion.RegionName) = 0 Then
-            Message = "Region Name must not be blank"
+            Message = "Region name must not be blank"
             Form1.Log(Message)
             Return Message
         End If
 
         ' UUID
-        If Len(MyRegion.UUID) <> 36 Then
+        Dim result As Guid
+        If Not Guid.TryParse(MyRegion.UUID, result) Then
             Message = "Region UUID is invalid: " + MyRegion.UUID
             Form1.Log(Message)
             Return Message
@@ -167,7 +189,7 @@ Public Class FormRegion
             Return Message
         End If
         If Convert.ToInt16(MyRegion.CoordX) > 10000 Then
-            Message = "Region CoordX is too big"
+            Message = "Region CoordX is too large"
             Form1.Log(Message)
             Return Message
         End If
@@ -177,7 +199,7 @@ Public Class FormRegion
             Return Message
         End If
         If Convert.ToInt16(MyRegion.CoordY) > 10000 Then
-            Message = "Region CoordY is too big"
+            Message = "Region CoordY is too large"
             Form1.Log(Message)
             Return Message
         End If
@@ -190,18 +212,18 @@ Public Class FormRegion
 
         ' Size
         If Convert.ToInt16(MyRegion.SizeX) = 0 Then
-            Message = ("Region Size X is zero")
+            Message = ("Region Size X cannot be zero")
             Form1.Log(Message)
             Return Message
         End If
         If Convert.ToInt16(MyRegion.SizeY) = 0 Then
-            Message = "Region Size Y is zero"
+            Message = "Region Size Y cannot be zero"
             Form1.Log(Message)
             Return Message
         End If
 
-        Dim result As Guid
-        If Not Guid.TryParse(UUID.Text, result) Then
+        Dim aresult As Guid
+        If Not Guid.TryParse(UUID.Text, aresult) Then
             Message = "Not a valid UUID"
             Form1.Log(Message)
             Return Message
@@ -213,7 +235,6 @@ Public Class FormRegion
     Private Sub WriteRegion()
 
         Dim size As String
-
         If MyRegion.SizeX = 256 And MyRegion.SizeY = 256 Then
             size = "256,256"
         ElseIf MyRegion.SizeX = 512 And MyRegion.SizeY = 512 Then
@@ -244,6 +265,7 @@ Public Class FormRegion
         Try
             My.Computer.FileSystem.DeleteFile(Form1.MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\Regions\" + MyRegion.RegionName + ".ini")
         Catch
+            Form1.Log("Info:Region file " + MyRegion.RegionName + ".ini did not exist and could be be deleted")
         End Try
 
         Try
@@ -251,7 +273,7 @@ Public Class FormRegion
                 outputFile.WriteLine(RegionText)
             End Using
         Catch ex As Exception
-            Form1.Log("Info:Region file did not exist")
+            Form1.Log("Err:Cannot write region file " + MyRegion.RegionName + ".ini")
         End Try
 
     End Sub
@@ -260,43 +282,49 @@ Public Class FormRegion
 
 #Region "Checkboxes"
 
-    Private Sub SizeX_TextChanged(sender As Object, e As EventArgs) Handles SizeX.TextChanged
-        If SizeX.Text <> "" Then
-            RadioButton1.Checked = False
-            RadioButton2.Checked = False
-            RadioButton3.Checked = False
-            MyRegion.SizeX = Convert.ToInt16(SizeX.Text)
+    Private Sub Coordy_TextChanged(sender As Object, e As EventArgs) Handles CoordY.TextChanged
+        If initted And CoordY.Text <> "" Then
+            MyRegion.CoordY = Convert.ToInt16(CoordY.Text)
             changed = True
         End If
+    End Sub
 
+    Private Sub CoordX_TextChanged(sender As Object, e As EventArgs) Handles CoordX.TextChanged
+        If initted And CoordX.Text <> "" Then
+            MyRegion.CoordX = Convert.ToInt16(CoordX.Text)
+            changed = True
+        End If
     End Sub
 
     Private Sub RegionPort_TextChanged(sender As Object, e As EventArgs) Handles RegionPort.TextChanged
         If initted Then
-            MyRegion.RegionPort = Convert.ToInt16(RegionPort.Text)
+            Try
+                MyRegion.RegionPort = Convert.ToInt16(RegionPort.Text)
+            Catch
+            End Try
             changed = True
         End If
-
     End Sub
 
     Private Sub RegionName_LostFocus(sender As Object, e As EventArgs) Handles RegionName.LostFocus
 
         If Len(RegionName.Text) > 0 And initted And MyRegion.RegionName <> RegionName.Text Then
+
+            If Not FilenameIsOK(RegionName.Text) Then
+                MsgBox("Region name can't use special characters such as < > : """" / \ | ? *", vbInformation)
+                Return
+            End If
+
             MyRegion.RegionName = RegionName.Text
+            Me.Text = MyRegion.RegionName
+            Dim oldname As String = ""
             Try
-                Dim oldname = Form1.aRegion(gNum).RegionName
+                oldname = Form1.aRegion(gNum).RegionName
                 My.Computer.FileSystem.RenameFile(Form1.MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\Regions\" + oldname + ".ini", RegionName.Text + ".ini")
             Catch ex As Exception
                 Dim str = ex.Message
+                Form1.Log("Could Not rename region From " + oldname + " to " + RegionName.Text)
             End Try
-            changed = True
-        End If
-
-    End Sub
-
-    Private Sub Coordy_TextChanged(sender As Object, e As EventArgs) Handles CoordY.TextChanged
-        If initted Then
-            MyRegion.CoordY = Convert.ToInt16(CoordY.Text)
             changed = True
         End If
     End Sub
@@ -309,7 +337,6 @@ Public Class FormRegion
             SizeY.Text = ""
             changed = True
         End If
-
     End Sub
 
     Private Sub RadioButton2_CheckedChanged(sender As Object, e As EventArgs) Handles RadioButton2.CheckedChanged
@@ -320,7 +347,6 @@ Public Class FormRegion
             SizeY.Text = ""
             changed = True
         End If
-
     End Sub
 
     Private Sub RadioButton3_CheckedChanged(sender As Object, e As EventArgs) Handles RadioButton3.CheckedChanged
@@ -341,7 +367,6 @@ Public Class FormRegion
             SizeY.Text = ""
             changed = True
         End If
-
     End Sub
 
     Private Sub UUID_LostFocus(sender As Object, e As EventArgs) Handles UUID.LostFocus
@@ -386,7 +411,10 @@ Public Class FormRegion
                 RadioButton1.Checked = False
                 RadioButton2.Checked = False
                 RadioButton3.Checked = False
-                MyRegion.CoordX = Convert.ToInt16(CoordX.Text)
+                Try
+                    MyRegion.SizeX = Convert.ToInt16(SizeX.Text)
+                Catch
+                End Try
             End If
         End If
 
@@ -398,7 +426,11 @@ Public Class FormRegion
                 RadioButton1.Checked = False
                 RadioButton2.Checked = False
                 RadioButton3.Checked = False
-                MyRegion.SizeY = Convert.ToInt16(SizeY.Text)
+                Try
+                    MyRegion.SizeY = Convert.ToInt16(SizeY.Text)
+                Catch
+                End Try
+
             End If
         End If
 
@@ -421,11 +453,11 @@ Public Class FormRegion
             End If
         Else
             WriteRegion()
+            Form1.Sleep(100)
             changed = False
+            Me.Close()
         End If
     End Sub
-
-
 
     Private Sub FormRegion_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
         If changed Then
@@ -441,7 +473,6 @@ Public Class FormRegion
                     WriteRegion()
                 End If
             End If
-
         End If
     End Sub
 #End Region

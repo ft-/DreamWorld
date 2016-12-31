@@ -82,7 +82,12 @@ Public Class Form1
                              My.Resources.wp_33, My.Resources.wp_34, My.Resources.wp_35,
                              My.Resources.wp_36, My.Resources.wp_37, My.Resources.wp_38,
                              My.Resources.wp_39, My.Resources.wp_40, My.Resources.wp_41,
-                             My.Resources.wp_42
+                             My.Resources.wp_42, My.Resources.wp_43, My.Resources.wp_44,
+                             My.Resources.wp_45, My.Resources.wp_46, My.Resources.wp_47,
+                             My.Resources.wp_48, My.Resources.wp_49, My.Resources.wp_50,
+                             My.Resources.wp_51, My.Resources.wp_52, My.Resources.wp_53,
+                             My.Resources.wp_54, My.Resources.wp_55, My.Resources.wp_56,
+                             My.Resources.wp_57
                             }
     Dim gDebug = False       ' toggled by -debug flag on command line
     Dim gContentAvailable As Boolean = False ' assume there is no OAR and IAR data available
@@ -187,7 +192,6 @@ Public Class Form1
         PictureBox1.AllowDrop = True
 
         Running = False ' true when opensim is running
-        ChooseVersion.Visible = True ' cannot change grid while running
 
         MyFolder = My.Application.Info.DirectoryPath
 
@@ -448,7 +452,6 @@ Public Class Form1
 
         CloseRouterPorts()
 
-        ChooseVersion.Visible = True ' cannot change grid while running
         ' cannot load OAR or IAR, either
         IslandToolStripMenuItem.Visible = False
         ClothingInventoryToolStripMenuItem.Visible = False
@@ -525,7 +528,7 @@ Public Class Form1
     End Sub
 
     Private Sub mnuLogin_Click(sender As System.Object, e As System.EventArgs) Handles mnuLogin.Click
-        Print("You can use 'Help->Web Interface' to create a new avatar or change passwords. The default User name is 'Dream World' with a password of '123'")
+        Print("You can use 'Help->Web Interface' to create a new avatar or change passwords. ")
     End Sub
 
     Private Sub mnuAbout_Click(sender As System.Object, e As System.EventArgs) Handles mnuAbout.Click
@@ -614,26 +617,6 @@ Public Class Form1
         End If
     End Sub
 
-
-    Private Sub mnu9_Click(sender As Object, e As EventArgs) Handles mnu9.Click
-        My.Settings.GridFolder = "Opensim-0.9"
-        My.Settings.Save()
-        ViewWebUI.Visible = False
-        mnu9.Checked = True
-        mnuHyperGrid.Checked = False
-        Print("Outworldz rev is set to 0.9")
-    End Sub
-
-    Private Sub mnuHyperGrid_Click(sender As Object, e As EventArgs) Handles mnuHyperGrid.Click
-        My.Settings.GridFolder = "Opensim"
-        My.Settings.Save()
-        mnu9.Checked = False
-        mnuHyperGrid.Checked = True
-        ViewWebUI.Visible = True
-        Print("Outworldz rev is set to 0.8.2.1")
-
-    End Sub
-
 #End Region
 
 #Region "INI"
@@ -706,7 +689,7 @@ Public Class Form1
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
         ' Opensim.ini
         LoadIni(MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\Opensim.ini", ";")
-        SetIni("Const", "BaseURL", "http://" + My.Settings.PublicIP)
+        SetIni("Const", "BaseURL", """" + "http://" + My.Settings.PublicIP + """")
         SetIni("Const", "PublicPort", My.Settings.PublicPort)
         SetIni("Const", "PrivatePort", My.Settings.PublicIP)
         SaveINI()
@@ -861,16 +844,8 @@ Public Class Form1
 
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-        ' Grid
-        If My.Settings.GridFolder = "Opensim" Then
-            Log("Info:0.8.2.1 enabled")
-            mnuHyperGrid.Checked = True
-            mnu9.Checked = False
-        Else
-            Log("Info:0.9.1 enabled")
-            mnuHyperGrid.Checked = False
-            mnu9.Checked = True
-        End If
+
+
 
         'Onlook viewer
         If My.Settings.Onlook = True Then
@@ -1003,7 +978,6 @@ Public Class Form1
         If Running = False Then Return True
         Print("Starting Opensimulator")
 
-        ChooseVersion.Visible = False ' cannot change grid while running
         Dim ItWorked As Boolean
         If mnuShow.Checked Then
             Log("Info:Opensim console is forced visible")
@@ -1169,7 +1143,9 @@ Public Class Form1
                                   "Nooo... is it already time to wake up?",
                                   "Mmmm, I was sleeping...",
                                   "What a dream that was!",
-                                  "Do you ever dream of better worlds? I just did."
+                                  "Do you ever dream of better worlds? I just did.",
+                                  "Huh?",
+                                  "Mumbles..."
                                 }
 
         Dim Array() As String = {
@@ -1185,7 +1161,7 @@ Public Class Form1
                  "I was dreaming that you were a mermaid in the Lost Worlds.",
                  "I deamt that you made a pile of prims that you simply will not believe!",
                  "I dreamed that I asked when you were going to straighten out the castle. You said, 'Why? Is it tilted?'",
-                 "I dreamt you made a 'mesh' of it.",
+                 "I saw a dog in my dream. I dreamt you made a 'mesh' of it.",
                  "I dreamt I saw a man without any pants firmly attached to an eagle flying in the air. Always rez before you attach!",
                  "I forgot the dream already. I remember I woke up in it.",
                  "I was thinking I had no clothes on. No shirt, shoes, or hair. The worst part was there was no facelight! I looked hideous!",

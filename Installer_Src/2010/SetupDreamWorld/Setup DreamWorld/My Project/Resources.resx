@@ -391,4 +391,49 @@
   <data name="document_chart" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\document_chart.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="wp_43" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\wp_43.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="wp_44" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\wp_44.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="wp_45" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\wp_45.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="wp_46" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\wp_46.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="wp_47" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\wp_47.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="wp_48" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\wp_48.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="wp_49" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\wp_49.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="wp_50" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\wp_50.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="wp_51" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\wp_51.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="wp_52" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\wp_52.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="wp_53" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\wp_53.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="wp_54" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\wp_54.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="wp_55" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\wp_55.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="wp_56" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\wp_56.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="wp_57" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\wp_57.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>
