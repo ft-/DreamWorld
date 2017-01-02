@@ -665,6 +665,30 @@ Namespace My
                 Me("Physics") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("0")>  _
+        Public Property MyX() As Integer
+            Get
+                Return CType(Me("MyX"),Integer)
+            End Get
+            Set
+                Me("MyX") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("0")>  _
+        Public Property MyY() As Integer
+            Get
+                Return CType(Me("MyY"),Integer)
+            End Get
+            Set
+                Me("MyY") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

@@ -95,7 +95,7 @@
     <GenerateManifests>false</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <SignManifests>false</SignManifests>
+    <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
     <TargetZone>Internet</TargetZone>
@@ -157,6 +157,12 @@
     <Compile Include="ApplicationEvents.vb" />
     <Compile Include="ClassUPnP.vb" />
     <Compile Include="ClassWebServer.vb" />
+    <Compile Include="Chooser.Designer.vb">
+      <DependentUpon>Chooser.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Chooser.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FormRegion.Designer.vb">
       <DependentUpon>FormRegion.vb</DependentUpon>
     </Compile>
@@ -189,6 +195,9 @@
   <ItemGroup>
     <EmbeddedResource Include="..\..\..\Setup.resx">
       <DependentUpon>Setup.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Chooser.resx">
+      <DependentUpon>Chooser.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormAdvanced.resx">
       <DependentUpon>FormAdvanced.vb</DependentUpon>

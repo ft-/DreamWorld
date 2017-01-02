@@ -75,6 +75,8 @@ Partial Class AdvancedForm
         Me.DbConnection = New System.Windows.Forms.TextBox()
         Me.PhysicsODE = New System.Windows.Forms.RadioButton()
         Me.PhysicsNone = New System.Windows.Forms.RadioButton()
+        Me.OpensimOld = New System.Windows.Forms.RadioButton()
+        Me.OpensImNew = New System.Windows.Forms.RadioButton()
         Me.GroupBox7 = New System.Windows.Forms.GroupBox()
         Me.GroupBox8 = New System.Windows.Forms.GroupBox()
         Me.Label23 = New System.Windows.Forms.Label()
@@ -86,8 +88,8 @@ Partial Class AdvancedForm
         Me.PhysicsubODE = New System.Windows.Forms.RadioButton()
         Me.PhysicsBullet = New System.Windows.Forms.RadioButton()
         Me.GroupBox6 = New System.Windows.Forms.GroupBox()
-        Me.OpensimOld = New System.Windows.Forms.RadioButton()
-        Me.OpensImNew = New System.Windows.Forms.RadioButton()
+        Me.GridName = New System.Windows.Forms.TextBox()
+        Me.Label2 = New System.Windows.Forms.Label()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
         Me.Web.SuspendLayout()
@@ -156,7 +158,7 @@ Partial Class AdvancedForm
         '
         'PublicPort
         '
-        Me.PublicPort.Location = New System.Drawing.Point(12, 92)
+        Me.PublicPort.Location = New System.Drawing.Point(81, 96)
         Me.PublicPort.Name = "PublicPort"
         Me.PublicPort.Size = New System.Drawing.Size(47, 20)
         Me.PublicPort.TabIndex = 0
@@ -164,7 +166,7 @@ Partial Class AdvancedForm
         '
         'DiagPort
         '
-        Me.DiagPort.Location = New System.Drawing.Point(12, 69)
+        Me.DiagPort.Location = New System.Drawing.Point(81, 73)
         Me.DiagPort.Name = "DiagPort"
         Me.DiagPort.Size = New System.Drawing.Size(47, 20)
         Me.DiagPort.TabIndex = 7
@@ -174,7 +176,7 @@ Partial Class AdvancedForm
         'Label6
         '
         Me.Label6.AutoSize = True
-        Me.Label6.Location = New System.Drawing.Point(63, 72)
+        Me.Label6.Location = New System.Drawing.Point(14, 77)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(57, 13)
         Me.Label6.TabIndex = 6
@@ -183,7 +185,7 @@ Partial Class AdvancedForm
         'Label4
         '
         Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(63, 117)
+        Me.Label4.Location = New System.Drawing.Point(14, 122)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(40, 13)
         Me.Label4.TabIndex = 4
@@ -191,7 +193,7 @@ Partial Class AdvancedForm
         '
         'PrivatePort
         '
-        Me.PrivatePort.Location = New System.Drawing.Point(12, 115)
+        Me.PrivatePort.Location = New System.Drawing.Point(81, 119)
         Me.PrivatePort.Name = "PrivatePort"
         Me.PrivatePort.Size = New System.Drawing.Size(47, 20)
         Me.PrivatePort.TabIndex = 1
@@ -200,7 +202,7 @@ Partial Class AdvancedForm
         'Label5
         '
         Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(64, 95)
+        Me.Label5.Location = New System.Drawing.Point(15, 100)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(39, 13)
         Me.Label5.TabIndex = 5
@@ -208,7 +210,7 @@ Partial Class AdvancedForm
         '
         'DbPort
         '
-        Me.DbPort.Location = New System.Drawing.Point(6, 41)
+        Me.DbPort.Location = New System.Drawing.Point(76, 38)
         Me.DbPort.Name = "DbPort"
         Me.DbPort.Size = New System.Drawing.Size(47, 20)
         Me.DbPort.TabIndex = 11
@@ -218,7 +220,7 @@ Partial Class AdvancedForm
         'Label
         '
         Me.Label.AutoSize = True
-        Me.Label.Location = New System.Drawing.Point(117, 38)
+        Me.Label.Location = New System.Drawing.Point(13, 38)
         Me.Label.Name = "Label"
         Me.Label.Size = New System.Drawing.Size(26, 13)
         Me.Label.TabIndex = 10
@@ -426,7 +428,7 @@ Partial Class AdvancedForm
         'Label19
         '
         Me.Label19.AutoSize = True
-        Me.Label19.Location = New System.Drawing.Point(6, 76)
+        Me.Label19.Location = New System.Drawing.Point(6, 110)
         Me.Label19.Name = "Label19"
         Me.Label19.Size = New System.Drawing.Size(139, 13)
         Me.Label19.TabIndex = 22
@@ -434,7 +436,7 @@ Partial Class AdvancedForm
         '
         'SplashPage
         '
-        Me.SplashPage.Location = New System.Drawing.Point(6, 94)
+        Me.SplashPage.Location = New System.Drawing.Point(6, 128)
         Me.SplashPage.Name = "SplashPage"
         Me.SplashPage.Size = New System.Drawing.Size(168, 20)
         Me.SplashPage.TabIndex = 16
@@ -496,14 +498,16 @@ Partial Class AdvancedForm
         '
         'GroupBox5
         '
+        Me.GroupBox5.Controls.Add(Me.Label2)
+        Me.GroupBox5.Controls.Add(Me.GridName)
         Me.GroupBox5.Controls.Add(Me.Label19)
         Me.GroupBox5.Controls.Add(Me.Label15)
         Me.GroupBox5.Controls.Add(Me.TimerInterval)
         Me.GroupBox5.Controls.Add(Me.SplashPage)
         Me.GroupBox5.Controls.Add(Me.ChatSpeed)
-        Me.GroupBox5.Location = New System.Drawing.Point(198, 16)
+        Me.GroupBox5.Location = New System.Drawing.Point(204, 12)
         Me.GroupBox5.Name = "GroupBox5"
-        Me.GroupBox5.Size = New System.Drawing.Size(180, 122)
+        Me.GroupBox5.Size = New System.Drawing.Size(174, 153)
         Me.GroupBox5.TabIndex = 22
         Me.GroupBox5.TabStop = False
         Me.GroupBox5.Text = "Personality"
@@ -511,7 +515,7 @@ Partial Class AdvancedForm
         'Label15
         '
         Me.Label15.AutoSize = True
-        Me.Label15.Location = New System.Drawing.Point(6, 49)
+        Me.Label15.Location = New System.Drawing.Point(6, 41)
         Me.Label15.Name = "Label15"
         Me.Label15.Size = New System.Drawing.Size(116, 13)
         Me.Label15.TabIndex = 25
@@ -519,7 +523,7 @@ Partial Class AdvancedForm
         '
         'TimerInterval
         '
-        Me.TimerInterval.Location = New System.Drawing.Point(135, 46)
+        Me.TimerInterval.Location = New System.Drawing.Point(135, 38)
         Me.TimerInterval.Name = "TimerInterval"
         Me.TimerInterval.Size = New System.Drawing.Size(39, 20)
         Me.TimerInterval.TabIndex = 24
@@ -529,7 +533,7 @@ Partial Class AdvancedForm
         '
         Me.ChatSpeed.FormattingEnabled = True
         Me.ChatSpeed.Items.AddRange(New Object() {"Sleepy", "Awake", "After Coffee", "Too much Coffee"})
-        Me.ChatSpeed.Location = New System.Drawing.Point(9, 19)
+        Me.ChatSpeed.Location = New System.Drawing.Point(9, 14)
         Me.ChatSpeed.Name = "ChatSpeed"
         Me.ChatSpeed.Size = New System.Drawing.Size(165, 21)
         Me.ChatSpeed.TabIndex = 22
@@ -548,7 +552,7 @@ Partial Class AdvancedForm
         '
         'DbName
         '
-        Me.DbName.Location = New System.Drawing.Point(6, 65)
+        Me.DbName.Location = New System.Drawing.Point(76, 62)
         Me.DbName.Name = "DbName"
         Me.DbName.Size = New System.Drawing.Size(107, 20)
         Me.DbName.TabIndex = 12
@@ -557,7 +561,7 @@ Partial Class AdvancedForm
         '
         'DbUsername
         '
-        Me.DbUsername.Location = New System.Drawing.Point(6, 87)
+        Me.DbUsername.Location = New System.Drawing.Point(76, 84)
         Me.DbUsername.Name = "DbUsername"
         Me.DbUsername.Size = New System.Drawing.Size(107, 20)
         Me.DbUsername.TabIndex = 14
@@ -566,7 +570,7 @@ Partial Class AdvancedForm
         '
         'DbPassword
         '
-        Me.DbPassword.Location = New System.Drawing.Point(6, 109)
+        Me.DbPassword.Location = New System.Drawing.Point(76, 106)
         Me.DbPassword.Name = "DbPassword"
         Me.DbPassword.Size = New System.Drawing.Size(107, 20)
         Me.DbPassword.TabIndex = 15
@@ -575,7 +579,7 @@ Partial Class AdvancedForm
         '
         'DbConnection
         '
-        Me.DbConnection.Location = New System.Drawing.Point(6, 17)
+        Me.DbConnection.Location = New System.Drawing.Point(76, 14)
         Me.DbConnection.Name = "DbConnection"
         Me.DbConnection.Size = New System.Drawing.Size(105, 20)
         Me.DbConnection.TabIndex = 18
@@ -607,6 +611,30 @@ Partial Class AdvancedForm
         Me.ToolTip1.SetToolTip(Me.PhysicsNone, "None - Your avatar will not be able to move. USeful in large presentations with O" &
         "nlook with no Avatar")
         Me.PhysicsNone.UseVisualStyleBackColor = True
+        '
+        'OpensimOld
+        '
+        Me.OpensimOld.AutoSize = True
+        Me.OpensimOld.Location = New System.Drawing.Point(19, 27)
+        Me.OpensimOld.Name = "OpensimOld"
+        Me.OpensimOld.Size = New System.Drawing.Size(107, 17)
+        Me.OpensimOld.TabIndex = 0
+        Me.OpensimOld.TabStop = True
+        Me.OpensimOld.Text = "0.8.2.1 (released)"
+        Me.ToolTip1.SetToolTip(Me.OpensimOld, "Older, stable version")
+        Me.OpensimOld.UseVisualStyleBackColor = True
+        '
+        'OpensImNew
+        '
+        Me.OpensImNew.AutoSize = True
+        Me.OpensImNew.Location = New System.Drawing.Point(19, 51)
+        Me.OpensImNew.Name = "OpensImNew"
+        Me.OpensImNew.Size = New System.Drawing.Size(76, 17)
+        Me.OpensImNew.TabIndex = 1
+        Me.OpensImNew.TabStop = True
+        Me.OpensImNew.Text = "0.9.1 (dev)"
+        Me.ToolTip1.SetToolTip(Me.OpensImNew, "Newer, development version with ubODE")
+        Me.OpensImNew.UseVisualStyleBackColor = True
         '
         'GroupBox7
         '
@@ -640,7 +668,7 @@ Partial Class AdvancedForm
         'Label23
         '
         Me.Label23.AutoSize = True
-        Me.Label23.Location = New System.Drawing.Point(117, 17)
+        Me.Label23.Location = New System.Drawing.Point(13, 17)
         Me.Label23.Name = "Label23"
         Me.Label23.Size = New System.Drawing.Size(61, 13)
         Me.Label23.TabIndex = 19
@@ -649,7 +677,7 @@ Partial Class AdvancedForm
         'Label22
         '
         Me.Label22.AutoSize = True
-        Me.Label22.Location = New System.Drawing.Point(119, 109)
+        Me.Label22.Location = New System.Drawing.Point(15, 109)
         Me.Label22.Name = "Label22"
         Me.Label22.Size = New System.Drawing.Size(53, 13)
         Me.Label22.TabIndex = 17
@@ -658,7 +686,7 @@ Partial Class AdvancedForm
         'Label21
         '
         Me.Label21.AutoSize = True
-        Me.Label21.Location = New System.Drawing.Point(119, 87)
+        Me.Label21.Location = New System.Drawing.Point(15, 87)
         Me.Label21.Name = "Label21"
         Me.Label21.Size = New System.Drawing.Size(55, 13)
         Me.Label21.TabIndex = 16
@@ -667,7 +695,7 @@ Partial Class AdvancedForm
         'Label20
         '
         Me.Label20.AutoSize = True
-        Me.Label20.Location = New System.Drawing.Point(119, 65)
+        Me.Label20.Location = New System.Drawing.Point(15, 65)
         Me.Label20.Name = "Label20"
         Me.Label20.Size = New System.Drawing.Size(53, 13)
         Me.Label20.TabIndex = 13
@@ -724,36 +752,29 @@ Partial Class AdvancedForm
         '
         Me.GroupBox6.Controls.Add(Me.OpensImNew)
         Me.GroupBox6.Controls.Add(Me.OpensimOld)
-        Me.GroupBox6.Location = New System.Drawing.Point(207, 145)
+        Me.GroupBox6.Location = New System.Drawing.Point(207, 169)
         Me.GroupBox6.Name = "GroupBox6"
         Me.GroupBox6.Size = New System.Drawing.Size(171, 85)
         Me.GroupBox6.TabIndex = 29
         Me.GroupBox6.TabStop = False
         Me.GroupBox6.Text = "Opensim Version"
         '
-        'OpensimOld
+        'GridName
         '
-        Me.OpensimOld.AutoSize = True
-        Me.OpensimOld.Location = New System.Drawing.Point(19, 27)
-        Me.OpensimOld.Name = "OpensimOld"
-        Me.OpensimOld.Size = New System.Drawing.Size(107, 17)
-        Me.OpensimOld.TabIndex = 0
-        Me.OpensimOld.TabStop = True
-        Me.OpensimOld.Text = "0.8.2.1 (released)"
-        Me.ToolTip1.SetToolTip(Me.OpensimOld, "Older, stable version")
-        Me.OpensimOld.UseVisualStyleBackColor = True
+        Me.GridName.Location = New System.Drawing.Point(69, 73)
+        Me.GridName.Name = "GridName"
+        Me.GridName.Size = New System.Drawing.Size(105, 20)
+        Me.GridName.TabIndex = 15
+        Me.ToolTip1.SetToolTip(Me.GridName, "Backaups older than this number will be deleted")
         '
-        'OpensImNew
+        'Label2
         '
-        Me.OpensImNew.AutoSize = True
-        Me.OpensImNew.Location = New System.Drawing.Point(19, 51)
-        Me.OpensImNew.Name = "OpensImNew"
-        Me.OpensImNew.Size = New System.Drawing.Size(76, 17)
-        Me.OpensImNew.TabIndex = 1
-        Me.OpensImNew.TabStop = True
-        Me.OpensImNew.Text = "0.9.1 (dev)"
-        Me.ToolTip1.SetToolTip(Me.OpensImNew, "Newer, development version with ubODE")
-        Me.OpensImNew.UseVisualStyleBackColor = True
+        Me.Label2.AutoSize = True
+        Me.Label2.Location = New System.Drawing.Point(6, 76)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(57, 13)
+        Me.Label2.TabIndex = 26
+        Me.Label2.Text = "Grid Name"
         '
         'AdvancedForm
         '
@@ -857,4 +878,6 @@ Partial Class AdvancedForm
     Friend WithEvents GroupBox6 As GroupBox
     Friend WithEvents OpensImNew As RadioButton
     Friend WithEvents OpensimOld As RadioButton
+    Friend WithEvents Label2 As Label
+    Friend WithEvents GridName As TextBox
 End Class

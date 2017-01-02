@@ -6,6 +6,9 @@ Imports System.ComponentModel
 Public Class FormRegion
 
 #Region "Declarations"
+
+    Dim oldname As String = ""
+
     ' hold a copy of the Main region data on a per-form basis
     Private Class Region_data
         Public RegionName As String
@@ -20,21 +23,14 @@ Public Class FormRegion
     Dim gNum As Integer = 1 ' pointer to this Object
     Dim MyRegion As New Region_data
     Dim initted As Boolean = False ' needed a flag to see if we are initted as the dialogs change on start.
-    Dim changed_value As Boolean    ' true if we need to save a form
-    Public Property changed() As Boolean
-        Get
-            Return changed_value
-        End Get
-        Set(ByVal Value As Boolean)
-            changed_value = Value
-        End Set
-    End Property
+    Dim changed As Boolean    ' true if we need to save a form
 
 #End Region
 
 #Region "Functions"
 
     Public Sub Init(num As Integer)
+
 
         gNum = num  ' from 1 to N regions.
 
@@ -47,13 +43,9 @@ Public Class FormRegion
         MyRegion.SizeY = Form1.aRegion(num).SizeY
         MyRegion.SizeX = Form1.aRegion(num).SizeX
 
+        oldname = MyRegion.RegionName
         '''''''''''''''''''''''''''''''
         ' reasonable default section 
-
-        ' viewers cannot yet take anything but auare regions.
-        If MyRegion.SizeX <> MyRegion.SizeY Then
-            MyRegion.SizeY = MyRegion.SizeX
-        End If
 
         Dim result As Guid
         ' make a new UUID if there is none or invalid
@@ -233,7 +225,6 @@ Public Class FormRegion
     End Function
 
     Private Sub WriteRegion()
-
         Dim size As String
         If MyRegion.SizeX = 256 And MyRegion.SizeY = 256 Then
             size = "256,256"
@@ -262,10 +253,11 @@ Public Class FormRegion
 
         ' save the Region File
 
+        Dim file = Form1.MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\Regions\" + oldname + ".ini"
         Try
-            My.Computer.FileSystem.DeleteFile(Form1.MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\Regions\" + MyRegion.RegionName + ".ini")
-        Catch
-            Form1.Log("Info:Region file " + MyRegion.RegionName + ".ini did not exist and could be be deleted")
+            My.Computer.FileSystem.DeleteFile(file)
+        Catch ex As Exception
+            Form1.Log("Info:" + ex.Message)
         End Try
 
         Try
@@ -275,6 +267,8 @@ Public Class FormRegion
         Catch ex As Exception
             Form1.Log("Err:Cannot write region file " + MyRegion.RegionName + ".ini")
         End Try
+
+        oldname = MyRegion.RegionName
 
     End Sub
 
@@ -306,7 +300,11 @@ Public Class FormRegion
         End If
     End Sub
 
-    Private Sub RegionName_LostFocus(sender As Object, e As EventArgs) Handles RegionName.LostFocus
+    Private Sub RLostFocus(sender As Object, e As EventArgs) Handles RegionName.LostFocus
+
+        If initted And MyRegion.RegionName = "Outworldz" And "Outworldz" <> RegionName.Text Then
+            MsgBox("Changing the name of the default sim name 'Outworldz' will prevent visitors from teleporting in. You can add another region by a another name.", vbInformation)
+        End If
 
         If Len(RegionName.Text) > 0 And initted And MyRegion.RegionName <> RegionName.Text Then
 
@@ -317,14 +315,6 @@ Public Class FormRegion
 
             MyRegion.RegionName = RegionName.Text
             Me.Text = MyRegion.RegionName
-            Dim oldname As String = ""
-            Try
-                oldname = Form1.aRegion(gNum).RegionName
-                My.Computer.FileSystem.RenameFile(Form1.MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\Regions\" + oldname + ".ini", RegionName.Text + ".ini")
-            Catch ex As Exception
-                Dim str = ex.Message
-                Form1.Log("Could Not rename region From " + oldname + " to " + RegionName.Text)
-            End Try
             changed = True
         End If
     End Sub
@@ -382,26 +372,6 @@ Public Class FormRegion
                 End If
             End If
         End If
-    End Sub
-
-    Private Sub SizeX_LostFocus(sender As Object, e As EventArgs) Handles SizeX.LostFocus
-        If initted Then
-            If SizeX.Text <> SizeY.Text Then
-                changed = True
-                SizeY = SizeX
-            End If
-        End If
-
-    End Sub
-
-    Private Sub SizeY_LostFocus(sender As Object, e As EventArgs) Handles SizeY.LostFocus
-        If initted Then
-            If SizeX.Text <> SizeY.Text Then
-                changed = True
-                SizeX = SizeY
-            End If
-        End If
-
     End Sub
 
     Private Sub SizeX_TextChanged_1(sender As Object, e As EventArgs) Handles SizeX.TextChanged
@@ -475,6 +445,46 @@ Public Class FormRegion
             End If
         End If
     End Sub
+
+    Private Sub RegionName_TextChanged(sender As Object, e As EventArgs) Handles RegionName.TextChanged
+        If initted Then
+            MyRegion.RegionName = RegionName.Text
+            changed = True
+        End If
+
+    End Sub
+
+    Private Sub SizeX_Changed(sender As Object, e As EventArgs) Handles SizeX.LostFocus
+        If initted And SizeX.Text <> "" Then
+            If Not IsPowerOf256(Convert.ToSingle(SizeX.Text)) Then
+                MsgBox("Must be a multiple of 256: 256,512,768,1024,1280,1536,1792,2048,2304,2560, ...", vbInformation)
+            Else
+                SizeY.Text = SizeX.Text
+                changed = True
+            End If
+        End If
+    End Sub
+
+    Private Sub SizeY_Changed(sender As Object, e As EventArgs) Handles SizeY.LostFocus
+        If SizeY.Text <> SizeX.Text Then
+            MsgBox("Must be the same as X")
+        End If
+
+    End Sub
+
+    Private Function IsPowerOf256(x As Integer)
+
+        While x > 0
+            x = x / 256
+        End While
+        If x = 0 Then
+            Return True
+        End If
+        Return False
+
+
+    End Function
+
 #End Region
 
 End Class

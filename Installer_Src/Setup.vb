@@ -44,7 +44,7 @@ Public Class Form1
     Dim DebugPath As String = "C:\Opensim\Outworldz"
     Dim Domain As String = "http://www.outworldz.com"
 
-    Dim gCurDir As String   ' Holds the current folder that we are running in
+    Public MyFolder As String   ' Holds the current folder that we are running in
     Dim gCurSlashDir As String '  holds the current directory info in Unix format
     Dim isRunning As Boolean = False
     Dim Arnd = New Random()
@@ -93,6 +93,7 @@ Public Class Form1
     Dim gContentAvailable As Boolean = False ' assume there is no OAR and IAR data available
 
     Public aRegion(0) As Object
+
     Private Class Region_data
         Public RegionName As String
         Public UUID As String
@@ -140,14 +141,6 @@ Public Class Form1
             isRunning = Value
         End Set
     End Property
-    Public Property MyFolder() As String
-        Get
-            Return gCurDir
-        End Get
-        Set(ByVal Value As String)
-            gCurDir = Value
-        End Set
-    End Property
 
     Public Shared Property ActualForm() As Form
         Get
@@ -169,6 +162,12 @@ Public Class Form1
         ProgressBar1.Minimum = 0
         ProgressBar1.Maximum = 100
         ProgressBar1.Value = 0
+
+        If My.Settings.MyX = 0 And My.Settings.MyY = 0 Then
+            Me.CenterToScreen()
+        Else
+            Me.Location = New Point(My.Settings.MyX, My.Settings.MyY)
+        End If
 
         Buttons(BusyButton)
         ' Save a random machine ID - we don't want any data to be sent that's personal or identifiable,  but it needs to be unique
@@ -345,6 +344,8 @@ Public Class Form1
         Running = True
         MnuContent.Visible = True
 
+        GetAllRegions()
+
         If My.Settings.DiagFailed = True Then
             My.Settings.PublicIP = "127.0.0.1"
         End If
@@ -385,6 +386,13 @@ Public Class Form1
     End Sub
 
     Private Sub Form1_Closed(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Closed
+
+        Dim p As Point
+        p = Me.Location
+
+        My.Settings.MyX = p.X
+        My.Settings.MyY = p.Y
+
         Log("Info:FormClosed")
         ProgressBar1.Value = 90
         Print("Hold fast to your dreams ...")
@@ -656,7 +664,11 @@ Public Class Form1
         parser.Parser.Configuration.CommentString = delim ' Opensim uses semicolons
 
         Dim Data = parser.ReadFile(filepath)
+
         GetIni = Stripqq(Data(section)(key))
+
+        parser = Nothing
+
     End Function
 
     Private Sub SetINIFromMySettings()
@@ -692,6 +704,7 @@ Public Class Form1
         SetIni("Const", "BaseURL", """" + "http://" + My.Settings.PublicIP + """")
         SetIni("Const", "PublicPort", My.Settings.PublicPort)
         SetIni("Const", "PrivatePort", My.Settings.PublicIP)
+        SetIni("Const", "GridName", """" + My.Settings.SimName + """")
         SaveINI()
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
         ' Diva 0.8.2 used MyWorld.ini all other versions use StandaloneCommon.ini
@@ -842,10 +855,7 @@ Public Class Form1
             counter += 1
         End While
 
-        ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-
-
+        '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
         'Onlook viewer
         If My.Settings.Onlook = True Then
@@ -872,6 +882,7 @@ Public Class Form1
 
         Dim files() As String
         Dim ini As String = MyFolder + "\OutworldzFiles\" + My.Settings.GridFolder + "\bin\Regions\"
+        Array.Resize(aRegion, 1)
 
         files = Directory.GetFiles(ini, "*.ini", SearchOption.TopDirectoryOnly)
         For Each FileName As String In files
@@ -1100,22 +1111,19 @@ Public Class Form1
         Try
             My.Computer.FileSystem.DeleteFile(MyFolder + "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\OpenSimConsoleHistory.txt")
         Catch ex As Exception
-            Log("Info:Console history was not empty")
+            Log("Info:Console history was empty")
         End Try
         BumpProgress()
     End Sub
 
-    Public Function Log(message As String)
+    Public Sub Log(message As String)
         Try
             Using outputFile As New StreamWriter(MyFolder & "\OutworldzFiles\Outworldz.log", True)
                 outputFile.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + message)
             End Using
         Catch
-
         End Try
-        Return True
-
-    End Function
+    End Sub
 
     Public Function DiagLog(message As String)
         Try
@@ -1210,6 +1218,9 @@ Public Class Form1
 
     Private Sub LoadBackupToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles LoadBackupToolStripMenuItem.Click
         If (Running) Then
+
+            ChooseRegion()
+
             ' Create an instance of the open file dialog box.
             Dim openFileDialog1 As OpenFileDialog = New OpenFileDialog
 
@@ -1245,7 +1256,7 @@ Public Class Form1
                 End If
             End If
         Else
-            Print("Opensim is not running. Cannot open the Web Interface.")
+            Print("Opensim is not running. Cannot load the OAR file.")
         End If
 
 
@@ -1264,7 +1275,7 @@ Public Class Form1
             Dim webAddress As String = "http://127.0.0.1:" + My.Settings.PublicPort + "/SStats/"
             Process.Start(webAddress)
         Else
-            Print("Opensim is not running. Cannot open the Web Interface.")
+            Print("Opensim is not running. Cannot open the Statistics web page.")
         End If
     End Sub
 
@@ -1311,6 +1322,24 @@ Public Class Form1
 
 #Region "IAROAR"
 
+    Private Sub ChooseRegion()
+        If aRegion.GetUpperBound(0) <> 1 Then
+            Dim Chooseform As New Chooser ' form for choosing a set of regions
+            ' Show testDialog as a modal dialog and determine if DialogResult = OK.
+            Chooseform.ShowDialog()
+            Try
+                ' Read the chosen sim name
+                Dim chosen As String = Chooseform.ListBox1.SelectedItem.ToString()
+                If chosen.Length Then
+                    AppActivate(OpensimProcID)
+                    SendKeys.SendWait("change region " + chosen + "{ENTER}")
+                End If
+                Chooseform.Dispose()
+            Catch
+            End Try
+
+        End If
+    End Sub
     Private Sub LoadOARContent(thing As String)
 
         If Running = False Then Return
@@ -1319,12 +1348,14 @@ Public Class Form1
             Return
         End If
 
-        Dim backMeUp = MsgBox("Make a backup first?", vbYesNo)
+        ChooseRegion()
 
+        Dim backMeUp = MsgBox("Make a backup first?", vbYesNo)
         Try
-            AppActivate(OpensimProcID)
+
             thing = thing.Replace("\", "/")    ' because Opensim uses unix-like slashes, that's why
             If backMeUp = vbYes Then
+                AppActivate(OpensimProcID)
                 SendKeys.SendWait("alert CPU Intensive Backup Started {ENTER}")
                 AppActivate(OpensimProcID)
                 SendKeys.SendWait("save oar " + MyFolder + "/OutworldzFiles/Autobackup/Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar{ENTER}")
@@ -1641,9 +1672,9 @@ Public Class Form1
         <key>auto_update</key>
             <boolean>0</boolean>
         <key>gridname</key>
-            <string>DreamWorld</string>
+            <string>" + My.Settings.SimName + "</string>
         <key>gridnick</key>
-            <string>dreamworld</string>
+            <string>" + My.Settings.SimName + "</string>
         <key>helperuri</key>
             <string>http://</string>
         <key>inventory_links</key>
@@ -2079,7 +2110,7 @@ Public Class Form1
 
             ' Set filter options and filter index.
             openFileDialog1.InitialDirectory = MyFolder + "/"
-            openFileDialog1.Filter = "Inventory IAR (*.iar)|*.iar|*.IAR)|All Files (*.*)|*.*"
+            openFileDialog1.Filter = "Inventory IAR (*.iar)|*.iar|All Files (*.*)|*.*"
             openFileDialog1.FilterIndex = 1
             openFileDialog1.Multiselect = False
 
@@ -2095,7 +2126,7 @@ Public Class Form1
                 End If
             End If
         Else
-            Print("Opensim is not running. Cannot open the Web Interface.")
+            Print("Opensim is not running. Cannot load an IAR at this time.")
         End If
 
     End Sub
