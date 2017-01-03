@@ -64,6 +64,8 @@ Partial Class AdvancedForm
         Me.ManagerGod = New System.Windows.Forms.CheckBox()
         Me.RegionGod = New System.Windows.Forms.CheckBox()
         Me.GroupBox5 = New System.Windows.Forms.GroupBox()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.GridName = New System.Windows.Forms.TextBox()
         Me.Label15 = New System.Windows.Forms.Label()
         Me.TimerInterval = New System.Windows.Forms.TextBox()
         Me.ChatSpeed = New System.Windows.Forms.ComboBox()
@@ -88,8 +90,7 @@ Partial Class AdvancedForm
         Me.PhysicsubODE = New System.Windows.Forms.RadioButton()
         Me.PhysicsBullet = New System.Windows.Forms.RadioButton()
         Me.GroupBox6 = New System.Windows.Forms.GroupBox()
-        Me.GridName = New System.Windows.Forms.TextBox()
-        Me.Label2 = New System.Windows.Forms.Label()
+        Me.Label3 = New System.Windows.Forms.Label()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
         Me.Web.SuspendLayout()
@@ -103,6 +104,9 @@ Partial Class AdvancedForm
         '
         'GroupBox2
         '
+        Me.GroupBox2.Controls.Add(Me.Label2)
+        Me.GroupBox2.Controls.Add(Me.Label3)
+        Me.GroupBox2.Controls.Add(Me.GridName)
         Me.GroupBox2.Controls.Add(Me.AddRegion)
         Me.GroupBox2.Controls.Add(Me.RegionButton)
         Me.GroupBox2.Controls.Add(Me.DnsName)
@@ -115,68 +119,69 @@ Partial Class AdvancedForm
         Me.GroupBox2.Controls.Add(Me.Label5)
         Me.GroupBox2.Location = New System.Drawing.Point(620, 8)
         Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Size = New System.Drawing.Size(134, 233)
+        Me.GroupBox2.Size = New System.Drawing.Size(134, 248)
         Me.GroupBox2.TabIndex = 5
         Me.GroupBox2.TabStop = False
-        Me.GroupBox2.Text = "Ports"
+        Me.GroupBox2.Text = "Grid"
         '
         'AddRegion
         '
-        Me.AddRegion.Location = New System.Drawing.Point(13, 170)
+        Me.AddRegion.Location = New System.Drawing.Point(13, 182)
         Me.AddRegion.Name = "AddRegion"
         Me.AddRegion.Size = New System.Drawing.Size(108, 23)
-        Me.AddRegion.TabIndex = 17
+        Me.AddRegion.TabIndex = 26
         Me.AddRegion.Text = "Add Region"
         Me.AddRegion.UseVisualStyleBackColor = True
         '
         'RegionButton
         '
-        Me.RegionButton.Location = New System.Drawing.Point(12, 199)
+        Me.RegionButton.Location = New System.Drawing.Point(13, 214)
         Me.RegionButton.Name = "RegionButton"
         Me.RegionButton.Size = New System.Drawing.Size(108, 23)
-        Me.RegionButton.TabIndex = 16
+        Me.RegionButton.TabIndex = 27
         Me.RegionButton.Text = "Configure Regions"
         Me.RegionButton.UseVisualStyleBackColor = True
         '
         'DnsName
         '
-        Me.DnsName.Location = New System.Drawing.Point(12, 38)
+        Me.DnsName.Location = New System.Drawing.Point(8, 38)
         Me.DnsName.Name = "DnsName"
         Me.DnsName.Size = New System.Drawing.Size(122, 20)
-        Me.DnsName.TabIndex = 14
-        Me.ToolTip1.SetToolTip(Me.DnsName, "MySQL port is normally 3306. I add one so it will not interfere with other instal" &
-        "lations.")
+        Me.DnsName.TabIndex = 22
+        Me.ToolTip1.SetToolTip(Me.DnsName, "DynDNS Name, Fixed Domain Name, Public WAN IP, PC's IP address, or 127.0.01. The " &
+        "first two allow Hypergridding.  PC LAn allows more than one LAN computer when th" &
+        "ere is no loopback.  Default: 127.0.0.1")
         '
         'Label7
         '
         Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(14, 16)
+        Me.Label7.Location = New System.Drawing.Point(6, 18)
         Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(120, 13)
+        Me.Label7.Size = New System.Drawing.Size(124, 13)
         Me.Label7.TabIndex = 15
-        Me.Label7.Text = "DNS Name (if available)"
+        Me.Label7.Text = "DNS Name or IPAddress"
         '
         'PublicPort
         '
-        Me.PublicPort.Location = New System.Drawing.Point(81, 96)
+        Me.PublicPort.Location = New System.Drawing.Point(82, 132)
         Me.PublicPort.Name = "PublicPort"
         Me.PublicPort.Size = New System.Drawing.Size(47, 20)
-        Me.PublicPort.TabIndex = 0
+        Me.PublicPort.TabIndex = 24
         Me.ToolTip1.SetToolTip(Me.PublicPort, "The Public port for your hypergrid. Default 8002")
         '
         'DiagPort
         '
-        Me.DiagPort.Location = New System.Drawing.Point(81, 73)
+        Me.DiagPort.Location = New System.Drawing.Point(82, 109)
         Me.DiagPort.Name = "DiagPort"
         Me.DiagPort.Size = New System.Drawing.Size(47, 20)
-        Me.DiagPort.TabIndex = 7
+        Me.DiagPort.TabIndex = 23
         Me.ToolTip1.SetToolTip(Me.DiagPort, "This port will be opened briefly to allow Hypertgrid to be tested before Opensim " &
         "runs. Default is 8001")
         '
         'Label6
         '
         Me.Label6.AutoSize = True
-        Me.Label6.Location = New System.Drawing.Point(14, 77)
+        Me.Label6.Location = New System.Drawing.Point(15, 113)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(57, 13)
         Me.Label6.TabIndex = 6
@@ -185,7 +190,7 @@ Partial Class AdvancedForm
         'Label4
         '
         Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(14, 122)
+        Me.Label4.Location = New System.Drawing.Point(15, 158)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(40, 13)
         Me.Label4.TabIndex = 4
@@ -193,16 +198,16 @@ Partial Class AdvancedForm
         '
         'PrivatePort
         '
-        Me.PrivatePort.Location = New System.Drawing.Point(81, 119)
+        Me.PrivatePort.Location = New System.Drawing.Point(82, 155)
         Me.PrivatePort.Name = "PrivatePort"
         Me.PrivatePort.Size = New System.Drawing.Size(47, 20)
-        Me.PrivatePort.TabIndex = 1
+        Me.PrivatePort.TabIndex = 25
         Me.ToolTip1.SetToolTip(Me.PrivatePort, "A Private Port used only on the LAN, never the WAN. Default: 8003")
         '
         'Label5
         '
         Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(15, 100)
+        Me.Label5.Location = New System.Drawing.Point(16, 136)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(39, 13)
         Me.Label5.TabIndex = 5
@@ -213,9 +218,8 @@ Partial Class AdvancedForm
         Me.DbPort.Location = New System.Drawing.Point(76, 38)
         Me.DbPort.Name = "DbPort"
         Me.DbPort.Size = New System.Drawing.Size(47, 20)
-        Me.DbPort.TabIndex = 11
-        Me.ToolTip1.SetToolTip(Me.DbPort, "MySQL port is normally 3306. I add one so it will not intyerfere with other insta" &
-        "llations.")
+        Me.DbPort.TabIndex = 29
+        Me.ToolTip1.SetToolTip(Me.DbPort, "MySQL port. Default: 3308")
         '
         'Label
         '
@@ -254,7 +258,7 @@ Partial Class AdvancedForm
         Me.AutoBackupKeepFilesForDays.Location = New System.Drawing.Point(17, 81)
         Me.AutoBackupKeepFilesForDays.Name = "AutoBackupKeepFilesForDays"
         Me.AutoBackupKeepFilesForDays.Size = New System.Drawing.Size(47, 20)
-        Me.AutoBackupKeepFilesForDays.TabIndex = 13
+        Me.AutoBackupKeepFilesForDays.TabIndex = 3
         Me.ToolTip1.SetToolTip(Me.AutoBackupKeepFilesForDays, "Backaups older than this number will be deleted")
         '
         'Label8
@@ -274,7 +278,7 @@ Partial Class AdvancedForm
         Me.AutoBackupInterval.Location = New System.Drawing.Point(17, 54)
         Me.AutoBackupInterval.Name = "AutoBackupInterval"
         Me.AutoBackupInterval.Size = New System.Drawing.Size(121, 21)
-        Me.AutoBackupInterval.TabIndex = 4
+        Me.AutoBackupInterval.TabIndex = 2
         Me.ToolTip1.SetToolTip(Me.AutoBackupInterval, "The sim nust run this long and it will back up")
         '
         'AutoBackup
@@ -283,7 +287,7 @@ Partial Class AdvancedForm
         Me.AutoBackup.Location = New System.Drawing.Point(17, 19)
         Me.AutoBackup.Name = "AutoBackup"
         Me.AutoBackup.Size = New System.Drawing.Size(65, 17)
-        Me.AutoBackup.TabIndex = 2
+        Me.AutoBackup.TabIndex = 1
         Me.AutoBackup.Text = "Enabled"
         Me.ToolTip1.SetToolTip(Me.AutoBackup, "Saves OAR files periodically")
         Me.AutoBackup.UseVisualStyleBackColor = True
@@ -315,7 +319,7 @@ Partial Class AdvancedForm
         Me.SmtpPassword.Location = New System.Drawing.Point(88, 162)
         Me.SmtpPassword.Name = "SmtpPassword"
         Me.SmtpPassword.Size = New System.Drawing.Size(100, 20)
-        Me.SmtpPassword.TabIndex = 19
+        Me.SmtpPassword.TabIndex = 20
         Me.ToolTip1.SetToolTip(Me.SmtpPassword, "Gmail Passeord")
         Me.SmtpPassword.UseSystemPasswordChar = True
         '
@@ -351,7 +355,7 @@ Partial Class AdvancedForm
         Me.SmtpUsername.Location = New System.Drawing.Point(88, 137)
         Me.SmtpUsername.Name = "SmtpUsername"
         Me.SmtpUsername.Size = New System.Drawing.Size(100, 20)
-        Me.SmtpUsername.TabIndex = 18
+        Me.SmtpUsername.TabIndex = 19
         Me.ToolTip1.SetToolTip(Me.SmtpUsername, "A Gmail email name to send email from")
         '
         'AdminEmail
@@ -359,7 +363,7 @@ Partial Class AdvancedForm
         Me.AdminEmail.Location = New System.Drawing.Point(88, 88)
         Me.AdminEmail.Name = "AdminEmail"
         Me.AdminEmail.Size = New System.Drawing.Size(100, 20)
-        Me.AdminEmail.TabIndex = 14
+        Me.AdminEmail.TabIndex = 17
         Me.ToolTip1.SetToolTip(Me.AdminEmail, "An email will be sent is someone registers for your grid")
         '
         'Label12
@@ -377,9 +381,10 @@ Partial Class AdvancedForm
         Me.AccountConfirmationRequired.Location = New System.Drawing.Point(88, 114)
         Me.AccountConfirmationRequired.Name = "AccountConfirmationRequired"
         Me.AccountConfirmationRequired.Size = New System.Drawing.Size(90, 17)
-        Me.AccountConfirmationRequired.TabIndex = 17
+        Me.AccountConfirmationRequired.TabIndex = 18
         Me.AccountConfirmationRequired.Text = "Confirmation?"
-        Me.ToolTip1.SetToolTip(Me.AccountConfirmationRequired, "If checked, you must log into the web interface and approve the new users.")
+        Me.ToolTip1.SetToolTip(Me.AccountConfirmationRequired, "If checked, you must log into the web interface and approve the new users.. Defau" &
+        "lt: checked")
         Me.AccountConfirmationRequired.UseVisualStyleBackColor = True
         '
         'AdminLast
@@ -387,16 +392,16 @@ Partial Class AdvancedForm
         Me.AdminLast.Location = New System.Drawing.Point(88, 42)
         Me.AdminLast.Name = "AdminLast"
         Me.AdminLast.Size = New System.Drawing.Size(100, 20)
-        Me.AdminLast.TabIndex = 12
-        Me.ToolTip1.SetToolTip(Me.AdminLast, "Last Name for Administering your grid")
+        Me.AdminLast.TabIndex = 15
+        Me.ToolTip1.SetToolTip(Me.AdminLast, "Last Name for Administering your grid. Default: Admin")
         '
         'AdminFirst
         '
         Me.AdminFirst.Location = New System.Drawing.Point(88, 20)
         Me.AdminFirst.Name = "AdminFirst"
         Me.AdminFirst.Size = New System.Drawing.Size(100, 20)
-        Me.AdminFirst.TabIndex = 11
-        Me.ToolTip1.SetToolTip(Me.AdminFirst, "First Name for Administering your grid")
+        Me.AdminFirst.TabIndex = 14
+        Me.ToolTip1.SetToolTip(Me.AdminFirst, "First Name for Administering your grid. Default: Wifi")
         '
         'Label11
         '
@@ -421,14 +426,14 @@ Partial Class AdvancedForm
         Me.Password.Location = New System.Drawing.Point(88, 66)
         Me.Password.Name = "Password"
         Me.Password.Size = New System.Drawing.Size(100, 20)
-        Me.Password.TabIndex = 8
-        Me.ToolTip1.SetToolTip(Me.Password, "Password for Administering your grid")
+        Me.Password.TabIndex = 16
+        Me.ToolTip1.SetToolTip(Me.Password, "Password for Administering your grid. Default: secret")
         Me.Password.UseSystemPasswordChar = True
         '
         'Label19
         '
         Me.Label19.AutoSize = True
-        Me.Label19.Location = New System.Drawing.Point(6, 110)
+        Me.Label19.Location = New System.Drawing.Point(6, 73)
         Me.Label19.Name = "Label19"
         Me.Label19.Size = New System.Drawing.Size(139, 13)
         Me.Label19.TabIndex = 22
@@ -436,11 +441,12 @@ Partial Class AdvancedForm
         '
         'SplashPage
         '
-        Me.SplashPage.Location = New System.Drawing.Point(6, 128)
+        Me.SplashPage.Location = New System.Drawing.Point(6, 91)
         Me.SplashPage.Name = "SplashPage"
         Me.SplashPage.Size = New System.Drawing.Size(168, 20)
-        Me.SplashPage.TabIndex = 16
-        Me.ToolTip1.SetToolTip(Me.SplashPage, "The page that appears when you log in")
+        Me.SplashPage.TabIndex = 11
+        Me.ToolTip1.SetToolTip(Me.SplashPage, "The page that appears when you log in. Default: ""http://www.outworldz.com/Outworl" &
+        "dz_installer/Welcome.htm")
         '
         'AllowGod
         '
@@ -448,9 +454,9 @@ Partial Class AdvancedForm
         Me.AllowGod.Location = New System.Drawing.Point(23, 23)
         Me.AllowGod.Name = "AllowGod"
         Me.AllowGod.Size = New System.Drawing.Size(105, 17)
-        Me.AllowGod.TabIndex = 16
+        Me.AllowGod.TabIndex = 4
         Me.AllowGod.Text = "Allow Grid gods?"
-        Me.ToolTip1.SetToolTip(Me.AllowGod, "Enable all God Functions ")
+        Me.ToolTip1.SetToolTip(Me.AllowGod, "Enable all God Functions. Default: Off")
         Me.AllowGod.UseVisualStyleBackColor = True
         '
         'GroupBox4
@@ -471,9 +477,9 @@ Partial Class AdvancedForm
         Me.ParcelGod.AutoSize = True
         Me.ParcelGod.Location = New System.Drawing.Point(24, 92)
         Me.ParcelGod.Name = "ParcelGod"
-        Me.ParcelGod.Size = New System.Drawing.Size(127, 17)
-        Me.ParcelGod.TabIndex = 20
-        Me.ParcelGod.Text = "Parcel Owner is god?"
+        Me.ParcelGod.Size = New System.Drawing.Size(181, 17)
+        Me.ParcelGod.TabIndex = 7
+        Me.ParcelGod.Text = "Parcel Owner is god?Default: Off"
         Me.ParcelGod.UseVisualStyleBackColor = True
         '
         'ManagerGod
@@ -481,9 +487,9 @@ Partial Class AdvancedForm
         Me.ManagerGod.AutoSize = True
         Me.ManagerGod.Location = New System.Drawing.Point(23, 69)
         Me.ManagerGod.Name = "ManagerGod"
-        Me.ManagerGod.Size = New System.Drawing.Size(141, 17)
-        Me.ManagerGod.TabIndex = 19
-        Me.ManagerGod.Text = "Region manager is god?"
+        Me.ManagerGod.Size = New System.Drawing.Size(195, 17)
+        Me.ManagerGod.TabIndex = 6
+        Me.ManagerGod.Text = "Region manager is god?Default: Off"
         Me.ManagerGod.UseVisualStyleBackColor = True
         '
         'RegionGod
@@ -491,15 +497,13 @@ Partial Class AdvancedForm
         Me.RegionGod.AutoSize = True
         Me.RegionGod.Location = New System.Drawing.Point(23, 46)
         Me.RegionGod.Name = "RegionGod"
-        Me.RegionGod.Size = New System.Drawing.Size(129, 17)
-        Me.RegionGod.TabIndex = 18
-        Me.RegionGod.Text = "Region owner is god?"
+        Me.RegionGod.Size = New System.Drawing.Size(186, 17)
+        Me.RegionGod.TabIndex = 1855
+        Me.RegionGod.Text = "Region owner is god? Default: Off"
         Me.RegionGod.UseVisualStyleBackColor = True
         '
         'GroupBox5
         '
-        Me.GroupBox5.Controls.Add(Me.Label2)
-        Me.GroupBox5.Controls.Add(Me.GridName)
         Me.GroupBox5.Controls.Add(Me.Label19)
         Me.GroupBox5.Controls.Add(Me.Label15)
         Me.GroupBox5.Controls.Add(Me.TimerInterval)
@@ -511,6 +515,24 @@ Partial Class AdvancedForm
         Me.GroupBox5.TabIndex = 22
         Me.GroupBox5.TabStop = False
         Me.GroupBox5.Text = "Personality"
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Location = New System.Drawing.Point(10, 65)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(57, 13)
+        Me.Label2.TabIndex = 26
+        Me.Label2.Text = "Grid Name"
+        '
+        'GridName
+        '
+        Me.GridName.Location = New System.Drawing.Point(13, 82)
+        Me.GridName.Name = "GridName"
+        Me.GridName.Size = New System.Drawing.Size(116, 20)
+        Me.GridName.TabIndex = 10
+        Me.ToolTip1.SetToolTip(Me.GridName, "The name of your mini-grid.  This shows in the Viewer Grid pulldown and on the Wi" &
+        "fi Page. Default: Outworldz")
         '
         'Label15
         '
@@ -526,8 +548,8 @@ Partial Class AdvancedForm
         Me.TimerInterval.Location = New System.Drawing.Point(135, 38)
         Me.TimerInterval.Name = "TimerInterval"
         Me.TimerInterval.Size = New System.Drawing.Size(39, 20)
-        Me.TimerInterval.TabIndex = 24
-        Me.ToolTip1.SetToolTip(Me.TimerInterval, "The cycle time for the wall paper - in seconds")
+        Me.TimerInterval.TabIndex = 9
+        Me.ToolTip1.SetToolTip(Me.TimerInterval, "The cycle time for the wall paper - in seconds. 0 = Off")
         '
         'ChatSpeed
         '
@@ -536,8 +558,8 @@ Partial Class AdvancedForm
         Me.ChatSpeed.Location = New System.Drawing.Point(9, 14)
         Me.ChatSpeed.Name = "ChatSpeed"
         Me.ChatSpeed.Size = New System.Drawing.Size(165, 21)
-        Me.ChatSpeed.TabIndex = 22
-        Me.ToolTip1.SetToolTip(Me.ChatSpeed, "The speed the sleepy chat occurs")
+        Me.ChatSpeed.TabIndex = 8
+        Me.ToolTip1.SetToolTip(Me.ChatSpeed, "The speed the sleepy chat occurs at.  ")
         '
         'WebStats
         '
@@ -545,9 +567,9 @@ Partial Class AdvancedForm
         Me.WebStats.Location = New System.Drawing.Point(20, 19)
         Me.WebStats.Name = "WebStats"
         Me.WebStats.Size = New System.Drawing.Size(65, 17)
-        Me.WebStats.TabIndex = 25
+        Me.WebStats.TabIndex = 21
         Me.WebStats.Text = "Enabled"
-        Me.ToolTip1.SetToolTip(Me.WebStats, "SHows Sim Stats on the web")
+        Me.ToolTip1.SetToolTip(Me.WebStats, "Webserver Sim Stats on the web")
         Me.WebStats.UseVisualStyleBackColor = True
         '
         'DbName
@@ -555,36 +577,32 @@ Partial Class AdvancedForm
         Me.DbName.Location = New System.Drawing.Point(76, 62)
         Me.DbName.Name = "DbName"
         Me.DbName.Size = New System.Drawing.Size(107, 20)
-        Me.DbName.TabIndex = 12
-        Me.ToolTip1.SetToolTip(Me.DbName, "MySQL port is normally 3306. I add one so it will not intyerfere with other insta" &
-        "llations.")
+        Me.DbName.TabIndex = 30
+        Me.ToolTip1.SetToolTip(Me.DbName, "The MySQL database name. Default: Opensim")
         '
         'DbUsername
         '
         Me.DbUsername.Location = New System.Drawing.Point(76, 84)
         Me.DbUsername.Name = "DbUsername"
         Me.DbUsername.Size = New System.Drawing.Size(107, 20)
-        Me.DbUsername.TabIndex = 14
-        Me.ToolTip1.SetToolTip(Me.DbUsername, "MySQL port is normally 3306. I add one so it will not intyerfere with other insta" &
-        "llations.")
+        Me.DbUsername.TabIndex = 31
+        Me.ToolTip1.SetToolTip(Me.DbUsername, "MySQL user for Opensim database")
         '
         'DbPassword
         '
         Me.DbPassword.Location = New System.Drawing.Point(76, 106)
         Me.DbPassword.Name = "DbPassword"
         Me.DbPassword.Size = New System.Drawing.Size(107, 20)
-        Me.DbPassword.TabIndex = 15
-        Me.ToolTip1.SetToolTip(Me.DbPassword, "MySQL port is normally 3306. I add one so it will not intyerfere with other insta" &
-        "llations.")
+        Me.DbPassword.TabIndex = 32
+        Me.ToolTip1.SetToolTip(Me.DbPassword, "MySQL Password for database Opensim")
         '
         'DbConnection
         '
         Me.DbConnection.Location = New System.Drawing.Point(76, 14)
         Me.DbConnection.Name = "DbConnection"
         Me.DbConnection.Size = New System.Drawing.Size(105, 20)
-        Me.DbConnection.TabIndex = 18
-        Me.ToolTip1.SetToolTip(Me.DbConnection, "MySQL port is normally 3306. I add one so it will not intyerfere with other insta" &
-        "llations.")
+        Me.DbConnection.TabIndex = 28
+        Me.ToolTip1.SetToolTip(Me.DbConnection, "The name or IP of the Machine with the database. Default: localhost")
         '
         'PhysicsODE
         '
@@ -592,7 +610,7 @@ Partial Class AdvancedForm
         Me.PhysicsODE.Location = New System.Drawing.Point(6, 38)
         Me.PhysicsODE.Name = "PhysicsODE"
         Me.PhysicsODE.Size = New System.Drawing.Size(136, 17)
-        Me.PhysicsODE.TabIndex = 0
+        Me.PhysicsODE.TabIndex = 34
         Me.PhysicsODE.TabStop = True
         Me.PhysicsODE.Text = "Open Dynamics Engine"
         Me.ToolTip1.SetToolTip(Me.PhysicsODE, "ODE is the original physics enfgine for Opensim. It should only be used for backw" &
@@ -605,11 +623,10 @@ Partial Class AdvancedForm
         Me.PhysicsNone.Location = New System.Drawing.Point(6, 19)
         Me.PhysicsNone.Name = "PhysicsNone"
         Me.PhysicsNone.Size = New System.Drawing.Size(51, 17)
-        Me.PhysicsNone.TabIndex = 3
+        Me.PhysicsNone.TabIndex = 33
         Me.PhysicsNone.TabStop = True
         Me.PhysicsNone.Text = "None"
-        Me.ToolTip1.SetToolTip(Me.PhysicsNone, "None - Your avatar will not be able to move. USeful in large presentations with O" &
-        "nlook with no Avatar")
+        Me.ToolTip1.SetToolTip(Me.PhysicsNone, "None - no physics at all")
         Me.PhysicsNone.UseVisualStyleBackColor = True
         '
         'OpensimOld
@@ -618,7 +635,7 @@ Partial Class AdvancedForm
         Me.OpensimOld.Location = New System.Drawing.Point(19, 27)
         Me.OpensimOld.Name = "OpensimOld"
         Me.OpensimOld.Size = New System.Drawing.Size(107, 17)
-        Me.OpensimOld.TabIndex = 0
+        Me.OpensimOld.TabIndex = 12
         Me.OpensimOld.TabStop = True
         Me.OpensimOld.Text = "0.8.2.1 (released)"
         Me.ToolTip1.SetToolTip(Me.OpensimOld, "Older, stable version")
@@ -630,7 +647,7 @@ Partial Class AdvancedForm
         Me.OpensImNew.Location = New System.Drawing.Point(19, 51)
         Me.OpensImNew.Name = "OpensImNew"
         Me.OpensImNew.Size = New System.Drawing.Size(76, 17)
-        Me.OpensImNew.TabIndex = 1
+        Me.OpensImNew.TabIndex = 13
         Me.OpensImNew.TabStop = True
         Me.OpensImNew.Text = "0.9.1 (dev)"
         Me.ToolTip1.SetToolTip(Me.OpensImNew, "Newer, development version with ubODE")
@@ -720,10 +737,10 @@ Partial Class AdvancedForm
         Me.PhysicsSeparate.AutoSize = True
         Me.PhysicsSeparate.Location = New System.Drawing.Point(6, 92)
         Me.PhysicsSeparate.Name = "PhysicsSeparate"
-        Me.PhysicsSeparate.Size = New System.Drawing.Size(139, 17)
-        Me.PhysicsSeparate.TabIndex = 4
+        Me.PhysicsSeparate.Size = New System.Drawing.Size(265, 17)
+        Me.PhysicsSeparate.TabIndex = 37
         Me.PhysicsSeparate.TabStop = True
-        Me.PhysicsSeparate.Text = "Bullet in separate thread"
+        Me.PhysicsSeparate.Text = "Bullet physics in separate thread. Default: Selected"
         Me.PhysicsSeparate.UseVisualStyleBackColor = True
         '
         'PhysicsubODE
@@ -732,7 +749,7 @@ Partial Class AdvancedForm
         Me.PhysicsubODE.Location = New System.Drawing.Point(6, 56)
         Me.PhysicsubODE.Name = "PhysicsubODE"
         Me.PhysicsubODE.Size = New System.Drawing.Size(153, 17)
-        Me.PhysicsubODE.TabIndex = 2
+        Me.PhysicsubODE.TabIndex = 35
         Me.PhysicsubODE.TabStop = True
         Me.PhysicsubODE.Text = "Ubit Open Dynamic Engine"
         Me.PhysicsubODE.UseVisualStyleBackColor = True
@@ -743,7 +760,7 @@ Partial Class AdvancedForm
         Me.PhysicsBullet.Location = New System.Drawing.Point(6, 74)
         Me.PhysicsBullet.Name = "PhysicsBullet"
         Me.PhysicsBullet.Size = New System.Drawing.Size(90, 17)
-        Me.PhysicsBullet.TabIndex = 1
+        Me.PhysicsBullet.TabIndex = 136
         Me.PhysicsBullet.TabStop = True
         Me.PhysicsBullet.Text = "Bullet Physics"
         Me.PhysicsBullet.UseVisualStyleBackColor = True
@@ -759,22 +776,13 @@ Partial Class AdvancedForm
         Me.GroupBox6.TabStop = False
         Me.GroupBox6.Text = "Opensim Version"
         '
-        'GridName
+        'Label3
         '
-        Me.GridName.Location = New System.Drawing.Point(69, 73)
-        Me.GridName.Name = "GridName"
-        Me.GridName.Size = New System.Drawing.Size(105, 20)
-        Me.GridName.TabIndex = 15
-        Me.ToolTip1.SetToolTip(Me.GridName, "Backaups older than this number will be deleted")
-        '
-        'Label2
-        '
-        Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(6, 76)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(57, 13)
-        Me.Label2.TabIndex = 26
-        Me.Label2.Text = "Grid Name"
+        Me.Label3.AutoSize = True
+        Me.Label3.Location = New System.Drawing.Point(15, 31)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(0, 13)
+        Me.Label3.TabIndex = 28
         '
         'AdvancedForm
         '
@@ -880,4 +888,5 @@ Partial Class AdvancedForm
     Friend WithEvents OpensimOld As RadioButton
     Friend WithEvents Label2 As Label
     Friend WithEvents GridName As TextBox
+    Friend WithEvents Label3 As Label
 End Class

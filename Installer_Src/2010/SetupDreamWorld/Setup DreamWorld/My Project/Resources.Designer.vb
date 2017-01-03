@@ -293,9 +293,9 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
-        Friend ReadOnly Property server_client() As System.Drawing.Bitmap
+        Friend ReadOnly Property server_gWSCLient() As System.Drawing.Bitmap
             Get
-                Dim obj As Object = ResourceManager.GetObject("server_client", resourceCulture)
+                Dim obj As Object = ResourceManager.GetObject("server_gWSCLient", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -1056,16 +1056,6 @@ Namespace My.Resources
         Friend ReadOnly Property wp_habitat() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("wp_habitat", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized resource of type System.Drawing.Bitmap.
-        '''</summary>
-        Friend ReadOnly Property wp_Inside_in_shadows() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("wp_Inside_in_shadows", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property

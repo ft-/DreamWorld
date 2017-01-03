@@ -55,7 +55,7 @@ Partial Class FormRegion
         Me.RegionPort.Location = New System.Drawing.Point(97, 39)
         Me.RegionPort.Name = "RegionPort"
         Me.RegionPort.Size = New System.Drawing.Size(46, 20)
-        Me.RegionPort.TabIndex = 18
+        Me.RegionPort.TabIndex = 10
         Me.ToolTip1.SetToolTip(Me.RegionPort, "The UDP port the region will operate on. Must be uinique")
         '
         'CoordY
@@ -63,7 +63,7 @@ Partial Class FormRegion
         Me.CoordY.Location = New System.Drawing.Point(163, 13)
         Me.CoordY.Name = "CoordY"
         Me.CoordY.Size = New System.Drawing.Size(38, 20)
-        Me.CoordY.TabIndex = 15
+        Me.CoordY.TabIndex = 9
         Me.ToolTip1.SetToolTip(Me.CoordY, "The Up-Down position on the world map")
         '
         'CoordX
@@ -71,7 +71,7 @@ Partial Class FormRegion
         Me.CoordX.Location = New System.Drawing.Point(97, 13)
         Me.CoordX.Name = "CoordX"
         Me.CoordX.Size = New System.Drawing.Size(40, 20)
-        Me.CoordX.TabIndex = 14
+        Me.CoordX.TabIndex = 8
         Me.ToolTip1.SetToolTip(Me.CoordX, "The L-R position on the world map")
         '
         'RegionName
@@ -79,7 +79,7 @@ Partial Class FormRegion
         Me.RegionName.Location = New System.Drawing.Point(15, 25)
         Me.RegionName.Name = "RegionName"
         Me.RegionName.Size = New System.Drawing.Size(230, 20)
-        Me.RegionName.TabIndex = 24
+        Me.RegionName.TabIndex = 1
         Me.ToolTip1.SetToolTip(Me.RegionName, "Alpa-Numeric plus Spaces")
         '
         'RadioButton4
@@ -88,7 +88,7 @@ Partial Class FormRegion
         Me.RadioButton4.Location = New System.Drawing.Point(20, 85)
         Me.RadioButton4.Name = "RadioButton4"
         Me.RadioButton4.Size = New System.Drawing.Size(50, 17)
-        Me.RadioButton4.TabIndex = 8
+        Me.RadioButton4.TabIndex = 5
         Me.RadioButton4.TabStop = True
         Me.RadioButton4.Text = "4 X 4"
         Me.ToolTip1.SetToolTip(Me.RadioButton4, "1024 X 1024")
@@ -100,7 +100,7 @@ Partial Class FormRegion
         Me.RadioButton3.Location = New System.Drawing.Point(20, 62)
         Me.RadioButton3.Name = "RadioButton3"
         Me.RadioButton3.Size = New System.Drawing.Size(50, 17)
-        Me.RadioButton3.TabIndex = 7
+        Me.RadioButton3.TabIndex = 4
         Me.RadioButton3.TabStop = True
         Me.RadioButton3.Text = "3 X 3"
         Me.ToolTip1.SetToolTip(Me.RadioButton3, "768 X 768")
@@ -112,7 +112,7 @@ Partial Class FormRegion
         Me.RadioButton2.Location = New System.Drawing.Point(20, 39)
         Me.RadioButton2.Name = "RadioButton2"
         Me.RadioButton2.Size = New System.Drawing.Size(50, 17)
-        Me.RadioButton2.TabIndex = 6
+        Me.RadioButton2.TabIndex = 3
         Me.RadioButton2.TabStop = True
         Me.RadioButton2.Text = "2 X 2"
         Me.ToolTip1.SetToolTip(Me.RadioButton2, "512 X 512")
@@ -124,7 +124,7 @@ Partial Class FormRegion
         Me.RadioButton1.Location = New System.Drawing.Point(20, 16)
         Me.RadioButton1.Name = "RadioButton1"
         Me.RadioButton1.Size = New System.Drawing.Size(50, 17)
-        Me.RadioButton1.TabIndex = 5
+        Me.RadioButton1.TabIndex = 2
         Me.RadioButton1.TabStop = True
         Me.RadioButton1.Text = "1 X 1"
         Me.ToolTip1.SetToolTip(Me.RadioButton1, "256 X 256")
@@ -135,7 +135,7 @@ Partial Class FormRegion
         Me.SizeY.Location = New System.Drawing.Point(168, 44)
         Me.SizeY.Name = "SizeY"
         Me.SizeY.Size = New System.Drawing.Size(43, 20)
-        Me.SizeY.TabIndex = 1
+        Me.SizeY.TabIndex = 7
         Me.ToolTip1.SetToolTip(Me.SizeY, "Must be the same as X")
         '
         'SizeX
@@ -143,7 +143,7 @@ Partial Class FormRegion
         Me.SizeX.Location = New System.Drawing.Point(168, 19)
         Me.SizeX.Name = "SizeX"
         Me.SizeX.Size = New System.Drawing.Size(43, 20)
-        Me.SizeX.TabIndex = 0
+        Me.SizeX.TabIndex = 6
         Me.ToolTip1.SetToolTip(Me.SizeX, "Must be the same as Y")
         '
         'Advanced
@@ -195,7 +195,7 @@ Partial Class FormRegion
         Me.UUID.Location = New System.Drawing.Point(9, 81)
         Me.UUID.Name = "UUID"
         Me.UUID.Size = New System.Drawing.Size(215, 20)
-        Me.UUID.TabIndex = 20
+        Me.UUID.TabIndex = 11
         Me.UUID.Text = "ae823f8a-edcc-4351-b797-0e10711312a8"
         '
         'Label21

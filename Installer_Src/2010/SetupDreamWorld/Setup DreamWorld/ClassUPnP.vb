@@ -243,7 +243,7 @@ Public Class UPNP
                 L.Add("--------------------------------------")
 
                 'Grab the rest
-                L.Add(String.Format("IP: {0}", mapping.InternalClient))
+                L.Add(String.Format("IP: {0}", mapping.InternalgWSCLient))
                 L.Add(String.Format("Port: {0}", mapping.InternalPort))
                 L.Add(String.Format("Description: {0}", mapping.Description))
 

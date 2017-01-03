@@ -48,7 +48,7 @@ Public Class Form1
     Dim gCurSlashDir As String '  holds the current directory info in Unix format
     Dim isRunning As Boolean = False
     Dim Arnd = New Random()
-    Dim ws As NetServer
+
     Public gChatTime As Integer
 
     Dim client As New System.Net.WebClient
@@ -66,7 +66,7 @@ Public Class Form1
     Dim OpensimProcID As Integer
     Private images =
     New List(Of Image) From {My.Resources.tangled, My.Resources.wp_habitat, My.Resources.wp_Mooferd,
-                             My.Resources.wp_Inside_in_shadows, My.Resources.wp_To_Piers_Anthony,
+                             My.Resources.wp_To_Piers_Anthony,
                              My.Resources.wp_wavy_love_of_animals, My.Resources.wp_zebra,
                              My.Resources.wp_Que, My.Resources.wp_1, My.Resources.wp_2,
                              My.Resources.wp_3, My.Resources.wp_4, My.Resources.wp_5,
@@ -226,25 +226,19 @@ Public Class Form1
 
         ClearLogFiles() ' clear log fles
 
-        Log("Info:Loading Web Server")
-        ws = NetServer.getWebServer
-        Log("Info:Starting Web Server")
-        ws.StartServer(MyFolder)
-        BumpProgress10()
+        ' If gDebug Then My.Settings.RanAllDiags = False
 
-        GetPubIP() ' force ip to to DnsName if we have one or else public
+        If Not My.Settings.RanAllDiags Then
+            My.Settings.RanAllDiags = True
+            DoDiag()
+        Else
+            My.Settings.PublicIP = GetPubIP() ' force ip to Advanced Menu IP if we have one or else public
+        End If
 
         ' always open ports
         OpenPorts()
 
         SetINIFromMySettings()
-
-        'If gDebug Then DoDiag()
-
-        If Not My.Settings.RunOnce Then
-            My.Settings.RunOnce = True
-            DoDiag()
-        End If
 
         If Not My.Settings.SkipUpdateCheck Then
             CheckForUpdates()
@@ -272,7 +266,7 @@ Public Class Form1
                     outputFile.WriteLine("This file lets Outworldz know it has been installed")
                 End Using
             Catch ex As Exception
-                Log("Could not create Init.txt:" + ex.Message)
+                Log("Err:Could not create Init.txt - no permissions to write it:" + ex.Message)
             End Try
 
             Dim yesno = MsgBox("Do you want to install the Onlook Viewer? (Newcomers to virtual worlds should choose Yes)", vbYesNo)
@@ -344,11 +338,9 @@ Public Class Form1
         Running = True
         MnuContent.Visible = True
 
-        GetAllRegions()
+        My.Settings.PublicIP = GetPubIP()
 
-        If My.Settings.DiagFailed = True Then
-            My.Settings.PublicIP = "127.0.0.1"
-        End If
+        GetAllRegions()
 
         OpenPorts() ' Open router ports with uPnP
         SetINIFromMySettings()    ' set up the INI files
@@ -393,7 +385,6 @@ Public Class Form1
         My.Settings.MyX = p.X
         My.Settings.MyY = p.Y
 
-        Log("Info:FormClosed")
         ProgressBar1.Value = 90
         Print("Hold fast to your dreams ...")
         ExitAll()
@@ -440,7 +431,7 @@ Public Class Form1
             pOnlook.WaitForExit()
             pOnlook.Close()
         Catch ex As Exception
-            Log("Warn: Could not stop Onlook:" + ex.Message)
+            Log("Warn:Could not stop Onlook:" + ex.Message)
         End Try
 
         ProgressBar1.Value = 67
@@ -455,7 +446,7 @@ Public Class Form1
             Log("Error:" + ex.Message)
         End Try
 
-        ws.StopWebServer()
+
         ProgressBar1.Value = 33
 
         CloseRouterPorts()
@@ -756,8 +747,6 @@ Public Class Form1
                 SetIni("Startup", "UseSeparatePhysicsThread", "true")
         End Select
 
-
-
         ' set MySql
         Dim ConnectionString = """" _
             + "Data Source=" + My.Settings.DBSource _
@@ -907,7 +896,7 @@ Public Class Form1
                 aRegion(index).CoordX = parts(0)
                 aRegion(index).CoordY = parts(1)
             Catch ex As Exception
-                Log("Err: Parse file " + Name + ":" + ex.Message)
+                Log("Err:Parse file " + Name + ":" + ex.Message)
             End Try
         Next
     End Sub
@@ -1006,7 +995,7 @@ Public Class Form1
         ' Wait for Opensim to start listening 
         Dim Up As String
         Try
-            Up = client.DownloadString("http://127.0.0.1:" + My.Settings.PublicPort + "/?r=" + Random())
+            Up = client.DownloadString("http://127.0.0.1:" + My.Settings.PublicPort + "/?_Opensim=" + Random())
         Catch ex As Exception
             Up = ""
         End Try
@@ -1016,7 +1005,7 @@ Public Class Form1
             BumpProgress()
             counter = counter + 1
             ' wait a couple of minutes for it to start
-            If counter > 120 Then
+            If counter > 1200 Then
                 Print("Opensim failed to start")
                 KillAll()
                 Buttons(StartButton)
@@ -1029,10 +1018,10 @@ Public Class Form1
                 Return False
             End If
             Application.DoEvents()
-            Sleep(1000)
+            Sleep(100)
 
             Try
-                Up = client.DownloadString("http://127.0.0.1:" + My.Settings.PublicPort + "/?r=" + Random())
+                Up = client.DownloadString("http://127.0.0.1:" + My.Settings.PublicPort + "/?_Opensim=" + Random())
             Catch ex As Exception
                 Up = ""
                 If InStr(ex.Message, "404") Then
@@ -1113,6 +1102,12 @@ Public Class Form1
         Catch ex As Exception
             Log("Info:Console history was empty")
         End Try
+        Try
+            My.Computer.FileSystem.DeleteFile(MyFolder & "\OutworldzFiles\Diagnostics.log")
+        Catch ex As Exception
+            Log("Info:Console history was empty")
+        End Try
+
         BumpProgress()
     End Sub
 
@@ -1267,7 +1262,7 @@ Public Class Form1
     End Sub
 
     Private Sub ShowHyperGridAddressToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ShowHyperGridAddressToolStripMenuItem.Click
-        Print("Hypergrid address is http://" + My.Settings.PublicIP + ":" + My.Settings.PublicPort)
+        Print("Hypergrid address is http://" + GetPubIP() + ":" + My.Settings.PublicPort)
     End Sub
 
     Private Sub WebStatsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles WebStatsToolStripMenuItem.Click
@@ -1608,7 +1603,7 @@ Public Class Form1
         Dim Data As String = GetPostData()
 
         Try
-            Update = client.DownloadString(Domain + "/Outworldz_Installer/Update.plx?Ver=" + Str(MyVersion) + Data)
+            Update = client.DownloadString(Domain + "/Outworldz_Installer/Update.plx?Ver=" + Str(MyVersion) + Data + "/?r=" + Random())
         Catch ex As Exception
             Log("Dang:The Outworld web site is down")
         End Try
@@ -1778,6 +1773,7 @@ Public Class Form1
         Try
             ClientSocket.Connect(ServerAddress, iPort)
         Catch ex As Exception
+            Log("Unable to connect to server:" + ex.Message)
             Return False
         End Try
 
@@ -1788,37 +1784,49 @@ Public Class Form1
         CheckPort = False
 
     End Function
-    Public Sub GetPubIP()
+    Public Function GetPubIP()
 
         If My.Settings.DnsName.Length Then
-            My.Settings.PublicIP = My.Settings.DnsName
             BumpProgress10()
-            Return
+            Return My.Settings.DnsName
         End If
 
         ' Set Public Port
         Try
-            My.Settings.PublicIP = client.DownloadString("http://api.ipify.org/?r=" + Random())
-            Log("Public IP=" + My.Settings.PublicIP)
+            Dim ip As String = client.DownloadString("http://api.ipify.org/?r=" + Random())
+            BumpProgress10()
+            DiagLog("Info:Public IP=" + My.Settings.PublicIP)
+            Return ip
         Catch ex As Exception
             Print("Hmm, I cannot reach the Internet? Uh. Okay, continuing." + ex.Message)
             My.Settings.DiagFailed = True
         End Try
         BumpProgress10()
+        Return "127.0.0.1"
 
-    End Sub
-    Private Sub Loopback()
+    End Function
+    Private Sub TestLoopback()
 
-        'Print("Opensim needs to be able to loop back to itself. ")
-        If Not CheckPort(My.Settings.PublicIP, My.Settings.LoopBack) Then
-            Application.DoEvents()
-            My.Settings.DiagFailed = True
-            Print("Hypergrid travel requires a router with 'loopback'. It seems to be missing from yours. See the Help section for 'Loopback' and how to enable it in Windows. Opensim can still continue, but without Hypergrid.")
+        Dim ws As NetServer = NetServer.getWebServer
+        DiagLog("Info:Starting Web Server")
+        ws.StartServer(MyFolder)
+        Sleep(1000)
+        Dim loopbacktest As String = "http://" + My.Settings.PublicIP + ":" + My.Settings.LoopBack + "/?_TestLoopback=" + Random()
+        Try
+            loopbacktest = client.DownloadString(loopbacktest)
+        Catch ex As Exception
+            DiagLog("Err:Loopback fail:" + loopbacktest + ":" + ex.Message)
+            loopbacktest = Nothing
+        End Try
+
+        If loopbacktest <> "Test completed" Then
+            Print("Router Loopback is disabled. See the Help section for 'Loopback' and how to enable it in Windows. Continuing...")
             My.Settings.LoopBackDiag = False
         Else
             My.Settings.LoopBackDiag = True
             Print("Loopback test passed")
         End If
+        ws.StopWebServer()
 
     End Sub
     Private Sub DiagnosticsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles DiagnosticsToolStripMenuItem.Click
@@ -1826,9 +1834,7 @@ Public Class Form1
         ProgressBar1.Value = 0
         DoDiag()
         If My.Settings.DiagFailed = True Then
-            My.Settings.PublicIP = "127.0.0.1"
             Print("Hypergrid Diagnostics Failed. These can be re-run at any time. See the Help menu for 'Diagnostics', 'Loopback', and 'Port Forwards'")
-            Sleep(3000)
         Else
             Print("Tests passed, Hypergrid should be working.")
         End If
@@ -1836,8 +1842,13 @@ Public Class Form1
     End Sub
     Private Sub ProbePublicPort()
 
-        Log("Info:Starting Diagnostic server")
-        GetPubIP()
+        DiagLog("Info:Probe Public Port")
+        Dim ip As String = GetPubIP()
+
+        Dim ws As NetServer = NetServer.getWebServer
+        DiagLog("Info:Starting Web Server")
+        ws.StartServer(MyFolder)
+        Sleep(1000)
 
         Dim isPortOpen As String = ""
         Try
@@ -1846,30 +1857,38 @@ Public Class Form1
             ' See my privacy policy at http://www.outworldz.com/privacy.htm
 
             Dim Data As String = GetPostData()
-            isPortOpen = client.DownloadString(Domain + "/cgi/probetest.plx?Port=" + My.Settings.LoopBack + Data)
+            isPortOpen = client.DownloadString(Domain + "/cgi/probetest.plx?IP=" + ip + "&Port=" + My.Settings.LoopBack + Data + "/?r=" + Random())
         Catch ex As Exception
             DiagLog("Dang:The Outworldz web site cannot find a path back")
             My.Settings.DiagFailed = True
         End Try
 
-        If isPortOpen <> "yes" Then
+        ws.StopWebServer()
+
+        If isPortOpen = "yes" Then
+            My.Settings.PublicIP = ip
+        Else
             DiagLog(isPortOpen)
             DiagLog("Warn:Port " + My.Settings.LoopBack + " is not forwarded to this machine")
             My.Settings.DiagFailed = True
-            My.Settings.PublicIP = "127.0.0.1"
             Print("Port " + My.Settings.LoopBack + " is not forwarded to this machine, so Hypergrid may not be available. Opensimulator is set for standalone ops. This can possibly be fixed by 'Port Forwards' in your router in the Help menu")
         End If
         BumpProgress10()
 
     End Sub
     Private Sub DoDiag()
-        Print("Running Network Diagnostics")
+        Print("Running Network Diagnostics, please wait")
         My.Settings.DiagFailed = False
-        CheckLocalHost()
-        GetPubIP()   '
-        Loopback()   ' test the loopback on the router. If it fails, use localhost, no Hg possible
-        ProbePublicPort() ' see if Public loopback works
 
+        My.Settings.PublicIP = "127.0.0.1"  ' set a reasonable default
+
+        BumpProgress10()
+        GetLocalIP()
+        TestLoopback()   ' test the loopback on the router. 
+        ProbePublicPort() ' see if Public loopback works
+        My.Settings.DnsName = My.Settings.PublicIP
+        My.Settings.Save()
+        Print("Setting Machine IP to " + My.Settings.DnsName + ". This can be changed in the help->Advanced menu.")
     End Sub
     Private Function GetPostData()
 
@@ -1899,12 +1918,41 @@ Public Class Form1
 
     End Function
 
-    Private Sub CheckLocalHost()
-        Dim Local = CheckPort("127.0.0.1", My.Settings.LoopBack)
-        If Not Local Then
-            DiagLog("Diagnostic server failed to start or Localhost port " + My.Settings.LoopBack + " is blocked")
-        End If
+    Private Function GetIPv4Address() As String
+        GetIPv4Address = String.Empty
+        Dim strHostName As String = System.Net.Dns.GetHostName()
+        Dim iphe As System.Net.IPHostEntry = System.Net.Dns.GetHostEntry(strHostName)
+
+        For Each ipheal As System.Net.IPAddress In iphe.AddressList
+            If ipheal.AddressFamily = System.Net.Sockets.AddressFamily.InterNetwork Then
+                GetIPv4Address = ipheal.ToString()
+            End If
+        Next
+
+    End Function
+
+    Private Sub GetLocalIP()
+
+        Dim IP As String = GetIPv4Address()
+        Dim ws As NetServer = NetServer.getWebServer
+        DiagLog("Info:Starting Web Server")
+        Try
+            ws.StartServer(MyFolder)
+            Sleep(1000)
+            Dim localURL = "http://" + IP + ":" + My.Settings.LoopBack + "/?_GetLocalIP=" + Random()
+
+            Dim expected = client.DownloadString(localURL)
+            If expected = "Test completed" Then
+                DiagLog("Info:IP detected as " + IP + ":" + My.Settings.LoopBack)
+                My.Settings.PublicIP = IP
+            End If
+        Catch ex As Exception
+            DiagLog("Warn:Diagnostic server not located at  " + IP + ":" + My.Settings.LoopBack + ":" + ex.Message)
+        End Try
+        ws.StopWebServer()
+
     End Sub
+
     Function CloseRouterPorts() As Boolean
 
         Dim MyUPnPMap As New UPNP

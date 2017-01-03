@@ -20,71 +20,101 @@ Public Class NetServer
     Public Sub StartServer(MyFolder As String)
         gMyFolder = MyFolder
         Try
+            Form1.DiagLog("Starting Diagnostic Webserver")
             WebThread = New Thread(AddressOf looper)
             WebThread.SetApartmentState(ApartmentState.STA)
             WebThread.Start()
         Catch ex As Exception
-            Debug.Print(ex.Message)
+            Form1.DiagLog(ex.Message)
         End Try
 
     End Sub
     Private Function looper()
 
+        Dim counter As Integer = 60 ' wait up to 30 seconds, then abord
         Try
-            LocalTCPListener = New TcpListener(GetIPAddress(), My.Settings.LoopBack)
+            Dim oaddress = GetIPv4Address()
+            Form1.DiagLog("IP:" + oaddress.ToString)
+            LocalTCPListener = New TcpListener(oaddress, My.Settings.LoopBack)
         Catch ex As Exception
-            Form1.Log(ex.Message)
+            Form1.DiagLog(ex.Message)
             Return True
         End Try
 
         LocalTCPListener.Start()
-
-        Dim data As String = "200 OK" + vbCrLf + vbCrLf + "Test completed"
+        Form1.DiagLog("Listener Started")
+        Dim data As String = "HTTP/1.0 200 OK" + vbCrLf + vbCrLf + "Test completed"
         Dim msg As Byte() = System.Text.Encoding.ASCII.GetBytes(data)
-
+        listen = True
         While listen
             If Not LocalTCPListener.Pending() Then
                 Thread.Sleep(500) ' choose a number (In milliseconds) that makes sense
-                ' Debug.Print("No connection requests have arrived")
-                Continue While  ' skip To Next iteration Of Loop
+                Form1.DiagLog("No connection requests have arrived")
+                counter -= 1
+                If counter > 0 Then
+                    Continue While  ' skip To Next iteration Of Loop
+                End If
+                Form1.DiagLog("Aborting due to no connections")
             End If
+
             Dim client As TcpClient = LocalTCPListener.AcceptTcpClient()
-            Log("******** Accepted client ***********")
+            Form1.DiagLog("Accepted client")
 
             Dim stream As NetworkStream = client.GetStream() ' Get a stream object for reading and writing
 
-            Log([String].Format("Received: {0}", data))
+            If stream.CanRead Then
+                Dim myReadBuffer(1024) As Byte
+                Dim myCompleteMessage As StringBuilder = New StringBuilder()
+                Dim numberOfBytesRead As Integer = 0
+
+                ' Incoming message may be larger than the buffer size.
+                Do
+                    numberOfBytesRead = stream.Read(myReadBuffer, 0, myReadBuffer.Length)
+                    myCompleteMessage.AppendFormat("{0}", Encoding.ASCII.GetString(myReadBuffer, 0, numberOfBytesRead))
+                Loop While stream.DataAvailable
+
+                ' Print out the received message to the console.
+                Form1.DiagLog(("You received the following message : " + myCompleteMessage.ToString()))
+            Else
+                Form1.DiagLog("Sorry. Cannot read from this NetworkStream.")
+            End If
+
             Try
                 stream.Write(msg, 0, msg.Length) ' Send back a response.
-                Debug.Print([String].Format("Sent: {0}", data))
-                Log([String].Format("Sent: {0}", data))
+                Form1.DiagLog([String].Format("Sent: {0}", data))
             Catch
             End Try
 
             ' Shutdown and end connection
             client.Close()
+            Form1.DiagLog("Client Closed")
+            listen = False
         End While
 
         LocalTCPListener.Stop()
-        Log("Stopped Listener")
+        Form1.DiagLog("Thread ending")
         Return False
     End Function
 
-    Private Function GetIPAddress() As IPAddress
-        Dim oAddr As System.Net.IPAddress = New IPAddress(0)
+    Private Function GetIPv4Address() As IPAddress
 
-        With System.Net.Dns.GetHostEntry(System.Net.Dns.GetHostName())
-            If .AddressList.Length > 0 Then
-                oAddr = New IPAddress(.AddressList.GetLowerBound(0))
+        GetIPv4Address = Nothing
+        Dim strHostName As String = System.Net.Dns.GetHostName()
+        Dim iphe As System.Net.IPHostEntry = System.Net.Dns.GetHostEntry(strHostName)
+
+        For Each ipheal As System.Net.IPAddress In iphe.AddressList
+            If ipheal.AddressFamily = System.Net.Sockets.AddressFamily.InterNetwork Then
+                GetIPv4Address = ipheal
             End If
-        End With
-        GetIPAddress = oAddr
+        Next
+
     End Function
 
     Public Sub StopWebServer()
+        Form1.DiagLog("Stopping Webserver")
         listen = False
         WebThread.Join()
-        Log("Stopped Webserver")
+        Form1.DiagLog("Stopped Webserver on command")
     End Sub
 
     Friend Shared Function getWebServer() As NetServer
@@ -95,17 +125,6 @@ Public Class NetServer
         Else
             Return singleWebserver
         End If
-    End Function
-
-    Public Function Log(message As String)
-        Try
-            Using outputFile As New StreamWriter(gMyFolder & "\OutworldzFiles\Diagnostics.log", True)
-                outputFile.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + message)
-            End Using
-        Catch
-        End Try
-        Return True
-
     End Function
 
 

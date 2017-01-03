@@ -51,10 +51,10 @@
       <Value Profile="(Default)">3308</Value>
     </Setting>
     <Setting Name="AutobackupInterval" Type="System.String" Scope="User">
-      <Value Profile="(Default)">1440</Value>
+      <Value Profile="(Default)">720</Value>
     </Setting>
     <Setting Name="KeepForDays" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">7</Value>
+      <Value Profile="(Default)">30</Value>
     </Setting>
     <Setting Name="Password" Type="System.String" Scope="User">
       <Value Profile="(Default)">secret</Value>
@@ -78,7 +78,7 @@
       <Value Profile="(Default)">8004</Value>
     </Setting>
     <Setting Name="ChatTime" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">1500</Value>
+      <Value Profile="(Default)">1000</Value>
     </Setting>
     <Setting Name="ViewerInstalled" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
@@ -110,7 +110,7 @@
     <Setting Name="SmtpPassword" Type="System.String" Scope="User">
       <Value Profile="(Default)">Gmail password</Value>
     </Setting>
-    <Setting Name="RunOnce" Type="System.Boolean" Scope="User">
+    <Setting Name="RanAllDiags" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="SkipUpdateCheck" Type="System.Boolean" Scope="User">
@@ -160,6 +160,9 @@
     </Setting>
     <Setting Name="MyY" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="MyIP" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
     </Setting>
   </Settings>
 </SettingsFile>

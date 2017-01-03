@@ -248,7 +248,7 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("1440")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("720")>  _
         Public Property AutobackupInterval() As String
             Get
                 Return CType(Me("AutobackupInterval"),String)
@@ -260,7 +260,7 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("7")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("30")>  _
         Public Property KeepForDays() As Integer
             Get
                 Return CType(Me("KeepForDays"),Integer)
@@ -356,7 +356,7 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("1500")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("1000")>  _
         Public Property ChatTime() As Integer
             Get
                 Return CType(Me("ChatTime"),Integer)
@@ -489,12 +489,12 @@ Namespace My
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
-        Public Property RunOnce() As Boolean
+        Public Property RanAllDiags() As Boolean
             Get
-                Return CType(Me("RunOnce"),Boolean)
+                Return CType(Me("RanAllDiags"),Boolean)
             End Get
             Set
-                Me("RunOnce") = value
+                Me("RanAllDiags") = value
             End Set
         End Property
         
@@ -687,6 +687,18 @@ Namespace My
             End Get
             Set
                 Me("MyY") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property MyIP() As String
+            Get
+                Return CType(Me("MyIP"),String)
+            End Get
+            Set
+                Me("MyIP") = value
             End Set
         End Property
     End Class

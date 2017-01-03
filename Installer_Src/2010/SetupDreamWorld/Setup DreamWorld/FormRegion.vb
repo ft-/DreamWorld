@@ -465,19 +465,13 @@ Public Class FormRegion
         End If
     End Sub
 
-    Private Sub SizeY_Changed(sender As Object, e As EventArgs) Handles SizeY.LostFocus
-        If SizeY.Text <> SizeX.Text Then
-            MsgBox("Must be the same as X")
-        End If
-
-    End Sub
 
     Private Function IsPowerOf256(x As Integer)
-
-        While x > 0
-            x = x / 256
+        Dim y As Single = Convert.ToSingle(x)
+        While y > 0
+            y = y - 256
         End While
-        If x = 0 Then
+        If y = 0 Then
             Return True
         End If
         Return False

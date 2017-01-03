@@ -27,7 +27,7 @@
         <comment>This is a comment</comment>
     </data>
                 
-    There are any number of "resheader" rows that contain simple 
+    There are any number of "resheader" rogWebserver that contain simple 
     name/value pairs.
     
     Each data row contains a name, and value. The row also contains a 
@@ -196,9 +196,6 @@
   <data name="wp_41" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\wp_41.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="wp_Inside_in_shadows" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\wp_Inside_in_shadows.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="wp_21" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\wp_21.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -358,8 +355,8 @@
   <data name="wp_7" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\wp_7.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="server_client" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\server_client.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="server_gWSCLient" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\server_CLient.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="wp_32" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\wp_32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
