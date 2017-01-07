@@ -113,6 +113,8 @@ Public Class NetServer
     Public Sub StopWebServer()
         Form1.DiagLog("Stopping Webserver")
         listen = False
+        Application.DoEvents()
+
         WebThread.Join()
         Form1.DiagLog("Stopped Webserver on command")
     End Sub

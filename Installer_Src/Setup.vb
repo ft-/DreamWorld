@@ -40,9 +40,13 @@ Public Class Form1
 
 #Region "Declarations"
 
-    Dim MyVersion As String = "1.3"
+    Dim MyVersion As String = "1.31"
     Dim DebugPath As String = "C:\Opensim\Outworldz"
     Dim Domain As String = "http://www.outworldz.com"
+
+    Private gFailDebug1 = False ' set to true to fail diagnostic
+    Private gFailDebug2 = False ' set to true to fail diagnostic
+    Private gFailDebug3 = False ' set to true to fail diagnostic
 
     Public MyFolder As String   ' Holds the current folder that we are running in
     Dim gCurSlashDir As String '  holds the current directory info in Unix format
@@ -1805,42 +1809,52 @@ Public Class Form1
         Return "127.0.0.1"
 
     End Function
-    Private Sub TestLoopback()
+    Private Function TestLoopback()
 
         Dim ws As NetServer = NetServer.getWebServer
         DiagLog("Info:Starting Web Server")
         ws.StartServer(MyFolder)
         Sleep(1000)
+
+        BumpProgress10()
+        Dim result As String = ""
         Dim loopbacktest As String = "http://" + My.Settings.PublicIP + ":" + My.Settings.LoopBack + "/?_TestLoopback=" + Random()
         Try
-            loopbacktest = client.DownloadString(loopbacktest)
+            result = client.DownloadString(loopbacktest)
         Catch ex As Exception
-            DiagLog("Err:Loopback fail:" + loopbacktest + ":" + ex.Message)
-            loopbacktest = Nothing
+            DiagLog("Err:Loopback fail:" + result + ":" + ex.Message)
         End Try
 
-        If loopbacktest <> "Test completed" Then
-            Print("Router Loopback is disabled. See the Help section for 'Loopback' and how to enable it in Windows. Continuing...")
-            My.Settings.LoopBackDiag = False
-        Else
-            My.Settings.LoopBackDiag = True
-            Print("Loopback test passed")
-        End If
+        BumpProgress10()
         ws.StopWebServer()
 
-    End Sub
+        If result = "Test completed" And Not gFailDebug2 Then
+            My.Settings.LoopBackDiag = True
+            My.Settings.Save()
+            Print("Loopback test passed")
+            Return True
+        Else
+            Print("Router Loopback is disabled. See the Help section for 'Loopback' and how to enable it in Windows. Continuing...")
+            My.Settings.LoopBackDiag = False
+            My.Settings.Save()
+            Return False
+        End If
+
+    End Function
+
     Private Sub DiagnosticsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles DiagnosticsToolStripMenuItem.Click
 
         ProgressBar1.Value = 0
         DoDiag()
         If My.Settings.DiagFailed = True Then
-            Print("Hypergrid Diagnostics Failed. These can be re-run at any time. See the Help menu for 'Diagnostics', 'Loopback', and 'Port Forwards'")
+            Print("Hypergrid Diagnostics failed. These can be re-run at any time. See Help->Network Diagnostics', 'Loopback', and 'Port Forwards'")
         Else
             Print("Tests passed, Hypergrid should be working.")
         End If
         ProgressBar1.Value = 100
+
     End Sub
-    Private Sub ProbePublicPort()
+    Private Function ProbePublicPort()
 
         DiagLog("Info:Probe Public Port")
         Dim ip As String = GetPubIP()
@@ -1849,6 +1863,7 @@ Public Class Form1
         DiagLog("Info:Starting Web Server")
         ws.StartServer(MyFolder)
         Sleep(1000)
+        BumpProgress10()
 
         Dim isPortOpen As String = ""
         Try
@@ -1863,32 +1878,38 @@ Public Class Form1
             My.Settings.DiagFailed = True
         End Try
 
+        BumpProgress10()
         ws.StopWebServer()
-
-        If isPortOpen = "yes" Then
-            My.Settings.PublicIP = ip
-        Else
-            DiagLog(isPortOpen)
-            DiagLog("Warn:Port " + My.Settings.LoopBack + " is not forwarded to this machine")
-            My.Settings.DiagFailed = True
-            Print("Port " + My.Settings.LoopBack + " is not forwarded to this machine, so Hypergrid may not be available. Opensimulator is set for standalone ops. This can possibly be fixed by 'Port Forwards' in your router in the Help menu")
-        End If
         BumpProgress10()
 
-    End Sub
+        If isPortOpen = "yes" And Not gFailDebug1 Then
+            My.Settings.PublicIP = ip
+            My.Settings.Save()
+            Return True
+        Else
+            DiagLog(isPortOpen)
+            My.Settings.DiagFailed = True
+            Print("Internet port  " + My.Settings.LoopBack + " appears to not be forwarded to this machine, so Hypergrid may not be available. Opensimulator is set for standalone ops. This can possibly be fixed by 'Port Forwards' in your router.  See Help->Port Forwards.")
+            Return False
+        End If
+
+    End Function
     Private Sub DoDiag()
         Print("Running Network Diagnostics, please wait")
         My.Settings.DiagFailed = False
-
-        My.Settings.PublicIP = "127.0.0.1"  ' set a reasonable default
-
-        BumpProgress10()
-        GetLocalIP()
-        TestLoopback()   ' test the loopback on the router. 
-        ProbePublicPort() ' see if Public loopback works
-        My.Settings.DnsName = My.Settings.PublicIP
+        My.Settings.PublicIP = GetPubIP()  ' set a reasonable default
         My.Settings.Save()
-        Print("Setting Machine IP to " + My.Settings.DnsName + ". This can be changed in the help->Advanced menu.")
+
+        If Not ProbePublicPort() Then ' see if Public loopback works
+            If Not TestLoopback() Then   ' test the loopback on the router. 
+                If Not GetLocalIP() Then      ' attempt to find the LAN IP
+                    My.Settings.PublicIP = "127.0.0.1"
+                    My.Settings.Save()
+                End If
+            End If
+        End If
+        Log("Diagnostics set the Public IP to " + My.Settings.PublicIP)
+
     End Sub
     Private Function GetPostData()
 
@@ -1931,27 +1952,34 @@ Public Class Form1
 
     End Function
 
-    Private Sub GetLocalIP()
+    Private Function GetLocalIP()
 
         Dim IP As String = GetIPv4Address()
+        DiagLog("Info:IP detected as " + IP)
         Dim ws As NetServer = NetServer.getWebServer
         DiagLog("Info:Starting Web Server")
         Try
             ws.StartServer(MyFolder)
             Sleep(1000)
+            BumpProgress10()
             Dim localURL = "http://" + IP + ":" + My.Settings.LoopBack + "/?_GetLocalIP=" + Random()
 
             Dim expected = client.DownloadString(localURL)
-            If expected = "Test completed" Then
+            If expected = "Test completed" And Not gFailDebug3 Then
                 DiagLog("Info:IP detected as " + IP + ":" + My.Settings.LoopBack)
                 My.Settings.PublicIP = IP
+                My.Settings.Save()
+                Return IP
             End If
         Catch ex As Exception
             DiagLog("Warn:Diagnostic server not located at  " + IP + ":" + My.Settings.LoopBack + ":" + ex.Message)
         End Try
-        ws.StopWebServer()
+        BumpProgress10()
 
-    End Sub
+        ws.StopWebServer()
+        Return False
+
+    End Function
 
     Function CloseRouterPorts() As Boolean
 
