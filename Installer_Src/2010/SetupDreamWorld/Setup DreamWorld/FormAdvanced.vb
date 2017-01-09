@@ -383,6 +383,12 @@ Public Class AdvancedForm
     Private Sub OpensImNew_CheckedChanged(sender As Object, e As EventArgs) Handles OpensImNew.CheckedChanged
         My.Settings.GridFolder = "Opensim-0.9"
         My.Settings.Save()
+
+        Try
+            My.Computer.FileSystem.RenameFile(Form1.MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\Regions\RegionConfig.ini", "Outworldz.ini")
+        Catch ex As Exception
+        End Try
+
         Form1.ViewWebUI.Visible = False
         Web.Enabled = False
     End Sub
@@ -390,6 +396,12 @@ Public Class AdvancedForm
     Private Sub OpensimOld_CheckedChanged(sender As Object, e As EventArgs) Handles OpensimOld.CheckedChanged
         My.Settings.GridFolder = "Opensim"
         My.Settings.Save()
+
+        Try
+            My.Computer.FileSystem.RenameFile(Form1.MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\Regions\RegionConfig.ini", "Outworldz.ini")
+        Catch ex As Exception
+        End Try
+
         Form1.ViewWebUI.Visible = True
         Web.Enabled = True
     End Sub
