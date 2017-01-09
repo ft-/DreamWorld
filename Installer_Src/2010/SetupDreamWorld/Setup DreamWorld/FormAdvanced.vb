@@ -241,7 +241,9 @@ Public Class AdvancedForm
     End Sub
 
     Private Sub DnsName_TextChanged(sender As Object, e As EventArgs) Handles DnsName.TextChanged
-        My.Settings.DnsName = DnsName.Text
+        Dim text = DnsName.Text
+        text = text.Replace("http://", "")
+        My.Settings.DnsName = text
         My.Settings.Save()
         Form1.GetPubIP()
     End Sub
