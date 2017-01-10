@@ -1697,7 +1697,7 @@ Public Class Form1
         Dim Data As String = GetPostData()
 
         Try
-            Update = client.DownloadString(Domain + "/Outworldz_Installer/Update.plx?Ver=" + Str(MyVersion) + Data + "/?r=" + Random())
+            Update = client.DownloadString(Domain + "/Outworldz_Installer/Update.plx?Ver=" + Str(MyVersion) + Data)
         Catch ex As Exception
             Log("Dang:The Outworld web site is down")
         End Try
