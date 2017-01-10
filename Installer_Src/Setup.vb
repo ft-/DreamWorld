@@ -40,7 +40,7 @@ Public Class Form1
 
 #Region "Declarations"
 
-    Dim MyVersion As String = "1.32"
+    Dim MyVersion As String = "1.33"
     Dim DebugPath As String = "C:\Opensim\Outworldz"
     Dim Domain As String = "http://www.outworldz.com"
 
@@ -200,6 +200,7 @@ Public Class Form1
 
         ' I would like to buy an argument
         Dim arguments As String() = Environment.GetCommandLineArgs()
+
 
         If arguments.Length > 1 Then
             ' for debugging when compiling
@@ -469,11 +470,13 @@ Public Class Form1
             Try
                 Log("Info:Stopping process " + processName)
                 P.Kill()
+                Return True
             Catch ex As Exception
                 Log("Info:failed to stop " + processName)
+                Return False
             End Try
         Next
-        zap = True
+        zap = False
     End Function
 #End Region
 
@@ -905,6 +908,97 @@ Public Class Form1
 
 #Region "ToolBars"
 
+    Private Sub LoadInventoryToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles LoadInventoryToolStripMenuItem.Click
+        If (Running) Then
+            ' Create an instance of the open file dialog box.
+            Dim openFileDialog1 As OpenFileDialog = New OpenFileDialog
+
+            ' Set filter options and filter index.
+            openFileDialog1.InitialDirectory = MyFolder + "/"
+            openFileDialog1.Filter = "Inventory IAR (*.iar)|*.iar|All Files (*.*)|*.*"
+            openFileDialog1.FilterIndex = 1
+            openFileDialog1.Multiselect = False
+
+            ' Call the ShowDialog method to show the dialogbox.
+            Dim UserClickedOK As Boolean = openFileDialog1.ShowDialog
+
+            ' Process input if the user clicked OK.
+            If UserClickedOK = True Then
+                Dim thing = openFileDialog1.FileName
+                If thing.Length Then
+                    thing = thing.Replace("\", "/")    ' because Opensim uses unix-like slashes, that's why
+                    LoadIARContent(thing)
+                End If
+            End If
+        Else
+            Print("Opensim is not running. Cannot load an IAR at this time.")
+        End If
+
+    End Sub
+
+    Private Sub SaveInventoryToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles SaveInventoryToolStripMenuItem.Click
+        If (Running) Then
+            Dim Message, title, defaultValue As String
+
+            '''''''''''''''''''''''
+            ' Object Name to back up
+            Dim itemName As String
+            ' Set prompt.
+            Message = "Enter the object name ('/' will  backup everything, and '/Objects/box' will back up box in folder Objects) :"
+            title = "Backup Name?"
+            defaultValue = "/"   ' Set default value.
+
+            ' Display message, title, and default value.
+            itemName = InputBox(Message, title, defaultValue)
+            ' If user has clicked Cancel, set myValue to defaultValue 
+            If itemName.Length = 0 Then Return
+
+            '''''''''''''''''''''''
+            ' Name of the IAR
+            Dim backupName As String
+            Message = "Backup name? :"
+            title = "Backup Name?"
+            defaultValue = "backup.iar"   ' Set default value.
+
+            ' Display message, title, and default value.
+            backupName = InputBox(Message, title, defaultValue)
+            ' If user has clicked Cancel, set myValue to defaultValue 
+            If itemName.Length = 0 Then Return
+
+            '''''''''''''''''''''''
+            ' Avatar
+            Dim Name As String
+            Message = "Avatar FirstName and Lastname:"
+            title = "FirstName LastName"
+            defaultValue = ""   ' Set default value.
+
+            ' Display message, title, and default value.
+            Name = InputBox(Message, title, defaultValue)
+            ' If user has clicked Cancel, set myValue to defaultValue 
+            If Name.Length = 0 Then Return
+
+            '''''''''''''''''''''''
+            ' Password
+            Dim Password As String
+            Message = "Avatar's Password?:"
+            title = "Password needed"
+            defaultValue = ""   ' Set default value.
+
+            ' Display message, title, and default value.
+            Password = InputBox(Message, title, defaultValue)
+
+            '''''''''''''''''''''''
+
+            AppActivate(OpensimProcID)
+            SendKeys.SendWait("alert CPU Intensive Backup Started{ENTER}")
+            AppActivate(OpensimProcID)
+            SendKeys.SendWait("save iar " + Name + " " + itemName + " " + Password + " " + MyFolder + "/OutworldzFiles/Autobackup/" + backupName + "{ENTER}")
+            Me.Focus()
+            Print("Saving " + backupName + " to " + MyFolder + "/OutworldzFiles/Autobackup")
+        Else
+            Print("Opensim is not running. Cannot make a backup now.")
+        End If
+    End Sub
     Private Sub BusyButton_Click(sender As Object, e As EventArgs) Handles BusyButton.Click
 
         Print("Stopping")
@@ -2125,110 +2219,29 @@ Public Class Form1
         Dim p As Process = New Process()
         Dim pi As ProcessStartInfo = New ProcessStartInfo()
         pi.Arguments = "-u root shutdown"
-        pi.FileName = MyFolder + "\OutworldzFiles\mysql\bin\mysqladmin.exe"
+        pi.FileName = MyFolder + "\OutworldzFiles\mysql\bin\mysqladmin.exeXXX"
         pi.WindowStyle = ProcessWindowStyle.Minimized
         p.StartInfo = pi
         Try
             p.Start()
             p.WaitForExit()
             p.Close()
-        Catch
-            Log("Error:mysqladmin failed to stop mysql")
+        Catch ex As Exception
+            Log("Error:mysqladmin failed to stop mysql:" + ex.Message)
         End Try
 
+        Try
+            pMySql.Close()
+        Catch ex2 As Exception
+            Log("Error:Process pMySql.Close() " + ex2.Message)
+        End Try
+
+        For Each stuckP As Process In System.Diagnostics.Process.GetProcessesByName("mysqld")
+            Sleep(2000)
+            stuckP.Kill()
+        Next
     End Sub
 
-    Private Sub LoadInventoryToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles LoadInventoryToolStripMenuItem.Click
-        If (Running) Then
-            ' Create an instance of the open file dialog box.
-            Dim openFileDialog1 As OpenFileDialog = New OpenFileDialog
-
-            ' Set filter options and filter index.
-            openFileDialog1.InitialDirectory = MyFolder + "/"
-            openFileDialog1.Filter = "Inventory IAR (*.iar)|*.iar|All Files (*.*)|*.*"
-            openFileDialog1.FilterIndex = 1
-            openFileDialog1.Multiselect = False
-
-            ' Call the ShowDialog method to show the dialogbox.
-            Dim UserClickedOK As Boolean = openFileDialog1.ShowDialog
-
-            ' Process input if the user clicked OK.
-            If UserClickedOK = True Then
-                Dim thing = openFileDialog1.FileName
-                If thing.Length Then
-                    thing = thing.Replace("\", "/")    ' because Opensim uses unix-like slashes, that's why
-                    LoadIARContent(thing)
-                End If
-            End If
-        Else
-            Print("Opensim is not running. Cannot load an IAR at this time.")
-        End If
-
-    End Sub
-
-    Private Sub SaveInventoryToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles SaveInventoryToolStripMenuItem.Click
-        If (Running) Then
-            Dim Message, title, defaultValue As String
-
-            '''''''''''''''''''''''
-            ' Object Name to back up
-            Dim itemName As String
-            ' Set prompt.
-            Message = "Enter the object name ('/' will  backup everything, and '/Objects/box' will back up box in folder Objects) :"
-            title = "Backup Name?"
-            defaultValue = "/"   ' Set default value.
-
-            ' Display message, title, and default value.
-            itemName = InputBox(Message, title, defaultValue)
-            ' If user has clicked Cancel, set myValue to defaultValue 
-            If itemName.Length = 0 Then Return
-
-            '''''''''''''''''''''''
-            ' Name of the IAR
-            Dim backupName As String
-            Message = "Backup name? :"
-            title = "Backup Name?"
-            defaultValue = "backup.iar"   ' Set default value.
-
-            ' Display message, title, and default value.
-            backupName = InputBox(Message, title, defaultValue)
-            ' If user has clicked Cancel, set myValue to defaultValue 
-            If itemName.Length = 0 Then Return
-
-            '''''''''''''''''''''''
-            ' Avatar
-            Dim Name As String
-            Message = "Avatar FirstName and Lastname:"
-            title = "FirstName LastName"
-            defaultValue = ""   ' Set default value.
-
-            ' Display message, title, and default value.
-            Name = InputBox(Message, title, defaultValue)
-            ' If user has clicked Cancel, set myValue to defaultValue 
-            If Name.Length = 0 Then Return
-
-            '''''''''''''''''''''''
-            ' Password
-            Dim Password As String
-            Message = "Avatar's Password?:"
-            title = "Password needed"
-            defaultValue = ""   ' Set default value.
-
-            ' Display message, title, and default value.
-            Password = InputBox(Message, title, defaultValue)
-
-            '''''''''''''''''''''''
-
-            AppActivate(OpensimProcID)
-            SendKeys.SendWait("alert CPU Intensive Backup Started{ENTER}")
-            AppActivate(OpensimProcID)
-            SendKeys.SendWait("save iar " + Name + " " + itemName + " " + Password + " " + MyFolder + "/OutworldzFiles/Autobackup/" + backupName + "{ENTER}")
-            Me.Focus()
-            Print("Saving " + backupName + " to " + MyFolder + "/OutworldzFiles/Autobackup")
-        Else
-            Print("Opensim is not running. Cannot make a backup now.")
-        End If
-    End Sub
 
 
 #End Region
