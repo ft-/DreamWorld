@@ -413,6 +413,10 @@ Public Class AdvancedForm
         My.Settings.Save()
     End Sub
 
+    Private Sub DnsName_TextChanged_1(sender As Object, e As EventArgs) Handles DnsName.TextChanged
+        MsgBox("Changed")
+    End Sub
+
 #End Region
 
 End Class

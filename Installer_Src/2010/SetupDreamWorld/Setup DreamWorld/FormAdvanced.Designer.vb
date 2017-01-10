@@ -24,6 +24,9 @@ Partial Class AdvancedForm
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.GridName = New System.Windows.Forms.TextBox()
         Me.AddRegion = New System.Windows.Forms.Button()
         Me.RegionButton = New System.Windows.Forms.Button()
         Me.DnsName = New System.Windows.Forms.TextBox()
@@ -64,8 +67,6 @@ Partial Class AdvancedForm
         Me.ManagerGod = New System.Windows.Forms.CheckBox()
         Me.RegionGod = New System.Windows.Forms.CheckBox()
         Me.GroupBox5 = New System.Windows.Forms.GroupBox()
-        Me.Label2 = New System.Windows.Forms.Label()
-        Me.GridName = New System.Windows.Forms.TextBox()
         Me.Label15 = New System.Windows.Forms.Label()
         Me.TimerInterval = New System.Windows.Forms.TextBox()
         Me.ChatSpeed = New System.Windows.Forms.ComboBox()
@@ -90,7 +91,6 @@ Partial Class AdvancedForm
         Me.PhysicsubODE = New System.Windows.Forms.RadioButton()
         Me.PhysicsBullet = New System.Windows.Forms.RadioButton()
         Me.GroupBox6 = New System.Windows.Forms.GroupBox()
-        Me.Label3 = New System.Windows.Forms.Label()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
         Me.Web.SuspendLayout()
@@ -123,6 +123,32 @@ Partial Class AdvancedForm
         Me.GroupBox2.TabIndex = 5
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Grid"
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Location = New System.Drawing.Point(10, 65)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(57, 13)
+        Me.Label2.TabIndex = 26
+        Me.Label2.Text = "Grid Name"
+        '
+        'Label3
+        '
+        Me.Label3.AutoSize = True
+        Me.Label3.Location = New System.Drawing.Point(15, 31)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(0, 13)
+        Me.Label3.TabIndex = 28
+        '
+        'GridName
+        '
+        Me.GridName.Location = New System.Drawing.Point(13, 82)
+        Me.GridName.Name = "GridName"
+        Me.GridName.Size = New System.Drawing.Size(116, 20)
+        Me.GridName.TabIndex = 10
+        Me.ToolTip1.SetToolTip(Me.GridName, "The name of your mini-grid.  This shows in the Viewer Grid pulldown and on the Wi" &
+        "fi Page. Default: Outworldz")
         '
         'AddRegion
         '
@@ -516,24 +542,6 @@ Partial Class AdvancedForm
         Me.GroupBox5.TabStop = False
         Me.GroupBox5.Text = "Personality"
         '
-        'Label2
-        '
-        Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(10, 65)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(57, 13)
-        Me.Label2.TabIndex = 26
-        Me.Label2.Text = "Grid Name"
-        '
-        'GridName
-        '
-        Me.GridName.Location = New System.Drawing.Point(13, 82)
-        Me.GridName.Name = "GridName"
-        Me.GridName.Size = New System.Drawing.Size(116, 20)
-        Me.GridName.TabIndex = 10
-        Me.ToolTip1.SetToolTip(Me.GridName, "The name of your mini-grid.  This shows in the Viewer Grid pulldown and on the Wi" &
-        "fi Page. Default: Outworldz")
-        '
         'Label15
         '
         Me.Label15.AutoSize = True
@@ -775,14 +783,6 @@ Partial Class AdvancedForm
         Me.GroupBox6.TabIndex = 29
         Me.GroupBox6.TabStop = False
         Me.GroupBox6.Text = "Opensim Version"
-        '
-        'Label3
-        '
-        Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(15, 31)
-        Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(0, 13)
-        Me.Label3.TabIndex = 28
         '
         'AdvancedForm
         '
