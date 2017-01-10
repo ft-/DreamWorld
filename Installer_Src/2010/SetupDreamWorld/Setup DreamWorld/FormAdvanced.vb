@@ -4,7 +4,7 @@ Imports System.IO
 Public Class AdvancedForm
 #Region "Declarations"
 
-
+    Dim gInitted As Boolean = False
 #End Region
 
 #Region "Functions"
@@ -27,6 +27,7 @@ Public Class AdvancedForm
 
     Private Sub Loaded(sender As Object, e As EventArgs) Handles Me.Load
 
+        gInitted = False
         PublicPort.Text = My.Settings.PublicPort
         PrivatePort.Text = My.Settings.PrivatePort
 
@@ -120,6 +121,7 @@ Public Class AdvancedForm
 
         GridName.Text = My.Settings.SimName
 
+        gInitted = True
     End Sub
 
     Private Sub DiagPort_TextChanged(sender As Object, e As EventArgs) Handles DiagPort.TextChanged
@@ -240,12 +242,12 @@ Public Class AdvancedForm
         My.Settings.Save()
     End Sub
 
-    Private Sub DnsName_TextChanged(sender As Object, e As EventArgs) Handles DnsName.TextChanged
-        Dim text = DnsName.Text
-        text = text.Replace("http://", "")
-        My.Settings.DnsName = text
-        My.Settings.Save()
-        Form1.GetPubIP()
+    Private Sub DnsName_TextChanged(sender As Object, e As EventArgs) Handles DnsName.Click
+        If gInitted Then
+            Dim F As New DNSName
+            F.Show()
+            Return
+        End If
     End Sub
 
     Private Sub CheckBox1_CheckedChanged(sender As Object, e As EventArgs) Handles WebStats.CheckedChanged

@@ -606,7 +606,7 @@ Public Class Form1
         My.Settings.Save()
     End Sub
 
-    Private Function Random() As String
+    Public Function Random() As String
         Dim value As Integer = CInt(Int((600000000 * Rnd()) + 1))
         Random = System.Convert.ToString(value)
     End Function
@@ -1977,7 +1977,7 @@ Public Class Form1
         Else
             DiagLog(isPortOpen)
             My.Settings.DiagFailed = True
-            Print("Internet address " + My.Settings.PublicIP + ":" + My.Settings.LoopBack + " appears to Not be forwarded To this machine in your router, so Hypergrid may Not be available. Opensimulator Is set for standalone ops. This can possibly be fixed by 'Port Forwards' in your router.  See Help->Port Forwards.")
+            Print("Internet address " + My.Settings.PublicIP + ":" + My.Settings.LoopBack + " appears to not be forwarded to this machine in your router, so Hypergrid is not available. This can possibly be fixed by 'Port Forwards' in your router.  See Help->Port Forwards.")
             My.Settings.PublicIP = GetIPv4Address() ' failed, so try the machines address
             Return False
         End If
