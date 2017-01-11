@@ -24,7 +24,6 @@ Partial Class DNSName
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Me.TextBox1 = New System.Windows.Forms.TextBox()
-        Me.RichTextBox1 = New System.Windows.Forms.RichTextBox()
         Me.SaveButton = New System.Windows.Forms.Button()
         Me.NextNameButton = New System.Windows.Forms.Button()
         Me.PublicBox = New System.Windows.Forms.CheckBox()
@@ -33,25 +32,14 @@ Partial Class DNSName
         '
         'TextBox1
         '
-        Me.TextBox1.Location = New System.Drawing.Point(6, 8)
+        Me.TextBox1.Location = New System.Drawing.Point(6, 10)
         Me.TextBox1.Name = "TextBox1"
-        Me.TextBox1.Size = New System.Drawing.Size(134, 20)
+        Me.TextBox1.Size = New System.Drawing.Size(202, 20)
         Me.TextBox1.TabIndex = 1
-        '
-        'RichTextBox1
-        '
-        Me.RichTextBox1.BackColor = System.Drawing.SystemColors.Control
-        Me.RichTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.RichTextBox1.ForeColor = System.Drawing.SystemColors.Window
-        Me.RichTextBox1.Location = New System.Drawing.Point(12, 72)
-        Me.RichTextBox1.Name = "RichTextBox1"
-        Me.RichTextBox1.Size = New System.Drawing.Size(225, 78)
-        Me.RichTextBox1.TabIndex = 4
-        Me.RichTextBox1.Text = ""
         '
         'SaveButton
         '
-        Me.SaveButton.Location = New System.Drawing.Point(163, 35)
+        Me.SaveButton.Location = New System.Drawing.Point(235, 35)
         Me.SaveButton.Name = "SaveButton"
         Me.SaveButton.Size = New System.Drawing.Size(64, 23)
         Me.SaveButton.TabIndex = 5
@@ -70,7 +58,7 @@ Partial Class DNSName
         'PublicBox
         '
         Me.PublicBox.AutoSize = True
-        Me.PublicBox.Location = New System.Drawing.Point(163, 10)
+        Me.PublicBox.Location = New System.Drawing.Point(235, 10)
         Me.PublicBox.Name = "PublicBox"
         Me.PublicBox.Size = New System.Drawing.Size(85, 17)
         Me.PublicBox.TabIndex = 7
@@ -86,11 +74,10 @@ Partial Class DNSName
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(254, 159)
+        Me.ClientSize = New System.Drawing.Size(332, 74)
         Me.Controls.Add(Me.PublicBox)
         Me.Controls.Add(Me.NextNameButton)
         Me.Controls.Add(Me.SaveButton)
-        Me.Controls.Add(Me.RichTextBox1)
         Me.Controls.Add(Me.TextBox1)
         Me.Name = "DNSName"
         Me.Text = "Form2"
@@ -99,7 +86,6 @@ Partial Class DNSName
 
     End Sub
     Friend WithEvents TextBox1 As TextBox
-    Friend WithEvents RichTextBox1 As RichTextBox
     Friend WithEvents SaveButton As Button
     Friend WithEvents NextNameButton As Button
     Friend WithEvents PublicBox As CheckBox

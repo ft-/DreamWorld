@@ -30,7 +30,7 @@ Public Class DNSName
 
         NextNameButton.Enabled = True
         If TextBox1.Text = String.Empty Then
-            RichTextBox1.Text = "Type in a name for your grid, or just press 'Next' to get a suggested name. You can also use a Dynamic DNS name."
+            MsgBox("Type in a name for your grid, or just press 'Next' to get a suggested name. You can also use a Dynamic DNS name.", vbInformation)
         End If
 
     End Sub
@@ -55,7 +55,7 @@ Public Class DNSName
                 TextBox1.Text = Checkname
 
             ElseIf Checkname = "USED" Then
-                RichTextBox1.Text = "That name is already in use"
+                MsgBox("That name is already in use", vbInformation)
 
             End If
         End If
@@ -66,9 +66,10 @@ Public Class DNSName
         If TextBox1.Text <> String.Empty Then
             Dim client As New System.Net.WebClient
 
-            RichTextBox1.Text = "Saving..."
+            NextNameButton.Text = "Saving..."
             Dim Checkname As String = String.Empty
-            If Not InStr(TextBox1.Text, ".") Then
+            Dim index = InStr(TextBox1.Text, ".")
+            If index = 0 Then
                 Dim pub As String
                 If My.Settings.DNSPublic Then
                     pub = "1"
@@ -81,6 +82,8 @@ Public Class DNSName
                     Form1.Log("Cannot check the DNS Name" + ex.Message)
                 End Try
             End If
+
+            NextNameButton.Text = "Next Name"
 
             Dim IP = DoGetHostAddresses(TextBox1.Text)
             Dim address As IPAddress = Nothing
@@ -104,32 +107,33 @@ Public Class DNSName
     Public Function DoGetHostAddresses(hostName As [String]) As String
 
         Dim ips As IPAddress()
+        Try
+            ips = Dns.GetHostAddresses(hostName)
+            Dim index As Integer
+            For index = 0 To ips.Length - 1
+                Debug.Print(ips(index).ToString())
+                Dim str = ips(index).ToString()
+                Return str
+            Next index
 
-        ips = Dns.GetHostAddresses(hostName)
-
-        Debug.Print("GetHostAddresses(" + hostName + ") returns: ")
-
-        Dim index As Integer
-        For index = 0 To ips.Length - 1
-            Debug.Print(ips(index).ToString())
-            Dim str = ips(index).ToString()
-            Return str
-        Next index
-        Return Nothing
+        Catch ex As Exception
+            Form1.Log("Unable to resolve name:" + ex.Message)
+        End Try
+        Return String.Empty
 
     End Function
 
     Private Sub NextNameButton_Click(sender As Object, e As EventArgs) Handles NextNameButton.Click
 
-        RichTextBox1.Text = "Busy..."
+        NextNameButton.Text = "Busy..."
         TextBox1.Text = String.Empty
         Application.DoEvents()
         Dim newname = Getnewname()
+        NextNameButton.Text = "Next Name"
         If newname = String.Empty Then
-            RichTextBox1.Text = "Please enter a DNS name, if you have one, Or register for one at http://www.noip.com"
+            MsgBox("Please enter a valid DNS name, or register for one at http://www.noip.com", vbInformation)
             NextNameButton.Enabled = False
         Else
-            RichTextBox1.Text = ""
             NextNameButton.Enabled = True
             TextBox1.Text = newname
         End If
