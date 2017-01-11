@@ -40,7 +40,9 @@ Partial Class DNSName
         '
         'RichTextBox1
         '
+        Me.RichTextBox1.BackColor = System.Drawing.SystemColors.Control
         Me.RichTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.RichTextBox1.ForeColor = System.Drawing.SystemColors.Window
         Me.RichTextBox1.Location = New System.Drawing.Point(12, 72)
         Me.RichTextBox1.Name = "RichTextBox1"
         Me.RichTextBox1.Size = New System.Drawing.Size(225, 78)

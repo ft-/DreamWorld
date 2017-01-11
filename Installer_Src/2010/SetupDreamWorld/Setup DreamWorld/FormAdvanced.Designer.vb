@@ -119,7 +119,7 @@ Partial Class AdvancedForm
         Me.GroupBox2.Controls.Add(Me.Label5)
         Me.GroupBox2.Location = New System.Drawing.Point(620, 8)
         Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Size = New System.Drawing.Size(134, 248)
+        Me.GroupBox2.Size = New System.Drawing.Size(192, 248)
         Me.GroupBox2.TabIndex = 5
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Grid"
@@ -145,25 +145,25 @@ Partial Class AdvancedForm
         '
         Me.GridName.Location = New System.Drawing.Point(13, 82)
         Me.GridName.Name = "GridName"
-        Me.GridName.Size = New System.Drawing.Size(116, 20)
+        Me.GridName.Size = New System.Drawing.Size(173, 20)
         Me.GridName.TabIndex = 10
         Me.ToolTip1.SetToolTip(Me.GridName, "The name of your mini-grid.  This shows in the Viewer Grid pulldown and on the Wi" &
         "fi Page. Default: Outworldz")
         '
         'AddRegion
         '
-        Me.AddRegion.Location = New System.Drawing.Point(13, 182)
+        Me.AddRegion.Location = New System.Drawing.Point(19, 182)
         Me.AddRegion.Name = "AddRegion"
-        Me.AddRegion.Size = New System.Drawing.Size(108, 23)
+        Me.AddRegion.Size = New System.Drawing.Size(148, 23)
         Me.AddRegion.TabIndex = 26
         Me.AddRegion.Text = "Add Region"
         Me.AddRegion.UseVisualStyleBackColor = True
         '
         'RegionButton
         '
-        Me.RegionButton.Location = New System.Drawing.Point(13, 214)
+        Me.RegionButton.Location = New System.Drawing.Point(19, 214)
         Me.RegionButton.Name = "RegionButton"
-        Me.RegionButton.Size = New System.Drawing.Size(108, 23)
+        Me.RegionButton.Size = New System.Drawing.Size(148, 23)
         Me.RegionButton.TabIndex = 27
         Me.RegionButton.Text = "Configure Regions"
         Me.RegionButton.UseVisualStyleBackColor = True
@@ -172,7 +172,7 @@ Partial Class AdvancedForm
         '
         Me.DnsName.Location = New System.Drawing.Point(8, 38)
         Me.DnsName.Name = "DnsName"
-        Me.DnsName.Size = New System.Drawing.Size(122, 20)
+        Me.DnsName.Size = New System.Drawing.Size(178, 20)
         Me.DnsName.TabIndex = 22
         Me.ToolTip1.SetToolTip(Me.DnsName, "DynDNS Name, Fixed Domain Name, Public WAN IP, PC's IP address, or 127.0.01. The " &
         "first two allow Hypergridding.  PC LAn allows more than one LAN computer when th" &
@@ -189,7 +189,7 @@ Partial Class AdvancedForm
         '
         'PublicPort
         '
-        Me.PublicPort.Location = New System.Drawing.Point(82, 132)
+        Me.PublicPort.Location = New System.Drawing.Point(120, 133)
         Me.PublicPort.Name = "PublicPort"
         Me.PublicPort.Size = New System.Drawing.Size(47, 20)
         Me.PublicPort.TabIndex = 24
@@ -197,7 +197,7 @@ Partial Class AdvancedForm
         '
         'DiagPort
         '
-        Me.DiagPort.Location = New System.Drawing.Point(82, 109)
+        Me.DiagPort.Location = New System.Drawing.Point(120, 110)
         Me.DiagPort.Name = "DiagPort"
         Me.DiagPort.Size = New System.Drawing.Size(47, 20)
         Me.DiagPort.TabIndex = 23
@@ -224,7 +224,7 @@ Partial Class AdvancedForm
         '
         'PrivatePort
         '
-        Me.PrivatePort.Location = New System.Drawing.Point(82, 155)
+        Me.PrivatePort.Location = New System.Drawing.Point(120, 156)
         Me.PrivatePort.Name = "PrivatePort"
         Me.PrivatePort.Size = New System.Drawing.Size(47, 20)
         Me.PrivatePort.TabIndex = 25
@@ -683,7 +683,7 @@ Partial Class AdvancedForm
         Me.GroupBox8.Controls.Add(Me.DbName)
         Me.GroupBox8.Controls.Add(Me.Label)
         Me.GroupBox8.Controls.Add(Me.DbPort)
-        Me.GroupBox8.Location = New System.Drawing.Point(771, 8)
+        Me.GroupBox8.Location = New System.Drawing.Point(854, 8)
         Me.GroupBox8.Name = "GroupBox8"
         Me.GroupBox8.Size = New System.Drawing.Size(189, 135)
         Me.GroupBox8.TabIndex = 27
@@ -733,9 +733,9 @@ Partial Class AdvancedForm
         Me.GroupBox1.Controls.Add(Me.PhysicsubODE)
         Me.GroupBox1.Controls.Add(Me.PhysicsBullet)
         Me.GroupBox1.Controls.Add(Me.PhysicsODE)
-        Me.GroupBox1.Location = New System.Drawing.Point(771, 145)
+        Me.GroupBox1.Location = New System.Drawing.Point(854, 145)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(183, 111)
+        Me.GroupBox1.Size = New System.Drawing.Size(189, 111)
         Me.GroupBox1.TabIndex = 28
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Physics Engine"
@@ -786,7 +786,7 @@ Partial Class AdvancedForm
         '
         'AdvancedForm
         '
-        Me.ClientSize = New System.Drawing.Size(976, 263)
+        Me.ClientSize = New System.Drawing.Size(1080, 263)
         Me.Controls.Add(Me.GroupBox6)
         Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.GroupBox8)

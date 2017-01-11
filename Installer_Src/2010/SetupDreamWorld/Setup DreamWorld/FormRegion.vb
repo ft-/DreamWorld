@@ -479,6 +479,18 @@ Public Class FormRegion
 
     End Function
 
+    Private Sub DeleteButton_Click(sender As Object, e As EventArgs) Handles DeleteButton.Click
+        Dim msg = MsgBox("Are you sure you want to delete this region? A backup of the region file will be saved as " + RegionName.Text + ".ini.bak", vbYesNo)
+        If msg = vbYes Then
+            Try
+                My.Computer.FileSystem.RenameFile(Form1.MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\Regions\" + RegionName.Text + ".ini", RegionName.Text + ".ini.bak")
+                Me.Close()
+            Catch ex As Exception
+                MsgBox("Cannot Backup region file:" + ex.Message, vbInformation)
+            End Try
+        End If
+    End Sub
+
 #End Region
 
 End Class

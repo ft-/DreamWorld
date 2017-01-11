@@ -62,7 +62,8 @@ Public Class Form1
     Dim pMySqlDiag As Process = New Process()
     Dim pOnlook As Process = New Process()
 
-    Private Shared m_ActiveForm As Form
+    Public Shared ActualForm As AdvancedForm
+
     Dim Data As IniParser.Model.IniData
     Private randomnum As New Random
     Dim parser As FileIniDataParser
@@ -146,14 +147,7 @@ Public Class Form1
         End Set
     End Property
 
-    Public Shared Property ActualForm() As Form
-        Get
-            ActualForm = m_ActiveForm
-        End Get
-        Set(ByVal Value As Form)
-            m_ActiveForm = Value
-        End Set
-    End Property
+
 
 #End Region
 
@@ -1052,12 +1046,14 @@ Public Class Form1
     End Sub
 
     Private Sub AdvancedSettingsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AdvancedSettingsToolStripMenuItem.Click
-        ActualForm = New AdvancedForm ' Bring the form into memory
+
+        ActualForm = New AdvancedForm
         ' Set the new form's desktop location so it appears below and
         ' to the right of the current form.
         ActualForm.SetDesktopLocation(300, 200)
         ActualForm.Activate()
         ActualForm.Visible = True
+
     End Sub
 
     Private Sub ToolStripMenuItem1_Click(sender As Object, e As EventArgs) Handles ToolStripMenuItem1.Click

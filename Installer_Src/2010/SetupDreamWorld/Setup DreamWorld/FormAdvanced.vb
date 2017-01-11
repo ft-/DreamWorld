@@ -414,8 +414,10 @@ Public Class AdvancedForm
     End Sub
 
     Private Sub DnsName_TextChanged_1(sender As Object, e As EventArgs) Handles DnsName.TextChanged
-        MsgBox("Changed")
+        My.Settings.PublicIP = DnsName.Text
+        My.Settings.Save()
     End Sub
+
 
 #End Region
 

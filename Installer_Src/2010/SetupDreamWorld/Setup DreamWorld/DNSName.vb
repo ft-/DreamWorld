@@ -39,9 +39,9 @@ Public Class DNSName
 
         If TextBox1.Text <> String.Empty Then
 
-            TextBox1.Text = Text.Replace("http://", "")
-            TextBox1.Text = Text.Replace("https://", "")
-            TextBox1.Text = Replace(Text, "[\da-z\.-]+", String.Empty)
+            TextBox1.Text = TextBox1.Text.Replace("http://", "")
+            TextBox1.Text = TextBox1.Text.Replace("https://", "")
+            'TextBox1.Text = Replace(TextBox1.Text, "[^\da-z\.-]+", String.Empty)
 
             Dim client As New System.Net.WebClient
             Dim Checkname As String = String.Empty
@@ -49,14 +49,13 @@ Public Class DNSName
                 Checkname = client.DownloadString("http://outworldz.net/getnewname.plx/?GridName=" + TextBox1.Text + "&r=" + Random())
             Catch ex As Exception
                 Form1.Log("Cannot get a check of the DNS Name" + ex.Message)
-                SaveButton.Enabled = True
             End Try
             If (Checkname = TextBox1.Text) Then
                 TextBox1.Text = Checkname
-                SaveButton.Enabled = True
+
             ElseIf Checkname = "USED" Then
                 RichTextBox1.Text = "That name is already in use"
-                SaveButton.Enabled = False
+
             End If
         End If
     End Sub
@@ -86,7 +85,7 @@ Public Class DNSName
         End If
         My.Settings.DnsName = TextBox1.Text
         My.Settings.Save()
-        AdvancedForm.DnsName.Text = TextBox1.Text
+        Form1.ActualForm.DnsName.Text = TextBox1.Text
 
         Me.Close()
 
@@ -119,6 +118,8 @@ Public Class DNSName
             My.Settings.DNSPublic = False
         End If
     End Sub
+
+
 
 
 

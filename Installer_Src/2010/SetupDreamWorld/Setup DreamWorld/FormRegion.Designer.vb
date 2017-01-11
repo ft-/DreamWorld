@@ -46,6 +46,7 @@ Partial Class FormRegion
         Me.Label3 = New System.Windows.Forms.Label()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Button1 = New System.Windows.Forms.Button()
+        Me.DeleteButton = New System.Windows.Forms.Button()
         Me.Advanced.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.SuspendLayout()
@@ -270,12 +271,22 @@ Partial Class FormRegion
         Me.Button1.Text = "Save"
         Me.Button1.UseVisualStyleBackColor = True
         '
+        'DeleteButton
+        '
+        Me.DeleteButton.Location = New System.Drawing.Point(154, 295)
+        Me.DeleteButton.Name = "DeleteButton"
+        Me.DeleteButton.Size = New System.Drawing.Size(75, 23)
+        Me.DeleteButton.TabIndex = 28
+        Me.DeleteButton.Text = "Delete"
+        Me.DeleteButton.UseVisualStyleBackColor = True
+        '
         'FormRegion
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.SystemColors.Control
         Me.ClientSize = New System.Drawing.Size(259, 330)
+        Me.Controls.Add(Me.DeleteButton)
         Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.Advanced)
         Me.Controls.Add(Me.RegionName)
@@ -314,4 +325,5 @@ Partial Class FormRegion
     Friend WithEvents SizeY As TextBox
     Friend WithEvents SizeX As TextBox
     Friend WithEvents Button1 As Button
+    Friend WithEvents DeleteButton As Button
 End Class
