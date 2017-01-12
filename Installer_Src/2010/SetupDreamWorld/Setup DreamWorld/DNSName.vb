@@ -85,7 +85,7 @@ Public Class DNSName
 
             NextNameButton.Text = "Next Name"
 
-            Dim IP = DoGetHostAddresses(TextBox1.Text)
+            Dim IP = Form1.DoGetHostAddresses(TextBox1.Text)
             Dim address As IPAddress = Nothing
             If IPAddress.TryParse(IP, address) Then
                 My.Settings.DnsName = TextBox1.Text
@@ -104,24 +104,6 @@ Public Class DNSName
 
     End Sub
 
-    Public Function DoGetHostAddresses(hostName As [String]) As String
-
-        Dim ips As IPAddress()
-        Try
-            ips = Dns.GetHostAddresses(hostName)
-            Dim index As Integer
-            For index = 0 To ips.Length - 1
-                Debug.Print(ips(index).ToString())
-                Dim str = ips(index).ToString()
-                Return str
-            Next index
-
-        Catch ex As Exception
-            Form1.Log("Unable to resolve name:" + ex.Message)
-        End Try
-        Return String.Empty
-
-    End Function
 
     Private Sub NextNameButton_Click(sender As Object, e As EventArgs) Handles NextNameButton.Click
 
@@ -147,10 +129,6 @@ Public Class DNSName
             My.Settings.DNSPublic = False
         End If
     End Sub
-
-
-
-
 
 #End Region
 End Class

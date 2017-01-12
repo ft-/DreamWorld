@@ -31,6 +31,16 @@ Public Class AdvancedForm
         PublicPort.Text = My.Settings.PublicPort
         PrivatePort.Text = My.Settings.PrivatePort
 
+        If Form1.isRunning Then
+            StatsButton.Enabled = True
+        Else
+            StatsButton.Enabled = False
+        End If
+
+        Password.UseSystemPasswordChar = True
+        DbPassword.UseSystemPasswordChar = True
+        SmtpPassword.UseSystemPasswordChar = True
+
         AutoBackupKeepFilesForDays.Text = My.Settings.KeepForDays
         If My.Settings.AutobackupInterval = 60 Then
             AutoBackupInterval.SelectedIndex = 0
@@ -167,6 +177,9 @@ Public Class AdvancedForm
         My.Settings.Save()
     End Sub
 
+    Private Sub Password_click(sender As Object, e As EventArgs) Handles Password.Click
+        Password.UseSystemPasswordChar = False
+    End Sub
     Private Sub Password_TextChanged(sender As Object, e As EventArgs) Handles Password.TextChanged
         My.Settings.Password = Password.Text
         My.Settings.Save()
@@ -236,18 +249,18 @@ Public Class AdvancedForm
         My.Settings.SmtpUsername = SmtpUsername.Text
         My.Settings.Save()
     End Sub
-
+    Private Sub SmtpUsername_Click(sender As Object, e As EventArgs) Handles SmtpPassword.Click
+        SmtpPassword.UseSystemPasswordChar = False
+    End Sub
     Private Sub SmtpPassword_TextChanged(sender As Object, e As EventArgs) Handles SmtpPassword.TextChanged
         My.Settings.SmtpPassword = SmtpPassword.Text
         My.Settings.Save()
     End Sub
 
     Private Sub DnsName_TextChanged(sender As Object, e As EventArgs) Handles DnsName.Click
-        If gInitted Then
-            Dim F As New DNSName
-            F.Show()
-            Return
-        End If
+        Dim F As New DNSName
+        F.Show()
+        Return
     End Sub
 
     Private Sub CheckBox1_CheckedChanged(sender As Object, e As EventArgs) Handles WebStats.CheckedChanged
@@ -269,6 +282,9 @@ Public Class AdvancedForm
     Private Sub DbUsername_TextChanged(sender As Object, e As EventArgs) Handles DbUsername.TextChanged
         My.Settings.DBUserID = DbUsername.Text
         My.Settings.Save()
+    End Sub
+    Private Sub DbPassword_click(sender As Object, e As EventArgs) Handles DbPassword.Click
+        DbPassword.UseSystemPasswordChar = False
     End Sub
 
     Private Sub DbPassword_TextChanged(sender As Object, e As EventArgs) Handles DbPassword.TextChanged
@@ -418,7 +434,22 @@ Public Class AdvancedForm
         My.Settings.Save()
     End Sub
 
+    Private Sub StatsButton_Click(sender As Object, e As EventArgs) Handles StatsButton.Click
+        If Form1.isRunning And WebStats.Checked Then
+            Dim webAddress As String = "http://127.0.0.1:" + My.Settings.PublicPort + "/SStats/"
+            Process.Start(webAddress)
+        Else
+            Print("Opensim is not running. Cannot open the Statistics web page.")
+        End If
+    End Sub
+
+    Private Sub VoiceButton1_Click(sender As Object, e As EventArgs) Handles VoiceButton1.Click
+        MsgBox("Not Implemented yet")
+    End Sub
+
 
 #End Region
+
+
 
 End Class

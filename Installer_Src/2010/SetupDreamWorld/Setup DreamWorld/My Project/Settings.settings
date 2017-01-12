@@ -48,7 +48,7 @@
       <Value Profile="(Default)">8001</Value>
     </Setting>
     <Setting Name="MySqlPort" Type="System.String" Scope="User">
-      <Value Profile="(Default)">3308</Value>
+      <Value Profile="(Default)">3309</Value>
     </Setting>
     <Setting Name="AutobackupInterval" Type="System.String" Scope="User">
       <Value Profile="(Default)">720</Value>

@@ -91,6 +91,8 @@ Partial Class AdvancedForm
         Me.PhysicsubODE = New System.Windows.Forms.RadioButton()
         Me.PhysicsBullet = New System.Windows.Forms.RadioButton()
         Me.GroupBox6 = New System.Windows.Forms.GroupBox()
+        Me.StatsButton = New System.Windows.Forms.Button()
+        Me.VoiceButton1 = New System.Windows.Forms.Button()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
         Me.Web.SuspendLayout()
@@ -117,7 +119,7 @@ Partial Class AdvancedForm
         Me.GroupBox2.Controls.Add(Me.Label4)
         Me.GroupBox2.Controls.Add(Me.PrivatePort)
         Me.GroupBox2.Controls.Add(Me.Label5)
-        Me.GroupBox2.Location = New System.Drawing.Point(620, 8)
+        Me.GroupBox2.Location = New System.Drawing.Point(656, 8)
         Me.GroupBox2.Name = "GroupBox2"
         Me.GroupBox2.Size = New System.Drawing.Size(192, 248)
         Me.GroupBox2.TabIndex = 5
@@ -265,7 +267,7 @@ Partial Class AdvancedForm
         Me.GroupBox3.Controls.Add(Me.AutoBackup)
         Me.GroupBox3.Location = New System.Drawing.Point(12, 11)
         Me.GroupBox3.Name = "GroupBox3"
-        Me.GroupBox3.Size = New System.Drawing.Size(180, 127)
+        Me.GroupBox3.Size = New System.Drawing.Size(180, 119)
         Me.GroupBox3.TabIndex = 6
         Me.GroupBox3.TabStop = False
         Me.GroupBox3.Text = "Auto Backup"
@@ -333,7 +335,7 @@ Partial Class AdvancedForm
         Me.Web.Controls.Add(Me.Label11)
         Me.Web.Controls.Add(Me.Label10)
         Me.Web.Controls.Add(Me.Password)
-        Me.Web.Location = New System.Drawing.Point(390, 8)
+        Me.Web.Location = New System.Drawing.Point(436, 9)
         Me.Web.Name = "Web"
         Me.Web.Size = New System.Drawing.Size(214, 193)
         Me.Web.TabIndex = 8
@@ -469,7 +471,7 @@ Partial Class AdvancedForm
         '
         Me.SplashPage.Location = New System.Drawing.Point(6, 91)
         Me.SplashPage.Name = "SplashPage"
-        Me.SplashPage.Size = New System.Drawing.Size(168, 20)
+        Me.SplashPage.Size = New System.Drawing.Size(188, 20)
         Me.SplashPage.TabIndex = 11
         Me.ToolTip1.SetToolTip(Me.SplashPage, "The page that appears when you log in. Default: ""http://www.outworldz.com/Outworl" &
         "dz_installer/Welcome.htm")
@@ -491,7 +493,7 @@ Partial Class AdvancedForm
         Me.GroupBox4.Controls.Add(Me.ManagerGod)
         Me.GroupBox4.Controls.Add(Me.RegionGod)
         Me.GroupBox4.Controls.Add(Me.AllowGod)
-        Me.GroupBox4.Location = New System.Drawing.Point(3, 138)
+        Me.GroupBox4.Location = New System.Drawing.Point(3, 133)
         Me.GroupBox4.Name = "GroupBox4"
         Me.GroupBox4.Size = New System.Drawing.Size(195, 118)
         Me.GroupBox4.TabIndex = 18
@@ -503,9 +505,10 @@ Partial Class AdvancedForm
         Me.ParcelGod.AutoSize = True
         Me.ParcelGod.Location = New System.Drawing.Point(24, 92)
         Me.ParcelGod.Name = "ParcelGod"
-        Me.ParcelGod.Size = New System.Drawing.Size(181, 17)
+        Me.ParcelGod.Size = New System.Drawing.Size(127, 17)
         Me.ParcelGod.TabIndex = 7
-        Me.ParcelGod.Text = "Parcel Owner is god?Default: Off"
+        Me.ParcelGod.Text = "Parcel Owner is god?"
+        Me.ToolTip1.SetToolTip(Me.ParcelGod, "Default: Off")
         Me.ParcelGod.UseVisualStyleBackColor = True
         '
         'ManagerGod
@@ -513,9 +516,10 @@ Partial Class AdvancedForm
         Me.ManagerGod.AutoSize = True
         Me.ManagerGod.Location = New System.Drawing.Point(23, 69)
         Me.ManagerGod.Name = "ManagerGod"
-        Me.ManagerGod.Size = New System.Drawing.Size(195, 17)
+        Me.ManagerGod.Size = New System.Drawing.Size(141, 17)
         Me.ManagerGod.TabIndex = 6
-        Me.ManagerGod.Text = "Region manager is god?Default: Off"
+        Me.ManagerGod.Text = "Region manager is god?"
+        Me.ToolTip1.SetToolTip(Me.ManagerGod, "Default: Off")
         Me.ManagerGod.UseVisualStyleBackColor = True
         '
         'RegionGod
@@ -523,9 +527,10 @@ Partial Class AdvancedForm
         Me.RegionGod.AutoSize = True
         Me.RegionGod.Location = New System.Drawing.Point(23, 46)
         Me.RegionGod.Name = "RegionGod"
-        Me.RegionGod.Size = New System.Drawing.Size(186, 17)
+        Me.RegionGod.Size = New System.Drawing.Size(132, 17)
         Me.RegionGod.TabIndex = 1855
-        Me.RegionGod.Text = "Region owner is god? Default: Off"
+        Me.RegionGod.Text = "Region owner is god? "
+        Me.ToolTip1.SetToolTip(Me.RegionGod, "Default: Off")
         Me.RegionGod.UseVisualStyleBackColor = True
         '
         'GroupBox5
@@ -537,7 +542,7 @@ Partial Class AdvancedForm
         Me.GroupBox5.Controls.Add(Me.ChatSpeed)
         Me.GroupBox5.Location = New System.Drawing.Point(204, 12)
         Me.GroupBox5.Name = "GroupBox5"
-        Me.GroupBox5.Size = New System.Drawing.Size(174, 153)
+        Me.GroupBox5.Size = New System.Drawing.Size(212, 126)
         Me.GroupBox5.TabIndex = 22
         Me.GroupBox5.TabStop = False
         Me.GroupBox5.Text = "Personality"
@@ -565,7 +570,7 @@ Partial Class AdvancedForm
         Me.ChatSpeed.Items.AddRange(New Object() {"Sleepy", "Awake", "After Coffee", "Too much Coffee"})
         Me.ChatSpeed.Location = New System.Drawing.Point(9, 14)
         Me.ChatSpeed.Name = "ChatSpeed"
-        Me.ChatSpeed.Size = New System.Drawing.Size(165, 21)
+        Me.ChatSpeed.Size = New System.Drawing.Size(113, 21)
         Me.ChatSpeed.TabIndex = 8
         Me.ToolTip1.SetToolTip(Me.ChatSpeed, "The speed the sleepy chat occurs at.  ")
         '
@@ -603,6 +608,7 @@ Partial Class AdvancedForm
         Me.DbPassword.Size = New System.Drawing.Size(107, 20)
         Me.DbPassword.TabIndex = 32
         Me.ToolTip1.SetToolTip(Me.DbPassword, "MySQL Password for database Opensim")
+        Me.DbPassword.UseSystemPasswordChar = True
         '
         'DbConnection
         '
@@ -663,8 +669,9 @@ Partial Class AdvancedForm
         '
         'GroupBox7
         '
+        Me.GroupBox7.Controls.Add(Me.StatsButton)
         Me.GroupBox7.Controls.Add(Me.WebStats)
-        Me.GroupBox7.Location = New System.Drawing.Point(390, 207)
+        Me.GroupBox7.Location = New System.Drawing.Point(436, 208)
         Me.GroupBox7.Name = "GroupBox7"
         Me.GroupBox7.Size = New System.Drawing.Size(214, 48)
         Me.GroupBox7.TabIndex = 26
@@ -745,10 +752,11 @@ Partial Class AdvancedForm
         Me.PhysicsSeparate.AutoSize = True
         Me.PhysicsSeparate.Location = New System.Drawing.Point(6, 92)
         Me.PhysicsSeparate.Name = "PhysicsSeparate"
-        Me.PhysicsSeparate.Size = New System.Drawing.Size(265, 17)
+        Me.PhysicsSeparate.Size = New System.Drawing.Size(180, 17)
         Me.PhysicsSeparate.TabIndex = 37
         Me.PhysicsSeparate.TabStop = True
-        Me.PhysicsSeparate.Text = "Bullet physics in separate thread. Default: Selected"
+        Me.PhysicsSeparate.Text = "Bullet physics in separate thread."
+        Me.ToolTip1.SetToolTip(Me.PhysicsSeparate, "Check for better performance. Default: Selected")
         Me.PhysicsSeparate.UseVisualStyleBackColor = True
         '
         'PhysicsubODE
@@ -777,16 +785,36 @@ Partial Class AdvancedForm
         '
         Me.GroupBox6.Controls.Add(Me.OpensImNew)
         Me.GroupBox6.Controls.Add(Me.OpensimOld)
-        Me.GroupBox6.Location = New System.Drawing.Point(207, 169)
+        Me.GroupBox6.Location = New System.Drawing.Point(207, 144)
         Me.GroupBox6.Name = "GroupBox6"
-        Me.GroupBox6.Size = New System.Drawing.Size(171, 85)
+        Me.GroupBox6.Size = New System.Drawing.Size(209, 80)
         Me.GroupBox6.TabIndex = 29
         Me.GroupBox6.TabStop = False
         Me.GroupBox6.Text = "Opensim Version"
         '
+        'StatsButton
+        '
+        Me.StatsButton.Location = New System.Drawing.Point(123, 15)
+        Me.StatsButton.Name = "StatsButton"
+        Me.StatsButton.Size = New System.Drawing.Size(75, 23)
+        Me.StatsButton.TabIndex = 22
+        Me.StatsButton.Text = "View"
+        Me.ToolTip1.SetToolTip(Me.StatsButton, "Enabled only when Opensim is running")
+        Me.StatsButton.UseVisualStyleBackColor = True
+        '
+        'VoiceButton1
+        '
+        Me.VoiceButton1.Location = New System.Drawing.Point(213, 225)
+        Me.VoiceButton1.Name = "VoiceButton1"
+        Me.VoiceButton1.Size = New System.Drawing.Size(148, 23)
+        Me.VoiceButton1.TabIndex = 30
+        Me.VoiceButton1.Text = "Voice Settings"
+        Me.VoiceButton1.UseVisualStyleBackColor = True
+        '
         'AdvancedForm
         '
-        Me.ClientSize = New System.Drawing.Size(1080, 263)
+        Me.ClientSize = New System.Drawing.Size(1080, 261)
+        Me.Controls.Add(Me.VoiceButton1)
         Me.Controls.Add(Me.GroupBox6)
         Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.GroupBox8)
@@ -889,4 +917,6 @@ Partial Class AdvancedForm
     Friend WithEvents Label2 As Label
     Friend WithEvents GridName As TextBox
     Friend WithEvents Label3 As Label
+    Friend WithEvents StatsButton As Button
+    Friend WithEvents VoiceButton1 As Button
 End Class

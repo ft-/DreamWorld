@@ -40,7 +40,7 @@ Public Class Form1
 
 #Region "Declarations"
 
-    Dim MyVersion As String = "1.33"
+    Dim MyVersion As String = "1.34"
     Dim DebugPath As String = "C:\Opensim\Outworldz"
     Dim Domain As String = "http://www.outworldz.com"
 
@@ -50,7 +50,7 @@ Public Class Form1
 
     Public MyFolder As String   ' Holds the current folder that we are running in
     Dim gCurSlashDir As String '  holds the current directory info in Unix format
-    Dim isRunning As Boolean = False
+    Public isRunning As Boolean = False
     Dim Arnd = New Random()
 
     Public gChatTime As Integer
@@ -266,52 +266,57 @@ Public Class Form1
                 Log("Err:Could not create Init.txt - no permissions to write it:" + ex.Message)
             End Try
 
-            Dim yesno = MsgBox("Do you want to install the Onlook Viewer? (Newcomers to virtual worlds should choose Yes)", vbYesNo)
-            If (yesno = vbYes) Then
+            If System.IO.File.Exists(xmlPath() + "\AppData\Roaming\Onlook\user_settings\settings_onlook.xml") Then
                 My.Settings.Onlook = True
-                Print("Installing Onlook Viewer")
-                Dim pi As ProcessStartInfo = New ProcessStartInfo()
-                pi.Arguments = ""
-                pi.FileName = MyFolder & "\Viewer\Onlook.exe"
-                pOnlook.StartInfo = pi
-                Try
-                    Log("Info:Launching Onlook installer")
-                    pOnlook.Start()
-                Catch ex As Exception
-                    Log("Error:Onlook installer failed to load:" + ex.Message)
-                End Try
-
-                ProgressBar1.Value = 0
-                Print("Please Install and Start the Onlook Viewer")
-                Dim toggle As Boolean = False
-                While Not System.IO.File.Exists(xmlPath() + "\AppData\Roaming\Onlook\user_settings\settings_onlook.xml") And ProgressBar1.Value < 99
-                    Application.DoEvents()
-                    Sleep(2000)
-                    If (toggle) Then
-                        Print("Attention needed - please Install and Start the Onlook Viewer ")
-                        toggle = False
-                    Else
-                        Print("Start the Onlook Viewer")
-                        toggle = False
-                        toggle = True
-                    End If
-                    BumpProgress()
-
-                    If ProgressBar1.Value = 100 Then
-                        Print("You win. Proceeding with Outworldz Installation. You may need to add the grid manually.")
-                        toggle = True
-                    End If
-                End While
-
-                ' close the viewer so the grid will repopulate next time it opens
-                Try
-                    zap("OnlookViewer")
-                Catch
-                End Try
-
             Else
-                My.Settings.Onlook = False
+                Dim yesno = MsgBox("Do you want to install the Onlook Viewer? (Newcomers to virtual worlds should choose Yes)", vbYesNo)
+                If (yesno = vbYes) Then
+                    My.Settings.Onlook = True
+                    Print("Installing Onlook Viewer")
+                    Dim pi As ProcessStartInfo = New ProcessStartInfo()
+                    pi.Arguments = ""
+                    pi.FileName = MyFolder & "\Viewer\Onlook.exe"
+                    pOnlook.StartInfo = pi
+                    Try
+                        Log("Info:Launching Onlook installer")
+                        pOnlook.Start()
+                    Catch ex As Exception
+                        Log("Error:Onlook installer failed to load:" + ex.Message)
+                    End Try
+
+                    ProgressBar1.Value = 0
+                    Print("Please Install and Start the Onlook Viewer")
+                    Dim toggle As Boolean = False
+                    While Not System.IO.File.Exists(xmlPath() + "\AppData\Roaming\Onlook\user_settings\settings_onlook.xml") And ProgressBar1.Value < 99
+                        Application.DoEvents()
+                        Sleep(2000)
+                        If (toggle) Then
+                            Print("Attention needed - please Install and Start the Onlook Viewer ")
+                            toggle = False
+                        Else
+                            Print("Start the Onlook Viewer")
+                            toggle = False
+                            toggle = True
+                        End If
+                        BumpProgress()
+
+                        If ProgressBar1.Value = 100 Then
+                            Print("You win. Proceeding with Outworldz Installation. You may need to add the grid manually.")
+                            toggle = True
+                        End If
+                    End While
+
+                    ' close the viewer so the grid will repopulate next time it opens
+                    Try
+                        zap("OnlookViewer")
+                    Catch
+                    End Try
+
+                Else
+                    My.Settings.Onlook = False
+                End If
             End If
+
         End If
 
         ProgressBar1.Value = 100
@@ -336,6 +341,8 @@ Public Class Form1
         MnuContent.Visible = True
 
         GetAllRegions()
+
+        RegisterDNS()
 
         OpenPorts() ' Open router ports with uPnP
         SetINIFromMySettings()    ' set up the INI files
@@ -2228,17 +2235,62 @@ Public Class Form1
 
         Try
             pMySql.Close()
+            Sleep(2000)
         Catch ex2 As Exception
             Log("Error:Process pMySql.Close() " + ex2.Message)
         End Try
-
+        Sleep(5000)
         For Each stuckP As Process In System.Diagnostics.Process.GetProcessesByName("mysqld")
-            Sleep(2000)
             stuckP.Kill()
+            Log("Warn:Forced to Zap mySQL")
         Next
     End Sub
 
+#End Region
 
+
+#Region "DNS"
+    Private Sub RegisterDNS()
+
+        If My.Settings.DnsName = String.Empty Then Return
+
+        Dim client As New System.Net.WebClient
+        Dim Checkname As String = String.Empty
+        Dim pub As String
+        If My.Settings.DNSPublic Then
+            pub = "1"
+        Else
+            pub = "0"
+        End If
+        Try
+            Log("Checking DNS name " + My.Settings.DnsName)
+            Checkname = client.DownloadString("http://outworldz.net/dns.plx/?GridName=" + My.Settings.DnsName + "&Public=" + pub + "&r=" + Random())
+        Catch ex As Exception
+            Log("Cannot check the DNS Name" + ex.Message)
+        End Try
+
+        DoGetHostAddresses(My.Settings.DnsName)
+        BumpProgress10()
+    End Sub
+
+    Public Function DoGetHostAddresses(hostName As [String]) As String
+
+        Dim ips As IPAddress()
+        Try
+            ips = Dns.GetHostAddresses(hostName)
+            Dim index As Integer
+            For index = 0 To ips.Length - 1
+                Debug.Print(ips(index).ToString())
+                Dim str = ips(index).ToString()
+                Return str
+            Next index
+
+        Catch ex As Exception
+            Log("Unable to resolve name:" + ex.Message)
+        End Try
+        Return String.Empty
+
+    End Function
 
 #End Region
 
