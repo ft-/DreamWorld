@@ -3,7 +3,6 @@ Imports System.IO
 
 Public Class AdvancedForm
 #Region "Declarations"
-
     Dim gInitted As Boolean = False
 #End Region
 
@@ -444,7 +443,12 @@ Public Class AdvancedForm
     End Sub
 
     Private Sub VoiceButton1_Click(sender As Object, e As EventArgs) Handles VoiceButton1.Click
-        MsgBox("Not Implemented yet")
+        Dim Voice As New Form2
+        ' Set the new form's desktop location so it appears below and
+        ' to the right of the current form.
+        Voice.SetDesktopLocation(300, 200)
+        Voice.Activate()
+        Voice.Visible = True
     End Sub
 
 

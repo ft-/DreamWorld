@@ -713,6 +713,42 @@ Namespace My
                 Me("DNSPublic") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public Property VivoxEnabled() As Boolean
+            Get
+                Return CType(Me("VivoxEnabled"),Boolean)
+            End Get
+            Set
+                Me("VivoxEnabled") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("someusername")>  _
+        Public Property Vivox_username() As String
+            Get
+                Return CType(Me("Vivox_username"),String)
+            End Get
+            Set
+                Me("Vivox_username") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("somepassword")>  _
+        Public Property Vivox_password() As String
+            Get
+                Return CType(Me("Vivox_password"),String)
+            End Get
+            Set
+                Me("Vivox_password") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

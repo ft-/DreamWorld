@@ -167,5 +167,14 @@
     <Setting Name="DNSPublic" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="VivoxEnabled" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="Vivox_username" Type="System.String" Scope="User">
+      <Value Profile="(Default)">someusername</Value>
+    </Setting>
+    <Setting Name="Vivox_password" Type="System.String" Scope="User">
+      <Value Profile="(Default)">somepassword</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

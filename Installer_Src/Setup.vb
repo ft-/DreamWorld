@@ -37,12 +37,11 @@ Public Class Form1
     '
     '     '-debug' forces this to use the DebugPath folder for testing
     '
-
 #Region "Declarations"
 
     Dim MyVersion As String = "1.34"
     Dim DebugPath As String = "C:\Opensim\Outworldz"
-    Dim Domain As String = "http://www.outworldz.com"
+    Public Domain As String = "http://www.outworldz.com"
 
     Private gFailDebug1 = False ' set to true to fail diagnostic
     Private gFailDebug2 = False ' set to true to fail diagnostic
@@ -711,6 +710,14 @@ Public Class Form1
             LoadIni(MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\config-include\MyWorld.ini", ";")
         End If
 
+        ' Voice
+        If My.Settings.VivoxEnabled Then
+            SetIni("VivoxVoice", "enabled", "true")
+        Else
+            SetIni("VivoxVoice", "enabled", "false")
+        End If
+        SetIni("VivoxVoice", "vivox_admin_user", My.Settings.Vivox_username)
+        SetIni("VivoxVoice", "vivox_admin_password", My.Settings.Vivox_password)
 
         ' Physics
         ' choices for meshmerizer, where Ubit's ODE requires a special one
@@ -2119,7 +2126,6 @@ Public Class Form1
 #End Region
 
 #Region "MySQl"
-
     Private Sub CheckDatabaseToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CheckDatabaseToolStripMenuItem.Click
 
         Dim pi As ProcessStartInfo = New ProcessStartInfo()
@@ -2247,7 +2253,6 @@ Public Class Form1
     End Sub
 
 #End Region
-
 
 #Region "DNS"
     Private Sub RegisterDNS()

@@ -95,7 +95,7 @@
     <GenerateManifests>false</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <SignManifests>true</SignManifests>
+    <SignManifests>false</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
     <TargetZone>Internet</TargetZone>
@@ -197,6 +197,12 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="Settings.vb" />
+    <Compile Include="FormVoice.Designer.vb">
+      <DependentUpon>FormVoice.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormVoice.vb">
+      <SubType>Form</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="..\..\..\Setup.resx">
@@ -221,6 +227,9 @@
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormVoice.resx">
+      <DependentUpon>FormVoice.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
