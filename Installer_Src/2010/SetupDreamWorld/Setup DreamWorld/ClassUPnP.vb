@@ -177,7 +177,8 @@ Public Class UPNP
         Dim IPList As System.Net.IPHostEntry = System.Net.Dns.GetHostEntry(System.Net.Dns.GetHostName)
         For Each IPaddress In IPList.AddressList
             If (IPaddress.AddressFamily = Sockets.AddressFamily.InterNetwork) AndAlso IsPrivateIP(IPaddress.ToString()) Then
-                Return IPaddress.ToString
+                Dim ip = IPaddress.ToString()
+                Return ip
             End If
         Next
         Return String.Empty

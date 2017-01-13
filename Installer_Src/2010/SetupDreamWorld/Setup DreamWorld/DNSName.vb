@@ -5,16 +5,6 @@ Public Class DNSName
 
 #Region "Functions"
 
-    Private Function Getnewname()
-        Dim client As New System.Net.WebClient
-        Dim Checkname As String = String.Empty
-        Try
-            Checkname = client.DownloadString("http://outworldz.net/getnewname.plx/?r=" + Random())
-        Catch ex As Exception
-            Form1.Log("Cannot get new name:" + ex.Message)
-        End Try
-        Return Checkname
-    End Function
     Public Function Random() As String
         Dim value As Integer = CInt(Int((600000000 * Rnd()) + 1))
         Random = System.Convert.ToString(value)
@@ -67,21 +57,8 @@ Public Class DNSName
             Dim client As New System.Net.WebClient
 
             NextNameButton.Text = "Saving..."
-            Dim Checkname As String = String.Empty
-            Dim index = InStr(TextBox1.Text, ".")
-            If index = 0 Then
-                Dim pub As String
-                If My.Settings.DNSPublic Then
-                    pub = "1"
-                Else
-                    pub = "0"
-                End If
-                Try
-                    Checkname = client.DownloadString("http://outworldz.net/dns.plx/?GridName=" + TextBox1.Text + "&Public=" + pub + "&r=" + Random())
-                Catch ex As Exception
-                    Form1.Log("Cannot check the DNS Name" + ex.Message)
-                End Try
-            End If
+
+            Form1.RegisterName(TextBox1.Text)
 
             NextNameButton.Text = "Next Name"
 
@@ -110,7 +87,7 @@ Public Class DNSName
         NextNameButton.Text = "Busy..."
         TextBox1.Text = String.Empty
         Application.DoEvents()
-        Dim newname = Getnewname()
+        Dim newname = Form1.GetNewDnsName()
         NextNameButton.Text = "Next Name"
         If newname = String.Empty Then
             MsgBox("Please enter a valid DNS name, or register for one at http://www.noip.com", vbInformation)

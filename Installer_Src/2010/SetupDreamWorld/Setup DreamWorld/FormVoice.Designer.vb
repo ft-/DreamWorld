@@ -23,19 +23,17 @@ Partial Class Form2
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
-        Me.VivoxHelpButton = New System.Windows.Forms.Button()
+        Me.RequestPassword = New System.Windows.Forms.Button()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.VivoxEnable = New System.Windows.Forms.CheckBox()
         Me.VivoxPassword = New System.Windows.Forms.TextBox()
         Me.VivoxUserName = New System.Windows.Forms.TextBox()
-        Me.RequestPassword = New System.Windows.Forms.Button()
         Me.GroupBox1.SuspendLayout()
         Me.SuspendLayout()
         '
         'GroupBox1
         '
-        Me.GroupBox1.Controls.Add(Me.VivoxHelpButton)
         Me.GroupBox1.Controls.Add(Me.RequestPassword)
         Me.GroupBox1.Controls.Add(Me.Label2)
         Me.GroupBox1.Controls.Add(Me.Label1)
@@ -49,14 +47,14 @@ Partial Class Form2
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Vivox Voice"
         '
-        'VivoxHelpButton
+        'RequestPassword
         '
-        Me.VivoxHelpButton.Location = New System.Drawing.Point(181, 47)
-        Me.VivoxHelpButton.Name = "VivoxHelpButton"
-        Me.VivoxHelpButton.Size = New System.Drawing.Size(53, 23)
-        Me.VivoxHelpButton.TabIndex = 8
-        Me.VivoxHelpButton.Text = "Help"
-        Me.VivoxHelpButton.UseVisualStyleBackColor = True
+        Me.RequestPassword.Location = New System.Drawing.Point(6, 18)
+        Me.RequestPassword.Name = "RequestPassword"
+        Me.RequestPassword.Size = New System.Drawing.Size(225, 23)
+        Me.RequestPassword.TabIndex = 0
+        Me.RequestPassword.Text = "Click to Request a Free Voice Service"
+        Me.RequestPassword.UseVisualStyleBackColor = True
         '
         'Label2
         '
@@ -101,15 +99,6 @@ Partial Class Form2
         Me.VivoxUserName.Size = New System.Drawing.Size(130, 20)
         Me.VivoxUserName.TabIndex = 1
         '
-        'RequestPassword
-        '
-        Me.RequestPassword.Location = New System.Drawing.Point(6, 18)
-        Me.RequestPassword.Name = "RequestPassword"
-        Me.RequestPassword.Size = New System.Drawing.Size(225, 23)
-        Me.RequestPassword.TabIndex = 0
-        Me.RequestPassword.Text = "Click to Request a Free Voice Service"
-        Me.RequestPassword.UseVisualStyleBackColor = True
-        '
         'Form2
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -125,7 +114,6 @@ Partial Class Form2
     End Sub
 
     Friend WithEvents GroupBox1 As GroupBox
-    Friend WithEvents VivoxHelpButton As Button
     Friend WithEvents Label2 As Label
     Friend WithEvents Label1 As Label
     Friend WithEvents VivoxEnable As CheckBox

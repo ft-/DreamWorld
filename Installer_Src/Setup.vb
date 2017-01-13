@@ -39,7 +39,7 @@ Public Class Form1
     '
 #Region "Declarations"
 
-    Dim MyVersion As String = "1.34"
+    Dim MyVersion As String = "1.35"
     Dim DebugPath As String = "C:\Opensim\Outworldz"
     Public Domain As String = "http://www.outworldz.com"
 
@@ -225,7 +225,7 @@ Public Class Form1
 
         ClearLogFiles() ' clear log fles
 
-        ' If gDebug Then My.Settings.RanAllDiags = False
+        If gDebug Then My.Settings.RanAllDiags = False
 
         If Not My.Settings.RanAllDiags Then
             My.Settings.RanAllDiags = True
@@ -1850,35 +1850,7 @@ Public Class Form1
 #End Region
 
 #Region "Diagnostics"
-    Private Function OpenPorts()
 
-        If Running = False Then Return True
-        ' Print("The human is instructed to wait while I check out this nice little router ...")
-        Try
-            If AllowFirewall() Then ' open uPNP port
-                DiagLog("uPnpOk")
-                'Print("uPnP works ...")
-                My.Settings.UPnPDiag = True
-                My.Settings.Save()
-                BumpProgress10()
-                Return True
-            Else
-                DiagLog("uPnP: fail")
-                My.Settings.UPnPDiag = False
-                My.Settings.Save()
-                'Print("UPnP Port forwarding Is Not enabled.  Ports can be manually opened in the router to compensate.")
-                BumpProgress10()
-                Return False
-            End If
-        Catch e As Exception
-            DiagLog("Error: UPNP Exception: " + e.Message)
-            My.Settings.UPnPDiag = False
-            My.Settings.Save()
-            BumpProgress10()
-            Return False
-        End Try
-
-    End Function
     Private Function CheckPort(ServerAddress As String, Port As String) As Boolean
 
         Dim iPort As Integer = Convert.ToInt16(Port)
@@ -2010,49 +1982,101 @@ Public Class Form1
         If Not ProbePublicPort() Then ' see if Public loopback works
             TestLoopback()
         End If
-        Log("Diagnostics set the Public IP to " + My.Settings.PublicIP)
+        If Not My.Settings.DiagFailed Then
+            NewDNSName()
+        End If
+        Log("Diagnostics set the Hypergrid address to " + My.Settings.PublicIP)
 
     End Sub
-    Private Function GetPostData()
-
-        Dim SimVersion As String
-        If (My.Settings.GridFolder = "Opensim") Then
-            SimVersion = "0.8.2.1"
-        Else
-            SimVersion = "0.9.1"
-        End If
-        Dim UpNp As String = "Fail"
-        If My.Settings.UPnPDiag Then
-            UpNp = "Pass"
-        End If
-        Dim Loopb As String = "Fail"
-        If My.Settings.LoopBackDiag Then
-            Loopb = "Pass"
-        End If
-
-        Dim data
-        data = "&r=" + Machine _
-            + "&V=" + MyVersion _
-            + "&OV=" + SimVersion _
-            + "&UpNp=" + UpNp _
-            + "&Loop=" + Loopb _
-            + "&x=" + Random()
-        Return data
-
-    End Function
 
     Private Function GetIPv4Address() As String
         GetIPv4Address = String.Empty
         Dim strHostName As String = System.Net.Dns.GetHostName()
-        Dim iphe As System.Net.IPHostEntry = System.Net.Dns.GetHostEntry(strHostName)
+        Dim IPList As System.Net.IPHostEntry = System.Net.Dns.GetHostEntry(strHostName)
 
-        For Each ipheal As System.Net.IPAddress In iphe.AddressList
-            If ipheal.AddressFamily = System.Net.Sockets.AddressFamily.InterNetwork Then
-                GetIPv4Address = ipheal.ToString()
+        For Each IPaddress As System.Net.IPAddress In IPList.AddressList
+            If IPaddress.AddressFamily = System.Net.Sockets.AddressFamily.InterNetwork AndAlso IsPrivateIP(IPaddress.ToString()) Then
+                GetIPv4Address = IPaddress.ToString()
             End If
         Next
 
     End Function
+
+    ''' <summary>
+    ''' Checks to see if an IP address is a local IP address.
+    ''' </summary>
+    ''' <param name="CheckIP">The IP address to check.</param>
+    ''' <returns>Boolean</returns>
+    ''' <remarks></remarks>
+    Private Shared Function IsPrivateIP(ByVal CheckIP As String) As Boolean
+        Dim Quad1, Quad2 As Integer
+
+        Quad1 = CInt(CheckIP.Substring(0, CheckIP.IndexOf(".")))
+        Quad2 = CInt(CheckIP.Substring(CheckIP.IndexOf(".") + 1).Substring(0, CheckIP.IndexOf(".")))
+        Select Case Quad1
+            Case 10
+                Return True
+            Case 172
+                If Quad2 >= 16 And Quad2 <= 31 Then Return True
+            Case 192
+                If Quad2 = 168 Then Return True
+        End Select
+        Return False
+    End Function
+
+#End Region
+
+#Region "PnP"
+
+    Function AllowFirewall() As Boolean
+
+        Log("uPnpprobing")
+        Dim MyUPnPMap As New UPNP
+
+        Try
+            If MyUPnPMap.Exists(My.Settings.PublicPort, UPNP.Protocol.UDP) Then
+                DiagLog("uPnp: PublicPort.UDP exists")
+            Else
+                MyUPnPMap.Add(UPNP.LocalIP, My.Settings.PublicPort, UPNP.Protocol.UDP, "Opensim UDP Public")
+                DiagLog("uPnp: PublicPort.UDP added")
+            End If
+
+            If MyUPnPMap.Exists(My.Settings.PublicPort, UPNP.Protocol.TCP) Then
+                DiagLog("uPnp: PublicPort.TCP exists")
+            Else
+                MyUPnPMap.Add(UPNP.LocalIP, My.Settings.PublicPort, UPNP.Protocol.TCP, "Opensim TCP Public")
+                DiagLog("uPnp: PublicPort.TCP added")
+            End If
+
+            If MyUPnPMap.Exists(My.Settings.LoopBack, UPNP.Protocol.TCP) Then
+                DiagLog("uPnp: Loopback.TCP exists")
+            Else
+                MyUPnPMap.Add(UPNP.LocalIP, My.Settings.LoopBack, UPNP.Protocol.TCP, "Opensim TCP LoopBack")
+                DiagLog("uPnp: Loopback.TCP Added ")
+            End If
+
+            If MyUPnPMap.Exists(My.Settings.RegionPort, UPNP.Protocol.TCP) Then
+                DiagLog("uPnp: Regionport.TCP exists")
+            Else
+                Log("uPnp: Loopback.TCP Added ")
+                MyUPnPMap.Add(UPNP.LocalIP, My.Settings.RegionPort, UPNP.Protocol.TCP, "Opensim TCP Region")
+            End If
+
+            If MyUPnPMap.Exists(My.Settings.RegionPort, UPNP.Protocol.UDP) Then
+                DiagLog("uPnp: Regionport.UDP exists")
+            Else
+                MyUPnPMap.Add(UPNP.LocalIP, My.Settings.RegionPort, UPNP.Protocol.UDP, "Opensim UDP Region")
+                DiagLog("uPnp: Loopback.UDP Added ")
+            End If
+
+
+        Catch e As Exception
+            DiagLog("uPnp: UPNP Exception caught:  " + e.Message)
+            Return False
+        End Try
+        Return True 'successfully added
+    End Function
+
 
     Function CloseRouterPorts() As Boolean
 
@@ -2085,54 +2109,65 @@ Public Class Form1
         End Try
         Return True 'successfully added
     End Function
-    Function AllowFirewall() As Boolean
 
-        Log("uPnpprobing")
-        Dim MyUPnPMap As New UPNP
+    Private Function GetPostData()
 
+        Dim SimVersion As String
+        If (My.Settings.GridFolder = "Opensim") Then
+            SimVersion = "0.8.2.1"
+        Else
+            SimVersion = "0.9.1"
+        End If
+        Dim UpNp As String = "Fail"
+        If My.Settings.UPnPDiag Then
+            UpNp = "Pass"
+        End If
+        Dim Loopb As String = "Fail"
+        If My.Settings.LoopBackDiag Then
+            Loopb = "Pass"
+        End If
+
+        Dim data
+        data = "&r=" + Machine _
+            + "&V=" + MyVersion _
+            + "&OV=" + SimVersion _
+            + "&UpNp=" + UpNp _
+            + "&Loop=" + Loopb _
+            + "&x=" + Random()
+        Return data
+
+    End Function
+
+    Private Function OpenPorts()
+
+        If Running = False Then Return True
+        ' Print("The human is instructed to wait while I check out this nice little router ...")
         Try
-            If MyUPnPMap.Exists(My.Settings.PublicPort, UPNP.Protocol.UDP) Then
-                DiagLog("uPnp: PublicPort.UDP exists")
+            If AllowFirewall() Then ' open uPNP port
+                DiagLog("uPnpOk")
+                'Print("uPnP works ...")
+                My.Settings.UPnPDiag = True
+                My.Settings.Save()
+                BumpProgress10()
+                Return True
             Else
-                MyUPnPMap.Add(UPNP.LocalIP, My.Settings.PublicPort, UPNP.Protocol.UDP, "Opensim UDP Public")
-                DiagLog("uPnp: PublicPort.UDP added")
+                DiagLog("uPnP: fail")
+                My.Settings.UPnPDiag = False
+                My.Settings.Save()
+                'Print("UPnP Port forwarding Is Not enabled.  Ports can be manually opened in the router to compensate.")
+                BumpProgress10()
+                Return False
             End If
-
-            If MyUPnPMap.Exists(My.Settings.PublicPort, UPNP.Protocol.TCP) Then
-                DiagLog("uPnp: PublicPort.TCP exists")
-            Else
-                MyUPnPMap.Add(UPNP.LocalIP, My.Settings.PublicPort, UPNP.Protocol.TCP, "Opensim TCP Public")
-                DiagLog("uPnp: PublicPort.TCP added")
-            End If
-
-            If MyUPnPMap.Exists(My.Settings.LoopBack, UPNP.Protocol.TCP) Then
-                DiagLog("uPnp: Loopback.TCP exists")
-            Else
-                MyUPnPMap.Add(UPNP.LocalIP, My.Settings.LoopBack, UPNP.Protocol.TCP, "Opensim TCP Region")
-                DiagLog("uPnp: Loopback.TCP Added ")
-            End If
-
-            If MyUPnPMap.Exists(My.Settings.RegionPort, UPNP.Protocol.TCP) Then
-                DiagLog("uPnp: Regionport.TCP exists")
-            Else
-                Log("uPnp: Loopback.TCP Added ")
-                MyUPnPMap.Add(UPNP.LocalIP, My.Settings.RegionPort, UPNP.Protocol.TCP, "Opensim TCP Region")
-            End If
-
-            If MyUPnPMap.Exists(My.Settings.RegionPort, UPNP.Protocol.UDP) Then
-                DiagLog("uPnp: Regionport.UDP exists")
-            Else
-                MyUPnPMap.Add(UPNP.LocalIP, My.Settings.RegionPort, UPNP.Protocol.UDP, "Opensim UDP Region")
-                DiagLog("uPnp: Loopback.UDP Added ")
-            End If
-
-
         Catch e As Exception
-            DiagLog("uPnp: UPNP Exception caught:  " + e.Message)
+            DiagLog("Error: UPNP Exception: " + e.Message)
+            My.Settings.UPnPDiag = False
+            My.Settings.Save()
+            BumpProgress10()
             Return False
         End Try
-        Return True 'successfully added
+
     End Function
+
 #End Region
 
 #Region "MySQl"
@@ -2306,7 +2341,49 @@ Public Class Form1
         Return String.Empty
 
     End Function
+    Public Function GetNewDnsName()
+        Dim client As New System.Net.WebClient
+        Dim Checkname As String = String.Empty
+        Try
+            Checkname = client.DownloadString("http://outworldz.net/getnewname.plx/?r=" + Random())
+        Catch ex As Exception
+            Log("Cannot get new name:" + ex.Message)
+        End Try
+        Return Checkname
+    End Function
 
+    Public Function RegisterName(name As String) As String
+        Dim pub As String
+        Dim Checkname As String = String.Empty
+        If My.Settings.DNSPublic Then
+            pub = "1"
+        Else
+            pub = "0"
+        End If
+        Try
+            Checkname = client.DownloadString("http://outworldz.net/dns.plx/?GridName=" + name + "&Public=" + pub + "&r=" + Random())
+        Catch ex As Exception
+            Log("Cannot check the DNS Name" + ex.Message)
+        End Try
+        If Checkname = "NEW" Or Checkname = "UPDATED" Then
+            Return name
+        End If
+        Return ""
+    End Function
+    Private Sub NewDNSName()
+        If My.Settings.DnsName = "" Then
+            Dim newname = GetNewDnsName()
+            If newname <> "" Then
+                If RegisterName(newname) <> "" Then
+                    BumpProgress10()
+                    My.Settings.DnsName = newname
+                    My.Settings.Save()
+                    MsgBox("Your system's name has been set to " + newname + ". You can change the name in the Advanced menu at any time")
+                End If
+            End If
+            BumpProgress10()
+        End If
+    End Sub
 #End Region
 
 End Class

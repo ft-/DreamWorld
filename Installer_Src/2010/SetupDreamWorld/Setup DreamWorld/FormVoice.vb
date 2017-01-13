@@ -12,16 +12,6 @@
         My.Settings.Save()
     End Sub
 
-    Private Sub VivoxHelpButton_Click(sender As Object, e As EventArgs) Handles VivoxHelpButton.Click
-        Dim webAddress As String = Form1.Domain + "/Outworldz_Installer/Vivox.htm"
-        Process.Start(webAddress)
-    End Sub
-
-    Private Sub FreeSwitchHelpButton_Click(sender As Object, e As EventArgs)
-        Dim webAddress As String = Form1.Domain + "/Outworldz_Installer/FreeSwitch.htm"
-        Process.Start(webAddress)
-    End Sub
-
     Private Sub RequestPassword_Click(sender As Object, e As EventArgs) Handles RequestPassword.Click
         Dim webAddress As String = "https://support.vivox.com/opensim/"
         Process.Start(webAddress)
