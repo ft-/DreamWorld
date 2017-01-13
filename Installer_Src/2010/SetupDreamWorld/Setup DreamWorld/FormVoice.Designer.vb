@@ -36,13 +36,13 @@ Partial Class Form2
         'GroupBox1
         '
         Me.GroupBox1.Controls.Add(Me.VivoxHelpButton)
+        Me.GroupBox1.Controls.Add(Me.RequestPassword)
         Me.GroupBox1.Controls.Add(Me.Label2)
         Me.GroupBox1.Controls.Add(Me.Label1)
         Me.GroupBox1.Controls.Add(Me.VivoxEnable)
         Me.GroupBox1.Controls.Add(Me.VivoxPassword)
         Me.GroupBox1.Controls.Add(Me.VivoxUserName)
-        Me.GroupBox1.Controls.Add(Me.RequestPassword)
-        Me.GroupBox1.Location = New System.Drawing.Point(12, 21)
+        Me.GroupBox1.Location = New System.Drawing.Point(12, 12)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Size = New System.Drawing.Size(245, 135)
         Me.GroupBox1.TabIndex = 0
@@ -51,7 +51,7 @@ Partial Class Form2
         '
         'VivoxHelpButton
         '
-        Me.VivoxHelpButton.Location = New System.Drawing.Point(176, 19)
+        Me.VivoxHelpButton.Location = New System.Drawing.Point(181, 47)
         Me.VivoxHelpButton.Name = "VivoxHelpButton"
         Me.VivoxHelpButton.Size = New System.Drawing.Size(53, 23)
         Me.VivoxHelpButton.TabIndex = 8
@@ -79,7 +79,7 @@ Partial Class Form2
         'VivoxEnable
         '
         Me.VivoxEnable.AutoSize = True
-        Me.VivoxEnable.Location = New System.Drawing.Point(14, 25)
+        Me.VivoxEnable.Location = New System.Drawing.Point(9, 51)
         Me.VivoxEnable.Name = "VivoxEnable"
         Me.VivoxEnable.Size = New System.Drawing.Size(59, 17)
         Me.VivoxEnable.TabIndex = 3
@@ -103,11 +103,11 @@ Partial Class Form2
         '
         'RequestPassword
         '
-        Me.RequestPassword.Location = New System.Drawing.Point(109, 47)
+        Me.RequestPassword.Location = New System.Drawing.Point(6, 18)
         Me.RequestPassword.Name = "RequestPassword"
-        Me.RequestPassword.Size = New System.Drawing.Size(130, 23)
+        Me.RequestPassword.Size = New System.Drawing.Size(225, 23)
         Me.RequestPassword.TabIndex = 0
-        Me.RequestPassword.Text = "Request a Password"
+        Me.RequestPassword.Text = "Click to Request a Free Voice Service"
         Me.RequestPassword.UseVisualStyleBackColor = True
         '
         'Form2

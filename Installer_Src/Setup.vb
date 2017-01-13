@@ -160,6 +160,7 @@ Public Class Form1
         ProgressBar1.Maximum = 100
         ProgressBar1.Value = 0
 
+
         If My.Settings.MyX = 0 And My.Settings.MyY = 0 Then
             Me.CenterToScreen()
         Else
@@ -252,6 +253,13 @@ Public Class Form1
             Log("Info:Ready to start")
 
         Else
+
+            If My.Settings.Password = "secret" Then
+                Dim Password = New PassGen
+                My.Settings.Password = Password.GeneratePass()
+                My.Settings.Save()
+            End If
+
             Print("Installing Desktop icon clicky thingy")
             Create_ShortCut(MyFolder & "\Start.exe")
             BumpProgress10()
@@ -710,6 +718,7 @@ Public Class Form1
             LoadIni(MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\config-include\MyWorld.ini", ";")
         End If
 
+
         ' Voice
         If My.Settings.VivoxEnabled Then
             SetIni("VivoxVoice", "enabled", "true")
@@ -778,7 +787,7 @@ Public Class Form1
 
         ' Viewer UI shows the full viewer UI
         If My.Settings.ViewerEase Then
-            Log("Info:Viewer set to Easy")
+            Log("Info: Viewer set to Easy")
             SetIni("SpecialUIModule", "enabled", "true")
         Else
             Log("Info:Viewer set to Normal")
@@ -819,6 +828,7 @@ Public Class Form1
         End If
 
         If My.Settings.GridFolder <> "Opensim-0.9" Then
+            SetIni("WifiService", "AdminPassword", """" + My.Settings.Password + """")
             SetIni("WifiService", "AdminEmail", """" + My.Settings.AdminEmail + """")
 
             If My.Settings.AccountConfirmationRequired Then
