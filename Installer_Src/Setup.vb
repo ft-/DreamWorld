@@ -95,6 +95,7 @@ Public Class Form1
                             }
     Dim gDebug = False       ' toggled by -debug flag on command line
     Dim gContentAvailable As Boolean = False ' assume there is no OAR and IAR data available
+    Dim MyUPnPMap As New UPNP
 
     Public aRegion(0) As Object
 
@@ -232,10 +233,10 @@ Public Class Form1
             DoDiag()
         End If
 
-        ' always open ports
+        SetINIFromMySettings()
+        ' always open ports after SetINI
         OpenPorts()
 
-        SetINIFromMySettings()
 
         If Not My.Settings.SkipUpdateCheck Then
             CheckForUpdates()
@@ -243,6 +244,8 @@ Public Class Form1
 
         mnuSettings.Visible = True
         SetIAROARContent() ' load IAR and OAR web content
+
+
 
         ' Find out if the viewer is installed
         If System.IO.File.Exists(MyFolder & "\OutworldzFiles\Init.txt") Then
@@ -351,9 +354,12 @@ Public Class Form1
 
         RegisterDNS()
 
-        OpenPorts() ' Open router ports with uPnP
         SetINIFromMySettings()    ' set up the INI files
-        SaveOnlookXMLData()
+        OpenPorts() ' Open router ports with uPnP
+
+        If My.Settings.Onlook Then
+            SaveOnlookXMLData()
+        End If
 
         StartMySQL() ' boot up MySql, and wait for it to start listening
 
@@ -435,12 +441,13 @@ Public Class Form1
 
         ProgressBar1.Value = 100
         ' close everything as gracefully as possible.
+
         Try
             pOnlook.CloseMainWindow()
             pOnlook.WaitForExit()
             pOnlook.Close()
         Catch ex As Exception
-            Log("Warn:Could not stop Onlook:" + ex.Message)
+            Log("Info:Onlook not running:" + ex.Message)
         End Try
 
         ProgressBar1.Value = 67
@@ -859,8 +866,8 @@ Public Class Form1
         While counter <= L
             Dim simName = aRegion(counter).RegionName
             LoadIni(MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\Regions\" + simName + ".ini", ";")
-            SetIni(simName, "InternalPort", aRegion(counter).RegionPort)
-            SetIni(simName, "ExternalHostName", My.Settings.PublicIP)
+            SetIni(simName, "InternalPort", Convert.ToString(aRegion(counter).RegionPort))
+            SetIni(simName, "ExternalHostName", Convert.ToString(My.Settings.PublicIP))
             SaveINI()
             counter += 1
         End While
@@ -2028,47 +2035,56 @@ Public Class Form1
 
 #Region "PnP"
 
-    Function AllowFirewall() As Boolean
+    Function OpenRouterPorts() As Boolean
 
-        Log("uPnpprobing")
-        Dim MyUPnPMap As New UPNP
+        Log("OpenRouterPorts local ip seems to be " + UPNP.LocalIP)
 
         Try
-            If MyUPnPMap.Exists(My.Settings.PublicPort, UPNP.Protocol.UDP) Then
-                DiagLog("uPnp: PublicPort.UDP exists")
-            Else
-                MyUPnPMap.Add(UPNP.LocalIP, My.Settings.PublicPort, UPNP.Protocol.UDP, "Opensim UDP Public")
-                DiagLog("uPnp: PublicPort.UDP added")
+            If MyUPnPMap.Exists(Convert.ToInt16(My.Settings.PublicPort), UPNP.Protocol.UDP) Then
+                MyUPnPMap.Remove(Convert.ToInt16(My.Settings.PublicPort), UPNP.Protocol.UDP)
+            End If
+            MyUPnPMap.Add(UPNP.LocalIP, Convert.ToInt16(My.Settings.PublicPort), UPNP.Protocol.UDP, "Opensim UDP Public")
+            DiagLog("uPnp: PublicPort.UDP added:")
+            BumpProgress10()
+
+
+            If MyUPnPMap.Exists(Convert.ToInt16(My.Settings.PublicPort), UPNP.Protocol.TCP) Then
+                MyUPnPMap.Remove(Convert.ToInt16(My.Settings.PublicPort), UPNP.Protocol.TCP)
             End If
 
-            If MyUPnPMap.Exists(My.Settings.PublicPort, UPNP.Protocol.TCP) Then
-                DiagLog("uPnp: PublicPort.TCP exists")
-            Else
-                MyUPnPMap.Add(UPNP.LocalIP, My.Settings.PublicPort, UPNP.Protocol.TCP, "Opensim TCP Public")
-                DiagLog("uPnp: PublicPort.TCP added")
-            End If
+            MyUPnPMap.Add(UPNP.LocalIP, Convert.ToInt16(My.Settings.PublicPort), UPNP.Protocol.TCP, "Opensim TCP Public")
+            DiagLog("uPnp: PublicPort.TCP added")
+            BumpProgress10()
 
-            If MyUPnPMap.Exists(My.Settings.LoopBack, UPNP.Protocol.TCP) Then
-                DiagLog("uPnp: Loopback.TCP exists")
-            Else
-                MyUPnPMap.Add(UPNP.LocalIP, My.Settings.LoopBack, UPNP.Protocol.TCP, "Opensim TCP LoopBack")
-                DiagLog("uPnp: Loopback.TCP Added ")
+            If MyUPnPMap.Exists(Convert.ToInt16(My.Settings.LoopBack), UPNP.Protocol.TCP) Then
+                MyUPnPMap.Remove(Convert.ToInt16(My.Settings.LoopBack), UPNP.Protocol.TCP)
             End If
+            MyUPnPMap.Add(UPNP.LocalIP, Convert.ToInt16(My.Settings.LoopBack), UPNP.Protocol.TCP, "Opensim TCP LoopBack")
+            DiagLog("uPnp: Loopback.TCP Added ")
+            BumpProgress10()
 
-            If MyUPnPMap.Exists(My.Settings.RegionPort, UPNP.Protocol.TCP) Then
-                DiagLog("uPnp: Regionport.TCP exists")
-            Else
-                Log("uPnp: Loopback.TCP Added ")
-                MyUPnPMap.Add(UPNP.LocalIP, My.Settings.RegionPort, UPNP.Protocol.TCP, "Opensim TCP Region")
-            End If
+            Dim counter = 1
+            Dim size = aRegion.GetUpperBound(0)
+            While counter <= size
 
-            If MyUPnPMap.Exists(My.Settings.RegionPort, UPNP.Protocol.UDP) Then
-                DiagLog("uPnp: Regionport.UDP exists")
-            Else
-                MyUPnPMap.Add(UPNP.LocalIP, My.Settings.RegionPort, UPNP.Protocol.UDP, "Opensim UDP Region")
-                DiagLog("uPnp: Loopback.UDP Added ")
-            End If
+                Dim RegionPort As Integer = aRegion(counter).RegionPort
 
+                If MyUPnPMap.Exists(RegionPort, UPNP.Protocol.UDP) Then
+                    MyUPnPMap.Remove(RegionPort, UPNP.Protocol.UDP)
+                End If
+                MyUPnPMap.Add(UPNP.LocalIP, RegionPort, UPNP.Protocol.UDP, "Opensim UDP Region")
+                DiagLog("uPnp: RegionPort.UDP Added:" + Convert.ToString(RegionPort))
+                BumpProgress10()
+
+                If MyUPnPMap.Exists(RegionPort, UPNP.Protocol.TCP) Then
+                    MyUPnPMap.Remove(RegionPort, UPNP.Protocol.TCP)
+                End If
+                MyUPnPMap.Add(UPNP.LocalIP, RegionPort, UPNP.Protocol.TCP, "Opensim TCP Region")
+                DiagLog("uPnp: RegionPort.TCP Added:" + Convert.ToString(RegionPort))
+                BumpProgress10()
+
+                counter += 1
+            End While
 
         Catch e As Exception
             DiagLog("uPnp: UPNP Exception caught:  " + e.Message)
@@ -2080,33 +2096,40 @@ Public Class Form1
 
     Function CloseRouterPorts() As Boolean
 
-        Dim MyUPnPMap As New UPNP
-
         Try
-            If MyUPnPMap.Exists(My.Settings.PublicPort, UPNP.Protocol.UDP) Then
-                MyUPnPMap.Remove(UPNP.LocalIP, My.Settings.PublicPort)
-                DiagLog("uPnp: PublicPort.UDP Removed ")
+            If MyUPnPMap.Exists(Convert.ToInt16(My.Settings.PublicPort), UPNP.Protocol.UDP) Then
+                MyUPnPMap.Remove(Convert.ToInt16(My.Settings.PublicPort), UPNP.Protocol.UDP)
+                DiagLog("uPnp: PublicPort.UDP Removed for port " + My.Settings.PublicPort)
             End If
 
-            If MyUPnPMap.Exists(My.Settings.PublicPort, UPNP.Protocol.TCP) Then
-                MyUPnPMap.Remove(UPNP.LocalIP, My.Settings.PublicPort)
-                DiagLog("uPnp: PublicPort.TCP Removed ")
+            If MyUPnPMap.Exists(Convert.ToInt16(My.Settings.PublicPort), UPNP.Protocol.TCP) Then
+                MyUPnPMap.Remove(Convert.ToInt16(My.Settings.PublicPort), UPNP.Protocol.TCP)
+                DiagLog("uPnp: PublicPort.TCP Removed for port " + My.Settings.PublicPort)
             End If
 
-            If MyUPnPMap.Exists(My.Settings.LoopBack, UPNP.Protocol.TCP) Then
-                MyUPnPMap.Remove(UPNP.LocalIP, My.Settings.LoopBack)
-                DiagLog("uPnp: Loopback.TCP Removed ")
+            If MyUPnPMap.Exists(Convert.ToInt16(My.Settings.LoopBack), UPNP.Protocol.TCP) Then
+                MyUPnPMap.Remove(Convert.ToInt16(My.Settings.LoopBack), UPNP.Protocol.TCP)
+                DiagLog("uPnp: Loopback.TCP Removed for port " + My.Settings.LoopBack)
             End If
 
-            If MyUPnPMap.Exists(My.Settings.RegionPort, UPNP.Protocol.TCP) Then
-                MyUPnPMap.Remove(UPNP.LocalIP, My.Settings.RegionPort)
-                DiagLog("uPnp: Loopback.TCP Removed ")
-            End If
+            Dim counter = 1
+            While counter <= aRegion.GetUpperBound(0)
+
+                Dim RegionPort As Integer = aRegion(counter).RegionPort
+                If MyUPnPMap.Exists(RegionPort, UPNP.Protocol.UDP) Then
+                    MyUPnPMap.Remove(RegionPort, UPNP.Protocol.UDP)
+                    DiagLog("uPnp: remove RegionPort.UDP (" + Convert.ToString(RegionPort) + ") for " + aRegion(counter).RegionName)
+                End If
+
+                counter += 1
+            End While
 
         Catch e As Exception
             Log("uPnp: UPNP Exception caught:  " + e.Message)
             Return False
         End Try
+
+
         Return True 'successfully added
     End Function
 
@@ -2143,7 +2166,7 @@ Public Class Form1
         If Running = False Then Return True
         ' Print("The human is instructed to wait while I check out this nice little router ...")
         Try
-            If AllowFirewall() Then ' open uPNP port
+            If OpenRouterPorts() Then ' open uPNP port
                 DiagLog("uPnpOk")
                 'Print("uPnP works ...")
                 My.Settings.UPnPDiag = True
@@ -2154,7 +2177,7 @@ Public Class Form1
                 DiagLog("uPnP: fail")
                 My.Settings.UPnPDiag = False
                 My.Settings.Save()
-                'Print("UPnP Port forwarding Is Not enabled.  Ports can be manually opened in the router to compensate.")
+
                 BumpProgress10()
                 Return False
             End If
