@@ -84,6 +84,8 @@ Partial Class Form1
         Me.OpenFileDialog2 = New System.Windows.Forms.OpenFileDialog()
         Me.TextBox1 = New System.Windows.Forms.RichTextBox()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.LogButton = New System.Windows.Forms.Button()
+        Me.IgnoreButton = New System.Windows.Forms.Button()
         Me.MenuStrip1.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -520,12 +522,32 @@ Partial Class Form1
         Me.PictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.PictureBox1.ErrorImage = Global.Outworldz.My.Resources.Resources.wp_51
         Me.PictureBox1.InitialImage = Nothing
-        Me.PictureBox1.Location = New System.Drawing.Point(0, 29)
+        Me.PictureBox1.Location = New System.Drawing.Point(131, -17)
         Me.PictureBox1.Name = "PictureBox1"
         Me.PictureBox1.Size = New System.Drawing.Size(320, 180)
         Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize
         Me.PictureBox1.TabIndex = 27
         Me.PictureBox1.TabStop = False
+        '
+        'LogButton
+        '
+        Me.LogButton.Font = New System.Drawing.Font("Tahoma", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LogButton.Location = New System.Drawing.Point(48, 169)
+        Me.LogButton.Name = "LogButton"
+        Me.LogButton.Size = New System.Drawing.Size(115, 30)
+        Me.LogButton.TabIndex = 30
+        Me.LogButton.Text = "Show Log"
+        Me.LogButton.UseVisualStyleBackColor = True
+        '
+        'IgnoreButton
+        '
+        Me.IgnoreButton.Font = New System.Drawing.Font("Tahoma", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.IgnoreButton.Location = New System.Drawing.Point(183, 169)
+        Me.IgnoreButton.Name = "IgnoreButton"
+        Me.IgnoreButton.Size = New System.Drawing.Size(85, 30)
+        Me.IgnoreButton.TabIndex = 31
+        Me.IgnoreButton.Text = "Skip"
+        Me.IgnoreButton.UseVisualStyleBackColor = True
         '
         'Form1
         '
@@ -534,6 +556,8 @@ Partial Class Form1
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.White
         Me.ClientSize = New System.Drawing.Size(320, 207)
+        Me.Controls.Add(Me.IgnoreButton)
+        Me.Controls.Add(Me.LogButton)
         Me.Controls.Add(Me.ProgressBar1)
         Me.Controls.Add(Me.PictureBox1)
         Me.Controls.Add(Me.UpdaterGo)
@@ -630,4 +654,6 @@ Partial Class Form1
     Friend WithEvents TextBox1 As RichTextBox
     Friend WithEvents LoadInventoryToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents SaveInventoryToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents LogButton As Button
+    Friend WithEvents IgnoreButton As Button
 End Class
