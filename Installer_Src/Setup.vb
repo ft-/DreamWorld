@@ -687,6 +687,7 @@ Public Class Form1
         Else
             INIname = "MyWorld.ini"
         End If
+        Dim onceflag As Boolean = False
 
         Using outputFile As New StreamWriter(prefix + "File.tmp")
             reader = System.IO.File.OpenText(prefix + INIname)
@@ -695,16 +696,22 @@ Public Class Form1
                 line = reader.ReadLine()
 
                 If line.Contains("DefaultRegion, DefaultHGRegion, FallbackRegion") Then
-                    Dim counter As Integer = 1
-                    Dim L = aRegion.GetUpperBound(0)
-                    While counter <= L
-                        Dim simName = aRegion(counter).RegionName
-                        line = "Region_" + simName + " = " + """" + "DefaultRegion, DefaultHGRegion, FallbackRegion" + """"
-                        counter += 1
-                        outputFile.WriteLine(line)
-                    End While
+
+                    ' only do the first line as we will replace them all
+                    If onceflag = False Then
+                        onceflag = True
+                        Dim counter As Integer = 1
+                        Dim L = aRegion.GetUpperBound(0)
+                        While counter <= L
+                            Dim simName = aRegion(counter).RegionName
+                            line = "Region_" + simName + " = " + """" + "DefaultRegion, DefaultHGRegion, FallbackRegion" + """"
+                            counter += 1
+                            outputFile.WriteLine(line)
+                        End While
+                    End If
+
                 Else
-                    outputFile.WriteLine(line)
+                        outputFile.WriteLine(line)
                 End If
 
             End While
