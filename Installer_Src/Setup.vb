@@ -39,7 +39,7 @@ Public Class Form1
     '
 #Region "Declarations"
 
-    Dim MyVersion As String = "1.35"
+    Dim MyVersion As String = "1.36"
     Dim DebugPath As String = "C:\Opensim\Outworldz"
     Public Domain As String = "http://www.outworldz.com"
 
@@ -234,8 +234,6 @@ Public Class Form1
         End If
 
         SetINIFromMySettings()
-        ' always open ports after SetINI
-        OpenPorts()
 
 
         If Not My.Settings.SkipUpdateCheck Then
@@ -355,8 +353,7 @@ Public Class Form1
         RegisterDNS()
 
         SetINIFromMySettings()    ' set up the INI files
-        OpenPorts() ' Open router ports with uPnP
-
+        
         If My.Settings.Onlook Then
             SaveOnlookXMLData()
         End If
@@ -1985,7 +1982,7 @@ Public Class Form1
     Private Sub DoDiag()
         Print("Running Network Diagnostics, please wait")
         My.Settings.DiagFailed = False
-
+        OpenPorts() ' Open router ports with uPnP
         If Not ProbePublicPort() Then ' see if Public loopback works
             TestLoopback()
         End If
