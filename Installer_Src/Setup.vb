@@ -22,7 +22,6 @@
 
 Imports System.Net
 Imports System.IO
-
 Imports System.Text
 Imports System.Net.Sockets
 Imports IWshRuntimeLibrary
@@ -243,7 +242,12 @@ Public Class Form1
         mnuSettings.Visible = True
         SetIAROARContent() ' load IAR and OAR web content
 
-
+        If My.Settings.Password = "secret" Then
+            Print("Creating a secure password for the web interface")
+            Dim Password = New PassGen
+            My.Settings.Password = Password.GeneratePass()
+            My.Settings.Save()
+        End If
 
         ' Find out if the viewer is installed
         If System.IO.File.Exists(MyFolder & "\OutworldzFiles\Init.txt") Then
@@ -254,12 +258,6 @@ Public Class Form1
             Log("Info:Ready to start")
 
         Else
-
-            If My.Settings.Password = "secret" Then
-                Dim Password = New PassGen
-                My.Settings.Password = Password.GeneratePass()
-                My.Settings.Save()
-            End If
 
             Print("Installing Desktop icon clicky thingy")
             Create_ShortCut(MyFolder & "\Start.exe")
@@ -403,7 +401,7 @@ Public Class Form1
         ProgressBar1.Value = 25
         Print("I'll tell you my next dream when I wake up.")
         StopMysql()
-        Print("Zzzzzz....")
+        Print("Zzzz.")
         ProgressBar1.Value = 0
         Sleep(1)
     End Sub
@@ -676,6 +674,46 @@ Public Class Form1
         parser = Nothing
 
     End Function
+    Private Sub SetDefaultSims()
+
+        Dim reader As System.IO.StreamReader
+        Dim line As String
+        Dim INIname As String
+
+        ' Diva 0.8.2 used MyWorld.ini all other versions use StandaloneCommon.ini
+        Dim prefix = MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\config-include\"
+        If My.Settings.GridFolder = "Opensim-0.9" Then
+            INIname = "StandaloneCommon.ini"
+        Else
+            INIname = "MyWorld.ini"
+        End If
+
+        Using outputFile As New StreamWriter(prefix + "File.tmp")
+            reader = System.IO.File.OpenText(prefix + INIname)
+            'now loop through each line
+            While reader.Peek <> -1
+                line = reader.ReadLine()
+
+                If line.Contains("DefaultRegion, DefaultHGRegion, FallbackRegion") Then
+                    Dim counter As Integer = 1
+                    Dim L = aRegion.GetUpperBound(0)
+                    While counter <= L
+                        Dim simName = aRegion(counter).RegionName
+                        line = "Region_" + simName + " = " + """" + "DefaultRegion, DefaultHGRegion, FallbackRegion" + """"
+                        counter += 1
+                        outputFile.WriteLine(line)
+                    End While
+                Else
+                    outputFile.WriteLine(line)
+                End If
+
+            End While
+        End Using
+        'close your reader
+        reader.Close()
+        My.Computer.FileSystem.DeleteFile(prefix + INIname)
+        My.Computer.FileSystem.RenameFile(prefix + "File.tmp", INIname)
+    End Sub
 
     Private Sub SetINIFromMySettings()
 
@@ -713,6 +751,10 @@ Public Class Form1
         SetIni("Const", "GridName", """" + My.Settings.SimName + """")
         SaveINI()
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+        ' set the defaults in the INI for the viewer to use. Painful to do as its a Left hand side edit 
+        SetDefaultSims()
+
         ' Diva 0.8.2 used MyWorld.ini all other versions use StandaloneCommon.ini
         If My.Settings.GridFolder = "Opensim-0.9" Then
             ViewWebUI.Visible = False
@@ -2253,11 +2295,11 @@ Public Class Form1
 
         Try
             pMySql.Close()
-            Sleep(2000)
+            Print("Zzzzz..")
         Catch ex2 As Exception
             Log("Error:Process pMySql.Close() " + ex2.Message)
         End Try
-        Sleep(5000)
+        Print("Zzzzzz...")
         For Each stuckP As Process In System.Diagnostics.Process.GetProcessesByName("mysqld")
             stuckP.Kill()
             Log("Warn:Forced to Zap mySQL")

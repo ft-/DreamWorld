@@ -31,7 +31,6 @@ Public Class FormRegion
 
     Public Sub Init(num As Integer)
 
-
         gNum = num  ' from 1 to N regions.
 
         ' populate the local copy from the main region. We will save it back if the make changes and approve the save
@@ -239,7 +238,7 @@ Public Class FormRegion
         End If
 
         Dim RegionText As String = "; * Regions configuration file " + vbCrLf _
-    + "; * This Is Your World. Change This And It Will break. See Advance->[Region Settings] instead." + vbCrLf _
+    + "; * This Is Your World. Change This And It Will BREAK. See Advance->[Region Settings] instead." + vbCrLf _
     + "; Automatically changed by Dreamworld - do Not change this file!" + vbCrLf _
     + "[" + MyRegion.RegionName + "]" + vbCrLf _
     + "RegionUUID = " + """" + MyRegion.UUID + """" + vbCrLf _
@@ -300,14 +299,9 @@ Public Class FormRegion
         End If
     End Sub
 
-    Private Sub RLostFocus(sender As Object, e As EventArgs) Handles RegionName.LostFocus
+    Private Sub RLostFocus(sender As Object, e As EventArgs) Handles RegionName.TextChanged
 
-        If initted And MyRegion.RegionName = "Outworldz" And "Outworldz" <> RegionName.Text Then
-            MsgBox("Changing the name of the default sim name 'Outworldz' will prevent visitors from teleporting in. You can add another region by a another name.", vbInformation)
-        End If
-
-        If Len(RegionName.Text) > 0 And initted And MyRegion.RegionName <> RegionName.Text Then
-
+        If Len(RegionName.Text) > 0 And initted Then
             If Not FilenameIsOK(RegionName.Text) Then
                 MsgBox("Region name can't use special characters such as < > : """" / \ | ? *", vbInformation)
                 Return
@@ -317,6 +311,7 @@ Public Class FormRegion
             Me.Text = MyRegion.RegionName
             changed = True
         End If
+
     End Sub
 
     Private Sub RadioButton1_CheckedChanged(sender As Object, e As EventArgs) Handles RadioButton1.CheckedChanged
@@ -447,10 +442,7 @@ Public Class FormRegion
     End Sub
 
     Private Sub RegionName_TextChanged(sender As Object, e As EventArgs) Handles RegionName.TextChanged
-        If initted Then
-            MyRegion.RegionName = RegionName.Text
-            changed = True
-        End If
+
 
     End Sub
 
@@ -490,6 +482,7 @@ Public Class FormRegion
             End Try
         End If
     End Sub
+
 
 #End Region
 
