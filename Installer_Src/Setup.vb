@@ -38,7 +38,7 @@ Public Class Form1
     '
 #Region "Declarations"
 
-    Dim MyVersion As String = "1.36"
+    Dim MyVersion As String = "1.37"
     Dim DebugPath As String = "C:\Opensim\Outworldz"
     Public Domain As String = "http://www.outworldz.com"
 
@@ -1443,6 +1443,9 @@ Public Class Form1
 
     Private Sub SaveBackupToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles SaveBackupToolStripMenuItem.Click
         If (Running) Then
+
+            ChooseRegion()  '1.37
+
             Dim Message, title, defaultValue As String
             Dim myValue As Object
             ' Set prompt.
@@ -1504,7 +1507,7 @@ Public Class Form1
     End Sub
     Private Sub LoadOARContent(thing As String)
 
-        If Running = False Then Return
+
         If Not isRunning Then
             Print("Opensim has to be started to load an OAR file.")
             Return
@@ -1514,7 +1517,7 @@ Public Class Form1
 
         Dim backMeUp = MsgBox("Make a backup first?", vbYesNo)
         Try
-
+            Print("Opensimulator will load  " + thing + ".  This may take some time.")
             thing = thing.Replace("\", "/")    ' because Opensim uses unix-like slashes, that's why
             If backMeUp = vbYes Then
                 AppActivate(OpensimProcID)
@@ -1529,6 +1532,8 @@ Public Class Form1
             AppActivate(OpensimProcID)
             SendKeys.SendWait("alert New content just loaded. {ENTER}")
             Me.Focus()
+
+
         Catch ex As Exception
             Log("Error:" + ex.Message)
         End Try
@@ -1680,7 +1685,6 @@ Public Class Form1
         File = Domain + "/Outworldz_Installer/OAR/" + File 'make a real URL
         LoadOARContent(File)
         sender.checked = True
-        Print("Opensimulator will load " + File + ".  This may take time to load.")
     End Sub
 
     Private Sub IarClick(sender As Object, e As EventArgs)
