@@ -50,16 +50,13 @@ Public Class Form1
     Dim gCurSlashDir As String '  holds the current directory info in Unix format
     Public isRunning As Boolean = False
     Dim Arnd = New Random()
-
     Public gChatTime As Integer
-
     Dim client As New System.Net.WebClient
 
     ' Processes
     Dim pMySql As Process = New Process()
     Dim pMySqlDiag As Process = New Process()
     Dim pOnlook As Process = New Process()
-
     Public Shared ActualForm As AdvancedForm
 
     Dim Data As IniParser.Model.IniData
@@ -160,6 +157,8 @@ Public Class Form1
         ProgressBar1.Maximum = 100
         ProgressBar1.Value = 0
 
+        LogButton.Hide()
+        IgnoreButton.Hide()
 
         If My.Settings.MyX = 0 And My.Settings.MyY = 0 Then
             Me.CenterToScreen()
@@ -225,6 +224,10 @@ Public Class Form1
 
         ClearLogFiles() ' clear log fles
 
+        If Not My.Settings.SkipUpdateCheck Then
+            CheckForUpdates()
+        End If
+
         If gDebug Then My.Settings.RanAllDiags = False
 
         If Not My.Settings.RanAllDiags Then
@@ -233,11 +236,6 @@ Public Class Form1
         End If
 
         SetINIFromMySettings()
-
-
-        If Not My.Settings.SkipUpdateCheck Then
-            CheckForUpdates()
-        End If
 
         mnuSettings.Visible = True
         SetIAROARContent() ' load IAR and OAR web content
@@ -254,7 +252,6 @@ Public Class Form1
 
             Buttons(StartButton)
             ProgressBar1.Value = 100
-            'Print("Outworldz Opensimulator is ready to start.")
             Log("Info:Ready to start")
 
         Else
@@ -322,12 +319,12 @@ Public Class Form1
                     My.Settings.Onlook = False
                 End If
             End If
-
+            Print("Ready to Launch! Click 'Start' to begin your adventure in Opensimulator.")
         End If
 
         ProgressBar1.Value = 100
         Application.DoEvents()
-        Print("Ready to Launch! Click 'Start' to begin your adventure in Opensimulator.")
+
 
         Buttons(StartButton)
 
@@ -1298,6 +1295,25 @@ Public Class Form1
         Return True
 
     End Function
+
+    Private Sub ShowLog()
+        LogButton.Show()
+        IgnoreButton.Show()
+    End Sub
+    Private Sub ShowLogButton_Click(sender As Object, e As EventArgs) Handles LogButton.Click
+
+        System.Diagnostics.Process.Start("wordpad.exe", MyFolder + "/OutworldzFiles/Diagnostics.log")
+        System.Diagnostics.Process.Start("wordpad.exe", MyFolder + "/OutworldzFiles/Outworldz.log")
+
+        LogButton.Hide()
+        IgnoreButton.Hide()
+
+    End Sub
+
+    Private Sub IgnoreButton_Click(sender As Object, e As EventArgs) Handles IgnoreButton.Click
+        LogButton.Hide()
+        IgnoreButton.Hide()
+    End Sub
 #End Region
 
 #Region "Subs"
@@ -1943,6 +1959,7 @@ Public Class Form1
         Catch ex As Exception
             Print("Hmm, I cannot reach the Internet? Uh. Okay, continuing." + ex.Message)
             My.Settings.DiagFailed = True
+            DiagLog("Info:Public IP=" + "127.0.0.1")
         End Try
         BumpProgress10()
         Return "127.0.0.1"
@@ -1959,6 +1976,7 @@ Public Class Form1
         Dim result As String = ""
         Dim loopbacktest As String = "http://" + My.Settings.PublicIP + ":" + My.Settings.LoopBack + "/?_TestLoopback=" + Random()
         Try
+            DiagLog(loopbacktest)
             result = client.DownloadString(loopbacktest)
         Catch ex As Exception
             DiagLog("Err:Loopback fail:" + result + ":" + ex.Message)
@@ -1968,9 +1986,11 @@ Public Class Form1
         ws.StopWebServer()
 
         If result = "Test completed" And Not gFailDebug2 Then
+            DiagLog("Passed:" + result)
             My.Settings.LoopBackDiag = True
             My.Settings.Save()
         Else
+            DiagLog("Failed:" + result)
             Print("Router Loopback is disabled. See the Help section for 'Loopback' and how to enable it in Windows. Continuing...")
             My.Settings.LoopBackDiag = False
             My.Settings.PublicIP = "127.0.0.1"
@@ -1997,7 +2017,7 @@ Public Class Form1
         Dim ip As String = GetPubIP()
 
         Dim ws As NetServer = NetServer.getWebServer
-        DiagLog("Info:Starting Web Server")
+        DiagLog("Info:Starting Web Server, public port is " + ip)
         ws.StartServer(MyFolder)
         Sleep(1000)
         BumpProgress10()
@@ -2009,7 +2029,9 @@ Public Class Form1
             ' See my privacy policy at http://www.outworldz.com/privacy.htm
 
             Dim Data As String = GetPostData()
-            isPortOpen = client.DownloadString(Domain + "/cgi/probetest.plx?IP=" + ip + "&Port=" + My.Settings.LoopBack + Data + "/?r=" + Random())
+            Dim Url = Domain + "/cgi/probetest.plx?IP=" + ip + "&Port=" + My.Settings.LoopBack + Data + "/?r=" + Random()
+            DiagLog(Url)
+            isPortOpen = client.DownloadString(Url)
         Catch ex As Exception
             DiagLog("Dang:The Outworldz web site cannot find a path back")
             My.Settings.DiagFailed = True
@@ -2021,13 +2043,15 @@ Public Class Form1
 
         If isPortOpen = "yes" And Not gFailDebug1 Then
             My.Settings.PublicIP = ip
+            DiagLog("Public IP set to " + ip)
             My.Settings.Save()
             Return True
         Else
-            DiagLog(isPortOpen)
+            DiagLog("Failed:" + isPortOpen)
             My.Settings.DiagFailed = True
             Print("Internet address " + My.Settings.PublicIP + ":" + My.Settings.LoopBack + " appears to not be forwarded to this machine in your router, so Hypergrid is not available. This can possibly be fixed by 'Port Forwards' in your router.  See Help->Port Forwards.")
             My.Settings.PublicIP = GetIPv4Address() ' failed, so try the machines address
+            DiagLog("IP set to " + My.Settings.PublicIP)
             Return False
         End If
 
@@ -2039,10 +2063,13 @@ Public Class Form1
         If Not ProbePublicPort() Then ' see if Public loopback works
             TestLoopback()
         End If
-        If Not My.Settings.DiagFailed Then
+        If My.Settings.DiagFailed Then
+            ShowLog()
+        Else
             NewDNSName()
         End If
         Log("Diagnostics set the Hypergrid address to " + My.Settings.PublicIP)
+
 
     End Sub
 
@@ -2404,6 +2431,7 @@ Public Class Form1
             BumpProgress10()
         End If
     End Sub
+
 #End Region
 
 End Class
