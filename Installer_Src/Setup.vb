@@ -253,7 +253,7 @@ Public Class Form1
             Buttons(StartButton)
             ProgressBar1.Value = 100
             Log("Info:Ready to start")
-
+            Print("Ready to Launch! Click 'Start' to begin your adventure in Opensimulator.")
         Else
 
             Print("Installing Desktop icon clicky thingy")
