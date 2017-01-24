@@ -47,7 +47,7 @@ This re-release updates it from the original Sim On A Stick format into a standa
                Diagnostics skip low level tests if high level tests pass.
 1.3.2 2016-1-9 Remove any extra http:// from DNS name.
                Update docs for 1.3.2
-			   
+1.3.7 2016-1-24 Dynamic DNS, Opensim 0.9 refresh, default region fixes.		   
 			   
 
 
