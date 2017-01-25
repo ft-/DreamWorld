@@ -212,8 +212,8 @@ Public Class UPNP
     ''' <param name="disposing">True or False makes no difference.</param>
     ''' <remarks></remarks>
     Protected Overridable Sub Dispose(disposing As Boolean)
-        Marshal.ReleaseComObject(staticMapping)
-        Marshal.ReleaseComObject(dynamicMapping)
+        If staticMapping IsNot Nothing Then Marshal.ReleaseComObject(staticMapping)
+        If dynamicMapping IsNot Nothing Then Marshal.ReleaseComObject(dynamicMapping)
         Marshal.ReleaseComObject(upnpnat)
     End Sub
 
