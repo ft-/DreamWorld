@@ -2259,15 +2259,6 @@ Public Class Form1
     Private Function StartMySQL()
         ' Start MySql in background.
         Dim StartValue = ProgressBar1.Value
-
-        ' SAVE INI file
-        LoadIni(MyFolder & "\OutworldzFiles\mysql\my.ini", "#")
-        SetIni("mysqld", "basedir", """" + gCurSlashDir + "/OutworldzFiles/Mysql" + """")
-        SetIni("mysqld", "datadir", """" + gCurSlashDir + "/OutworldzFiles/Mysql/Data" + """")
-        SetIni("mysqld", "port", My.Settings.MySqlPort)
-        SetIni("client", "port", My.Settings.MySqlPort)
-        SaveINI()
-
         BumpProgress()
 
         ' Check for MySql operation
@@ -2279,6 +2270,14 @@ Public Class Form1
         End If
 
         Print("Starting Database")
+
+        ' SAVE INI file
+        LoadIni(MyFolder & "\OutworldzFiles\mysql\my.ini", "#")
+        SetIni("mysqld", "basedir", """" + gCurSlashDir + "/OutworldzFiles/Mysql" + """")
+        SetIni("mysqld", "datadir", """" + gCurSlashDir + "/OutworldzFiles/Mysql/Data" + """")
+        SetIni("mysqld", "port", My.Settings.MySqlPort)
+        SetIni("client", "port", My.Settings.MySqlPort)
+        SaveINI()
 
         ' create test program - only the first time
         ' slants the other way:
@@ -2361,11 +2360,19 @@ Public Class Form1
             Log("Error:Process pMySql.Close() " + ex2.Message)
         End Try
         Print("Zzzzzz...")
-        Sleep(5000)
-        For Each stuckP As Process In System.Diagnostics.Process.GetProcessesByName("mysqld")
-            stuckP.Kill()
-            Log("Warn:Forced to Zap mySQL")
-        Next
+        Dim Mysql = CheckPort("127.0.0.1", My.Settings.MySqlPort)
+        If Not Mysql Then
+            Sleep(4000)
+        End If
+
+        Mysql = CheckPort("127.0.0.1", My.Settings.MySqlPort)
+        If Not Mysql Then
+            For Each stuckP As Process In System.Diagnostics.Process.GetProcessesByName("mysqld")
+                stuckP.Kill()
+                Log("Warn:Forced to Zap mySQL")
+            Next
+        End If
+
     End Sub
 
 #End Region
