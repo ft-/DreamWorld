@@ -235,6 +235,7 @@ Public Class Form1
             DoDiag()
         End If
 
+
         SetINIFromMySettings()
 
         mnuSettings.Visible = True
@@ -346,6 +347,8 @@ Public Class Form1
         GetAllRegions()
 
         RegisterDNS()
+
+        GetPubIP()
 
         SetINIFromMySettings()    ' set up the INI files
 
@@ -1947,6 +1950,7 @@ Public Class Form1
 
         If My.Settings.DnsName.Length Then
             BumpProgress10()
+            My.Settings.PublicIP = My.Settings.DnsName
             Return My.Settings.DnsName
         End If
 
@@ -2338,6 +2342,7 @@ Public Class Form1
             Log("Error:Process pMySql.Close() " + ex2.Message)
         End Try
         Print("Zzzzzz...")
+        Sleep(5000)
         For Each stuckP As Process In System.Diagnostics.Process.GetProcessesByName("mysqld")
             stuckP.Kill()
             Log("Warn:Forced to Zap mySQL")
@@ -2349,7 +2354,9 @@ Public Class Form1
 #Region "DNS"
     Private Sub RegisterDNS()
 
-        If My.Settings.DnsName = String.Empty Then Return
+        If My.Settings.DnsName = String.Empty Then
+            Return
+        End If
 
         Dim client As New System.Net.WebClient
         Dim Checkname As String = String.Empty
