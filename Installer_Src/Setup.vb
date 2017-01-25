@@ -1883,11 +1883,10 @@ Public Class Form1
         <key>loginuri</key>
             <string>http://" + My.Settings.PublicIP + ":" + My.Settings.HttpPort + "/</string>
         <key>password</key>
-            <string>http://127.0.0.1:8002/wifi/forgotpassword</string>
+            <string>http://127.0.0.1:" + My.Settings.HttpPort + "/wifi/forgotpassword</string>
         <key>platform</key>
             <string>OpenSim</string>
         <key>register</key>
-            <string>http://127.0.0.1:8002/wifi/user/account</string>
         <key>render_compat</key>
             <boolean>1</boolean>
         <key>search</key>
