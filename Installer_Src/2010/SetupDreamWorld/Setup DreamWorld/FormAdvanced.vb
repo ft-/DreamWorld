@@ -29,6 +29,7 @@ Public Class AdvancedForm
         gInitted = False
         PublicPort.Text = My.Settings.PublicPort
         PrivatePort.Text = My.Settings.PrivatePort
+        httpPort.Text = My.Settings.HttpPort
 
         If Form1.isRunning Then
             StatsButton.Enabled = True
@@ -435,7 +436,7 @@ Public Class AdvancedForm
 
     Private Sub StatsButton_Click(sender As Object, e As EventArgs) Handles StatsButton.Click
         If Form1.isRunning And WebStats.Checked Then
-            Dim webAddress As String = "http://127.0.0.1:" + My.Settings.PublicPort + "/SStats/"
+            Dim webAddress As String = "http://127.0.0.1:" + My.Settings.HttpPort + "/SStats/"
             Process.Start(webAddress)
         Else
             Print("Opensim is not running. Cannot open the Statistics web page.")
@@ -449,6 +450,15 @@ Public Class AdvancedForm
         Voice.SetDesktopLocation(300, 200)
         Voice.Activate()
         Voice.Visible = True
+    End Sub
+
+    Private Sub Label2_Click(sender As Object, e As EventArgs) Handles Label2.Click
+
+    End Sub
+
+    Private Sub http_Port_TextChanged(sender As Object, e As EventArgs) Handles httpPort.TextChanged
+        My.Settings.HttpPort = httpPort.Text
+        My.Settings.Save()
     End Sub
 
 

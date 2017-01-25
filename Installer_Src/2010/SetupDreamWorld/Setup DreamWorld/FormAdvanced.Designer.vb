@@ -80,6 +80,8 @@ Partial Class AdvancedForm
         Me.PhysicsNone = New System.Windows.Forms.RadioButton()
         Me.OpensimOld = New System.Windows.Forms.RadioButton()
         Me.OpensImNew = New System.Windows.Forms.RadioButton()
+        Me.PhysicsSeparate = New System.Windows.Forms.RadioButton()
+        Me.StatsButton = New System.Windows.Forms.Button()
         Me.GroupBox7 = New System.Windows.Forms.GroupBox()
         Me.GroupBox8 = New System.Windows.Forms.GroupBox()
         Me.Label23 = New System.Windows.Forms.Label()
@@ -87,12 +89,12 @@ Partial Class AdvancedForm
         Me.Label21 = New System.Windows.Forms.Label()
         Me.Label20 = New System.Windows.Forms.Label()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
-        Me.PhysicsSeparate = New System.Windows.Forms.RadioButton()
         Me.PhysicsubODE = New System.Windows.Forms.RadioButton()
         Me.PhysicsBullet = New System.Windows.Forms.RadioButton()
         Me.GroupBox6 = New System.Windows.Forms.GroupBox()
-        Me.StatsButton = New System.Windows.Forms.Button()
         Me.VoiceButton1 = New System.Windows.Forms.Button()
+        Me.Label13 = New System.Windows.Forms.Label()
+        Me.httpPort = New System.Windows.Forms.TextBox()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
         Me.Web.SuspendLayout()
@@ -106,6 +108,8 @@ Partial Class AdvancedForm
         '
         'GroupBox2
         '
+        Me.GroupBox2.Controls.Add(Me.httpPort)
+        Me.GroupBox2.Controls.Add(Me.Label13)
         Me.GroupBox2.Controls.Add(Me.Label2)
         Me.GroupBox2.Controls.Add(Me.Label3)
         Me.GroupBox2.Controls.Add(Me.GridName)
@@ -129,7 +133,7 @@ Partial Class AdvancedForm
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(10, 65)
+        Me.Label2.Location = New System.Drawing.Point(10, 49)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(57, 13)
         Me.Label2.TabIndex = 26
@@ -145,7 +149,7 @@ Partial Class AdvancedForm
         '
         'GridName
         '
-        Me.GridName.Location = New System.Drawing.Point(13, 82)
+        Me.GridName.Location = New System.Drawing.Point(13, 67)
         Me.GridName.Name = "GridName"
         Me.GridName.Size = New System.Drawing.Size(173, 20)
         Me.GridName.TabIndex = 10
@@ -154,7 +158,7 @@ Partial Class AdvancedForm
         '
         'AddRegion
         '
-        Me.AddRegion.Location = New System.Drawing.Point(19, 182)
+        Me.AddRegion.Location = New System.Drawing.Point(19, 194)
         Me.AddRegion.Name = "AddRegion"
         Me.AddRegion.Size = New System.Drawing.Size(148, 23)
         Me.AddRegion.TabIndex = 26
@@ -163,7 +167,7 @@ Partial Class AdvancedForm
         '
         'RegionButton
         '
-        Me.RegionButton.Location = New System.Drawing.Point(19, 214)
+        Me.RegionButton.Location = New System.Drawing.Point(19, 219)
         Me.RegionButton.Name = "RegionButton"
         Me.RegionButton.Size = New System.Drawing.Size(148, 23)
         Me.RegionButton.TabIndex = 27
@@ -172,7 +176,7 @@ Partial Class AdvancedForm
         '
         'DnsName
         '
-        Me.DnsName.Location = New System.Drawing.Point(8, 38)
+        Me.DnsName.Location = New System.Drawing.Point(9, 28)
         Me.DnsName.Name = "DnsName"
         Me.DnsName.Size = New System.Drawing.Size(178, 20)
         Me.DnsName.TabIndex = 22
@@ -183,7 +187,7 @@ Partial Class AdvancedForm
         'Label7
         '
         Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(6, 18)
+        Me.Label7.Location = New System.Drawing.Point(6, 14)
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(124, 13)
         Me.Label7.TabIndex = 15
@@ -191,15 +195,15 @@ Partial Class AdvancedForm
         '
         'PublicPort
         '
-        Me.PublicPort.Location = New System.Drawing.Point(120, 133)
+        Me.PublicPort.Location = New System.Drawing.Point(120, 116)
         Me.PublicPort.Name = "PublicPort"
         Me.PublicPort.Size = New System.Drawing.Size(47, 20)
         Me.PublicPort.TabIndex = 24
-        Me.ToolTip1.SetToolTip(Me.PublicPort, "The Public port for your hypergrid. Default 8002")
+        Me.ToolTip1.SetToolTip(Me.PublicPort, "Public Port: Default 8002")
         '
         'DiagPort
         '
-        Me.DiagPort.Location = New System.Drawing.Point(120, 110)
+        Me.DiagPort.Location = New System.Drawing.Point(120, 93)
         Me.DiagPort.Name = "DiagPort"
         Me.DiagPort.Size = New System.Drawing.Size(47, 20)
         Me.DiagPort.TabIndex = 23
@@ -209,24 +213,24 @@ Partial Class AdvancedForm
         'Label6
         '
         Me.Label6.AutoSize = True
-        Me.Label6.Location = New System.Drawing.Point(15, 113)
+        Me.Label6.Location = New System.Drawing.Point(15, 96)
         Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(57, 13)
+        Me.Label6.Size = New System.Drawing.Size(79, 13)
         Me.Label6.TabIndex = 6
-        Me.Label6.Text = "Diagnostic"
+        Me.Label6.Text = "Diagnostic Port"
         '
         'Label4
         '
         Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(15, 158)
+        Me.Label4.Location = New System.Drawing.Point(15, 141)
         Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(40, 13)
+        Me.Label4.Size = New System.Drawing.Size(62, 13)
         Me.Label4.TabIndex = 4
-        Me.Label4.Text = "Private"
+        Me.Label4.Text = "Private Port"
         '
         'PrivatePort
         '
-        Me.PrivatePort.Location = New System.Drawing.Point(120, 156)
+        Me.PrivatePort.Location = New System.Drawing.Point(120, 139)
         Me.PrivatePort.Name = "PrivatePort"
         Me.PrivatePort.Size = New System.Drawing.Size(47, 20)
         Me.PrivatePort.TabIndex = 25
@@ -235,11 +239,11 @@ Partial Class AdvancedForm
         'Label5
         '
         Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(16, 136)
+        Me.Label5.Location = New System.Drawing.Point(16, 119)
         Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(39, 13)
+        Me.Label5.Size = New System.Drawing.Size(58, 13)
         Me.Label5.TabIndex = 5
-        Me.Label5.Text = "Public "
+        Me.Label5.Text = "Public Port"
         '
         'DbPort
         '
@@ -667,6 +671,28 @@ Partial Class AdvancedForm
         Me.ToolTip1.SetToolTip(Me.OpensImNew, "Newer, development version with ubODE")
         Me.OpensImNew.UseVisualStyleBackColor = True
         '
+        'PhysicsSeparate
+        '
+        Me.PhysicsSeparate.AutoSize = True
+        Me.PhysicsSeparate.Location = New System.Drawing.Point(6, 92)
+        Me.PhysicsSeparate.Name = "PhysicsSeparate"
+        Me.PhysicsSeparate.Size = New System.Drawing.Size(180, 17)
+        Me.PhysicsSeparate.TabIndex = 37
+        Me.PhysicsSeparate.TabStop = True
+        Me.PhysicsSeparate.Text = "Bullet physics in separate thread."
+        Me.ToolTip1.SetToolTip(Me.PhysicsSeparate, "Check for better performance. Default: Selected")
+        Me.PhysicsSeparate.UseVisualStyleBackColor = True
+        '
+        'StatsButton
+        '
+        Me.StatsButton.Location = New System.Drawing.Point(123, 15)
+        Me.StatsButton.Name = "StatsButton"
+        Me.StatsButton.Size = New System.Drawing.Size(75, 23)
+        Me.StatsButton.TabIndex = 22
+        Me.StatsButton.Text = "View"
+        Me.ToolTip1.SetToolTip(Me.StatsButton, "Enabled only when Opensim is running")
+        Me.StatsButton.UseVisualStyleBackColor = True
+        '
         'GroupBox7
         '
         Me.GroupBox7.Controls.Add(Me.StatsButton)
@@ -747,18 +773,6 @@ Partial Class AdvancedForm
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Physics Engine"
         '
-        'PhysicsSeparate
-        '
-        Me.PhysicsSeparate.AutoSize = True
-        Me.PhysicsSeparate.Location = New System.Drawing.Point(6, 92)
-        Me.PhysicsSeparate.Name = "PhysicsSeparate"
-        Me.PhysicsSeparate.Size = New System.Drawing.Size(180, 17)
-        Me.PhysicsSeparate.TabIndex = 37
-        Me.PhysicsSeparate.TabStop = True
-        Me.PhysicsSeparate.Text = "Bullet physics in separate thread."
-        Me.ToolTip1.SetToolTip(Me.PhysicsSeparate, "Check for better performance. Default: Selected")
-        Me.PhysicsSeparate.UseVisualStyleBackColor = True
-        '
         'PhysicsubODE
         '
         Me.PhysicsubODE.AutoSize = True
@@ -792,16 +806,6 @@ Partial Class AdvancedForm
         Me.GroupBox6.TabStop = False
         Me.GroupBox6.Text = "Opensim Version"
         '
-        'StatsButton
-        '
-        Me.StatsButton.Location = New System.Drawing.Point(123, 15)
-        Me.StatsButton.Name = "StatsButton"
-        Me.StatsButton.Size = New System.Drawing.Size(75, 23)
-        Me.StatsButton.TabIndex = 22
-        Me.StatsButton.Text = "View"
-        Me.ToolTip1.SetToolTip(Me.StatsButton, "Enabled only when Opensim is running")
-        Me.StatsButton.UseVisualStyleBackColor = True
-        '
         'VoiceButton1
         '
         Me.VoiceButton1.Location = New System.Drawing.Point(213, 225)
@@ -810,6 +814,23 @@ Partial Class AdvancedForm
         Me.VoiceButton1.TabIndex = 30
         Me.VoiceButton1.Text = "Voice Settings"
         Me.VoiceButton1.UseVisualStyleBackColor = True
+        '
+        'Label13
+        '
+        Me.Label13.AutoSize = True
+        Me.Label13.Location = New System.Drawing.Point(19, 167)
+        Me.Label13.Name = "Label13"
+        Me.Label13.Size = New System.Drawing.Size(48, 13)
+        Me.Label13.TabIndex = 29
+        Me.Label13.Text = "Grid Port"
+        '
+        'httpPort
+        '
+        Me.httpPort.Location = New System.Drawing.Point(120, 163)
+        Me.httpPort.Name = "httpPort"
+        Me.httpPort.Size = New System.Drawing.Size(47, 20)
+        Me.httpPort.TabIndex = 30
+        Me.ToolTip1.SetToolTip(Me.httpPort, "A Public Port used to find your grid: Default: 9000")
         '
         'AdvancedForm
         '
@@ -919,4 +940,6 @@ Partial Class AdvancedForm
     Friend WithEvents Label3 As Label
     Friend WithEvents StatsButton As Button
     Friend WithEvents VoiceButton1 As Button
+    Friend WithEvents httpPort As TextBox
+    Friend WithEvents Label13 As Label
 End Class

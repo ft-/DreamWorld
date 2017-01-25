@@ -126,7 +126,7 @@
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="HttpPort" Type="System.String" Scope="User">
-      <Value Profile="(Default)">8002</Value>
+      <Value Profile="(Default)">9000</Value>
     </Setting>
     <Setting Name="MachineID" Type="System.String" Scope="User">
       <Value Profile="(Default)" />

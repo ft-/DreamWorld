@@ -260,6 +260,9 @@ Public Class Form1
             Print("Ready to Launch! Click 'Start' to begin your adventure in Opensimulator.")
         Else
 
+            My.Settings.HttpPort = 9000
+            My.Settings.Save()
+
             Print("Installing Desktop icon clicky thingy")
             Create_ShortCut(MyFolder & "\Start.exe")
             BumpProgress10()
@@ -376,7 +379,7 @@ Public Class Form1
         Buttons(StopButton)
 
         Print("Outworldz is almost ready for you to log in.  Wait for INITIALIZATION COMPLETE - LOGINS ENABLED to appear in the console, and you can log in." + vbCrLf _
-              + " Hypergrid address is http://" + My.Settings.PublicIP + ":" + My.Settings.PublicPort)
+              + " Hypergrid address is http://" + My.Settings.PublicIP + ":" + My.Settings.HttpPort)
 
         ' done with bootup
         ProgressBar1.Value = 100
@@ -631,7 +634,7 @@ Public Class Form1
     Private Sub WebUIToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs)
         Print("The Web UI lets you add or view settings for the default avatar. ")
         If Running Then
-            Dim webAddress As String = "http://127.0.0.1:" + My.Settings.PublicPort
+            Dim webAddress As String = "http://127.0.0.1:" + My.Settings.HttpPort
             Process.Start(webAddress)
         End If
     End Sub
@@ -681,12 +684,11 @@ Public Class Form1
         parser = Nothing
 
     End Function
-    Private Function SetDefaultSims()
+    Private Sub SetDefaultSims()
 
         Dim reader As System.IO.StreamReader
         Dim line As String
         Dim INIname As String
-        Dim lowestPort As Integer = 66536
 
         ' Diva 0.8.2 used MyWorld.ini all other versions use StandaloneCommon.ini
         Dim prefix = MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\config-include\"
@@ -704,22 +706,18 @@ Public Class Form1
                 line = reader.ReadLine()
 
                 If line.Contains("DefaultRegion, DefaultHGRegion, FallbackRegion") Then
-
                     ' only do the first line as we will replace them all
                     If onceflag = False Then
                         onceflag = True
                         Dim counter As Integer = 1
                         Dim L = aRegion.GetUpperBound(0)
                         While counter <= L
-                            Dim regionPort = aRegion(counter).RegionPort
-                            If regionPort < lowestPort Then lowestPort = regionPort
                             Dim simName = aRegion(counter).RegionName
                             line = "Region_" + simName + " = " + """" + "DefaultRegion, DefaultHGRegion, FallbackRegion" + """"
                             counter += 1
                             outputFile.WriteLine(line)
                         End While
                     End If
-
                 Else
                     outputFile.WriteLine(line)
                 End If
@@ -731,9 +729,7 @@ Public Class Form1
         My.Computer.FileSystem.DeleteFile(prefix + INIname)
         My.Computer.FileSystem.RenameFile(prefix + "File.tmp", INIname)
 
-        Return lowestPort
-
-    End Function
+    End Sub
 
     Private Sub SetINIFromMySettings()
 
@@ -765,16 +761,15 @@ Public Class Form1
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
         ' set the defaults in the INI for the viewer to use. Painful to do as its a Left hand side edit 
 
+        SetDefaultSims()
 
         ' Opensim.ini
         LoadIni(MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\Opensim.ini", ";")
+        SetIni("Const", "httpPort", My.Settings.HttpPort)
         SetIni("Const", "BaseURL", """" + "http://" + My.Settings.PublicIP + """")
         SetIni("Const", "PublicPort", My.Settings.PublicPort)
         SetIni("Const", "PrivatePort", My.Settings.PrivatePort)
         SetIni("Const", "GridName", """" + My.Settings.SimName + """")
-
-        Dim LowestRegion As Integer = SetDefaultSims()
-        SetIni("Const", "httpPort", LowestRegion)
         SaveINI()
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
@@ -1100,7 +1095,7 @@ Public Class Form1
 
     Private Sub AdminUIToolStripMenuItem1_Click(sender As Object, e As EventArgs) Handles ViewWebUI.Click
         If (Running) Then
-            Dim webAddress As String = "http://127.0.0.1:" + My.Settings.PublicPort
+            Dim webAddress As String = "http://127.0.0.1:" + My.Settings.HttpPort
             Process.Start(webAddress)
             Print("Log in as '" + My.Settings.AdminFirst + " " + My.Settings.AdminLast + "' with a password of '" + My.Settings.Password + "' to add user accounts.")
         Else
@@ -1179,7 +1174,7 @@ Public Class Form1
         ' Wait for Opensim to start listening 
         Dim Up As String
         Try
-            Up = client.DownloadString("http://127.0.0.1:" + My.Settings.PublicPort + "/?_Opensim=" + Random())
+            Up = client.DownloadString("http://127.0.0.1:" + My.Settings.HttpPort + "/?_Opensim=" + Random())
         Catch ex As Exception
             Up = ""
         End Try
@@ -1205,7 +1200,7 @@ Public Class Form1
             Sleep(100)
 
             Try
-                Up = client.DownloadString("http://127.0.0.1:" + My.Settings.PublicPort + "/?_Opensim=" + Random())
+                Up = client.DownloadString("http://127.0.0.1:" + My.Settings.HttpPort + "/?_Opensim=" + Random())
             Catch ex As Exception
                 Up = ""
                 If InStr(ex.Message, "404") Then
@@ -1465,12 +1460,12 @@ Public Class Form1
     End Sub
 
     Private Sub ShowHyperGridAddressToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ShowHyperGridAddressToolStripMenuItem.Click
-        Print("Hypergrid address is http://" + My.Settings.PublicIP + ":" + My.Settings.PublicPort)
+        Print("Hypergrid address is http://" + My.Settings.PublicIP + ":" + My.Settings.HttpPort)
     End Sub
 
     Private Sub WebStatsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles WebStatsToolStripMenuItem.Click
         If (Running) Then
-            Dim webAddress As String = "http://127.0.0.1:" + My.Settings.PublicPort + "/SStats/"
+            Dim webAddress As String = "http://127.0.0.1:" + My.Settings.HttpPort + "/SStats/"
             Process.Start(webAddress)
         Else
             Print("Opensim is not running. Cannot open the Statistics web page.")
@@ -1886,7 +1881,7 @@ Public Class Form1
         <key>loginpage</key>
             <string>" + Splashpage + "</string>
         <key>loginuri</key>
-            <string>http://" + My.Settings.PublicIP + ":" + My.Settings.PublicPort + "/</string>
+            <string>http://" + My.Settings.PublicIP + ":" + My.Settings.HttpPort + "/</string>
         <key>password</key>
             <string>http://127.0.0.1:8002/wifi/forgotpassword</string>
         <key>platform</key>
@@ -2138,16 +2133,24 @@ Public Class Form1
         Log("OpenRouterPorts local ip seems to be " + UPNP.LocalIP)
 
         Try
+            If Not MyUPnPMap.Exists(Convert.ToInt16(My.Settings.HttpPort), UPNP.Protocol.TCP) Then
+                MyUPnPMap.Add(UPNP.LocalIP, Convert.ToInt16(My.Settings.HttpPort), UPNP.Protocol.TCP, "Opensim TCP grid port")
+                DiagLog("uPnp: Grid Port.TCP added")
+            End If
+            BumpProgress10()
+
             If Not MyUPnPMap.Exists(Convert.ToInt16(My.Settings.PublicPort), UPNP.Protocol.UDP) Then
                 MyUPnPMap.Add(UPNP.LocalIP, Convert.ToInt16(My.Settings.PublicPort), UPNP.Protocol.UDP, "Opensim UDP Public")
                 DiagLog("uPnp: PublicPort.UDP added:")
             End If
             BumpProgress10()
+
             If Not MyUPnPMap.Exists(Convert.ToInt16(My.Settings.PublicPort), UPNP.Protocol.TCP) Then
                 MyUPnPMap.Add(UPNP.LocalIP, Convert.ToInt16(My.Settings.PublicPort), UPNP.Protocol.TCP, "Opensim TCP Public")
                 DiagLog("uPnp: PublicPort.TCP added")
             End If
             BumpProgress10()
+
             If Not MyUPnPMap.Exists(Convert.ToInt16(My.Settings.LoopBack), UPNP.Protocol.TCP) Then
                 MyUPnPMap.Add(UPNP.LocalIP, Convert.ToInt16(My.Settings.LoopBack), UPNP.Protocol.TCP, "Opensim TCP LoopBack")
                 DiagLog("uPnp: Loopback.TCP Added ")
