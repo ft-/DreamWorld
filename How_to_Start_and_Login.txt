@@ -1,21 +1,21 @@
 
 This application requires 1 to 2 GB of free disk space and a good 3-D graphics card.   
 
-1) Unzip the application and save everything to a folder named "DreamWorld".  Navigate to the folder "DreamWorld"  and run "Start.exe"
+1) Unzip the application and save everything to a folder.  Navigate to the folder and run "Start.exe"
 2) The system will install Opensimulator, the Onlook Viewer and a desktop shortcut.
 3) After the programs are installed, click "Start".
 4) If your firewall is operating as it should, a series of requests to send data through the firewall will appear. No personal data is sent anywhere when you authorize this app.
    The firewall is being programmed so the viewer and server can connect to themselves.
 5) The Onlook Viewer will appear.
-6) Follow the prompts inb the DOS box to create a new user account. Use those crediential to log in with Onlook.
+6) Follow the prompts in the DOS box to create a new user account. Use those credentials to log in with Onlook.
 7) To exit, click "Stop".  You may then click Start again, or close the app.  
 
 The next time you wish to log in, click the icon on your desktop and click "Start".
 
 Administration:
-When using the web interface, use user "Wifi Admin" and the password "secret". With this you can control, delete and add extra users.  
-
-This is is made possible by the work of the entire OpenSimulator development team, and specifically Crista Lopes (Diva Canto) for her D2 Distro of OpenSim.
+When using the web interface, use user "Wifi Admin". The password will be displayed on the screen for you.  With this you can control, delete and add extra users.  
+==================
+This is made possible by the work of the entire OpenSimulator development team, and specifically Crista Lopes (Diva Canto) for her D2 Distro of OpenSim.
 
 For licensing information, please see licenses in the various folders. Additional licenses, such as for MySQL, may also apply.
 

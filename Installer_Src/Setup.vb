@@ -38,10 +38,10 @@ Public Class Form1
     '
 #Region "Declarations"
 
-    Dim MyVersion As String = "1.37"
+    Dim MyVersion As String = "1.4"
     Dim DebugPath As String = "C:\Opensim\Outworldz"
     Public Domain As String = "http://www.outworldz.com"
-
+    Dim RevNotesFile As String = "Update_Notes_" + MyVersion + ".rtf"
     Private gFailDebug1 = False ' set to true to fail diagnostic
     Private gFailDebug2 = False ' set to true to fail diagnostic
     Private gFailDebug3 = False ' set to true to fail diagnostic
@@ -104,7 +104,6 @@ Public Class Form1
         Public SizeX As Integer
         Public SizeY As Integer
     End Class
-
 
 
 #End Region
@@ -208,6 +207,10 @@ Public Class Form1
             My.Computer.FileSystem.RenameFile(MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\Regions\RegionConfig.ini", "Outworldz.ini")
         Catch ex As Exception
         End Try
+
+        If System.IO.File.Exists(MyFolder + "\" + RevNotesFile) Then
+            System.Diagnostics.Process.Start("wordpad.exe", RevNotesFile)
+        End If
 
         GetAllRegions()
 
@@ -391,6 +394,10 @@ Public Class Form1
 
         Dim p As Point
         p = Me.Location
+
+        If System.IO.File.Exists(MyFolder + "\" + RevNotesFile) Then
+            My.Computer.FileSystem.RenameFile(MyFolder + "\" + RevNotesFile, "Update_Notes_for_Rev_" + MyVersion + ".rtf")
+        End If
 
         My.Settings.MyX = p.X
         My.Settings.MyY = p.Y
@@ -674,11 +681,12 @@ Public Class Form1
         parser = Nothing
 
     End Function
-    Private Sub SetDefaultSims()
+    Private Function SetDefaultSims()
 
         Dim reader As System.IO.StreamReader
         Dim line As String
         Dim INIname As String
+        Dim lowestPort As Integer = 66536
 
         ' Diva 0.8.2 used MyWorld.ini all other versions use StandaloneCommon.ini
         Dim prefix = MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\config-include\"
@@ -703,6 +711,8 @@ Public Class Form1
                         Dim counter As Integer = 1
                         Dim L = aRegion.GetUpperBound(0)
                         While counter <= L
+                            Dim regionPort = aRegion(counter).RegionPort
+                            If regionPort < lowestPort Then lowestPort = regionPort
                             Dim simName = aRegion(counter).RegionName
                             line = "Region_" + simName + " = " + """" + "DefaultRegion, DefaultHGRegion, FallbackRegion" + """"
                             counter += 1
@@ -711,7 +721,7 @@ Public Class Form1
                     End If
 
                 Else
-                        outputFile.WriteLine(line)
+                    outputFile.WriteLine(line)
                 End If
 
             End While
@@ -720,7 +730,10 @@ Public Class Form1
         reader.Close()
         My.Computer.FileSystem.DeleteFile(prefix + INIname)
         My.Computer.FileSystem.RenameFile(prefix + "File.tmp", INIname)
-    End Sub
+
+        Return lowestPort
+
+    End Function
 
     Private Sub SetINIFromMySettings()
 
@@ -750,17 +763,21 @@ Public Class Form1
             Log("Info:Avatar will not be visible")
         End If
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+        ' set the defaults in the INI for the viewer to use. Painful to do as its a Left hand side edit 
+
+
         ' Opensim.ini
         LoadIni(MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\Opensim.ini", ";")
         SetIni("Const", "BaseURL", """" + "http://" + My.Settings.PublicIP + """")
         SetIni("Const", "PublicPort", My.Settings.PublicPort)
         SetIni("Const", "PrivatePort", My.Settings.PrivatePort)
         SetIni("Const", "GridName", """" + My.Settings.SimName + """")
+
+        Dim LowestRegion As Integer = SetDefaultSims()
+        SetIni("Const", "httpPort", LowestRegion)
         SaveINI()
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-        ' set the defaults in the INI for the viewer to use. Painful to do as its a Left hand side edit 
-        SetDefaultSims()
 
         ' Diva 0.8.2 used MyWorld.ini all other versions use StandaloneCommon.ini
         If My.Settings.GridFolder = "Opensim-0.9" Then
