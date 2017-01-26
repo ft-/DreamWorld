@@ -23,7 +23,10 @@ Partial Class AdvancedForm
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(AdvancedForm))
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
+        Me.httpPort = New System.Windows.Forms.TextBox()
+        Me.Label13 = New System.Windows.Forms.Label()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.GridName = New System.Windows.Forms.TextBox()
@@ -91,10 +94,15 @@ Partial Class AdvancedForm
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.PhysicsubODE = New System.Windows.Forms.RadioButton()
         Me.PhysicsBullet = New System.Windows.Forms.RadioButton()
-        Me.GroupBox6 = New System.Windows.Forms.GroupBox()
         Me.VoiceButton1 = New System.Windows.Forms.Button()
-        Me.Label13 = New System.Windows.Forms.Label()
-        Me.httpPort = New System.Windows.Forms.TextBox()
+        Me.MapBox = New System.Windows.Forms.GroupBox()
+        Me.MapSimple = New System.Windows.Forms.RadioButton()
+        Me.MapBetter = New System.Windows.Forms.RadioButton()
+        Me.MapBest = New System.Windows.Forms.RadioButton()
+        Me.MapGood = New System.Windows.Forms.RadioButton()
+        Me.GroupBox6 = New System.Windows.Forms.GroupBox()
+        Me.MapNone = New System.Windows.Forms.RadioButton()
+        Me.MapPicture = New System.Windows.Forms.PictureBox()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
         Me.Web.SuspendLayout()
@@ -103,7 +111,9 @@ Partial Class AdvancedForm
         Me.GroupBox7.SuspendLayout()
         Me.GroupBox8.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
+        Me.MapBox.SuspendLayout()
         Me.GroupBox6.SuspendLayout()
+        CType(Me.MapPicture, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'GroupBox2
@@ -123,12 +133,29 @@ Partial Class AdvancedForm
         Me.GroupBox2.Controls.Add(Me.Label4)
         Me.GroupBox2.Controls.Add(Me.PrivatePort)
         Me.GroupBox2.Controls.Add(Me.Label5)
-        Me.GroupBox2.Location = New System.Drawing.Point(656, 8)
+        Me.GroupBox2.Location = New System.Drawing.Point(662, 12)
         Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Size = New System.Drawing.Size(192, 248)
+        Me.GroupBox2.Size = New System.Drawing.Size(192, 265)
         Me.GroupBox2.TabIndex = 5
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Grid"
+        '
+        'httpPort
+        '
+        Me.httpPort.Location = New System.Drawing.Point(120, 163)
+        Me.httpPort.Name = "httpPort"
+        Me.httpPort.Size = New System.Drawing.Size(47, 20)
+        Me.httpPort.TabIndex = 30
+        Me.ToolTip1.SetToolTip(Me.httpPort, "A Public Port used to find your grid: Default: 9000")
+        '
+        'Label13
+        '
+        Me.Label13.AutoSize = True
+        Me.Label13.Location = New System.Drawing.Point(19, 167)
+        Me.Label13.Name = "Label13"
+        Me.Label13.Size = New System.Drawing.Size(48, 13)
+        Me.Label13.TabIndex = 29
+        Me.Label13.Text = "Grid Port"
         '
         'Label2
         '
@@ -271,7 +298,7 @@ Partial Class AdvancedForm
         Me.GroupBox3.Controls.Add(Me.AutoBackup)
         Me.GroupBox3.Location = New System.Drawing.Point(12, 11)
         Me.GroupBox3.Name = "GroupBox3"
-        Me.GroupBox3.Size = New System.Drawing.Size(180, 119)
+        Me.GroupBox3.Size = New System.Drawing.Size(175, 119)
         Me.GroupBox3.TabIndex = 6
         Me.GroupBox3.TabStop = False
         Me.GroupBox3.Text = "Auto Backup"
@@ -475,7 +502,7 @@ Partial Class AdvancedForm
         '
         Me.SplashPage.Location = New System.Drawing.Point(6, 91)
         Me.SplashPage.Name = "SplashPage"
-        Me.SplashPage.Size = New System.Drawing.Size(188, 20)
+        Me.SplashPage.Size = New System.Drawing.Size(200, 20)
         Me.SplashPage.TabIndex = 11
         Me.ToolTip1.SetToolTip(Me.SplashPage, "The page that appears when you log in. Default: ""http://www.outworldz.com/Outworl" &
         "dz_installer/Welcome.htm")
@@ -499,7 +526,7 @@ Partial Class AdvancedForm
         Me.GroupBox4.Controls.Add(Me.AllowGod)
         Me.GroupBox4.Location = New System.Drawing.Point(3, 133)
         Me.GroupBox4.Name = "GroupBox4"
-        Me.GroupBox4.Size = New System.Drawing.Size(195, 118)
+        Me.GroupBox4.Size = New System.Drawing.Size(184, 118)
         Me.GroupBox4.TabIndex = 18
         Me.GroupBox4.TabStop = False
         Me.GroupBox4.Text = "Permissions"
@@ -546,7 +573,7 @@ Partial Class AdvancedForm
         Me.GroupBox5.Controls.Add(Me.ChatSpeed)
         Me.GroupBox5.Location = New System.Drawing.Point(204, 12)
         Me.GroupBox5.Name = "GroupBox5"
-        Me.GroupBox5.Size = New System.Drawing.Size(212, 126)
+        Me.GroupBox5.Size = New System.Drawing.Size(212, 118)
         Me.GroupBox5.TabIndex = 22
         Me.GroupBox5.TabStop = False
         Me.GroupBox5.Text = "Personality"
@@ -581,11 +608,11 @@ Partial Class AdvancedForm
         'WebStats
         '
         Me.WebStats.AutoSize = True
-        Me.WebStats.Location = New System.Drawing.Point(20, 19)
+        Me.WebStats.Location = New System.Drawing.Point(12, 19)
         Me.WebStats.Name = "WebStats"
-        Me.WebStats.Size = New System.Drawing.Size(65, 17)
+        Me.WebStats.Size = New System.Drawing.Size(59, 17)
         Me.WebStats.TabIndex = 21
-        Me.WebStats.Text = "Enabled"
+        Me.WebStats.Text = "Enable"
         Me.ToolTip1.SetToolTip(Me.WebStats, "Webserver Sim Stats on the web")
         Me.WebStats.UseVisualStyleBackColor = True
         '
@@ -650,7 +677,7 @@ Partial Class AdvancedForm
         'OpensimOld
         '
         Me.OpensimOld.AutoSize = True
-        Me.OpensimOld.Location = New System.Drawing.Point(19, 27)
+        Me.OpensimOld.Location = New System.Drawing.Point(18, 22)
         Me.OpensimOld.Name = "OpensimOld"
         Me.OpensimOld.Size = New System.Drawing.Size(107, 17)
         Me.OpensimOld.TabIndex = 12
@@ -662,12 +689,12 @@ Partial Class AdvancedForm
         'OpensImNew
         '
         Me.OpensImNew.AutoSize = True
-        Me.OpensImNew.Location = New System.Drawing.Point(19, 51)
+        Me.OpensImNew.Location = New System.Drawing.Point(18, 45)
         Me.OpensImNew.Name = "OpensImNew"
         Me.OpensImNew.Size = New System.Drawing.Size(76, 17)
         Me.OpensImNew.TabIndex = 13
         Me.OpensImNew.TabStop = True
-        Me.OpensImNew.Text = "0.9.1 (dev)"
+        Me.OpensImNew.Text = "0.9.0 (dev)"
         Me.ToolTip1.SetToolTip(Me.OpensImNew, "Newer, development version with ubODE")
         Me.OpensImNew.UseVisualStyleBackColor = True
         '
@@ -685,7 +712,7 @@ Partial Class AdvancedForm
         '
         'StatsButton
         '
-        Me.StatsButton.Location = New System.Drawing.Point(123, 15)
+        Me.StatsButton.Location = New System.Drawing.Point(83, 15)
         Me.StatsButton.Name = "StatsButton"
         Me.StatsButton.Size = New System.Drawing.Size(75, 23)
         Me.StatsButton.TabIndex = 22
@@ -697,7 +724,7 @@ Partial Class AdvancedForm
         '
         Me.GroupBox7.Controls.Add(Me.StatsButton)
         Me.GroupBox7.Controls.Add(Me.WebStats)
-        Me.GroupBox7.Location = New System.Drawing.Point(436, 208)
+        Me.GroupBox7.Location = New System.Drawing.Point(436, 210)
         Me.GroupBox7.Name = "GroupBox7"
         Me.GroupBox7.Size = New System.Drawing.Size(214, 48)
         Me.GroupBox7.TabIndex = 26
@@ -716,9 +743,9 @@ Partial Class AdvancedForm
         Me.GroupBox8.Controls.Add(Me.DbName)
         Me.GroupBox8.Controls.Add(Me.Label)
         Me.GroupBox8.Controls.Add(Me.DbPort)
-        Me.GroupBox8.Location = New System.Drawing.Point(854, 8)
+        Me.GroupBox8.Location = New System.Drawing.Point(436, 264)
         Me.GroupBox8.Name = "GroupBox8"
-        Me.GroupBox8.Size = New System.Drawing.Size(189, 135)
+        Me.GroupBox8.Size = New System.Drawing.Size(214, 139)
         Me.GroupBox8.TabIndex = 27
         Me.GroupBox8.TabStop = False
         Me.GroupBox8.Text = "Database"
@@ -766,9 +793,9 @@ Partial Class AdvancedForm
         Me.GroupBox1.Controls.Add(Me.PhysicsubODE)
         Me.GroupBox1.Controls.Add(Me.PhysicsBullet)
         Me.GroupBox1.Controls.Add(Me.PhysicsODE)
-        Me.GroupBox1.Location = New System.Drawing.Point(854, 145)
+        Me.GroupBox1.Location = New System.Drawing.Point(204, 136)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(189, 111)
+        Me.GroupBox1.Size = New System.Drawing.Size(189, 115)
         Me.GroupBox1.TabIndex = 28
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Physics Engine"
@@ -795,48 +822,118 @@ Partial Class AdvancedForm
         Me.PhysicsBullet.Text = "Bullet Physics"
         Me.PhysicsBullet.UseVisualStyleBackColor = True
         '
-        'GroupBox6
-        '
-        Me.GroupBox6.Controls.Add(Me.OpensImNew)
-        Me.GroupBox6.Controls.Add(Me.OpensimOld)
-        Me.GroupBox6.Location = New System.Drawing.Point(207, 144)
-        Me.GroupBox6.Name = "GroupBox6"
-        Me.GroupBox6.Size = New System.Drawing.Size(209, 80)
-        Me.GroupBox6.TabIndex = 29
-        Me.GroupBox6.TabStop = False
-        Me.GroupBox6.Text = "Opensim Version"
-        '
         'VoiceButton1
         '
-        Me.VoiceButton1.Location = New System.Drawing.Point(213, 225)
+        Me.VoiceButton1.Location = New System.Drawing.Point(684, 372)
         Me.VoiceButton1.Name = "VoiceButton1"
-        Me.VoiceButton1.Size = New System.Drawing.Size(148, 23)
+        Me.VoiceButton1.Size = New System.Drawing.Size(145, 23)
         Me.VoiceButton1.TabIndex = 30
         Me.VoiceButton1.Text = "Voice Settings"
         Me.VoiceButton1.UseVisualStyleBackColor = True
         '
-        'Label13
+        'MapBox
         '
-        Me.Label13.AutoSize = True
-        Me.Label13.Location = New System.Drawing.Point(19, 167)
-        Me.Label13.Name = "Label13"
-        Me.Label13.Size = New System.Drawing.Size(48, 13)
-        Me.Label13.TabIndex = 29
-        Me.Label13.Text = "Grid Port"
+        Me.MapBox.Controls.Add(Me.MapPicture)
+        Me.MapBox.Controls.Add(Me.MapNone)
+        Me.MapBox.Controls.Add(Me.MapSimple)
+        Me.MapBox.Controls.Add(Me.MapBetter)
+        Me.MapBox.Controls.Add(Me.MapBest)
+        Me.MapBox.Controls.Add(Me.MapGood)
+        Me.MapBox.Location = New System.Drawing.Point(3, 260)
+        Me.MapBox.Name = "MapBox"
+        Me.MapBox.Size = New System.Drawing.Size(333, 140)
+        Me.MapBox.TabIndex = 137
+        Me.MapBox.TabStop = False
+        Me.MapBox.Text = "Maps"
         '
-        'httpPort
+        'MapSimple
         '
-        Me.httpPort.Location = New System.Drawing.Point(120, 163)
-        Me.httpPort.Name = "httpPort"
-        Me.httpPort.Size = New System.Drawing.Size(47, 20)
-        Me.httpPort.TabIndex = 30
-        Me.ToolTip1.SetToolTip(Me.httpPort, "A Public Port used to find your grid: Default: 9000")
+        Me.MapSimple.AutoSize = True
+        Me.MapSimple.Location = New System.Drawing.Point(23, 48)
+        Me.MapSimple.Name = "MapSimple"
+        Me.MapSimple.Size = New System.Drawing.Size(94, 17)
+        Me.MapSimple.TabIndex = 33
+        Me.MapSimple.TabStop = True
+        Me.MapSimple.Text = "Simple but fast"
+        Me.ToolTip1.SetToolTip(Me.MapSimple, "Simple - ")
+        Me.MapSimple.UseVisualStyleBackColor = True
+        '
+        'MapBetter
+        '
+        Me.MapBetter.AutoSize = True
+        Me.MapBetter.Location = New System.Drawing.Point(24, 87)
+        Me.MapBetter.Name = "MapBetter"
+        Me.MapBetter.Size = New System.Drawing.Size(116, 17)
+        Me.MapBetter.TabIndex = 35
+        Me.MapBetter.TabStop = True
+        Me.MapBetter.Text = "Better (Prims, Slow)"
+        Me.MapBetter.TextImageRelation = System.Windows.Forms.TextImageRelation.TextAboveImage
+        Me.ToolTip1.SetToolTip(Me.MapBetter, "Warp3DImageModule with Prims and Textures")
+        Me.MapBetter.UseVisualStyleBackColor = True
+        '
+        'MapBest
+        '
+        Me.MapBest.AutoSize = True
+        Me.MapBest.Location = New System.Drawing.Point(23, 109)
+        Me.MapBest.Name = "MapBest"
+        Me.MapBest.Size = New System.Drawing.Size(144, 17)
+        Me.MapBest.TabIndex = 136
+        Me.MapBest.TabStop = True
+        Me.MapBest.Text = "Best (Prims +Mesh, Slow)"
+        Me.ToolTip1.SetToolTip(Me.MapBest, "Slow, but has Prims and Mesh")
+        Me.MapBest.UseVisualStyleBackColor = True
+        '
+        'MapGood
+        '
+        Me.MapGood.AutoSize = True
+        Me.MapGood.Location = New System.Drawing.Point(24, 67)
+        Me.MapGood.Name = "MapGood"
+        Me.MapGood.Size = New System.Drawing.Size(100, 17)
+        Me.MapGood.TabIndex = 34
+        Me.MapGood.TabStop = True
+        Me.MapGood.Text = "Good (Warp3D)"
+        Me.ToolTip1.SetToolTip(Me.MapGood, "Fast and simple map usng Warp3DImageModule")
+        Me.MapGood.UseVisualStyleBackColor = True
+        '
+        'GroupBox6
+        '
+        Me.GroupBox6.Controls.Add(Me.OpensImNew)
+        Me.GroupBox6.Controls.Add(Me.OpensimOld)
+        Me.GroupBox6.Location = New System.Drawing.Point(662, 289)
+        Me.GroupBox6.Name = "GroupBox6"
+        Me.GroupBox6.Size = New System.Drawing.Size(193, 77)
+        Me.GroupBox6.TabIndex = 26
+        Me.GroupBox6.TabStop = False
+        Me.GroupBox6.Text = "Grid Version"
+        '
+        'MapNone
+        '
+        Me.MapNone.AutoSize = True
+        Me.MapNone.Location = New System.Drawing.Point(23, 29)
+        Me.MapNone.Name = "MapNone"
+        Me.MapNone.Size = New System.Drawing.Size(51, 17)
+        Me.MapNone.TabIndex = 137
+        Me.MapNone.TabStop = True
+        Me.MapNone.Text = "None"
+        Me.ToolTip1.SetToolTip(Me.MapNone, "No Maps at all")
+        Me.MapNone.UseVisualStyleBackColor = True
+        '
+        'MapPicture
+        '
+        Me.MapPicture.InitialImage = CType(resources.GetObject("MapPicture.InitialImage"), System.Drawing.Image)
+        Me.MapPicture.Location = New System.Drawing.Point(201, 7)
+        Me.MapPicture.Name = "MapPicture"
+        Me.MapPicture.Size = New System.Drawing.Size(128, 128)
+        Me.MapPicture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.MapPicture.TabIndex = 138
+        Me.MapPicture.TabStop = False
         '
         'AdvancedForm
         '
-        Me.ClientSize = New System.Drawing.Size(1080, 261)
-        Me.Controls.Add(Me.VoiceButton1)
+        Me.ClientSize = New System.Drawing.Size(867, 412)
         Me.Controls.Add(Me.GroupBox6)
+        Me.Controls.Add(Me.VoiceButton1)
+        Me.Controls.Add(Me.MapBox)
         Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.GroupBox8)
         Me.Controls.Add(Me.GroupBox7)
@@ -865,8 +962,11 @@ Partial Class AdvancedForm
         Me.GroupBox8.PerformLayout()
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
+        Me.MapBox.ResumeLayout(False)
+        Me.MapBox.PerformLayout()
         Me.GroupBox6.ResumeLayout(False)
         Me.GroupBox6.PerformLayout()
+        CType(Me.MapPicture, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -932,7 +1032,6 @@ Partial Class AdvancedForm
     Friend WithEvents PhysicsBullet As RadioButton
     Friend WithEvents PhysicsODE As RadioButton
     Friend WithEvents PhysicsSeparate As RadioButton
-    Friend WithEvents GroupBox6 As GroupBox
     Friend WithEvents OpensImNew As RadioButton
     Friend WithEvents OpensimOld As RadioButton
     Friend WithEvents Label2 As Label
@@ -942,4 +1041,12 @@ Partial Class AdvancedForm
     Friend WithEvents VoiceButton1 As Button
     Friend WithEvents httpPort As TextBox
     Friend WithEvents Label13 As Label
+    Friend WithEvents MapBox As GroupBox
+    Friend WithEvents MapSimple As RadioButton
+    Friend WithEvents MapBetter As RadioButton
+    Friend WithEvents MapBest As RadioButton
+    Friend WithEvents MapGood As RadioButton
+    Friend WithEvents GroupBox6 As GroupBox
+    Friend WithEvents MapNone As RadioButton
+    Friend WithEvents MapPicture As PictureBox
 End Class

@@ -749,6 +749,18 @@ Namespace My
                 Me("Vivox_password") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("Simple")>  _
+        Public Property MapType() As String
+            Get
+                Return CType(Me("MapType"),String)
+            End Get
+            Set
+                Me("MapType") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

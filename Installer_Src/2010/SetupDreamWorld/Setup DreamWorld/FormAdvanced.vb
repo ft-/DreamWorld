@@ -131,6 +131,23 @@ Public Class AdvancedForm
 
         GridName.Text = My.Settings.SimName
 
+        If My.Settings.MapType = "None" Then
+            MapNone.Checked = True
+            MapPicture.Image = Nothing
+        ElseIf My.Settings.MapType = "Simple" Then
+            MapSimple.Checked = True
+            MapPicture.Image = My.Resources.Simple
+        ElseIf My.Settings.MapType = "Good" Then
+            MapGood.Checked = True
+            MapPicture.Image = My.Resources.Good
+        ElseIf My.Settings.MapType = "Better" Then
+            MapBetter.Checked = True
+            MapPicture.Image = My.Resources.Better
+        ElseIf My.Settings.MapType = "Best" Then
+            MapBest.Checked = True
+            MapPicture.Image = My.Resources.Best
+        End If
+
         gInitted = True
     End Sub
 
@@ -461,9 +478,37 @@ Public Class AdvancedForm
         My.Settings.Save()
     End Sub
 
+    Private Sub MapNone_CheckedChanged(sender As Object, e As EventArgs) Handles MapNone.CheckedChanged
+        My.Settings.MapType = "None"
+        My.Settings.Save()
+        MapPicture.Image = Nothing
+    End Sub
+
+    Private Sub MapSimple_CheckedChanged(sender As Object, e As EventArgs) Handles MapSimple.CheckedChanged
+        My.Settings.MapType = "Simple"
+        My.Settings.Save()
+        MapPicture.Image = My.Resources.Simple
+    End Sub
+
+    Private Sub MapGood_CheckedChanged(sender As Object, e As EventArgs) Handles MapGood.CheckedChanged
+        My.Settings.MapType = "Good"
+        My.Settings.Save()
+        MapPicture.Image = My.Resources.Good
+    End Sub
+
+    Private Sub MapBetter_CheckedChanged(sender As Object, e As EventArgs) Handles MapBetter.CheckedChanged
+        My.Settings.MapType = "Better"
+        My.Settings.Save()
+        MapPicture.Image = My.Resources.Better
+    End Sub
+
+    Private Sub MapBest_CheckedChanged(sender As Object, e As EventArgs) Handles MapBest.CheckedChanged
+        My.Settings.MapType = "Best"
+        My.Settings.Save()
+        MapPicture.Image = My.Resources.Best
+    End Sub
 
 #End Region
-
 
 
 End Class

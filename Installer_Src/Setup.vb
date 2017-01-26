@@ -54,10 +54,14 @@ Public Class Form1
     Dim client As New System.Net.WebClient
 
     ' Processes
-    Dim pMySql As Process = New Process()
+
     Dim pMySqlDiag As Process = New Process()
     Dim pOnlook As Process = New Process()
     Public Shared ActualForm As AdvancedForm
+
+    ' with events
+    Private WithEvents pMySql As Process = New Process()
+    Public Event Exited As EventHandler
 
     Dim Data As IniParser.Model.IniData
     Private randomnum As New Random
@@ -413,7 +417,6 @@ Public Class Form1
         StopMysql()
         Print("Zzzz.")
         ProgressBar1.Value = 0
-        Sleep(1)
     End Sub
 
     Private Sub mnuExit_Click(sender As System.Object, e As System.EventArgs) Handles mnuExit.Click
@@ -770,6 +773,40 @@ Public Class Form1
         SetIni("Const", "PublicPort", My.Settings.PublicPort)
         SetIni("Const", "PrivatePort", My.Settings.PrivatePort)
         SetIni("Const", "GridName", """" + My.Settings.SimName + """")
+
+        If My.Settings.MapType = "None" Then
+            SetIni("Map", "GenerateMaptiles", "false")
+        ElseIf My.Settings.MapType = "Simple" Then
+            SetIni("Map", "GenerateMaptiles", "true")
+            SetIni("Map", "MapImageModule", "MapImageModule")  ' versus Warp3DImageModule
+            SetIni("Map", "TextureOnMapTile", "false")         ' versus true
+            SetIni("Map", "DrawPrimOnMapTile", "false")
+            SetIni("Map", "TexturePrims", "false")
+            SetIni("Map", "RenderMeshes", "false")
+        ElseIf My.Settings.MapType = "Good" Then
+            SetIni("Map", "GenerateMaptiles", "true")
+            SetIni("Map", "MapImageModule", "Warp3DImageModule")  ' versus MapImageModule
+            SetIni("Map", "TextureOnMapTile", "false")         ' versus true
+            SetIni("Map", "DrawPrimOnMapTile", "false")
+            SetIni("Map", "TexturePrims", "false")
+            SetIni("Map", "RenderMeshes", "false")
+        ElseIf My.Settings.MapType = "Better" Then
+            SetIni("Map", "GenerateMaptiles", "true")
+            SetIni("Map", "MapImageModule", "Warp3DImageModule")  ' versus MapImageModule
+            SetIni("Map", "TextureOnMapTile", "true")         ' versus true
+            SetIni("Map", "DrawPrimOnMapTile", "true")
+            SetIni("Map", "TexturePrims", "false")
+            SetIni("Map", "RenderMeshes", "false")
+        ElseIf My.Settings.MapType = "Best" Then
+            SetIni("Map", "GenerateMaptiles", "true")
+            SetIni("Map", "MapImageModule", "Warp3DImageModule")  ' versus MapImageModule
+            SetIni("Map", "TextureOnMapTile", "true")      ' versus true
+            SetIni("Map", "DrawPrimOnMapTile", "true")
+            SetIni("Map", "TexturePrims", "true")
+            SetIni("Map", "RenderMeshes", "true")
+        End If
+
+
         SaveINI()
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
@@ -1226,6 +1263,7 @@ Public Class Form1
         End Try
         Return True
     End Function
+
 
 #End Region
 
@@ -2342,7 +2380,7 @@ Public Class Form1
         Dim p As Process = New Process()
         Dim pi As ProcessStartInfo = New ProcessStartInfo()
         pi.Arguments = "-u root shutdown"
-        pi.FileName = MyFolder + "\OutworldzFiles\mysql\bin\mysqladmin.exeXXX"
+        pi.FileName = MyFolder + "\OutworldzFiles\mysql\bin\mysqladmin.exe"
         pi.WindowStyle = ProcessWindowStyle.Minimized
         p.StartInfo = pi
         Try
@@ -2361,7 +2399,7 @@ Public Class Form1
         End Try
         Print("Zzzzzz...")
         Dim Mysql = CheckPort("127.0.0.1", My.Settings.MySqlPort)
-        If Not Mysql Then
+        If Mysql Then
             Sleep(4000)
         End If
 
@@ -2373,6 +2411,11 @@ Public Class Form1
             Next
         End If
 
+    End Sub
+
+    ' Handle Exited event and display process information.
+    Private Sub mySQL_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles pMySql.Exited
+        Debug.Print("Exit code:    {1}", pMySql.ExitCode)
     End Sub
 
 #End Region

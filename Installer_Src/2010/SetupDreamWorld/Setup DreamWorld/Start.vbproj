@@ -357,6 +357,10 @@
     <None Include="Resources\wp_55.gif" />
     <None Include="Resources\wp_56.gif" />
     <None Include="Resources\wp_57.gif" />
+    <None Include="Resources\Best.jpg" />
+    <None Include="Resources\Better.jpg" />
+    <None Include="Resources\Good.jpg" />
+    <None Include="Resources\Simple.jpg" />
     <Content Include="Resources\wp_habitat.gif" />
     <Content Include="Resources\wp_Inside_in_shadows.gif" />
     <Content Include="Resources\wp_Mooferd.gif" />
