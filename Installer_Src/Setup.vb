@@ -403,7 +403,11 @@ Public Class Form1
         p = Me.Location
 
         If System.IO.File.Exists(MyFolder + "\" + RevNotesFile) Then
-            My.Computer.FileSystem.RenameFile(MyFolder + "\" + RevNotesFile, "Update_Notes_for_Rev_" + MyVersion + ".rtf")
+            Try
+                My.Computer.FileSystem.RenameFile(MyFolder + "\" + RevNotesFile, "Update_Notes_for_Rev_" + MyVersion + ".rtf")
+            Catch ex As Exception
+            End Try
+
         End If
 
         My.Settings.MyX = p.X
@@ -729,8 +733,11 @@ Public Class Form1
         End Using
         'close your reader
         reader.Close()
-        My.Computer.FileSystem.DeleteFile(prefix + INIname)
-        My.Computer.FileSystem.RenameFile(prefix + "File.tmp", INIname)
+        Try
+            My.Computer.FileSystem.DeleteFile(prefix + INIname)
+            My.Computer.FileSystem.RenameFile(prefix + "File.tmp", INIname)
+        Catch
+        End Try
 
     End Sub
 
@@ -1476,12 +1483,12 @@ Public Class Form1
                         AppActivate(OpensimProcID)
                         SendKeys.SendWait("alert CPU Intensive Backup Started{ENTER}")
                         AppActivate(OpensimProcID)
-                        SendKeys.SendWait("save oar --perm=CT " + MyFolder + "/OutworldzFiles/Autobackup/Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar{ENTER}")
+                        SendKeys.SendWait("save oar --perm=CT " + """" + MyFolder + "/OutworldzFiles/Autobackup/Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar{ENTER}" + """")
                     End If
                     AppActivate(OpensimProcID)
                     SendKeys.SendWait("alert New content is loading..{ENTER}")
                     AppActivate(OpensimProcID)
-                    SendKeys.SendWait("load oar --force-terrain --force-parcels " + Chr(34) + thing + Chr(34) + "{ENTER}")
+                    SendKeys.SendWait("load oar --force-terrain --force-parcels " + """" + thing + """" + "{ENTER}")
                     AppActivate(OpensimProcID)
                     SendKeys.SendWait("alert New content just loaded." + "{ENTER}")
                     Me.Focus()
@@ -1530,9 +1537,9 @@ Public Class Form1
             AppActivate(OpensimProcID)
             SendKeys.SendWait("alert CPU Intensive Backup Started{ENTER}")
             AppActivate(OpensimProcID)
-            SendKeys.SendWait("save oar " + MyFolder + "/OutworldzFiles/Autobackup/" + myValue + "{ENTER}")
+            SendKeys.SendWait("save oar " + """" + MyFolder + "/OutworldzFiles/Autobackup/" + myValue + "{ENTER}" + """")
             Me.Focus()
-            Print("Saving " + myValue + " to " + MyFolder + "/OutworldzFiles/Autobackup")
+            Print("Saving " + myValue + " to " + """" + MyFolder + "/OutworldzFiles/Autobackup" + """")
         Else
             Print("Opensim is not running. Cannot make a backup now.")
         End If
@@ -1593,12 +1600,12 @@ Public Class Form1
                 AppActivate(OpensimProcID)
                 SendKeys.SendWait("alert CPU Intensive Backup Started {ENTER}")
                 AppActivate(OpensimProcID)
-                SendKeys.SendWait("save oar " + MyFolder + "/OutworldzFiles/Autobackup/Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar{ENTER}")
+                SendKeys.SendWait("save oar " + """" + MyFolder + "/OutworldzFiles/Autobackup/Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar{ENTER}" + """")
             End If
             AppActivate(OpensimProcID)
             SendKeys.SendWait("alert New content Is loading..{ENTER}")
             AppActivate(OpensimProcID)
-            SendKeys.SendWait("load oar --force-terrain --force-parcels " + Chr(34) + thing + Chr(34) + "{ENTER}")
+            SendKeys.SendWait("load oar --force-terrain --force-parcels " + """" + thing + """" + "{ENTER}")
             AppActivate(OpensimProcID)
             SendKeys.SendWait("alert New content just loaded. {ENTER}")
             Me.Focus()
