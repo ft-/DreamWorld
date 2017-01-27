@@ -64,14 +64,11 @@ Public Class AdvancedForm
             ChatSpeed.SelectedIndex = 3
         End If
 
-        DiagPort.Text = My.Settings.LoopBack
-
         DbPort.Text = My.Settings.MySqlPort
         AutoBackup.Checked = My.Settings.AutoBackup
         Password.Text = My.Settings.Password
         AdminLast.Text = My.Settings.AdminLast
         AdminFirst.Text = My.Settings.AdminFirst
-
 
         AllowGod.Checked = My.Settings.allow_grid_gods
         RegionGod.Checked = My.Settings.region_owner_is_god
@@ -149,11 +146,6 @@ Public Class AdvancedForm
         End If
 
         gInitted = True
-    End Sub
-
-    Private Sub DiagPort_TextChanged(sender As Object, e As EventArgs) Handles DiagPort.TextChanged
-        My.Settings.LoopBack = DiagPort.Text
-        My.Settings.Save()
     End Sub
 
     Private Sub TextBox1_TextChanged_1(sender As Object, e As EventArgs) Handles DbPort.TextChanged

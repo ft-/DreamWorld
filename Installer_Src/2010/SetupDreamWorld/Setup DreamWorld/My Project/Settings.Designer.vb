@@ -56,7 +56,7 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("True")>  _
         Public Property ConsoleShow() As Boolean
             Get
                 Return CType(Me("ConsoleShow"),Boolean)
@@ -116,7 +116,7 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("8002")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("8001")>  _
         Public Property PublicPort() As String
             Get
                 Return CType(Me("PublicPort"),String)
@@ -219,18 +219,6 @@ Namespace My
             End Get
             Set
                 Me("SizeY") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("8001")>  _
-        Public Property LoopBack() As String
-            Get
-                Return CType(Me("LoopBack"),String)
-            End Get
-            Set
-                Me("LoopBack") = value
             End Set
         End Property
         
@@ -339,18 +327,6 @@ Namespace My
             End Get
             Set
                 Me("ConsolePass") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("8004")>  _
-        Public Property RegionPort() As String
-            Get
-                Return CType(Me("RegionPort"),String)
-            End Get
-            Set
-                Me("RegionPort") = value
             End Set
         End Property
         
@@ -548,7 +524,7 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("9000")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("8002")>  _
         Public Property HttpPort() As String
             Get
                 Return CType(Me("HttpPort"),String)

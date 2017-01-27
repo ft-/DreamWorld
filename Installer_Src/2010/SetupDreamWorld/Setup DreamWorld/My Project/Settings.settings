@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="ConsoleShow" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
+      <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="AvatarShow" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
@@ -18,7 +18,7 @@
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="PublicPort" Type="System.String" Scope="User">
-      <Value Profile="(Default)">8002</Value>
+      <Value Profile="(Default)">8001</Value>
     </Setting>
     <Setting Name="PublicIP" Type="System.String" Scope="User">
       <Value Profile="(Default)">127.0.0.1</Value>
@@ -43,9 +43,6 @@
     </Setting>
     <Setting Name="SizeY" Type="System.String" Scope="User">
       <Value Profile="(Default)">256</Value>
-    </Setting>
-    <Setting Name="LoopBack" Type="System.String" Scope="User">
-      <Value Profile="(Default)">8001</Value>
     </Setting>
     <Setting Name="MySqlPort" Type="System.String" Scope="User">
       <Value Profile="(Default)">3309</Value>
@@ -73,9 +70,6 @@
     </Setting>
     <Setting Name="ConsolePass" Type="System.String" Scope="User">
       <Value Profile="(Default)">secret</Value>
-    </Setting>
-    <Setting Name="RegionPort" Type="System.String" Scope="User">
-      <Value Profile="(Default)">8004</Value>
     </Setting>
     <Setting Name="ChatTime" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">1000</Value>
@@ -126,7 +120,7 @@
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="HttpPort" Type="System.String" Scope="User">
-      <Value Profile="(Default)">9000</Value>
+      <Value Profile="(Default)">8002</Value>
     </Setting>
     <Setting Name="MachineID" Type="System.String" Scope="User">
       <Value Profile="(Default)" />

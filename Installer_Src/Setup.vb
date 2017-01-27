@@ -1373,6 +1373,7 @@ Public Class Form1
 
     Private Sub SaySomething()
 
+
         Dim Prefix() As String = {
                                   "Mmmm?  Yawns ...",
                                   "Yawns, and stretches ...",
@@ -1921,7 +1922,7 @@ Public Class Form1
         <key>loginuri</key>
             <string>http://" + My.Settings.PublicIP + ":" + My.Settings.HttpPort + "/</string>
         <key>password</key>
-            <string>http://127.0.0.1:" + My.Settings.HttpPort + "/wifi/forgotpassword</string>
+            <string>http://" + My.Settings.PublicIP + My.Settings.HttpPort + "/wifi/forgotpassword</string>
         <key>platform</key>
             <string>OpenSim</string>
         <key>register</key>
@@ -2027,7 +2028,7 @@ Public Class Form1
 
         BumpProgress10()
         Dim result As String = ""
-        Dim loopbacktest As String = "http://" + My.Settings.PublicIP + ":" + My.Settings.LoopBack + "/?_TestLoopback=" + Random()
+        Dim loopbacktest As String = "http://" + My.Settings.PublicIP + ":" + My.Settings.PublicPort + "/?_TestLoopback=" + Random()
         Try
             DiagLog(loopbacktest)
             result = client.DownloadString(loopbacktest)
@@ -2054,6 +2055,10 @@ Public Class Form1
 
     Private Sub DiagnosticsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles DiagnosticsToolStripMenuItem.Click
 
+        If Running Then
+            Print("Cannot run dignostics while Opensimulator is running. Click 'Stop' and try again.")
+            Return
+        End If
         ProgressBar1.Value = 0
         DoDiag()
         If My.Settings.DiagFailed = True Then
@@ -2082,7 +2087,7 @@ Public Class Form1
             ' See my privacy policy at http://www.outworldz.com/privacy.htm
 
             Dim Data As String = GetPostData()
-            Dim Url = Domain + "/cgi/probetest.plx?IP=" + ip + "&Port=" + My.Settings.LoopBack + Data + "/?r=" + Random()
+            Dim Url = Domain + "/cgi/probetest.plx?IP=" + ip + "&Port=" + My.Settings.PublicPort + Data + "/?r=" + Random()
             DiagLog(Url)
             isPortOpen = client.DownloadString(Url)
         Catch ex As Exception
@@ -2102,7 +2107,7 @@ Public Class Form1
         Else
             DiagLog("Failed:" + isPortOpen)
             My.Settings.DiagFailed = True
-            Print("Internet address " + My.Settings.PublicIP + ":" + My.Settings.LoopBack + " appears to not be forwarded to this machine in your router, so Hypergrid is not available. This can possibly be fixed by 'Port Forwards' in your router.  See Help->Port Forwards.")
+            Print("Internet address " + My.Settings.PublicIP + ":" + My.Settings.PublicPort + " appears to not be forwarded to this machine in your router, so Hypergrid is not available. This can possibly be fixed by 'Port Forwards' in your router.  See Help->Port Forwards.")
             My.Settings.PublicIP = GetIPv4Address() ' failed, so try the machines address
             DiagLog("IP set to " + My.Settings.PublicIP)
             Return False
@@ -2185,12 +2190,6 @@ Public Class Form1
             If Not MyUPnPMap.Exists(Convert.ToInt16(My.Settings.PublicPort), UPNP.Protocol.TCP) Then
                 MyUPnPMap.Add(UPNP.LocalIP, Convert.ToInt16(My.Settings.PublicPort), UPNP.Protocol.TCP, "Opensim TCP Public")
                 DiagLog("uPnp: PublicPort.TCP added")
-            End If
-            BumpProgress10()
-
-            If Not MyUPnPMap.Exists(Convert.ToInt16(My.Settings.LoopBack), UPNP.Protocol.TCP) Then
-                MyUPnPMap.Add(UPNP.LocalIP, Convert.ToInt16(My.Settings.LoopBack), UPNP.Protocol.TCP, "Opensim TCP LoopBack")
-                DiagLog("uPnp: Loopback.TCP Added ")
             End If
             BumpProgress10()
 
