@@ -467,13 +467,24 @@ Public Class Form1
         Application.DoEvents()
 
         Try
-            AppActivate(OpensimProcID)
-            SendKeys.Send("quit{ENTER}")
+            ConsoleCommand("quit{ENTER}")
+            Dim ctr = 20
+            While IsOpensimRunning() And ctr > 0
+                Sleep(1000)
+                Try
+                    ConsoleCommand("quit{ENTER}")
+                Catch
+                End Try
+                ctr = -1
+            End While
+            Try
+                ConsoleCommand("{ENTER}")
+            Catch
+            End Try
             Me.Focus()
         Catch ex As Exception
             Log("Error:" + ex.Message)
         End Try
-
 
         ProgressBar1.Value = 33
 
@@ -1116,10 +1127,8 @@ Public Class Form1
 
             '''''''''''''''''''''''
 
-            AppActivate(OpensimProcID)
-            SendKeys.SendWait("alert CPU Intensive Backup Started{ENTER}")
-            AppActivate(OpensimProcID)
-            SendKeys.SendWait("save iar " + Name + " " + itemName + " " + Password + " " + MyFolder + "/OutworldzFiles/Autobackup/" + backupName + "{ENTER}")
+            ConsoleCommand("alert CPU Intensive Backup Started{ENTER}")
+            ConsoleCommand("save iar " + Name + " " + itemName + " " + Password + " " + MyFolder + "/OutworldzFiles/Autobackup/" + backupName + "{ENTER}")
             Me.Focus()
             Print("Saving " + backupName + " to " + MyFolder + "/OutworldzFiles/Autobackup")
         Else
@@ -1259,7 +1268,7 @@ Public Class Form1
 
         Try
             ChDir(MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\")
-            OpensimProcID = Shell(MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\OpenSim.exe", Show)
+            OpensimProcID = Shell(MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\StartOpensim.bat", Show)
             ChDir(MyFolder)
         Catch ex As Exception
             Print("Error: Opensim did not start: " + ex.Message)
@@ -1271,6 +1280,20 @@ Public Class Form1
         Return True
     End Function
 
+    Private Function IsOpensimRunning()
+
+        Dim Up As String = String.Empty
+        Try
+            Up = client.DownloadString("http://127.0.0.1:" + My.Settings.HttpPort + "/?_Opensim=" + Random())
+        Catch ex As Exception
+            Return False
+        End Try
+        If Up.Length = 0 And Running Then
+            Return False
+        End If
+
+        Return True
+    End Function
 
 #End Region
 
@@ -1378,9 +1401,14 @@ Public Class Form1
 
 #Region "Subs"
 
+    Private Sub ConsoleCommand(command As String)
+        Try
+            AppActivate(OpensimProcID)
+            SendKeys.SendWait(command)
+        Catch
+        End Try
+    End Sub
     Private Sub SaySomething()
-
-
         Dim Prefix() As String = {
                                   "Mmmm?  Yawns ...",
                                   "Yawns, and stretches ...",
@@ -1480,17 +1508,12 @@ Public Class Form1
                     thing = thing.Replace("\", "/")    ' because Opensim uses unix-like slashes, that's why
 
                     If backMeUp = vbYes Then
-                        AppActivate(OpensimProcID)
-                        SendKeys.SendWait("alert CPU Intensive Backup Started{ENTER}")
-                        AppActivate(OpensimProcID)
-                        SendKeys.SendWait("save oar --perm=CT " + """" + MyFolder + "/OutworldzFiles/Autobackup/Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar{ENTER}" + """")
+                        ConsoleCommand("alert CPU Intensive Backup Started{ENTER}")
+                        ConsoleCommand("save oar --perm=CT " + """" + MyFolder + "/OutworldzFiles/Autobackup/Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar{ENTER}" + """")
                     End If
-                    AppActivate(OpensimProcID)
-                    SendKeys.SendWait("alert New content is loading..{ENTER}")
-                    AppActivate(OpensimProcID)
-                    SendKeys.SendWait("load oar --force-terrain --force-parcels " + """" + thing + """" + "{ENTER}")
-                    AppActivate(OpensimProcID)
-                    SendKeys.SendWait("alert New content just loaded." + "{ENTER}")
+                    ConsoleCommand("alert New content is loading..{ENTER}")
+                    ConsoleCommand("load oar --force-terrain --force-parcels " + """" + thing + """" + "{ENTER}")
+                    ConsoleCommand("alert New content just loaded." + "{ENTER}")
                     Me.Focus()
                 End If
             End If
@@ -1534,10 +1557,8 @@ Public Class Form1
             myValue = InputBox(Message, title, defaultValue)
             ' If user has clicked Cancel, set myValue to defaultValue 
             If myValue.length = 0 Then Return
-            AppActivate(OpensimProcID)
-            SendKeys.SendWait("alert CPU Intensive Backup Started{ENTER}")
-            AppActivate(OpensimProcID)
-            SendKeys.SendWait("save oar " + """" + MyFolder + "/OutworldzFiles/Autobackup/" + myValue + "{ENTER}" + """")
+            ConsoleCommand("alert CPU Intensive Backup Started{ENTER}")
+            ConsoleCommand("save oar " + """" + MyFolder + "/OutworldzFiles/Autobackup/" + myValue + "{ENTER}" + """")
             Me.Focus()
             Print("Saving " + myValue + " to " + """" + MyFolder + "/OutworldzFiles/Autobackup" + """")
         Else
@@ -1573,8 +1594,7 @@ Public Class Form1
                 ' Read the chosen sim name
                 Dim chosen As String = Chooseform.ListBox1.SelectedItem.ToString()
                 If chosen.Length Then
-                    AppActivate(OpensimProcID)
-                    SendKeys.SendWait("change region " + chosen + "{ENTER}")
+                    ConsoleCommand("change region " + chosen + "{ENTER}")
                 End If
                 Chooseform.Dispose()
             Catch
@@ -1597,17 +1617,12 @@ Public Class Form1
             Print("Opensimulator will load  " + thing + ".  This may take some time.")
             thing = thing.Replace("\", "/")    ' because Opensim uses unix-like slashes, that's why
             If backMeUp = vbYes Then
-                AppActivate(OpensimProcID)
-                SendKeys.SendWait("alert CPU Intensive Backup Started {ENTER}")
-                AppActivate(OpensimProcID)
-                SendKeys.SendWait("save oar " + """" + MyFolder + "/OutworldzFiles/Autobackup/Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar{ENTER}" + """")
+                ConsoleCommand("alert CPU Intensive Backup Started {ENTER}")
+                ConsoleCommand("save oar " + """" + MyFolder + "/OutworldzFiles/Autobackup/Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar{ENTER}" + """")
             End If
-            AppActivate(OpensimProcID)
-            SendKeys.SendWait("alert New content Is loading..{ENTER}")
-            AppActivate(OpensimProcID)
-            SendKeys.SendWait("load oar --force-terrain --force-parcels " + """" + thing + """" + "{ENTER}")
-            AppActivate(OpensimProcID)
-            SendKeys.SendWait("alert New content just loaded. {ENTER}")
+            ConsoleCommand("alert New content Is loading..{ENTER}")
+            ConsoleCommand("load oar --force-terrain --force-parcels " + """" + thing + """" + "{ENTER}")
+            ConsoleCommand("alert New content just loaded. {ENTER}")
             Me.Focus()
 
 
@@ -1627,10 +1642,8 @@ Public Class Form1
         Dim password = InputBox("Password for user " + user + "?")
         If user.Length And password.Length Then
             Try
-                AppActivate(OpensimProcID)
-                SendKeys.SendWait("load iar --merge " + user + " / " + password + " " + Chr(34) + thing + Chr(34) + "{ENTER}")
-                AppActivate(OpensimProcID)
-                SendKeys.SendWait("alert IAR content Is loaded{ENTER}")
+                ConsoleCommand("load iar --merge " + user + " / " + password + " " + Chr(34) + thing + Chr(34) + "{ENTER}")
+                ConsoleCommand("alert IAR content Is loaded{ENTER}")
                 Me.Focus()
             Catch ex As Exception
                 Log("Error:" + ex.Message)
@@ -2397,25 +2410,23 @@ Public Class Form1
             Log("Error:mysqladmin failed to stop mysql:" + ex.Message)
         End Try
 
-        Try
-            pMySql.Close()
-            Print("Zzzzz..")
-        Catch ex2 As Exception
-            Log("Error:Process pMySql.Close() " + ex2.Message)
-        End Try
-        Print("Zzzzzz...")
         Dim Mysql = CheckPort("127.0.0.1", My.Settings.MySqlPort)
         If Mysql Then
             Sleep(4000)
+            Try
+                pMySql.Close()
+            Catch ex2 As Exception
+                Log("Error:Process pMySql.Close() " + ex2.Message)
+            End Try
         End If
 
-        Mysql = CheckPort("127.0.0.1", My.Settings.MySqlPort)
-        If Not Mysql Then
-            For Each stuckP As Process In System.Diagnostics.Process.GetProcessesByName("mysqld")
-                stuckP.Kill()
-                Log("Warn:Forced to Zap mySQL")
-            Next
-        End If
+        '   Mysql = CheckPort("127.0.0.1", My.Settings.MySqlPort)
+        '   If Not Mysql Then
+        '  For Each stuckP As Process In System.Diagnostics.Process.GetProcessesByName("mysqld")
+        ' 'stuckP.Kill()
+        ' Log("Warn:Forced to Zap mySQL")
+        ' Next
+        ' End If
 
     End Sub
 
