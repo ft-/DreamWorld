@@ -41,6 +41,8 @@ Partial Class AdvancedForm
         Me.DbPort = New System.Windows.Forms.TextBox()
         Me.Label = New System.Windows.Forms.Label()
         Me.GroupBox3 = New System.Windows.Forms.GroupBox()
+        Me.Label6 = New System.Windows.Forms.Label()
+        Me.BackupFolder = New System.Windows.Forms.TextBox()
         Me.Label9 = New System.Windows.Forms.Label()
         Me.AutoBackupKeepFilesForDays = New System.Windows.Forms.TextBox()
         Me.Label8 = New System.Windows.Forms.Label()
@@ -269,6 +271,8 @@ Partial Class AdvancedForm
         '
         'GroupBox3
         '
+        Me.GroupBox3.Controls.Add(Me.Label6)
+        Me.GroupBox3.Controls.Add(Me.BackupFolder)
         Me.GroupBox3.Controls.Add(Me.Label9)
         Me.GroupBox3.Controls.Add(Me.AutoBackupKeepFilesForDays)
         Me.GroupBox3.Controls.Add(Me.Label8)
@@ -276,15 +280,31 @@ Partial Class AdvancedForm
         Me.GroupBox3.Controls.Add(Me.AutoBackup)
         Me.GroupBox3.Location = New System.Drawing.Point(12, 11)
         Me.GroupBox3.Name = "GroupBox3"
-        Me.GroupBox3.Size = New System.Drawing.Size(175, 119)
+        Me.GroupBox3.Size = New System.Drawing.Size(175, 145)
         Me.GroupBox3.TabIndex = 6
         Me.GroupBox3.TabStop = False
         Me.GroupBox3.Text = "Auto Backup"
         '
+        'Label6
+        '
+        Me.Label6.AutoSize = True
+        Me.Label6.Location = New System.Drawing.Point(6, 96)
+        Me.Label6.Name = "Label6"
+        Me.Label6.Size = New System.Drawing.Size(83, 13)
+        Me.Label6.TabIndex = 16
+        Me.Label6.Text = "Save To Folder:"
+        '
+        'BackupFolder
+        '
+        Me.BackupFolder.Location = New System.Drawing.Point(6, 112)
+        Me.BackupFolder.Name = "BackupFolder"
+        Me.BackupFolder.Size = New System.Drawing.Size(163, 20)
+        Me.BackupFolder.TabIndex = 15
+        '
         'Label9
         '
         Me.Label9.AutoSize = True
-        Me.Label9.Location = New System.Drawing.Point(70, 86)
+        Me.Label9.Location = New System.Drawing.Point(6, 68)
         Me.Label9.Name = "Label9"
         Me.Label9.Size = New System.Drawing.Size(74, 13)
         Me.Label9.TabIndex = 14
@@ -292,7 +312,7 @@ Partial Class AdvancedForm
         '
         'AutoBackupKeepFilesForDays
         '
-        Me.AutoBackupKeepFilesForDays.Location = New System.Drawing.Point(17, 81)
+        Me.AutoBackupKeepFilesForDays.Location = New System.Drawing.Point(86, 65)
         Me.AutoBackupKeepFilesForDays.Name = "AutoBackupKeepFilesForDays"
         Me.AutoBackupKeepFilesForDays.Size = New System.Drawing.Size(47, 20)
         Me.AutoBackupKeepFilesForDays.TabIndex = 3
@@ -301,7 +321,7 @@ Partial Class AdvancedForm
         'Label8
         '
         Me.Label8.AutoSize = True
-        Me.Label8.Location = New System.Drawing.Point(14, 38)
+        Me.Label8.Location = New System.Drawing.Point(3, 21)
         Me.Label8.Name = "Label8"
         Me.Label8.Size = New System.Drawing.Size(45, 13)
         Me.Label8.TabIndex = 12
@@ -312,7 +332,7 @@ Partial Class AdvancedForm
         Me.AutoBackupInterval.AutoCompleteCustomSource.AddRange(New String() {"1 Hour", "4 Hour", "12 Hour", "Daily", "Weekly"})
         Me.AutoBackupInterval.FormattingEnabled = True
         Me.AutoBackupInterval.Items.AddRange(New Object() {"Hourly", "12 Hour", "Daily", "Weekly"})
-        Me.AutoBackupInterval.Location = New System.Drawing.Point(17, 54)
+        Me.AutoBackupInterval.Location = New System.Drawing.Point(6, 39)
         Me.AutoBackupInterval.Name = "AutoBackupInterval"
         Me.AutoBackupInterval.Size = New System.Drawing.Size(121, 21)
         Me.AutoBackupInterval.TabIndex = 2
@@ -321,7 +341,7 @@ Partial Class AdvancedForm
         'AutoBackup
         '
         Me.AutoBackup.AutoSize = True
-        Me.AutoBackup.Location = New System.Drawing.Point(17, 19)
+        Me.AutoBackup.Location = New System.Drawing.Point(62, 21)
         Me.AutoBackup.Name = "AutoBackup"
         Me.AutoBackup.Size = New System.Drawing.Size(65, 17)
         Me.AutoBackup.TabIndex = 1
@@ -502,7 +522,7 @@ Partial Class AdvancedForm
         Me.GroupBox4.Controls.Add(Me.ManagerGod)
         Me.GroupBox4.Controls.Add(Me.RegionGod)
         Me.GroupBox4.Controls.Add(Me.AllowGod)
-        Me.GroupBox4.Location = New System.Drawing.Point(3, 133)
+        Me.GroupBox4.Location = New System.Drawing.Point(3, 159)
         Me.GroupBox4.Name = "GroupBox4"
         Me.GroupBox4.Size = New System.Drawing.Size(184, 118)
         Me.GroupBox4.TabIndex = 18
@@ -832,7 +852,7 @@ Partial Class AdvancedForm
         Me.GroupBox1.Controls.Add(Me.PhysicsubODE)
         Me.GroupBox1.Controls.Add(Me.PhysicsBullet)
         Me.GroupBox1.Controls.Add(Me.PhysicsODE)
-        Me.GroupBox1.Location = New System.Drawing.Point(204, 136)
+        Me.GroupBox1.Location = New System.Drawing.Point(204, 159)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Size = New System.Drawing.Size(189, 115)
         Me.GroupBox1.TabIndex = 28
@@ -878,7 +898,7 @@ Partial Class AdvancedForm
         Me.MapBox.Controls.Add(Me.MapBetter)
         Me.MapBox.Controls.Add(Me.MapBest)
         Me.MapBox.Controls.Add(Me.MapGood)
-        Me.MapBox.Location = New System.Drawing.Point(3, 260)
+        Me.MapBox.Location = New System.Drawing.Point(3, 289)
         Me.MapBox.Name = "MapBox"
         Me.MapBox.Size = New System.Drawing.Size(333, 140)
         Me.MapBox.TabIndex = 137
@@ -908,7 +928,7 @@ Partial Class AdvancedForm
         '
         'AdvancedForm
         '
-        Me.ClientSize = New System.Drawing.Size(867, 412)
+        Me.ClientSize = New System.Drawing.Size(867, 445)
         Me.Controls.Add(Me.GroupBox6)
         Me.Controls.Add(Me.VoiceButton1)
         Me.Controls.Add(Me.MapBox)
@@ -1025,4 +1045,6 @@ Partial Class AdvancedForm
     Friend WithEvents GroupBox6 As GroupBox
     Friend WithEvents MapNone As RadioButton
     Friend WithEvents MapPicture As PictureBox
+    Friend WithEvents Label6 As Label
+    Friend WithEvents BackupFolder As TextBox
 End Class

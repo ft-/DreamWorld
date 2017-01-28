@@ -39,7 +39,7 @@ Public Class Form1
 #Region "Declarations"
 
     Dim MyVersion As String = "1.4"
-    Dim DebugPath As String = "C:\Opensim\Outworldz"
+    Dim DebugPath As String = "C:\Opensim\Outworldz Test" ' Note that this uses spaces
     Public Domain As String = "http://www.outworldz.com"
     Dim RevNotesFile As String = "Update_Notes_" + MyVersion + ".rtf"
     Private gFailDebug1 = False ' set to true to fail diagnostic
@@ -54,13 +54,12 @@ Public Class Form1
     Dim client As New System.Net.WebClient
 
     ' Processes
-
     Dim pMySqlDiag As Process = New Process()
     Dim pOnlook As Process = New Process()
     Public Shared ActualForm As AdvancedForm
 
     ' with events
-    Private WithEvents pMySql As Process = New Process()
+    Private pMySql As Process = New Process()
     Public Event Exited As EventHandler
 
     Dim Data As IniParser.Model.IniData
@@ -210,10 +209,11 @@ Public Class Form1
         Try
             My.Computer.FileSystem.RenameFile(MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\Regions\RegionConfig.ini", "Outworldz.ini")
         Catch ex As Exception
+            Log("Info:Rename:" + ex.Message)
         End Try
 
-        If System.IO.File.Exists(MyFolder + "\" + RevNotesFile) Then
-            System.Diagnostics.Process.Start("wordpad.exe", MyFolder + "\" + RevNotesFile)
+        If System.IO.File.Exists("""" + MyFolder + "\" + RevNotesFile + """") Then
+            System.Diagnostics.Process.Start("wordpad.exe", """" + MyFolder + "\" + RevNotesFile + """")
         End If
 
         GetAllRegions()
@@ -249,7 +249,7 @@ Public Class Form1
         SetIAROARContent() ' load IAR and OAR web content
 
         If My.Settings.Password = "secret" Then
-            Print("Creating a secure password for the web interface")
+            BumpProgress10()
             Dim Password = New PassGen
             My.Settings.Password = Password.GeneratePass()
             My.Settings.Save()
@@ -277,7 +277,7 @@ Public Class Form1
                     outputFile.WriteLine("This file lets Outworldz know it has been installed")
                 End Using
             Catch ex As Exception
-                Log("Err:Could not create Init.txt - no permissions to write it:" + ex.Message)
+                Log("Error:Could not create Init.txt - no permissions to write it:" + ex.Message)
             End Try
 
             If System.IO.File.Exists(xmlPath() + "\AppData\Roaming\Onlook\user_settings\settings_onlook.xml") Then
@@ -289,7 +289,7 @@ Public Class Form1
                     Print("Installing Onlook Viewer")
                     Dim pi As ProcessStartInfo = New ProcessStartInfo()
                     pi.Arguments = ""
-                    pi.FileName = MyFolder & "\Viewer\Onlook.exe"
+                    pi.FileName = """" + MyFolder & "\Viewer\Onlook.exe" + """"
                     pOnlook.StartInfo = pi
                     Try
                         Log("Info:Launching Onlook installer")
@@ -312,7 +312,7 @@ Public Class Form1
                             toggle = False
                             toggle = True
                         End If
-                        BumpProgress()
+                        BumpProgress(1)
 
                         If ProgressBar1.Value = 100 Then
                             Print("You win. Proceeding with Outworldz Installation. You may need to add the grid manually.")
@@ -323,7 +323,8 @@ Public Class Form1
                     ' close the viewer so the grid will repopulate next time it opens
                     Try
                         zap("OnlookViewer")
-                    Catch
+                    Catch ex As Exception
+                        Log("Error:Failed to zap Onlook:" + ex.Message)
                     End Try
 
                 Else
@@ -369,7 +370,7 @@ Public Class Form1
         StartMySQL() ' boot up MySql, and wait for it to start listening
 
         If Not Start_Opensimulator() Then ' Launch the rocket
-            KillAll()
+            'KillAll()
             Return
         End If
         Onlook()
@@ -402,10 +403,11 @@ Public Class Form1
         Dim p As Point
         p = Me.Location
 
-        If System.IO.File.Exists(MyFolder + "\" + RevNotesFile) Then
+        If System.IO.File.Exists("""" + MyFolder + "\" + RevNotesFile + """") Then
             Try
                 My.Computer.FileSystem.RenameFile(MyFolder + "\" + RevNotesFile, "Update_Notes_for_Rev_" + MyVersion + ".rtf")
             Catch ex As Exception
+                Log("Error: Failed to remove rev notes" + ex.Message)
             End Try
 
         End If
@@ -419,7 +421,7 @@ Public Class Form1
         ProgressBar1.Value = 25
         Print("I'll tell you my next dream when I wake up.")
         StopMysql()
-        Print("Zzzz.")
+        Print("Zzzz...")
         ProgressBar1.Value = 0
     End Sub
 
@@ -479,11 +481,12 @@ Public Class Form1
             End While
             Try
                 ConsoleCommand("{ENTER}")
+                ConsoleCommand("{ENTER}")
             Catch
             End Try
             Me.Focus()
         Catch ex As Exception
-            Log("Error:" + ex.Message)
+            Log("Warn:Cannot stop a non-running Opensim:" + ex.Message)
         End Try
 
         ProgressBar1.Value = 33
@@ -550,7 +553,7 @@ Public Class Form1
         Dim DesktopFolder As String = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory)
         MyShortcut = CType(WshShell.CreateShortcut(DesktopFolder & "\Outworldz.lnk"), IWshRuntimeLibrary.IWshShortcut)
         MyShortcut.TargetPath = sTargetPath
-        MyShortcut.IconLocation = WshShell.ExpandEnvironmentStrings(MyFolder & "\Start.exe, 0 ")
+        MyShortcut.IconLocation = WshShell.ExpandEnvironmentStrings(MyFolder & "\Start.exe")
         MyShortcut.WorkingDirectory = MyFolder
         MyShortcut.Save()
 
@@ -567,12 +570,9 @@ Public Class Form1
 
     End Sub
 
-    Private Sub mnuLogin_Click(sender As System.Object, e As System.EventArgs) Handles mnuLogin.Click
-        Print("You can use 'Help->Web Interface' to create a new avatar or change passwords. ")
-    End Sub
 
     Private Sub mnuAbout_Click(sender As System.Object, e As System.EventArgs) Handles mnuAbout.Click
-        Print("(c) 2014 " + Domain + ",LLC")
+        Print("(c) 2014 Outworld.LLC")
         Dim webAddress As String = Domain + "/Outworldz_Installer"
         Process.Start(webAddress)
     End Sub
@@ -747,7 +747,8 @@ Public Class Form1
         Try
             My.Computer.FileSystem.DeleteFile(prefix + INIname)
             My.Computer.FileSystem.RenameFile(prefix + "File.tmp", INIname)
-        Catch
+        Catch ex As Exception
+            Log("Error:SetDefault sims could not rename the file:" + ex.Message)
         End Try
 
     End Sub
@@ -1031,6 +1032,8 @@ Public Class Form1
                 aRegion(index).SizeY = Convert.ToInt16(GetIni(longName, fname, "SizeY", ";"))
                 aRegion(index).RegionPort = Convert.ToInt16(GetIni(longName, fname, "InternalPort", ";"))
 
+                Log("Fetching INI file for Region " + fname)
+
                 ' Location is int,int format.
                 Dim C = GetIni(longName, fname, "Location", ";")
                 Dim parts As String() = C.Split(New Char() {","c}) ' split at the comma
@@ -1046,95 +1049,7 @@ Public Class Form1
 
 #Region "ToolBars"
 
-    Private Sub LoadInventoryToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles LoadInventoryToolStripMenuItem.Click
-        If (Running) Then
-            ' Create an instance of the open file dialog box.
-            Dim openFileDialog1 As OpenFileDialog = New OpenFileDialog
 
-            ' Set filter options and filter index.
-            openFileDialog1.InitialDirectory = MyFolder + "/"
-            openFileDialog1.Filter = "Inventory IAR (*.iar)|*.iar|All Files (*.*)|*.*"
-            openFileDialog1.FilterIndex = 1
-            openFileDialog1.Multiselect = False
-
-            ' Call the ShowDialog method to show the dialogbox.
-            Dim UserClickedOK As Boolean = openFileDialog1.ShowDialog
-
-            ' Process input if the user clicked OK.
-            If UserClickedOK = True Then
-                Dim thing = openFileDialog1.FileName
-                If thing.Length Then
-                    thing = thing.Replace("\", "/")    ' because Opensim uses unix-like slashes, that's why
-                    LoadIARContent(thing)
-                End If
-            End If
-        Else
-            Print("Opensim is not running. Cannot load an IAR at this time.")
-        End If
-
-    End Sub
-
-    Private Sub SaveInventoryToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles SaveInventoryToolStripMenuItem.Click
-        If (Running) Then
-            Dim Message, title, defaultValue As String
-
-            '''''''''''''''''''''''
-            ' Object Name to back up
-            Dim itemName As String
-            ' Set prompt.
-            Message = "Enter the object name ('/' will  backup everything, and '/Objects/box' will back up box in folder Objects) :"
-            title = "Backup Name?"
-            defaultValue = "/"   ' Set default value.
-
-            ' Display message, title, and default value.
-            itemName = InputBox(Message, title, defaultValue)
-            ' If user has clicked Cancel, set myValue to defaultValue 
-            If itemName.Length = 0 Then Return
-
-            '''''''''''''''''''''''
-            ' Name of the IAR
-            Dim backupName As String
-            Message = "Backup name? :"
-            title = "Backup Name?"
-            defaultValue = "backup.iar"   ' Set default value.
-
-            ' Display message, title, and default value.
-            backupName = InputBox(Message, title, defaultValue)
-            ' If user has clicked Cancel, set myValue to defaultValue 
-            If itemName.Length = 0 Then Return
-
-            '''''''''''''''''''''''
-            ' Avatar
-            Dim Name As String
-            Message = "Avatar FirstName and Lastname:"
-            title = "FirstName LastName"
-            defaultValue = ""   ' Set default value.
-
-            ' Display message, title, and default value.
-            Name = InputBox(Message, title, defaultValue)
-            ' If user has clicked Cancel, set myValue to defaultValue 
-            If Name.Length = 0 Then Return
-
-            '''''''''''''''''''''''
-            ' Password
-            Dim Password As String
-            Message = "Avatar's Password?:"
-            title = "Password needed"
-            defaultValue = ""   ' Set default value.
-
-            ' Display message, title, and default value.
-            Password = InputBox(Message, title, defaultValue)
-
-            '''''''''''''''''''''''
-
-            ConsoleCommand("alert CPU Intensive Backup Started{ENTER}")
-            ConsoleCommand("save iar " + Name + " " + itemName + " " + Password + " " + MyFolder + "/OutworldzFiles/Autobackup/" + backupName + "{ENTER}")
-            Me.Focus()
-            Print("Saving " + backupName + " to " + MyFolder + "/OutworldzFiles/Autobackup")
-        Else
-            Print("Opensim is not running. Cannot make a backup now.")
-        End If
-    End Sub
     Private Sub BusyButton_Click(sender As Object, e As EventArgs) Handles BusyButton.Click
 
         Print("Stopping")
@@ -1206,7 +1121,7 @@ Public Class Form1
 
 #Region "Opensimulator"
 
-    Private Function Start_Opensimulator()
+    Private Function Start_Opensimulator() As Boolean
         If Running = False Then Return True
         Print("Starting Opensimulator")
 
@@ -1230,11 +1145,12 @@ Public Class Form1
             Up = client.DownloadString("http://127.0.0.1:" + My.Settings.HttpPort + "/?_Opensim=" + Random())
         Catch ex As Exception
             Up = ""
+            Log("Info:Opensim is not yet running:" + ex.Message)
         End Try
         Dim counter = 0
         While Up.Length = 0 And Running
             Application.DoEvents()
-            BumpProgress()
+            BumpProgress(1)
             counter = counter + 1
             ' wait a couple of minutes for it to start
             If counter > 1200 Then
@@ -1243,7 +1159,7 @@ Public Class Form1
                 Buttons(StartButton)
                 Dim yesno = MsgBox("Opensim did not start. Do you want to see the log file?", vbYesNo)
                 If (yesno = vbYes) Then
-                    Dim Log As String = MyFolder + "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\OpenSim.log"
+                    Dim Log As String = """" + MyFolder + "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\OpenSim.log" + """"
                     System.Diagnostics.Process.Start("wordpad.exe", Log)
                 End If
                 Buttons(StartButton)
@@ -1255,24 +1171,25 @@ Public Class Form1
             Try
                 Up = client.DownloadString("http://127.0.0.1:" + My.Settings.HttpPort + "/?_Opensim=" + Random())
             Catch ex As Exception
+                Log("Opensim is not yet running:" + ex.Message)
                 Up = ""
                 If InStr(ex.Message, "404") Then
                     Up = "Done"
                 End If
             End Try
         End While
+        Log("Info:Opensim is running")
         Return True
 
     End Function
-    Private Function Boot(Show As AppWinStyle)
+    Private Function Boot(Show As AppWinStyle) As Boolean
 
         Try
             ChDir(MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\")
-            OpensimProcID = Shell(MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\StartOpensim.bat", Show)
+            OpensimProcID = Shell("""" + MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\StartOpensim.bat" + """", Show)
             ChDir(MyFolder)
         Catch ex As Exception
             Print("Error: Opensim did not start: " + ex.Message)
-
             KillAll()
             Buttons(StartButton)
             Return False
@@ -1280,7 +1197,7 @@ Public Class Form1
         Return True
     End Function
 
-    Private Function IsOpensimRunning()
+    Private Function IsOpensimRunning() As Boolean
 
         Dim Up As String = String.Empty
         Try
@@ -1339,11 +1256,12 @@ Public Class Form1
     Private Sub ClearLogFiles()
         ' clear out the log files
         Try
-            My.Computer.FileSystem.DeleteFile(MyFolder + "\OutworldzFiles" & My.Settings.GridFolder & "\bin\Opensim.log")
+            Dim f = MyFolder + "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\Opensim.log"
+            My.Computer.FileSystem.DeleteFile(f)
         Catch ex As Exception
             Log("Info:Opensim Log file did not exist")
         End Try
-        BumpProgress()
+        BumpProgress10()
         Try
             My.Computer.FileSystem.DeleteFile(MyFolder + "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\OpenSimConsoleHistory.txt")
         Catch ex As Exception
@@ -1355,7 +1273,7 @@ Public Class Form1
             Log("Info:Console history was empty")
         End Try
 
-        BumpProgress()
+        BumpProgress10()
     End Sub
 
     Public Sub Log(message As String)
@@ -1367,26 +1285,13 @@ Public Class Form1
         End Try
     End Sub
 
-    Public Function DiagLog(message As String)
-        Try
-            Using outputFile As New StreamWriter(MyFolder & "\OutworldzFiles\Diagnostics.log", True)
-                outputFile.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH: mm:ss") + ":" + message)
-            End Using
-        Catch ex As Exception
-
-        End Try
-        Return True
-
-    End Function
-
     Private Sub ShowLog()
         LogButton.Show()
         IgnoreButton.Show()
     End Sub
     Private Sub ShowLogButton_Click(sender As Object, e As EventArgs) Handles LogButton.Click
 
-        System.Diagnostics.Process.Start("wordpad.exe", MyFolder + "/OutworldzFiles/Diagnostics.log")
-        System.Diagnostics.Process.Start("wordpad.exe", MyFolder + "/OutworldzFiles/Outworldz.log")
+        System.Diagnostics.Process.Start("wordpad.exe", """" + MyFolder + "/OutworldzFiles/Outworldz.log" + """")
 
         LogButton.Hide()
         IgnoreButton.Hide()
@@ -1401,11 +1306,21 @@ Public Class Form1
 
 #Region "Subs"
 
+    Private Function BackupPath() As String
+
+        If My.Settings.BackupFolder = "AutoBackup" Then
+            BackupPath = """" + MyFolder + "/OutworldzFiles/Autobackup/" + """"
+        Else
+            BackupPath = My.Settings.BackupFolder + "/"
+        End If
+
+    End Function
     Private Sub ConsoleCommand(command As String)
         Try
             AppActivate(OpensimProcID)
             SendKeys.SendWait(command)
-        Catch
+        Catch ex As exception
+            Log("Warn:" + ex.Message)
         End Try
     End Sub
     Private Sub SaySomething()
@@ -1492,7 +1407,7 @@ Public Class Form1
             Dim openFileDialog1 As OpenFileDialog = New OpenFileDialog
 
             ' Set filter options and filter index.
-            openFileDialog1.InitialDirectory = MyFolder + "/OutworldzFiles/Autobackup"
+            openFileDialog1.InitialDirectory = BackupPath()
             openFileDialog1.Filter = "Opensim OAR(*.OAR,*.GZ,*.TGZ)|*.oar;*.gz;*.tgz;*.OAR;*.GZ;*.TGZ|All Files (*.*)|*.*"
             openFileDialog1.FilterIndex = 1
             openFileDialog1.Multiselect = False
@@ -1509,7 +1424,7 @@ Public Class Form1
 
                     If backMeUp = vbYes Then
                         ConsoleCommand("alert CPU Intensive Backup Started{ENTER}")
-                        ConsoleCommand("save oar --perm=CT " + """" + MyFolder + "/OutworldzFiles/Autobackup/Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar{ENTER}" + """")
+                        ConsoleCommand("save oar --perm=CT " + BackupPath() + "Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
                     End If
                     ConsoleCommand("alert New content is loading..{ENTER}")
                     ConsoleCommand("load oar --force-terrain --force-parcels " + """" + thing + """" + "{ENTER}")
@@ -1558,32 +1473,142 @@ Public Class Form1
             ' If user has clicked Cancel, set myValue to defaultValue 
             If myValue.length = 0 Then Return
             ConsoleCommand("alert CPU Intensive Backup Started{ENTER}")
-            ConsoleCommand("save oar " + """" + MyFolder + "/OutworldzFiles/Autobackup/" + myValue + "{ENTER}" + """")
+            ConsoleCommand("save oar " + BackupPath() + myValue + """" + "{ENTER}")
             Me.Focus()
-            Print("Saving " + myValue + " to " + """" + MyFolder + "/OutworldzFiles/Autobackup" + """")
+            Print("Saving " + myValue + " to " + BackupPath())
         Else
             Print("Opensim is not running. Cannot make a backup now.")
         End If
     End Sub
 
-    Private Sub BumpProgress()
+    Private Sub BumpProgress(bump As Integer)
         If ProgressBar1.Value < 100 Then
-            ProgressBar1.Value = ProgressBar1.Value + 1
+            ProgressBar1.Value = ProgressBar1.Value + bump
         End If
     End Sub
     Private Sub BumpProgress10()
         If ProgressBar1.Value < 90 Then
             ProgressBar1.Value = ProgressBar1.Value + 10
+        Else
+            ProgressBar1.Value = 100
         End If
     End Sub
 
-    Private Function Stripqq(input As String)
+    Private Function Stripqq(input As String) As String
         Return Replace(input, """", "")
     End Function
 
 #End Region
 
 #Region "IAROAR"
+    Private Sub LoadInventoryToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles LoadInventoryToolStripMenuItem.Click
+        If Running Then
+            ' Create an instance of the open file dialog box.
+            Dim openFileDialog1 As OpenFileDialog = New OpenFileDialog
+
+            ' Set filter options and filter index.
+            openFileDialog1.InitialDirectory = """" + MyFolder + "/" + """"
+            openFileDialog1.Filter = "Inventory IAR (*.iar)|*.iar|All Files (*.*)|*.*"
+            openFileDialog1.FilterIndex = 1
+            openFileDialog1.Multiselect = False
+
+            ' Call the ShowDialog method to show the dialogbox.
+            Dim UserClickedOK As Boolean = openFileDialog1.ShowDialog
+
+            ' Process input if the user clicked OK.
+            If UserClickedOK = True Then
+                Dim thing = openFileDialog1.FileName
+                If thing.Length Then
+                    thing = thing.Replace("\", "/")    ' because Opensim uses unix-like slashes, that's why
+                    LoadIARContent(thing)
+                End If
+            End If
+        Else
+            Print("Opensim is not running. Cannot load an IAR at this time.")
+        End If
+
+    End Sub
+
+    Private Sub SaveInventoryToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles SaveInventoryToolStripMenuItem.Click
+        If (Running) Then
+            Dim Message, title, defaultValue As String
+
+            '''''''''''''''''''''''
+            ' Object Name to back up
+            Dim itemName As String
+            ' Set prompt.
+            Message = "Enter the object name ('/' will  backup everything, and '/Objects/box' will back up box in folder Objects) :"
+            title = "Backup Name?"
+            defaultValue = "/"   ' Set default value.
+
+            ' Display message, title, and default value.
+            itemName = InputBox(Message, title, defaultValue)
+            ' If user has clicked Cancel, set myValue to defaultValue 
+            If itemName.Length = 0 Then Return
+
+            '''''''''''''''''''''''
+            ' Name of the IAR
+            Dim backupName As String
+            Message = "Backup name? :"
+            title = "Backup Name?"
+            defaultValue = "backup.iar"   ' Set default value.
+
+            ' Display message, title, and default value.
+            backupName = InputBox(Message, title, defaultValue)
+            ' If user has clicked Cancel, set myValue to defaultValue 
+            If itemName.Length = 0 Then Return
+
+            '''''''''''''''''''''''
+            ' Avatar
+            Dim Name As String
+            Message = "Avatar FirstName and Lastname:"
+            title = "FirstName LastName"
+            defaultValue = ""   ' Set default value.
+
+            ' Display message, title, and default value.
+            Name = InputBox(Message, title, defaultValue)
+            ' If user has clicked Cancel, set myValue to defaultValue 
+            If Name.Length = 0 Then Return
+
+            '''''''''''''''''''''''
+            ' Password
+            Dim Password As String
+            Message = "Avatar's Password?:"
+            title = "Password needed"
+            defaultValue = ""   ' Set default value.
+
+            ' Display message, title, and default value.
+            Password = InputBox(Message, title, defaultValue)
+
+            '''''''''''''''''''''''
+
+            ConsoleCommand("alert CPU Intensive Backup Started{ENTER}")
+            ConsoleCommand("save iar " + Name + " " + """" + itemName + """" + " " + Password + " " + """" + MyFolder + "/OutworldzFiles/Autobackup/" + backupName + """" + "{ENTER}")
+            Me.Focus()
+            Print("Saving " + backupName + " to " + BackupPath())
+        Else
+            Print("Opensim is not running. Cannot make a backup now.")
+        End If
+    End Sub
+
+    Private Sub AllRegionsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AllRegionsToolStripMenuItem.Click
+        If Not Running Then
+            Print("Opensim is not running. Cannot load an IAR at this time.")
+            Return
+        End If
+
+        ConsoleCommand("alert CPU Intensive Backup Started{ENTER}")
+
+        Dim counter = 1
+        Dim size = aRegion.GetUpperBound(0)
+        While counter <= size
+            Dim RegionName As String = aRegion(counter).RegionName
+            ConsoleCommand("save oar --perm=CT " + BackupPath() + RegionName + "_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
+            counter += 1
+            Application.DoEvents()
+        End While
+
+    End Sub
 
     Private Sub ChooseRegion()
         If aRegion.GetUpperBound(0) <> 1 Then
@@ -1594,7 +1619,7 @@ Public Class Form1
                 ' Read the chosen sim name
                 Dim chosen As String = Chooseform.ListBox1.SelectedItem.ToString()
                 If chosen.Length Then
-                    ConsoleCommand("change region " + chosen + "{ENTER}")
+                    ConsoleCommand("change region " + """" + chosen + """" + "{ENTER}")
                 End If
                 Chooseform.Dispose()
             Catch
@@ -1618,16 +1643,14 @@ Public Class Form1
             thing = thing.Replace("\", "/")    ' because Opensim uses unix-like slashes, that's why
             If backMeUp = vbYes Then
                 ConsoleCommand("alert CPU Intensive Backup Started {ENTER}")
-                ConsoleCommand("save oar " + """" + MyFolder + "/OutworldzFiles/Autobackup/Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar{ENTER}" + """")
+                ConsoleCommand("save oar " + BackupPath() + "Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
             End If
             ConsoleCommand("alert New content Is loading..{ENTER}")
             ConsoleCommand("load oar --force-terrain --force-parcels " + """" + thing + """" + "{ENTER}")
             ConsoleCommand("alert New content just loaded. {ENTER}")
             Me.Focus()
-
-
         Catch ex As Exception
-            Log("Error:" + ex.Message)
+            Log("Error: " + ex.Message)
         End Try
     End Sub
     Private Sub LoadIARContent(thing As String)
@@ -1642,7 +1665,7 @@ Public Class Form1
         Dim password = InputBox("Password for user " + user + "?")
         If user.Length And password.Length Then
             Try
-                ConsoleCommand("load iar --merge " + user + " / " + password + " " + Chr(34) + thing + Chr(34) + "{ENTER}")
+                ConsoleCommand("load iar --merge " + user + " / " + password + " " + """" + thing + """" + "{ENTER}")
                 ConsoleCommand("alert IAR content Is loaded{ENTER}")
                 Me.Focus()
             Catch ex As Exception
@@ -1724,7 +1747,7 @@ Public Class Form1
         While Not ContentSeen
             line = oarreader.ReadLine()
             If line <> Nothing Then
-                Log(line)
+                Log("Info:" + line)
                 Dim OarMenu As New ToolStripMenuItem
                 OarMenu.Text = line
                 OarMenu.ToolTipText = "Cick to load this content"
@@ -1744,7 +1767,7 @@ Public Class Form1
         Try
             iars = client.DownloadString(Domain + "/Outworldz_Installer/Content.plx?type=IAR&r=" + Random())
         Catch ex As Exception
-            Log("No IARS, dang, something is wrong with the Internet :-(")
+            Log("Info:No IARS, dang, something is wrong with the Internet :-(")
             Return
         End Try
 
@@ -1753,7 +1776,7 @@ Public Class Form1
         While Not ContentSeen
             line = iarreader.ReadLine()
             If line <> Nothing Then
-                Log(line)
+                Log("Info:" + line)
                 Dim IarMenu As New ToolStripMenuItem
                 IarMenu.Text = line
                 IarMenu.ToolTipText = "Click to load this content the next time the simulator is started"
@@ -1788,7 +1811,6 @@ Public Class Form1
 
 #Region "Updates"
 
-
     Private Sub CheckForUpdatesToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CHeckForUpdatesToolStripMenuItem.Click
         CheckForUpdates()
     End Sub
@@ -1810,7 +1832,7 @@ Public Class Form1
             Dim pUpdate As Process = New Process()
             Dim pi As ProcessStartInfo = New ProcessStartInfo()
             pi.Arguments = ""
-            pi.FileName = MyFolder + "\" + fileloaded
+            pi.FileName = """" + MyFolder + "\" + fileloaded + """"
             pUpdate.StartInfo = pi
             Try
                 Print("I'll see you again when I wake up all fresh and new!")
@@ -1828,7 +1850,7 @@ Public Class Form1
         End If
 
     End Sub
-    Private Function Download()
+    Private Function Download() As String
 
         Dim fileName As String = "Updater.exe"
 
@@ -1870,7 +1892,7 @@ Public Class Form1
         End Try
         If (Update = "") Then Update = "0"
         If Convert.ToSingle(Update) > Convert.ToSingle(MyVersion) Then
-            Print("I am Outworldz version " + MyVersion + vbCrLf + "A dreamier version " + Update + " is available.")
+            Print("A dreamier version " + Update + " is available.")
             UpdaterGo.Visible = True
             UpdaterGo.Enabled = True
             UpdaterCancel.Visible = True
@@ -2005,18 +2027,19 @@ Public Class Form1
         Try
             ClientSocket.Connect(ServerAddress, iPort)
         Catch ex As Exception
-            Log("Unable to connect to server:" + ex.Message)
+            Log("Info:Unable to connect to server:" + ex.Message)
             Return False
         End Try
 
         If ClientSocket.Connected Then
-            Log("Okay: port probe success on port " + Convert.ToString(iPort))
+            Log("Info: port probe success on port " + Convert.ToString(iPort))
+            ClientSocket.Close()
             Return True
         End If
         CheckPort = False
 
     End Function
-    Public Function GetPubIP()
+    Public Function GetPubIP() As String
 
         If My.Settings.DnsName.Length Then
             BumpProgress10()
@@ -2028,12 +2051,12 @@ Public Class Form1
         Try
             Dim ip As String = client.DownloadString("http://api.ipify.org/?r=" + Random())
             BumpProgress10()
-            DiagLog("Info:Public IP=" + My.Settings.PublicIP)
+            Log("Info:Public IP=" + My.Settings.PublicIP)
             Return ip
         Catch ex As Exception
             Print("Hmm, I cannot reach the Internet? Uh. Okay, continuing." + ex.Message)
             My.Settings.DiagFailed = True
-            DiagLog("Info:Public IP=" + "127.0.0.1")
+            Log("Info:Public IP=" + "127.0.0.1")
         End Try
         BumpProgress10()
         Return "127.0.0.1"
@@ -2042,29 +2065,29 @@ Public Class Form1
     Private Sub TestLoopback()
 
         Dim ws As NetServer = NetServer.getWebServer
-        DiagLog("Info:Starting Web Server")
-        ws.StartServer(MyFolder)
+        Log("Info:Starting Web Server")
+        ws.StartServer()
         Sleep(1000)
 
         BumpProgress10()
         Dim result As String = ""
         Dim loopbacktest As String = "http://" + My.Settings.PublicIP + ":" + My.Settings.PublicPort + "/?_TestLoopback=" + Random()
         Try
-            DiagLog(loopbacktest)
+            Log(loopbacktest)
             result = client.DownloadString(loopbacktest)
         Catch ex As Exception
-            DiagLog("Err:Loopback fail:" + result + ":" + ex.Message)
+            Log("Err:Loopback fail:" + result + ":" + ex.Message)
         End Try
 
         BumpProgress10()
         ws.StopWebServer()
 
         If result = "Test completed" And Not gFailDebug2 Then
-            DiagLog("Passed:" + result)
+            Log("Passed:" + result)
             My.Settings.LoopBackDiag = True
             My.Settings.Save()
         Else
-            DiagLog("Failed:" + result)
+            Log("Failed:" + result)
             Print("Router Loopback is disabled. See the Help section for 'Loopback' and how to enable it in Windows. Continuing...")
             My.Settings.LoopBackDiag = False
             My.Settings.PublicIP = "127.0.0.1"
@@ -2089,14 +2112,14 @@ Public Class Form1
         ProgressBar1.Value = 100
 
     End Sub
-    Private Function ProbePublicPort()
+    Private Function ProbePublicPort() As Boolean
 
-        DiagLog("Info:Probe Public Port")
+        Log("Info:Probe Public Port")
         Dim ip As String = GetPubIP()
 
         Dim ws As NetServer = NetServer.getWebServer
-        DiagLog("Info:Starting Web Server, public port is " + ip)
-        ws.StartServer(MyFolder)
+        Log("Info:Starting Web Server, public port is " + ip)
+        ws.StartServer()
         Sleep(1000)
         BumpProgress10()
 
@@ -2108,10 +2131,10 @@ Public Class Form1
 
             Dim Data As String = GetPostData()
             Dim Url = Domain + "/cgi/probetest.plx?IP=" + ip + "&Port=" + My.Settings.PublicPort + Data + "/?r=" + Random()
-            DiagLog(Url)
+            Log(Url)
             isPortOpen = client.DownloadString(Url)
         Catch ex As Exception
-            DiagLog("Dang:The Outworldz web site cannot find a path back")
+            Log("Dang:The Outworldz web site cannot find a path back")
             My.Settings.DiagFailed = True
         End Try
 
@@ -2121,15 +2144,15 @@ Public Class Form1
 
         If isPortOpen = "yes" And Not gFailDebug1 Then
             My.Settings.PublicIP = ip
-            DiagLog("Public IP set to " + ip)
+            Log("Public IP set to " + ip)
             My.Settings.Save()
             Return True
         Else
-            DiagLog("Failed:" + isPortOpen)
+            Log("Failed:" + isPortOpen)
             My.Settings.DiagFailed = True
             Print("Internet address " + My.Settings.PublicIP + ":" + My.Settings.PublicPort + " appears to not be forwarded to this machine in your router, so Hypergrid is not available. This can possibly be fixed by 'Port Forwards' in your router.  See Help->Port Forwards.")
             My.Settings.PublicIP = GetIPv4Address() ' failed, so try the machines address
-            DiagLog("IP set to " + My.Settings.PublicIP)
+            Log("IP set to " + My.Settings.PublicIP)
             Return False
         End If
 
@@ -2197,19 +2220,19 @@ Public Class Form1
         Try
             If Not MyUPnPMap.Exists(Convert.ToInt16(My.Settings.HttpPort), UPNP.Protocol.TCP) Then
                 MyUPnPMap.Add(UPNP.LocalIP, Convert.ToInt16(My.Settings.HttpPort), UPNP.Protocol.TCP, "Opensim TCP grid port")
-                DiagLog("uPnp: Grid Port.TCP added")
+                Log("uPnp: Grid Port.TCP added")
             End If
             BumpProgress10()
 
             If Not MyUPnPMap.Exists(Convert.ToInt16(My.Settings.PublicPort), UPNP.Protocol.UDP) Then
                 MyUPnPMap.Add(UPNP.LocalIP, Convert.ToInt16(My.Settings.PublicPort), UPNP.Protocol.UDP, "Opensim UDP Public")
-                DiagLog("uPnp: PublicPort.UDP added:")
+                Log("uPnp: PublicPort.UDP added:")
             End If
             BumpProgress10()
 
             If Not MyUPnPMap.Exists(Convert.ToInt16(My.Settings.PublicPort), UPNP.Protocol.TCP) Then
                 MyUPnPMap.Add(UPNP.LocalIP, Convert.ToInt16(My.Settings.PublicPort), UPNP.Protocol.TCP, "Opensim TCP Public")
-                DiagLog("uPnp: PublicPort.TCP added")
+                Log("uPnp: PublicPort.TCP added")
             End If
             BumpProgress10()
 
@@ -2221,7 +2244,7 @@ Public Class Form1
 
                 If Not MyUPnPMap.Exists(RegionPort, UPNP.Protocol.UDP) Then
                     MyUPnPMap.Add(UPNP.LocalIP, RegionPort, UPNP.Protocol.UDP, "Opensim UDP Region")
-                    DiagLog("uPnp: RegionPort.UDP Added:" + Convert.ToString(RegionPort))
+                    Log("uPnp: RegionPort.UDP Added:" + Convert.ToString(RegionPort))
                 End If
                 BumpProgress10()
 
@@ -2230,14 +2253,14 @@ Public Class Form1
 
         Catch e As Exception
             Print("uPnP is not working or enabled in your router. Hypergrid access will require ports to be opened manually.")
-            DiagLog("uPnp: UPNP Exception caught:  " + e.Message)
+            Log("uPnp: UPNP Exception caught:  " + e.Message)
             Return False
         End Try
         Return True 'successfully added
     End Function
 
 
-    Private Function GetPostData()
+    Private Function GetPostData() As String
 
         Dim SimVersion As String
         If (My.Settings.GridFolder = "Opensim") Then
@@ -2265,20 +2288,20 @@ Public Class Form1
 
     End Function
 
-    Private Function OpenPorts()
+    Private Function OpenPorts() As Boolean
 
-        If Running = False Then Return True
+        'If Running = False Then Return True
         Print("The human is instructed to wait while I check out the router ...")
         Try
             If OpenRouterPorts() Then ' open uPNP port
-                DiagLog("uPnpOk")
+                Log("uPnpOk")
                 Print("uPnP Ok")
                 My.Settings.UPnPDiag = True
                 My.Settings.Save()
                 BumpProgress10()
                 Return True
             Else
-                DiagLog("uPnP: fail")
+                Log("uPnP: fail")
                 My.Settings.UPnPDiag = False
                 My.Settings.Save()
 
@@ -2286,7 +2309,7 @@ Public Class Form1
                 Return False
             End If
         Catch e As Exception
-            DiagLog("Error: UPNP Exception: " + e.Message)
+            Log("Error: UPNP Exception: " + e.Message)
             My.Settings.UPnPDiag = False
             My.Settings.Save()
             BumpProgress10()
@@ -2298,31 +2321,117 @@ Public Class Form1
 #End Region
 
 #Region "MySQl"
-    Private Sub CheckDatabaseToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CheckDatabaseToolStripMenuItem.Click
 
+    Private Sub RestoreDatabaseToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles RestoreDatabaseToolStripMenuItem.Click
+
+        If Running Then
+            Print("Cannot restore when Opensim is running. Click [Stop] and try again.")
+            Return
+        End If
+        StartMySQL()
+
+        ' Create an instance of the open file dialog box.
+        Dim openFileDialog1 As OpenFileDialog = New OpenFileDialog
+
+        ' Set filter options and filter index.
+        openFileDialog1.InitialDirectory = BackupPath()
+        openFileDialog1.Filter = "MySqlDump (*.sql)|*.sql|All Files (*.*)|*.*"
+        openFileDialog1.FilterIndex = 1
+        openFileDialog1.Multiselect = False
+
+        ' Call the ShowDialog method to show the dialogbox.
+        Dim UserClickedOK As Boolean = openFileDialog1.ShowDialog
+
+        ' Process input if the user clicked OK.
+        If UserClickedOK = True Then
+            Dim thing = openFileDialog1.FileName
+            If thing.Length Then
+
+                Dim yesno = MsgBox("Are you sure?  Your database will re-loaded from the backup and all existing content lost.  Avatars, sims, inventory, all of it.", vbYesNo)
+                If yesno = vbYes Then
+                    thing = thing.Replace("\", "/")    ' because Opensim uses unix-like slashes, that's why
+
+                    Try
+                        My.Computer.FileSystem.DeleteFile(MyFolder & "\OutworldzFiles\mysql\bin\RestoreMysql.bat")
+                    Catch
+                    End Try
+                    Try
+                        Dim filename As String = MyFolder & "\OutworldzFiles\mysql\bin\RestoreMysql.bat"
+                        Using outputFile As New StreamWriter(filename, True)
+                            outputFile.WriteLine("@REM A program to restore Mysql from a backup" + vbCrLf _
+                                    + "mysql -u root opensim < %1 " _
+                                    + vbCrLf + "@pause" + vbCrLf)
+                        End Using
+                    Catch ex As Exception
+                        Print("Failed to create restore file:" + ex.Message)
+                        Return
+                    End Try
+
+                    Print("Starting restore - do not interrupt!")
+                    Dim pMySqlRestore As Process = New Process()
+                    Dim pi As ProcessStartInfo = New ProcessStartInfo()
+
+                    pi.Arguments = thing
+                    pi.WindowStyle = ProcessWindowStyle.Normal
+                    pi.WorkingDirectory = MyFolder & "\OutworldzFiles\mysql\bin\"
+
+                    pi.FileName = MyFolder & "\OutworldzFiles\mysql\bin\RestoreMysql.bat"
+                    pMySqlRestore.StartInfo = pi
+                    pMySqlRestore.Start()
+                End If
+            Else
+                Print("Restore cancelled")
+            End If
+        End If
+    End Sub
+
+    Private Sub MysqlToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles MysqlToolStripMenuItem.Click
+
+        StartMySQL()
+
+        Try
+            My.Computer.FileSystem.DeleteFile(MyFolder & "\OutworldzFiles\mysql\bin\BackupMysql.bat")
+        Catch
+        End Try
+        Try
+            Dim filename As String = MyFolder & "\OutworldzFiles\mysql\bin\BackupMysql.bat"
+            Using outputFile As New StreamWriter(filename, True)
+
+                Dim PathToBackup As String = BackupPath()
+                PathToBackup = PathToBackup.Replace("\", "/")    ' because Opensim uses unix-like slashes, that's why
+                outputFile.WriteLine("@REM A program to backup Mysql manually" + vbCrLf _
+                                    + "mysqldump.exe --opt  -uroot --verbose opensim  > " _
+                                    + PathToBackup + "Mysql_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".sql" + """" _
+                                    + vbCrLf + "@pause" + vbCrLf)
+            End Using
+        Catch ex As Exception
+            Print("Failed to create backup:" + ex.Message)
+            Return
+        End Try
+
+        Print("Starting Backup")
+        Dim pMySqlBackup As Process = New Process()
         Dim pi As ProcessStartInfo = New ProcessStartInfo()
-
-        ChDir(MyFolder & "\OutworldzFiles\mysql\bin")
+        pi.Arguments = ""
         pi.WindowStyle = ProcessWindowStyle.Normal
-        pi.FileName = "CheckAndRepair.bat"
-        pi.Arguments = My.Settings.MySqlPort
-        pMySqlDiag.StartInfo = pi
-        pMySqlDiag.Start()
-        pMySqlDiag.WaitForExit()
-        pMySqlDiag.Close()
-        ChDir(MyFolder)
+        pi.WorkingDirectory = MyFolder & "\OutworldzFiles\mysql\bin\"
+        pi.FileName = MyFolder & "\OutworldzFiles\mysql\bin\BackupMysql.bat"
+        pMySqlBackup.StartInfo = pi
+
+        pMySqlBackup.Start()
 
     End Sub
-    Private Function StartMySQL()
+
+    Private Function StartMySQL() As Boolean
         ' Start MySql in background.
         Dim StartValue = ProgressBar1.Value
-        BumpProgress()
 
         ' Check for MySql operation
         Dim Mysql = False
         ' wait for MySql to come up
         Mysql = CheckPort("127.0.0.1", My.Settings.MySqlPort)
         If Mysql Then
+            BumpProgress10()
             Return True
         End If
 
@@ -2336,42 +2445,43 @@ Public Class Form1
         SetIni("client", "port", My.Settings.MySqlPort)
         SaveINI()
 
-        ' create test program - only the first time
+        ' create test program 
         ' slants the other way:
-        Dim testProgram As String = MyFolder & "\OutworldzFiles\mysql\bin\StartManually.bat"
+        Dim testProgram As String = MyFolder & "\OutworldzFiles\Mysql\bin\StartManually.bat"
         Try
             My.Computer.FileSystem.DeleteFile(testProgram)
-        Catch
+        Catch ex As Exception
+            Log("DeleteFile: " + ex.Message)
         End Try
         Try
             Using outputFile As New StreamWriter(testProgram, True)
-                outputFile.WriteLine("@rem A program to run Mysql manually for troubleshooting." + vbCrLf _
+                outputFile.WriteLine("@REM A program to run Mysql manually for troubleshooting." + vbCrLf _
                                      + "mysqld.exe --defaults-file=" + """" + gCurSlashDir + "/OutworldzFiles/mysql/my.ini" + """")
             End Using
-        Catch
+        Catch ex As Exception
+            Log("Error:StartManually" + ex.Message)
         End Try
 
-        BumpProgress()
+        BumpProgress(1)
 
-        ' mYsql was not running, so lets start it up.
+        ' Mysql was not running, so lets start it up.
         Dim pi As ProcessStartInfo = New ProcessStartInfo()
-        pi.Arguments = "--defaults-file=" + Chr(34) + gCurSlashDir + "/OutworldzFiles/mysql/my.ini" + Chr(34)
+        pi.Arguments = "--defaults-file=" + """" + gCurSlashDir + "/OutworldzFiles/mysql/my.ini" + """"
         pi.WindowStyle = ProcessWindowStyle.Hidden
-        pi.FileName = MyFolder & "\OutworldzFiles\mysql\bin\mysqld.exe"
+        pi.FileName = """" + MyFolder & "\OutworldzFiles\mysql\bin\mysqld.exe" + """"
         pMySql.StartInfo = pi
         pMySql.Start()
 
-        BumpProgress()
 
         ' wait for MySql to come up
         Mysql = CheckPort("127.0.0.1", My.Settings.MySqlPort)
         While Not Mysql
 
-            BumpProgress()
+            BumpProgress(1)
             Application.DoEvents()
 
-            Dim MysqlLog As String = MyFolder + "\OutworldzFiles\mysql\data"
-            If ProgressBar1.Value = 99 Then ' about 30 seconds when it fails
+            Dim MysqlLog As String = """" + MyFolder + "\OutworldzFiles\mysql\data" + """"
+            If ProgressBar1.Value = 100 Then ' about 30 seconds when it fails
 
                 Dim yesno = MsgBox("The database did not start. Do you want to see the log file?", vbYesNo)
                 If (yesno = vbYes) Then
@@ -2399,7 +2509,7 @@ Public Class Form1
         Dim p As Process = New Process()
         Dim pi As ProcessStartInfo = New ProcessStartInfo()
         pi.Arguments = "-u root shutdown"
-        pi.FileName = MyFolder + "\OutworldzFiles\mysql\bin\mysqladmin.exe"
+        pi.FileName = """" + MyFolder + "\OutworldzFiles\mysql\bin\mysqladmin.exe" + """"
         pi.WindowStyle = ProcessWindowStyle.Minimized
         p.StartInfo = pi
         Try
@@ -2430,11 +2540,6 @@ Public Class Form1
 
     End Sub
 
-    ' Handle Exited event and display process information.
-    Private Sub mySQL_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles pMySql.Exited
-        Debug.Print("Exit code:    {1}", pMySql.ExitCode)
-    End Sub
-
 #End Region
 
 #Region "DNS"
@@ -2456,7 +2561,7 @@ Public Class Form1
             Log("Checking DNS name " + My.Settings.DnsName)
             Checkname = client.DownloadString("http://outworldz.net/dns.plx/?GridName=" + My.Settings.DnsName + "&Public=" + pub + "&r=" + Random())
         Catch ex As Exception
-            Log("Cannot check the DNS Name" + ex.Message)
+            Log("Warn:Cannot check the DNS Name" + ex.Message)
         End Try
 
         DoGetHostAddresses(My.Settings.DnsName)
@@ -2476,18 +2581,18 @@ Public Class Form1
             Next index
 
         Catch ex As Exception
-            Log("Unable to resolve name:" + ex.Message)
+            Log("Warn:Unable to resolve name:" + ex.Message)
         End Try
         Return String.Empty
 
     End Function
-    Public Function GetNewDnsName()
+    Public Function GetNewDnsName() As String
         Dim client As New System.Net.WebClient
         Dim Checkname As String = String.Empty
         Try
             Checkname = client.DownloadString("http://outworldz.net/getnewname.plx/?r=" + Random())
         Catch ex As Exception
-            Log("Cannot get new name:" + ex.Message)
+            Log("Warn:Cannot get new name:" + ex.Message)
         End Try
         Return Checkname
     End Function
@@ -2503,7 +2608,7 @@ Public Class Form1
         Try
             Checkname = client.DownloadString("http://outworldz.net/dns.plx/?GridName=" + name + "&Public=" + pub + "&r=" + Random())
         Catch ex As Exception
-            Log("Cannot check the DNS Name" + ex.Message)
+            Log("Warn:Cannot check the DNS Name" + ex.Message)
         End Try
         If Checkname = "NEW" Or Checkname = "UPDATED" Then
             Return name
@@ -2524,6 +2629,7 @@ Public Class Form1
             BumpProgress10()
         End If
     End Sub
+
 
 #End Region
 

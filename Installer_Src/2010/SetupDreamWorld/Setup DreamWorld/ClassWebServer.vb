@@ -12,20 +12,19 @@ Public Class NetServer
     Private WebThread As Thread
     Private Shared blnFlag As Boolean
     Private Shared singleWebserver As NetServer
-    Private gMyFolder As String
+
 
     Private Sub New()
         'create a singleton
     End Sub
-    Public Sub StartServer(MyFolder As String)
-        gMyFolder = MyFolder
+    Public Sub StartServer()
         Try
-            Form1.DiagLog("Starting Diagnostic Webserver")
+            Form1.Log("Info:Starting Diagnostic Webserver")
             WebThread = New Thread(AddressOf looper)
             WebThread.SetApartmentState(ApartmentState.STA)
             WebThread.Start()
         Catch ex As Exception
-            Form1.DiagLog(ex.Message)
+            Form1.Log(ex.Message)
         End Try
 
     End Sub
@@ -34,31 +33,31 @@ Public Class NetServer
         Dim counter As Integer = 60 ' wait up to 30 seconds, then abord
         Try
             Dim oaddress = GetIPv4Address()
-            Form1.DiagLog("IP:" + oaddress.ToString)
+            Form1.Log("Info:IP:" + oaddress.ToString)
             LocalTCPListener = New TcpListener(oaddress, My.Settings.PublicPort)
         Catch ex As Exception
-            Form1.DiagLog(ex.Message)
+            Form1.Log(ex.Message)
             Return True
         End Try
 
         LocalTCPListener.Start()
-        Form1.DiagLog("Listener Started")
+        Form1.Log("Info:Listener Started")
         Dim data As String = "HTTP/1.0 200 OK" + vbCrLf + vbCrLf + "Test completed"
         Dim msg As Byte() = System.Text.Encoding.ASCII.GetBytes(data)
         listen = True
         While listen
             If Not LocalTCPListener.Pending() Then
                 Thread.Sleep(500) ' choose a number (In milliseconds) that makes sense
-                Form1.DiagLog("No connection requests have arrived")
+                Form1.Log("Info:No connection requests have arrived")
                 counter -= 1
                 If counter > 0 Then
                     Continue While  ' skip To Next iteration Of Loop
                 End If
-                Form1.DiagLog("Aborting due to no connections")
+                Form1.Log("Warn:Aborting due to no connections")
             End If
 
             Dim client As TcpClient = LocalTCPListener.AcceptTcpClient()
-            Form1.DiagLog("Accepted client")
+            Form1.Log("Info:Accepted client")
 
             Dim stream As NetworkStream = client.GetStream() ' Get a stream object for reading and writing
 
@@ -74,25 +73,25 @@ Public Class NetServer
                 Loop While stream.DataAvailable
 
                 ' Print out the received message to the console.
-                Form1.DiagLog(("You received the following message : " + myCompleteMessage.ToString()))
+                Form1.Log(("Info:You received the following message : " + myCompleteMessage.ToString()))
             Else
-                Form1.DiagLog("Sorry. Cannot read from this NetworkStream.")
+                Form1.Log("Error:Cannot read from this NetworkStream.")
             End If
 
             Try
                 stream.Write(msg, 0, msg.Length) ' Send back a response.
-                Form1.DiagLog([String].Format("Sent: {0}", data))
+                Form1.Log([String].Format("Info: {0}", data))
             Catch
             End Try
 
             ' Shutdown and end connection
             client.Close()
-            Form1.DiagLog("Client Closed")
+            Form1.Log("Info:WebClient Closed")
             listen = False
         End While
 
         LocalTCPListener.Stop()
-        Form1.DiagLog("Thread ending")
+        Form1.Log("Info:Webthread ending")
         Return False
     End Function
 
@@ -111,12 +110,12 @@ Public Class NetServer
     End Function
 
     Public Sub StopWebServer()
-        Form1.DiagLog("Stopping Webserver")
+        Form1.Log("Info:Stopping Webserver")
         listen = False
         Application.DoEvents()
 
         WebThread.Join()
-        Form1.DiagLog("Stopped Webserver on command")
+        Form1.Log("Info:Stopped Webserver on command")
     End Sub
 
     Friend Shared Function getWebServer() As NetServer

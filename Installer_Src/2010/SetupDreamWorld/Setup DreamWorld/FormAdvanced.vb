@@ -52,6 +52,8 @@ Public Class AdvancedForm
             AutoBackupInterval.SelectedIndex = 3
         End If
 
+        BackupFolder.Text = My.Settings.BackupFolder
+
         Dim Chattime = My.Settings.ChatTime
 
         If Chattime = Sleepy Then
@@ -500,6 +502,24 @@ Public Class AdvancedForm
         MapPicture.Image = My.Resources.Best
     End Sub
 
+    Private Sub BackupFolder_clicked(sender As Object, e As EventArgs) Handles BackupFolder.Click
+        'Create an instance of the open file dialog box.
+        Dim openFileDialog1 As FolderBrowserDialog = New FolderBrowserDialog
+
+        openFileDialog1.ShowNewFolderButton = True
+        openFileDialog1.Description = "Pick folder for backups"
+        Dim UserClickedOK As Boolean = openFileDialog1.ShowDialog
+
+        ' Process input if the user clicked OK.
+        If UserClickedOK = True Then
+            Dim thing = openFileDialog1.SelectedPath
+            If thing.Length Then
+                My.Settings.BackupFolder = thing
+                My.Settings.Save()
+                BackupFolder.Text = thing
+            End If
+        End If
+    End Sub
 #End Region
 
 

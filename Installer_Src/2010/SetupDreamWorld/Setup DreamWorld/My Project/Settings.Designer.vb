@@ -737,6 +737,18 @@ Namespace My
                 Me("MapType") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("AutoBackup")>  _
+        Public Property BackupFolder() As String
+            Get
+                Return CType(Me("BackupFolder"),String)
+            End Get
+            Set
+                Me("BackupFolder") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

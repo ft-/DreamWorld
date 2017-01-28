@@ -17,16 +17,13 @@ It's standard D2 Opensim with lots of small tweaks, so it starts the standard th
 After OpenSim has fully started, use your favourite viewer with the following grid and login information:
 
 login URI: http://127.0.0.1:8002/
-User First Name: Wifi
-User Last Name: Admin
-Password: secret
 
 0.8.2.1 has a Wifi Interface:
 Admin User for Wifi that can administer accounts using the web interface is:
 login URI: http://127.0.0.1:8002/
 User First Name: Wifi
 User Last Name: Admin
-Password: secret
+Password: will show on the screen when you click the link to get to the above page.
 
 Other passwords
 MySQL Database root user has no password
@@ -46,7 +43,7 @@ Making A Different Installation:
 
 Everything that makes an opensim instance is located in a single folder "OutworldzFiles".   It is essentially a copy of the default installation with modifications to make it easy to install and ready to use.  
 
-You must add of [AutoBackupModule], [CameraOnlyModeModule],  [SpecialUIModule] and [WebStats] to StandaloneCommon.ini or you wll get run time errors.
+For example, you must add [AutoBackupModule], [CameraOnlyModeModule],  [SpecialUIModule] and [WebStats] to StandaloneCommon.ini or you wll get run time errors.
 
 The bottom of StandaloneCommon.ini has a configured Autobackup module.  You must create an Autobackup folder in your Opensim bin folder to accomodate this.
 
@@ -77,7 +74,7 @@ The bottom of Opensim.ini  has the CameraOnlyModeModule and SpecialUIModule. The
   UserLevel = 0
   
   
-Updates: The system has a built in updater that it fetches from the Outworldz web site.   This is how the updater can be updated.  It fetches a zip file that has the changes in it.
+Updates: The system has a built in updater that it fetches from the Outworldz web site.   This is how the updater can be updated.  The updater, in turn, fetches a zip file that has the changes in it.
 
 Backups and other details:
 

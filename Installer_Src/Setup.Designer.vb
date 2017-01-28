@@ -56,7 +56,9 @@ Partial Class Form1
         Me.AdvancedSettingsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.HelpToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ShowHyperGridAddressToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuLogin = New System.Windows.Forms.ToolStripMenuItem()
+        Me.BackupToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.AllRegionsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.MysqlToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.WebStatsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ViewWebUI = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
@@ -86,6 +88,7 @@ Partial Class Form1
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.LogButton = New System.Windows.Forms.Button()
         Me.IgnoreButton = New System.Windows.Forms.Button()
+        Me.RestoreDatabaseToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuStrip1.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -298,7 +301,7 @@ Partial Class Form1
         '
         'HelpToolStripMenuItem
         '
-        Me.HelpToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ShowHyperGridAddressToolStripMenuItem, Me.mnuLogin, Me.WebStatsToolStripMenuItem, Me.ViewWebUI, Me.ToolStripMenuItem1, Me.LoopBackToolStripMenuItem, Me.CHeckForUpdatesToolStripMenuItem, Me.DiagnosticsToolStripMenuItem, Me.CheckDatabaseToolStripMenuItem, Me.mnuAbout})
+        Me.HelpToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ShowHyperGridAddressToolStripMenuItem, Me.BackupToolStripMenuItem, Me.WebStatsToolStripMenuItem, Me.ViewWebUI, Me.ToolStripMenuItem1, Me.LoopBackToolStripMenuItem, Me.CHeckForUpdatesToolStripMenuItem, Me.DiagnosticsToolStripMenuItem, Me.CheckDatabaseToolStripMenuItem, Me.mnuAbout})
         Me.HelpToolStripMenuItem.Name = "HelpToolStripMenuItem"
         Me.HelpToolStripMenuItem.Size = New System.Drawing.Size(44, 20)
         Me.HelpToolStripMenuItem.Text = "Help"
@@ -311,14 +314,27 @@ Partial Class Form1
         Me.ShowHyperGridAddressToolStripMenuItem.Text = "Show HyperGrid Address"
         Me.ShowHyperGridAddressToolStripMenuItem.ToolTipText = "You can give this address out to oepple and they can visit your grid"
         '
-        'mnuLogin
+        'BackupToolStripMenuItem
         '
-        Me.mnuLogin.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None
-        Me.mnuLogin.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.mnuLogin.Name = "mnuLogin"
-        Me.mnuLogin.Size = New System.Drawing.Size(205, 22)
-        Me.mnuLogin.Text = "How to  Login"
-        Me.mnuLogin.ToolTipText = "User ID and default Password"
+        Me.BackupToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AllRegionsToolStripMenuItem, Me.MysqlToolStripMenuItem, Me.RestoreDatabaseToolStripMenuItem})
+        Me.BackupToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.disk_blue
+        Me.BackupToolStripMenuItem.Name = "BackupToolStripMenuItem"
+        Me.BackupToolStripMenuItem.Size = New System.Drawing.Size(205, 22)
+        Me.BackupToolStripMenuItem.Text = "Backup and Restore"
+        '
+        'AllRegionsToolStripMenuItem
+        '
+        Me.AllRegionsToolStripMenuItem.Image = CType(resources.GetObject("AllRegionsToolStripMenuItem.Image"), System.Drawing.Image)
+        Me.AllRegionsToolStripMenuItem.Name = "AllRegionsToolStripMenuItem"
+        Me.AllRegionsToolStripMenuItem.Size = New System.Drawing.Size(184, 22)
+        Me.AllRegionsToolStripMenuItem.Text = "All Regions => OARs"
+        '
+        'MysqlToolStripMenuItem
+        '
+        Me.MysqlToolStripMenuItem.Image = CType(resources.GetObject("MysqlToolStripMenuItem.Image"), System.Drawing.Image)
+        Me.MysqlToolStripMenuItem.Name = "MysqlToolStripMenuItem"
+        Me.MysqlToolStripMenuItem.Size = New System.Drawing.Size(184, 22)
+        Me.MysqlToolStripMenuItem.Text = "Backup Database"
         '
         'WebStatsToolStripMenuItem
         '
@@ -368,7 +384,7 @@ Partial Class Form1
         '
         'CheckDatabaseToolStripMenuItem
         '
-        Me.CheckDatabaseToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.data
+        Me.CheckDatabaseToolStripMenuItem.Image = CType(resources.GetObject("CheckDatabaseToolStripMenuItem.Image"), System.Drawing.Image)
         Me.CheckDatabaseToolStripMenuItem.Name = "CheckDatabaseToolStripMenuItem"
         Me.CheckDatabaseToolStripMenuItem.Size = New System.Drawing.Size(205, 22)
         Me.CheckDatabaseToolStripMenuItem.Text = "Check Database"
@@ -549,6 +565,13 @@ Partial Class Form1
         Me.IgnoreButton.Text = "Skip"
         Me.IgnoreButton.UseVisualStyleBackColor = True
         '
+        'RestoreDatabaseToolStripMenuItem
+        '
+        Me.RestoreDatabaseToolStripMenuItem.Image = CType(resources.GetObject("RestoreDatabaseToolStripMenuItem.Image"), System.Drawing.Image)
+        Me.RestoreDatabaseToolStripMenuItem.Name = "RestoreDatabaseToolStripMenuItem"
+        Me.RestoreDatabaseToolStripMenuItem.Size = New System.Drawing.Size(184, 22)
+        Me.RestoreDatabaseToolStripMenuItem.Text = "Restore Database"
+        '
         'Form1
         '
         Me.AllowDrop = True
@@ -614,7 +637,6 @@ Partial Class Form1
     Friend WithEvents mnuNoAvatar As ToolStripMenuItem
     Friend WithEvents mnuYesAvatar As ToolStripMenuItem
     Friend WithEvents HelpToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents mnuLogin As ToolStripMenuItem
     Friend WithEvents mnuAbout As ToolStripMenuItem
     Friend WithEvents MenuStrip1 As MenuStrip
     Friend WithEvents WebBrowser3 As WebBrowser
@@ -656,4 +678,8 @@ Partial Class Form1
     Friend WithEvents SaveInventoryToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents LogButton As Button
     Friend WithEvents IgnoreButton As Button
+    Friend WithEvents BackupToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents AllRegionsToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents MysqlToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents RestoreDatabaseToolStripMenuItem As ToolStripMenuItem
 End Class

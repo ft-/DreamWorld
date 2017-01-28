@@ -69,8 +69,6 @@ Public Class DNSName
                 My.Settings.Save()
                 Form1.ActualForm.DnsName.Text = TextBox1.Text
                 Me.Close()
-            Else
-                MsgBox("DNS lookup failed for " + TextBox1.Text, vbInformation)
             End If
         Else
             My.Settings.DnsName = TextBox1.Text
