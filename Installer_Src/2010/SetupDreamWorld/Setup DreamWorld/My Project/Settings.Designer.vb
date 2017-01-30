@@ -749,6 +749,18 @@ Namespace My
                 Me("BackupFolder") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public Property DiagsRun2() As Boolean
+            Get
+                Return CType(Me("DiagsRun2"),Boolean)
+            End Get
+            Set
+                Me("DiagsRun2") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

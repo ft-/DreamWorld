@@ -38,7 +38,7 @@ Public Class Form1
     '
 #Region "Declarations"
 
-    Dim MyVersion As String = "1.4"
+    Dim MyVersion As String = "1.5"
     Dim DebugPath As String = "C:\Opensim\Outworldz Test" ' Note that this uses spaces
     Public Domain As String = "http://www.outworldz.com"
     Dim RevNotesFile As String = "Update_Notes_" + MyVersion + ".rtf"
@@ -196,7 +196,6 @@ Public Class Form1
         ' I would like to buy an argument
         Dim arguments As String() = Environment.GetCommandLineArgs()
 
-
         If arguments.Length > 1 Then
             ' for debugging when compiling
             If arguments(1) = "-debug" Then
@@ -235,15 +234,17 @@ Public Class Form1
             CheckForUpdates()
         End If
 
-        If gDebug Then My.Settings.RanAllDiags = False
+        CheckDefaultPorts()
 
-        If Not My.Settings.RanAllDiags Then
-            My.Settings.RanAllDiags = True
+        ' Run diagnostics, maybe
+        If gDebug Then My.Settings.DiagsRun2 = False
+
+        If Not My.Settings.DiagsRun2 Then
             DoDiag()
+            My.Settings.DiagsRun2 = True
         End If
 
-
-        SetINIFromMySettings()
+        SetINIData()
 
         mnuSettings.Visible = True
         SetIAROARContent() ' load IAR and OAR web content
@@ -264,7 +265,7 @@ Public Class Form1
             Print("Ready to Launch! Click 'Start' to begin your adventure in Opensimulator.")
         Else
 
-            My.Settings.HttpPort = 9000
+            My.Settings.HttpPort = 8002
             My.Settings.Save()
 
             Print("Installing Desktop icon clicky thingy")
@@ -361,7 +362,7 @@ Public Class Form1
 
         GetPubIP()
 
-        SetINIFromMySettings()    ' set up the INI files
+        SetINIData()    ' set up the INI files
 
         If My.Settings.Onlook Then
             SaveOnlookXMLData()
@@ -753,7 +754,7 @@ Public Class Form1
 
     End Sub
 
-    Private Sub SetINIFromMySettings()
+    Private Sub SetINIData()
 
         'mnuShow shows the DOS box for Opensimulator
         mnuShow.Checked = My.Settings.ConsoleShow
@@ -1007,7 +1008,32 @@ Public Class Form1
 
 #End Region
 
-#Region "Regions"
+#Region "Regions and Ports"
+
+    Private Sub CheckDefaultPorts()
+
+        If My.Settings.PrivatePort = My.Settings.PublicPort Then
+            My.Settings.PublicPort = 8001
+            My.Settings.HttpPort = 8002
+            My.Settings.PrivatePort = 8003
+            MsgBox("Port conflict detected. Public, HTTP and Private Ports have been reset to the default of 8001, 8002 and 8003", vbInformation)
+        End If
+
+        If My.Settings.PrivatePort = My.Settings.HttpPort Then
+            My.Settings.PublicPort = 8001
+            My.Settings.HttpPort = 8002
+            My.Settings.PrivatePort = 8003
+            MsgBox("Port conflict detected. Public, HTTP and Private Ports have been reset to the default of 8001, 8002 and 8003", vbInformation)
+        End If
+
+        If My.Settings.PublicPort = My.Settings.HttpPort Then
+            My.Settings.PublicPort = 8001
+            My.Settings.HttpPort = 8002
+            My.Settings.PrivatePort = 8003
+            MsgBox("Port conflict detected. Public, HTTP and Private Ports have been reset to the default of 8001, 8002 and 8003", vbInformation)
+        End If
+
+    End Sub
 
     Public Sub GetAllRegions()
 
@@ -1309,9 +1335,10 @@ Public Class Form1
     Private Function BackupPath() As String
 
         If My.Settings.BackupFolder = "AutoBackup" Then
-            BackupPath = """" + MyFolder + "/OutworldzFiles/Autobackup/" + """"
+            BackupPath = """" + gCurSlashDir + "/OutworldzFiles/Autobackup/" + """"
         Else
             BackupPath = My.Settings.BackupFolder + "/"
+            BackupPath = BackupPath.Replace("\", "/")    ' because Opensim uses unix-like slashes, that's why
         End If
 
     End Function
@@ -2587,6 +2614,7 @@ Public Class Form1
 
     End Function
     Public Function GetNewDnsName() As String
+
         Dim client As New System.Net.WebClient
         Dim Checkname As String = String.Empty
         Try

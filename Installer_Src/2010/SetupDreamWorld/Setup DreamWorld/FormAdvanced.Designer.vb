@@ -144,7 +144,7 @@ Partial Class AdvancedForm
         Me.httpPort.Name = "httpPort"
         Me.httpPort.Size = New System.Drawing.Size(47, 20)
         Me.httpPort.TabIndex = 30
-        Me.ToolTip1.SetToolTip(Me.httpPort, "A Public Port used to find your grid: Default: 9000")
+        Me.ToolTip1.SetToolTip(Me.httpPort, "A Public Port used to find your grid: Default: 8002")
         '
         'Label13
         '
