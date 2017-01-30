@@ -1335,7 +1335,7 @@ Public Class Form1
     Private Function BackupPath() As String
 
         If My.Settings.BackupFolder = "AutoBackup" Then
-            BackupPath = """" + gCurSlashDir + "/OutworldzFiles/Autobackup/" + """"
+            BackupPath = gCurSlashDir + "/OutworldzFiles/Autobackup/"
         Else
             BackupPath = My.Settings.BackupFolder + "/"
             BackupPath = BackupPath.Replace("\", "/")    ' because Opensim uses unix-like slashes, that's why
@@ -1451,10 +1451,10 @@ Public Class Form1
 
                     If backMeUp = vbYes Then
                         ConsoleCommand("alert CPU Intensive Backup Started{ENTER}")
-                        ConsoleCommand("save oar --perm=CT " + BackupPath() + "Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
+                        ConsoleCommand("save oar --perm=CT " + """" + BackupPath() + "Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
                     End If
                     ConsoleCommand("alert New content is loading..{ENTER}")
-                    ConsoleCommand("load oar --force-terrain --force-parcels " + """" + thing + """" + "{ENTER}")
+                    ConsoleCommand("load oar --force-terrain --force-parcels " + thing + "{ENTER}")
                     ConsoleCommand("alert New content just loaded." + "{ENTER}")
                     Me.Focus()
                 End If
@@ -1500,7 +1500,7 @@ Public Class Form1
             ' If user has clicked Cancel, set myValue to defaultValue 
             If myValue.length = 0 Then Return
             ConsoleCommand("alert CPU Intensive Backup Started{ENTER}")
-            ConsoleCommand("save oar " + BackupPath() + myValue + """" + "{ENTER}")
+            ConsoleCommand("save oar " + """" + BackupPath() + myValue + """" + "{ENTER}")
             Me.Focus()
             Print("Saving " + myValue + " to " + BackupPath())
         Else
@@ -1610,7 +1610,7 @@ Public Class Form1
             '''''''''''''''''''''''
 
             ConsoleCommand("alert CPU Intensive Backup Started{ENTER}")
-            ConsoleCommand("save iar " + Name + " " + """" + itemName + """" + " " + Password + " " + """" + MyFolder + "/OutworldzFiles/Autobackup/" + backupName + """" + "{ENTER}")
+            ConsoleCommand("save iar " + Name + " " + """" + itemName + """" + " " + Password + " " + """" + BackupPath() + backupName + """" + "{ENTER}")
             Me.Focus()
             Print("Saving " + backupName + " to " + BackupPath())
         Else
@@ -1630,7 +1630,7 @@ Public Class Form1
         Dim size = aRegion.GetUpperBound(0)
         While counter <= size
             Dim RegionName As String = aRegion(counter).RegionName
-            ConsoleCommand("save oar --perm=CT " + BackupPath() + RegionName + "_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
+            ConsoleCommand("save oar --perm=CT " + """" + BackupPath() + RegionName + "_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
             counter += 1
             Application.DoEvents()
         End While
@@ -1670,7 +1670,7 @@ Public Class Form1
             thing = thing.Replace("\", "/")    ' because Opensim uses unix-like slashes, that's why
             If backMeUp = vbYes Then
                 ConsoleCommand("alert CPU Intensive Backup Started {ENTER}")
-                ConsoleCommand("save oar " + BackupPath() + "Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
+                ConsoleCommand("save oar " + """" + BackupPath() + "Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
             End If
             ConsoleCommand("alert New content Is loading..{ENTER}")
             ConsoleCommand("load oar --force-terrain --force-parcels " + """" + thing + """" + "{ENTER}")
@@ -2459,6 +2459,7 @@ Public Class Form1
         Mysql = CheckPort("127.0.0.1", My.Settings.MySqlPort)
         If Mysql Then
             BumpProgress10()
+
             Return True
         End If
 
@@ -2527,6 +2528,7 @@ Public Class Form1
             Sleep(1000)
             Mysql = CheckPort("127.0.0.1", My.Settings.MySqlPort)
         End While
+        Sleep(2000) ' hacky, but may work
         Return True
     End Function
 
