@@ -38,7 +38,7 @@ Public Class Form1
     '
 #Region "Declarations"
 
-    Dim MyVersion As String = "1.5"
+    Dim MyVersion As String = "1.51"
     Dim DebugPath As String = "C:\Opensim\Outworldz Test" ' Note that this uses spaces
     Public Domain As String = "http://www.outworldz.com"
     Dim RevNotesFile As String = "Update_Notes_" + MyVersion + ".rtf"
@@ -1918,14 +1918,18 @@ Public Class Form1
             Log("Dang:The Outworld web site is down")
         End Try
         If (Update = "") Then Update = "0"
-        If Convert.ToSingle(Update) > Convert.ToSingle(MyVersion) Then
-            Print("A dreamier version " + Update + " is available.")
-            UpdaterGo.Visible = True
-            UpdaterGo.Enabled = True
-            UpdaterCancel.Visible = True
-        Else
-            Print("I am the dreamiest version available, at V " + MyVersion)
-        End If
+
+        Try
+            If Convert.ToSingle(Update) > Convert.ToSingle(MyVersion) Then
+                Print("A dreamier version " + Update + " is available.")
+                UpdaterGo.Visible = True
+                UpdaterGo.Enabled = True
+                UpdaterCancel.Visible = True
+            Else
+                Print("I am the dreamiest version available, at V " + MyVersion)
+            End If
+        Catch
+        End Try
         BumpProgress10()
 
     End Sub
