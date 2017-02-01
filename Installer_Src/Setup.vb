@@ -1171,7 +1171,7 @@ Public Class Form1
             Up = client.DownloadString("http://127.0.0.1:" + My.Settings.HttpPort + "/?_Opensim=" + Random())
         Catch ex As Exception
             Up = ""
-            Log("Info:Opensim is not yet running:" + ex.Message)
+            Log("Info:Opensim is not yet running, will continue to check every 1/10 second for two minutes")
         End Try
         Dim counter = 0
         While Up.Length = 0 And Running
@@ -1180,7 +1180,7 @@ Public Class Form1
             counter = counter + 1
             ' wait a couple of minutes for it to start
             If counter > 1200 Then
-                Print("Opensim failed to start")
+                Print("Error:Opensim failed to start")
                 KillAll()
                 Buttons(StartButton)
                 Dim yesno = MsgBox("Opensim did not start. Do you want to see the log file?", vbYesNo)
@@ -1197,7 +1197,7 @@ Public Class Form1
             Try
                 Up = client.DownloadString("http://127.0.0.1:" + My.Settings.HttpPort + "/?_Opensim=" + Random())
             Catch ex As Exception
-                Log("Opensim is not yet running:" + ex.Message)
+                Log("Info:Opensim is not yet running, waiting for it to start listeneing")
                 Up = ""
                 If InStr(ex.Message, "404") Then
                     Up = "Done"
