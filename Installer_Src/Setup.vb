@@ -36,6 +36,7 @@ Public Class Form1
     '
     '     '-debug' forces this to use the DebugPath folder for testing
     '
+
 #Region "Declarations"
 
     Dim MyVersion As String = "1.51"
@@ -716,7 +717,15 @@ Public Class Form1
         Else
             INIname = "MyWorld.ini"
         End If
-        Dim onceflag As Boolean = False
+
+        ' add this sim name as a default to the file as HG regions, and add the other regions as fallback
+        Dim DefaultName = aRegion(My.Settings.WelcomeRegion + 1).RegionName
+        '(replace spaces with underscore)
+        DefaultName = DefaultName.Replace(" ", "_")    ' because this is a screwy thing they did in the INI file
+
+        Dim onceflag As Boolean = False ' only do the DefaultName
+        Dim counter As Integer = 1
+        Dim L = aRegion.GetUpperBound(0)
 
         Using outputFile As New StreamWriter(prefix + "File.tmp")
             reader = System.IO.File.OpenText(prefix + INIname)
@@ -725,17 +734,11 @@ Public Class Form1
                 line = reader.ReadLine()
 
                 If line.Contains("DefaultRegion, DefaultHGRegion, FallbackRegion") Then
-                    ' only do the first line as we will replace them all
+                    ' flag lets us skip multi-lines
                     If onceflag = False Then
                         onceflag = True
-                        Dim counter As Integer = 1
-                        Dim L = aRegion.GetUpperBound(0)
-                        While counter <= L
-                            Dim simName = aRegion(counter).RegionName
-                            line = "Region_" + simName + " = " + """" + "DefaultRegion, DefaultHGRegion, FallbackRegion" + """"
-                            counter += 1
-                            outputFile.WriteLine(line)
-                        End While
+                        line = "Region_" + DefaultName + " = " + """" + "DefaultRegion, DefaultHGRegion, FallbackRegion" + """"
+                        outputFile.WriteLine(line)
                     End If
                 Else
                     outputFile.WriteLine(line)

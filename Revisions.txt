@@ -54,7 +54,7 @@ This re-release updates it from the original Sim On A Stick format into a standa
 1.3.7 2017-1-24 Opensim 0.9 refresh, default region fixes to Opensim.ini		   
 1.4.0 2017-1-26 Public Port moved to 8001 to fix HG issues. 
 1.5.0 2017-1-31 All changes released to updater
-
+1.5.1 2017-12-1 Default Region set.
 			   
 
 

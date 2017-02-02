@@ -761,6 +761,18 @@ Namespace My
                 Me("DiagsRun2") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("0")>  _
+        Public Property WelcomeRegion() As Integer
+            Get
+                Return CType(Me("WelcomeRegion"),Integer)
+            End Get
+            Set
+                Me("WelcomeRegion") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

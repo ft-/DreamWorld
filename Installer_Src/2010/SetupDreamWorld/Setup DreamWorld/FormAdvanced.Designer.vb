@@ -25,6 +25,8 @@ Partial Class AdvancedForm
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(AdvancedForm))
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
+        Me.WelcomeRegion = New System.Windows.Forms.Label()
+        Me.WelcomeBox1 = New System.Windows.Forms.ComboBox()
         Me.httpPort = New System.Windows.Forms.TextBox()
         Me.Label13 = New System.Windows.Forms.Label()
         Me.Label2 = New System.Windows.Forms.Label()
@@ -103,6 +105,7 @@ Partial Class AdvancedForm
         Me.MapBox = New System.Windows.Forms.GroupBox()
         Me.MapPicture = New System.Windows.Forms.PictureBox()
         Me.GroupBox6 = New System.Windows.Forms.GroupBox()
+        Me.LinkLabel1 = New System.Windows.Forms.LinkLabel()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
         Me.Web.SuspendLayout()
@@ -118,6 +121,8 @@ Partial Class AdvancedForm
         '
         'GroupBox2
         '
+        Me.GroupBox2.Controls.Add(Me.WelcomeRegion)
+        Me.GroupBox2.Controls.Add(Me.WelcomeBox1)
         Me.GroupBox2.Controls.Add(Me.httpPort)
         Me.GroupBox2.Controls.Add(Me.Label13)
         Me.GroupBox2.Controls.Add(Me.Label2)
@@ -133,10 +138,31 @@ Partial Class AdvancedForm
         Me.GroupBox2.Controls.Add(Me.Label5)
         Me.GroupBox2.Location = New System.Drawing.Point(662, 12)
         Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Size = New System.Drawing.Size(192, 265)
+        Me.GroupBox2.Size = New System.Drawing.Size(192, 295)
         Me.GroupBox2.TabIndex = 5
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Grid"
+        '
+        'WelcomeRegion
+        '
+        Me.WelcomeRegion.AutoSize = True
+        Me.WelcomeRegion.Location = New System.Drawing.Point(22, 241)
+        Me.WelcomeRegion.Name = "WelcomeRegion"
+        Me.WelcomeRegion.Size = New System.Drawing.Size(89, 13)
+        Me.WelcomeRegion.TabIndex = 32
+        Me.WelcomeRegion.Text = "Welcome Region"
+        Me.ToolTip1.SetToolTip(Me.WelcomeRegion, "This region is where visitors first arrive")
+        '
+        'WelcomeBox1
+        '
+        Me.WelcomeBox1.AutoCompleteCustomSource.AddRange(New String() {"1 Hour", "4 Hour", "12 Hour", "Daily", "Weekly"})
+        Me.WelcomeBox1.FormattingEnabled = True
+        Me.WelcomeBox1.Items.AddRange(New Object() {"Hourly", "12 Hour", "Daily", "Weekly"})
+        Me.WelcomeBox1.Location = New System.Drawing.Point(18, 261)
+        Me.WelcomeBox1.Name = "WelcomeBox1"
+        Me.WelcomeBox1.Size = New System.Drawing.Size(121, 21)
+        Me.WelcomeBox1.TabIndex = 31
+        Me.ToolTip1.SetToolTip(Me.WelcomeBox1, "The first sim a visitor will arrive in")
         '
         'httpPort
         '
@@ -183,7 +209,7 @@ Partial Class AdvancedForm
         '
         'AddRegion
         '
-        Me.AddRegion.Location = New System.Drawing.Point(21, 184)
+        Me.AddRegion.Location = New System.Drawing.Point(18, 179)
         Me.AddRegion.Name = "AddRegion"
         Me.AddRegion.Size = New System.Drawing.Size(148, 23)
         Me.AddRegion.TabIndex = 26
@@ -192,7 +218,7 @@ Partial Class AdvancedForm
         '
         'RegionButton
         '
-        Me.RegionButton.Location = New System.Drawing.Point(21, 223)
+        Me.RegionButton.Location = New System.Drawing.Point(18, 208)
         Me.RegionButton.Name = "RegionButton"
         Me.RegionButton.Size = New System.Drawing.Size(148, 23)
         Me.RegionButton.TabIndex = 27
@@ -518,13 +544,14 @@ Partial Class AdvancedForm
         '
         'GroupBox4
         '
+        Me.GroupBox4.Controls.Add(Me.LinkLabel1)
         Me.GroupBox4.Controls.Add(Me.ParcelGod)
         Me.GroupBox4.Controls.Add(Me.ManagerGod)
         Me.GroupBox4.Controls.Add(Me.RegionGod)
         Me.GroupBox4.Controls.Add(Me.AllowGod)
-        Me.GroupBox4.Location = New System.Drawing.Point(3, 159)
+        Me.GroupBox4.Location = New System.Drawing.Point(12, 159)
         Me.GroupBox4.Name = "GroupBox4"
-        Me.GroupBox4.Size = New System.Drawing.Size(184, 118)
+        Me.GroupBox4.Size = New System.Drawing.Size(175, 118)
         Me.GroupBox4.TabIndex = 18
         Me.GroupBox4.TabStop = False
         Me.GroupBox4.Text = "Permissions"
@@ -883,7 +910,7 @@ Partial Class AdvancedForm
         '
         'VoiceButton1
         '
-        Me.VoiceButton1.Location = New System.Drawing.Point(684, 372)
+        Me.VoiceButton1.Location = New System.Drawing.Point(684, 401)
         Me.VoiceButton1.Name = "VoiceButton1"
         Me.VoiceButton1.Size = New System.Drawing.Size(145, 23)
         Me.VoiceButton1.TabIndex = 30
@@ -898,7 +925,7 @@ Partial Class AdvancedForm
         Me.MapBox.Controls.Add(Me.MapBetter)
         Me.MapBox.Controls.Add(Me.MapBest)
         Me.MapBox.Controls.Add(Me.MapGood)
-        Me.MapBox.Location = New System.Drawing.Point(3, 289)
+        Me.MapBox.Location = New System.Drawing.Point(12, 284)
         Me.MapBox.Name = "MapBox"
         Me.MapBox.Size = New System.Drawing.Size(333, 140)
         Me.MapBox.TabIndex = 137
@@ -919,12 +946,22 @@ Partial Class AdvancedForm
         '
         Me.GroupBox6.Controls.Add(Me.OpensImNew)
         Me.GroupBox6.Controls.Add(Me.OpensimOld)
-        Me.GroupBox6.Location = New System.Drawing.Point(662, 289)
+        Me.GroupBox6.Location = New System.Drawing.Point(662, 313)
         Me.GroupBox6.Name = "GroupBox6"
         Me.GroupBox6.Size = New System.Drawing.Size(193, 77)
         Me.GroupBox6.TabIndex = 26
         Me.GroupBox6.TabStop = False
         Me.GroupBox6.Text = "Grid Version"
+        '
+        'LinkLabel1
+        '
+        Me.LinkLabel1.AutoSize = True
+        Me.LinkLabel1.Location = New System.Drawing.Point(56, 38)
+        Me.LinkLabel1.Name = "LinkLabel1"
+        Me.LinkLabel1.Size = New System.Drawing.Size(59, 13)
+        Me.LinkLabel1.TabIndex = 1856
+        Me.LinkLabel1.TabStop = True
+        Me.LinkLabel1.Text = "LinkLabel1"
         '
         'AdvancedForm
         '
@@ -1047,4 +1084,7 @@ Partial Class AdvancedForm
     Friend WithEvents MapPicture As PictureBox
     Friend WithEvents Label6 As Label
     Friend WithEvents BackupFolder As TextBox
+    Friend WithEvents WelcomeRegion As Label
+    Friend WithEvents WelcomeBox1 As ComboBox
+    Friend WithEvents LinkLabel1 As LinkLabel
 End Class

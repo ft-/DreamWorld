@@ -94,7 +94,6 @@ Public Class AdvancedForm
         DbPassword.Text = My.Settings.DBPassword
         SplashPage.Text = My.Settings.SplashPage
 
-
         ' physics engines differ between 0.8.2.1 and 0.9.1
         If My.Settings.GridFolder = "Opensim" And PhysicsubODE.Checked Then
             My.Settings.Physics = 3 ' They just switched engines, set a default of Bullet, separate thread for 0.8.1
@@ -146,6 +145,8 @@ Public Class AdvancedForm
             MapBest.Checked = True
             MapPicture.Image = My.Resources.Best
         End If
+
+        LoadWelcomeBox()
 
         gInitted = True
     End Sub
@@ -519,6 +520,33 @@ Public Class AdvancedForm
                 BackupFolder.Text = thing
             End If
         End If
+    End Sub
+
+    Private Sub ComboBox1_Click(sender As Object, e As EventArgs) Handles WelcomeBox1.Click
+        LoadWelcomeBox()
+    End Sub
+
+    Private Sub ComboBox1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles WelcomeBox1.SelectedIndexChanged
+        My.Settings.WelcomeRegion = WelcomeBox1.SelectedIndex
+        My.Settings.Save()
+    End Sub
+
+    Private Sub LoadWelcomeBox()
+        ' Default welcome region load
+        WelcomeBox1.Items.Clear()
+        Dim counter As Integer = 1
+        Dim L = Form1.aRegion.GetUpperBound(0)
+        While counter <= L
+            WelcomeBox1.Items.Add(Form1.aRegion(counter).RegionName)
+            counter += 1
+        End While
+
+        Try
+            WelcomeBox1.SelectedIndex = My.Settings.WelcomeRegion
+        Catch ex As Exception
+            WelcomeBox1.SelectedIndex = -1
+        End Try
+
     End Sub
 #End Region
 
