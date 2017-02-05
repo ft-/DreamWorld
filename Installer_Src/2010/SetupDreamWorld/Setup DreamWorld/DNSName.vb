@@ -43,10 +43,6 @@ Public Class DNSName
             End Try
             If (Checkname = TextBox1.Text) Then
                 TextBox1.Text = Checkname
-
-            ElseIf Checkname = "USED" Then
-                MsgBox("That name is already in use", vbInformation)
-
             End If
         End If
     End Sub

@@ -2310,6 +2310,10 @@ Public Class Form1
         If My.Settings.LoopBackDiag Then
             Loopb = "Pass"
         End If
+        Dim Pub As String = "No"
+        If My.Settings.DNSPublic then
+			Pub = "Yes"
+		end if
 
         Dim data
         data = "&r=" + Machine _
@@ -2317,6 +2321,7 @@ Public Class Form1
             + "&OV=" + SimVersion _
             + "&UpNp=" + UpNp _
             + "&Loop=" + Loopb _
+			+ "&Public=" + Pub _
             + "&x=" + Random()
         Return data
 
