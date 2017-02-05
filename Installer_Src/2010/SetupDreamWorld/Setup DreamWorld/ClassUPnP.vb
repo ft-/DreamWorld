@@ -1,4 +1,5 @@
-﻿
+﻿Imports System.Net.Sockets
+Imports System.IO
 Imports System.Net
 Imports System.Runtime.InteropServices
 
@@ -11,6 +12,8 @@ Public Class UPNP
 
     Private staticEnabled As Boolean = True
     Private dynamicEnabled As Boolean = True
+
+    Private myfolder As String = ""
 
     ''' <summary>
     ''' The different supported protocols
@@ -48,7 +51,9 @@ Public Class UPNP
     ''' The UPnP Managed Class
     ''' </summary>
     ''' <remarks></remarks>
-    Public Sub New()
+    Public Sub New(Folder As String)
+
+        myfolder = Folder
 
         'Create the new NAT Class
         upnpnat = New NATUPNPLib.UPnPNAT
@@ -56,6 +61,8 @@ Public Class UPNP
         'generate the static mappings
         Me.GetStaticMappings()
         Me.GetDynamicMappings()
+
+        Print()
 
     End Sub
 
@@ -67,10 +74,17 @@ Public Class UPNP
         Try
             staticMapping = upnpnat.StaticPortMappingCollection()
             If staticMapping Is Nothing Then
+                Log("No UPnP mappings found. Do you have a uPnP enabled router as your gateway?")
                 staticEnabled = False
+                Return
+            End If
+
+            If staticMapping.Count = 0 Then
+                Log("Router does not have any active uPnP mappings.")
             End If
 
         Catch ex As NotImplementedException
+            Log("Router does not support Static mappings.")
             staticEnabled = False
         End Try
     End Sub
@@ -86,6 +100,7 @@ Public Class UPNP
                 dynamicEnabled = False
             End If
         Catch ex As NotImplementedException
+            Log("Router does not support Dynamic mappings.")
             dynamicEnabled = False
         End Try
     End Sub
@@ -167,14 +182,29 @@ Public Class UPNP
         Return False
 
     End Function
+    Public Shared Function LocalIP() As String
+
+        Dim sock As Socket = New Socket(AddressFamily.InterNetwork, SocketType.Dgram, 0)
+        Try
+            Using sock
+                sock.Connect("8.8.8.8", 65530)  ' try Google
+                Dim EndPoint As IPEndPoint = sock.LocalEndPoint
+                LocalIP = EndPoint.Address.ToString()
+            End Using
+        Catch ex As Exception
+            LocalIP = "127.0.0.1"
+        End Try
+
+    End Function
 
     ''' <summary>
     ''' Attempts to locate the local IP address of this computer.
     ''' </summary>
     ''' <returns>String</returns>
     ''' <remarks></remarks>
-    Public Shared Function LocalIP() As String
+    Public Shared Function LocalIP1() As String
         Dim IPList As System.Net.IPHostEntry = System.Net.Dns.GetHostEntry(System.Net.Dns.GetHostName)
+
         For Each IPaddress In IPList.AddressList
             If (IPaddress.AddressFamily = Sockets.AddressFamily.InterNetwork) AndAlso IsPrivateIP(IPaddress.ToString()) Then
                 Dim ip = IPaddress.ToString()
@@ -226,37 +256,40 @@ Public Class UPNP
         GC.SuppressFinalize(Me)
     End Sub
 
-    ''' <summary>
+
     ''' Prints out some debugging information to use.
-    ''' </summary>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
-    Public Function Print() As List(Of String)
 
-        ' Return list
-        Dim L As New List(Of String)
+    Public Sub Print()
 
+        '
         ' Loop through all the data after a check
         If staticEnabled Then
+
+            Log("---------Static Mappings-----------------------")
+
             For Each mapping As NATUPNPLib.IStaticPortMapping In staticMapping
-
-                ' Add some initial data
-                L.Add("--------------------------------------")
-
-                'Grab the rest
-                L.Add(String.Format("IP: {0}", mapping.InternalgWSCLient))
-                L.Add(String.Format("Port: {0}", mapping.InternalPort))
-                L.Add(String.Format("Description: {0}", mapping.Description))
-
+                If mapping.Enabled Then
+                    Log(String.Format("Enabled: {0}", mapping.Description))
+                Else
+                    Log(String.Format("**Disabled**: {0}", mapping.Description))
+                End If
+                Log(String.Format("Port: {0}", mapping.InternalPort))
+                Log(String.Format("Protocol: {0}", mapping.Protocol))
+                Log(String.Format("ExternalIPAddress: {0}", mapping.ExternalIPAddress))
+                Log("--------------------------------------")
             Next
         End If
 
-        'Finisher
-        L.Add("--------------------------------------")
+    End Sub
 
-        ' Give it back
-        Return L
+    Public Sub Log(message As String)
+        Try
+            Using outputFile As New StreamWriter(myfolder & "\OutworldzFiles\UPNP.log", True)
+                outputFile.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + message)
+            End Using
+        Catch
+        End Try
+    End Sub
 
-    End Function
 
 End Class

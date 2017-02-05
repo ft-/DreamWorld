@@ -39,7 +39,7 @@ Public Class Form1
 
 #Region "Declarations"
 
-    Dim MyVersion As String = "1.51"
+    Dim MyVersion As String = "1.53"
     Dim DebugPath As String = "C:\Opensim\Outworldz Test" ' Note that this uses spaces
     Public Domain As String = "http://www.outworldz.com"
     Dim RevNotesFile As String = "Update_Notes_" + MyVersion + ".rtf"
@@ -95,7 +95,7 @@ Public Class Form1
                             }
     Dim gDebug = False       ' toggled by -debug flag on command line
     Dim gContentAvailable As Boolean = False ' assume there is no OAR and IAR data available
-    Dim MyUPnPMap As New UPNP
+    Dim MyUPnPMap
 
     Public aRegion(0) As Object
 
@@ -154,6 +154,7 @@ Public Class Form1
 
     Private Sub Form1_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 
+
         'hide progress
         ProgressBar1.Visible = True
         ProgressBar1.Minimum = 0
@@ -206,13 +207,18 @@ Public Class Form1
         End If
         gCurSlashDir = MyFolder.Replace("\", "/")    ' because Mysql uses unix like slashes, that's why
 
+        ClearLogFiles() ' clear log fles
+
+        MyUPnPMap = New UPNP(MyFolder)
+
         Try
             My.Computer.FileSystem.RenameFile(MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\Regions\RegionConfig.ini", "Outworldz.ini")
+            Log("Info:Upgraded RegionConfig.ini to Outworldz.ini")
         Catch ex As Exception
-            Log("Info:Rename:" + ex.Message)
+            Log("Info:No need to upgrade RegionConfig.ini")
         End Try
 
-        If System.IO.File.Exists(MyFolder + "\" + RevNotesFile) Then
+        If System.IO.File.Exists(MyFolder + " \ " + RevNotesFile) Then
             System.Diagnostics.Process.Start("wordpad.exe", """" + MyFolder + "\" + RevNotesFile + """")
         End If
 
@@ -228,8 +234,6 @@ Public Class Form1
         Me.Show()
         ProgressBar1.Value = 100
         ProgressBar1.Value = 0
-
-        ClearLogFiles() ' clear log fles
 
         If Not My.Settings.SkipUpdateCheck Then
             CheckForUpdates()
@@ -262,7 +266,7 @@ Public Class Form1
 
             Buttons(StartButton)
             ProgressBar1.Value = 100
-            Log("Info:Ready to start")
+            Log("Info: Ready to start")
             Print("Ready to Launch! Click 'Start' to begin your adventure in Opensimulator.")
         Else
 
@@ -1200,7 +1204,7 @@ Public Class Form1
             Try
                 Up = client.DownloadString("http://127.0.0.1:" + My.Settings.HttpPort + "/?_Opensim=" + Random())
             Catch ex As Exception
-                Log("Info:Opensim is not yet running, waiting for it to start listeneing")
+                Log("Info:Opensim is not yet running, waiting for it to start listening")
                 Up = ""
                 If InStr(ex.Message, "404") Then
                     Up = "Done"
@@ -1283,26 +1287,24 @@ Public Class Form1
 
 #Region "Logging"
     Private Sub ClearLogFiles()
-        ' clear out the log files
-        Try
-            Dim f = MyFolder + "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\Opensim.log"
-            My.Computer.FileSystem.DeleteFile(f)
-        Catch ex As Exception
-            Log("Info:Opensim Log file did not exist")
-        End Try
-        BumpProgress10()
-        Try
-            My.Computer.FileSystem.DeleteFile(MyFolder + "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\OpenSimConsoleHistory.txt")
-        Catch ex As Exception
-            Log("Info:Console history was empty")
-        End Try
-        Try
-            My.Computer.FileSystem.DeleteFile(MyFolder & "\OutworldzFiles\Diagnostics.log")
-        Catch ex As Exception
-            Log("Info:Console history was empty")
-        End Try
 
-        BumpProgress10()
+        Dim Logfiles = New List(Of String) From {
+            MyFolder + "\OutworldzFiles\Outworldz.log",
+            MyFolder + "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\Opensim.log",
+            MyFolder + "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\OpenSimConsoleHistory.txt",
+            MyFolder + "\OutworldzFiles\Diagnostics.log",
+            MyFolder + "\OutworldzFiles\UPNP.log"
+        }
+
+        For Each thing In Logfiles
+            ' clear out the log files
+            Try
+                My.Computer.FileSystem.DeleteFile(thing)
+            Catch ex As Exception
+                Log("Info:" + thing + " is empty")
+            End Try
+            BumpProgress10()
+        Next
     End Sub
 
     Public Sub Log(message As String)
@@ -2205,7 +2207,6 @@ Public Class Form1
         End If
         Log("Diagnostics set the Hypergrid address to " + My.Settings.PublicIP)
 
-
     End Sub
 
     Private Function GetIPv4Address() As String
@@ -2249,24 +2250,30 @@ Public Class Form1
 
     Function OpenRouterPorts() As Boolean
 
-        Log("OpenRouterPorts local ip seems to be " + UPNP.LocalIP)
+        Log("Local ip seems to be " + UPNP.LocalIP)
 
         Try
             If Not MyUPnPMap.Exists(Convert.ToInt16(My.Settings.HttpPort), UPNP.Protocol.TCP) Then
                 MyUPnPMap.Add(UPNP.LocalIP, Convert.ToInt16(My.Settings.HttpPort), UPNP.Protocol.TCP, "Opensim TCP grid port")
                 Log("uPnp: Grid Port.TCP added")
+            Else
+                Log("uPnp: HttpPort.TCP " + My.Settings.HttpPort + " is already in uPnP")
             End If
             BumpProgress10()
 
             If Not MyUPnPMap.Exists(Convert.ToInt16(My.Settings.PublicPort), UPNP.Protocol.UDP) Then
                 MyUPnPMap.Add(UPNP.LocalIP, Convert.ToInt16(My.Settings.PublicPort), UPNP.Protocol.UDP, "Opensim UDP Public")
                 Log("uPnp: PublicPort.UDP added:")
+            Else
+                Log("uPnp: PublicPort.UDP " + My.Settings.PublicPort + " is already in uPnP")
             End If
             BumpProgress10()
 
             If Not MyUPnPMap.Exists(Convert.ToInt16(My.Settings.PublicPort), UPNP.Protocol.TCP) Then
                 MyUPnPMap.Add(UPNP.LocalIP, Convert.ToInt16(My.Settings.PublicPort), UPNP.Protocol.TCP, "Opensim TCP Public")
                 Log("uPnp: PublicPort.TCP added")
+            Else
+                Log("uPnp: PublicPort.TCP " + My.Settings.PublicPort + "    is already in uPnP")
             End If
             BumpProgress10()
 
@@ -2279,6 +2286,8 @@ Public Class Form1
                 If Not MyUPnPMap.Exists(RegionPort, UPNP.Protocol.UDP) Then
                     MyUPnPMap.Add(UPNP.LocalIP, RegionPort, UPNP.Protocol.UDP, "Opensim UDP Region")
                     Log("uPnp: RegionPort.UDP Added:" + Convert.ToString(RegionPort))
+                Else
+                    Log("uPnp: RegionPort.UDP " + Convert.ToString(RegionPort) + " is already in uPnP")
                 End If
                 BumpProgress10()
 
