@@ -59,6 +59,7 @@ Partial Class Form1
         Me.BackupToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.AllRegionsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MysqlToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.RestoreDatabaseToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.WebStatsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ViewWebUI = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
@@ -88,7 +89,8 @@ Partial Class Form1
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.LogButton = New System.Windows.Forms.Button()
         Me.IgnoreButton = New System.Windows.Forms.Button()
-        Me.RestoreDatabaseToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ConsoleCommandsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ConsoleCOmmandsToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuStrip1.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -301,7 +303,7 @@ Partial Class Form1
         '
         'HelpToolStripMenuItem
         '
-        Me.HelpToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ShowHyperGridAddressToolStripMenuItem, Me.BackupToolStripMenuItem, Me.WebStatsToolStripMenuItem, Me.ViewWebUI, Me.ToolStripMenuItem1, Me.LoopBackToolStripMenuItem, Me.CHeckForUpdatesToolStripMenuItem, Me.DiagnosticsToolStripMenuItem, Me.CheckDatabaseToolStripMenuItem, Me.mnuAbout})
+        Me.HelpToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ShowHyperGridAddressToolStripMenuItem, Me.BackupToolStripMenuItem, Me.ConsoleCOmmandsToolStripMenuItem1, Me.WebStatsToolStripMenuItem, Me.ViewWebUI, Me.ToolStripMenuItem1, Me.LoopBackToolStripMenuItem, Me.CHeckForUpdatesToolStripMenuItem, Me.DiagnosticsToolStripMenuItem, Me.CheckDatabaseToolStripMenuItem, Me.mnuAbout, Me.ConsoleCommandsToolStripMenuItem})
         Me.HelpToolStripMenuItem.Name = "HelpToolStripMenuItem"
         Me.HelpToolStripMenuItem.Size = New System.Drawing.Size(44, 20)
         Me.HelpToolStripMenuItem.Text = "Help"
@@ -335,6 +337,13 @@ Partial Class Form1
         Me.MysqlToolStripMenuItem.Name = "MysqlToolStripMenuItem"
         Me.MysqlToolStripMenuItem.Size = New System.Drawing.Size(184, 22)
         Me.MysqlToolStripMenuItem.Text = "Backup Database"
+        '
+        'RestoreDatabaseToolStripMenuItem
+        '
+        Me.RestoreDatabaseToolStripMenuItem.Image = CType(resources.GetObject("RestoreDatabaseToolStripMenuItem.Image"), System.Drawing.Image)
+        Me.RestoreDatabaseToolStripMenuItem.Name = "RestoreDatabaseToolStripMenuItem"
+        Me.RestoreDatabaseToolStripMenuItem.Size = New System.Drawing.Size(184, 22)
+        Me.RestoreDatabaseToolStripMenuItem.Text = "Restore Database"
         '
         'WebStatsToolStripMenuItem
         '
@@ -565,12 +574,18 @@ Partial Class Form1
         Me.IgnoreButton.Text = "Skip"
         Me.IgnoreButton.UseVisualStyleBackColor = True
         '
-        'RestoreDatabaseToolStripMenuItem
+        'ConsoleCommandsToolStripMenuItem
         '
-        Me.RestoreDatabaseToolStripMenuItem.Image = CType(resources.GetObject("RestoreDatabaseToolStripMenuItem.Image"), System.Drawing.Image)
-        Me.RestoreDatabaseToolStripMenuItem.Name = "RestoreDatabaseToolStripMenuItem"
-        Me.RestoreDatabaseToolStripMenuItem.Size = New System.Drawing.Size(184, 22)
-        Me.RestoreDatabaseToolStripMenuItem.Text = "Restore Database"
+        Me.ConsoleCommandsToolStripMenuItem.Name = "ConsoleCommandsToolStripMenuItem"
+        Me.ConsoleCommandsToolStripMenuItem.Size = New System.Drawing.Size(205, 22)
+        Me.ConsoleCommandsToolStripMenuItem.Text = "Console Commands"
+        '
+        'ConsoleCOmmandsToolStripMenuItem1
+        '
+        Me.ConsoleCOmmandsToolStripMenuItem1.Image = Global.Outworldz.My.Resources.Resources.document_view
+        Me.ConsoleCOmmandsToolStripMenuItem1.Name = "ConsoleCOmmandsToolStripMenuItem1"
+        Me.ConsoleCOmmandsToolStripMenuItem1.Size = New System.Drawing.Size(205, 22)
+        Me.ConsoleCOmmandsToolStripMenuItem1.Text = "Console Commands"
         '
         'Form1
         '
@@ -682,4 +697,6 @@ Partial Class Form1
     Friend WithEvents AllRegionsToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents MysqlToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents RestoreDatabaseToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents ConsoleCOmmandsToolStripMenuItem1 As ToolStripMenuItem
+    Friend WithEvents ConsoleCommandsToolStripMenuItem As ToolStripMenuItem
 End Class

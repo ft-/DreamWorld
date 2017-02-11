@@ -105,7 +105,12 @@ Partial Class AdvancedForm
         Me.MapBox = New System.Windows.Forms.GroupBox()
         Me.MapPicture = New System.Windows.Forms.PictureBox()
         Me.GroupBox6 = New System.Windows.Forms.GroupBox()
-        Me.LinkLabel1 = New System.Windows.Forms.LinkLabel()
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.PictureBox2 = New System.Windows.Forms.PictureBox()
+        Me.PictureBox3 = New System.Windows.Forms.PictureBox()
+        Me.PictureBox4 = New System.Windows.Forms.PictureBox()
+        Me.PictureBox5 = New System.Windows.Forms.PictureBox()
+        Me.TestButton1 = New System.Windows.Forms.Button()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
         Me.Web.SuspendLayout()
@@ -117,10 +122,16 @@ Partial Class AdvancedForm
         Me.MapBox.SuspendLayout()
         CType(Me.MapPicture, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox6.SuspendLayout()
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.PictureBox3, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.PictureBox4, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.PictureBox5, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'GroupBox2
         '
+        Me.GroupBox2.Controls.Add(Me.TestButton1)
         Me.GroupBox2.Controls.Add(Me.WelcomeRegion)
         Me.GroupBox2.Controls.Add(Me.WelcomeBox1)
         Me.GroupBox2.Controls.Add(Me.httpPort)
@@ -138,7 +149,7 @@ Partial Class AdvancedForm
         Me.GroupBox2.Controls.Add(Me.Label5)
         Me.GroupBox2.Location = New System.Drawing.Point(662, 12)
         Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Size = New System.Drawing.Size(192, 295)
+        Me.GroupBox2.Size = New System.Drawing.Size(192, 330)
         Me.GroupBox2.TabIndex = 5
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Grid"
@@ -146,7 +157,7 @@ Partial Class AdvancedForm
         'WelcomeRegion
         '
         Me.WelcomeRegion.AutoSize = True
-        Me.WelcomeRegion.Location = New System.Drawing.Point(22, 241)
+        Me.WelcomeRegion.Location = New System.Drawing.Point(18, 277)
         Me.WelcomeRegion.Name = "WelcomeRegion"
         Me.WelcomeRegion.Size = New System.Drawing.Size(89, 13)
         Me.WelcomeRegion.TabIndex = 32
@@ -158,7 +169,7 @@ Partial Class AdvancedForm
         Me.WelcomeBox1.AutoCompleteCustomSource.AddRange(New String() {"1 Hour", "4 Hour", "12 Hour", "Daily", "Weekly"})
         Me.WelcomeBox1.FormattingEnabled = True
         Me.WelcomeBox1.Items.AddRange(New Object() {"Hourly", "12 Hour", "Daily", "Weekly"})
-        Me.WelcomeBox1.Location = New System.Drawing.Point(18, 261)
+        Me.WelcomeBox1.Location = New System.Drawing.Point(14, 297)
         Me.WelcomeBox1.Name = "WelcomeBox1"
         Me.WelcomeBox1.Size = New System.Drawing.Size(121, 21)
         Me.WelcomeBox1.TabIndex = 31
@@ -166,7 +177,7 @@ Partial Class AdvancedForm
         '
         'httpPort
         '
-        Me.httpPort.Location = New System.Drawing.Point(123, 124)
+        Me.httpPort.Location = New System.Drawing.Point(119, 160)
         Me.httpPort.Name = "httpPort"
         Me.httpPort.Size = New System.Drawing.Size(47, 20)
         Me.httpPort.TabIndex = 30
@@ -175,7 +186,7 @@ Partial Class AdvancedForm
         'Label13
         '
         Me.Label13.AutoSize = True
-        Me.Label13.Location = New System.Drawing.Point(19, 127)
+        Me.Label13.Location = New System.Drawing.Point(15, 163)
         Me.Label13.Name = "Label13"
         Me.Label13.Size = New System.Drawing.Size(48, 13)
         Me.Label13.TabIndex = 29
@@ -184,7 +195,7 @@ Partial Class AdvancedForm
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(10, 49)
+        Me.Label2.Location = New System.Drawing.Point(6, 85)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(57, 13)
         Me.Label2.TabIndex = 26
@@ -200,7 +211,7 @@ Partial Class AdvancedForm
         '
         'GridName
         '
-        Me.GridName.Location = New System.Drawing.Point(13, 67)
+        Me.GridName.Location = New System.Drawing.Point(9, 103)
         Me.GridName.Name = "GridName"
         Me.GridName.Size = New System.Drawing.Size(173, 20)
         Me.GridName.TabIndex = 10
@@ -209,7 +220,7 @@ Partial Class AdvancedForm
         '
         'AddRegion
         '
-        Me.AddRegion.Location = New System.Drawing.Point(18, 179)
+        Me.AddRegion.Location = New System.Drawing.Point(14, 215)
         Me.AddRegion.Name = "AddRegion"
         Me.AddRegion.Size = New System.Drawing.Size(148, 23)
         Me.AddRegion.TabIndex = 26
@@ -218,7 +229,7 @@ Partial Class AdvancedForm
         '
         'RegionButton
         '
-        Me.RegionButton.Location = New System.Drawing.Point(18, 208)
+        Me.RegionButton.Location = New System.Drawing.Point(14, 244)
         Me.RegionButton.Name = "RegionButton"
         Me.RegionButton.Size = New System.Drawing.Size(148, 23)
         Me.RegionButton.TabIndex = 27
@@ -229,7 +240,7 @@ Partial Class AdvancedForm
         '
         Me.DnsName.Location = New System.Drawing.Point(9, 28)
         Me.DnsName.Name = "DnsName"
-        Me.DnsName.Size = New System.Drawing.Size(178, 20)
+        Me.DnsName.Size = New System.Drawing.Size(173, 20)
         Me.DnsName.TabIndex = 22
         Me.ToolTip1.SetToolTip(Me.DnsName, "DynDNS Name, Fixed Domain Name, Public WAN IP, PC's IP address, or 127.0.01. The " &
         "first two allow Hypergridding.  PC LAn allows more than one LAN computer when th" &
@@ -246,7 +257,7 @@ Partial Class AdvancedForm
         '
         'PublicPort
         '
-        Me.PublicPort.Location = New System.Drawing.Point(123, 102)
+        Me.PublicPort.Location = New System.Drawing.Point(119, 138)
         Me.PublicPort.Name = "PublicPort"
         Me.PublicPort.Size = New System.Drawing.Size(47, 20)
         Me.PublicPort.TabIndex = 24
@@ -255,7 +266,7 @@ Partial Class AdvancedForm
         'Label4
         '
         Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(18, 148)
+        Me.Label4.Location = New System.Drawing.Point(14, 184)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(62, 13)
         Me.Label4.TabIndex = 4
@@ -263,7 +274,7 @@ Partial Class AdvancedForm
         '
         'PrivatePort
         '
-        Me.PrivatePort.Location = New System.Drawing.Point(123, 146)
+        Me.PrivatePort.Location = New System.Drawing.Point(119, 182)
         Me.PrivatePort.Name = "PrivatePort"
         Me.PrivatePort.Size = New System.Drawing.Size(47, 20)
         Me.PrivatePort.TabIndex = 25
@@ -272,7 +283,7 @@ Partial Class AdvancedForm
         'Label5
         '
         Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(19, 105)
+        Me.Label5.Location = New System.Drawing.Point(15, 141)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(58, 13)
         Me.Label5.TabIndex = 5
@@ -297,6 +308,7 @@ Partial Class AdvancedForm
         '
         'GroupBox3
         '
+        Me.GroupBox3.Controls.Add(Me.PictureBox2)
         Me.GroupBox3.Controls.Add(Me.Label6)
         Me.GroupBox3.Controls.Add(Me.BackupFolder)
         Me.GroupBox3.Controls.Add(Me.Label9)
@@ -544,7 +556,7 @@ Partial Class AdvancedForm
         '
         'GroupBox4
         '
-        Me.GroupBox4.Controls.Add(Me.LinkLabel1)
+        Me.GroupBox4.Controls.Add(Me.PictureBox1)
         Me.GroupBox4.Controls.Add(Me.ParcelGod)
         Me.GroupBox4.Controls.Add(Me.ManagerGod)
         Me.GroupBox4.Controls.Add(Me.RegionGod)
@@ -591,6 +603,7 @@ Partial Class AdvancedForm
         '
         'GroupBox5
         '
+        Me.GroupBox5.Controls.Add(Me.PictureBox4)
         Me.GroupBox5.Controls.Add(Me.Label19)
         Me.GroupBox5.Controls.Add(Me.Label15)
         Me.GroupBox5.Controls.Add(Me.TimerInterval)
@@ -910,7 +923,7 @@ Partial Class AdvancedForm
         '
         'VoiceButton1
         '
-        Me.VoiceButton1.Location = New System.Drawing.Point(684, 401)
+        Me.VoiceButton1.Location = New System.Drawing.Point(454, 410)
         Me.VoiceButton1.Name = "VoiceButton1"
         Me.VoiceButton1.Size = New System.Drawing.Size(145, 23)
         Me.VoiceButton1.TabIndex = 30
@@ -919,6 +932,7 @@ Partial Class AdvancedForm
         '
         'MapBox
         '
+        Me.MapBox.Controls.Add(Me.PictureBox3)
         Me.MapBox.Controls.Add(Me.MapPicture)
         Me.MapBox.Controls.Add(Me.MapNone)
         Me.MapBox.Controls.Add(Me.MapSimple)
@@ -946,26 +960,76 @@ Partial Class AdvancedForm
         '
         Me.GroupBox6.Controls.Add(Me.OpensImNew)
         Me.GroupBox6.Controls.Add(Me.OpensimOld)
-        Me.GroupBox6.Location = New System.Drawing.Point(662, 313)
+        Me.GroupBox6.Location = New System.Drawing.Point(662, 348)
         Me.GroupBox6.Name = "GroupBox6"
         Me.GroupBox6.Size = New System.Drawing.Size(193, 77)
         Me.GroupBox6.TabIndex = 26
         Me.GroupBox6.TabStop = False
         Me.GroupBox6.Text = "Grid Version"
         '
-        'LinkLabel1
+        'PictureBox1
         '
-        Me.LinkLabel1.AutoSize = True
-        Me.LinkLabel1.Location = New System.Drawing.Point(56, 38)
-        Me.LinkLabel1.Name = "LinkLabel1"
-        Me.LinkLabel1.Size = New System.Drawing.Size(59, 13)
-        Me.LinkLabel1.TabIndex = 1856
-        Me.LinkLabel1.TabStop = True
-        Me.LinkLabel1.Text = "LinkLabel1"
+        Me.PictureBox1.Image = Global.Outworldz.My.Resources.Resources.about
+        Me.PictureBox1.Location = New System.Drawing.Point(127, 1)
+        Me.PictureBox1.Name = "PictureBox1"
+        Me.PictureBox1.Size = New System.Drawing.Size(28, 27)
+        Me.PictureBox1.TabIndex = 1856
+        Me.PictureBox1.TabStop = False
+        Me.ToolTip1.SetToolTip(Me.PictureBox1, "Click for Help on Grid Gods")
+        '
+        'PictureBox2
+        '
+        Me.PictureBox2.Image = Global.Outworldz.My.Resources.Resources.about
+        Me.PictureBox2.Location = New System.Drawing.Point(123, -2)
+        Me.PictureBox2.Name = "PictureBox2"
+        Me.PictureBox2.Size = New System.Drawing.Size(28, 32)
+        Me.PictureBox2.TabIndex = 1857
+        Me.PictureBox2.TabStop = False
+        Me.ToolTip1.SetToolTip(Me.PictureBox2, "Click for Help on Backup")
+        '
+        'PictureBox3
+        '
+        Me.PictureBox3.Image = Global.Outworldz.My.Resources.Resources.about
+        Me.PictureBox3.Location = New System.Drawing.Point(46, -1)
+        Me.PictureBox3.Name = "PictureBox3"
+        Me.PictureBox3.Size = New System.Drawing.Size(28, 27)
+        Me.PictureBox3.TabIndex = 1857
+        Me.PictureBox3.TabStop = False
+        Me.ToolTip1.SetToolTip(Me.PictureBox3, "Click for Help on Grid Gods")
+        '
+        'PictureBox4
+        '
+        Me.PictureBox4.Image = Global.Outworldz.My.Resources.Resources.about
+        Me.PictureBox4.Location = New System.Drawing.Point(128, 0)
+        Me.PictureBox4.Name = "PictureBox4"
+        Me.PictureBox4.Size = New System.Drawing.Size(28, 32)
+        Me.PictureBox4.TabIndex = 1858
+        Me.PictureBox4.TabStop = False
+        Me.ToolTip1.SetToolTip(Me.PictureBox4, "Click for Help on Personality")
+        '
+        'PictureBox5
+        '
+        Me.PictureBox5.Image = Global.Outworldz.My.Resources.Resources.about
+        Me.PictureBox5.Location = New System.Drawing.Point(804, 7)
+        Me.PictureBox5.Name = "PictureBox5"
+        Me.PictureBox5.Size = New System.Drawing.Size(28, 27)
+        Me.PictureBox5.TabIndex = 1858
+        Me.PictureBox5.TabStop = False
+        Me.ToolTip1.SetToolTip(Me.PictureBox5, "Click for Help on Grid Gods")
+        '
+        'TestButton1
+        '
+        Me.TestButton1.Location = New System.Drawing.Point(9, 54)
+        Me.TestButton1.Name = "TestButton1"
+        Me.TestButton1.Size = New System.Drawing.Size(75, 23)
+        Me.TestButton1.TabIndex = 33
+        Me.TestButton1.Text = "Test DNS"
+        Me.TestButton1.UseVisualStyleBackColor = True
         '
         'AdvancedForm
         '
         Me.ClientSize = New System.Drawing.Size(867, 445)
+        Me.Controls.Add(Me.PictureBox5)
         Me.Controls.Add(Me.GroupBox6)
         Me.Controls.Add(Me.VoiceButton1)
         Me.Controls.Add(Me.MapBox)
@@ -1002,6 +1066,11 @@ Partial Class AdvancedForm
         CType(Me.MapPicture, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox6.ResumeLayout(False)
         Me.GroupBox6.PerformLayout()
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.PictureBox3, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.PictureBox4, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.PictureBox5, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -1086,5 +1155,10 @@ Partial Class AdvancedForm
     Friend WithEvents BackupFolder As TextBox
     Friend WithEvents WelcomeRegion As Label
     Friend WithEvents WelcomeBox1 As ComboBox
-    Friend WithEvents LinkLabel1 As LinkLabel
+    Friend WithEvents PictureBox1 As PictureBox
+    Friend WithEvents PictureBox2 As PictureBox
+    Friend WithEvents PictureBox3 As PictureBox
+    Friend WithEvents PictureBox4 As PictureBox
+    Friend WithEvents PictureBox5 As PictureBox
+    Friend WithEvents TestButton1 As Button
 End Class

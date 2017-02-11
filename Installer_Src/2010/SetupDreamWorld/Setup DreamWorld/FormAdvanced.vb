@@ -1,9 +1,10 @@
-﻿Imports IniParser
+﻿Imports System.Net
+Imports IniParser
 Imports System.IO
 
 Public Class AdvancedForm
 #Region "Declarations"
-    Dim gInitted As Boolean = False
+
 #End Region
 
 #Region "Functions"
@@ -13,6 +14,7 @@ Public Class AdvancedForm
     Dim Awake As Integer = 1000
     Dim Coffee As Integer = 500
     Dim Toomuch As Integer = 0
+
 
     Private Class Region_data
         Public RegionName As String
@@ -26,7 +28,6 @@ Public Class AdvancedForm
 
     Private Sub Loaded(sender As Object, e As EventArgs) Handles Me.Load
 
-        gInitted = False
         PublicPort.Text = My.Settings.PublicPort
         PrivatePort.Text = My.Settings.PrivatePort
         httpPort.Text = My.Settings.HttpPort
@@ -36,6 +37,8 @@ Public Class AdvancedForm
         Else
             StatsButton.Enabled = False
         End If
+
+        Form1.RegisterDNS()
 
         Password.UseSystemPasswordChar = True
         DbPassword.UseSystemPasswordChar = True
@@ -147,8 +150,16 @@ Public Class AdvancedForm
         End If
 
         LoadWelcomeBox()
+    End Sub
 
-        gInitted = True
+    Private Sub Form1_Closed(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Closed
+
+        If Form1.Running Then
+            Form1.ConsoleCommand("reset user password Wifi Admin " + My.Settings.Password + "{Enter}")
+        End If
+
+        MsgBox("Any changes will take effect the next time Opensimulator is started.")
+
     End Sub
 
     Private Sub TextBox1_TextChanged_1(sender As Object, e As EventArgs) Handles DbPort.TextChanged
@@ -170,6 +181,7 @@ Public Class AdvancedForm
         If text = "Weekly" Then Interval = 60 * 24 * 7
         My.Settings.AutobackupInterval = Interval
         My.Settings.Save()
+
     End Sub
 
     Private Sub AutoBackupKeepFilesForDays_TextChanged(sender As Object, e As EventArgs) Handles AutoBackupKeepFilesForDays.TextChanged
@@ -177,24 +189,33 @@ Public Class AdvancedForm
             My.Settings.KeepForDays = Convert.ToInt32(AutoBackupKeepFilesForDays.Text)
             My.Settings.Save()
         End If
+
     End Sub
 
     Private Sub TextBox1_TextChanged_2(sender As Object, e As EventArgs) Handles AdminFirst.TextChanged
         My.Settings.AdminFirst = AdminFirst.Text
         My.Settings.Save()
+
     End Sub
 
     Private Sub AdminLast_TextChanged(sender As Object, e As EventArgs) Handles AdminLast.TextChanged
         My.Settings.AdminLast = AdminLast.Text
         My.Settings.Save()
+
     End Sub
 
     Private Sub Password_click(sender As Object, e As EventArgs) Handles Password.Click
         Password.UseSystemPasswordChar = False
+
     End Sub
     Private Sub Password_TextChanged(sender As Object, e As EventArgs) Handles Password.TextChanged
         My.Settings.Password = Password.Text
         My.Settings.Save()
+
+        If Form1.Running Then
+            Form1.ConsoleCommand("reset user password Wifi Admin " + My.Settings.Password + "{Enter}")
+        End If
+
     End Sub
 
     Private Sub ChatSpeed_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ChatSpeed.SelectedIndexChanged
@@ -215,21 +236,25 @@ Public Class AdvancedForm
     Private Sub AllowGod_CheckedChanged(sender As Object, e As EventArgs) Handles AllowGod.CheckedChanged
         My.Settings.allow_grid_gods = AllowGod.Checked
         My.Settings.Save()
+
     End Sub
 
     Private Sub RegionGod_CheckedChanged(sender As Object, e As EventArgs) Handles RegionGod.CheckedChanged
         My.Settings.region_owner_is_god = RegionGod.Checked
         My.Settings.Save()
+
     End Sub
 
     Private Sub ManagerGod_CheckedChanged(sender As Object, e As EventArgs) Handles ManagerGod.CheckedChanged
         My.Settings.region_manager_is_god = ManagerGod.Checked
         My.Settings.Save()
+
     End Sub
 
     Private Sub ParcelGod_CheckedChanged(sender As Object, e As EventArgs) Handles ParcelGod.CheckedChanged
         My.Settings.parcel_owner_is_god = ParcelGod.Checked
         My.Settings.Save()
+
     End Sub
 
     Private Sub TimerInterval_TextChanged(sender As Object, e As EventArgs) Handles TimerInterval.TextChanged
@@ -250,63 +275,76 @@ Public Class AdvancedForm
     Private Sub TextBox1_TextChanged_3(sender As Object, e As EventArgs) Handles AdminEmail.TextChanged
         My.Settings.AdminEmail = AdminEmail.Text
         My.Settings.Save()
+
     End Sub
 
     Private Sub AccountConfirmationRequired_CheckedChanged(sender As Object, e As EventArgs) Handles AccountConfirmationRequired.CheckedChanged
         My.Settings.AccountConfirmationRequired = AccountConfirmationRequired.Checked
         My.Settings.Save()
+
     End Sub
 
     Private Sub SmtpUsername_TextChanged(sender As Object, e As EventArgs) Handles SmtpUsername.TextChanged
         My.Settings.SmtpUsername = SmtpUsername.Text
         My.Settings.Save()
+
     End Sub
     Private Sub SmtpUsername_Click(sender As Object, e As EventArgs) Handles SmtpPassword.Click
         SmtpPassword.UseSystemPasswordChar = False
+
     End Sub
     Private Sub SmtpPassword_TextChanged(sender As Object, e As EventArgs) Handles SmtpPassword.TextChanged
         My.Settings.SmtpPassword = SmtpPassword.Text
         My.Settings.Save()
+
     End Sub
 
     Private Sub DnsName_TextChanged(sender As Object, e As EventArgs) Handles DnsName.Click
         Dim F As New DNSName
         F.Show()
-        Return
+
     End Sub
 
     Private Sub CheckBox1_CheckedChanged(sender As Object, e As EventArgs) Handles WebStats.CheckedChanged
         My.Settings.WebStats = WebStats.Checked
         My.Settings.Save()
         Form1.WebStatsToolStripMenuItem.Visible = WebStats.Checked
+
     End Sub
 
     Private Sub DatabaseNameUser_TextChanged(sender As Object, e As EventArgs) Handles DbName.TextChanged
         My.Settings.DBName = DbName.Text
         My.Settings.Save()
+
     End Sub
 
     Private Sub DbConnection_TextChanged(sender As Object, e As EventArgs) Handles DbConnection.TextChanged
+
         My.Settings.DBSource = DbConnection.Text
         My.Settings.Save()
+
     End Sub
 
     Private Sub DbUsername_TextChanged(sender As Object, e As EventArgs) Handles DbUsername.TextChanged
         My.Settings.DBUserID = DbUsername.Text
         My.Settings.Save()
+
     End Sub
     Private Sub DbPassword_click(sender As Object, e As EventArgs) Handles DbPassword.Click
         DbPassword.UseSystemPasswordChar = False
+
     End Sub
 
     Private Sub DbPassword_TextChanged(sender As Object, e As EventArgs) Handles DbPassword.TextChanged
         My.Settings.DBPassword = DbPassword.Text
         My.Settings.Save()
+
     End Sub
 
     Private Sub TextBox1_TextChanged(sender As Object, e As EventArgs) Handles SplashPage.TextChanged
         My.Settings.SplashPage = SplashPage.Text
         My.Settings.Save()
+
     End Sub
 
     Private Sub PrivatePort_TextChanged(sender As Object, e As EventArgs) Handles PrivatePort.TextChanged
@@ -370,6 +408,7 @@ Public Class AdvancedForm
             ActualForm.Init(index)
             ActualForm.Activate()
             ActualForm.Visible = True
+
         Catch ex As Exception
             Form1.Log("Info:" + ex.Message)
         End Try
@@ -379,6 +418,7 @@ Public Class AdvancedForm
         If PhysicsNone.Checked Then
             My.Settings.Physics = 0
             My.Settings.Save()
+
         End If
     End Sub
 
@@ -386,6 +426,7 @@ Public Class AdvancedForm
         If PhysicsODE.Checked Then
             My.Settings.Physics = 1
             My.Settings.Save()
+
         End If
     End Sub
 
@@ -393,6 +434,7 @@ Public Class AdvancedForm
         If PhysicsBullet.Checked Then
             My.Settings.Physics = 2
             My.Settings.Save()
+
         End If
     End Sub
 
@@ -400,6 +442,7 @@ Public Class AdvancedForm
         If PhysicsSeparate.Checked Then
             My.Settings.Physics = 3
             My.Settings.Save()
+
         End If
     End Sub
 
@@ -407,6 +450,7 @@ Public Class AdvancedForm
         If PhysicsubODE.Checked Then
             My.Settings.Physics = 4
             My.Settings.Save()
+
         End If
     End Sub
 
@@ -439,11 +483,13 @@ Public Class AdvancedForm
     Private Sub GridName_TextChanged(sender As Object, e As EventArgs) Handles GridName.TextChanged
         My.Settings.SimName = GridName.Text
         My.Settings.Save()
+
     End Sub
 
     Private Sub DnsName_TextChanged_1(sender As Object, e As EventArgs) Handles DnsName.TextChanged
         My.Settings.PublicIP = DnsName.Text
         My.Settings.Save()
+
     End Sub
 
     Private Sub StatsButton_Click(sender As Object, e As EventArgs) Handles StatsButton.Click
@@ -477,30 +523,35 @@ Public Class AdvancedForm
         My.Settings.MapType = "None"
         My.Settings.Save()
         MapPicture.Image = Nothing
+
     End Sub
 
     Private Sub MapSimple_CheckedChanged(sender As Object, e As EventArgs) Handles MapSimple.CheckedChanged
         My.Settings.MapType = "Simple"
         My.Settings.Save()
         MapPicture.Image = My.Resources.Simple
+
     End Sub
 
     Private Sub MapGood_CheckedChanged(sender As Object, e As EventArgs) Handles MapGood.CheckedChanged
         My.Settings.MapType = "Good"
         My.Settings.Save()
         MapPicture.Image = My.Resources.Good
+
     End Sub
 
     Private Sub MapBetter_CheckedChanged(sender As Object, e As EventArgs) Handles MapBetter.CheckedChanged
         My.Settings.MapType = "Better"
         My.Settings.Save()
         MapPicture.Image = My.Resources.Better
+
     End Sub
 
     Private Sub MapBest_CheckedChanged(sender As Object, e As EventArgs) Handles MapBest.CheckedChanged
         My.Settings.MapType = "Best"
         My.Settings.Save()
         MapPicture.Image = My.Resources.Best
+
     End Sub
 
     Private Sub BackupFolder_clicked(sender As Object, e As EventArgs) Handles BackupFolder.Click
@@ -518,6 +569,7 @@ Public Class AdvancedForm
                 My.Settings.BackupFolder = thing
                 My.Settings.Save()
                 BackupFolder.Text = thing
+
             End If
         End If
     End Sub
@@ -529,6 +581,7 @@ Public Class AdvancedForm
     Private Sub ComboBox1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles WelcomeBox1.SelectedIndexChanged
         My.Settings.WelcomeRegion = WelcomeBox1.SelectedIndex
         My.Settings.Save()
+
     End Sub
 
     Private Sub LoadWelcomeBox()
@@ -548,6 +601,49 @@ Public Class AdvancedForm
         End Try
 
     End Sub
+#End Region
+
+#Region "Help"
+    Private Sub PictureBox1_Click(sender As Object, e As EventArgs) Handles PictureBox1.Click
+        Dim webAddress As String = Form1.Domain + "/Outworldz_installer/technical.htm#GridGod"
+        Process.Start(webAddress)
+    End Sub
+
+    Private Sub PictureBox2_Click(sender As Object, e As EventArgs) Handles PictureBox2.Click
+        Dim webAddress As String = Form1.Domain + "/Outworldz_installer/technical.htm#Backup"
+        Process.Start(webAddress)
+    End Sub
+
+    Private Sub PictureBox3_Click(sender As Object, e As EventArgs) Handles PictureBox3.Click
+        Dim webAddress As String = Form1.Domain + "/Outworldz_installer/technical.htm#Maps"
+        Process.Start(webAddress)
+    End Sub
+
+    Private Sub PictureBox4_Click(sender As Object, e As EventArgs) Handles PictureBox4.Click
+        Dim webAddress As String = Form1.Domain + "/Outworldz_installer/technical.htm#Personality"
+        Process.Start(webAddress)
+    End Sub
+
+    Private Sub PictureBox5_Click(sender As Object, e As EventArgs) Handles PictureBox5.Click
+        Dim webAddress As String = Form1.Domain + "/Outworldz_installer/technical.htm#Grid"
+        Process.Start(webAddress)
+    End Sub
+
+    Private Sub BackupFolder_TextChanged(sender As Object, e As EventArgs) Handles BackupFolder.TextChanged
+
+    End Sub
+
+    Private Sub TestButton1_Click(sender As Object, e As EventArgs) Handles TestButton1.Click
+        Dim IP = Form1.DoGetHostAddresses(DnsName.Text)
+        Dim address As IPAddress = Nothing
+        If IPAddress.TryParse(IP, address) Then
+            MsgBox("IP address was sucessfully resolved to " + IP)
+        Else
+            MsgBox("Cannot resolve " + DnsName.Text)
+        End If
+    End Sub
+
+
 #End Region
 
 

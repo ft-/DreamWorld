@@ -529,6 +529,12 @@ Public Class Form1
 
 #Region "Menus"
 
+    Private Sub ConsoleCOmmandsToolStripMenuItem1_Click(sender As Object, e As EventArgs) Handles ConsoleCOmmandsToolStripMenuItem1.Click
+        Dim webAddress As String = "http://opensimulator.org/wiki/Server_Commands"
+        Process.Start(webAddress)
+    End Sub
+
+
     Private Sub Busy_Click(sender As System.Object, e As System.EventArgs)
         ' Busy click shuts us down
         Dim result As Integer = MessageBox.Show("Do you want to Abort?", "caption", MessageBoxButtons.YesNo)
@@ -1347,11 +1353,11 @@ Public Class Form1
         End If
 
     End Function
-    Private Sub ConsoleCommand(command As String)
+    Public Sub ConsoleCommand(command As String)
         Try
             AppActivate(OpensimProcID)
             SendKeys.SendWait(command)
-        Catch ex As exception
+        Catch ex As Exception
             Log("Warn:" + ex.Message)
         End Try
     End Sub
@@ -2343,7 +2349,7 @@ Public Class Form1
         Try
             If OpenRouterPorts() Then ' open uPNP port
                 Log("uPnpOk")
-                Print("uPnP Ok")
+                'Print("uPnP Ok")
                 My.Settings.UPnPDiag = True
                 My.Settings.Save()
                 BumpProgress10()
@@ -2593,7 +2599,7 @@ Public Class Form1
 #End Region
 
 #Region "DNS"
-    Private Sub RegisterDNS()
+    Public Sub RegisterDNS()
 
         If My.Settings.DnsName = String.Empty Then
             Return
@@ -2680,6 +2686,7 @@ Public Class Form1
             BumpProgress10()
         End If
     End Sub
+
 
 
 #End Region
