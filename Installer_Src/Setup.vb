@@ -728,36 +728,42 @@ Public Class Form1
             INIname = "MyWorld.ini"
         End If
 
-        ' add this sim name as a default to the file as HG regions, and add the other regions as fallback
-        Dim DefaultName = aRegion(My.Settings.WelcomeRegion + 1).RegionName
-        '(replace spaces with underscore)
-        DefaultName = DefaultName.Replace(" ", "_")    ' because this is a screwy thing they did in the INI file
+        Try
 
-        Dim onceflag As Boolean = False ' only do the DefaultName
-        Dim counter As Integer = 1
-        Dim L = aRegion.GetUpperBound(0)
+            ' add this sim name as a default to the file as HG regions, and add the other regions as fallback
+            Dim DefaultName = aRegion(My.Settings.WelcomeRegion + 1).RegionName
+            '(replace spaces with underscore)
+            DefaultName = DefaultName.Replace(" ", "_")    ' because this is a screwy thing they did in the INI file
 
-        Using outputFile As New StreamWriter(prefix + "File.tmp")
-            reader = System.IO.File.OpenText(prefix + INIname)
-            'now loop through each line
-            While reader.Peek <> -1
-                line = reader.ReadLine()
+            Dim onceflag As Boolean = False ' only do the DefaultName
+            Dim counter As Integer = 1
+            Dim L = aRegion.GetUpperBound(0)
 
-                If line.Contains("DefaultRegion, DefaultHGRegion, FallbackRegion") Then
-                    ' flag lets us skip multi-lines
-                    If onceflag = False Then
-                        onceflag = True
-                        line = "Region_" + DefaultName + " = " + """" + "DefaultRegion, DefaultHGRegion, FallbackRegion" + """"
+            Using outputFile As New StreamWriter(prefix + "File.tmp")
+                reader = System.IO.File.OpenText(prefix + INIname)
+                'now loop through each line
+                While reader.Peek <> -1
+                    line = reader.ReadLine()
+
+                    If line.Contains("DefaultRegion, DefaultHGRegion, FallbackRegion") Then
+                        ' flag lets us skip multi-lines
+                        If onceflag = False Then
+                            onceflag = True
+                            line = "Region_" + DefaultName + " = " + """" + "DefaultRegion, DefaultHGRegion, FallbackRegion" + """"
+                            outputFile.WriteLine(line)
+                        End If
+                    Else
                         outputFile.WriteLine(line)
                     End If
-                Else
-                    outputFile.WriteLine(line)
-                End If
 
-            End While
-        End Using
-        'close your reader
-        reader.Close()
+                End While
+            End Using
+            'close your reader
+            reader.Close()
+        Catch
+            MsgBox("There are no region files! There must be at least one region")
+        End Try
+
         Try
             My.Computer.FileSystem.DeleteFile(prefix + INIname)
             My.Computer.FileSystem.RenameFile(prefix + "File.tmp", INIname)
