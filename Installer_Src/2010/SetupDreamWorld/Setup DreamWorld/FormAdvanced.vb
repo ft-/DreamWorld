@@ -302,7 +302,6 @@ Public Class AdvancedForm
     Private Sub DnsName_TextChanged(sender As Object, e As EventArgs) Handles DnsName.Click
         Dim F As New DNSName
         F.Show()
-
     End Sub
 
     Private Sub CheckBox1_CheckedChanged(sender As Object, e As EventArgs) Handles WebStats.CheckedChanged
@@ -489,7 +488,6 @@ Public Class AdvancedForm
     Private Sub DnsName_TextChanged_1(sender As Object, e As EventArgs) Handles DnsName.TextChanged
         My.Settings.PublicIP = DnsName.Text
         My.Settings.Save()
-
     End Sub
 
     Private Sub StatsButton_Click(sender As Object, e As EventArgs) Handles StatsButton.Click

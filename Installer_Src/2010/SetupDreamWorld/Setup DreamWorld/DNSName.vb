@@ -66,6 +66,8 @@ Public Class DNSName
                 Form1.ActualForm.DnsName.Text = TextBox1.Text
                 Me.Close()
             End If
+            My.Settings.DnsName = TextBox1.Text
+            My.Settings.Save()
         Else
             My.Settings.DnsName = TextBox1.Text
             My.Settings.Save()
@@ -100,6 +102,8 @@ Public Class DNSName
             My.Settings.DNSPublic = False
         End If
     End Sub
+
+
 
 #End Region
 End Class
