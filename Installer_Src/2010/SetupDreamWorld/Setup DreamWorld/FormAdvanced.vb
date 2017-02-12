@@ -601,6 +601,16 @@ Public Class AdvancedForm
         End Try
 
     End Sub
+
+    Private Sub Hyperica_Click(sender As Object, e As EventArgs) Handles HypericaButton.Click
+        Dim Hyperica As New Hyperica
+        ' Set the new form's desktop location so it appears below and
+        ' to the right of the current form.
+        Hyperica.SetDesktopLocation(300, 200)
+        Hyperica.Activate()
+        Hyperica.Visible = True
+    End Sub
+
 #End Region
 
 #Region "Help"
@@ -642,8 +652,6 @@ Public Class AdvancedForm
             MsgBox("Cannot resolve " + DnsName.Text)
         End If
     End Sub
-
-
 #End Region
 
 

@@ -32,7 +32,7 @@ Public Class DNSName
 
             TextBox1.Text = TextBox1.Text.Replace("http://", "")
             TextBox1.Text = TextBox1.Text.Replace("https://", "")
-            'TextBox1.Text = Replace(TextBox1.Text, "[^\da-z\.-]+", String.Empty)
+            TextBox1.Text = Replace(TextBox1.Text, "[^\da-z\.-]+", String.Empty) ' !!!
 
             Dim client As New System.Net.WebClient
             Dim Checkname As String = String.Empty
@@ -93,12 +93,9 @@ Public Class DNSName
 
     End Sub
 
-    Private Sub PublicBox_CheckedChanged(sender As Object, e As EventArgs) Handles PublicBox.CheckedChanged
-        If PublicBox.Checked Then
-            My.Settings.DNSPublic = True
-        Else
-            My.Settings.DNSPublic = False
-        End If
+    Private Sub PictureBox4_Click(sender As Object, e As EventArgs) Handles PictureBox4.Click
+        Dim webAddress As String = Form1.Domain + "/Outworldz_installer/technical.htm#DNSName" '!!!
+        Process.Start(webAddress)
     End Sub
 
 #End Region

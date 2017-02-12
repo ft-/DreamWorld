@@ -26,20 +26,22 @@ Partial Class DNSName
         Me.TextBox1 = New System.Windows.Forms.TextBox()
         Me.SaveButton = New System.Windows.Forms.Button()
         Me.NextNameButton = New System.Windows.Forms.Button()
-        Me.PublicBox = New System.Windows.Forms.CheckBox()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
+        Me.PictureBox4 = New System.Windows.Forms.PictureBox()
+        CType(Me.PictureBox4, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'TextBox1
         '
         Me.TextBox1.Location = New System.Drawing.Point(6, 10)
         Me.TextBox1.Name = "TextBox1"
-        Me.TextBox1.Size = New System.Drawing.Size(202, 20)
+        Me.TextBox1.Size = New System.Drawing.Size(182, 20)
         Me.TextBox1.TabIndex = 1
+        Me.ToolTip1.SetToolTip(Me.TextBox1, "Alpha-Numeric plus - ( no spaces or special chars)")
         '
         'SaveButton
         '
-        Me.SaveButton.Location = New System.Drawing.Point(235, 35)
+        Me.SaveButton.Location = New System.Drawing.Point(124, 35)
         Me.SaveButton.Name = "SaveButton"
         Me.SaveButton.Size = New System.Drawing.Size(64, 23)
         Me.SaveButton.TabIndex = 5
@@ -55,32 +57,33 @@ Partial Class DNSName
         Me.NextNameButton.Text = "Next Name"
         Me.NextNameButton.UseVisualStyleBackColor = True
         '
-        'PublicBox
-        '
-        Me.PublicBox.AutoSize = True
-        Me.PublicBox.Location = New System.Drawing.Point(235, 10)
-        Me.PublicBox.Name = "PublicBox"
-        Me.PublicBox.Size = New System.Drawing.Size(85, 17)
-        Me.PublicBox.TabIndex = 7
-        Me.PublicBox.Text = "Make Public"
-        Me.PublicBox.UseVisualStyleBackColor = True
-        '
         'ToolTip1
         '
         Me.ToolTip1.ToolTipTitle = "If marked Public, this sim will be published to an online directory so others peo" &
     "pkle on the hypergrid can find it."
         '
+        'PictureBox4
+        '
+        Me.PictureBox4.Image = Global.Outworldz.My.Resources.Resources.about
+        Me.PictureBox4.Location = New System.Drawing.Point(207, 10)
+        Me.PictureBox4.Name = "PictureBox4"
+        Me.PictureBox4.Size = New System.Drawing.Size(28, 32)
+        Me.PictureBox4.TabIndex = 1859
+        Me.PictureBox4.TabStop = False
+        Me.ToolTip1.SetToolTip(Me.PictureBox4, "Click for Help on DNS Names")
+        '
         'DNSName
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(332, 74)
-        Me.Controls.Add(Me.PublicBox)
+        Me.ClientSize = New System.Drawing.Size(252, 74)
+        Me.Controls.Add(Me.PictureBox4)
         Me.Controls.Add(Me.NextNameButton)
         Me.Controls.Add(Me.SaveButton)
         Me.Controls.Add(Me.TextBox1)
         Me.Name = "DNSName"
         Me.Text = "Form2"
+        CType(Me.PictureBox4, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -88,6 +91,6 @@ Partial Class DNSName
     Friend WithEvents TextBox1 As TextBox
     Friend WithEvents SaveButton As Button
     Friend WithEvents NextNameButton As Button
-    Friend WithEvents PublicBox As CheckBox
     Friend WithEvents ToolTip1 As ToolTip
+    Friend WithEvents PictureBox4 As PictureBox
 End Class
