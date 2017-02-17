@@ -488,6 +488,8 @@ Public Class Form1
             Try
                 ConsoleCommand("{ENTER}")
                 ConsoleCommand("{ENTER}")
+                ConsoleCommand("{ENTER}")
+                ConsoleCommand("{ENTER}")
             Catch
             End Try
             Me.Focus()
@@ -859,6 +861,9 @@ Public Class Form1
             LoadIni(MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\config-include\MyWorld.ini", ";")
         End If
 
+
+        ' set viewer Splash Page V 1.54
+        SetIni("GridInfoService", "welcome", My.Settings.SplashPage)
 
         ' Voice
         If My.Settings.VivoxEnabled Then
