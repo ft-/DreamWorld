@@ -567,7 +567,6 @@ Public Class AdvancedForm
                 My.Settings.BackupFolder = thing
                 My.Settings.Save()
                 BackupFolder.Text = thing
-
             End If
         End If
     End Sub
@@ -600,14 +599,7 @@ Public Class AdvancedForm
 
     End Sub
 
-    Private Sub Hyperica_Click(sender As Object, e As EventArgs) Handles HypericaButton.Click
-        Dim Hyperica As New Hyperica
-        ' Set the new form's desktop location so it appears below and
-        ' to the right of the current form.
-        Hyperica.SetDesktopLocation(300, 200)
-        Hyperica.Activate()
-        Hyperica.Visible = True
-    End Sub
+
 
 #End Region
 
@@ -637,10 +629,6 @@ Public Class AdvancedForm
         Process.Start(webAddress)
     End Sub
 
-    Private Sub BackupFolder_TextChanged(sender As Object, e As EventArgs) Handles BackupFolder.TextChanged
-
-    End Sub
-
     Private Sub TestButton1_Click(sender As Object, e As EventArgs) Handles TestButton1.Click
         Dim IP = Form1.DoGetHostAddresses(DnsName.Text)
         Dim address As IPAddress = Nothing
@@ -649,6 +637,11 @@ Public Class AdvancedForm
         Else
             MsgBox("Cannot resolve " + DnsName.Text)
         End If
+    End Sub
+
+    Private Sub HypericaButton_Click(sender As Object, e As EventArgs) Handles HypericaButton.Click
+        Dim webAddress As String = "http://www.hyperica.com/directory/?GridName=" + My.Settings.DnsName
+        Process.Start(webAddress)
     End Sub
 #End Region
 
