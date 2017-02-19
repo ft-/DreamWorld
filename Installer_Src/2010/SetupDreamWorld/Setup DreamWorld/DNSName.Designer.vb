@@ -76,6 +76,8 @@ Partial Class DNSName
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoSize = True
+        Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.ClientSize = New System.Drawing.Size(252, 74)
         Me.Controls.Add(Me.PictureBox4)
         Me.Controls.Add(Me.NextNameButton)

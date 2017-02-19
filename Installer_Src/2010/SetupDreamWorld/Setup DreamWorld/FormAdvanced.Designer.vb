@@ -1039,6 +1039,8 @@ Partial Class AdvancedForm
         '
         'AdvancedForm
         '
+        Me.AutoSize = True
+        Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.ClientSize = New System.Drawing.Size(867, 445)
         Me.Controls.Add(Me.PictureBox5)
         Me.Controls.Add(Me.GroupBox6)

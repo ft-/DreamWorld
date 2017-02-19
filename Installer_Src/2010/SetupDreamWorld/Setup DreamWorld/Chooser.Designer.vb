@@ -49,6 +49,8 @@ Partial Class Chooser
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoSize = True
+        Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.ClientSize = New System.Drawing.Size(241, 189)
         Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.ListBox1)
