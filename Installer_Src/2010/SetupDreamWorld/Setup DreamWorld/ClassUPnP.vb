@@ -261,24 +261,28 @@ Public Class UPNP
 
     Public Sub Print()
 
-        '
-        ' Loop through all the data after a check
-        If staticEnabled Then
+        Try
+            '
+            ' Loop through all the data after a check
+            If staticEnabled Then
 
-            Log("---------Static Mappings-----------------------")
+                Log("---------Static Mappings-----------------------")
 
-            For Each mapping As NATUPNPLib.IStaticPortMapping In staticMapping
-                If mapping.Enabled Then
-                    Log(String.Format("Enabled: {0}", mapping.Description))
-                Else
-                    Log(String.Format("**Disabled**: {0}", mapping.Description))
-                End If
-                Log(String.Format("Port: {0}", mapping.InternalPort))
-                Log(String.Format("Protocol: {0}", mapping.Protocol))
-                Log(String.Format("ExternalIPAddress: {0}", mapping.ExternalIPAddress))
-                Log("--------------------------------------")
-            Next
-        End If
+                For Each mapping As NATUPNPLib.IStaticPortMapping In staticMapping
+                    If mapping.Enabled Then
+                        Log(String.Format("Enabled: {0}", mapping.Description))
+                    Else
+                        Log(String.Format("**Disabled**: {0}", mapping.Description))
+                    End If
+                    Log(String.Format("Port: {0}", Convert.ToString(mapping.InternalPort)))
+                    Log(String.Format("Protocol: {0}", Convert.ToString(mapping.Protocol)))
+                    Log(String.Format("ExternalIPAddress: {0}", Convert.ToString(mapping.ExternalIPAddress)))
+                    Log("--------------------------------------")
+                Next
+            End If
+        Catch
+        End Try
+
 
     End Sub
 

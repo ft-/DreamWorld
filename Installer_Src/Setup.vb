@@ -39,7 +39,7 @@ Public Class Form1
 
 #Region "Declarations"
 
-    Dim MyVersion As String = "1.6"
+    Dim MyVersion As String = "1.61"
     Dim DebugPath As String = "C:\Opensim\Outworldz Test" ' Note that this uses spaces
     Public Domain As String = "http://www.outworldz.com"
     Dim RevNotesFile As String = "Update_Notes_" + MyVersion + ".rtf"
