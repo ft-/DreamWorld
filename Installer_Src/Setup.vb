@@ -2142,9 +2142,9 @@ Public Class Form1
             My.Settings.Save()
         Else
             Log("Failed:" + result)
-            Print("Router Loopback is disabled. See the Help section for 'Loopback' and how to enable it in Windows. Continuing...")
+            Print("Router Loopback failed. See the Help section for 'Loopback' and how to enable it in Windows. Continuing...")
             My.Settings.LoopBackDiag = False
-            My.Settings.PublicIP = "127.0.0.1"
+            My.Settings.PublicIP = GetLocalIPv4Address()
             My.Settings.Save()
         End If
 
@@ -2205,7 +2205,7 @@ Public Class Form1
             Log("Failed:" + isPortOpen)
             My.Settings.DiagFailed = True
             Print("Internet address " + ip + ":" + My.Settings.PublicPort + " appears to not be forwarded to this machine in your router, so Hypergrid is not available. This can possibly be fixed by 'Port Forwards' in your router.  See Help->Port Forwards.")
-            My.Settings.PublicIP = GetIPv4Address() ' failed, so try the machines address
+            My.Settings.PublicIP = GetLocalIPv4Address() ' failed, so try the machines address
             Log("IP set to " + My.Settings.PublicIP)
             Return False
         End If
@@ -2227,17 +2227,16 @@ Public Class Form1
 
     End Sub
 
-    Private Function GetIPv4Address() As String
-        GetIPv4Address = String.Empty
+    Private Function GetLocalIPv4Address() As String
         Dim strHostName As String = System.Net.Dns.GetHostName()
         Dim IPList As System.Net.IPHostEntry = System.Net.Dns.GetHostEntry(strHostName)
 
         For Each IPaddress As System.Net.IPAddress In IPList.AddressList
             If IPaddress.AddressFamily = System.Net.Sockets.AddressFamily.InterNetwork AndAlso IsPrivateIP(IPaddress.ToString()) Then
-                GetIPv4Address = IPaddress.ToString()
+                Return IPaddress.ToString()
             End If
         Next
-
+        Return "127.0.0.1"
     End Function
 
     ''' <summary>
