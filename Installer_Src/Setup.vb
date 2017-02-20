@@ -2204,7 +2204,7 @@ Public Class Form1
         Else
             Log("Failed:" + isPortOpen)
             My.Settings.DiagFailed = True
-            Print("Internet address " + My.Settings.PublicIP + ":" + My.Settings.PublicPort + " appears to not be forwarded to this machine in your router, so Hypergrid is not available. This can possibly be fixed by 'Port Forwards' in your router.  See Help->Port Forwards.")
+            Print("Internet address " + ip + ":" + My.Settings.PublicPort + " appears to not be forwarded to this machine in your router, so Hypergrid is not available. This can possibly be fixed by 'Port Forwards' in your router.  See Help->Port Forwards.")
             My.Settings.PublicIP = GetIPv4Address() ' failed, so try the machines address
             Log("IP set to " + My.Settings.PublicIP)
             Return False
@@ -2638,15 +2638,17 @@ Public Class Form1
 
     Public Function DoGetHostAddresses(hostName As [String]) As String
 
-        Dim ips As IPAddress()
         Try
-            ips = Dns.GetHostAddresses(hostName)
-            Dim index As Integer
-            For index = 0 To ips.Length - 1
-                Debug.Print(ips(index).ToString())
-                Dim str = ips(index).ToString()
-                Return str
-            Next index
+
+            Dim IPList As System.Net.IPHostEntry = System.Net.Dns.GetHostEntry(hostName)
+
+            For Each IPaddress In IPList.AddressList
+                If (IPaddress.AddressFamily = Sockets.AddressFamily.InterNetwork) Then
+                    Dim ip = IPaddress.ToString()
+                    Return ip
+                End If
+            Next
+            Return String.Empty
 
         Catch ex As Exception
             Log("Warn:Unable to resolve name:" + ex.Message)
