@@ -39,7 +39,7 @@ Public Class Form1
 
 #Region "Declarations"
 
-    Dim MyVersion As String = "1.61"
+    Dim MyVersion As String = "1.62"
     Dim DebugPath As String = "C:\Opensim\Outworldz Test" ' Note that this uses spaces
     Public Domain As String = "http://www.outworldz.com"
     Dim RevNotesFile As String = "Update_Notes_" + MyVersion + ".rtf"
@@ -1934,6 +1934,9 @@ Public Class Form1
         Dim isPortOpen As String = ""
         Dim Data As String = GetPostData()
 
+        My.Settings.SkipUpdateCheck = False
+        My.Settings.Save()
+
         Try
             Update = client.DownloadString(Domain + "/Outworldz_Installer/Update.plx?Ver=" + Str(MyVersion) + Data)
         Catch ex As Exception
@@ -2226,8 +2229,22 @@ Public Class Form1
         Log("Diagnostics set the Hypergrid address to " + My.Settings.PublicIP)
 
     End Sub
+    Public Shared Function GetLocalIPv4Address() As String
 
-    Private Function GetLocalIPv4Address() As String
+        Dim sock As Socket = New Socket(AddressFamily.InterNetwork, SocketType.Dgram, 0)
+        Try
+            Using sock
+                sock.Connect("8.8.8.8", 65530)  ' try Google
+                Dim EndPoint As IPEndPoint = sock.LocalEndPoint
+                GetLocalIPv4Address = EndPoint.Address.ToString()
+            End Using
+        Catch ex As Exception
+            GetLocalIPv4Address = "127.0.0.1"
+        End Try
+
+    End Function
+
+    Private Function OldGetLocalIPv4Address() As String
         Dim strHostName As String = System.Net.Dns.GetHostName()
         Dim IPList As System.Net.IPHostEntry = System.Net.Dns.GetHostEntry(strHostName)
 
