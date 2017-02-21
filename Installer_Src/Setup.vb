@@ -218,7 +218,7 @@ Public Class Form1
             Log("Info:No need to upgrade RegionConfig.ini")
         End Try
 
-        If System.IO.File.Exists(MyFolder + " \ " + RevNotesFile) Then
+        If System.IO.File.Exists(MyFolder + "\" + RevNotesFile) Then
             System.Diagnostics.Process.Start("wordpad.exe", """" + MyFolder + "\" + RevNotesFile + """")
         End If
 
