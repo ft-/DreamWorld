@@ -39,7 +39,7 @@ Public Class Form1
 
 #Region "Declarations"
 
-    Dim MyVersion As String = "1.62"
+    Dim MyVersion As String = "1.63"
     Dim DebugPath As String = "C:\Opensim\Outworldz Test" ' Note that this uses spaces
     Public Domain As String = "http://www.outworldz.com"
     Dim RevNotesFile As String = "Update_Notes_" + MyVersion + ".rtf"
@@ -409,7 +409,7 @@ Public Class Form1
         Dim p As Point
         p = Me.Location
 
-        If System.IO.File.Exists("""" + MyFolder + "\" + RevNotesFile + """") Then
+        If System.IO.File.Exists(MyFolder + "\" + RevNotesFile) Then
             Try
                 My.Computer.FileSystem.RenameFile(MyFolder + "\" + RevNotesFile, "Update_Notes_for_Rev_" + MyVersion + ".rtf")
             Catch ex As Exception
@@ -487,9 +487,9 @@ Public Class Form1
             End While
             Try
                 ConsoleCommand("{ENTER}")
+                ConsoleCommand(" ")
                 ConsoleCommand("{ENTER}")
-                ConsoleCommand("{ENTER}")
-                ConsoleCommand("{ENTER}")
+                ConsoleCommand(" ")
             Catch
             End Try
             Me.Focus()
@@ -586,7 +586,7 @@ Public Class Form1
 
 
     Private Sub mnuAbout_Click(sender As System.Object, e As System.EventArgs) Handles mnuAbout.Click
-        Print("(c) 2014 Outworld.LLC")
+        Print("(c) 2017 Outworldz,LLC")
         Dim webAddress As String = Domain + "/Outworldz_Installer"
         Process.Start(webAddress)
     End Sub
@@ -1476,7 +1476,7 @@ Public Class Form1
                         ConsoleCommand("save oar --perm=CT " + """" + BackupPath() + "Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
                     End If
                     ConsoleCommand("alert New content is loading..{ENTER}")
-                    ConsoleCommand("load oar --force-terrain --force-parcels " + thing + "{ENTER}")
+                    ConsoleCommand("load oar --force-terrain --force-parcels " + """" + thing + """" + "{ENTER}")
                     ConsoleCommand("alert New content just loaded." + "{ENTER}")
                     Me.Focus()
                 End If
@@ -2483,7 +2483,7 @@ Public Class Form1
                 PathToBackup = PathToBackup.Replace("\", "/")    ' because Opensim uses unix-like slashes, that's why
                 outputFile.WriteLine("@REM A program to backup Mysql manually" + vbCrLf _
                                     + "mysqldump.exe --opt  -uroot --verbose opensim  > " _
-                                    + PathToBackup + "Mysql_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".sql" + """" _
+                                    + """" + PathToBackup + "Mysql_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".sql" + """" _
                                     + vbCrLf + "@pause" + vbCrLf)
             End Using
         Catch ex As Exception
@@ -2715,6 +2715,20 @@ Public Class Form1
             End If
             BumpProgress10()
         End If
+    End Sub
+
+    Private Sub CheckDatabaseToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CheckDatabaseToolStripMenuItem.Click
+        Dim pi As ProcessStartInfo = New ProcessStartInfo()
+
+        ChDir(MyFolder & "\OutworldzFiles\mysql\bin")
+        pi.WindowStyle = ProcessWindowStyle.Normal
+        pi.Arguments = My.Settings.MySqlPort
+        pi.FileName = "CheckAndRepair.bat"
+        pMySqlDiag.StartInfo = pi
+        pMySqlDiag.Start()
+        pMySqlDiag.WaitForExit()
+        ChDir(MyFolder)
+
     End Sub
 
 
