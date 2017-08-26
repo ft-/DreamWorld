@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<VisualState xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ShowCheckBoxes="false">
+  <TopNode>[0-1006]F:\dev\opensim-core\bin\OpenSim.Tests.Permissions.dll</TopNode>
+  <SelectedNode>[0-1006]F:\dev\opensim-core\bin\OpenSim.Tests.Permissions.dll</SelectedNode>
+  <ExcludeCategories>false</ExcludeCategories>
+  <Nodes>
+    <Node UniqueName="[0-1006]F:\dev\opensim-core\bin\OpenSim.Tests.Permissions.dll" Expanded="true" />
+    <Node UniqueName="[0-1007]OpenSim" Expanded="true" />
+    <Node UniqueName="[0-1008]OpenSim.Tests" Expanded="true" />
+    <Node UniqueName="[0-1000]OpenSim.Tests.Permissions.Common" Expanded="true" />
+    <Node UniqueName="[0-1001]OpenSim.Tests.Permissions.DirectTransferTests" Expanded="true" />
+    <Node UniqueName="[0-1004]OpenSim.Tests.Permissions.IndirectTransferTests" Expanded="true" />
+  </Nodes>
+</VisualState>
