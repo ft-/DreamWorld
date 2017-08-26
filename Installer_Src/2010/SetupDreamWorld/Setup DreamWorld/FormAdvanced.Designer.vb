@@ -72,7 +72,6 @@ Partial Class AdvancedForm
         Me.AllowGod = New System.Windows.Forms.CheckBox()
         Me.GroupBox4 = New System.Windows.Forms.GroupBox()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
-        Me.ParcelGod = New System.Windows.Forms.CheckBox()
         Me.ManagerGod = New System.Windows.Forms.CheckBox()
         Me.RegionGod = New System.Windows.Forms.CheckBox()
         Me.GroupBox5 = New System.Windows.Forms.GroupBox()
@@ -437,7 +436,7 @@ Partial Class AdvancedForm
         Me.Web.Size = New System.Drawing.Size(214, 193)
         Me.Web.TabIndex = 8
         Me.Web.TabStop = False
-        Me.Web.Text = "Wifi Interface Admin (0.8.2.1 only)"
+        Me.Web.Text = "Wifi Interface Admin"
         '
         'SmtpPassword
         '
@@ -587,13 +586,12 @@ Partial Class AdvancedForm
         'GroupBox4
         '
         Me.GroupBox4.Controls.Add(Me.PictureBox1)
-        Me.GroupBox4.Controls.Add(Me.ParcelGod)
         Me.GroupBox4.Controls.Add(Me.ManagerGod)
         Me.GroupBox4.Controls.Add(Me.RegionGod)
         Me.GroupBox4.Controls.Add(Me.AllowGod)
         Me.GroupBox4.Location = New System.Drawing.Point(12, 159)
         Me.GroupBox4.Name = "GroupBox4"
-        Me.GroupBox4.Size = New System.Drawing.Size(175, 118)
+        Me.GroupBox4.Size = New System.Drawing.Size(175, 99)
         Me.GroupBox4.TabIndex = 18
         Me.GroupBox4.TabStop = False
         Me.GroupBox4.Text = "Permissions"
@@ -607,17 +605,6 @@ Partial Class AdvancedForm
         Me.PictureBox1.TabIndex = 1856
         Me.PictureBox1.TabStop = False
         Me.ToolTip1.SetToolTip(Me.PictureBox1, "Click for Help on Grid Gods")
-        '
-        'ParcelGod
-        '
-        Me.ParcelGod.AutoSize = True
-        Me.ParcelGod.Location = New System.Drawing.Point(24, 92)
-        Me.ParcelGod.Name = "ParcelGod"
-        Me.ParcelGod.Size = New System.Drawing.Size(127, 17)
-        Me.ParcelGod.TabIndex = 7
-        Me.ParcelGod.Text = "Parcel Owner is god?"
-        Me.ToolTip1.SetToolTip(Me.ParcelGod, "Default: Off")
-        Me.ParcelGod.UseVisualStyleBackColor = True
         '
         'ManagerGod
         '
@@ -779,10 +766,10 @@ Partial Class AdvancedForm
         Me.OpensImNew.AutoSize = True
         Me.OpensImNew.Location = New System.Drawing.Point(18, 45)
         Me.OpensImNew.Name = "OpensImNew"
-        Me.OpensImNew.Size = New System.Drawing.Size(76, 17)
+        Me.OpensImNew.Size = New System.Drawing.Size(98, 17)
         Me.OpensImNew.TabIndex = 13
         Me.OpensImNew.TabStop = True
-        Me.OpensImNew.Text = "0.9.0 (dev)"
+        Me.OpensImNew.Text = "0.9.0 (released)"
         Me.ToolTip1.SetToolTip(Me.OpensImNew, "Newer, development version with ubODE")
         Me.OpensImNew.UseVisualStyleBackColor = True
         '
@@ -1111,7 +1098,6 @@ Partial Class AdvancedForm
     Friend WithEvents GroupBox4 As GroupBox
     Friend WithEvents ManagerGod As CheckBox
     Friend WithEvents RegionGod As CheckBox
-    Friend WithEvents ParcelGod As CheckBox
     Friend WithEvents GroupBox5 As GroupBox
     Friend WithEvents Label15 As Label
     Friend WithEvents TimerInterval As TextBox

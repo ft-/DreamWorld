@@ -78,7 +78,6 @@ Public Class AdvancedForm
         AllowGod.Checked = My.Settings.allow_grid_gods
         RegionGod.Checked = My.Settings.region_owner_is_god
         ManagerGod.Checked = My.Settings.region_manager_is_god
-        ParcelGod.Checked = My.Settings.parcel_owner_is_god
 
         TimerInterval.Text = Str(My.Settings.TimerInterval)
         AdminEmail.Text = My.Settings.AdminEmail
@@ -251,11 +250,6 @@ Public Class AdvancedForm
 
     End Sub
 
-    Private Sub ParcelGod_CheckedChanged(sender As Object, e As EventArgs) Handles ParcelGod.CheckedChanged
-        My.Settings.parcel_owner_is_god = ParcelGod.Checked
-        My.Settings.Save()
-
-    End Sub
 
     Private Sub TimerInterval_TextChanged(sender As Object, e As EventArgs) Handles TimerInterval.TextChanged
         If Len(TimerInterval.Text) > 0 Then
@@ -644,6 +638,8 @@ Public Class AdvancedForm
         Dim webAddress As String = "http://www.hyperica.com/directory/?GridName=" + My.Settings.DnsName
         Process.Start(webAddress)
     End Sub
+
+
 #End Region
 
 

@@ -807,7 +807,7 @@ Public Class Form1
         ' Opensim.ini
         LoadIni(MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\Opensim.ini", ";")
         SetIni("Const", "httpPort", My.Settings.HttpPort)
-        SetIni("Const", "BaseHostname", "http://" + My.Settings.PublicIP)
+        SetIni("Const", "BaseHostname", My.Settings.PublicIP)
         SetIni("Const", "PublicPort", My.Settings.PublicPort)
         SetIni("Const", "PrivatePort", My.Settings.PrivatePort)
         SetIni("Const", "GridName", My.Settings.SimName)
@@ -954,11 +954,7 @@ Public Class Form1
             SetIni("Permissions", "region_manager_is_god", "false")
         End If
 
-        If (My.Settings.parcel_owner_is_god) Then
-            SetIni("Permissions", "parcel_owner_is_god", "true")
-        Else
-            SetIni("Permissions", "parcel_owner_is_god", "false")
-        End If
+
 
 
         ' Wifi
