@@ -90,6 +90,7 @@ Partial Class Form1
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.LogButton = New System.Windows.Forms.Button()
         Me.IgnoreButton = New System.Windows.Forms.Button()
+        Me.ToolStripMenuItem2 = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuStrip1.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -302,7 +303,7 @@ Partial Class Form1
         '
         'HelpToolStripMenuItem
         '
-        Me.HelpToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ShowHyperGridAddressToolStripMenuItem, Me.BackupToolStripMenuItem, Me.ConsoleCOmmandsToolStripMenuItem1, Me.WebStatsToolStripMenuItem, Me.ViewWebUI, Me.ToolStripMenuItem1, Me.LoopBackToolStripMenuItem, Me.CHeckForUpdatesToolStripMenuItem, Me.DiagnosticsToolStripMenuItem, Me.CheckDatabaseToolStripMenuItem, Me.mnuAbout})
+        Me.HelpToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ShowHyperGridAddressToolStripMenuItem, Me.BackupToolStripMenuItem, Me.ConsoleCOmmandsToolStripMenuItem1, Me.WebStatsToolStripMenuItem, Me.ViewWebUI, Me.ToolStripMenuItem1, Me.LoopBackToolStripMenuItem, Me.CHeckForUpdatesToolStripMenuItem, Me.ToolStripMenuItem2, Me.DiagnosticsToolStripMenuItem, Me.CheckDatabaseToolStripMenuItem, Me.mnuAbout})
         Me.HelpToolStripMenuItem.Name = "HelpToolStripMenuItem"
         Me.HelpToolStripMenuItem.Size = New System.Drawing.Size(44, 20)
         Me.HelpToolStripMenuItem.Text = "Help"
@@ -580,6 +581,13 @@ Partial Class Form1
         Me.IgnoreButton.Text = "Skip"
         Me.IgnoreButton.UseVisualStyleBackColor = True
         '
+        'ToolStripMenuItem2
+        '
+        Me.ToolStripMenuItem2.Image = Global.Outworldz.My.Resources.Resources.earth_network
+        Me.ToolStripMenuItem2.Name = "ToolStripMenuItem2"
+        Me.ToolStripMenuItem2.Size = New System.Drawing.Size(205, 22)
+        Me.ToolStripMenuItem2.Text = "UPnP Setup"
+        '
         'Form1
         '
         Me.AllowDrop = True
@@ -691,4 +699,5 @@ Partial Class Form1
     Friend WithEvents MysqlToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents RestoreDatabaseToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ConsoleCOmmandsToolStripMenuItem1 As ToolStripMenuItem
+    Friend WithEvents ToolStripMenuItem2 As ToolStripMenuItem
 End Class

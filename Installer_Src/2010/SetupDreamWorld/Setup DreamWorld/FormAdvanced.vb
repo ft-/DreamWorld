@@ -617,12 +617,12 @@ Public Class AdvancedForm
 
     Private Sub TestButton1_Click(sender As Object, e As EventArgs) Handles TestButton1.Click
 
-        Dim IP = Form1.DoGetHostAddresses(DnsName.Text)
+        Dim IP = Form1.DoGetHostAddresses(My.Settings.DnsName)
         Dim address As IPAddress = Nothing
         If IPAddress.TryParse(IP, address) Then
-            MsgBox("IP address was sucessfully resolved to " + IP)
+            MsgBox("DNS name was resolved to " + IP)
         Else
-            MsgBox("Cannot resolve " + DnsName.Text)
+            MsgBox("Cannot resolve " + My.Settings.DnsName)
         End If
     End Sub
 

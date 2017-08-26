@@ -22,13 +22,10 @@
 
 Imports System.Net
 Imports System.IO
-Imports System.Text
 Imports System.Net.Sockets
 Imports IWshRuntimeLibrary
 Imports IniParser
 Imports System.Threading
-Imports Ionic.Zip
-Imports System.Timers
 
 Public Class Form1
 
@@ -1082,6 +1079,19 @@ Public Class Form1
 
 #Region "ToolBars"
 
+    Private Sub ToolStripMenuItem2_Click(sender As Object, e As EventArgs) Handles ToolStripMenuItem2.Click
+        Print("Starting UPnp Control Panel")
+        Dim pi As ProcessStartInfo = New ProcessStartInfo()
+        pi.Arguments = ""
+        pi.FileName = MyFolder & "\UPnPPortForwardManager.exe"
+        pi.WindowStyle = ProcessWindowStyle.Normal
+        pOnlook.StartInfo = pi
+        Try
+            pOnlook.Start()
+        Catch ex As Exception
+            Log("Error:uPnp failed to launch:" + ex.Message)
+        End Try
+    End Sub
 
     Private Sub BusyButton_Click(sender As Object, e As EventArgs) Handles BusyButton.Click
 
@@ -1625,7 +1635,7 @@ Public Class Form1
 
     Private Sub AllRegionsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AllRegionsToolStripMenuItem.Click
         If Not Running Then
-            Print("Opensim is not running. Cannot load an IAR at this time.")
+            Print("Opensim is not running. Cannot save an OAR at this time.")
             Return
         End If
 
@@ -2713,6 +2723,7 @@ Public Class Form1
         ChDir(MyFolder)
 
     End Sub
+
 
 
 
