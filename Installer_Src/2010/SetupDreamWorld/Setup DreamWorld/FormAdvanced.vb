@@ -105,10 +105,8 @@ Public Class AdvancedForm
 
         If My.Settings.GridFolder = "Opensim" Then
             PhysicsubODE.Enabled = False
-            Web.Enabled = False
         Else
             PhysicsubODE.Enabled = True
-            Web.Enabled = True
         End If
 
         Select Case My.Settings.Physics
@@ -455,9 +453,6 @@ Public Class AdvancedForm
             My.Computer.FileSystem.RenameFile(Form1.MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\Regions\RegionConfig.ini", "Outworldz.ini")
         Catch ex As Exception
         End Try
-
-        Form1.ViewWebUI.Visible = False
-        Web.Enabled = False
     End Sub
 
     Private Sub OpensimOld_CheckedChanged(sender As Object, e As EventArgs) Handles OpensimOld.CheckedChanged
@@ -468,9 +463,6 @@ Public Class AdvancedForm
             My.Computer.FileSystem.RenameFile(Form1.MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\Regions\RegionConfig.ini", "Outworldz.ini")
         Catch ex As Exception
         End Try
-
-        Form1.ViewWebUI.Visible = True
-        Web.Enabled = True
     End Sub
 
     Private Sub GridName_TextChanged(sender As Object, e As EventArgs) Handles GridName.TextChanged
