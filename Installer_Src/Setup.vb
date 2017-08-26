@@ -39,8 +39,8 @@ Public Class Form1
 
 #Region "Declarations"
 
-    Dim MyVersion As String = "1.63"
-    Dim DebugPath As String = "C:\Opensim\Outworldz Test" ' Note that this uses spaces
+    Dim MyVersion As String = "1.65"
+    Dim DebugPath As String = "C:\Opensim\Outworldz"
     Public Domain As String = "http://www.outworldz.com"
     Dim RevNotesFile As String = "Update_Notes_" + MyVersion + ".rtf"
     Private gFailDebug1 = False ' set to true to fail diagnostic
@@ -722,13 +722,10 @@ Public Class Form1
         Dim line As String
         Dim INIname As String
 
-        ' Diva 0.8.2 used MyWorld.ini all other versions use StandaloneCommon.ini
+        ' Diva 0.8.2 used MyWorld.ini 
         Dim prefix = MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\config-include\"
-        If My.Settings.GridFolder = "Opensim-0.9" Then
-            INIname = "StandaloneCommon.ini"
-        Else
-            INIname = "MyWorld.ini"
-        End If
+
+        INIname = "MyWorld.ini"
 
         Try
 
@@ -810,10 +807,10 @@ Public Class Form1
         ' Opensim.ini
         LoadIni(MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\Opensim.ini", ";")
         SetIni("Const", "httpPort", My.Settings.HttpPort)
-        SetIni("Const", "BaseURL", """" + "http://" + My.Settings.PublicIP + """")
+        SetIni("Const", "BaseHostname", "http://" + My.Settings.PublicIP)
         SetIni("Const", "PublicPort", My.Settings.PublicPort)
         SetIni("Const", "PrivatePort", My.Settings.PrivatePort)
-        SetIni("Const", "GridName", """" + My.Settings.SimName + """")
+        SetIni("Const", "GridName", My.Settings.SimName)
 
         If My.Settings.MapType = "None" Then
             SetIni("Map", "GenerateMaptiles", "false")
@@ -850,17 +847,7 @@ Public Class Form1
 
         SaveINI()
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-
-        ' Diva 0.8.2 used MyWorld.ini all other versions use StandaloneCommon.ini
-        If My.Settings.GridFolder = "Opensim-0.9" Then
-            ViewWebUI.Visible = False
-            LoadIni(MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\config-include\StandaloneCommon.ini", ";")
-        Else
-            ViewWebUI.Visible = True
-            LoadIni(MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\config-include\MyWorld.ini", ";")
-        End If
-
+        LoadIni(MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\config-include\MyWorld.ini", ";")
 
         ' set viewer Splash Page V 1.54
         SetIni("GridInfoService", "welcome", My.Settings.SplashPage)
@@ -973,15 +960,15 @@ Public Class Form1
             SetIni("Permissions", "parcel_owner_is_god", "false")
         End If
 
-        If My.Settings.GridFolder <> "Opensim-0.9" Then
-            SetIni("WifiService", "AdminPassword", """" + My.Settings.Password + """")
-            SetIni("WifiService", "AdminEmail", """" + My.Settings.AdminEmail + """")
 
-            If My.Settings.AccountConfirmationRequired Then
-                SetIni("WifiService", "AccountConfirmationRequired", "true")
-            Else
-                SetIni("WifiService", "AccountConfirmationRequired", "false")
-            End If
+        ' Wifi
+        SetIni("WifiService", "AdminPassword", My.Settings.Password)
+        SetIni("WifiService", "AdminEmail", My.Settings.AdminEmail)
+
+        If My.Settings.AccountConfirmationRequired Then
+            SetIni("WifiService", "AccountConfirmationRequired", "true")
+        Else
+            SetIni("WifiService", "AccountConfirmationRequired", "false")
         End If
 
         ' Autobackup

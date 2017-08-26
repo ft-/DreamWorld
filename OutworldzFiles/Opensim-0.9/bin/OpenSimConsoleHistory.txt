@@ -1,5 +1,3 @@
-load oar ../BadAsset.oar
-load oar ../BadAsset.oar
 save oar MaybeBad.oar
 load oar ../MaybeBad.oar
 load oar MaybeBad.oar
@@ -98,4 +96,5 @@ load iar Test User /rocket 123 rocketlauncher.iar
 load iar Test User Inventory/rocket 123 rocketlauncher.iar
 load iar Test User rocket 123 rocketlauncher.iar
 load iar Foo Bar rocket 123 rocketlauncher.iar
+show regions
 show regions
