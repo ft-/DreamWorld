@@ -148,7 +148,7 @@ Partial Class AdvancedForm
         Me.GroupBox2.Controls.Add(Me.Label4)
         Me.GroupBox2.Controls.Add(Me.PrivatePort)
         Me.GroupBox2.Controls.Add(Me.Label5)
-        Me.GroupBox2.Location = New System.Drawing.Point(662, 12)
+        Me.GroupBox2.Location = New System.Drawing.Point(662, 11)
         Me.GroupBox2.Name = "GroupBox2"
         Me.GroupBox2.Size = New System.Drawing.Size(192, 330)
         Me.GroupBox2.TabIndex = 5
@@ -569,8 +569,8 @@ Partial Class AdvancedForm
         Me.SplashPage.Name = "SplashPage"
         Me.SplashPage.Size = New System.Drawing.Size(200, 20)
         Me.SplashPage.TabIndex = 11
-        Me.ToolTip1.SetToolTip(Me.SplashPage, "The page that appears when you log in. Default: ""http://www.outworldz.com/Outworl" &
-        "dz_installer/Welcome.htm")
+        Me.ToolTip1.SetToolTip(Me.SplashPage, "The page that appears when you log in. Default: ""https://www.outworldz.com/Outwor" &
+        "ldz_installer/Welcome.htm")
         '
         'AllowGod
         '
@@ -874,7 +874,7 @@ Partial Class AdvancedForm
         Me.PictureBox5.Size = New System.Drawing.Size(28, 27)
         Me.PictureBox5.TabIndex = 1858
         Me.PictureBox5.TabStop = False
-        Me.ToolTip1.SetToolTip(Me.PictureBox5, "Click for Help on Grid Gods")
+        Me.ToolTip1.SetToolTip(Me.PictureBox5, "Click for Help on Grid Name")
         '
         'GroupBox7
         '
@@ -949,7 +949,7 @@ Partial Class AdvancedForm
         Me.GroupBox1.Controls.Add(Me.PhysicsubODE)
         Me.GroupBox1.Controls.Add(Me.PhysicsBullet)
         Me.GroupBox1.Controls.Add(Me.PhysicsODE)
-        Me.GroupBox1.Location = New System.Drawing.Point(204, 159)
+        Me.GroupBox1.Location = New System.Drawing.Point(210, 164)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Size = New System.Drawing.Size(189, 115)
         Me.GroupBox1.TabIndex = 28
@@ -980,7 +980,7 @@ Partial Class AdvancedForm
         '
         'VoiceButton1
         '
-        Me.VoiceButton1.Location = New System.Drawing.Point(454, 410)
+        Me.VoiceButton1.Location = New System.Drawing.Point(210, 133)
         Me.VoiceButton1.Name = "VoiceButton1"
         Me.VoiceButton1.Size = New System.Drawing.Size(145, 23)
         Me.VoiceButton1.TabIndex = 30
@@ -1017,7 +1017,7 @@ Partial Class AdvancedForm
         '
         Me.GroupBox6.Controls.Add(Me.OpensImNew)
         Me.GroupBox6.Controls.Add(Me.OpensimOld)
-        Me.GroupBox6.Location = New System.Drawing.Point(662, 348)
+        Me.GroupBox6.Location = New System.Drawing.Point(662, 356)
         Me.GroupBox6.Name = "GroupBox6"
         Me.GroupBox6.Size = New System.Drawing.Size(193, 77)
         Me.GroupBox6.TabIndex = 26

@@ -38,7 +38,7 @@ Public Class AdvancedForm
             StatsButton.Enabled = False
         End If
 
-        Form1.RegisterDNS()
+        'Form1.RegisterDNS()  ' 1.66 why?
 
         Password.UseSystemPasswordChar = True
         DbPassword.UseSystemPasswordChar = True
@@ -620,14 +620,14 @@ Public Class AdvancedForm
         Dim IP = Form1.DoGetHostAddresses(My.Settings.DnsName)
         Dim address As IPAddress = Nothing
         If IPAddress.TryParse(IP, address) Then
-            MsgBox("DNS name was resolved to " + IP)
+            MsgBox("DNS name " + My.Settings.DnsName + " was resolved to " + IP)
         Else
-            MsgBox("Cannot resolve " + My.Settings.DnsName)
+            MsgBox("Cannot resolve " + My.Settings.DnsName + ". Check for illegal characters")
         End If
     End Sub
 
     Private Sub HypericaButton_Click(sender As Object, e As EventArgs) Handles HypericaButton.Click
-        Dim webAddress As String = "http://www.hyperica.com/directory/?GridName=" + My.Settings.DnsName
+        Dim webAddress As String = "http://www.hyperica.com/directory/"
         Process.Start(webAddress)
     End Sub
 

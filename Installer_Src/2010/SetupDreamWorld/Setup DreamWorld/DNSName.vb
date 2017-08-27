@@ -38,7 +38,7 @@ Public Class DNSName
             Try
                 Checkname = client.DownloadString("http://outworldz.net/getnewname.plx/?GridName=" + TextBox1.Text + "&r=" + Random())
             Catch ex As Exception
-                Form1.Log("Cannot get a check of the DNS Name" + ex.Message)
+                Form1.Log("Cannot check the DNS Name, no connection to the Internet or Outworldz.com is down. " + ex.Message)
             End Try
             If (Checkname = TextBox1.Text) Then
                 TextBox1.Text = Checkname
@@ -64,9 +64,12 @@ Public Class DNSName
                 My.Settings.Save()
                 Form1.ActualForm.DnsName.Text = TextBox1.Text
                 Me.Close()
+                Return
             End If
+            MsgBox("Please enter a valid domain name, a XYZ.Outworldz.net name, the IP address of this machine or the router, or register for a dynamic DNS account at http://www.noip.com", vbInformation)
             My.Settings.DnsName = TextBox1.Text
             My.Settings.Save()
+            Form1.ActualForm.DnsName.Text = TextBox1.Text
         Else
             My.Settings.DnsName = TextBox1.Text
             My.Settings.Save()

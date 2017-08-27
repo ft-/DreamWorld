@@ -38,7 +38,7 @@ Public Class Form1
 
     Dim MyVersion As String = "1.65"
     Dim DebugPath As String = "C:\Opensim\Outworldz"
-    Public Domain As String = "http://www.outworldz.com"
+    Public Domain As String = "https://www.outworldz.com"
     Dim RevNotesFile As String = "Update_Notes_" + MyVersion + ".rtf"
     Private gFailDebug1 = False ' set to true to fail diagnostic
     Private gFailDebug2 = False ' set to true to fail diagnostic
@@ -2177,7 +2177,7 @@ Public Class Form1
         Try
             ' collect some stats and test loopback with a HTTP_ GET to the webserver.
             ' Send unique, anonymous random ID, both of the versions of Opensim and this program, and the diagnostics test results 
-            ' See my privacy policy at http://www.outworldz.com/privacy.htm
+            ' See my privacy policy at https://www.outworldz.com/privacy.htm
 
             Dim Data As String = GetPostData()
             Dim Url = Domain + "/cgi/probetest.plx?IP=" + ip + "&Port=" + My.Settings.PublicPort + Data + "/?r=" + Random()
@@ -2346,10 +2346,7 @@ Public Class Form1
         If My.Settings.LoopBackDiag Then
             Loopb = "Pass"
         End If
-        Dim Pub As String = "No"
-        If My.Settings.DNSPublic then
-			Pub = "Yes"
-		end if
+
 
         Dim data
         data = "&r=" + Machine _
@@ -2357,7 +2354,6 @@ Public Class Form1
             + "&OV=" + SimVersion _
             + "&UpNp=" + UpNp _
             + "&Loop=" + Loopb _
-			+ "&Public=" + Pub _
             + "&x=" + Random()
         Return data
 
@@ -2628,15 +2624,10 @@ Public Class Form1
 
         Dim client As New System.Net.WebClient
         Dim Checkname As String = String.Empty
-        Dim pub As String
-        If My.Settings.DNSPublic Then
-            pub = "1"
-        Else
-            pub = "0"
-        End If
+
         Try
             Log("Checking DNS name " + My.Settings.DnsName)
-            Checkname = client.DownloadString("http://outworldz.net/dns.plx/?GridName=" + My.Settings.DnsName + "&Public=" + pub + "&r=" + Random())
+            Checkname = client.DownloadString("http://outworldz.net/dns.plx/?GridName=" + My.Settings.DnsName + "&r=" + Random())
         Catch ex As Exception
             Log("Warn:Cannot check the DNS Name" + ex.Message)
         End Try
@@ -2678,15 +2669,11 @@ Public Class Form1
     End Function
 
     Public Function RegisterName(name As String) As String
-        Dim pub As String
+
         Dim Checkname As String = String.Empty
-        If My.Settings.DNSPublic Then
-            pub = "1"
-        Else
-            pub = "0"
-        End If
+
         Try
-            Checkname = client.DownloadString("http://outworldz.net/dns.plx/?GridName=" + name + "&Public=" + pub + "&r=" + Random())
+            Checkname = client.DownloadString("http://outworldz.net/dns.plx/?GridName=" + name + "&r=" + Random())
         Catch ex As Exception
             Log("Warn:Cannot check the DNS Name" + ex.Message)
         End Try

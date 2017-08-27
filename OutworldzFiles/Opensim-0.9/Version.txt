@@ -1,3 +1,0 @@
-Commit 7494d7 (OpenSim 0.9.0)	Added 10-15-2016
-http://opensimulator.org/viewgit/?a=commit&p=opensim&h=7494d7726afd9f8b9762d78aead918ba7a90efa3
-

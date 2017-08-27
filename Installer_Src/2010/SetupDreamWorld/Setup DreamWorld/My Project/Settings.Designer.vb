@@ -681,18 +681,6 @@ Namespace My
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
-        Public Property DNSPublic() As Boolean
-            Get
-                Return CType(Me("DNSPublic"),Boolean)
-            End Get
-            Set
-                Me("DNSPublic") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
         Public Property VivoxEnabled() As Boolean
             Get
                 Return CType(Me("VivoxEnabled"),Boolean)
