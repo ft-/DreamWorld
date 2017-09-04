@@ -266,7 +266,6 @@ Public Class Form1
             Log("Info: Ready to start")
             Print("Ready to Launch! Click 'Start' to begin your adventure in Opensimulator.")
         Else
-
             My.Settings.HttpPort = 8002
             My.Settings.Save()
 
@@ -819,7 +818,7 @@ Public Class Form1
         ' Grid regions need GridDBName
         LoadIni(prefix + "\config-include\Gridcommon.ini", ";")
         Dim ConnectionString = """" _
-            + "Data Source=" + My.Settings.RobustMySqlURL _
+            + "Data Source=My.Settings.RobustMySqlURL _
             + ";Database=" + My.Settings.RobustMySqlURL _
             + ";Port=" + My.Settings.RobustMySqlPort _
             + ";User ID=" + My.Settings.RobustMySqlUsername _
@@ -857,30 +856,27 @@ Public Class Form1
         SetIni("Const", "PrivatePort", My.Settings.PrivatePort)
         SaveINI()
 
-
-
-
-
+        ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
         ' Opensim.ini
         LoadIni(prefix + "Opensim.ini", ";")
 
 
         If (My.Settings.allow_grid_gods) Then
-            SetIni("Permissions", "allow_grid_gods", "true")
+            SetIni("Permissions", "allow_grid_gods", "True")
         Else
-            SetIni("Permissions", "allow_grid_gods", "false")
+            SetIni("Permissions", "allow_grid_gods", "False")
         End If
 
         If (My.Settings.region_owner_is_god) Then
-            SetIni("Permissions", "region_owner_is_god", "true")
+            SetIni("Permissions", "region_owner_is_god", "True")
         Else
-            SetIni("Permissions", "region_owner_is_god", "false")
+            SetIni("Permissions", "region_owner_is_god", "False")
         End If
 
         If (My.Settings.region_manager_is_god) Then
-            SetIni("Permissions", "region_manager_is_god", "true")
+            SetIni("Permissions", "region_manager_is_god", "True")
         Else
-            SetIni("Permissions", "region_manager_is_god", "false")
+            SetIni("Permissions", "region_manager_is_god", "False")
         End If
 
         ' Physics
@@ -899,27 +895,27 @@ Public Class Form1
             Case 0
                 SetIni("Startup", "meshing", "ZeroMesher")
                 SetIni("Startup", "physics", "basicphysics")
-                SetIni("Startup", "UseSeparatePhysicsThread", "false")
+                SetIni("Startup", "UseSeparatePhysicsThread", "False")
             Case 1
                 SetIni("Startup", "meshing", "Meshmerizer")
                 SetIni("Startup", "physics", "OpenDynamicsEngine")
-                SetIni("Startup", "UseSeparatePhysicsThread", "false")
+                SetIni("Startup", "UseSeparatePhysicsThread", "False")
             Case 2
                 SetIni("Startup", "meshing", "Meshmerizer")
                 SetIni("Startup", "physics", "BulletSim")
-                SetIni("Startup", "UseSeparatePhysicsThread", "false")
+                SetIni("Startup", "UseSeparatePhysicsThread", "False")
             Case 3
                 SetIni("Startup", "meshing", "Meshmerizer")
                 SetIni("Startup", "physics", "BulletSim")
-                SetIni("Startup", "UseSeparatePhysicsThread", "true")
+                SetIni("Startup", "UseSeparatePhysicsThread", "True")
             Case 4
                 SetIni("Startup", "meshing", "ubODEMeshmerizer")
                 SetIni("Startup", "physics", "ubODE")
-                SetIni("Startup", "UseSeparatePhysicsThread", "false")
+                SetIni("Startup", "UseSeparatePhysicsThread", "False")
             Case Else
                 SetIni("Startup", "meshing", "Meshmerizer")
                 SetIni("Startup", "physics", "BulletSim")
-                SetIni("Startup", "UseSeparatePhysicsThread", "true")
+                SetIni("Startup", "UseSeparatePhysicsThread", "True")
         End Select
 
         SetIni("Const", "http_listener_port", My.Settings.HttpPort)
@@ -2414,7 +2410,7 @@ Public Class Form1
                 MyUPnPMap.Add(UPNP.LocalIP, Convert.ToInt16(My.Settings.PublicPort), UPNP.Protocol.TCP, "Opensim TCP Public")
                 Log("uPnp: PublicPort.TCP added")
             Else
-                Log("uPnp: PublicPort.TCP " + My.Settings.PublicPort + "    is already in uPnP")
+                Log("uPnp: PublicPort.TCP " + My.Settings.PublicPort + " is already in uPnP")
             End If
             BumpProgress10()
 

@@ -1,6 +1,6 @@
 License:
 
-The DreamWorld installer program is Copyright 2016  by Fred Beckhusen, Outworldz,mLLC
+The DreamWorld installer program is Copyright 2016  by Fred Beckhusen, Outworldz,LLC
 
 Redistribution and use in binary and source form is permitted provided that the following conditions are met:
 
