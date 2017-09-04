@@ -36,9 +36,11 @@ Public Class Form1
 
 #Region "Declarations"
 
-    Dim MyVersion As String = "1.65"
-    Dim DebugPath As String = "C:\Opensim\Outworldz"
-    Public Domain As String = "https://www.outworldz.com"
+    Dim MyVersion As String = "1.8"
+    Dim DebugPath As String = "C:\Opensim\Outworldz-2.0"
+    Public Domain As String = "http://www.outworldz.com"
+    Public prefix As String ' Holds path to bin folder
+
     Dim RevNotesFile As String = "Update_Notes_" + MyVersion + ".rtf"
     Private gFailDebug1 = False ' set to true to fail diagnostic
     Private gFailDebug2 = False ' set to true to fail diagnostic
@@ -65,6 +67,7 @@ Public Class Form1
     Dim parser As FileIniDataParser
     Dim gINI As String  ' the name of the current INI file we are writing
     Dim OpensimProcID As Integer
+    Dim RobustProcID As Integer
     Private images =
     New List(Of Image) From {My.Resources.tangled, My.Resources.wp_habitat, My.Resources.wp_Mooferd,
                              My.Resources.wp_To_Piers_Anthony,
@@ -151,7 +154,6 @@ Public Class Form1
 
     Private Sub Form1_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 
-
         'hide progress
         ProgressBar1.Visible = True
         ProgressBar1.Minimum = 0
@@ -175,6 +177,10 @@ Public Class Form1
         ' hide updater
         UpdaterGo.Visible = False
         UpdaterCancel.Visible = False
+
+        ' WebUI
+        ViewWebUI.Visible = My.Settings.WifiEnabled
+
 
         Me.Text = "Outworldz V" + MyVersion
         PictureBox1.Enabled = True
@@ -203,17 +209,11 @@ Public Class Form1
             End If
         End If
         gCurSlashDir = MyFolder.Replace("\", "/")    ' because Mysql uses unix like slashes, that's why
+        prefix = MyFolder & "\OutworldzFiles\Opensim-0.9.0\bin\"
 
         ClearLogFiles() ' clear log fles
 
         MyUPnPMap = New UPNP(MyFolder)
-
-        Try
-            My.Computer.FileSystem.RenameFile(MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\Regions\RegionConfig.ini", "Outworldz.ini")
-            Log("Info:Upgraded RegionConfig.ini to Outworldz.ini")
-        Catch ex As Exception
-            Log("Info:No need to upgrade RegionConfig.ini")
-        End Try
 
         If System.IO.File.Exists(MyFolder + "\" + RevNotesFile) Then
             System.Diagnostics.Process.Start("wordpad.exe", """" + MyFolder + "\" + RevNotesFile + """")
@@ -491,9 +491,12 @@ Public Class Form1
             End Try
             Me.Focus()
         Catch ex As Exception
-            Log("Warn:Cannot stop a non-running Opensim:" + ex.Message)
+            Log("Huh:Cannot stop a non-running Opensim:" + ex.Message)
         End Try
 
+        If RobustProcID Then
+            RobustCommand("quit{ENTER}")
+        End If
         ProgressBar1.Value = 33
 
         'CloseRouterPorts()
@@ -676,8 +679,12 @@ Public Class Form1
         parser = New FileIniDataParser()
         parser.Parser.Configuration.SkipInvalidLines = True
         parser.Parser.Configuration.CommentString = delim ' Opensim uses semicolons
+        Try
+            Data = parser.ReadFile(filepath)
+        Catch ex As Exception
+            MsgBox("Cannot read an INI file - program is missing! " + ex.Message)
+        End Try
 
-        Data = parser.ReadFile(filepath)
         gINI = filepath
     End Sub
 
@@ -713,19 +720,13 @@ Public Class Form1
         parser = Nothing
 
     End Function
+
     Private Sub SetDefaultSims()
 
         Dim reader As System.IO.StreamReader
         Dim line As String
-        Dim INIname As String
-
-        ' Diva 0.8.2 used MyWorld.ini 
-        Dim prefix = MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\config-include\"
-
-        INIname = "MyWorld.ini"
 
         Try
-
             ' add this sim name as a default to the file as HG regions, and add the other regions as fallback
             Dim DefaultName = aRegion(My.Settings.WelcomeRegion + 1).RegionName
             '(replace spaces with underscore)
@@ -735,8 +736,14 @@ Public Class Form1
             Dim counter As Integer = 1
             Dim L = aRegion.GetUpperBound(0)
 
+            Try
+                My.Computer.FileSystem.DeleteFile(prefix + "File.tmp")
+            Catch ex As Exception
+                'Nothing to do, this was just cleanup
+            End Try
+
             Using outputFile As New StreamWriter(prefix + "File.tmp")
-                reader = System.IO.File.OpenText(prefix + INIname)
+                reader = System.IO.File.OpenText(prefix + "Robust.HG.ini")
                 'now loop through each line
                 While reader.Peek <> -1
                     line = reader.ReadLine()
@@ -756,15 +763,21 @@ Public Class Form1
             End Using
             'close your reader
             reader.Close()
-        Catch
-            MsgBox("There are no region files! There must be at least one region")
-        End Try
+            Try
+                Try
+                    My.Computer.FileSystem.DeleteFile(prefix + "Robust.HG.ini.bak")
+                Catch ex As Exception
+                    'Nothing to do, this was just cleanup
+                End Try
+                My.Computer.FileSystem.RenameFile(prefix + "Robust.HG.ini", "Robust.HG.ini.bak")
+                My.Computer.FileSystem.RenameFile(prefix + "File.tmp", "Robust.HG.ini")
+            Catch ex As Exception
+                Log("Error:SetDefault sims could not rename the file:" + ex.Message)
+                My.Computer.FileSystem.RenameFile(prefix + "Robust.HG.ini.bak", "Robust.HG.ini")
+            End Try
 
-        Try
-            My.Computer.FileSystem.DeleteFile(prefix + INIname)
-            My.Computer.FileSystem.RenameFile(prefix + "File.tmp", INIname)
         Catch ex As Exception
-            Log("Error:SetDefault sims could not rename the file:" + ex.Message)
+            MsgBox("Warn:Could not set default sim for visitors. " + ex.Message)
         End Try
 
     End Sub
@@ -796,67 +809,79 @@ Public Class Form1
         Else
             Log("Info:Avatar will not be visible")
         End If
+
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-        ' set the defaults in the INI for the viewer to use. Painful to do as its a Left hand side edit 
+        ' set the defaults in the INI for the viewer to use. Painful to do as it's a Left hand side edit 
 
         SetDefaultSims()
+        ''''''''''''''''''''''''''''''''''''''''''''''''
+        ' Robust 
+        ' Grid regions need GridDBName
+        LoadIni(prefix + "\config-include\Gridcommon.ini", ";")
+        Dim ConnectionString = """" _
+            + "Data Source=" + My.Settings.RobustMySqlURL _
+            + ";Database=" + My.Settings.RobustMySqlURL _
+            + ";Port=" + My.Settings.RobustMySqlPort _
+            + ";User ID=" + My.Settings.RobustMySqlUsername _
+            + ";Password=" + My.Settings.RobustMySqlPassword _
+            + ";Old Guids=True;Allow Zero Datetime=True;" _
+            + """"
+        SetIni("DatabaseService", "ConnectionString", ConnectionString)
 
-        ' Opensim.ini
-        LoadIni(MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\Opensim.ini", ";")
-        SetIni("Const", "httpPort", My.Settings.HttpPort)
-        SetIni("Const", "BaseHostname", My.Settings.PublicIP)
-        SetIni("Const", "PublicPort", My.Settings.PublicPort)
-        SetIni("Const", "PrivatePort", My.Settings.PrivatePort)
-        SetIni("Const", "GridName", My.Settings.SimName)
 
-        If My.Settings.MapType = "None" Then
-            SetIni("Map", "GenerateMaptiles", "false")
-        ElseIf My.Settings.MapType = "Simple" Then
-            SetIni("Map", "GenerateMaptiles", "true")
-            SetIni("Map", "MapImageModule", "MapImageModule")  ' versus Warp3DImageModule
-            SetIni("Map", "TextureOnMapTile", "false")         ' versus true
-            SetIni("Map", "DrawPrimOnMapTile", "false")
-            SetIni("Map", "TexturePrims", "false")
-            SetIni("Map", "RenderMeshes", "false")
-        ElseIf My.Settings.MapType = "Good" Then
-            SetIni("Map", "GenerateMaptiles", "true")
-            SetIni("Map", "MapImageModule", "Warp3DImageModule")  ' versus MapImageModule
-            SetIni("Map", "TextureOnMapTile", "false")         ' versus true
-            SetIni("Map", "DrawPrimOnMapTile", "false")
-            SetIni("Map", "TexturePrims", "false")
-            SetIni("Map", "RenderMeshes", "false")
-        ElseIf My.Settings.MapType = "Better" Then
-            SetIni("Map", "GenerateMaptiles", "true")
-            SetIni("Map", "MapImageModule", "Warp3DImageModule")  ' versus MapImageModule
-            SetIni("Map", "TextureOnMapTile", "true")         ' versus true
-            SetIni("Map", "DrawPrimOnMapTile", "true")
-            SetIni("Map", "TexturePrims", "false")
-            SetIni("Map", "RenderMeshes", "false")
-        ElseIf My.Settings.MapType = "Best" Then
-            SetIni("Map", "GenerateMaptiles", "true")
-            SetIni("Map", "MapImageModule", "Warp3DImageModule")  ' versus MapImageModule
-            SetIni("Map", "TextureOnMapTile", "true")      ' versus true
-            SetIni("Map", "DrawPrimOnMapTile", "true")
-            SetIni("Map", "TexturePrims", "true")
-            SetIni("Map", "RenderMeshes", "true")
+        If My.Settings.WebStats Then
+            SetIni("WebStats", "enabled", "True")
+        Else
+            SetIni("WebStats", "enabled", "False")
         End If
-
 
         SaveINI()
-        ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-        LoadIni(MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\config-include\MyWorld.ini", ";")
 
-        ' set viewer Splash Page V 1.54
-        SetIni("GridInfoService", "welcome", My.Settings.SplashPage)
+        ''''''''''''''''''''''''''''''''''''''''''
+        ' Robust Process
+        LoadIni(prefix + "Robust.HG.ini", ";")
 
-        ' Voice
-        If My.Settings.VivoxEnabled Then
-            SetIni("VivoxVoice", "enabled", "true")
+        ConnectionString = """" _
+            + "Data Source=" + My.Settings.RobustMySqlURL _
+            + ";Database=" + My.Settings.RobustMySqlName _
+            + ";Port=" + My.Settings.RobustMySqlPort _
+            + ";User ID=" + My.Settings.RobustMySqlUsername _
+            + ";Password=" + My.Settings.RobustMySqlPassword _
+            + ";Old Guids=True;Allow Zero Datetime=True;" _
+            + """"
+
+        SetIni("DatabaseService", "ConnectionString", ConnectionString)
+
+        SetIni("Const", "BaseURL", My.Settings.RobustMySqlURL)
+        SetIni("Const", "PublicPort", My.Settings.PublicPort)
+        SetIni("Const", "PrivatePort", My.Settings.PrivatePort)
+        SaveINI()
+
+
+
+
+
+        ' Opensim.ini
+        LoadIni(prefix + "Opensim.ini", ";")
+
+
+        If (My.Settings.allow_grid_gods) Then
+            SetIni("Permissions", "allow_grid_gods", "true")
         Else
-            SetIni("VivoxVoice", "enabled", "false")
+            SetIni("Permissions", "allow_grid_gods", "false")
         End If
-        SetIni("VivoxVoice", "vivox_admin_user", My.Settings.Vivox_username)
-        SetIni("VivoxVoice", "vivox_admin_password", My.Settings.Vivox_password)
+
+        If (My.Settings.region_owner_is_god) Then
+            SetIni("Permissions", "region_owner_is_god", "true")
+        Else
+            SetIni("Permissions", "region_owner_is_god", "false")
+        End If
+
+        If (My.Settings.region_manager_is_god) Then
+            SetIni("Permissions", "region_manager_is_god", "true")
+        Else
+            SetIni("Permissions", "region_manager_is_god", "false")
+        End If
 
         ' Physics
         ' choices for meshmerizer, where Ubit's ODE requires a special one
@@ -897,31 +922,43 @@ Public Class Form1
                 SetIni("Startup", "UseSeparatePhysicsThread", "true")
         End Select
 
-        ' set MySql
-        Dim ConnectionString = """" _
-            + "Data Source=" + My.Settings.DBSource _
-            + ";Database=" + My.Settings.DBName _
-            + ";Port=" + My.Settings.MySqlPort _
-            + ";User ID=" + My.Settings.DBUserID _
-            + ";Password=" + My.Settings.DBPassword _
-            + ";Old Guids=True;Allow Zero Datetime=True;" _
-            + """"
+        SetIni("Const", "http_listener_port", My.Settings.HttpPort)
+        SetIni("Const", "BaseURL", """" + "http://" + My.Settings.PublicIP + """")
+        SetIni("Const", "PublicPort", My.Settings.PublicPort)
+        SetIni("Const", "PrivatePort", My.Settings.PrivatePort)
 
-        SetIni("DatabaseService", "ConnectionString", ConnectionString)
+        SetIni("Const", "GridName", """" + My.Settings.SimName + """")
 
-        If My.Settings.WebStats Then
-            SetIni("WebStats", "enabled", "True")
-        Else
-            SetIni("WebStats", "enabled", "False")
-        End If
-
-        ' Viewer UI shows the full viewer UI
-        If My.Settings.ViewerEase Then
-            Log("Info: Viewer set to Easy")
-            SetIni("SpecialUIModule", "enabled", "true")
-        Else
-            Log("Info:Viewer set to Normal")
-            SetIni("SpecialUIModule", "enabled", "false")
+        If My.Settings.MapType = "None" Then
+            SetIni("Map", "GenerateMaptiles", "false")
+        ElseIf My.Settings.MapType = "Simple" Then
+            SetIni("Map", "GenerateMaptiles", "true")
+            SetIni("Map", "MapImageModule", "MapImageModule")  ' versus Warp3DImageModule
+            SetIni("Map", "TextureOnMapTile", "false")         ' versus true
+            SetIni("Map", "DrawPrimOnMapTile", "false")
+            SetIni("Map", "TexturePrims", "false")
+            SetIni("Map", "RenderMeshes", "false")
+        ElseIf My.Settings.MapType = "Good" Then
+            SetIni("Map", "GenerateMaptiles", "true")
+            SetIni("Map", "MapImageModule", "Warp3DImageModule")  ' versus MapImageModule
+            SetIni("Map", "TextureOnMapTile", "false")         ' versus true
+            SetIni("Map", "DrawPrimOnMapTile", "false")
+            SetIni("Map", "TexturePrims", "false")
+            SetIni("Map", "RenderMeshes", "false")
+        ElseIf My.Settings.MapType = "Better" Then
+            SetIni("Map", "GenerateMaptiles", "true")
+            SetIni("Map", "MapImageModule", "Warp3DImageModule")  ' versus MapImageModule
+            SetIni("Map", "TextureOnMapTile", "true")         ' versus true
+            SetIni("Map", "DrawPrimOnMapTile", "true")
+            SetIni("Map", "TexturePrims", "false")
+            SetIni("Map", "RenderMeshes", "false")
+        ElseIf My.Settings.MapType = "Best" Then
+            SetIni("Map", "GenerateMaptiles", "true")
+            SetIni("Map", "MapImageModule", "Warp3DImageModule")  ' versus MapImageModule
+            SetIni("Map", "TextureOnMapTile", "true")      ' versus true
+            SetIni("Map", "DrawPrimOnMapTile", "true")
+            SetIni("Map", "TexturePrims", "true")
+            SetIni("Map", "RenderMeshes", "true")
         End If
 
         'Avatar visible?
@@ -933,36 +970,16 @@ Public Class Form1
             SetIni("CameraOnlyModeModule", "enabled", "true")
         End If
 
-        If (My.Settings.allow_grid_gods) Then
-            SetIni("Permissions", "allow_grid_gods", "true")
+
+        ' Viewer UI shows the full viewer UI
+        If My.Settings.ViewerEase Then
+            Log("Info: Viewer set to Easy")
+            SetIni("SpecialUIModule", "enabled", "true")
         Else
-            SetIni("Permissions", "allow_grid_gods", "false")
+            Log("Info:Viewer set to Normal")
+            SetIni("SpecialUIModule", "enabled", "false")
         End If
 
-        If (My.Settings.region_owner_is_god) Then
-            SetIni("Permissions", "region_owner_is_god", "true")
-        Else
-            SetIni("Permissions", "region_owner_is_god", "false")
-        End If
-
-        If (My.Settings.region_manager_is_god) Then
-            SetIni("Permissions", "region_manager_is_god", "true")
-        Else
-            SetIni("Permissions", "region_manager_is_god", "false")
-        End If
-
-
-
-
-        ' Wifi
-        SetIni("WifiService", "AdminPassword", My.Settings.Password)
-        SetIni("WifiService", "AdminEmail", My.Settings.AdminEmail)
-
-        If My.Settings.AccountConfirmationRequired Then
-            SetIni("WifiService", "AccountConfirmationRequired", "true")
-        Else
-            SetIni("WifiService", "AccountConfirmationRequired", "false")
-        End If
 
         ' Autobackup
         If My.Settings.AutoBackup Then
@@ -976,7 +993,69 @@ Public Class Form1
         SetIni("AutoBackupModule", "AutoBackupInterval", My.Settings.AutobackupInterval)
         SetIni("AutoBackupModule", "AutoBackupKeepFilesForDays", My.Settings.KeepForDays)
 
+
+        ' Voice
+        If My.Settings.VivoxEnabled Then
+            SetIni("VivoxVoice", "enabled", "true")
+        Else
+            SetIni("VivoxVoice", "enabled", "false")
+        End If
+        SetIni("VivoxVoice", "vivox_admin_user", My.Settings.Vivox_username)
+        SetIni("VivoxVoice", "vivox_admin_password", My.Settings.Vivox_password)
+
         SaveINI()
+
+        ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+        'Gloebits.ini
+
+        LoadIni(prefix + "Gloebit.ini", ";")
+        If My.Settings.GloebitsEnable Then
+            SetIni("Gloebit", "Enabled", "true")
+        Else
+            SetIni("Gloebit", "Enabled", "false")
+        End If
+
+        If My.Settings.GloebitsMode Then
+            SetIni("Gloebit", "GLBEnvironment", "production")
+        Else
+            SetIni("Gloebit", "GLBEnvironment", "sandbox")
+        End If
+
+        SetIni("Gloebit", "GLBKey", My.Settings.GLSandKey)
+        SetIni("Gloebit", "GLBSecret", My.Settings.GLSandSecret)
+        SetIni("Gloebit", "GLBOwnerName", My.Settings.GLBOwnerName)
+        SetIni("Gloebit", "GLBOwnerEmail", My.Settings.GLBOwnerEmail)
+
+
+        ConnectionString = """" _
+            + "Data Source=" + My.Settings.RegionDBURL _
+            + ";Database=" + My.Settings.RegionDBName _
+            + ";Port=" + My.Settings.RegionMySqlPort _
+            + ";User ID=" + My.Settings.RegionDBUsername _
+            + ";Password=" + My.Settings.RegionDbPassword _
+            + ";Old Guids=True;Allow Zero Datetime=True;" _
+            + """"
+        SetIni("Gloebit", "GLBSpecificConnectionString", ConnectionString)
+
+        SaveINI()
+
+
+        ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+        ' Wifi
+
+        LoadIni(prefix + "config-include\Wifi.ini", ";")
+        If (My.Settings.WifiEnabled) Then
+            SetIni("WifiService", "AdminPassword", My.Settings.Password)
+            SetIni("WifiService", "AdminEmail", My.Settings.AdminEmail)
+
+            If My.Settings.AccountConfirmationRequired Then
+                SetIni("WifiService", "AccountConfirmationRequired", "true")
+            Else
+                SetIni("WifiService", "AccountConfirmationRequired", "false")
+            End If
+        End If
+        SaveINI()
+
 
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
         'Regions - write all region.ini files with public IP and Public port
@@ -984,7 +1063,7 @@ Public Class Form1
         Dim L = aRegion.GetUpperBound(0)
         While counter <= L
             Dim simName = aRegion(counter).RegionName
-            LoadIni(MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\Regions\" + simName + ".ini", ";")
+            LoadIni(prefix + "Regions\" + simName + "\" + simName + ".ini", ";")
             SetIni(simName, "InternalPort", Convert.ToString(aRegion(counter).RegionPort))
             SetIni(simName, "ExternalHostName", Convert.ToString(My.Settings.PublicIP))
             SaveINI()
@@ -1008,6 +1087,12 @@ Public Class Form1
             AvatarVisible.Visible = False
         End If
 
+
+
+
+        ' COPY OPENSIM.INBI prototype to all region folders
+
+
     End Sub
 
 #End Region
@@ -1016,25 +1101,12 @@ Public Class Form1
 
     Private Sub CheckDefaultPorts()
 
-        If My.Settings.PrivatePort = My.Settings.PublicPort Then
-            My.Settings.PublicPort = 8001
+        If My.Settings.PrivatePort = My.Settings.PublicPort Or My.Settings.PrivatePort = My.Settings.HttpPort Or My.Settings.PublicPort = My.Settings.HttpPort Then
+            My.Settings.DiagnosticPort = 8001
             My.Settings.HttpPort = 8002
             My.Settings.PrivatePort = 8003
-            MsgBox("Port conflict detected. Public, HTTP and Private Ports have been reset to the default of 8001, 8002 and 8003", vbInformation)
-        End If
-
-        If My.Settings.PrivatePort = My.Settings.HttpPort Then
-            My.Settings.PublicPort = 8001
-            My.Settings.HttpPort = 8002
-            My.Settings.PrivatePort = 8003
-            MsgBox("Port conflict detected. Public, HTTP and Private Ports have been reset to the default of 8001, 8002 and 8003", vbInformation)
-        End If
-
-        If My.Settings.PublicPort = My.Settings.HttpPort Then
-            My.Settings.PublicPort = 8001
-            My.Settings.HttpPort = 8002
-            My.Settings.PrivatePort = 8003
-            MsgBox("Port conflict detected. Public, HTTP and Private Ports have been reset to the default of 8001, 8002 and 8003", vbInformation)
+            My.Settings.PublicPort = 9000
+            MsgBox("Port conflict detected. Public, HTTP and Private Ports have been reset to the default", vbInformation)
         End If
 
     End Sub
@@ -1042,36 +1114,52 @@ Public Class Form1
     Public Sub GetAllRegions()
 
         Dim files() As String
-        Dim ini As String = MyFolder + "\OutworldzFiles\" + My.Settings.GridFolder + "\bin\Regions\"
+        Dim folders() As String
+
         Array.Resize(aRegion, 1)
 
-        files = Directory.GetFiles(ini, "*.ini", SearchOption.TopDirectoryOnly)
-        For Each FileName As String In files
-            Try
-                Array.Resize(aRegion, aRegion.Length + 1)
-                Dim index = aRegion.Length - 1
-                aRegion(index) = New Region_data
-                Dim pos = InStrRev(FileName, "\")
-                Dim name As String = Mid(FileName, pos + 1)
-                Dim fname = Mid(name, 1, Len(name) - 4)
-                Dim longName = MyFolder + "\OutworldzFiles\" + My.Settings.GridFolder + "\bin\Regions\" + fname + ".ini"
+        '!!!  Move any INI files down a folder
 
-                aRegion(index).RegionName = fname
-                aRegion(index).UUID = GetIni(longName, fname, "RegionUUID", ";")
-                aRegion(index).SizeX = Convert.ToInt16(GetIni(longName, fname, "SizeX", ";"))
-                aRegion(index).SizeY = Convert.ToInt16(GetIni(longName, fname, "SizeY", ";"))
-                aRegion(index).RegionPort = Convert.ToInt16(GetIni(longName, fname, "InternalPort", ";"))
+        folders = Directory.GetDirectories(prefix + "Regions\")
+        For Each FolderName As String In folders
 
-                Log("Fetching INI file for Region " + fname)
+            Log("Info:Found region in " + FolderName)
 
-                ' Location is int,int format.
-                Dim C = GetIni(longName, fname, "Location", ";")
-                Dim parts As String() = C.Split(New Char() {","c}) ' split at the comma
-                aRegion(index).CoordX = parts(0)
-                aRegion(index).CoordY = parts(1)
-            Catch ex As Exception
-                Log("Err:Parse file " + Name + ":" + ex.Message)
-            End Try
+            files = Directory.GetFiles(FolderName, "*.ini", SearchOption.TopDirectoryOnly)
+            For Each FileName As String In files
+                Try
+                    ' remove the ini
+                    Dim fName = Path.GetFileName(FileName)
+                    fName = Mid(fName, 1, Len(fName) - 4)
+
+                    If fName <> "OpenSim" Then
+                        ' make a slot to hold the region data 
+                        Array.Resize(aRegion, aRegion.Length + 1)
+                        Dim index = aRegion.Length - 1
+                        aRegion(index) = New Region_data
+
+                        Log("Info:Setting up Region " + fName)
+
+                        ' populate from disk
+                        aRegion(index).RegionName = fName
+                        aRegion(index).UUID = GetIni(FileName, fName, "RegionUUID", ";")
+                        aRegion(index).SizeX = Convert.ToInt16(GetIni(FileName, fName, "SizeX", ";"))
+                        aRegion(index).SizeY = Convert.ToInt16(GetIni(FileName, fName, "SizeY", ";"))
+                        aRegion(index).RegionPort = Convert.ToInt16(GetIni(FileName, fName, "InternalPort", ";"))
+
+                        Log("Fetching INI file for Region " + fName)
+
+                        ' Location is int,int format.
+                        Dim C = GetIni(FileName, fName, "Location", ";")
+                        Dim parts As String() = C.Split(New Char() {","c}) ' split at the comma
+                        aRegion(index).CoordX = parts(0)
+                        aRegion(index).CoordY = parts(1)
+                    End If
+
+                Catch ex As Exception
+                    Log("Err:Parse file " + Name + ":" + ex.Message)
+                End Try
+            Next
         Next
     End Sub
 
@@ -1202,7 +1290,7 @@ Public Class Form1
                 Buttons(StartButton)
                 Dim yesno = MsgBox("Opensim did not start. Do you want to see the log file?", vbYesNo)
                 If (yesno = vbYes) Then
-                    Dim Log As String = """" + MyFolder + "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\OpenSim.log" + """"
+                    Dim Log As String = """" + MyFolder + "\OutworldzFiles\Opensim-0.9.0\bin\OpenSim.log" + """"
                     System.Diagnostics.Process.Start("wordpad.exe", Log)
                 End If
                 Buttons(StartButton)
@@ -1227,9 +1315,25 @@ Public Class Form1
     End Function
     Private Function Boot(Show As AppWinStyle) As Boolean
 
+
+        If My.Settings.RobustMySqlURL = "localhost" Then
+            Try
+                ChDir(prefix + "")
+                RobustProcID = Shell("""" + prefix + "Robust.exe" + """", Show)
+                ChDir(MyFolder)
+            Catch ex As Exception
+                Print("Error: Robust did not start: " + ex.Message)
+                KillAll()
+                Buttons(StartButton)
+                Return False
+            End Try
+
+        End If
+
+
         Try
-            ChDir(MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\")
-            OpensimProcID = Shell("""" + MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\StartOpensim.bat" + """", Show)
+            ChDir(prefix)
+            OpensimProcID = Shell("""" + prefix + "StartOpensim.bat" + """", Show)
             ChDir(MyFolder)
         Catch ex As Exception
             Print("Error: Opensim did not start: " + ex.Message)
@@ -1300,8 +1404,8 @@ Public Class Form1
 
         Dim Logfiles = New List(Of String) From {
             MyFolder + "\OutworldzFiles\Outworldz.log",
-            MyFolder + "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\Opensim.log",
-            MyFolder + "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\OpenSimConsoleHistory.txt",
+            MyFolder + "\OutworldzFiles\Opensim-0.9.0\bin\Opensim.log",
+            MyFolder + "\OutworldzFiles\Opensim-0.9.0\bin\OpenSimConsoleHistory.txt",
             MyFolder + "\OutworldzFiles\Diagnostics.log",
             MyFolder + "\OutworldzFiles\UPNP.log"
         }
@@ -1324,6 +1428,7 @@ Public Class Form1
             End Using
         Catch
         End Try
+        Debug.Print(message)
     End Sub
 
     Private Sub ShowLog()
@@ -1365,6 +1470,15 @@ Public Class Form1
             Log("Warn:" + ex.Message)
         End Try
     End Sub
+    Public Sub RobustCommand(command As String)
+        Try
+            AppActivate(RobustProcID)
+            SendKeys.SendWait(command)
+        Catch ex As Exception
+            Log("Warn:" + ex.Message)
+        End Try
+    End Sub
+
     Private Sub SaySomething()
         Dim Prefix() As String = {
                                   "Mmmm?  Yawns ...",
@@ -2332,12 +2446,8 @@ Public Class Form1
 
     Private Function GetPostData() As String
 
-        Dim SimVersion As String
-        If (My.Settings.GridFolder = "Opensim") Then
-            SimVersion = "0.8.2.1"
-        Else
-            SimVersion = "0.9.1"
-        End If
+        Dim SimVersion = "0.9.0"
+
         Dim UpNp As String = "Fail"
         If My.Settings.UPnPDiag Then
             UpNp = "Pass"
@@ -2494,27 +2604,28 @@ Public Class Form1
     End Sub
 
     Private Function StartMySQL() As Boolean
-        ' Start MySql in background.
-        Dim StartValue = ProgressBar1.Value
 
         ' Check for MySql operation
         Dim Mysql = False
         ' wait for MySql to come up
-        Mysql = CheckPort("127.0.0.1", My.Settings.MySqlPort)
+        Mysql = CheckPort("127.0.0.1", My.Settings.RegionMySqlPort)
         If Mysql Then
-            BumpProgress10()
 
             Return True
         End If
 
+        ' Start MySql in background.
+
+        BumpProgress10()
+        Dim StartValue = ProgressBar1.Value
         Print("Starting Database")
 
         ' SAVE INI file
         LoadIni(MyFolder & "\OutworldzFiles\mysql\my.ini", "#")
         SetIni("mysqld", "basedir", """" + gCurSlashDir + "/OutworldzFiles/Mysql" + """")
         SetIni("mysqld", "datadir", """" + gCurSlashDir + "/OutworldzFiles/Mysql/Data" + """")
-        SetIni("mysqld", "port", My.Settings.MySqlPort)
-        SetIni("client", "port", My.Settings.MySqlPort)
+        SetIni("mysqld", "port", My.Settings.RegionMySqlPort)
+        SetIni("client", "port", My.Settings.RegionMySqlPort)
         SaveINI()
 
         ' create test program 
@@ -2546,7 +2657,7 @@ Public Class Form1
 
 
         ' wait for MySql to come up
-        Mysql = CheckPort("127.0.0.1", My.Settings.MySqlPort)
+        Mysql = CheckPort("127.0.0.1", My.Settings.RegionMySqlPort)
         While Not Mysql
 
             BumpProgress(1)
@@ -2570,7 +2681,7 @@ Public Class Form1
 
             ' check again
             Sleep(1000)
-            Mysql = CheckPort("127.0.0.1", My.Settings.MySqlPort)
+            Mysql = CheckPort("127.0.0.1", My.Settings.RegionMySqlPort)
         End While
         Sleep(2000) ' hacky, but may work
         Return True
@@ -2593,7 +2704,7 @@ Public Class Form1
             Log("Error:mysqladmin failed to stop mysql:" + ex.Message)
         End Try
 
-        Dim Mysql = CheckPort("127.0.0.1", My.Settings.MySqlPort)
+        Dim Mysql = CheckPort("127.0.0.1", My.Settings.RegionMySqlPort)
         If Mysql Then
             Sleep(4000)
             Try
@@ -2698,11 +2809,14 @@ Public Class Form1
     End Sub
 
     Private Sub CheckDatabaseToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CheckDatabaseToolStripMenuItem.Click
+
+        StartMySQL()
+
         Dim pi As ProcessStartInfo = New ProcessStartInfo()
 
         ChDir(MyFolder & "\OutworldzFiles\mysql\bin")
         pi.WindowStyle = ProcessWindowStyle.Normal
-        pi.Arguments = My.Settings.MySqlPort
+        pi.Arguments = My.Settings.RegionMySqlPort
         pi.FileName = "CheckAndRepair.bat"
         pMySqlDiag.StartInfo = pi
         pMySqlDiag.Start()

@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
-Partial Class Form2
+Partial Class FormVoice
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
@@ -99,7 +99,7 @@ Partial Class Form2
         Me.VivoxUserName.Size = New System.Drawing.Size(130, 20)
         Me.VivoxUserName.TabIndex = 1
         '
-        'Form2
+        'FormVoice
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
@@ -107,7 +107,7 @@ Partial Class Form2
         Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.ClientSize = New System.Drawing.Size(272, 171)
         Me.Controls.Add(Me.GroupBox1)
-        Me.Name = "Form2"
+        Me.Name = "FormVoice"
         Me.Text = "Form2"
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()

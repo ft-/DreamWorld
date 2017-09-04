@@ -128,7 +128,7 @@ Public Class UPNP
         If Not staticEnabled Then Throw New ApplicationException("UPnP is not enabled, or there was an error with UPnP Initialization.")
 
         ' Okay, continue on
-        staticMapping.Add(port, prot.ToString(), port, localIP, True, desc)
+        staticMapping.Add(port, prot.ToString(), port, localIP, True, desc + " " + port.ToString)
 
     End Sub
 
@@ -192,7 +192,12 @@ Public Class UPNP
                 LocalIP = EndPoint.Address.ToString()
             End Using
         Catch ex As Exception
-            LocalIP = "127.0.0.1"
+            LocalIP = LocalIPForced()
+
+            If LocalIP = String.Empty Then
+                LocalIP = "127.0.0.1"
+            End If
+
         End Try
 
     End Function
@@ -202,7 +207,7 @@ Public Class UPNP
     ''' </summary>
     ''' <returns>String</returns>
     ''' <remarks></remarks>
-    Public Shared Function LocalIP1() As String
+    Public Shared Function LocalIPForced() As String
         Dim IPList As System.Net.IPHostEntry = System.Net.Dns.GetHostEntry(System.Net.Dns.GetHostName)
 
         For Each IPaddress In IPList.AddressList

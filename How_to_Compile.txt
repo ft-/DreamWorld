@@ -43,36 +43,18 @@ Making A Different Installation:
 
 Everything that makes an opensim instance is located in a single folder "OutworldzFiles".   It is essentially a copy of the default installation with modifications to make it easy to install and ready to use.  
 
-For example, you must add [AutoBackupModule], [CameraOnlyModeModule],  [SpecialUIModule] and [WebStats] to StandaloneCommon.ini or you wll get run time errors.
+cd OutworldzFiles\Opensim-0.9
+@rem update Opensim from master
+git pull 
+cd addon-modules
+@rem update bird module from master
+git pull 
+cd ..
+runprebuild.bat
+compile.bat
+cd bin
+mautil -reg . reg-update
 
-The bottom of StandaloneCommon.ini has a configured Autobackup module.  You must create an Autobackup folder in your Opensim bin folder to accomodate this.
-
- [AutoBackupModule]
-    AutoBackupModuleEnabled = true
-    AutoBackup = true
-    AutoBackupInterval = 1440
-    AutoBackupBusyCheck = false
-    AutoBackupThreshold = 1
-    AutoBackupSkipAssets = false
-    AutoBackupKeepFilesForDays = 120
-    AutoBackupNaming = Time
-    AutoBackupDir = "AutoBackup"
-
-The bottom of Opensim.ini  has the CameraOnlyModeModule and SpecialUIModule. These values are changed dynamically by the installer
-
-  [CameraOnlyModeModule]
-    ;# include the camera versus avatar settings. The Dreamworld installer will change this file as needed
-  enabled = true
-  ;; Users with UserLevel equal or less than this will be sent this mode.
-  ;; Others above will not.
-  UserLevel = 0
-  
-  [SpecialUIModule]
-  enabled = true
-  ;; Users with UserLevel equal or less than this will be sent this mode.
-  ;; Others above will not.
-  UserLevel = 0
-  
   
 Updates: The system has a built in updater that it fetches from the Outworldz web site.   This is how the updater can be updated.  The updater, in turn, fetches a zip file that has the changes in it.
 

@@ -1,4 +1,4 @@
-﻿Public Class Form2
+﻿Public Class FormVoice
 
     Private Sub Loaded(sender As Object, e As EventArgs) Handles Me.Load
         Me.Text = "Vivox Voice Settings"

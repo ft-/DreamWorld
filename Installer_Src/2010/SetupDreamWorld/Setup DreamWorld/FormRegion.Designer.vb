@@ -294,6 +294,7 @@ Partial Class FormRegion
         Me.Controls.Add(Me.RegionName)
         Me.Controls.Add(Me.Label8)
         Me.Controls.Add(Me.GroupBox2)
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow
         Me.Name = "FormRegion"
         Me.Text = "Region"
         Me.Advanced.ResumeLayout(False)

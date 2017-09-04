@@ -66,6 +66,7 @@ Partial Class Form1
         Me.ToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
         Me.LoopBackToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.CHeckForUpdatesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripMenuItem2 = New System.Windows.Forms.ToolStripMenuItem()
         Me.DiagnosticsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.CheckDatabaseToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuAbout = New System.Windows.Forms.ToolStripMenuItem()
@@ -90,7 +91,6 @@ Partial Class Form1
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.LogButton = New System.Windows.Forms.Button()
         Me.IgnoreButton = New System.Windows.Forms.Button()
-        Me.ToolStripMenuItem2 = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuStrip1.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -303,7 +303,7 @@ Partial Class Form1
         '
         'HelpToolStripMenuItem
         '
-        Me.HelpToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ShowHyperGridAddressToolStripMenuItem, Me.BackupToolStripMenuItem, Me.ConsoleCOmmandsToolStripMenuItem1, Me.WebStatsToolStripMenuItem, Me.ViewWebUI, Me.ToolStripMenuItem1, Me.LoopBackToolStripMenuItem, Me.CHeckForUpdatesToolStripMenuItem, Me.ToolStripMenuItem2, Me.DiagnosticsToolStripMenuItem, Me.CheckDatabaseToolStripMenuItem, Me.mnuAbout})
+        Me.HelpToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ShowHyperGridAddressToolStripMenuItem, Me.BackupToolStripMenuItem, Me.ConsoleCOmmandsToolStripMenuItem1, Me.WebStatsToolStripMenuItem, Me.ViewWebUI, Me.ToolStripMenuItem2, Me.ToolStripMenuItem1, Me.LoopBackToolStripMenuItem, Me.DiagnosticsToolStripMenuItem, Me.CheckDatabaseToolStripMenuItem, Me.CHeckForUpdatesToolStripMenuItem, Me.mnuAbout})
         Me.HelpToolStripMenuItem.Name = "HelpToolStripMenuItem"
         Me.HelpToolStripMenuItem.Size = New System.Drawing.Size(44, 20)
         Me.HelpToolStripMenuItem.Text = "Help"
@@ -389,6 +389,13 @@ Partial Class Form1
         Me.CHeckForUpdatesToolStripMenuItem.Name = "CHeckForUpdatesToolStripMenuItem"
         Me.CHeckForUpdatesToolStripMenuItem.Size = New System.Drawing.Size(205, 22)
         Me.CHeckForUpdatesToolStripMenuItem.Text = "Check for Updates"
+        '
+        'ToolStripMenuItem2
+        '
+        Me.ToolStripMenuItem2.Image = Global.Outworldz.My.Resources.Resources.earth_network
+        Me.ToolStripMenuItem2.Name = "ToolStripMenuItem2"
+        Me.ToolStripMenuItem2.Size = New System.Drawing.Size(205, 22)
+        Me.ToolStripMenuItem2.Text = "Port/UPnP Setup"
         '
         'DiagnosticsToolStripMenuItem
         '
@@ -580,13 +587,6 @@ Partial Class Form1
         Me.IgnoreButton.TabIndex = 31
         Me.IgnoreButton.Text = "Skip"
         Me.IgnoreButton.UseVisualStyleBackColor = True
-        '
-        'ToolStripMenuItem2
-        '
-        Me.ToolStripMenuItem2.Image = Global.Outworldz.My.Resources.Resources.earth_network
-        Me.ToolStripMenuItem2.Name = "ToolStripMenuItem2"
-        Me.ToolStripMenuItem2.Size = New System.Drawing.Size(205, 22)
-        Me.ToolStripMenuItem2.Text = "UPnP Setup"
         '
         'Form1
         '

@@ -8,7 +8,6 @@ OutworldzFiles/Diagnostics.log
 OutworldzFiles/Opensim/bin/OpenSimConsoleHistory.txt
 OutworldzFiles/Opensim/bin/OpenSim.log
 OutworldzFiles/Opensim/bin/LocalUserStatistics.db
-OutworldzFiles/addins-registry/
 OutworldzFiles/Init.txt
 OutworldzFiles/Outworldz.log
 OutworldzFiles/Opensim/bin/assetcache
@@ -36,4 +35,4 @@ Thumbs.db
 obj/
 Release/
 Debug/
-
+OsGrid/

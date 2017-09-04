@@ -11,14 +11,11 @@
     <Setting Name="ViewerEase" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="GridFolder" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Opensim</Value>
-    </Setting>
     <Setting Name="AutoBackup" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="PublicPort" Type="System.String" Scope="User">
-      <Value Profile="(Default)">8001</Value>
+      <Value Profile="(Default)">8000</Value>
     </Setting>
     <Setting Name="PublicIP" Type="System.String" Scope="User">
       <Value Profile="(Default)">127.0.0.1</Value>
@@ -44,7 +41,7 @@
     <Setting Name="SizeY" Type="System.String" Scope="User">
       <Value Profile="(Default)">256</Value>
     </Setting>
-    <Setting Name="MySqlPort" Type="System.String" Scope="User">
+    <Setting Name="RegionMySqlPort" Type="System.String" Scope="User">
       <Value Profile="(Default)">3309</Value>
     </Setting>
     <Setting Name="AutobackupInterval" Type="System.String" Scope="User">
@@ -89,9 +86,6 @@
     <Setting Name="region_manager_is_god" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="parcel_owner_is_god" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
     <Setting Name="TimerInterval" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">60</Value>
     </Setting>
@@ -131,18 +125,6 @@
     <Setting Name="UPnPDiag" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="DBName" Type="System.String" Scope="User">
-      <Value Profile="(Default)">opensim</Value>
-    </Setting>
-    <Setting Name="DBUserID" Type="System.String" Scope="User">
-      <Value Profile="(Default)">opensimuser</Value>
-    </Setting>
-    <Setting Name="DBPassword" Type="System.String" Scope="User">
-      <Value Profile="(Default)">opensimpassword</Value>
-    </Setting>
-    <Setting Name="DBSource" Type="System.String" Scope="User">
-      <Value Profile="(Default)">localhost</Value>
-    </Setting>
     <Setting Name="SplashPage" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
@@ -178,6 +160,63 @@
     </Setting>
     <Setting Name="WelcomeRegion" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="GloebitsEnable" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="GloebitsMode" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="GLSandKey" Type="System.String" Scope="User">
+      <Value Profile="(Default)">OAuth Sandbox key</Value>
+    </Setting>
+    <Setting Name="GLSandSecret" Type="System.String" Scope="User">
+      <Value Profile="(Default)">OAuth sandbox secret</Value>
+    </Setting>
+    <Setting Name="GLBOwnerEmail" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Your Email</Value>
+    </Setting>
+    <Setting Name="GLBOwnerName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Your Avatar Name</Value>
+    </Setting>
+    <Setting Name="GLProdKey" Type="System.String" Scope="User">
+      <Value Profile="(Default)">OAuth Production key</Value>
+    </Setting>
+    <Setting Name="RobustMySqlPort" Type="System.String" Scope="User">
+      <Value Profile="(Default)">3306</Value>
+    </Setting>
+    <Setting Name="GLProdSecret" Type="System.String" Scope="User">
+      <Value Profile="(Default)">OAuth Production secret</Value>
+    </Setting>
+    <Setting Name="RegionDbPassword" Type="System.String" Scope="User">
+      <Value Profile="(Default)">opensimpassword</Value>
+    </Setting>
+    <Setting Name="RegionDBUsername" Type="System.String" Scope="User">
+      <Value Profile="(Default)">opensimuser</Value>
+    </Setting>
+    <Setting Name="RegionDBURL" Type="System.String" Scope="User">
+      <Value Profile="(Default)">localhost</Value>
+    </Setting>
+    <Setting Name="RegionDBName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Opensim</Value>
+    </Setting>
+    <Setting Name="WifiEnabled" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="DiagnosticPort" Type="System.String" Scope="User">
+      <Value Profile="(Default)">8001</Value>
+    </Setting>
+    <Setting Name="RobustMySqlURL" Type="System.String" Scope="User">
+      <Value Profile="(Default)">localhost</Value>
+    </Setting>
+    <Setting Name="RobustMySqlName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">robust</Value>
+    </Setting>
+    <Setting Name="RobustMySqlUsername" Type="System.String" Scope="User">
+      <Value Profile="(Default)">robustuser</Value>
+    </Setting>
+    <Setting Name="RobustMySqlPassword" Type="System.String" Scope="User">
+      <Value Profile="(Default)">robustpassword</Value>
     </Setting>
   </Settings>
 </SettingsFile>

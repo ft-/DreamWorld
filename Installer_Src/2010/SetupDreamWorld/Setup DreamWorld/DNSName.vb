@@ -25,11 +25,9 @@ Public Class DNSName
 
     End Sub
 
-
     Private Sub TextBox1_LostFocus(sender As Object, e As EventArgs) Handles TextBox1.LostFocus
 
         If TextBox1.Text <> String.Empty Then
-
             TextBox1.Text = TextBox1.Text.Replace("http://", "")
             TextBox1.Text = TextBox1.Text.Replace("https://", "")
 
@@ -38,7 +36,7 @@ Public Class DNSName
             Try
                 Checkname = client.DownloadString("http://outworldz.net/getnewname.plx/?GridName=" + TextBox1.Text + "&r=" + Random())
             Catch ex As Exception
-                Form1.Log("Cannot check the DNS Name, no connection to the Internet or Outworldz.com is down. " + ex.Message)
+                Form1.Log("Cannot get a check of the DNS Name" + ex.Message)
             End Try
             If (Checkname = TextBox1.Text) Then
                 TextBox1.Text = Checkname
@@ -53,27 +51,30 @@ Public Class DNSName
 
             NextNameButton.Text = "Saving..."
 
-            Form1.RegisterName(TextBox1.Text)
+            Dim newname = Form1.RegisterName(TextBox1.Text)
 
             NextNameButton.Text = "Next Name"
 
-            Dim IP = Form1.DoGetHostAddresses(TextBox1.Text)
+            Dim IP = Form1.DoGetHostAddresses(newname)
             Dim address As IPAddress = Nothing
             If IPAddress.TryParse(IP, address) Then
-                My.Settings.DnsName = TextBox1.Text
+
+                My.Settings.DnsName = newname
                 My.Settings.Save()
-                Form1.ActualForm.DnsName.Text = TextBox1.Text
+
+                Application.DoEvents()
                 Me.Close()
                 Return
             End If
-            MsgBox("Please enter a valid domain name, a XYZ.Outworldz.net name, the IP address of this machine or the router, or register for a dynamic DNS account at http://www.noip.com", vbInformation)
-            My.Settings.DnsName = TextBox1.Text
+            MsgBox("Could not parse DNS Name [" + newname + "] . The IP address was invalid: [" + IP + "]")
+            My.Settings.DnsName = ""
             My.Settings.Save()
-            Form1.ActualForm.DnsName.Text = TextBox1.Text
+            Me.Close()
+            Return
         Else
-            My.Settings.DnsName = TextBox1.Text
+            My.Settings.DnsName = ""
             My.Settings.Save()
-            Form1.ActualForm.DnsName.Text = TextBox1.Text
+
             Me.Close()
         End If
 
@@ -98,9 +99,14 @@ Public Class DNSName
     End Sub
 
     Private Sub PictureBox4_Click(sender As Object, e As EventArgs) Handles PictureBox4.Click
-        Dim webAddress As String = Form1.Domain + "/Outworldz_installer/technical.htm#DNSName" '!!!
+        Dim webAddress As String = Form1.Domain + "/Outworldz_installer/technical.htm#Grid" '!!!
         Process.Start(webAddress)
     End Sub
+
+    Private Sub TextBox1_TextChanged(sender As Object, e As EventArgs) Handles TextBox1.TextChanged
+
+    End Sub
+
 
 
 

@@ -92,18 +92,6 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("Opensim")>  _
-        Public Property GridFolder() As String
-            Get
-                Return CType(Me("GridFolder"),String)
-            End Get
-            Set
-                Me("GridFolder") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("True")>  _
         Public Property AutoBackup() As Boolean
             Get
@@ -116,7 +104,7 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("8001")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("8000")>  _
         Public Property PublicPort() As String
             Get
                 Return CType(Me("PublicPort"),String)
@@ -225,12 +213,12 @@ Namespace My
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("3309")>  _
-        Public Property MySqlPort() As String
+        Public Property RegionMySqlPort() As String
             Get
-                Return CType(Me("MySqlPort"),String)
+                Return CType(Me("RegionMySqlPort"),String)
             End Get
             Set
-                Me("MySqlPort") = value
+                Me("RegionMySqlPort") = value
             End Set
         End Property
         
@@ -404,18 +392,6 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
-        Public Property parcel_owner_is_god() As Boolean
-            Get
-                Return CType(Me("parcel_owner_is_god"),Boolean)
-            End Get
-            Set
-                Me("parcel_owner_is_god") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("60")>  _
         Public Property TimerInterval() As Integer
             Get
@@ -572,54 +548,6 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("opensim")>  _
-        Public Property DBName() As String
-            Get
-                Return CType(Me("DBName"),String)
-            End Get
-            Set
-                Me("DBName") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("opensimuser")>  _
-        Public Property DBUserID() As String
-            Get
-                Return CType(Me("DBUserID"),String)
-            End Get
-            Set
-                Me("DBUserID") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("opensimpassword")>  _
-        Public Property DBPassword() As String
-            Get
-                Return CType(Me("DBPassword"),String)
-            End Get
-            Set
-                Me("DBPassword") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("localhost")>  _
-        Public Property DBSource() As String
-            Get
-                Return CType(Me("DBSource"),String)
-            End Get
-            Set
-                Me("DBSource") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("")>  _
         Public Property SplashPage() As String
             Get
@@ -759,6 +687,234 @@ Namespace My
             End Get
             Set
                 Me("WelcomeRegion") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public Property GloebitsEnable() As Boolean
+            Get
+                Return CType(Me("GloebitsEnable"),Boolean)
+            End Get
+            Set
+                Me("GloebitsEnable") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public Property GloebitsMode() As Boolean
+            Get
+                Return CType(Me("GloebitsMode"),Boolean)
+            End Get
+            Set
+                Me("GloebitsMode") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("OAuth Sandbox key")>  _
+        Public Property GLSandKey() As String
+            Get
+                Return CType(Me("GLSandKey"),String)
+            End Get
+            Set
+                Me("GLSandKey") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("OAuth sandbox secret")>  _
+        Public Property GLSandSecret() As String
+            Get
+                Return CType(Me("GLSandSecret"),String)
+            End Get
+            Set
+                Me("GLSandSecret") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("Your Email")>  _
+        Public Property GLBOwnerEmail() As String
+            Get
+                Return CType(Me("GLBOwnerEmail"),String)
+            End Get
+            Set
+                Me("GLBOwnerEmail") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("Your Avatar Name")>  _
+        Public Property GLBOwnerName() As String
+            Get
+                Return CType(Me("GLBOwnerName"),String)
+            End Get
+            Set
+                Me("GLBOwnerName") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("OAuth Production key")>  _
+        Public Property GLProdKey() As String
+            Get
+                Return CType(Me("GLProdKey"),String)
+            End Get
+            Set
+                Me("GLProdKey") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("3306")>  _
+        Public Property RobustMySqlPort() As String
+            Get
+                Return CType(Me("RobustMySqlPort"),String)
+            End Get
+            Set
+                Me("RobustMySqlPort") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("OAuth Production secret")>  _
+        Public Property GLProdSecret() As String
+            Get
+                Return CType(Me("GLProdSecret"),String)
+            End Get
+            Set
+                Me("GLProdSecret") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("opensimpassword")>  _
+        Public Property RegionDbPassword() As String
+            Get
+                Return CType(Me("RegionDbPassword"),String)
+            End Get
+            Set
+                Me("RegionDbPassword") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("opensimuser")>  _
+        Public Property RegionDBUsername() As String
+            Get
+                Return CType(Me("RegionDBUsername"),String)
+            End Get
+            Set
+                Me("RegionDBUsername") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("localhost")>  _
+        Public Property RegionDBURL() As String
+            Get
+                Return CType(Me("RegionDBURL"),String)
+            End Get
+            Set
+                Me("RegionDBURL") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("Opensim")>  _
+        Public Property RegionDBName() As String
+            Get
+                Return CType(Me("RegionDBName"),String)
+            End Get
+            Set
+                Me("RegionDBName") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public Property WifiEnabled() As Boolean
+            Get
+                Return CType(Me("WifiEnabled"),Boolean)
+            End Get
+            Set
+                Me("WifiEnabled") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("8001")>  _
+        Public Property DiagnosticPort() As String
+            Get
+                Return CType(Me("DiagnosticPort"),String)
+            End Get
+            Set
+                Me("DiagnosticPort") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("localhost")>  _
+        Public Property RobustMySqlURL() As String
+            Get
+                Return CType(Me("RobustMySqlURL"),String)
+            End Get
+            Set
+                Me("RobustMySqlURL") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("robust")>  _
+        Public Property RobustMySqlName() As String
+            Get
+                Return CType(Me("RobustMySqlName"),String)
+            End Get
+            Set
+                Me("RobustMySqlName") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("robustuser")>  _
+        Public Property RobustMySqlUsername() As String
+            Get
+                Return CType(Me("RobustMySqlUsername"),String)
+            End Get
+            Set
+                Me("RobustMySqlUsername") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("robustpassword")>  _
+        Public Property RobustMySqlPassword() As String
+            Get
+                Return CType(Me("RobustMySqlPassword"),String)
+            End Get
+            Set
+                Me("RobustMySqlPassword") = value
             End Set
         End Property
     End Class

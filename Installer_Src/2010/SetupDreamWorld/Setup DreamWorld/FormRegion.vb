@@ -224,18 +224,6 @@ Public Class FormRegion
     End Function
 
     Private Sub WriteRegion()
-        Dim size As String
-        If MyRegion.SizeX = 256 And MyRegion.SizeY = 256 Then
-            size = "256,256"
-        ElseIf MyRegion.SizeX = 512 And MyRegion.SizeY = 512 Then
-            size = "512,512"
-        ElseIf MyRegion.SizeX = 768 And MyRegion.SizeY = 768 Then
-            size = "768,768"
-        ElseIf MyRegion.SizeX = 1024 And MyRegion.SizeY = 1024 Then
-            size = "1024,1024"
-        Else
-            size = Convert.ToString(MyRegion.SizeX) + "," + Convert.ToString(MyRegion.SizeY)
-        End If
 
         Dim RegionText As String = "; * Regions configuration file " + vbCrLf _
     + "; * This Is Your World. Change This And It Will BREAK. See Advance->[Region Settings] instead." + vbCrLf _
@@ -252,7 +240,7 @@ Public Class FormRegion
 
         ' save the Region File
 
-        Dim file = Form1.MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\Regions\" + oldname + ".ini"
+        Dim file = Form1.MyFolder & "\OutworldzFiles\Opensim-0.9.0\bin\Regions\" + oldname + "\" + oldname + ".ini"
         Try
             My.Computer.FileSystem.DeleteFile(file)
         Catch ex As Exception
@@ -260,11 +248,30 @@ Public Class FormRegion
         End Try
 
         Try
-            Using outputFile As New StreamWriter(Form1.MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\Regions\" + MyRegion.RegionName + ".ini", True)
+            MkDir(Form1.MyFolder & "\OutworldzFiles\Opensim-0.9.0\bin\Regions\" + MyRegion.RegionName)
+        Catch ex As Exception
+            ' no need to log this as the directury may already to exist        
+        End Try
+
+        Try
+            Using outputFile As New StreamWriter(Form1.MyFolder & "\OutworldzFiles\Opensim-0.9.0\bin\Regions\" & MyRegion.RegionName & "\" & MyRegion.RegionName & ".ini", True)
                 outputFile.WriteLine(RegionText)
             End Using
         Catch ex As Exception
             Form1.Log("Err:Cannot write region file " + MyRegion.RegionName + ".ini")
+        End Try
+
+        ' now handle Opensim.ini. It has to be done every time in case of an updat
+        Try
+            My.Computer.FileSystem.DeleteFile(file)
+        Catch ex As Exception
+            Form1.Log("Info:" + ex.Message)
+
+        End Try
+        Try
+            My.Computer.FileSystem.CopyFile(Form1.MyFolder & "\OutworldzFiles\Opensim-0.9.0\bin\Opensim.Proto", Form1.MyFolder & "\OutworldzFiles\Opensim-0.9.0\bin\Regions\" & MyRegion.RegionName & ".ini", True)
+        Catch ex As Exception
+
         End Try
 
         oldname = MyRegion.RegionName
@@ -475,7 +482,7 @@ Public Class FormRegion
         Dim msg = MsgBox("Are you sure you want to delete this region? A backup of the region file will be saved as " + RegionName.Text + ".ini.bak", vbYesNo)
         If msg = vbYes Then
             Try
-                My.Computer.FileSystem.RenameFile(Form1.MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\Regions\" + RegionName.Text + ".ini", RegionName.Text + ".ini.bak")
+                My.Computer.FileSystem.RenameFile(Form1.MyFolder & "\OutworldzFiles\Opensim-0.9.0\bin\Regions\" + RegionName.Text + ".ini", RegionName.Text + ".ini.bak")
                 Me.Close()
             Catch ex As Exception
                 MsgBox("Cannot Backup region file:" + ex.Message, vbInformation)

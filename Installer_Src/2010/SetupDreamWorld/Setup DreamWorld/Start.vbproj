@@ -169,6 +169,12 @@
     <Compile Include="DNSName.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Expert.Designer.vb">
+      <DependentUpon>Expert.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Expert.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FormRegion.Designer.vb">
       <DependentUpon>FormRegion.vb</DependentUpon>
     </Compile>
@@ -182,6 +188,12 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Genpassword.vb" />
+    <Compile Include="Gloebits.Designer.vb">
+      <DependentUpon>Gloebits.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Gloebits.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -217,11 +229,17 @@
     <EmbeddedResource Include="DNSName.resx">
       <DependentUpon>DNSName.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Expert.resx">
+      <DependentUpon>Expert.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormAdvanced.resx">
       <DependentUpon>FormAdvanced.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormRegion.resx">
       <DependentUpon>FormRegion.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gloebits.resx">
+      <DependentUpon>Gloebits.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
