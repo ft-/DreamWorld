@@ -88,18 +88,16 @@ Partial Class Expert
         Me.RobustDBPassword = New System.Windows.Forms.TextBox()
         Me.Label6 = New System.Windows.Forms.Label()
         Me.RobustDBUsername = New System.Windows.Forms.TextBox()
-        Me.StandaloneGroup = New System.Windows.Forms.GroupBox()
-        Me.Label22 = New System.Windows.Forms.Label()
-        Me.Label20 = New System.Windows.Forms.Label()
-        Me.RegionDbName = New System.Windows.Forms.TextBox()
-        Me.Label = New System.Windows.Forms.Label()
-        Me.RegionDBUsername = New System.Windows.Forms.TextBox()
-        Me.RegionPort = New System.Windows.Forms.TextBox()
-        Me.Label21 = New System.Windows.Forms.Label()
-        Me.RegionDBURL = New System.Windows.Forms.TextBox()
-        Me.RobustMySqlPassword = New System.Windows.Forms.TextBox()
-        Me.Label23 = New System.Windows.Forms.Label()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
+        Me.Label23 = New System.Windows.Forms.Label()
+        Me.RobustMySqlPassword = New System.Windows.Forms.TextBox()
+        Me.RegionDBURL = New System.Windows.Forms.TextBox()
+        Me.Label21 = New System.Windows.Forms.Label()
+        Me.RegionDBUsername = New System.Windows.Forms.TextBox()
+        Me.RegionDbName = New System.Windows.Forms.TextBox()
+        Me.Label20 = New System.Windows.Forms.Label()
+        Me.Label22 = New System.Windows.Forms.Label()
+        Me.StandaloneGroup = New System.Windows.Forms.GroupBox()
         Me.GroupBox6.SuspendLayout()
         Me.GroupBox5.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -745,72 +743,29 @@ Partial Class Expert
         Me.RobustDBUsername.Size = New System.Drawing.Size(107, 20)
         Me.RobustDBUsername.TabIndex = 36
         '
-        'StandaloneGroup
+        'Label23
         '
-        Me.StandaloneGroup.Controls.Add(Me.Label22)
-        Me.StandaloneGroup.Controls.Add(Me.Label20)
-        Me.StandaloneGroup.Controls.Add(Me.RegionDbName)
-        Me.StandaloneGroup.Controls.Add(Me.Label)
-        Me.StandaloneGroup.Controls.Add(Me.RegionDBUsername)
-        Me.StandaloneGroup.Controls.Add(Me.RegionPort)
-        Me.StandaloneGroup.Controls.Add(Me.Label21)
-        Me.StandaloneGroup.Controls.Add(Me.RegionDBURL)
-        Me.StandaloneGroup.Controls.Add(Me.RobustMySqlPassword)
-        Me.StandaloneGroup.Controls.Add(Me.Label23)
-        Me.StandaloneGroup.Location = New System.Drawing.Point(686, 209)
-        Me.StandaloneGroup.Name = "StandaloneGroup"
-        Me.StandaloneGroup.Size = New System.Drawing.Size(243, 183)
-        Me.StandaloneGroup.TabIndex = 54
-        Me.StandaloneGroup.TabStop = False
-        Me.StandaloneGroup.Text = "Region Databases"
+        Me.Label23.AutoSize = True
+        Me.Label23.Location = New System.Drawing.Point(16, 103)
+        Me.Label23.Name = "Label23"
+        Me.Label23.Size = New System.Drawing.Size(47, 13)
+        Me.Label23.TabIndex = 19
+        Me.Label23.Text = "DB URL"
         '
-        'Label22
+        'RobustMySqlPassword
         '
-        Me.Label22.AutoSize = True
-        Me.Label22.Location = New System.Drawing.Point(14, 74)
-        Me.Label22.Name = "Label22"
-        Me.Label22.Size = New System.Drawing.Size(53, 13)
-        Me.Label22.TabIndex = 17
-        Me.Label22.Text = "Password"
+        Me.RobustMySqlPassword.Location = New System.Drawing.Point(122, 74)
+        Me.RobustMySqlPassword.Name = "RobustMySqlPassword"
+        Me.RobustMySqlPassword.Size = New System.Drawing.Size(107, 20)
+        Me.RobustMySqlPassword.TabIndex = 32
+        Me.RobustMySqlPassword.UseSystemPasswordChar = True
         '
-        'Label20
+        'RegionDBURL
         '
-        Me.Label20.AutoSize = True
-        Me.Label20.Location = New System.Drawing.Point(14, 23)
-        Me.Label20.Name = "Label20"
-        Me.Label20.Size = New System.Drawing.Size(53, 13)
-        Me.Label20.TabIndex = 13
-        Me.Label20.Text = "DB Name"
-        '
-        'RegionDbName
-        '
-        Me.RegionDbName.Location = New System.Drawing.Point(122, 19)
-        Me.RegionDbName.Name = "RegionDbName"
-        Me.RegionDbName.Size = New System.Drawing.Size(107, 20)
-        Me.RegionDbName.TabIndex = 30
-        '
-        'Label
-        '
-        Me.Label.AutoSize = True
-        Me.Label.Location = New System.Drawing.Point(16, 137)
-        Me.Label.Name = "Label"
-        Me.Label.Size = New System.Drawing.Size(26, 13)
-        Me.Label.TabIndex = 10
-        Me.Label.Text = "Port"
-        '
-        'RegionDBUsername
-        '
-        Me.RegionDBUsername.Location = New System.Drawing.Point(122, 45)
-        Me.RegionDBUsername.Name = "RegionDBUsername"
-        Me.RegionDBUsername.Size = New System.Drawing.Size(107, 20)
-        Me.RegionDBUsername.TabIndex = 31
-        '
-        'RegionPort
-        '
-        Me.RegionPort.Location = New System.Drawing.Point(122, 137)
-        Me.RegionPort.Name = "RegionPort"
-        Me.RegionPort.Size = New System.Drawing.Size(47, 20)
-        Me.RegionPort.TabIndex = 29
+        Me.RegionDBURL.Location = New System.Drawing.Point(122, 103)
+        Me.RegionDBURL.Name = "RegionDBURL"
+        Me.RegionDBURL.Size = New System.Drawing.Size(105, 20)
+        Me.RegionDBURL.TabIndex = 28
         '
         'Label21
         '
@@ -821,29 +776,54 @@ Partial Class Expert
         Me.Label21.TabIndex = 16
         Me.Label21.Text = "Username"
         '
-        'RegionDBURL
+        'RegionDBUsername
         '
-        Me.RegionDBURL.Location = New System.Drawing.Point(122, 103)
-        Me.RegionDBURL.Name = "RegionDBURL"
-        Me.RegionDBURL.Size = New System.Drawing.Size(105, 20)
-        Me.RegionDBURL.TabIndex = 28
+        Me.RegionDBUsername.Location = New System.Drawing.Point(122, 45)
+        Me.RegionDBUsername.Name = "RegionDBUsername"
+        Me.RegionDBUsername.Size = New System.Drawing.Size(107, 20)
+        Me.RegionDBUsername.TabIndex = 31
         '
-        'RobustMySqlPassword
+        'RegionDbName
         '
-        Me.RobustMySqlPassword.Location = New System.Drawing.Point(122, 74)
-        Me.RobustMySqlPassword.Name = "RobustMySqlPassword"
-        Me.RobustMySqlPassword.Size = New System.Drawing.Size(107, 20)
-        Me.RobustMySqlPassword.TabIndex = 32
-        Me.RobustMySqlPassword.UseSystemPasswordChar = True
+        Me.RegionDbName.Location = New System.Drawing.Point(122, 19)
+        Me.RegionDbName.Name = "RegionDbName"
+        Me.RegionDbName.Size = New System.Drawing.Size(107, 20)
+        Me.RegionDbName.TabIndex = 30
         '
-        'Label23
+        'Label20
         '
-        Me.Label23.AutoSize = True
-        Me.Label23.Location = New System.Drawing.Point(16, 103)
-        Me.Label23.Name = "Label23"
-        Me.Label23.Size = New System.Drawing.Size(47, 13)
-        Me.Label23.TabIndex = 19
-        Me.Label23.Text = "DB URL"
+        Me.Label20.AutoSize = True
+        Me.Label20.Location = New System.Drawing.Point(14, 23)
+        Me.Label20.Name = "Label20"
+        Me.Label20.Size = New System.Drawing.Size(53, 13)
+        Me.Label20.TabIndex = 13
+        Me.Label20.Text = "DB Name"
+        '
+        'Label22
+        '
+        Me.Label22.AutoSize = True
+        Me.Label22.Location = New System.Drawing.Point(14, 74)
+        Me.Label22.Name = "Label22"
+        Me.Label22.Size = New System.Drawing.Size(53, 13)
+        Me.Label22.TabIndex = 17
+        Me.Label22.Text = "Password"
+        '
+        'StandaloneGroup
+        '
+        Me.StandaloneGroup.Controls.Add(Me.Label22)
+        Me.StandaloneGroup.Controls.Add(Me.Label20)
+        Me.StandaloneGroup.Controls.Add(Me.RegionDbName)
+        Me.StandaloneGroup.Controls.Add(Me.RegionDBUsername)
+        Me.StandaloneGroup.Controls.Add(Me.Label21)
+        Me.StandaloneGroup.Controls.Add(Me.RegionDBURL)
+        Me.StandaloneGroup.Controls.Add(Me.RobustMySqlPassword)
+        Me.StandaloneGroup.Controls.Add(Me.Label23)
+        Me.StandaloneGroup.Location = New System.Drawing.Point(686, 209)
+        Me.StandaloneGroup.Name = "StandaloneGroup"
+        Me.StandaloneGroup.Size = New System.Drawing.Size(243, 149)
+        Me.StandaloneGroup.TabIndex = 54
+        Me.StandaloneGroup.TabStop = False
+        Me.StandaloneGroup.Text = "Region Databases"
         '
         'Expert
         '
@@ -952,19 +932,17 @@ Partial Class Expert
     Friend WithEvents RobustDBPassword As TextBox
     Friend WithEvents Label6 As Label
     Friend WithEvents RobustDBUsername As TextBox
-    Friend WithEvents StandaloneGroup As GroupBox
-    Friend WithEvents Label22 As Label
-    Friend WithEvents Label20 As Label
-    Friend WithEvents RegionDbName As TextBox
-    Friend WithEvents Label As Label
-    Friend WithEvents RegionDBUsername As TextBox
-    Friend WithEvents RegionPort As TextBox
-    Friend WithEvents Label21 As Label
-    Friend WithEvents RegionDBURL As TextBox
-    Friend WithEvents RobustMySqlPassword As TextBox
-    Friend WithEvents Label23 As Label
     Friend WithEvents WifiEnabled As CheckBox
     Friend WithEvents ToolTip1 As ToolTip
     Friend WithEvents HTTPPort As TextBox
     Friend WithEvents Label7 As Label
+    Friend WithEvents Label23 As Label
+    Friend WithEvents RobustMySqlPassword As TextBox
+    Friend WithEvents RegionDBURL As TextBox
+    Friend WithEvents Label21 As Label
+    Friend WithEvents RegionDBUsername As TextBox
+    Friend WithEvents RegionDbName As TextBox
+    Friend WithEvents Label20 As Label
+    Friend WithEvents Label22 As Label
+    Friend WithEvents StandaloneGroup As GroupBox
 End Class

@@ -212,18 +212,6 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("3309")>  _
-        Public Property RegionMySqlPort() As String
-            Get
-                Return CType(Me("RegionMySqlPort"),String)
-            End Get
-            Set
-                Me("RegionMySqlPort") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("720")>  _
         Public Property AutobackupInterval() As String
             Get
@@ -777,12 +765,12 @@ Namespace My
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("3306")>  _
-        Public Property RobustMySqlPort() As String
+        Public Property MySqlPort() As String
             Get
-                Return CType(Me("RobustMySqlPort"),String)
+                Return CType(Me("MySqlPort"),String)
             End Get
             Set
-                Me("RobustMySqlPort") = value
+                Me("MySqlPort") = value
             End Set
         End Property
         
@@ -836,7 +824,7 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("Opensim")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("opensim")>  _
         Public Property RegionDBName() As String
             Get
                 Return CType(Me("RegionDBName"),String)

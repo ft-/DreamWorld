@@ -240,38 +240,28 @@ Public Class FormRegion
 
         ' save the Region File
 
-        Dim file = Form1.MyFolder & "\OutworldzFiles\Opensim-0.9.0\bin\Regions\" + oldname + "\" + oldname + ".ini"
+        Dim file = Form1.prefix + "\Regions\" + oldname + "\Region\" + oldname + ".ini"
         Try
             My.Computer.FileSystem.DeleteFile(file)
         Catch ex As Exception
-            Form1.Log("Info:" + ex.Message)
         End Try
 
         Try
-            MkDir(Form1.MyFolder & "\OutworldzFiles\Opensim-0.9.0\bin\Regions\" + MyRegion.RegionName)
+            MkDir(Form1.prefix & "\Regions\" + MyRegion.RegionName)
         Catch ex As Exception
-            ' no need to log this as the directury may already to exist        
         End Try
 
         Try
-            Using outputFile As New StreamWriter(Form1.MyFolder & "\OutworldzFiles\Opensim-0.9.0\bin\Regions\" & MyRegion.RegionName & "\" & MyRegion.RegionName & ".ini", True)
+            MkDir(Form1.prefix & "\Regions\" + MyRegion.RegionName + "\Region")
+        Catch ex As Exception
+        End Try
+
+        Try
+            Using outputFile As New StreamWriter(Form1.prefix & "Regions\" & MyRegion.RegionName & "\Region\" + MyRegion.RegionName & ".ini", True)
                 outputFile.WriteLine(RegionText)
             End Using
         Catch ex As Exception
             Form1.Log("Err:Cannot write region file " + MyRegion.RegionName + ".ini")
-        End Try
-
-        ' now handle Opensim.ini. It has to be done every time in case of an updat
-        Try
-            My.Computer.FileSystem.DeleteFile(file)
-        Catch ex As Exception
-            Form1.Log("Info:" + ex.Message)
-
-        End Try
-        Try
-            My.Computer.FileSystem.CopyFile(Form1.MyFolder & "\OutworldzFiles\Opensim-0.9.0\bin\Opensim.Proto", Form1.MyFolder & "\OutworldzFiles\Opensim-0.9.0\bin\Regions\" & MyRegion.RegionName & ".ini", True)
-        Catch ex As Exception
-
         End Try
 
         oldname = MyRegion.RegionName
@@ -479,13 +469,13 @@ Public Class FormRegion
     End Function
 
     Private Sub DeleteButton_Click(sender As Object, e As EventArgs) Handles DeleteButton.Click
-        Dim msg = MsgBox("Are you sure you want to delete this region? A backup of the region file will be saved as " + RegionName.Text + ".ini.bak", vbYesNo)
+        Dim msg = MsgBox("Are you sure you want to delete this region? ", vbYesNo)
         If msg = vbYes Then
             Try
-                My.Computer.FileSystem.RenameFile(Form1.MyFolder & "\OutworldzFiles\Opensim-0.9.0\bin\Regions\" + RegionName.Text + ".ini", RegionName.Text + ".ini.bak")
+                My.Computer.FileSystem.DeleteDirectory(Form1.prefix & "Regions\" + RegionName.Text, FileIO.RecycleOption.SendToRecycleBin, FileIO.DeleteDirectoryOption.DeleteAllContents)
                 Me.Close()
             Catch ex As Exception
-                MsgBox("Cannot Backup region file:" + ex.Message, vbInformation)
+                MsgBox("Cannot delete region file:" + ex.Message, vbInformation)
             End Try
         End If
     End Sub

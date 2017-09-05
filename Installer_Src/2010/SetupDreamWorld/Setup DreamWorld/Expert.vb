@@ -66,16 +66,15 @@ Public Class Expert
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''
         RegionDbName.Text = My.Settings.RegionDBName
         RegionDBUsername.Text = My.Settings.RegionDBUsername
-        RegionPort.Text = My.Settings.RegionMySqlPort
         RegionDBURL.Text = My.Settings.RegionDBURL
-        RegionPort.Text = My.Settings.RegionMySqlPort
+
 
         ' Robust DB
         RobustDBURL.Text = My.Settings.RobustMySqlURL
         RobustDbName.Text = My.Settings.RobustMySqlName
         RobustDBPassword.Text = My.Settings.RobustMySqlPassword
         RobustDBUsername.Text = My.Settings.RobustMySqlUsername
-        RobustDbPort.Text = My.Settings.RobustMySqlPort
+        RobustDbPort.Text = My.Settings.MySqlPort
 
     End Sub
 #End Region
@@ -287,10 +286,6 @@ Public Class Expert
 
 #Region "Database"
 
-    Private Sub DbPort_TextChanged_1(sender As Object, e As EventArgs) Handles RegionPort.TextChanged
-        My.Settings.RegionMySqlPort = RegionPort.Text
-        My.Settings.Save()
-    End Sub
     Private Sub DatabaseNameUser_TextChanged(sender As Object, e As EventArgs) Handles RegionDbName.TextChanged
         My.Settings.RegionDBName = RegionDbName.Text
         My.Settings.Save()
@@ -334,7 +329,7 @@ Public Class Expert
     End Sub
 
     Private Sub RobustDbPortTextbox_TextChanged(sender As Object, e As EventArgs) Handles RobustDbPort.TextChanged
-        My.Settings.RobustMySqlPort = RobustDbPort.Text
+        My.Settings.MySqlPort = RobustDbPort.Text
         My.Settings.Save()
     End Sub
 

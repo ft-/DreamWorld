@@ -58,4 +58,23 @@ OutworldzFiles/Opensim-0.9.0/share/
 
 
 
+# Ignore .user and .suo files as these are user preference specific
+# http://stackoverflow.com/questions/72298/should-i-add-the-visual-studio-suo-and-user-files-to-source-control
+*.suo
+*.user
+
+*.VisualState.xml
+*/*/obj
+*/*/*/obj
+*/*/*/*/obj
+*/*/*/*/*/obj
+*/*/*/*/*/*/obj
+*/*/*/*/*/*/*/obj
+*/*/bin
+*/*/*/bin
+*/*/*/*/bin
+*/*/*/*/*/bin
+*/*/*/*/*/*/bin
+*/*/*/*/*/*/*/bin
+.vs/
 

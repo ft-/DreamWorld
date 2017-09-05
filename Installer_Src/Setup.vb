@@ -266,8 +266,6 @@ Public Class Form1
             Log("Info: Ready to start")
             Print("Ready to Launch! Click 'Start' to begin your adventure in Opensimulator.")
         Else
-            My.Settings.HttpPort = 8002
-            My.Settings.Save()
 
             Print("Installing Desktop icon clicky thingy")
             Create_ShortCut(MyFolder & "\Start.exe")
@@ -371,8 +369,10 @@ Public Class Form1
 
         StartMySQL() ' boot up MySql, and wait for it to start listening
 
+        If Not Start_Robust() Then
+            Return
+        End If
         If Not Start_Opensimulator() Then ' Launch the rocket
-            'KillAll()
             Return
         End If
         Onlook()
@@ -747,7 +747,7 @@ Public Class Form1
                 While reader.Peek <> -1
                     line = reader.ReadLine()
 
-                    If line.Contains("DefaultRegion, DefaultHGRegion, FallbackRegion") Then
+                    If line.Contains("DefaultHGRegion, FallbackRegion") Then
                         ' flag lets us skip multi-lines
                         If onceflag = False Then
                             onceflag = True
@@ -762,6 +762,7 @@ Public Class Form1
             End Using
             'close your reader
             reader.Close()
+
             Try
                 Try
                     My.Computer.FileSystem.DeleteFile(prefix + "Robust.HG.ini.bak")
@@ -818,11 +819,11 @@ Public Class Form1
         ' Grid regions need GridDBName
         LoadIni(prefix + "\config-include\Gridcommon.ini", ";")
         Dim ConnectionString = """" _
-            + "Data Source=" + My.Settings.RobustMySqlURL _
-            + ";Database=" + My.Settings.RobustMySqlURL _
-            + ";Port=" + My.Settings.RobustMySqlPort _
-            + ";User ID=" + My.Settings.RobustMySqlUsername _
-            + ";Password=" + My.Settings.RobustMySqlPassword _
+            + "Data Source=" + My.Settings.RegionDBURL _
+            + ";Database=" + My.Settings.RegionDBName _
+            + ";Port=" + My.Settings.MySqlPort _
+            + ";User ID=" + My.Settings.RegionDBUsername _
+            + ";Password=" + My.Settings.RegionDbPassword _
             + ";Old Guids=True;Allow Zero Datetime=True;" _
             + """"
         SetIni("DatabaseService", "ConnectionString", ConnectionString)
@@ -843,7 +844,7 @@ Public Class Form1
         ConnectionString = """" _
             + "Data Source=" + My.Settings.RobustMySqlURL _
             + ";Database=" + My.Settings.RobustMySqlName _
-            + ";Port=" + My.Settings.RobustMySqlPort _
+            + ";Port=" + My.Settings.MySqlPort _
             + ";User ID=" + My.Settings.RobustMySqlUsername _
             + ";Password=" + My.Settings.RobustMySqlPassword _
             + ";Old Guids=True;Allow Zero Datetime=True;" _
@@ -1026,7 +1027,7 @@ Public Class Form1
         ConnectionString = """" _
             + "Data Source=" + My.Settings.RegionDBURL _
             + ";Database=" + My.Settings.RegionDBName _
-            + ";Port=" + My.Settings.RegionMySqlPort _
+            + ";Port=" + My.Settings.MySqlPort _
             + ";User ID=" + My.Settings.RegionDBUsername _
             + ";Password=" + My.Settings.RegionDbPassword _
             + ";Old Guids=True;Allow Zero Datetime=True;" _
@@ -1034,7 +1035,6 @@ Public Class Form1
         SetIni("Gloebit", "GLBSpecificConnectionString", ConnectionString)
 
         SaveINI()
-
 
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
         ' Wifi
@@ -1059,10 +1059,13 @@ Public Class Form1
         Dim L = aRegion.GetUpperBound(0)
         While counter <= L
             Dim simName = aRegion(counter).RegionName
-            LoadIni(prefix + "Regions\" + simName + "\" + simName + ".ini", ";")
-            SetIni(simName, "InternalPort", Convert.ToString(aRegion(counter).RegionPort))
-            SetIni(simName, "ExternalHostName", Convert.ToString(My.Settings.PublicIP))
-            SaveINI()
+            If simName <> "Opensim" Then
+                LoadIni(prefix + "Regions\" + simName + "\Region\" + simName + ".ini", ";")
+                SetIni(simName, "InternalPort", Convert.ToString(aRegion(counter).RegionPort))
+                SetIni(simName, "ExternalHostName", Convert.ToString(My.Settings.PublicIP))
+                SaveINI()
+            End If
+
             counter += 1
         End While
 
@@ -1085,29 +1088,26 @@ Public Class Form1
 
 
         ' COPY OPENSIM.INI prototype to all region folders and set the Sim Name
-
+        counter = 1
         Dim regioncounter As Integer = 1
         Dim length = aRegion.Length ' 5 for 4 items as we skip 0
         While counter <= length - 1      ' so we subtract 1
             Try
                 Dim fname = aRegion(counter).RegionName
-
-                Try
-                    My.Computer.FileSystem.DeleteFile(prefix + fname + "/Opensim.ini")
-                Catch ex As Exception
-
-                End Try
-                Try
-                    LoadIni(prefix + "Opensim.ini", ";")
-                    SetIni("Const", "RegionFolderName", fname)
-                    SaveINI()
-
-                    My.Computer.FileSystem.CopyFile(prefix + "Opensim.ini", prefix + fname + "/Opensim.ini", True)
-
-                Catch
-                    Log("Error:Failed to Set the Opensim.ini for sim " + fname)
-                End Try
-
+                If fname <> "Opensim" Then
+                    Try
+                        My.Computer.FileSystem.DeleteFile(prefix + "Regions/" + fname + "/Opensim.ini")
+                    Catch ex As Exception
+                    End Try
+                    Try
+                        LoadIni(prefix + "Opensim.ini", ";")
+                        SetIni("Const", "RegionFolderName", fname)
+                        SaveINI()
+                        My.Computer.FileSystem.CopyFile(prefix + "Opensim.ini", prefix + "Regions/" + fname + "/Opensim.ini", True)
+                    Catch
+                        Log("Error:Failed to Set the Opensim.ini for sim " + fname)
+                    End Try
+                End If
             Catch ex As Exception
                 Log("Info:" + ex.Message)
             End Try
@@ -1274,33 +1274,33 @@ Public Class Form1
     End Sub
 #End Region
 
-#Region "Opensimulator"
+#Region "Robust"
+    Private Function Start_Robust() As Boolean
 
-    Private Function Start_Opensimulator() As Boolean
-        If Running = False Then Return True
-        Print("Starting Opensimulator")
-
-        Dim ItWorked As Boolean
-        If mnuShow.Checked Then
-            Log("Info:Opensim console is forced visible")
-            Print("Please wait for the console to show 'LOGINS ENABLED'. It will take a while to load. ")
-            ItWorked = Boot(AppWinStyle.NormalFocus)
-        Else
-            ItWorked = Boot(AppWinStyle.MinimizedNoFocus)
-            Log("Info:Opensim console is Minimized")
-        End If
-
-        If Not ItWorked Then
+        Print("Starting Robust")
+        Try
+            ChDir(prefix)
+            If mnuShow.Checked Then
+                Dim str = prefix + "Robust.exe -inifile Robust.HG.ini"
+                RobustProcID = Shell(prefix + "Robust.exe -inifile Robust.HG.ini", AppWinStyle.NormalFocus)
+            Else
+                RobustProcID = Shell(prefix + "Robust.exe -inifile Robust.HG.ini", AppWinStyle.MinimizedNoFocus)
+            End If
+            ChDir(MyFolder)
+        Catch ex As Exception
+            Print("Error: Robust did not start: " + ex.Message)
+            KillAll()
+            Buttons(StartButton)
             Return False
-        End If
+        End Try
 
         ' Wait for Opensim to start listening 
         Dim Up As String
         Try
-            Up = client.DownloadString("http://127.0.0.1:" + My.Settings.HttpPort + "/?_Opensim=" + Random())
+            Up = client.DownloadString("http://127.0.0.1:" + My.Settings.PublicPort + "/?_Opensim=" + Random())
         Catch ex As Exception
             Up = ""
-            Log("Info:Opensim is not yet running, will continue to check every 1/10 second for two minutes")
+            Log("Info:Robust is not yet running, will continue to check every 1/10 second for two minutes")
         End Try
         Dim counter = 0
         While Up.Length = 0 And Running
@@ -1309,12 +1309,12 @@ Public Class Form1
             counter = counter + 1
             ' wait a couple of minutes for it to start
             If counter > 1200 Then
-                Print("Error:Opensim failed to start")
+                Print("Error:Robust failed to start")
                 KillAll()
                 Buttons(StartButton)
-                Dim yesno = MsgBox("Opensim did not start. Do you want to see the log file?", vbYesNo)
+                Dim yesno = MsgBox("Robust did not start. Do you want to see the log file?", vbYesNo)
                 If (yesno = vbYes) Then
-                    Dim Log As String = """" + MyFolder + "\OutworldzFiles\Opensim-0.9.0\bin\OpenSim.log" + """"
+                    Dim Log As String = """" + MyFolder + "\OutworldzFiles\Opensim-0.9.0\bin\Robust.log" + """"
                     System.Diagnostics.Process.Start("wordpad.exe", Log)
                 End If
                 Buttons(StartButton)
@@ -1324,40 +1324,55 @@ Public Class Form1
             Sleep(100)
 
             Try
-                Up = client.DownloadString("http://127.0.0.1:" + My.Settings.HttpPort + "/?_Opensim=" + Random())
+                Up = client.DownloadString("http://127.0.0.1:" + My.Settings.PublicPort + "/?_Opensim=" + Random())
             Catch ex As Exception
-                Log("Info:Opensim is not yet running, waiting for it to start listening")
+
                 Up = ""
                 If InStr(ex.Message, "404") Then
                     Up = "Done"
                 End If
             End Try
         End While
-        Log("Info:Opensim is running")
+        Log("Info:Robust is running")
         Return True
 
     End Function
-    Private Function Boot(Show As AppWinStyle) As Boolean
 
+#End Region
 
-        If My.Settings.RobustMySqlURL = "localhost" Then
-            Try
-                ChDir(prefix + "")
-                RobustProcID = Shell("""" + prefix + "Robust.exe" + """", Show)
-                ChDir(MyFolder)
-            Catch ex As Exception
-                Print("Error: Robust did not start: " + ex.Message)
-                KillAll()
-                Buttons(StartButton)
-                Return False
-            End Try
+#Region "Opensimulator"
 
-        End If
+    Private Function Start_Opensimulator() As Boolean
+        If Running = False Then Return True
 
+        Dim counter = 1
+        Dim size = aRegion.GetUpperBound(0)
+        While counter <= size
+            Dim RegionName As String = aRegion(counter).RegionName
+
+            Print("Starting " + RegionName)
+
+            If mnuShow.Checked Then
+                If Not Boot(RegionName, AppWinStyle.NormalFocus) Then
+                    Return False
+                End If
+            Else
+                If Not Boot(RegionName, AppWinStyle.MinimizedNoFocus) Then
+                    Return False
+                End If
+            End If
+
+            counter += 1
+            Application.DoEvents()
+        End While
+        Return True
+
+    End Function
+    Private Function Boot(InstanceName As String, Show As AppWinStyle) As Boolean
 
         Try
             ChDir(prefix)
-            OpensimProcID = Shell("""" + prefix + "StartOpensim.bat" + """", Show)
+            OpensimProcID = Shell(prefix + "OpenSim.exe -inidirectory=./Regions/" + InstanceName, Show)
             ChDir(MyFolder)
         Catch ex As Exception
             Print("Error: Opensim did not start: " + ex.Message)
@@ -1366,6 +1381,7 @@ Public Class Form1
             Return False
         End Try
         Return True
+
     End Function
 
     Private Function IsOpensimRunning() As Boolean
@@ -2632,7 +2648,7 @@ Public Class Form1
         ' Check for MySql operation
         Dim Mysql = False
         ' wait for MySql to come up
-        Mysql = CheckPort("127.0.0.1", My.Settings.RegionMySqlPort)
+        Mysql = CheckPort("127.0.0.1", My.Settings.MySqlPort)
         If Mysql Then
 
             Return True
@@ -2648,8 +2664,8 @@ Public Class Form1
         LoadIni(MyFolder & "\OutworldzFiles\mysql\my.ini", "#")
         SetIni("mysqld", "basedir", """" + gCurSlashDir + "/OutworldzFiles/Mysql" + """")
         SetIni("mysqld", "datadir", """" + gCurSlashDir + "/OutworldzFiles/Mysql/Data" + """")
-        SetIni("mysqld", "port", My.Settings.RegionMySqlPort)
-        SetIni("client", "port", My.Settings.RegionMySqlPort)
+        SetIni("mysqld", "port", My.Settings.MySqlPort)
+        SetIni("client", "port", My.Settings.MySqlPort)
         SaveINI()
 
         ' create test program 
@@ -2681,7 +2697,7 @@ Public Class Form1
 
 
         ' wait for MySql to come up
-        Mysql = CheckPort("127.0.0.1", My.Settings.RegionMySqlPort)
+        Mysql = CheckPort("127.0.0.1", My.Settings.MySqlPort)
         While Not Mysql
 
             BumpProgress(1)
@@ -2698,14 +2714,13 @@ Public Class Form1
                         System.Diagnostics.Process.Start("wordpad.exe", FileName)
                     Next
                 End If
-
                 Buttons(StartButton)
                 Return False
             End If
 
             ' check again
             Sleep(1000)
-            Mysql = CheckPort("127.0.0.1", My.Settings.RegionMySqlPort)
+            Mysql = CheckPort("127.0.0.1", My.Settings.MySqlPort)
         End While
         Sleep(2000) ' hacky, but may work
         Return True
@@ -2728,7 +2743,7 @@ Public Class Form1
             Log("Error:mysqladmin failed to stop mysql:" + ex.Message)
         End Try
 
-        Dim Mysql = CheckPort("127.0.0.1", My.Settings.RegionMySqlPort)
+        Dim Mysql = CheckPort("127.0.0.1", My.Settings.MySqlPort)
         If Mysql Then
             Sleep(4000)
             Try
@@ -2840,7 +2855,7 @@ Public Class Form1
 
         ChDir(MyFolder & "\OutworldzFiles\mysql\bin")
         pi.WindowStyle = ProcessWindowStyle.Normal
-        pi.Arguments = My.Settings.RegionMySqlPort
+        pi.Arguments = My.Settings.MySqlPort
         pi.FileName = "CheckAndRepair.bat"
         pMySqlDiag.StartInfo = pi
         pMySqlDiag.Start()

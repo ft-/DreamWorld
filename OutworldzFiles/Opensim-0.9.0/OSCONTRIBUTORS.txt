@@ -89,7 +89,6 @@ what it is today.
 * dmiles (Daxtron Labs)
 * Dong Jun Lan (IBM)
 * DoranZemlja
-* Drake Arconis
 * dr0b3rts
 * dslake
 * eeyore
@@ -108,7 +107,6 @@ what it is today.
 * Flyte Xevious
 * Freaky Tech
 * Garmin Kawaguichi
-* Geir Noklebye
 * Glenn Martin (MOSES)
 * Gryc Ueusp
 * H-H-H (ginge264)
@@ -117,7 +115,6 @@ what it is today.
 * Imaze Rhiano
 * Intimidated
 * Jak Daniels
-* Jeff Kelly
 * Jeremy Bongio (IBM)
 * jhurliman
 * John R Sohn (XenReborn)
@@ -139,7 +136,6 @@ what it is today.
 * Magnuz Binder
 * maimedleech
 * Mana Janus
-* Mandarinka Tasty
 * MarcelEdward
 * Matt Lehmann
 * Mic Bowman
@@ -162,7 +158,6 @@ what it is today.
 * openlifegrid.com
 * otakup0pe
 * Pixel Tomsen
-* Quill Littlefeather
 * ralphos
 * RemedyTomm
 * Revolution
@@ -188,8 +183,6 @@ what it is today.
 * TBG Renfold
 * tglion
 * tlaukkan/Tommil (Tommi S. E. Laukkanen, Bubble Cloud)
-* TomDataWorks
-* TomTheDragon (muckwaddle)
 * tyre
 * Vegaslon <vegaslon@gmail.com>
 * VikingErik

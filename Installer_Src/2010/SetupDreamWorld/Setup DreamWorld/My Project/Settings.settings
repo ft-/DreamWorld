@@ -41,9 +41,6 @@
     <Setting Name="SizeY" Type="System.String" Scope="User">
       <Value Profile="(Default)">256</Value>
     </Setting>
-    <Setting Name="RegionMySqlPort" Type="System.String" Scope="User">
-      <Value Profile="(Default)">3309</Value>
-    </Setting>
     <Setting Name="AutobackupInterval" Type="System.String" Scope="User">
       <Value Profile="(Default)">720</Value>
     </Setting>
@@ -182,7 +179,7 @@
     <Setting Name="GLProdKey" Type="System.String" Scope="User">
       <Value Profile="(Default)">OAuth Production key</Value>
     </Setting>
-    <Setting Name="RobustMySqlPort" Type="System.String" Scope="User">
+    <Setting Name="MySqlPort" Type="System.String" Scope="User">
       <Value Profile="(Default)">3306</Value>
     </Setting>
     <Setting Name="GLProdSecret" Type="System.String" Scope="User">
@@ -198,7 +195,7 @@
       <Value Profile="(Default)">localhost</Value>
     </Setting>
     <Setting Name="RegionDBName" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Opensim</Value>
+      <Value Profile="(Default)">opensim</Value>
     </Setting>
     <Setting Name="WifiEnabled" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
