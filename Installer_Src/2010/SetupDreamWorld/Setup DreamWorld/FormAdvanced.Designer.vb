@@ -251,7 +251,7 @@ Partial Class AdvancedForm
         '
         Me.ExpertButton1.Location = New System.Drawing.Point(399, 215)
         Me.ExpertButton1.Name = "ExpertButton1"
-        Me.ExpertButton1.Size = New System.Drawing.Size(132, 23)
+        Me.ExpertButton1.Size = New System.Drawing.Size(143, 23)
         Me.ExpertButton1.TabIndex = 1866
         Me.ExpertButton1.Text = "Expert Settings"
         Me.ExpertButton1.UseVisualStyleBackColor = True
@@ -308,7 +308,7 @@ Partial Class AdvancedForm
         '
         Me.VoiceButton1.Location = New System.Drawing.Point(399, 186)
         Me.VoiceButton1.Name = "VoiceButton1"
-        Me.VoiceButton1.Size = New System.Drawing.Size(132, 23)
+        Me.VoiceButton1.Size = New System.Drawing.Size(143, 23)
         Me.VoiceButton1.TabIndex = 1864
         Me.VoiceButton1.Text = "Voice Setup"
         Me.VoiceButton1.UseVisualStyleBackColor = True

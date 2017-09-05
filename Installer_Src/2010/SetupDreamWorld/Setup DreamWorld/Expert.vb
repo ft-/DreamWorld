@@ -101,8 +101,6 @@ Public Class Expert
     End Sub
 
 
-
-
 #End Region
 
 #Region "Wifi"

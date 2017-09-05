@@ -818,7 +818,7 @@ Public Class Form1
         ' Grid regions need GridDBName
         LoadIni(prefix + "\config-include\Gridcommon.ini", ";")
         Dim ConnectionString = """" _
-            + "Data Source=My.Settings.RobustMySqlURL _
+            + "Data Source=" + My.Settings.RobustMySqlURL _
             + ";Database=" + My.Settings.RobustMySqlURL _
             + ";Port=" + My.Settings.RobustMySqlPort _
             + ";User ID=" + My.Settings.RobustMySqlUsername _
@@ -862,21 +862,21 @@ Public Class Form1
 
 
         If (My.Settings.allow_grid_gods) Then
-            SetIni("Permissions", "allow_grid_gods", "True")
+            SetIni("Permissions", "allow_grid_gods", "true")
         Else
-            SetIni("Permissions", "allow_grid_gods", "False")
+            SetIni("Permissions", "allow_grid_gods", "false")
         End If
 
         If (My.Settings.region_owner_is_god) Then
-            SetIni("Permissions", "region_owner_is_god", "True")
+            SetIni("Permissions", "region_owner_is_god", "true")
         Else
-            SetIni("Permissions", "region_owner_is_god", "False")
+            SetIni("Permissions", "region_owner_is_god", "false")
         End If
 
         If (My.Settings.region_manager_is_god) Then
-            SetIni("Permissions", "region_manager_is_god", "True")
+            SetIni("Permissions", "region_manager_is_god", "true")
         Else
-            SetIni("Permissions", "region_manager_is_god", "False")
+            SetIni("Permissions", "region_manager_is_god", "false")
         End If
 
         ' Physics
@@ -895,27 +895,27 @@ Public Class Form1
             Case 0
                 SetIni("Startup", "meshing", "ZeroMesher")
                 SetIni("Startup", "physics", "basicphysics")
-                SetIni("Startup", "UseSeparatePhysicsThread", "False")
+                SetIni("Startup", "UseSeparatePhysicsThread", "false")
             Case 1
                 SetIni("Startup", "meshing", "Meshmerizer")
                 SetIni("Startup", "physics", "OpenDynamicsEngine")
-                SetIni("Startup", "UseSeparatePhysicsThread", "False")
+                SetIni("Startup", "UseSeparatePhysicsThread", "false")
             Case 2
                 SetIni("Startup", "meshing", "Meshmerizer")
                 SetIni("Startup", "physics", "BulletSim")
-                SetIni("Startup", "UseSeparatePhysicsThread", "False")
+                SetIni("Startup", "UseSeparatePhysicsThread", "false")
             Case 3
                 SetIni("Startup", "meshing", "Meshmerizer")
                 SetIni("Startup", "physics", "BulletSim")
-                SetIni("Startup", "UseSeparatePhysicsThread", "True")
+                SetIni("Startup", "UseSeparatePhysicsThread", "true")
             Case 4
                 SetIni("Startup", "meshing", "ubODEMeshmerizer")
                 SetIni("Startup", "physics", "ubODE")
-                SetIni("Startup", "UseSeparatePhysicsThread", "False")
+                SetIni("Startup", "UseSeparatePhysicsThread", "false")
             Case Else
                 SetIni("Startup", "meshing", "Meshmerizer")
                 SetIni("Startup", "physics", "BulletSim")
-                SetIni("Startup", "UseSeparatePhysicsThread", "True")
+                SetIni("Startup", "UseSeparatePhysicsThread", "true")
         End Select
 
         SetIni("Const", "http_listener_port", My.Settings.HttpPort)
@@ -1084,9 +1084,37 @@ Public Class Form1
         End If
 
 
+        ' COPY OPENSIM.INI prototype to all region folders and set the Sim Name
 
+        Dim regioncounter As Integer = 1
+        Dim length = aRegion.Length ' 5 for 4 items as we skip 0
+        While counter <= length - 1      ' so we subtract 1
+            Try
+                Dim fname = aRegion(counter).RegionName
 
-        ' COPY OPENSIM.INBI prototype to all region folders
+                Try
+                    My.Computer.FileSystem.DeleteFile(prefix + fname + "/Opensim.ini")
+                Catch ex As Exception
+
+                End Try
+                Try
+                    LoadIni(prefix + "Opensim.ini", ";")
+                    SetIni("Const", "RegionFolderName", fname)
+                    SaveINI()
+
+                    My.Computer.FileSystem.CopyFile(prefix + "Opensim.ini", prefix + fname + "/Opensim.ini", True)
+
+                Catch
+                    Log("Error:Failed to Set the Opensim.ini for sim " + fname)
+                End Try
+
+            Catch ex As Exception
+                Log("Info:" + ex.Message)
+            End Try
+
+            counter = counter + 1
+
+        End While
 
 
     End Sub
@@ -1101,7 +1129,7 @@ Public Class Form1
             My.Settings.DiagnosticPort = 8001
             My.Settings.HttpPort = 8002
             My.Settings.PrivatePort = 8003
-            My.Settings.PublicPort = 9000
+            My.Settings.PublicPort = 8000
             MsgBox("Port conflict detected. Public, HTTP and Private Ports have been reset to the default", vbInformation)
         End If
 
