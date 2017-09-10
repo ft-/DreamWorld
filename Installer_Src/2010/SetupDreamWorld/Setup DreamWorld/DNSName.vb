@@ -99,7 +99,7 @@ Public Class DNSName
     End Sub
 
     Private Sub PictureBox4_Click(sender As Object, e As EventArgs) Handles PictureBox4.Click
-        Dim webAddress As String = Form1.Domain + "/Outworldz_installer/technical.htm#Grid" '!!!
+        Dim webAddress As String = Form1.Domain + "/Outworldz_installer/technical.htm#Grid" '!!! not made yet
         Process.Start(webAddress)
     End Sub
 

@@ -7,15 +7,8 @@ Public Class AdvancedForm
     Dim Awake As Integer = 1000
     Dim Coffee As Integer = 500
     Dim Toomuch As Integer = 0
-    Private Class Region_data
-        Public RegionName As String
-        Public UUID As String
-        Public CoordX As Integer
-        Public CoordY As String
-        Public RegionPort As Integer
-        Public SizeX As Integer
-        Public SizeY As Integer
-    End Class
+    Dim MyRegion As RegionMaker
+
 
 #End Region
 
@@ -68,14 +61,11 @@ Public Class AdvancedForm
         End If
         LoadWelcomeBox()
 
-
-
-
     End Sub
 
     Private Sub Form1_Closed(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Closed
         If Form1.Running Then
-            Form1.ConsoleCommand("reset user password Wifi Admin " + My.Settings.Password + "{Enter}")
+            Form1.ConsoleCommand(Form1.gRobustProcID, "reset user password Wifi Admin " + My.Settings.Password + "{Enter}")
         End If
         MsgBox("Any changes will take effect the next time Opensimulator is started.")
     End Sub
@@ -134,16 +124,19 @@ Public Class AdvancedForm
 
     Private Sub RegionButton1_Click(sender As Object, e As EventArgs) Handles RegionButton.Click
 
-        Form1.GetAllRegions()
         Dim X As Integer = 300
         Dim Y As Integer = 200
         Dim fname As String
 
+
         Dim counter As Integer = 1
-        Dim l = Form1.aRegion.Length ' 5 for 4 items as we skip 0
+        Dim r As RegionMaker
+        r = Form1.RegionClass
+        Dim l = r.RegionList.Length ' 5 for 4 items as we skip 0
         While counter <= l - 1      ' so we subtract 1
             Try
-                fname = Form1.aRegion(counter).RegionName
+                r.RegionNum = counter
+                fname = r.RegionName
 
                 Dim ActualForm As New FormRegion
                 ActualForm.SetDesktopLocation(X, Y)
@@ -166,21 +159,13 @@ Public Class AdvancedForm
         Dim X As Integer = 300
         Dim Y As Integer = 200
 
-        Array.Resize(Form1.aRegion, Form1.aRegion.Length + 1)
-        Dim index = Form1.aRegion.Length - 1
-        Form1.aRegion(index) = New Region_data
-        Form1.aRegion(index).RegionPort = 0
-        Form1.aRegion(index).CoordX = 0
-        Form1.aRegion(index).CoordY = 0
-        Form1.aRegion(index).SizeX = 256
-        Form1.aRegion(index).SizeY = 256
-        Form1.aRegion(index).UUID = ""
-        Form1.aRegion(index).RegionName = ""
+        Form1.RegionClass.CreateRegion()
+        Dim id = Form1.RegionClass.RegionNum()
 
         Try
             Dim ActualForm As New FormRegion
             ActualForm.SetDesktopLocation(X, Y)
-            ActualForm.Init(index)
+            ActualForm.Init(id)
             ActualForm.Activate()
             ActualForm.Visible = True
 
@@ -262,9 +247,10 @@ Public Class AdvancedForm
         ' Default welcome region load
         WelcomeBox1.Items.Clear()
         Dim counter As Integer = 1
-        Dim L = Form1.aRegion.GetUpperBound(0)
+        Dim L = Form1.RegionClass.Count
         While counter <= L
-            WelcomeBox1.Items.Add(Form1.aRegion(counter).RegionName)
+            Form1.RegionClass.RegionNum = counter
+            WelcomeBox1.Items.Add(Form1.RegionClass.RegionName())
             counter += 1
         End While
 

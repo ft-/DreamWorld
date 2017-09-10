@@ -66,8 +66,14 @@ Public Class Form1
     Private randomnum As New Random
     Dim parser As FileIniDataParser
     Dim gINI As String  ' the name of the current INI file we are writing
-    Dim OpensimProcID As Integer
-    Dim RobustProcID As Integer
+    Dim OpensimProcID As ArrayList
+
+    ' robust errors and startup
+    Public gRobustProcID As Integer
+    Private WithEvents RobustProcess As New Process()
+    Public Event RobustExited As EventHandler
+
+
     Private images =
     New List(Of Image) From {My.Resources.tangled, My.Resources.wp_habitat, My.Resources.wp_Mooferd,
                              My.Resources.wp_To_Piers_Anthony,
@@ -97,17 +103,8 @@ Public Class Form1
     Dim gContentAvailable As Boolean = False ' assume there is no OAR and IAR data available
     Dim MyUPnPMap
 
-    Public aRegion(0) As Object
-
-    Private Class Region_data
-        Public RegionName As String
-        Public UUID As String
-        Public CoordX As Integer
-        Public CoordY As String
-        Public RegionPort As Integer
-        Public SizeX As Integer
-        Public SizeY As Integer
-    End Class
+    Public RegionClass As RegionMaker
+    Public gSelectedRegionID = 0
 
 
 #End Region
@@ -219,7 +216,7 @@ Public Class Form1
             System.Diagnostics.Process.Start("wordpad.exe", """" + MyFolder + "\" + RevNotesFile + """")
         End If
 
-        GetAllRegions()
+        RegionClass = New RegionMaker
 
         If (My.Settings.SplashPage = "") Then
             My.Settings.SplashPage = Domain + "/Outworldz_installer/Welcome.htm"
@@ -250,13 +247,6 @@ Public Class Form1
 
         mnuSettings.Visible = True
         SetIAROARContent() ' load IAR and OAR web content
-
-        If My.Settings.Password = "secret" Then
-            BumpProgress10()
-            Dim Password = New PassGen
-            My.Settings.Password = Password.GeneratePass()
-            My.Settings.Save()
-        End If
 
         ' Find out if the viewer is installed
         If System.IO.File.Exists(MyFolder & "\OutworldzFiles\Init.txt") Then
@@ -355,7 +345,7 @@ Public Class Form1
         Running = True
         MnuContent.Visible = True
 
-        GetAllRegions()
+        RegionClass.GetAllRegions()
 
         RegisterDNS()
 
@@ -372,9 +362,11 @@ Public Class Form1
         If Not Start_Robust() Then
             Return
         End If
-        If Not Start_Opensimulator() Then ' Launch the rocket
+
+        If Not Start_Opensimulator() Then ' Launch the rockets
             Return
         End If
+
         Onlook()
 
         ' show the IAR and OAR menu when we are up 
@@ -471,34 +463,36 @@ Public Class Form1
         Application.DoEvents()
 
         Try
-            ConsoleCommand("quit{ENTER}")
-            Dim ctr = 20
-            While IsOpensimRunning() And ctr > 0
-                Sleep(1000)
+            For Each obj In OpensimProcID
+
+                ConsoleCommand(obj, "quit{ENTER}")
+                Dim ctr = 20
+                While IsOpensimRunning() And ctr > 0
+                    Sleep(1000)
+                    Try
+                        ConsoleCommand(obj, "quit{ENTER}")
+                    Catch
+                    End Try
+                    ctr = -1
+                End While
                 Try
-                    ConsoleCommand("quit{ENTER}")
+                    ConsoleCommand(obj, "{ENTER}")
+                    ConsoleCommand(obj, " ")
+                    ConsoleCommand(obj, "{ENTER}")
+                    ConsoleCommand(obj, " ")
                 Catch
                 End Try
-                ctr = -1
-            End While
-            Try
-                ConsoleCommand("{ENTER}")
-                ConsoleCommand(" ")
-                ConsoleCommand("{ENTER}")
-                ConsoleCommand(" ")
-            Catch
-            End Try
-            Me.Focus()
+                Me.Focus()
+            Next
+
         Catch ex As Exception
             Log("Huh:Cannot stop a non-running Opensim:" + ex.Message)
         End Try
 
-        If RobustProcID Then
+        If gRobustProcID Then
             RobustCommand("quit{ENTER}")
         End If
         ProgressBar1.Value = 33
-
-        'CloseRouterPorts()
 
         ' cannot load OAR or IAR, either
         IslandToolStripMenuItem.Visible = False
@@ -727,41 +721,49 @@ Public Class Form1
 
         Try
             ' add this sim name as a default to the file as HG regions, and add the other regions as fallback
-            Dim DefaultName = aRegion(My.Settings.WelcomeRegion + 1).RegionName
+
+            RegionClass.RegionNum = My.Settings.WelcomeRegion
+            Dim DefaultName = RegionClass.RegionName
+
             '(replace spaces with underscore)
             DefaultName = DefaultName.Replace(" ", "_")    ' because this is a screwy thing they did in the INI file
 
             Dim onceflag As Boolean = False ' only do the DefaultName
             Dim counter As Integer = 1
-            Dim L = aRegion.GetUpperBound(0)
 
-            Try
-                My.Computer.FileSystem.DeleteFile(prefix + "File.tmp")
-            Catch ex As Exception
-                'Nothing to do, this was just cleanup
-            End Try
+            Dim id = RegionClass.FindRegionidByName(DefaultName)
+            If id >= 0 Then
 
-            Using outputFile As New StreamWriter(prefix + "File.tmp")
-                reader = System.IO.File.OpenText(prefix + "Robust.HG.ini")
-                'now loop through each line
-                While reader.Peek <> -1
-                    line = reader.ReadLine()
+                Try
+                    My.Computer.FileSystem.DeleteFile(prefix + "File.tmp")
+                Catch ex As Exception
+                    'Nothing to do, this was just cleanup
+                End Try
 
-                    If line.Contains("DefaultHGRegion, FallbackRegion") Then
-                        ' flag lets us skip multi-lines
-                        If onceflag = False Then
-                            onceflag = True
-                            line = "Region_" + DefaultName + " = " + """" + "DefaultRegion, DefaultHGRegion, FallbackRegion" + """"
+                Using outputFile As New StreamWriter(prefix + "File.tmp")
+                    reader = System.IO.File.OpenText(prefix + "Robust.HG.ini")
+                    'now loop through each line
+                    While reader.Peek <> -1
+                        line = reader.ReadLine()
+
+                        If line.Contains("DefaultHGRegion, FallbackRegion") Then
+                            ' flag lets us skip multi-lines
+                            If onceflag = False Then
+                                onceflag = True
+                                line = "Region_" + DefaultName + " = " + """" + "DefaultRegion, DefaultHGRegion, FallbackRegion" + """"
+                                outputFile.WriteLine(line)
+                            End If
+                        Else
                             outputFile.WriteLine(line)
                         End If
-                    Else
-                        outputFile.WriteLine(line)
-                    End If
 
-                End While
-            End Using
-            'close your reader
-            reader.Close()
+                    End While
+                End Using
+                'close your reader
+                reader.Close()
+            Else
+                MsgBox("Cannot locate Default region named " + DefaultName)
+            End If
 
             Try
                 Try
@@ -859,7 +861,7 @@ Public Class Form1
 
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
         ' Opensim.ini
-        LoadIni(prefix + "Opensim.ini", ";")
+        LoadIni(prefix + "Opensim.proto", ";")
 
 
         If (My.Settings.allow_grid_gods) Then
@@ -1056,12 +1058,13 @@ Public Class Form1
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
         'Regions - write all region.ini files with public IP and Public port
         Dim counter As Integer = 1
-        Dim L = aRegion.GetUpperBound(0)
+        Dim L = RegionClass.Count
         While counter <= L
-            Dim simName = aRegion(counter).RegionName
+            RegionClass.RegionNum = counter
+            Dim simName = RegionClass.RegionName
             If simName <> "Opensim" Then
                 LoadIni(prefix + "Regions\" + simName + "\Region\" + simName + ".ini", ";")
-                SetIni(simName, "InternalPort", Convert.ToString(aRegion(counter).RegionPort))
+                SetIni(simName, "InternalPort", Convert.ToString(RegionClass.RegionPort))
                 SetIni(simName, "ExternalHostName", Convert.ToString(My.Settings.PublicIP))
                 SaveINI()
             End If
@@ -1090,20 +1093,21 @@ Public Class Form1
         ' COPY OPENSIM.INI prototype to all region folders and set the Sim Name
         counter = 1
         Dim regioncounter As Integer = 1
-        Dim length = aRegion.Length ' 5 for 4 items as we skip 0
+        Dim length = RegionClass.Count ' 5 for 4 items as we skip 0
         While counter <= length - 1      ' so we subtract 1
             Try
-                Dim fname = aRegion(counter).RegionName
+                RegionClass.RegionNum = counter
+                Dim fname = RegionClass.RegionName
                 If fname <> "Opensim" Then
                     Try
                         My.Computer.FileSystem.DeleteFile(prefix + "Regions/" + fname + "/Opensim.ini")
                     Catch ex As Exception
                     End Try
                     Try
-                        LoadIni(prefix + "Opensim.ini", ";")
+                        LoadIni(prefix + "Opensim.proto", ";")
                         SetIni("Const", "RegionFolderName", fname)
                         SaveINI()
-                        My.Computer.FileSystem.CopyFile(prefix + "Opensim.ini", prefix + "Regions/" + fname + "/Opensim.ini", True)
+                        My.Computer.FileSystem.CopyFile(prefix + "Opensim.proto", prefix + "Regions/" + fname + "/Opensim.ini", True)
                     Catch
                         Log("Error:Failed to Set the Opensim.ini for sim " + fname)
                     End Try
@@ -1121,7 +1125,7 @@ Public Class Form1
 
 #End Region
 
-#Region "Regions and Ports"
+#Region "Ports"
 
     Private Sub CheckDefaultPorts()
 
@@ -1135,57 +1139,6 @@ Public Class Form1
 
     End Sub
 
-    Public Sub GetAllRegions()
-
-        Dim files() As String
-        Dim folders() As String
-
-        Array.Resize(aRegion, 1)
-
-        '!!!  Move any INI files down a folder
-
-        folders = Directory.GetDirectories(prefix + "Regions\")
-        For Each FolderName As String In folders
-
-            Log("Info:Found region in " + FolderName)
-
-            files = Directory.GetFiles(FolderName, "*.ini", SearchOption.TopDirectoryOnly)
-            For Each FileName As String In files
-                Try
-                    ' remove the ini
-                    Dim fName = Path.GetFileName(FileName)
-                    fName = Mid(fName, 1, Len(fName) - 4)
-
-                    If fName <> "OpenSim" Then
-                        ' make a slot to hold the region data 
-                        Array.Resize(aRegion, aRegion.Length + 1)
-                        Dim index = aRegion.Length - 1
-                        aRegion(index) = New Region_data
-
-                        Log("Info:Setting up Region " + fName)
-
-                        ' populate from disk
-                        aRegion(index).RegionName = fName
-                        aRegion(index).UUID = GetIni(FileName, fName, "RegionUUID", ";")
-                        aRegion(index).SizeX = Convert.ToInt16(GetIni(FileName, fName, "SizeX", ";"))
-                        aRegion(index).SizeY = Convert.ToInt16(GetIni(FileName, fName, "SizeY", ";"))
-                        aRegion(index).RegionPort = Convert.ToInt16(GetIni(FileName, fName, "InternalPort", ";"))
-
-                        Log("Fetching INI file for Region " + fName)
-
-                        ' Location is int,int format.
-                        Dim C = GetIni(FileName, fName, "Location", ";")
-                        Dim parts As String() = C.Split(New Char() {","c}) ' split at the comma
-                        aRegion(index).CoordX = parts(0)
-                        aRegion(index).CoordY = parts(1)
-                    End If
-
-                Catch ex As Exception
-                    Log("Err:Parse file " + Name + ":" + ex.Message)
-                End Try
-            Next
-        Next
-    End Sub
 
 #End Region
 
@@ -1275,18 +1228,43 @@ Public Class Form1
 #End Region
 
 #Region "Robust"
+
+    ' Handle Exited event and display process information.
+    Private Sub RobustProcess_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles RobustProcess.Exited
+
+        gRobustProcID = Nothing
+        Debug.Print("Exit code: " + Convert.ToString(RobustProcess.ExitCode))
+
+    End Sub
+
     Private Function Start_Robust() As Boolean
 
+        If gRobustProcID Then
+            Print("Robust is already running")
+            Return True
+        End If
+
+        gRobustProcID = Nothing
         Print("Starting Robust")
+
         Try
-            ChDir(prefix)
+            RobustProcess.EnableRaisingEvents = True
+            RobustProcess.StartInfo.UseShellExecute = False ' so we can redirect streams
+            RobustProcess.StartInfo.FileName = prefix + "robust.exe"
+            RobustProcess.StartInfo.CreateNoWindow = False
+            RobustProcess.StartInfo.WorkingDirectory = prefix
+
             If mnuShow.Checked Then
-                Dim str = prefix + "Robust.exe -inifile Robust.HG.ini"
-                RobustProcID = Shell(prefix + "Robust.exe -inifile Robust.HG.ini", AppWinStyle.NormalFocus)
+                RobustProcess.StartInfo.WindowStyle = ProcessWindowStyle.Normal
             Else
-                RobustProcID = Shell(prefix + "Robust.exe -inifile Robust.HG.ini", AppWinStyle.MinimizedNoFocus)
+                gRobustProcID = RobustProcess.StartInfo.WindowStyle = ProcessWindowStyle.Minimized
             End If
-            ChDir(MyFolder)
+
+            RobustProcess.StartInfo.Arguments = "-inifile Robust.HG.ini"
+            RobustProcess.Start()
+            gRobustProcID = RobustProcess.Id
+
+
         Catch ex As Exception
             Print("Error: Robust did not start: " + ex.Message)
             KillAll()
@@ -1345,22 +1323,20 @@ Public Class Form1
     Private Function Start_Opensimulator() As Boolean
         If Running = False Then Return True
 
-        Dim counter = 1
-        Dim size = aRegion.GetUpperBound(0)
+        Dim counter = 0
+        Dim size = RegionClass.Count
         While counter <= size
-            Dim RegionName As String = aRegion(counter).RegionName
+            RegionClass.RegionNum = counter
+            Dim RegionName As String = RegionClass.RegionName
 
             Print("Starting " + RegionName)
+            Dim procid = Boot(RegionName)
 
-            If mnuShow.Checked Then
-                If Not Boot(RegionName, AppWinStyle.NormalFocus) Then
-                    Return False
-                End If
-            Else
-                If Not Boot(RegionName, AppWinStyle.MinimizedNoFocus) Then
-                    Return False
-                End If
+            If Not procid Then
+                Return False
             End If
+
+            RegionClass.ProcessID = procid
 
             counter += 1
             Application.DoEvents()
@@ -1368,12 +1344,27 @@ Public Class Form1
         Return True
 
     End Function
-    Private Function Boot(InstanceName As String, Show As AppWinStyle) As Boolean
+    Private Function Boot(InstanceName As String) As Boolean
+
+        Dim myProcess As New Process()
+        OpensimProcID = Nothing
 
         Try
-            ChDir(prefix)
-            OpensimProcID = Shell(prefix + "OpenSim.exe -inidirectory=./Regions/" + InstanceName, Show)
-            ChDir(MyFolder)
+            myProcess.StartInfo.UseShellExecute = False ' so we can redirect streams
+            myProcess.StartInfo.WorkingDirectory = prefix
+            myProcess.StartInfo.FileName = prefix + "OpenSim.exe"
+            myProcess.StartInfo.CreateNoWindow = False
+            If mnuShow.Checked Then
+                myProcess.StartInfo.WindowStyle = ProcessWindowStyle.Normal
+            Else
+                myProcess.StartInfo.WindowStyle = ProcessWindowStyle.Minimized
+            End If
+
+            myProcess.StartInfo.Arguments = "-inidirectory=./Regions/" + InstanceName
+            myProcess.Start()
+            Dim Pid = myProcess.Id
+            OpensimProcID.Add(Pid)
+
         Catch ex As Exception
             Print("Error: Opensim did not start: " + ex.Message)
             KillAll()
@@ -1502,9 +1493,9 @@ Public Class Form1
         End If
 
     End Function
-    Public Sub ConsoleCommand(command As String)
+    Public Sub ConsoleCommand(ProcessID As Integer, command As String)
         Try
-            AppActivate(OpensimProcID)
+            AppActivate(ProcessID)
             SendKeys.SendWait(command)
         Catch ex As Exception
             Log("Warn:" + ex.Message)
@@ -1512,7 +1503,7 @@ Public Class Form1
     End Sub
     Public Sub RobustCommand(command As String)
         Try
-            AppActivate(RobustProcID)
+            AppActivate(gRobustProcID)
             SendKeys.SendWait(command)
         Catch ex As Exception
             Log("Warn:" + ex.Message)
@@ -1619,12 +1610,12 @@ Public Class Form1
                     thing = thing.Replace("\", "/")    ' because Opensim uses unix-like slashes, that's why
 
                     If backMeUp = vbYes Then
-                        ConsoleCommand("alert CPU Intensive Backup Started{ENTER}")
-                        ConsoleCommand("save oar --perm=CT " + """" + BackupPath() + "Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
+                        ConsoleCommand(RegionClass.ProcessID, "alert CPU Intensive Backup Started{ENTER}")
+                        ConsoleCommand(RegionClass.ProcessID, "save oar --perm=CT " + """" + BackupPath() + "Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
                     End If
-                    ConsoleCommand("alert New content is loading..{ENTER}")
-                    ConsoleCommand("load oar --force-terrain --force-parcels " + """" + thing + """" + "{ENTER}")
-                    ConsoleCommand("alert New content just loaded." + "{ENTER}")
+                    ConsoleCommand(RegionClass.ProcessID, "alert New content is loading..{ENTER}")
+                    ConsoleCommand(RegionClass.ProcessID, "load oar --force-terrain --force-parcels " + """" + thing + """" + "{ENTER}")
+                    ConsoleCommand(RegionClass.ProcessID, "alert New content just loaded." + "{ENTER}")
                     Me.Focus()
                 End If
             End If
@@ -1668,8 +1659,8 @@ Public Class Form1
             myValue = InputBox(Message, title, defaultValue)
             ' If user has clicked Cancel, set myValue to defaultValue 
             If myValue.length = 0 Then Return
-            ConsoleCommand("alert CPU Intensive Backup Started{ENTER}")
-            ConsoleCommand("save oar " + """" + BackupPath() + myValue + """" + "{ENTER}")
+            ConsoleCommand(RegionClass.ProcessID, "alert CPU Intensive Backup Started{ENTER}")
+            ConsoleCommand(RegionClass.ProcessID, "save oar " + """" + BackupPath() + myValue + """" + "{ENTER}")
             Me.Focus()
             Print("Saving " + myValue + " to " + BackupPath())
         Else
@@ -1778,8 +1769,8 @@ Public Class Form1
 
             '''''''''''''''''''''''
 
-            ConsoleCommand("alert CPU Intensive Backup Started{ENTER}")
-            ConsoleCommand("save iar " + Name + " " + """" + itemName + """" + " " + Password + " " + """" + BackupPath() + backupName + """" + "{ENTER}")
+            ConsoleCommand(RegionClass.ProcessID, "alert CPU Intensive Backup Started{ENTER}")
+            ConsoleCommand(RegionClass.ProcessID, "save iar " + Name + " " + """" + itemName + """" + " " + Password + " " + """" + BackupPath() + backupName + """" + "{ENTER}")
             Me.Focus()
             Print("Saving " + backupName + " to " + BackupPath())
         Else
@@ -1793,13 +1784,14 @@ Public Class Form1
             Return
         End If
 
-        ConsoleCommand("alert CPU Intensive Backup Started{ENTER}")
+        ConsoleCommand(gSelectedRegionID, "alert CPU Intensive Backup Started{ENTER}")
 
         Dim counter = 1
-        Dim size = aRegion.GetUpperBound(0)
+        Dim size = RegionClass.Count
         While counter <= size
-            Dim RegionName As String = aRegion(counter).RegionName
-            ConsoleCommand("save oar --perm=CT " + """" + BackupPath() + RegionName + "_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
+            RegionClass.RegionNum = counter
+            Dim RegionName As String = RegionClass.RegionName
+            ConsoleCommand(gSelectedRegionID, "save oar --perm=CT " + """" + BackupPath() + RegionName + "_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
             counter += 1
             Application.DoEvents()
         End While
@@ -1807,7 +1799,7 @@ Public Class Form1
     End Sub
 
     Private Sub ChooseRegion()
-        If aRegion.GetUpperBound(0) <> 1 Then
+        If RegionClass.Count <> 1 Then
             Dim Chooseform As New Chooser ' form for choosing a set of regions
             ' Show testDialog as a modal dialog and determine if DialogResult = OK.
             Chooseform.ShowDialog()
@@ -1815,7 +1807,9 @@ Public Class Form1
                 ' Read the chosen sim name
                 Dim chosen As String = Chooseform.ListBox1.SelectedItem.ToString()
                 If chosen.Length Then
-                    ConsoleCommand("change region " + """" + chosen + """" + "{ENTER}")
+                    '!!!! Dim id = RegionClass.FindRegionidByName(chosen)
+                    gSelectedRegionID = RegionClass.RegionName
+                    ConsoleCommand(RegionClass.ProcessID, "change region " + """" + chosen + """" + "{ENTER}")
                 End If
                 Chooseform.Dispose()
             Catch
@@ -1824,7 +1818,6 @@ Public Class Form1
         End If
     End Sub
     Private Sub LoadOARContent(thing As String)
-
 
         If Not isRunning Then
             Print("Opensim has to be started to load an OAR file.")
@@ -1838,12 +1831,12 @@ Public Class Form1
             Print("Opensimulator will load  " + thing + ".  This may take some time.")
             thing = thing.Replace("\", "/")    ' because Opensim uses unix-like slashes, that's why
             If backMeUp = vbYes Then
-                ConsoleCommand("alert CPU Intensive Backup Started {ENTER}")
-                ConsoleCommand("save oar " + """" + BackupPath() + "Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
+                ConsoleCommand(RegionClass.ProcessID, "alert CPU Intensive Backup Started {ENTER}")
+                ConsoleCommand(RegionClass.ProcessID, "save oar " + """" + BackupPath() + "Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
             End If
-            ConsoleCommand("alert New content Is loading..{ENTER}")
-            ConsoleCommand("load oar --force-terrain --force-parcels " + """" + thing + """" + "{ENTER}")
-            ConsoleCommand("alert New content just loaded. {ENTER}")
+            ConsoleCommand(RegionClass.ProcessID, "alert New content Is loading..{ENTER}")
+            ConsoleCommand(RegionClass.ProcessID, "load oar --force-terrain --force-parcels " + """" + thing + """" + "{ENTER}")
+            ConsoleCommand(RegionClass.ProcessID, "alert New content just loaded. {ENTER}")
             Me.Focus()
         Catch ex As Exception
             Log("Error: " + ex.Message)
@@ -1861,8 +1854,8 @@ Public Class Form1
         Dim password = InputBox("Password for user " + user + "?")
         If user.Length And password.Length Then
             Try
-                ConsoleCommand("load iar --merge " + user + " / " + password + " " + """" + thing + """" + "{ENTER}")
-                ConsoleCommand("alert IAR content Is loaded{ENTER}")
+                ConsoleCommand(RegionClass.ProcessID, "load iar --merge " + user + " / " + password + " " + """" + thing + """" + "{ENTER}")
+                ConsoleCommand(RegionClass.ProcessID, "alert IAR content Is loaded{ENTER}")
                 Me.Focus()
             Catch ex As Exception
                 Log("Error:" + ex.Message)
@@ -2459,10 +2452,11 @@ Public Class Form1
             BumpProgress10()
 
             Dim counter = 1
-            Dim size = aRegion.GetUpperBound(0)
+            Dim size = RegionClass.Count
             While counter <= size
 
-                Dim RegionPort As Integer = aRegion(counter).RegionPort
+                RegionClass.RegionNum = counter
+                Dim RegionPort As Integer = RegionClass.RegionPort
 
                 If Not MyUPnPMap.Exists(RegionPort, UPNP.Protocol.UDP) Then
                     MyUPnPMap.Add(UPNP.LocalIP, RegionPort, UPNP.Protocol.UDP, "Opensim UDP Region")
@@ -2776,7 +2770,7 @@ Public Class Form1
         Dim Checkname As String = String.Empty
 
         Try
-            Log("Checking DNS name " + My.Settings.DnsName)
+            Print("Checking DNS name " + My.Settings.DnsName)
             Checkname = client.DownloadString("http://outworldz.net/dns.plx/?GridName=" + My.Settings.DnsName + "&r=" + Random())
         Catch ex As Exception
             Log("Warn:Cannot check the DNS Name" + ex.Message)
@@ -2868,5 +2862,9 @@ Public Class Form1
 
 
 #End Region
+
+
+
+
 
 End Class

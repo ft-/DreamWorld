@@ -8,20 +8,8 @@ Public Class FormRegion
 #Region "Declarations"
 
     Dim oldname As String = ""
-
-    ' hold a copy of the Main region data on a per-form basis
-    Private Class Region_data
-        Public RegionName As String
-        Public UUID As String
-        Public CoordX As Integer
-        Public CoordY As String
-        Public RegionPort As Integer
-        Public SizeX As Integer
-        Public SizeY As Integer
-    End Class
-
-    Dim gNum As Integer = 1 ' pointer to this Object
-    Dim MyRegion As New Region_data
+    Dim MyRegion As RegionMaker
+    Dim gNum As Integer ' pointer to this region in RegionMake
     Dim initted As Boolean = False ' needed a flag to see if we are initted as the dialogs change on start.
     Dim changed As Boolean    ' true if we need to save a form
 
@@ -31,17 +19,9 @@ Public Class FormRegion
 
     Public Sub Init(num As Integer)
 
-        gNum = num  ' from 1 to N regions.
-
-        ' populate the local copy from the main region. We will save it back if the make changes and approve the save
-        MyRegion.RegionName = Form1.aRegion(num).RegionName
-        MyRegion.UUID = Form1.aRegion(num).UUID
-        MyRegion.CoordX = Form1.aRegion(num).CoordX
-        MyRegion.CoordY = Form1.aRegion(num).CoordY
-        MyRegion.RegionPort = Form1.aRegion(num).RegionPort
-        MyRegion.SizeY = Form1.aRegion(num).SizeY
-        MyRegion.SizeX = Form1.aRegion(num).SizeX
-
+        MyRegion = Form1.RegionClass
+        MyRegion.RegionNum = num
+        gNum = num
         oldname = MyRegion.RegionName
         '''''''''''''''''''''''''''''''
         ' reasonable default section 
@@ -62,20 +42,24 @@ Public Class FormRegion
             Dim MaxY As Integer
             Dim MaxPort As Integer
             Dim counter As Integer = 1
-            Dim L = Form1.aRegion.GetUpperBound(0)
+            Dim L = MyRegion.Count
             While counter <= L
-                Dim port = Form1.aRegion(counter).RegionPort
+                MyRegion.RegionNum = counter
+                Dim port = MyRegion.RegionPort
 
                 If port > MaxPort Then MaxPort = port
 
-                Dim X = Form1.aRegion(counter).CoordX
+                Dim X = MyRegion.CoordX
                 If X > MaxX Then MaxX = X
 
-                Dim Y = Form1.aRegion(counter).CoordY
+                Dim Y = MyRegion.CoordY
                 If Y > MaxY Then MaxY = Y
                 counter += 1
             End While
-            'Add somethign to make sure we do not intersect
+
+            MyRegion.RegionNum = gNum ' index back to our Region
+
+            'Add something to make sure we do not intersect
             MyRegion.RegionPort = MaxPort + 1
             MyRegion.CoordX = MaxX + 10
             MyRegion.CoordY = MaxY + 10
@@ -399,13 +383,14 @@ Public Class FormRegion
     End Sub
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
-        Form1.aRegion(gNum).RegionName = MyRegion.RegionName
-        Form1.aRegion(gNum).UUID = MyRegion.UUID
-        Form1.aRegion(gNum).CoordX = MyRegion.CoordX
-        Form1.aRegion(gNum).CoordY = MyRegion.CoordY
-        Form1.aRegion(gNum).RegionPort = MyRegion.RegionPort
-        Form1.aRegion(gNum).SizeY = MyRegion.SizeY
-        Form1.aRegion(gNum).SizeX = MyRegion.SizeX
+
+        Form1.RegionClass.RegionName = MyRegion.RegionName
+        Form1.RegionClass.UUID = MyRegion.UUID
+        Form1.RegionClass.CoordX = MyRegion.CoordX
+        Form1.RegionClass.CoordY = MyRegion.CoordY
+        Form1.RegionClass.RegionPort = MyRegion.RegionPort
+        Form1.RegionClass.SizeY = MyRegion.SizeY
+        Form1.RegionClass.SizeX = MyRegion.SizeX
 
         Dim message = RegionValidate()
         If Len(message) Then

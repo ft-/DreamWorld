@@ -2,7 +2,6 @@
 Imports System.Net
 
 Public Class Expert
-    '   Implements IDisposable
 
 #Region "Load/Exit"
 
@@ -122,7 +121,7 @@ Public Class Expert
         My.Settings.Save()
 
         If Form1.Running Then
-            Form1.ConsoleCommand("reset user password Wifi Admin " + My.Settings.Password + "{Enter}")
+            Form1.ConsoleCommand(Form1.gRobustProcID, "reset user password Wifi Admin " + My.Settings.Password + "{Enter}")
         End If
     End Sub
 
@@ -373,6 +372,5 @@ Public Class Expert
 
 
 #End Region
-
 
 End Class
