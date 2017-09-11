@@ -66,7 +66,8 @@ Public Class Form1
     Private randomnum As New Random
     Dim parser As FileIniDataParser
     Dim gINI As String  ' the name of the current INI file we are writing
-    Dim OpensimProcID
+
+    Public OpensimProcID As New ArrayList
 
     ' robust errors and startup
     Public gRobustProcID As Integer
@@ -148,8 +149,8 @@ Public Class Form1
 
     Private Sub Form1_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 
-        Dim PID As New ArrayList
-        OpensimProcID = PID
+
+
 
         'hide progress
         ProgressBar1.Visible = True
@@ -1330,7 +1331,7 @@ Public Class Form1
 
     Private Function Start_Opensimulator() As Boolean
         If Running = False Then Return True
-
+        OpensimProcID.Clear
         Dim counter = 0
         Dim size = RegionClass.Count
         While counter <= size
@@ -1370,7 +1371,7 @@ Public Class Form1
             myProcess.StartInfo.Arguments = "-inidirectory=./Regions/" + InstanceName
             myProcess.Start()
             Dim Pid = myProcess.Id
-            OpensimProcID.Add(1)
+
             OpensimProcID.Add(Pid)
 
         Catch ex As Exception
@@ -2778,7 +2779,7 @@ Public Class Form1
         Dim Checkname As String = String.Empty
 
         Try
-            Print("Checking DNS name " + My.Settings.DnsName)
+            Print("Checking DNS name http://" + My.Settings.DnsName)
             Checkname = client.DownloadString("http://outworldz.net/dns.plx/?GridName=" + My.Settings.DnsName + "&r=" + Random())
         Catch ex As Exception
             Log("Warn:Cannot check the DNS Name" + ex.Message)
