@@ -66,7 +66,7 @@ Public Class Form1
     Private randomnum As New Random
     Dim parser As FileIniDataParser
     Dim gINI As String  ' the name of the current INI file we are writing
-    Dim OpensimProcID As ArrayList
+    Dim OpensimProcID
 
     ' robust errors and startup
     Public gRobustProcID As Integer
@@ -147,6 +147,9 @@ Public Class Form1
 #Region "StartStop"
 
     Private Sub Form1_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+
+        Dim PID As New ArrayList
+        OpensimProcID = PID
 
         'hide progress
         ProgressBar1.Visible = True
@@ -851,7 +854,7 @@ Public Class Form1
 
         SetIni("DatabaseService", "ConnectionString", ConnectionString)
 
-        SetIni("Const", "BaseURL", "http://" + My.Settings.PublicIP)
+        SetIni("Const", "BaseURL", "http://" + My.Settings.RobustMySqlURL)
         SetIni("Const", "PublicPort", My.Settings.PublicPort)
         SetIni("Const", "PrivatePort", My.Settings.PrivatePort)
         SaveINI()
@@ -921,10 +924,6 @@ Public Class Form1
                 SetIni("Startup", "physics", "BulletSim")
                 SetIni("Startup", "UseSeparatePhysicsThread", "true")
         End Select
-
-        SetIni("Const", "BaseURL", "http://" + My.Settings.PublicIP)
-        SetIni("Const", "PublicPort", My.Settings.PublicPort)
-        SetIni("Const", "PrivatePort", My.Settings.PrivatePort)
 
         SetIni("Const", "GridName", """" + My.Settings.SimName + """")
 
@@ -1356,7 +1355,6 @@ Public Class Form1
     Private Function Boot(InstanceName As String) As Boolean
 
         Dim myProcess As New Process()
-        OpensimProcID = Nothing
 
         Try
             myProcess.StartInfo.UseShellExecute = False ' so we can redirect streams
@@ -1372,6 +1370,7 @@ Public Class Form1
             myProcess.StartInfo.Arguments = "-inidirectory=./Regions/" + InstanceName
             myProcess.Start()
             Dim Pid = myProcess.Id
+            OpensimProcID.Add(1)
             OpensimProcID.Add(Pid)
 
         Catch ex As Exception
@@ -2040,7 +2039,7 @@ Public Class Form1
                 Print("Error: Could not launch " + fileloaded + ". Perhaps you can can exit this program and launch it manually.")
                 Log("Error: installer failed to launch:" + ex.Message)
             End Try
-            End ' quit program
+            End ' program
         Else
             Print("Uh Oh!  The files I need could not be found online. The gnomes have absconded with them!   Please check later.")
             UpdaterGo.Visible = False
