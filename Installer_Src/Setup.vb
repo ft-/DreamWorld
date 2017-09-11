@@ -72,10 +72,7 @@ Public Class Form1
     Public gRobustProcID As Integer
     Private WithEvents RobustProcess As New Process()
     Public Event RobustExited As EventHandler
-
-
-    Private images =
-    New List(Of Image) From {My.Resources.tangled, My.Resources.wp_habitat, My.Resources.wp_Mooferd,
+    Private images = New List(Of Image) From {My.Resources.tangled, My.Resources.wp_habitat, My.Resources.wp_Mooferd,
                              My.Resources.wp_To_Piers_Anthony,
                              My.Resources.wp_wavy_love_of_animals, My.Resources.wp_zebra,
                              My.Resources.wp_Que, My.Resources.wp_1, My.Resources.wp_2,
@@ -104,7 +101,7 @@ Public Class Form1
     Dim MyUPnPMap
 
     Public RegionClass As RegionMaker
-    Public gSelectedRegionID = 0
+
 
 
 #End Region
@@ -243,7 +240,7 @@ Public Class Form1
             My.Settings.DiagsRun2 = True
         End If
 
-        SetINIData()
+        If Not SetINIData() Then Return
 
         mnuSettings.Visible = True
         SetIAROARContent() ' load IAR and OAR web content
@@ -351,7 +348,7 @@ Public Class Form1
 
         GetPubIP()
 
-        SetINIData()    ' set up the INI files
+        If Not SetINIData() Then Return   ' set up the INI files
 
         If My.Settings.Onlook Then
             SaveOnlookXMLData()
@@ -784,7 +781,7 @@ Public Class Form1
 
     End Sub
 
-    Private Sub SetINIData()
+    Private Function SetINIData() As Boolean
 
         'mnuShow shows the DOS box for Opensimulator
         mnuShow.Checked = My.Settings.ConsoleShow
@@ -854,7 +851,7 @@ Public Class Form1
 
         SetIni("DatabaseService", "ConnectionString", ConnectionString)
 
-        SetIni("Const", "BaseURL", My.Settings.RobustMySqlURL)
+        SetIni("Const", "BaseURL", "http://" + My.Settings.PublicIP)
         SetIni("Const", "PublicPort", My.Settings.PublicPort)
         SetIni("Const", "PrivatePort", My.Settings.PrivatePort)
         SaveINI()
@@ -862,6 +859,10 @@ Public Class Form1
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
         ' Opensim.ini
         LoadIni(prefix + "Opensim.proto", ";")
+
+        SetIni("Const", "BaseURL", "http://" + My.Settings.PublicIP)
+        SetIni("Const", "PublicPort", My.Settings.PublicPort)
+        SetIni("Const", "PrivatePort", My.Settings.PrivatePort)
 
 
         If (My.Settings.allow_grid_gods) Then
@@ -921,8 +922,7 @@ Public Class Form1
                 SetIni("Startup", "UseSeparatePhysicsThread", "true")
         End Select
 
-        SetIni("Const", "http_listener_port", My.Settings.HttpPort)
-        SetIni("Const", "BaseURL", """" + "http://" + My.Settings.PublicIP + """")
+        SetIni("Const", "BaseURL", "http://" + My.Settings.PublicIP)
         SetIni("Const", "PublicPort", My.Settings.PublicPort)
         SetIni("Const", "PrivatePort", My.Settings.PrivatePort)
 
@@ -1039,10 +1039,22 @@ Public Class Form1
         SaveINI()
 
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-        ' Wifi
+        ' Wifi Settings in bin? !!!
 
-        LoadIni(prefix + "config-include\Wifi.ini", ";")
+        LoadIni(prefix + "Wifi.ini", ";")
+
+        ConnectionString = """" _
+            + "Data Source=" + My.Settings.RegionDBURL _
+            + ";Database=" + My.Settings.RegionDBName _
+            + ";Port=" + My.Settings.MySqlPort _
+            + ";User ID=" + My.Settings.RegionDBUsername _
+            + ";Password=" + My.Settings.RegionDbPassword _
+            + """"
+
+        SetIni("DatabaseService", "DataSource", ConnectionString)
+
         If (My.Settings.WifiEnabled) Then
+
             SetIni("WifiService", "AdminPassword", My.Settings.Password)
             SetIni("WifiService", "AdminEmail", My.Settings.AdminEmail)
 
@@ -1056,27 +1068,9 @@ Public Class Form1
 
 
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-        'Regions - write all region.ini files with public IP and Public port
-        Dim counter As Integer = 1
-        Dim L = RegionClass.Count
-        While counter <= L
-            RegionClass.RegionNum = counter
-            Dim simName = RegionClass.RegionName
-            If simName <> "Opensim" Then
-                LoadIni(prefix + "Regions\" + simName + "\Region\" + simName + ".ini", ";")
-                SetIni(simName, "InternalPort", Convert.ToString(RegionClass.RegionPort))
-                SetIni(simName, "ExternalHostName", Convert.ToString(My.Settings.PublicIP))
-                SaveINI()
-            End If
-
-            counter += 1
-        End While
-
-        '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
         'Onlook viewer
         If My.Settings.Onlook = True Then
-            Log("Info:Onlook viewer mode")
+            Log("Info: Onlook viewer mode")
             mnuOther.Checked = False
             mnuOnlook.Checked = True
             VUI.Visible = True
@@ -1089,39 +1083,54 @@ Public Class Form1
             AvatarVisible.Visible = False
         End If
 
+        ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+        'Regions - write all region.ini files with public IP and Public port
+        Dim counter As Integer = 0
+        Dim L = RegionClass.Count
+        While counter <= L
+            RegionClass.RegionNum = counter
+            Dim simName = RegionClass.RegionName
+            LoadIni(prefix + "Regions\" + simName + "\Region\" + simName + ".ini", ";")
+            SetIni(simName, "InternalPort", Convert.ToString(RegionClass.RegionPort))
+            SetIni(simName, "ExternalHostName", Convert.ToString(My.Settings.PublicIP))
+            SaveINI()
+            counter += 1
+        End While
+
+        '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
         ' COPY OPENSIM.INI prototype to all region folders and set the Sim Name
-        counter = 1
-        Dim regioncounter As Integer = 1
-        Dim length = RegionClass.Count ' 5 for 4 items as we skip 0
-        While counter <= length - 1      ' so we subtract 1
+        counter = 0
+        While counter <= L      ' 
             Try
                 RegionClass.RegionNum = counter
                 Dim fname = RegionClass.RegionName
-                If fname <> "Opensim" Then
-                    Try
-                        My.Computer.FileSystem.DeleteFile(prefix + "Regions/" + fname + "/Opensim.ini")
-                    Catch ex As Exception
-                    End Try
-                    Try
-                        LoadIni(prefix + "Opensim.proto", ";")
-                        SetIni("Const", "RegionFolderName", fname)
-                        SaveINI()
-                        My.Computer.FileSystem.CopyFile(prefix + "Opensim.proto", prefix + "Regions/" + fname + "/Opensim.ini", True)
-                    Catch
-                        Log("Error:Failed to Set the Opensim.ini for sim " + fname)
-                    End Try
-                End If
+
+                Try
+                    My.Computer.FileSystem.DeleteFile(prefix + "Regions/" + fname + "/Opensim.ini")
+                Catch ex As Exception
+                End Try
+                Try
+                    LoadIni(prefix + "Opensim.proto", ";")
+                    SetIni("Const", "RegionFolderName", fname)
+                    SetIni("Const", "http_listener_port", RegionClass.RegionPort)
+                    SaveINI()
+                    My.Computer.FileSystem.CopyFile(prefix + "Opensim.proto", prefix + "Regions/" + fname + "/Opensim.ini", True)
+                Catch
+                    Print("Error:Failed to Set the Opensim.ini for sim " + fname)
+                    Return False
+                End Try
+
             Catch ex As Exception
-                Log("Info:" + ex.Message)
+                Print("Error:" + ex.Message)
+                Return False
             End Try
 
             counter = counter + 1
 
         End While
-
-
-    End Sub
+        Return True
+    End Function
 
 #End Region
 
@@ -1784,14 +1793,14 @@ Public Class Form1
             Return
         End If
 
-        ConsoleCommand(gSelectedRegionID, "alert CPU Intensive Backup Started{ENTER}")
+        ConsoleCommand(RegionClass.ProcessID, "alert CPU Intensive Backup Started{ENTER}")
 
         Dim counter = 1
         Dim size = RegionClass.Count
         While counter <= size
             RegionClass.RegionNum = counter
             Dim RegionName As String = RegionClass.RegionName
-            ConsoleCommand(gSelectedRegionID, "save oar --perm=CT " + """" + BackupPath() + RegionName + "_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
+            ConsoleCommand(RegionClass.ProcessID, "save oar --perm=CT " + """" + BackupPath() + RegionName + "_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
             counter += 1
             Application.DoEvents()
         End While
@@ -1807,8 +1816,8 @@ Public Class Form1
                 ' Read the chosen sim name
                 Dim chosen As String = Chooseform.ListBox1.SelectedItem.ToString()
                 If chosen.Length Then
-                    '!!!! Dim id = RegionClass.FindRegionidByName(chosen)
-                    gSelectedRegionID = RegionClass.RegionName
+                    Dim id = RegionClass.FindRegionidByName(chosen)
+                    RegionClass.RegionNum = chosen
                     ConsoleCommand(RegionClass.ProcessID, "change region " + """" + chosen + """" + "{ENTER}")
                 End If
                 Chooseform.Dispose()
@@ -2451,7 +2460,7 @@ Public Class Form1
             End If
             BumpProgress10()
 
-            Dim counter = 1
+            Dim counter = 0
             Dim size = RegionClass.Count
             While counter <= size
 

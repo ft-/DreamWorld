@@ -80,7 +80,6 @@ Public Class DNSName
 
     End Sub
 
-
     Private Sub NextNameButton_Click(sender As Object, e As EventArgs) Handles NextNameButton.Click
 
         NextNameButton.Text = "Busy..."

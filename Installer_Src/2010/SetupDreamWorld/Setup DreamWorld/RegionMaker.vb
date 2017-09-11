@@ -137,7 +137,6 @@ Public Class RegionMaker
         'make room for a new region
         Array.Resize(RegionList, Count() + 1)
         Dim index = Count()
-        If index < 0 Then index = 0
         RegionList(index) = New Region_data
         ' default data
         RegionNum = index
@@ -201,7 +200,8 @@ Public Class RegionMaker
 #Region "Public"
 
     Public Function Count() As Integer
-        Return RegionList.GetUpperBound(0)
+        Dim s = RegionList.GetUpperBound(0)
+        Return s
     End Function
 
 #End Region
