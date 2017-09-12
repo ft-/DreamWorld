@@ -6,23 +6,23 @@
         Button1.DialogResult = DialogResult.OK
         ListBox1.Items.Clear()
 
-        Dim oldID = Form1.RegionClass.RegionNum
+        Dim oldID = Form1.RegionClass.CurRegionNum()
         Dim counter As Integer = 1
-        While counter <= Form1.RegionClass.Count
-            Form1.RegionClass.RegionNum = counter
+        While counter <= Form1.RegionClass.RegionListCount()
+            Form1.RegionClass.CurRegionNum() = counter
             ListBox1.Items.Add(Form1.RegionClass.RegionName)
             counter += 1
         End While
 
         ListBox1.Sorted = True
         ListBox1.Text = "Select from..."
-        Form1.RegionClass.RegionNum = oldID
+        Form1.RegionClass.CurRegionNum() = oldID
 
     End Sub
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
 
-        Form1.RegionClass.RegionNum = ListBox1.SelectedIndex
+        Form1.RegionClass.CurRegionNum() = ListBox1.SelectedIndex
         My.Settings.WelcomeRegion = ListBox1.SelectedIndex
     End Sub
 End Class

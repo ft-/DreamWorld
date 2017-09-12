@@ -20,86 +20,96 @@ Public Class RegionMaker
         Public SizeY As Integer
     End Class
 
-    Public RegionList(0) As Object
-    Private gCurRegionNum As UInteger
-
-
+    Public Shared RegionList As New ArrayList
+    Private gCurCurRegionNum As UInteger
 #End Region
 
 #Region "Properties"
-    Public Property ProcessID() As Integer
+    Public Shared Property RegionCount() As Integer
         Get
-            Return RegionList(RegionNum()).ProcessID
+            Try
+                Return RegionList.Count
+            Catch
+                Return 0
+            End Try
         End Get
-        Set(ByVal Value As Integer)
-            RegionList(RegionNum()).ProcessID = Value
+        Set(value As Integer)
         End Set
     End Property
-    Public Property RegionNum() As Integer
+
+    Public Property ProcessID() As Integer
         Get
-            Return gCurRegionNum
+            Return RegionList(CurRegionNum()).ProcessID
         End Get
         Set(ByVal Value As Integer)
-            gCurRegionNum = Value
+            RegionList(CurRegionNum()).ProcessID = Value
+        End Set
+    End Property
+    Public Property CurRegionNum() As Integer
+        Get
+            Return gCurCurRegionNum
+        End Get
+        Set(ByVal Value As Integer)
+            gCurCurRegionNum = Value
         End Set
     End Property
     Public Property RegionName() As String
         Get
-            Return RegionList(RegionNum()).RegionName
+            Return RegionList(CurRegionNum()).RegionName
         End Get
         Set(ByVal Value As String)
-            RegionList(RegionNum()).RegionName = Value
+            RegionList(CurRegionNum()).RegionName = Value
         End Set
     End Property
     Public Property UUID() As String
         Get
-            Return RegionList(RegionNum()).UUID
+            Return RegionList(CurRegionNum()).UUID
         End Get
         Set(ByVal Value As String)
-            RegionList(RegionNum()).UUID = Value
+            RegionList(CurRegionNum()).UUID = Value
         End Set
     End Property
     Public Property SizeX() As Integer
         Get
-            Return RegionList(RegionNum()).SizeX
+            Return RegionList(CurRegionNum()).SizeX
         End Get
         Set(ByVal Value As Integer)
-            RegionList(RegionNum()).SizeX = Value
+            RegionList(CurRegionNum()).SizeX = Value
         End Set
     End Property
     Public Property SizeY() As Integer
         Get
-            Return RegionList(RegionNum()).SizeY
+            Return RegionList(CurRegionNum()).SizeY
         End Get
         Set(ByVal Value As Integer)
-            RegionList(RegionNum()).SizeY = Value
+            RegionList(CurRegionNum()).SizeY = Value
         End Set
     End Property
     Public Property RegionPort() As Integer
         Get
-            If RegionList(RegionNum()).RegionPort <= My.Settings.PrivatePort Then
-                RegionList(RegionNum()).RegionPort = My.Settings.PrivatePort + 1 ' 8004, by default
+            If RegionList(CurRegionNum()).RegionPort <= My.Settings.PrivatePort Then
+                RegionList(CurRegionNum()).RegionPort = My.Settings.PrivatePort + 1 ' 8004, by default
             End If
-            Return RegionList(RegionNum()).RegionPort
+            Return RegionList(CurRegionNum()).RegionPort
         End Get
         Set(ByVal Value As Integer)
-            RegionList(RegionNum()).RegionPort = Value
+            RegionList(CurRegionNum()).RegionPort = Value
         End Set
     End Property
     Public Property CoordX() As Integer
         Get
-            Return RegionList(RegionNum()).CoordX
+            Return RegionList(CurRegionNum()).CoordX
         End Get
         Set(ByVal Value As Integer)
-            RegionList(RegionNum()).CoordX = Value
+            RegionList(CurRegionNum()).CoordX = Value
         End Set
     End Property
     Public Property CoordY() As Integer
         Get
-            Return RegionList(RegionNum()).CoordY
+            Return RegionList(CurRegionNum()).CoordY
         End Get
         Set(ByVal Value As Integer)
-            RegionList(RegionNum()).CoordY = Value
+            RegionList(CurRegionNum()).CoordY = Value
         End Set
     End Property
 
@@ -109,19 +119,27 @@ Public Class RegionMaker
 
     Public Sub New()
 
-        GetAllRegions()
+        If GetAllRegions() Then
+            MsgBox("Failed to load all regions")
+        End If
 
     End Sub
     Public Function CurrentRegionName() As String
 
-        Dim id = RegionNum
+        Dim id = CurRegionNum
         Return FindRegionidByName(id)
 
     End Function
 
+    Public Function RegionListCount() As Integer
+
+        Return RegionCount()
+
+    End Function
     Public Function FindRegionidByName(Name As String) As Integer
 
-        Dim index = RegionList.GetUpperBound(0)
+        Dim index = RegionListCount() - 1
+
         While index > -1
             If Name = RegionList(index).RegionName Then
                 Return index
@@ -134,25 +152,25 @@ Public Class RegionMaker
 
     Public Sub CreateRegion()
 
-        'make room for a new region
-        Array.Resize(RegionList, Count() + 1)
-        Dim index = Count()
-        RegionList(index) = New Region_data
+        Dim r As New Region_data
+        r.RegionName = ""
+        r.UUID = Guid.NewGuid().ToString
+        r.SizeX = 256
+        r.SizeY = 256
+
+        RegionList.Add(r)
+        Dim index = RegionListCount() - 1
         ' default data
-        RegionNum = index
-        RegionName() = ""
-        UUID() = Guid.NewGuid().ToString
-        SizeX() = 256
-        SizeY() = 256
-        RegionPort() = LargestPort() + 1 '8004 + 1
+        RegionList(index).RegionPort = LargestPort() + 1 '8004 + 1
 
         ' form a line acrss the X Axis 4 to the right
-        CoordX() = LargestX() + 4
-        CoordY() = LargestY() + 0
+        RegionList(index).CoordX = LargestX() + 4
+        RegionList(index).CoordY = LargestY() + 0
+        CurRegionNum() = index
 
     End Sub
 
-    Public Sub GetAllRegions()
+    Public Function GetAllRegions() As Boolean
 
         Dim folders() As String
         Dim regionfolders() As String
@@ -166,7 +184,6 @@ Public Class RegionMaker
                     Form1.Log("Info:Loading region from " + FolderName)
                     Dim inis = Directory.GetFiles(FileName, "*.ini", SearchOption.TopDirectoryOnly)
                     For Each ini As String In inis
-
                         ' remove the ini
                         Dim fName = Path.GetFileName(ini)
                         fName = Mid(fName, 1, Len(fName) - 4)
@@ -190,21 +207,15 @@ Public Class RegionMaker
 
                 Catch ex As Exception
                     Form1.Log("Err:Parse file " + FileName + ":" + ex.Message)
+                    Return True
                 End Try
             Next
         Next
-    End Sub
-
-#End Region
-
-#Region "Public"
-
-    Public Function Count() As Integer
-        Dim s = RegionList.GetUpperBound(0)
-        Return s
+        Return False
     End Function
 
 #End Region
+
 #Region "Private"
 
     Private Function LargestX() As Integer
@@ -212,12 +223,13 @@ Public Class RegionMaker
         ' locate largest global coords
         Dim Max As Integer
         Dim counter As Integer = 1
-        Dim L = RegionList.GetUpperBound(0)
-        While counter <= L
+        Dim L = RegionListCount()
+        While counter < L
             Dim val = RegionList(counter).CoordX
             If val > Max Then Max = val
             counter += 1
         End While
+        If Max = 0 Then Max = 1000
         Return Max
 
     End Function
@@ -227,12 +239,13 @@ Public Class RegionMaker
         ' locate largest global coords
         Dim Max As Integer
         Dim counter As Integer = 1
-        Dim L = RegionList.GetUpperBound(0)
-        While counter <= L
+        Dim L = RegionListCount()
+        While counter < L
             Dim val = RegionList(counter).CoordY
             If val > Max Then Max = val
             counter += 1
         End While
+        If Max = 0 Then Max = 1000
         Return Max
 
     End Function
@@ -241,13 +254,14 @@ Public Class RegionMaker
 
         ' locate largest global coords
         Dim Max As Integer
-        Dim counter As Integer = 1
-        Dim L = RegionList.GetUpperBound(0)
-        While counter <= L
+        Dim counter As Integer = 0
+        Dim L = RegionListCount()
+        While counter < L
             Dim val = RegionList(counter).RegionPort
             If val > Max Then Max = val
             counter += 1
         End While
+        If Max = 0 Then Max = 8004
         Return Max
 
     End Function

@@ -149,9 +149,6 @@ Public Class Form1
 
     Private Sub Form1_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 
-
-
-
         'hide progress
         ProgressBar1.Visible = True
         ProgressBar1.Minimum = 0
@@ -723,14 +720,14 @@ Public Class Form1
         Try
             ' add this sim name as a default to the file as HG regions, and add the other regions as fallback
 
-            RegionClass.RegionNum = My.Settings.WelcomeRegion
+            RegionClass.CurRegionNum = My.Settings.WelcomeRegion
             Dim DefaultName = RegionClass.RegionName
 
             '(replace spaces with underscore)
             DefaultName = DefaultName.Replace(" ", "_")    ' because this is a screwy thing they did in the INI file
 
             Dim onceflag As Boolean = False ' only do the DefaultName
-            Dim counter As Integer = 1
+            Dim counter As Integer = 0
 
             Dim id = RegionClass.FindRegionidByName(DefaultName)
             If id >= 0 Then
@@ -763,7 +760,8 @@ Public Class Form1
                 'close your reader
                 reader.Close()
             Else
-                MsgBox("Cannot locate Default region named " + DefaultName)
+                Log("Error:Cannot Set the Default region named " + DefaultName)
+                MsgBox("Cannot Set the Default region named " + DefaultName)
             End If
 
             Try
@@ -1086,9 +1084,9 @@ Public Class Form1
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
         'Regions - write all region.ini files with public IP and Public port
         Dim counter As Integer = 0
-        Dim L = RegionClass.Count
-        While counter <= L
-            RegionClass.RegionNum = counter
+        Dim L = RegionClass.RegionListCount()
+        While counter < L
+            RegionClass.CurRegionNum = counter
             Dim simName = RegionClass.RegionName
             LoadIni(prefix + "Regions\" + simName + "\Region\" + simName + ".ini", ";")
             SetIni(simName, "InternalPort", Convert.ToString(RegionClass.RegionPort))
@@ -1101,9 +1099,9 @@ Public Class Form1
 
         ' COPY OPENSIM.INI prototype to all region folders and set the Sim Name
         counter = 0
-        While counter <= L      ' 
+        While counter < L      ' 
             Try
-                RegionClass.RegionNum = counter
+                RegionClass.CurRegionNum = counter
                 Dim fname = RegionClass.RegionName
 
                 Try
@@ -1333,9 +1331,9 @@ Public Class Form1
         If Running = False Then Return True
         OpensimProcID.Clear
         Dim counter = 0
-        Dim size = RegionClass.Count
+        Dim size = RegionClass.RegionListCount()
         While counter <= size
-            RegionClass.RegionNum = counter
+            RegionClass.CurRegionNum = counter
             Dim RegionName As String = RegionClass.RegionName
 
             Print("Starting " + RegionName)
@@ -1796,9 +1794,9 @@ Public Class Form1
         ConsoleCommand(RegionClass.ProcessID, "alert CPU Intensive Backup Started{ENTER}")
 
         Dim counter = 1
-        Dim size = RegionClass.Count
+        Dim size = RegionClass.RegionListCount()
         While counter <= size
-            RegionClass.RegionNum = counter
+            RegionClass.CurRegionNum = counter
             Dim RegionName As String = RegionClass.RegionName
             ConsoleCommand(RegionClass.ProcessID, "save oar --perm=CT " + """" + BackupPath() + RegionName + "_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
             counter += 1
@@ -1808,7 +1806,7 @@ Public Class Form1
     End Sub
 
     Private Sub ChooseRegion()
-        If RegionClass.Count <> 1 Then
+        If RegionClass.RegionListCount() <> 1 Then
             Dim Chooseform As New Chooser ' form for choosing a set of regions
             ' Show testDialog as a modal dialog and determine if DialogResult = OK.
             Chooseform.ShowDialog()
@@ -1817,7 +1815,7 @@ Public Class Form1
                 Dim chosen As String = Chooseform.ListBox1.SelectedItem.ToString()
                 If chosen.Length Then
                     Dim id = RegionClass.FindRegionidByName(chosen)
-                    RegionClass.RegionNum = chosen
+                    RegionClass.CurRegionNum = chosen
                     ConsoleCommand(RegionClass.ProcessID, "change region " + """" + chosen + """" + "{ENTER}")
                 End If
                 Chooseform.Dispose()
@@ -2461,10 +2459,10 @@ Public Class Form1
             BumpProgress10()
 
             Dim counter = 0
-            Dim size = RegionClass.Count
+            Dim size = RegionClass.RegionListCount()
             While counter <= size
 
-                RegionClass.RegionNum = counter
+                RegionClass.CurRegionNum = counter
                 Dim RegionPort As Integer = RegionClass.RegionPort
 
                 If Not MyUPnPMap.Exists(RegionPort, UPNP.Protocol.UDP) Then

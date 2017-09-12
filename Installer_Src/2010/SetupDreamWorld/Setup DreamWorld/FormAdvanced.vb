@@ -127,15 +127,14 @@ Public Class AdvancedForm
         Dim X As Integer = 300
         Dim Y As Integer = 200
         Dim fname As String
-
-
-        Dim counter As Integer = 1
+        Dim counter As Integer = 0
         Dim r As RegionMaker
+
         r = Form1.RegionClass
-        Dim l = r.RegionList.Length ' 5 for 4 items as we skip 0
-        While counter <= l - 1      ' so we subtract 1
+        Dim L = Form1.RegionClass.RegionListCount()
+        While counter < L
             Try
-                r.RegionNum = counter
+                r.CurRegionNum = counter
                 fname = r.RegionName
 
                 Dim ActualForm As New FormRegion
@@ -160,7 +159,7 @@ Public Class AdvancedForm
         Dim Y As Integer = 200
 
         Form1.RegionClass.CreateRegion()
-        Dim id = Form1.RegionClass.RegionNum()
+        Dim id = Form1.RegionClass.CurRegionNum()
 
         Try
             Dim ActualForm As New FormRegion
@@ -247,9 +246,11 @@ Public Class AdvancedForm
         ' Default welcome region load
         WelcomeBox1.Items.Clear()
         Dim counter As Integer = 1
-        Dim L = Form1.RegionClass.Count
+
+        Dim L = Form1.RegionClass.RegionListCount()
+
         While counter <= L
-            Form1.RegionClass.RegionNum = counter
+            Form1.RegionClass.CurRegionNum = counter
             WelcomeBox1.Items.Add(Form1.RegionClass.RegionName())
             counter += 1
         End While

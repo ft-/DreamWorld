@@ -20,7 +20,7 @@ Public Class FormRegion
     Public Sub Init(num As Integer)
 
         MyRegion = Form1.RegionClass
-        MyRegion.RegionNum = num
+        MyRegion.CurRegionNum = num
         gNum = num
         oldname = MyRegion.RegionName
         '''''''''''''''''''''''''''''''
@@ -42,9 +42,9 @@ Public Class FormRegion
             Dim MaxY As Integer
             Dim MaxPort As Integer
             Dim counter As Integer = 1
-            Dim L = MyRegion.Count
+            Dim L = Form1.RegionClass.RegionListCount()
             While counter <= L
-                MyRegion.RegionNum = counter
+                MyRegion.CurRegionNum = counter
                 Dim port = MyRegion.RegionPort
 
                 If port > MaxPort Then MaxPort = port
@@ -57,7 +57,7 @@ Public Class FormRegion
                 counter += 1
             End While
 
-            MyRegion.RegionNum = gNum ' index back to our Region
+            MyRegion.CurRegionNum = gNum ' index back to our Region
 
             'Add something to make sure we do not intersect
             MyRegion.RegionPort = MaxPort + 1
