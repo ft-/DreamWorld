@@ -136,6 +136,17 @@ Public Class RegionMaker
         Return RegionCount()
 
     End Function
+    Public Sub DisplayRegions()
+
+        Dim index = RegionListCount() - 1
+        Dim counter = 0
+        While counter <= index
+            Debug.Print("Region {0}:" + RegionList(counter).RegionName, counter)
+            counter = counter + 1
+        End While
+
+    End Sub
+
     Public Function FindRegionidByName(Name As String) As Integer
 
         Dim index = RegionListCount() - 1
@@ -172,6 +183,7 @@ Public Class RegionMaker
 
     Public Function GetAllRegions() As Boolean
 
+        RegionList.Clear()
         Dim folders() As String
         Dim regionfolders() As String
 
@@ -190,6 +202,7 @@ Public Class RegionMaker
 
                         ' make a slot to hold the region data 
                         CreateRegion()
+                        DisplayRegions()
                         Form1.Log("Info:Reading Region " + ini)
 
                         ' populate from disk

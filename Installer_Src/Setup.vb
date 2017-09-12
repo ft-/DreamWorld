@@ -729,7 +729,9 @@ Public Class Form1
             Dim onceflag As Boolean = False ' only do the DefaultName
             Dim counter As Integer = 0
 
-            Dim id = RegionClass.FindRegionidByName(DefaultName)
+            RegionClass.DisplayRegions()
+
+            Dim id = RegionClass.FindRegionidByName(RegionClass.RegionName)
             If id >= 0 Then
 
                 Try
@@ -760,7 +762,6 @@ Public Class Form1
                 'close your reader
                 reader.Close()
             Else
-                Log("Error:Cannot Set the Default region named " + DefaultName)
                 MsgBox("Cannot Set the Default region named " + DefaultName)
             End If
 
@@ -1345,16 +1346,16 @@ Public Class Form1
 
             RegionClass.ProcessID = procid
 
-            counter += 1
+            counter = counter + 1
             Application.DoEvents()
         End While
         Return True
 
     End Function
-    Private Function Boot(InstanceName As String) As Boolean
+    Private Function Boot(InstanceName As String) As Integer
 
         Dim myProcess As New Process()
-
+        Dim Pid
         Try
             myProcess.StartInfo.UseShellExecute = False ' so we can redirect streams
             myProcess.StartInfo.WorkingDirectory = prefix
@@ -1368,7 +1369,7 @@ Public Class Form1
 
             myProcess.StartInfo.Arguments = "-inidirectory=./Regions/" + InstanceName
             myProcess.Start()
-            Dim Pid = myProcess.Id
+            Pid = myProcess.Id
 
             OpensimProcID.Add(Pid)
 
@@ -1376,9 +1377,9 @@ Public Class Form1
             Print("Error: Opensim did not start: " + ex.Message)
             KillAll()
             Buttons(StartButton)
-            Return False
+            Return 0
         End Try
-        Return True
+        Return PID
 
     End Function
 

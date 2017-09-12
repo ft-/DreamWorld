@@ -58,8 +58,8 @@ Public Class DNSName
             Dim IP = Form1.DoGetHostAddresses(newname)
             Dim address As IPAddress = Nothing
             If IPAddress.TryParse(IP, address) Then
-
                 My.Settings.DnsName = newname
+                My.Settings.PublicIP = newname
                 My.Settings.Save()
 
                 Application.DoEvents()
@@ -68,11 +68,13 @@ Public Class DNSName
             End If
             MsgBox("Could not parse DNS Name [" + newname + "] . The IP address was invalid: [" + IP + "]")
             My.Settings.DnsName = ""
+            My.Settings.PublicIP = ""
             My.Settings.Save()
             Me.Close()
             Return
         Else
             My.Settings.DnsName = ""
+            My.Settings.PublicIP = ""
             My.Settings.Save()
 
             Me.Close()
