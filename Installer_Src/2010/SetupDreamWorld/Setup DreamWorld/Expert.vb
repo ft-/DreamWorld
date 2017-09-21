@@ -31,7 +31,6 @@ Public Class Expert
         AdminFirst.Text = My.Settings.AdminFirst
 
         'gods
-        AllowGod.Checked = My.Settings.allow_grid_gods
         RegionGod.Checked = My.Settings.region_owner_is_god
         ManagerGod.Checked = My.Settings.region_manager_is_god
 
@@ -43,6 +42,9 @@ Public Class Expert
         GmailPassword.Text = My.Settings.SmtpPassword
         GmailUsername.Text = My.Settings.SmtpUsername
 
+
+        ' Unique ID
+        UniqueId.Text = My.Settings.MachineID
 
 
         Select Case My.Settings.Physics
@@ -73,6 +75,8 @@ Public Class Expert
         RobustDBUsername.Text = My.Settings.RobustMySqlUsername
         RobustDbPort.Text = My.Settings.MySqlPort
 
+
+
     End Sub
 #End Region
 
@@ -94,6 +98,7 @@ Public Class Expert
 
     Private Sub HTTP_Port_TextChanged_1(sender As Object, e As EventArgs) Handles HTTPPort.TextChanged
         My.Settings.HttpPort = HTTPPort.Text
+        My.Settings.Save()
     End Sub
 
 
@@ -175,10 +180,7 @@ Public Class Expert
 #End Region
 
 #Region "Gods"
-    Private Sub AllowGod_CheckedChanged(sender As Object, e As EventArgs) Handles AllowGod.CheckedChanged
-        My.Settings.allow_grid_gods = AllowGod.Checked
-        My.Settings.Save()
-    End Sub
+
     Private Sub RegionGod_CheckedChanged(sender As Object, e As EventArgs) Handles RegionGod.CheckedChanged
         My.Settings.region_owner_is_god = RegionGod.Checked
         My.Settings.Save()
@@ -314,7 +316,7 @@ Public Class Expert
     End Sub
 
     Private Sub RobustPasswordTextBox_TextChanged(sender As Object, e As EventArgs) Handles RobustDBPassword.TextChanged
-        My.Settings.RobustMySqlPassword = RegionMySqlPassword.Text
+        My.Settings.RobustMySqlPassword = RobustDBPassword.Text
         My.Settings.Save()
     End Sub
 
@@ -343,6 +345,10 @@ Public Class Expert
         Process.Start(webAddress)
     End Sub
 
+    Private Sub UniqueId_TextChanged(sender As Object, e As EventArgs) Handles UniqueId.TextChanged
+        My.Settings.MachineID = UniqueId.Text
+        My.Settings.Save()
+    End Sub
 
 #End Region
 

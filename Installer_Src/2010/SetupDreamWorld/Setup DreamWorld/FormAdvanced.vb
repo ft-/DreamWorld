@@ -249,7 +249,7 @@ Public Class AdvancedForm
 
         Dim L = Form1.RegionClass.RegionListCount()
 
-        While counter <= L
+        While counter < L
             Form1.RegionClass.CurRegionNum = counter
             WelcomeBox1.Items.Add(Form1.RegionClass.RegionName())
             counter += 1

@@ -345,18 +345,6 @@ Namespace My
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
-        Public Property allow_grid_gods() As Boolean
-            Get
-                Return CType(Me("allow_grid_gods"),Boolean)
-            End Get
-            Set
-                Me("allow_grid_gods") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
         Public Property region_owner_is_god() As Boolean
             Get
                 Return CType(Me("region_owner_is_god"),Boolean)

@@ -24,6 +24,8 @@ Partial Class Expert
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Me.GroupBox3 = New System.Windows.Forms.GroupBox()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.UniqueId = New System.Windows.Forms.TextBox()
         Me.DNSButton = New System.Windows.Forms.Button()
         Me.DNSHelp = New System.Windows.Forms.PictureBox()
         Me.HypericaButton = New System.Windows.Forms.Button()
@@ -102,6 +104,8 @@ Partial Class Expert
         '
         'GroupBox3
         '
+        Me.GroupBox3.Controls.Add(Me.Label1)
+        Me.GroupBox3.Controls.Add(Me.UniqueId)
         Me.GroupBox3.Controls.Add(Me.DNSButton)
         Me.GroupBox3.Controls.Add(Me.DNSHelp)
         Me.GroupBox3.Controls.Add(Me.HypericaButton)
@@ -113,10 +117,26 @@ Partial Class Expert
         Me.GroupBox3.Controls.Add(Me.SplashPage)
         Me.GroupBox3.Location = New System.Drawing.Point(12, 12)
         Me.GroupBox3.Name = "GroupBox3"
-        Me.GroupBox3.Size = New System.Drawing.Size(192, 208)
+        Me.GroupBox3.Size = New System.Drawing.Size(192, 299)
         Me.GroupBox3.TabIndex = 49
         Me.GroupBox3.TabStop = False
         Me.GroupBox3.Text = "Grid"
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Location = New System.Drawing.Point(6, 88)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(77, 13)
+        Me.Label1.TabIndex = 1863
+        Me.Label1.Text = "Unique Grid ID"
+        '
+        'UniqueId
+        '
+        Me.UniqueId.Location = New System.Drawing.Point(9, 105)
+        Me.UniqueId.Name = "UniqueId"
+        Me.UniqueId.Size = New System.Drawing.Size(173, 20)
+        Me.UniqueId.TabIndex = 1862
         '
         'DNSButton
         '
@@ -138,7 +158,7 @@ Partial Class Expert
         '
         'HypericaButton
         '
-        Me.HypericaButton.Location = New System.Drawing.Point(6, 79)
+        Me.HypericaButton.Location = New System.Drawing.Point(9, 181)
         Me.HypericaButton.Name = "HypericaButton"
         Me.HypericaButton.Size = New System.Drawing.Size(172, 23)
         Me.HypericaButton.TabIndex = 34
@@ -157,11 +177,11 @@ Partial Class Expert
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(6, 108)
+        Me.Label2.Location = New System.Drawing.Point(6, 137)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(87, 13)
+        Me.Label2.Size = New System.Drawing.Size(126, 13)
         Me.Label2.TabIndex = 26
-        Me.Label2.Text = "This Grid's Name"
+        Me.Label2.Text = "This Grid's Friendly Name"
         '
         'Label3
         '
@@ -173,7 +193,7 @@ Partial Class Expert
         '
         'GridName
         '
-        Me.GridName.Location = New System.Drawing.Point(9, 126)
+        Me.GridName.Location = New System.Drawing.Point(9, 155)
         Me.GridName.Name = "GridName"
         Me.GridName.Size = New System.Drawing.Size(173, 20)
         Me.GridName.TabIndex = 10
@@ -181,7 +201,7 @@ Partial Class Expert
         'Label19
         '
         Me.Label19.AutoSize = True
-        Me.Label19.Location = New System.Drawing.Point(9, 154)
+        Me.Label19.Location = New System.Drawing.Point(6, 230)
         Me.Label19.Name = "Label19"
         Me.Label19.Size = New System.Drawing.Size(139, 13)
         Me.Label19.TabIndex = 46
@@ -189,7 +209,7 @@ Partial Class Expert
         '
         'SplashPage
         '
-        Me.SplashPage.Location = New System.Drawing.Point(9, 172)
+        Me.SplashPage.Location = New System.Drawing.Point(6, 248)
         Me.SplashPage.Name = "SplashPage"
         Me.SplashPage.Size = New System.Drawing.Size(177, 20)
         Me.SplashPage.TabIndex = 45
@@ -390,14 +410,14 @@ Partial Class Expert
         '
         'GroupBox2
         '
-        Me.GroupBox2.Controls.Add(Me.HTTPPort)
         Me.GroupBox2.Controls.Add(Me.Label7)
         Me.GroupBox2.Controls.Add(Me.Label5)
+        Me.GroupBox2.Controls.Add(Me.HTTPPort)
         Me.GroupBox2.Controls.Add(Me.PublicPort)
-        Me.GroupBox2.Controls.Add(Me.PrivatePort)
         Me.GroupBox2.Controls.Add(Me.Label13)
-        Me.GroupBox2.Controls.Add(Me.Label4)
+        Me.GroupBox2.Controls.Add(Me.PrivatePort)
         Me.GroupBox2.Controls.Add(Me.DiagnosticPort)
+        Me.GroupBox2.Controls.Add(Me.Label4)
         Me.GroupBox2.Location = New System.Drawing.Point(424, 12)
         Me.GroupBox2.Name = "GroupBox2"
         Me.GroupBox2.Size = New System.Drawing.Size(199, 121)
@@ -407,7 +427,7 @@ Partial Class Expert
         '
         'HTTPPort
         '
-        Me.HTTPPort.Location = New System.Drawing.Point(138, 85)
+        Me.HTTPPort.Location = New System.Drawing.Point(138, 60)
         Me.HTTPPort.Name = "HTTPPort"
         Me.HTTPPort.Size = New System.Drawing.Size(47, 20)
         Me.HTTPPort.TabIndex = 39
@@ -415,7 +435,7 @@ Partial Class Expert
         'Label7
         '
         Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(18, 67)
+        Me.Label7.Location = New System.Drawing.Point(18, 93)
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(62, 13)
         Me.Label7.TabIndex = 38
@@ -424,7 +444,7 @@ Partial Class Expert
         'Label5
         '
         Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(18, 21)
+        Me.Label5.Location = New System.Drawing.Point(19, 41)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(79, 13)
         Me.Label5.TabIndex = 33
@@ -432,14 +452,14 @@ Partial Class Expert
         '
         'PublicPort
         '
-        Me.PublicPort.Location = New System.Drawing.Point(138, 36)
+        Me.PublicPort.Location = New System.Drawing.Point(138, 9)
         Me.PublicPort.Name = "PublicPort"
         Me.PublicPort.Size = New System.Drawing.Size(47, 20)
         Me.PublicPort.TabIndex = 37
         '
         'PrivatePort
         '
-        Me.PrivatePort.Location = New System.Drawing.Point(138, 60)
+        Me.PrivatePort.Location = New System.Drawing.Point(138, 86)
         Me.PrivatePort.Name = "PrivatePort"
         Me.PrivatePort.Size = New System.Drawing.Size(47, 20)
         Me.PrivatePort.TabIndex = 35
@@ -447,7 +467,7 @@ Partial Class Expert
         'Label13
         '
         Me.Label13.AutoSize = True
-        Me.Label13.Location = New System.Drawing.Point(18, 43)
+        Me.Label13.Location = New System.Drawing.Point(18, 16)
         Me.Label13.Name = "Label13"
         Me.Label13.Size = New System.Drawing.Size(58, 13)
         Me.Label13.TabIndex = 36
@@ -456,7 +476,7 @@ Partial Class Expert
         'Label4
         '
         Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(18, 91)
+        Me.Label4.Location = New System.Drawing.Point(18, 66)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(49, 13)
         Me.Label4.TabIndex = 32
@@ -464,7 +484,7 @@ Partial Class Expert
         '
         'DiagnosticPort
         '
-        Me.DiagnosticPort.Location = New System.Drawing.Point(138, 14)
+        Me.DiagnosticPort.Location = New System.Drawing.Point(139, 34)
         Me.DiagnosticPort.Name = "DiagnosticPort"
         Me.DiagnosticPort.Size = New System.Drawing.Size(47, 20)
         Me.DiagnosticPort.TabIndex = 34
@@ -473,7 +493,7 @@ Partial Class Expert
         '
         Me.GroupBox7.Controls.Add(Me.StatsButton)
         Me.GroupBox7.Controls.Add(Me.WebStats)
-        Me.GroupBox7.Location = New System.Drawing.Point(12, 237)
+        Me.GroupBox7.Location = New System.Drawing.Point(229, 263)
         Me.GroupBox7.Name = "GroupBox7"
         Me.GroupBox7.Size = New System.Drawing.Size(189, 48)
         Me.GroupBox7.TabIndex = 43
@@ -817,4 +837,6 @@ Partial Class Expert
     Friend WithEvents Label20 As Label
     Friend WithEvents Label22 As Label
     Friend WithEvents StandaloneGroup As GroupBox
+    Friend WithEvents Label1 As Label
+    Friend WithEvents UniqueId As TextBox
 End Class

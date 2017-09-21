@@ -380,6 +380,7 @@
     <None Include="Resources\Better.jpg" />
     <None Include="Resources\Good.jpg" />
     <None Include="Resources\Simple.jpg" />
+    <None Include="Resources\transform.png" />
     <Content Include="Resources\wp_habitat.gif" />
     <Content Include="Resources\wp_Inside_in_shadows.gif" />
     <Content Include="Resources\wp_Mooferd.gif" />

@@ -868,7 +868,7 @@ Public Class Form1
         SetIni("Const", "PrivatePort", My.Settings.PrivatePort)
 
 
-        If (My.Settings.allow_grid_gods) Then
+        If (My.Settings.region_owner_is_god Or My.Settings.region_manager_is_god) Then
             SetIni("Permissions", "allow_grid_gods", "true")
         Else
             SetIni("Permissions", "allow_grid_gods", "false")
@@ -1137,11 +1137,18 @@ Public Class Form1
 
     Private Sub CheckDefaultPorts()
 
-        If My.Settings.PrivatePort = My.Settings.PublicPort Or My.Settings.PrivatePort = My.Settings.HttpPort Or My.Settings.PublicPort = My.Settings.HttpPort Then
+        If My.Settings.PublicPort = My.Settings.DiagnosticPort _
+            Or My.Settings.PublicPort = My.Settings.HttpPort _
+            Or My.Settings.PublicPort = My.Settings.PrivatePort _
+            Or My.Settings.DiagnosticPort = My.Settings.HttpPort _
+            Or My.Settings.DiagnosticPort = My.Settings.PrivatePort _
+            Or My.Settings.HttpPort = My.Settings.PrivatePort Then
+
+            My.Settings.PublicPort = 8000
             My.Settings.DiagnosticPort = 8001
             My.Settings.HttpPort = 8002
             My.Settings.PrivatePort = 8003
-            My.Settings.PublicPort = 8000
+
             MsgBox("Port conflict detected. Sim Ports have been reset to the defaults", vbInformation)
         End If
 
@@ -1271,7 +1278,6 @@ Public Class Form1
             RobustProcess.StartInfo.Arguments = "-inifile Robust.HG.ini"
             RobustProcess.Start()
             gRobustProcID = RobustProcess.Id
-
 
         Catch ex As Exception
             Print("Error: Robust did not start: " + ex.Message)
@@ -2627,7 +2633,7 @@ Public Class Form1
         ' wait for MySql to come up
         Mysql = CheckPort("127.0.0.1", My.Settings.MySqlPort)
         If Mysql Then
-
+            Sleep(5)
             Return True
         End If
 
@@ -2800,9 +2806,12 @@ Public Class Form1
         Dim Checkname As String = String.Empty
 
         Try
-            Checkname = client.DownloadString("http://outworldz.net/dns.plx/?GridName=" + name + "&r=" + Random())
+            Checkname = client.DownloadString("http://outworldz.net/dns.plx/?GridName=" + name _
+                                              + "&ID=" + My.Settings.MachineID _
+                                              + "&Port=" + My.Settings.PublicPort _
+                                              + "&r=" + Random())
         Catch ex As Exception
-            Log("Warn:Cannot check the DNS Name" + ex.Message)
+            Log("Warn: Cannot check the DNS Name" + ex.Message)
         End Try
         If Checkname = "NEW" Or Checkname = "UPDATED" Then
             Return name
@@ -2839,6 +2848,16 @@ Public Class Form1
         pMySqlDiag.WaitForExit()
         ChDir(MyFolder)
 
+    End Sub
+
+    Private Sub ExpertSettingsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ExpertSettingsToolStripMenuItem.Click
+        Dim ActualForm As New Expert
+        Dim X As Integer = 300
+        Dim Y As Integer = 200
+        ActualForm.SetDesktopLocation(X, Y)
+        ActualForm.Visible = True
+        ActualForm.Activate()
+        Application.DoEvents()
     End Sub
 
 
