@@ -1338,7 +1338,7 @@ Public Class Form1
         If Running = False Then Return True
         OpensimProcID.Clear
         Dim counter = 0
-        Dim size = RegionClass.RegionListCount()
+        Dim size = RegionClass.RegionListCount() - 1
         While counter <= size
             RegionClass.CurRegionNum = counter
             Dim RegionName As String = RegionClass.RegionName
@@ -1346,7 +1346,7 @@ Public Class Form1
             Print("Starting " + RegionName)
             Dim procid = Boot(RegionName)
 
-            If Not procid Then
+            If procid = 0 Then
                 Return False
             End If
 
@@ -1367,13 +1367,13 @@ Public Class Form1
             myProcess.StartInfo.WorkingDirectory = prefix
             myProcess.StartInfo.FileName = prefix + "OpenSim.exe"
             myProcess.StartInfo.CreateNoWindow = False
-            If mnuShow.Checked Then
+            If My.Settings.ConsoleShow Then
                 myProcess.StartInfo.WindowStyle = ProcessWindowStyle.Normal
             Else
                 myProcess.StartInfo.WindowStyle = ProcessWindowStyle.Minimized
             End If
 
-            myProcess.StartInfo.Arguments = "-inidirectory=./Regions/" + InstanceName
+            myProcess.StartInfo.Arguments = "-inidirectory=" + """" + "./Regions/" + InstanceName + """"
             myProcess.Start()
             Pid = myProcess.Id
 
