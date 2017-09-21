@@ -2295,7 +2295,7 @@ Public Class Form1
             Log("Failed:" + result)
             Print("Router Loopback failed. See the Help section for 'Loopback' and how to enable it in Windows. Continuing...")
             My.Settings.LoopBackDiag = False
-            My.Settings.PublicIP = GetLocalIPv4Address()
+            My.Settings.PublicIP = MyUPnPMap.LocalIP()
             My.Settings.Save()
         End If
 
@@ -2356,7 +2356,7 @@ Public Class Form1
             Log("Failed:" + isPortOpen)
             My.Settings.DiagFailed = True
             Print("Internet address " + ip + ":" + My.Settings.PublicPort + " appears to not be forwarded to this machine in your router, so Hypergrid is not available. This can possibly be fixed by 'Port Forwards' in your router.  See Help->Port Forwards.")
-            My.Settings.PublicIP = GetLocalIPv4Address() ' failed, so try the machines address
+            My.Settings.PublicIP = MyUPnPMap.LocalIP() ' failed, so try the machine address
             Log("IP set to " + My.Settings.PublicIP)
             Return False
         End If
@@ -2377,32 +2377,7 @@ Public Class Form1
         Log("Diagnostics set the Hypergrid address to " + My.Settings.PublicIP)
 
     End Sub
-    Public Shared Function GetLocalIPv4Address() As String
 
-        Dim sock As Socket = New Socket(AddressFamily.InterNetwork, SocketType.Dgram, 0)
-        Try
-            Using sock
-                sock.Connect("8.8.8.8", 65530)  ' try Google
-                Dim EndPoint As IPEndPoint = sock.LocalEndPoint
-                GetLocalIPv4Address = EndPoint.Address.ToString()
-            End Using
-        Catch ex As Exception
-            GetLocalIPv4Address = "127.0.0.1"
-        End Try
-
-    End Function
-
-    Private Function OldGetLocalIPv4Address() As String
-        Dim strHostName As String = System.Net.Dns.GetHostName()
-        Dim IPList As System.Net.IPHostEntry = System.Net.Dns.GetHostEntry(strHostName)
-
-        For Each IPaddress As System.Net.IPAddress In IPList.AddressList
-            If IPaddress.AddressFamily = System.Net.Sockets.AddressFamily.InterNetwork AndAlso IsPrivateIP(IPaddress.ToString()) Then
-                Return IPaddress.ToString()
-            End If
-        Next
-        Return "127.0.0.1"
-    End Function
 
     ''' <summary>
     ''' Checks to see if an IP address is a local IP address.

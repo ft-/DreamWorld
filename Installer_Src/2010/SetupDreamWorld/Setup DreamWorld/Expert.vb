@@ -63,6 +63,7 @@ Public Class Expert
 
         'Database 
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''
+        RegionConnection.Text = My.Settings.RegionDBURL
         RegionDbName.Text = My.Settings.RegionDBName
         RegionDBUsername.Text = My.Settings.RegionDBUsername
         RegionDBURL.Text = My.Settings.RegionDBURL
@@ -284,6 +285,10 @@ Public Class Expert
 #End Region
 
 #Region "Database"
+    Private Sub TextBox1_TextChanged_2(sender As Object, e As EventArgs) Handles RegionConnection.TextChanged
+        My.Settings.RegionDBURL = RegionConnection.Text
+        My.Settings.Save()
+    End Sub
 
     Private Sub DatabaseNameUser_TextChanged(sender As Object, e As EventArgs) Handles RegionDbName.TextChanged
         My.Settings.RegionDBName = RegionDbName.Text
@@ -332,6 +337,20 @@ Public Class Expert
         My.Settings.Save()
     End Sub
 
+
+    Private Sub RobustDBURL_TextChanged(sender As Object, e As EventArgs) Handles RobustDBURL.TextChanged
+        My.Settings.RobustMySqlURL = RobustDBURL.Text
+        My.Settings.Save()
+
+    End Sub
+
+
+
+
+#End Region
+
+#Region "Help"
+
     Private Sub PictureBox1_Click(sender As Object, e As EventArgs) Handles GodHelp.Click
         Dim webAddress As String = Form1.Domain + "/Outworldz_installer/technical.htm#GridGod"
         Process.Start(webAddress)
@@ -341,34 +360,6 @@ Public Class Expert
         Dim webAddress As String = Form1.Domain + "/Outworldz_installer/technical.htm#Grid"
         Process.Start(webAddress)
     End Sub
-
-    Private Sub Label15_Click(sender As Object, e As EventArgs) Handles Label15.Click
-
-    End Sub
-
-    Private Sub Label9_Click(sender As Object, e As EventArgs) Handles Label9.Click
-
-    End Sub
-
-    Private Sub Label6_Click(sender As Object, e As EventArgs) Handles Label6.Click
-
-    End Sub
-
-    Private Sub Label8_Click(sender As Object, e As EventArgs) Handles Label8.Click
-
-    End Sub
-
-    Private Sub Label16_Click(sender As Object, e As EventArgs)
-
-    End Sub
-
-    Private Sub FullGridName_TextChanged(sender As Object, e As EventArgs) Handles RobustDBURL.TextChanged
-
-    End Sub
-
-
-
-
 
 
 #End Region

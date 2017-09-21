@@ -119,9 +119,7 @@ Public Class RegionMaker
 
     Public Sub New()
 
-        If GetAllRegions() Then
-            MsgBox("Failed to load all regions")
-        End If
+        GetAllRegions()
 
     End Sub
     Public Function CurrentRegionName() As String
@@ -181,7 +179,7 @@ Public Class RegionMaker
 
     End Sub
 
-    Public Function GetAllRegions() As Boolean
+    Public Sub GetAllRegions()
 
         RegionList.Clear()
         Dim folders() As String
@@ -219,13 +217,14 @@ Public Class RegionMaker
                     Next
 
                 Catch ex As Exception
+                    MsgBox("Error: Cannot parse a Region file:" + FileName + ":" + ex.Message)
                     Form1.Log("Err:Parse file " + FileName + ":" + ex.Message)
-                    Return True
+
                 End Try
             Next
         Next
-        Return False
-    End Function
+
+    End Sub
 
 #End Region
 
