@@ -191,9 +191,6 @@
     <Setting Name="RegionDBUsername" Type="System.String" Scope="User">
       <Value Profile="(Default)">opensimuser</Value>
     </Setting>
-    <Setting Name="RegionDBURL" Type="System.String" Scope="User">
-      <Value Profile="(Default)">localhost</Value>
-    </Setting>
     <Setting Name="RegionDBName" Type="System.String" Scope="User">
       <Value Profile="(Default)">opensim</Value>
     </Setting>
@@ -202,9 +199,6 @@
     </Setting>
     <Setting Name="DiagnosticPort" Type="System.String" Scope="User">
       <Value Profile="(Default)">8001</Value>
-    </Setting>
-    <Setting Name="RobustMySqlURL" Type="System.String" Scope="User">
-      <Value Profile="(Default)">localhost</Value>
     </Setting>
     <Setting Name="RobustMySqlName" Type="System.String" Scope="User">
       <Value Profile="(Default)">robust</Value>

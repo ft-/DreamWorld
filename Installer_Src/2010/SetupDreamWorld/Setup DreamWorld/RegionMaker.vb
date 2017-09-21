@@ -139,7 +139,7 @@ Public Class RegionMaker
         Dim index = RegionListCount() - 1
         Dim counter = 0
         While counter <= index
-            Debug.Print("Region {0}:" + RegionList(counter).RegionName, counter)
+            Debug.Print("Region :" + RegionList(counter).RegionName)
             counter = counter + 1
         End While
 
@@ -200,7 +200,7 @@ Public Class RegionMaker
 
                         ' make a slot to hold the region data 
                         CreateRegion()
-                        DisplayRegions()
+
                         Form1.Log("Info:Reading Region " + ini)
 
                         ' populate from disk
@@ -219,11 +219,10 @@ Public Class RegionMaker
                 Catch ex As Exception
                     MsgBox("Error: Cannot parse a Region file:" + FileName + ":" + ex.Message)
                     Form1.Log("Err:Parse file " + FileName + ":" + ex.Message)
-
                 End Try
             Next
         Next
-
+        DisplayRegions()
     End Sub
 
 #End Region

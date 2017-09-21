@@ -821,7 +821,7 @@ Public Class Form1
         ' Grid regions need GridDBName
         LoadIni(prefix + "\config-include\Gridcommon.ini", ";")
         Dim ConnectionString = """" _
-            + "Data Source=" + My.Settings.RegionDBURL _
+            + "Data Source=" + "localhost" _
             + ";Database=" + My.Settings.RegionDBName _
             + ";Port=" + My.Settings.MySqlPort _
             + ";User ID=" + My.Settings.RegionDBUsername _
@@ -844,7 +844,7 @@ Public Class Form1
         LoadIni(prefix + "Robust.HG.ini", ";")
 
         ConnectionString = """" _
-            + "Data Source=" + My.Settings.RobustMySqlURL _
+            + "Data Source=" + "localhost" _
             + ";Database=" + My.Settings.RobustMySqlName _
             + ";Port=" + My.Settings.MySqlPort _
             + ";User ID=" + My.Settings.RobustMySqlUsername _
@@ -854,7 +854,7 @@ Public Class Form1
 
         SetIni("DatabaseService", "ConnectionString", ConnectionString)
 
-        SetIni("Const", "BaseURL", "http://" + My.Settings.RobustMySqlURL)
+        SetIni("Const", "BaseURL", "http://localhost")
         SetIni("Const", "PublicPort", My.Settings.PublicPort)
         SetIni("Const", "PrivatePort", My.Settings.PrivatePort)
         SaveINI()
@@ -1026,7 +1026,7 @@ Public Class Form1
 
 
         ConnectionString = """" _
-            + "Data Source=" + My.Settings.RegionDBURL _
+            + "Data Source=" + "localhost" _
             + ";Database=" + My.Settings.RegionDBName _
             + ";Port=" + My.Settings.MySqlPort _
             + ";User ID=" + My.Settings.RegionDBUsername _
@@ -1043,7 +1043,7 @@ Public Class Form1
         LoadIni(prefix + "Wifi.ini", ";")
 
         ConnectionString = """" _
-            + "Data Source=" + My.Settings.RegionDBURL _
+            + "Data Source=" + "localhost" _
             + ";Database=" + My.Settings.RegionDBName _
             + ";Port=" + My.Settings.MySqlPort _
             + ";User ID=" + My.Settings.RegionDBUsername _
@@ -1142,7 +1142,7 @@ Public Class Form1
             My.Settings.HttpPort = 8002
             My.Settings.PrivatePort = 8003
             My.Settings.PublicPort = 8000
-            MsgBox("Port conflict detected. Public, HTTP and Private Ports have been reset to the default", vbInformation)
+            MsgBox("Port conflict detected. Sim Ports have been reset to the defaults", vbInformation)
         End If
 
     End Sub
@@ -2435,14 +2435,14 @@ Public Class Form1
             BumpProgress10()
 
             Dim counter = 0
-            Dim size = RegionClass.RegionListCount()
+            Dim size = RegionClass.RegionListCount() - 1
             While counter <= size
 
                 RegionClass.CurRegionNum = counter
                 Dim RegionPort As Integer = RegionClass.RegionPort
 
                 If Not MyUPnPMap.Exists(RegionPort, UPNP.Protocol.UDP) Then
-                    MyUPnPMap.Add(UPNP.LocalIP, RegionPort, UPNP.Protocol.UDP, "Opensim UDP Region")
+                    MyUPnPMap.Add(UPNP.LocalIP, RegionPort, UPNP.Protocol.UDP, "Opensim UDP Region " + RegionPort)
                     Log("uPnp: RegionPort.UDP Added:" + Convert.ToString(RegionPort))
                 Else
                     Log("uPnp: RegionPort.UDP " + Convert.ToString(RegionPort) + " is already in uPnP")

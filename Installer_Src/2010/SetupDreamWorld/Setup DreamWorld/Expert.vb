@@ -60,17 +60,14 @@ Public Class Expert
         PrivatePort.Text = My.Settings.PrivatePort
         PublicPort.Text = My.Settings.HttpPort
 
-
         'Database 
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''
-        RegionConnection.Text = My.Settings.RegionDBURL
         RegionDbName.Text = My.Settings.RegionDBName
         RegionDBUsername.Text = My.Settings.RegionDBUsername
-        RegionDBURL.Text = My.Settings.RegionDBURL
+        RegionMySqlPassword.Text = My.Settings.RegionDbPassword
 
 
         ' Robust DB
-        RobustDBURL.Text = My.Settings.RobustMySqlURL
         RobustDbName.Text = My.Settings.RobustMySqlName
         RobustDBPassword.Text = My.Settings.RobustMySqlPassword
         RobustDBUsername.Text = My.Settings.RobustMySqlUsername
@@ -285,18 +282,10 @@ Public Class Expert
 #End Region
 
 #Region "Database"
-    Private Sub TextBox1_TextChanged_2(sender As Object, e As EventArgs) Handles RegionConnection.TextChanged
-        My.Settings.RegionDBURL = RegionConnection.Text
-        My.Settings.Save()
-    End Sub
+
 
     Private Sub DatabaseNameUser_TextChanged(sender As Object, e As EventArgs) Handles RegionDbName.TextChanged
         My.Settings.RegionDBName = RegionDbName.Text
-        My.Settings.Save()
-    End Sub
-
-    Private Sub DbConnection_TextChanged(sender As Object, e As EventArgs) Handles RegionDBURL.TextChanged
-        My.Settings.RegionDBURL = RegionDBURL.Text
         My.Settings.Save()
     End Sub
 
@@ -304,12 +293,13 @@ Public Class Expert
         My.Settings.RegionDBUsername = RegionDBUsername.Text
         My.Settings.Save()
     End Sub
-    Private Sub DbPassword_click(sender As Object, e As EventArgs) Handles RobustMySqlPassword.Click
-        RobustMySqlPassword.UseSystemPasswordChar = False
+
+    Private Sub DbPassword_click(sender As Object, e As EventArgs) Handles RegionMySqlPassword.Click
+        RegionMySqlPassword.UseSystemPasswordChar = False
     End Sub
 
-    Private Sub DbPassword_TextChanged(sender As Object, e As EventArgs) Handles RobustMySqlPassword.TextChanged
-        My.Settings.RegionDbPassword = RobustMySqlPassword.Text
+    Private Sub DbPassword_TextChanged(sender As Object, e As EventArgs) Handles RegionMySqlPassword.TextChanged
+        My.Settings.RegionDbPassword = RegionMySqlPassword.Text
         My.Settings.Save()
     End Sub
 
@@ -324,7 +314,7 @@ Public Class Expert
     End Sub
 
     Private Sub RobustPasswordTextBox_TextChanged(sender As Object, e As EventArgs) Handles RobustDBPassword.TextChanged
-        My.Settings.RobustMySqlPassword = RobustMySqlPassword.Text
+        My.Settings.RobustMySqlPassword = RegionMySqlPassword.Text
         My.Settings.Save()
     End Sub
 
@@ -336,14 +326,6 @@ Public Class Expert
         My.Settings.MySqlPort = RobustDbPort.Text
         My.Settings.Save()
     End Sub
-
-
-    Private Sub RobustDBURL_TextChanged(sender As Object, e As EventArgs) Handles RobustDBURL.TextChanged
-        My.Settings.RobustMySqlURL = RobustDBURL.Text
-        My.Settings.Save()
-
-    End Sub
-
 
 
 

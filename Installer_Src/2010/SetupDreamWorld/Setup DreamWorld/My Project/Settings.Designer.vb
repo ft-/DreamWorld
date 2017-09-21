@@ -812,18 +812,6 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("localhost")>  _
-        Public Property RegionDBURL() As String
-            Get
-                Return CType(Me("RegionDBURL"),String)
-            End Get
-            Set
-                Me("RegionDBURL") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("opensim")>  _
         Public Property RegionDBName() As String
             Get
@@ -855,18 +843,6 @@ Namespace My
             End Get
             Set
                 Me("DiagnosticPort") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("localhost")>  _
-        Public Property RobustMySqlURL() As String
-            Get
-                Return CType(Me("RobustMySqlURL"),String)
-            End Get
-            Set
-                Me("RobustMySqlURL") = value
             End Set
         End Property
         
