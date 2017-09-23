@@ -47,6 +47,7 @@ Partial Class FormRegion
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Button1 = New System.Windows.Forms.Button()
         Me.DeleteButton = New System.Windows.Forms.Button()
+        Me.EnabledCheckBox = New System.Windows.Forms.CheckBox()
         Me.Advanced.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.SuspendLayout()
@@ -55,7 +56,7 @@ Partial Class FormRegion
         '
         Me.RegionPort.Location = New System.Drawing.Point(97, 39)
         Me.RegionPort.Name = "RegionPort"
-        Me.RegionPort.Size = New System.Drawing.Size(46, 20)
+        Me.RegionPort.Size = New System.Drawing.Size(40, 20)
         Me.RegionPort.TabIndex = 10
         Me.ToolTip1.SetToolTip(Me.RegionPort, "The UDP port the region will operate on. Must be uinique")
         '
@@ -77,7 +78,7 @@ Partial Class FormRegion
         '
         'RegionName
         '
-        Me.RegionName.Location = New System.Drawing.Point(15, 25)
+        Me.RegionName.Location = New System.Drawing.Point(14, 36)
         Me.RegionName.Name = "RegionName"
         Me.RegionName.Size = New System.Drawing.Size(230, 20)
         Me.RegionName.TabIndex = 1
@@ -157,7 +158,7 @@ Partial Class FormRegion
         Me.Advanced.Controls.Add(Me.Label21)
         Me.Advanced.Controls.Add(Me.CoordY)
         Me.Advanced.Controls.Add(Me.CoordX)
-        Me.Advanced.Location = New System.Drawing.Point(18, 171)
+        Me.Advanced.Location = New System.Drawing.Point(14, 207)
         Me.Advanced.Name = "Advanced"
         Me.Advanced.Size = New System.Drawing.Size(230, 100)
         Me.Advanced.TabIndex = 26
@@ -211,7 +212,7 @@ Partial Class FormRegion
         'Label8
         '
         Me.Label8.AutoSize = True
-        Me.Label8.Location = New System.Drawing.Point(12, 9)
+        Me.Label8.Location = New System.Drawing.Point(11, 20)
         Me.Label8.Name = "Label8"
         Me.Label8.Size = New System.Drawing.Size(75, 13)
         Me.Label8.TabIndex = 25
@@ -228,7 +229,7 @@ Partial Class FormRegion
         Me.GroupBox2.Controls.Add(Me.Label2)
         Me.GroupBox2.Controls.Add(Me.SizeY)
         Me.GroupBox2.Controls.Add(Me.SizeX)
-        Me.GroupBox2.Location = New System.Drawing.Point(18, 51)
+        Me.GroupBox2.Location = New System.Drawing.Point(14, 87)
         Me.GroupBox2.Name = "GroupBox2"
         Me.GroupBox2.Size = New System.Drawing.Size(227, 114)
         Me.GroupBox2.TabIndex = 23
@@ -264,7 +265,7 @@ Partial Class FormRegion
         '
         'Button1
         '
-        Me.Button1.Location = New System.Drawing.Point(26, 295)
+        Me.Button1.Location = New System.Drawing.Point(22, 331)
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(75, 23)
         Me.Button1.TabIndex = 27
@@ -273,12 +274,22 @@ Partial Class FormRegion
         '
         'DeleteButton
         '
-        Me.DeleteButton.Location = New System.Drawing.Point(154, 295)
+        Me.DeleteButton.Location = New System.Drawing.Point(160, 331)
         Me.DeleteButton.Name = "DeleteButton"
         Me.DeleteButton.Size = New System.Drawing.Size(75, 23)
         Me.DeleteButton.TabIndex = 28
         Me.DeleteButton.Text = "Delete"
         Me.DeleteButton.UseVisualStyleBackColor = True
+        '
+        'EnabledCheckBox
+        '
+        Me.EnabledCheckBox.AutoSize = True
+        Me.EnabledCheckBox.Location = New System.Drawing.Point(23, 64)
+        Me.EnabledCheckBox.Name = "EnabledCheckBox"
+        Me.EnabledCheckBox.Size = New System.Drawing.Size(65, 17)
+        Me.EnabledCheckBox.TabIndex = 29
+        Me.EnabledCheckBox.Text = "Enabled"
+        Me.EnabledCheckBox.UseVisualStyleBackColor = True
         '
         'FormRegion
         '
@@ -287,7 +298,8 @@ Partial Class FormRegion
         Me.AutoSize = True
         Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.BackColor = System.Drawing.SystemColors.Control
-        Me.ClientSize = New System.Drawing.Size(259, 330)
+        Me.ClientSize = New System.Drawing.Size(259, 391)
+        Me.Controls.Add(Me.EnabledCheckBox)
         Me.Controls.Add(Me.DeleteButton)
         Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.Advanced)
@@ -329,4 +341,5 @@ Partial Class FormRegion
     Friend WithEvents SizeX As TextBox
     Friend WithEvents Button1 As Button
     Friend WithEvents DeleteButton As Button
+    Friend WithEvents EnabledCheckBox As CheckBox
 End Class

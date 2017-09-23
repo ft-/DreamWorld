@@ -9,11 +9,11 @@ Imports System.Runtime.InteropServices
 
 ' Review the values of the assembly attributes
 
-<Assembly: AssemblyTitle("DreamWorld")>
+<Assembly: AssemblyTitle("DreamwGrid")>
 <Assembly: AssemblyDescription("Virtual World installer for Opensimulator")>
 <Assembly: AssemblyCompany("Outworldz.com")>
-<Assembly: AssemblyProduct("DreamWorld")>
-<Assembly: AssemblyCopyright("Copyright ©  2013")>
+<Assembly: AssemblyProduct("DreamGrid")>
+<Assembly: AssemblyCopyright("Copyright © 2013")>
 <Assembly: AssemblyTrademark("")>
 
 <Assembly: ComVisible(False)>

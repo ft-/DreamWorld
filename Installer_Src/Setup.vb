@@ -1038,7 +1038,7 @@ Public Class Form1
         SaveINI()
 
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-        ' Wifi Settings in bin? !!!
+        ' Wifi Settings
 
         LoadIni(prefix + "Wifi.ini", ";")
 
@@ -1092,6 +1092,14 @@ Public Class Form1
             LoadIni(prefix + "Regions\" + simName + "\Region\" + simName + ".ini", ";")
             SetIni(simName, "InternalPort", Convert.ToString(RegionClass.RegionPort))
             SetIni(simName, "ExternalHostName", Convert.ToString(My.Settings.PublicIP))
+
+            ' not a standrd INI, only use by the Dreamers
+            If RegionClass.RegionEnabled Then
+                SetIni(simName, "Enabled", "true")
+            Else
+                SetIni(simName, "Enabled", "false")
+            End If
+
             SaveINI()
             counter += 1
         End While
@@ -1341,19 +1349,20 @@ Public Class Form1
         Dim size = RegionClass.RegionListCount() - 1
         While counter <= size
             RegionClass.CurRegionNum = counter
-            Dim RegionName As String = RegionClass.RegionName
+            If RegionClass.RegionEnabled Then
+                Dim RegionName As String = RegionClass.RegionName
 
-            Print("Starting " + RegionName)
-            Dim procid = Boot(RegionName)
+                Print("Starting " + RegionName)
+                Dim procid = Boot(RegionName)
+                If procid = 0 Then
+                    Return False
+                End If
 
-            If procid = 0 Then
-                Return False
+                RegionClass.ProcessID = procid
+                counter = counter + 1
+                Application.DoEvents()
             End If
 
-            RegionClass.ProcessID = procid
-
-            counter = counter + 1
-            Application.DoEvents()
         End While
         Return True
 

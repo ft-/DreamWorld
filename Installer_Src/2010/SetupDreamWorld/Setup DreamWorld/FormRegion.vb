@@ -23,6 +23,7 @@ Public Class FormRegion
         MyRegion.CurRegionNum = num
         gNum = num
         oldname = MyRegion.RegionName
+        EnabledCheckBox.Checked = MyRegion.RegionEnabled
         '''''''''''''''''''''''''''''''
         ' reasonable default section 
 
@@ -38,37 +39,17 @@ Public Class FormRegion
             MyRegion.SizeX = 256
 
             ' locate largest X and Y global coords, and Region Port
-            Dim MaxX As Integer
-            Dim MaxY As Integer
-            Dim MaxPort As Integer
-            Dim counter As Integer = 1
-            Dim L = Form1.RegionClass.RegionListCount()
-            While counter <= L
-                MyRegion.CurRegionNum = counter
-                Dim port = MyRegion.RegionPort
-
-                If port > MaxPort Then MaxPort = port
-
-                Dim X = MyRegion.CoordX
-                If X > MaxX Then MaxX = X
-
-                Dim Y = MyRegion.CoordY
-                If Y > MaxY Then MaxY = Y
-                counter += 1
-            End While
-
-            MyRegion.CurRegionNum = gNum ' index back to our Region
-
-            'Add something to make sure we do not intersect
-            MyRegion.RegionPort = MaxPort + 1
-            MyRegion.CoordX = MaxX + 10
-            MyRegion.CoordY = MaxY + 10
+            ' Add something to make sure we do not intersect
+            MyRegion.RegionPort = MyRegion.LargestPort + 1
+            MyRegion.CoordX = MyRegion.LargestX + 10
+            MyRegion.CoordY = MyRegion.LargestY + 10
         End If
 
         ' save them
         Me.Text = MyRegion.RegionName ' on screen
         RegionName.Text = MyRegion.RegionName ' on form
         UUID.Text = MyRegion.UUID   ' on screen
+
 
         Me.Show() ' time to show the results
         Application.DoEvents()
@@ -209,9 +190,16 @@ Public Class FormRegion
 
     Private Sub WriteRegion()
 
+        Dim sEnabled As String
+        If MyRegion.RegionEnabled Then
+            sEnabled = "true"
+        Else
+            sEnabled = False
+        End If
+
         Dim RegionText As String = "; * Regions configuration file " + vbCrLf _
-    + "; * This Is Your World. Change This And It Will BREAK. See Advance->[Region Settings] instead." + vbCrLf _
-    + "; Automatically changed by Dreamworld - do Not change this file!" + vbCrLf _
+    + "; * This Is Your World. See Common Setting->[Region Settings] to change values." + vbCrLf _
+    + "; Automatically changed by Dreamworld - do Not change this file!" + vbCrLf + vbCrLf _
     + "[" + MyRegion.RegionName + "]" + vbCrLf _
     + "RegionUUID = " + """" + MyRegion.UUID + """" + vbCrLf _
     + "Location = " + """" + Convert.ToString(MyRegion.CoordX) + "," + Convert.ToString(MyRegion.CoordY) + """" + vbCrLf _
@@ -220,7 +208,8 @@ Public Class FormRegion
     + "AllowAlternatePorts = False" + vbCrLf _
     + "ExternalHostName = " + My.Settings.PublicIP + vbCrLf _
     + "SizeX = " + Convert.ToString(MyRegion.SizeX) + vbCrLf _
-    + "SizeY = " + Convert.ToString(MyRegion.SizeY) + vbCrLf
+    + "SizeY = " + Convert.ToString(MyRegion.SizeY) + vbCrLf _
+    + "Enabled = " + sEnabled + vbCrLf
 
         ' save the Region File
 
@@ -344,9 +333,12 @@ Public Class FormRegion
                 If Guid.TryParse(UUID.Text, result) Then
                     MyRegion.UUID = UUID.Text
                 Else
-                    MsgBox("Not a valid UUID", vbInformation)
+                    Dim ok = MsgBox("Not a valid UUID. Do you want a new, Random UUID?", vbOKCancel)
+                    If ok = vbOK Then
+                        UUID.Text = System.Guid.NewGuid.ToString
+                    End If
                 End If
-            End If
+                End If
         End If
     End Sub
 
@@ -450,19 +442,22 @@ Public Class FormRegion
         End If
         Return False
 
-
     End Function
 
     Private Sub DeleteButton_Click(sender As Object, e As EventArgs) Handles DeleteButton.Click
         Dim msg = MsgBox("Are you sure you want to delete this region? ", vbYesNo)
         If msg = vbYes Then
             Try
-                My.Computer.FileSystem.DeleteDirectory(Form1.prefix & "Regions\" + RegionName.Text, FileIO.RecycleOption.SendToRecycleBin, FileIO.DeleteDirectoryOption.DeleteAllContents)
+                My.Computer.FileSystem.DeleteDirectory(Form1.prefix & "Regions\" + RegionName.Text, FileIO.UIOption.AllDialogs, FileIO.RecycleOption.SendToRecycleBin, FileIO.UICancelOption.ThrowException)
                 Me.Close()
             Catch ex As Exception
                 MsgBox("Cannot delete region file:" + ex.Message, vbInformation)
             End Try
         End If
+    End Sub
+
+    Private Sub EnabledCheckBox_CheckedChanged(sender As Object, e As EventArgs) Handles EnabledCheckBox.CheckedChanged
+        MyRegion.RegionEnabled = EnabledCheckBox.Checked
     End Sub
 
 

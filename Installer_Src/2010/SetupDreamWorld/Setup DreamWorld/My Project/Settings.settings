@@ -23,9 +23,6 @@
     <Setting Name="Onlook" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="SimName" Type="System.String" Scope="User">
-      <Value Profile="(Default)">DreamWorld</Value>
-    </Setting>
     <Setting Name="CoordX" Type="System.String" Scope="User">
       <Value Profile="(Default)">2000</Value>
     </Setting>
@@ -205,6 +202,9 @@
     </Setting>
     <Setting Name="RobustMySqlPassword" Type="System.String" Scope="User">
       <Value Profile="(Default)">robustpassword</Value>
+    </Setting>
+    <Setting Name="SimName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">DreamWorld</Value>
     </Setting>
   </Settings>
 </SettingsFile>

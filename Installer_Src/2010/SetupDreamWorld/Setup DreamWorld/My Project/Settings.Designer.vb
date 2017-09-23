@@ -140,18 +140,6 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("DreamWorld")>  _
-        Public Property SimName() As String
-            Get
-                Return CType(Me("SimName"),String)
-            End Get
-            Set
-                Me("SimName") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("2000")>  _
         Public Property CoordX() As String
             Get
@@ -867,6 +855,18 @@ Namespace My
             End Get
             Set
                 Me("RobustMySqlPassword") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("DreamWorld")>  _
+        Public Property SimName() As String
+            Get
+                Return CType(Me("SimName"),String)
+            End Get
+            Set
+                Me("SimName") = value
             End Set
         End Property
     End Class

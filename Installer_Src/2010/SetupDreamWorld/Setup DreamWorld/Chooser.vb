@@ -9,8 +9,12 @@
         Dim oldID = Form1.RegionClass.CurRegionNum()
         Dim counter As Integer = 1
         While counter <= Form1.RegionClass.RegionListCount()
-            Form1.RegionClass.CurRegionNum() = counter
-            ListBox1.Items.Add(Form1.RegionClass.RegionName)
+
+            If Form1.RegionClass.RegionEnabled Then
+                Form1.RegionClass.CurRegionNum() = counter
+                ListBox1.Items.Add(Form1.RegionClass.RegionName)
+            End If
+
             counter += 1
         End While
 
@@ -25,4 +29,5 @@
         Form1.RegionClass.CurRegionNum() = ListBox1.SelectedIndex
         My.Settings.WelcomeRegion = ListBox1.SelectedIndex
     End Sub
+
 End Class

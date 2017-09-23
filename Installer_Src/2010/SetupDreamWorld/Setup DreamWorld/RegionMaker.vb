@@ -3,8 +3,6 @@
 Imports System
 Imports System.IO
 
-
-
 Public Class RegionMaker
 
 #Region "Declarations"
@@ -18,6 +16,7 @@ Public Class RegionMaker
         Public RegionPort As Integer
         Public SizeX As Integer
         Public SizeY As Integer
+        Public RegionEnabled As Boolean
     End Class
 
     Public Shared RegionList As New ArrayList
@@ -32,11 +31,19 @@ Public Class RegionMaker
             Catch
                 Return 0
             End Try
+
         End Get
         Set(value As Integer)
         End Set
     End Property
-
+    Public Property RegionEnabled() As Boolean
+        Get
+            Return RegionList(CurRegionNum()).RegionEnabled
+        End Get
+        Set(ByVal Value As Boolean)
+            RegionList(CurRegionNum()).RegionEnabled = Value
+        End Set
+    End Property
     Public Property ProcessID() As Integer
         Get
             Return RegionList(CurRegionNum()).ProcessID
@@ -113,9 +120,11 @@ Public Class RegionMaker
         End Set
     End Property
 
+
+
 #End Region
 
-#Region "Code"
+#Region "Public"
 
     Public Sub New()
 
@@ -163,6 +172,7 @@ Public Class RegionMaker
 
         Dim r As New Region_data
         r.RegionName = ""
+        r.RegionEnabled = True
         r.UUID = Guid.NewGuid().ToString
         r.SizeX = 256
         r.SizeY = 256
@@ -205,6 +215,12 @@ Public Class RegionMaker
 
                         ' populate from disk
                         RegionName() = fName
+                        Try
+                            RegionEnabled() = Form1.GetIni(ini, fName, "Enabled", ";")
+                        Catch
+                            RegionEnabled() = True
+                        End Try
+
                         UUID() = Form1.GetIni(ini, fName, "RegionUUID", ";")
                         SizeX() = Convert.ToInt16(Form1.GetIni(ini, fName, "SizeX", ";"))
                         SizeY() = Convert.ToInt16(Form1.GetIni(ini, fName, "SizeY", ";"))
@@ -229,7 +245,7 @@ Public Class RegionMaker
 
 #Region "Private"
 
-    Private Function LargestX() As Integer
+    Public Function LargestX() As Integer
 
         ' locate largest global coords
         Dim Max As Integer
@@ -245,7 +261,7 @@ Public Class RegionMaker
 
     End Function
 
-    Private Function LargestY() As Integer
+    Public Function LargestY() As Integer
 
         ' locate largest global coords
         Dim Max As Integer
@@ -261,7 +277,7 @@ Public Class RegionMaker
 
     End Function
 
-    Private Function LargestPort() As Integer
+    Public Function LargestPort() As Integer
 
         ' locate largest global coords
         Dim Max As Integer

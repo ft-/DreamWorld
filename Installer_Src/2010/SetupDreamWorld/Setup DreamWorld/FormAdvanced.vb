@@ -245,13 +245,15 @@ Public Class AdvancedForm
     Private Sub LoadWelcomeBox()
         ' Default welcome region load
         WelcomeBox1.Items.Clear()
-        Dim counter As Integer = 1
+        Dim counter As Integer = 0
 
         Dim L = Form1.RegionClass.RegionListCount()
 
         While counter < L
-            Form1.RegionClass.CurRegionNum = counter
-            WelcomeBox1.Items.Add(Form1.RegionClass.RegionName())
+            If Form1.RegionClass.RegionEnabled Then
+                Form1.RegionClass.CurRegionNum = counter
+                WelcomeBox1.Items.Add(Form1.RegionClass.RegionName())
+            End If
             counter += 1
         End While
 
