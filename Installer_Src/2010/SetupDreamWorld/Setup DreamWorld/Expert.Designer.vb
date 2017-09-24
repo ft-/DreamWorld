@@ -56,14 +56,12 @@ Partial Class Expert
         Me.Label10 = New System.Windows.Forms.Label()
         Me.AdminPassword = New System.Windows.Forms.TextBox()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
-        Me.HTTPPort = New System.Windows.Forms.TextBox()
         Me.Label7 = New System.Windows.Forms.Label()
         Me.Label5 = New System.Windows.Forms.Label()
-        Me.PublicPort = New System.Windows.Forms.TextBox()
+        Me.HTTPPort = New System.Windows.Forms.TextBox()
         Me.PrivatePort = New System.Windows.Forms.TextBox()
-        Me.Label13 = New System.Windows.Forms.Label()
-        Me.Label4 = New System.Windows.Forms.Label()
         Me.DiagnosticPort = New System.Windows.Forms.TextBox()
+        Me.Label4 = New System.Windows.Forms.Label()
         Me.GroupBox7 = New System.Windows.Forms.GroupBox()
         Me.StatsButton = New System.Windows.Forms.Button()
         Me.WebStats = New System.Windows.Forms.CheckBox()
@@ -413,8 +411,6 @@ Partial Class Expert
         Me.GroupBox2.Controls.Add(Me.Label7)
         Me.GroupBox2.Controls.Add(Me.Label5)
         Me.GroupBox2.Controls.Add(Me.HTTPPort)
-        Me.GroupBox2.Controls.Add(Me.PublicPort)
-        Me.GroupBox2.Controls.Add(Me.Label13)
         Me.GroupBox2.Controls.Add(Me.PrivatePort)
         Me.GroupBox2.Controls.Add(Me.DiagnosticPort)
         Me.GroupBox2.Controls.Add(Me.Label4)
@@ -425,17 +421,10 @@ Partial Class Expert
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Ports"
         '
-        'HTTPPort
-        '
-        Me.HTTPPort.Location = New System.Drawing.Point(138, 60)
-        Me.HTTPPort.Name = "HTTPPort"
-        Me.HTTPPort.Size = New System.Drawing.Size(47, 20)
-        Me.HTTPPort.TabIndex = 39
-        '
         'Label7
         '
         Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(18, 93)
+        Me.Label7.Location = New System.Drawing.Point(18, 103)
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(62, 13)
         Me.Label7.TabIndex = 38
@@ -444,50 +433,41 @@ Partial Class Expert
         'Label5
         '
         Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(19, 41)
+        Me.Label5.Location = New System.Drawing.Point(19, 51)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(79, 13)
         Me.Label5.TabIndex = 33
         Me.Label5.Text = "Diagnostic Port"
         '
-        'PublicPort
+        'HTTPPort
         '
-        Me.PublicPort.Location = New System.Drawing.Point(138, 9)
-        Me.PublicPort.Name = "PublicPort"
-        Me.PublicPort.Size = New System.Drawing.Size(47, 20)
-        Me.PublicPort.TabIndex = 37
+        Me.HTTPPort.Location = New System.Drawing.Point(138, 70)
+        Me.HTTPPort.Name = "HTTPPort"
+        Me.HTTPPort.Size = New System.Drawing.Size(47, 20)
+        Me.HTTPPort.TabIndex = 39
         '
         'PrivatePort
         '
-        Me.PrivatePort.Location = New System.Drawing.Point(138, 86)
+        Me.PrivatePort.Location = New System.Drawing.Point(138, 96)
         Me.PrivatePort.Name = "PrivatePort"
         Me.PrivatePort.Size = New System.Drawing.Size(47, 20)
         Me.PrivatePort.TabIndex = 35
         '
-        'Label13
+        'DiagnosticPort
         '
-        Me.Label13.AutoSize = True
-        Me.Label13.Location = New System.Drawing.Point(18, 16)
-        Me.Label13.Name = "Label13"
-        Me.Label13.Size = New System.Drawing.Size(58, 13)
-        Me.Label13.TabIndex = 36
-        Me.Label13.Text = "Public Port"
+        Me.DiagnosticPort.Location = New System.Drawing.Point(139, 44)
+        Me.DiagnosticPort.Name = "DiagnosticPort"
+        Me.DiagnosticPort.Size = New System.Drawing.Size(47, 20)
+        Me.DiagnosticPort.TabIndex = 34
         '
         'Label4
         '
         Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(18, 66)
+        Me.Label4.Location = New System.Drawing.Point(18, 76)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(49, 13)
         Me.Label4.TabIndex = 32
         Me.Label4.Text = "Http Port"
-        '
-        'DiagnosticPort
-        '
-        Me.DiagnosticPort.Location = New System.Drawing.Point(139, 34)
-        Me.DiagnosticPort.Name = "DiagnosticPort"
-        Me.DiagnosticPort.Size = New System.Drawing.Size(47, 20)
-        Me.DiagnosticPort.TabIndex = 34
         '
         'GroupBox7
         '
@@ -803,9 +783,7 @@ Partial Class Expert
     Friend WithEvents SplashPage As TextBox
     Friend WithEvents GroupBox2 As GroupBox
     Friend WithEvents Label5 As Label
-    Friend WithEvents PublicPort As TextBox
     Friend WithEvents PrivatePort As TextBox
-    Friend WithEvents Label13 As Label
     Friend WithEvents Label4 As Label
     Friend WithEvents DiagnosticPort As TextBox
     Friend WithEvents GroupBox7 As GroupBox

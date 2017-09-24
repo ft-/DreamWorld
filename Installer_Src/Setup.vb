@@ -829,14 +829,6 @@ Public Class Form1
             + ";Old Guids=True;Allow Zero Datetime=True;" _
             + """"
         SetIni("DatabaseService", "ConnectionString", ConnectionString)
-
-
-        If My.Settings.WebStats Then
-            SetIni("WebStats", "enabled", "True")
-        Else
-            SetIni("WebStats", "enabled", "False")
-        End If
-
         SaveINI()
 
         ''''''''''''''''''''''''''''''''''''''''''
@@ -853,20 +845,23 @@ Public Class Form1
             + """"
 
         SetIni("DatabaseService", "ConnectionString", ConnectionString)
-
+        SetIni("Const", "GridName", My.Settings.SimName)
         SetIni("Const", "BaseURL", "http://localhost")
-        SetIni("Const", "PublicPort", My.Settings.PublicPort)
-        SetIni("Const", "PrivatePort", My.Settings.PrivatePort)
+        SetIni("Const", "PublicPort", My.Settings.HttpPort) ' 8002
+        SetIni("Const", "PrivatePort", My.Settings.PrivatePort) ' 8003
+        SetIni("Const", "http_listener_port", My.Settings.HttpPort)
+
+        If My.Settings.WebStats Then
+            SetIni("WebStats", "enabled", "True")
+        Else
+            SetIni("WebStats", "enabled", "False")
+        End If
+
         SaveINI()
 
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
         ' Opensim.ini
         LoadIni(prefix + "Opensim.proto", ";")
-
-        SetIni("Const", "BaseURL", "http://" + My.Settings.PublicIP)
-        SetIni("Const", "PublicPort", My.Settings.PublicPort)
-        SetIni("Const", "PrivatePort", My.Settings.PrivatePort)
-
 
         If (My.Settings.region_owner_is_god Or My.Settings.region_manager_is_god) Then
             SetIni("Permissions", "allow_grid_gods", "true")
@@ -1041,28 +1036,37 @@ Public Class Form1
         ' Wifi Settings
 
         LoadIni(prefix + "Wifi.ini", ";")
+        If (My.Settings.WifiEnabled) Then
+            SetIni("WifiService", "Enabled", "true")
+        Else
+            SetIni("WifiService", "Enabled", "false")
+        End If
 
         ConnectionString = """" _
-            + "Data Source=" + "localhost" _
-            + ";Database=" + My.Settings.RegionDBName _
-            + ";Port=" + My.Settings.MySqlPort _
-            + ";User ID=" + My.Settings.RegionDBUsername _
-            + ";Password=" + My.Settings.RegionDbPassword _
-            + """"
+                + "Data Source=" + "localhost" _
+                + ";Database=" + My.Settings.RobustMySqlName _
+                + ";Port=" + My.Settings.MySqlPort _
+                + ";User ID=" + My.Settings.RobustMySqlUsername _
+                + ";Password=" + My.Settings.RobustMySqlPassword _
+                + """"
 
         SetIni("DatabaseService", "DataSource", ConnectionString)
 
-        If (My.Settings.WifiEnabled) Then
+        ' Wifi Section
+        'email
+        SetIni("WifiService", "SmtpUsername", My.Settings.SmtpUsername)
+        SetIni("WifiService", "SmtpPassword", My.Settings.SmtpPassword)
 
-            SetIni("WifiService", "AdminPassword", My.Settings.Password)
-            SetIni("WifiService", "AdminEmail", My.Settings.AdminEmail)
+        'Gmail
+        SetIni("WifiService", "AdminPassword", My.Settings.Password)
+        SetIni("WifiService", "AdminEmail", My.Settings.AdminEmail)
 
-            If My.Settings.AccountConfirmationRequired Then
-                SetIni("WifiService", "AccountConfirmationRequired", "true")
-            Else
-                SetIni("WifiService", "AccountConfirmationRequired", "false")
-            End If
+        If My.Settings.AccountConfirmationRequired Then
+            SetIni("WifiService", "AccountConfirmationRequired", "true")
+        Else
+            SetIni("WifiService", "AccountConfirmationRequired", "false")
         End If
+
         SaveINI()
 
 
@@ -1119,8 +1123,14 @@ Public Class Form1
                 End Try
                 Try
                     LoadIni(prefix + "Opensim.proto", ";")
-                    SetIni("Const", "RegionFolderName", fname)
+                    SetIni("Const", "BaseURL", "http://" + My.Settings.PublicIP)
+                    SetIni("Const", "PublicPort", My.Settings.HttpPort)
                     SetIni("Const", "http_listener_port", RegionClass.RegionPort)
+                    SetIni("Const", "PrivatePort", My.Settings.PrivatePort) '8003
+
+
+                    SetIni("Const", "RegionFolderName", fname)
+
                     SaveINI()
                     My.Computer.FileSystem.CopyFile(prefix + "Opensim.proto", prefix + "Regions/" + fname + "/Opensim.ini", True)
                 Catch
@@ -1145,14 +1155,9 @@ Public Class Form1
 
     Private Sub CheckDefaultPorts()
 
-        If My.Settings.PublicPort = My.Settings.DiagnosticPort _
-            Or My.Settings.PublicPort = My.Settings.HttpPort _
-            Or My.Settings.PublicPort = My.Settings.PrivatePort _
-            Or My.Settings.DiagnosticPort = My.Settings.HttpPort _
+        If My.Settings.DiagnosticPort = My.Settings.HttpPort _
             Or My.Settings.DiagnosticPort = My.Settings.PrivatePort _
             Or My.Settings.HttpPort = My.Settings.PrivatePort Then
-
-            My.Settings.PublicPort = 8000
             My.Settings.DiagnosticPort = 8001
             My.Settings.HttpPort = 8002
             My.Settings.PrivatePort = 8003
@@ -1297,7 +1302,7 @@ Public Class Form1
         ' Wait for Opensim to start listening 
         Dim Up As String
         Try
-            Up = client.DownloadString("http://127.0.0.1:" + My.Settings.PublicPort + "/?_Opensim=" + Random())
+            Up = client.DownloadString("http://127.0.0.1:" + My.Settings.HttpPort + "/?_Opensim=" + Random())
         Catch ex As Exception
             Up = ""
             Log("Info:Robust is not yet running, will continue to check every 1/10 second for two minutes")
@@ -1324,7 +1329,7 @@ Public Class Form1
             Sleep(100)
 
             Try
-                Up = client.DownloadString("http://127.0.0.1:" + My.Settings.PublicPort + "/?_Opensim=" + Random())
+                Up = client.DownloadString("http://127.0.0.1:" + My.Settings.HttpPort + "/?_Opensim=" + Random())
             Catch ex As Exception
 
                 Up = ""
@@ -1344,7 +1349,7 @@ Public Class Form1
 
     Private Function Start_Opensimulator() As Boolean
         If Running = False Then Return True
-        OpensimProcID.Clear
+        OpensimProcID.Clear()
         Dim counter = 0
         Dim size = RegionClass.RegionListCount() - 1
         While counter <= size
@@ -1359,9 +1364,10 @@ Public Class Form1
                 End If
 
                 RegionClass.ProcessID = procid
-                counter = counter + 1
+
                 Application.DoEvents()
             End If
+            counter = counter + 1
 
         End While
         Return True
@@ -1372,17 +1378,18 @@ Public Class Form1
         Dim myProcess As New Process()
         Dim Pid
         Try
-            myProcess.StartInfo.UseShellExecute = False ' so we can redirect streams
+            myProcess.StartInfo.UseShellExecute = True ' so we can redirect streams
             myProcess.StartInfo.WorkingDirectory = prefix
             myProcess.StartInfo.FileName = prefix + "OpenSim.exe"
-            myProcess.StartInfo.CreateNoWindow = False
+
             If My.Settings.ConsoleShow Then
-                myProcess.StartInfo.WindowStyle = ProcessWindowStyle.Normal
+                myProcess.StartInfo.CreateNoWindow = False
             Else
-                myProcess.StartInfo.WindowStyle = ProcessWindowStyle.Minimized
+                myProcess.StartInfo.CreateNoWindow = True
             End If
 
             myProcess.StartInfo.Arguments = "-inidirectory=" + """" + "./Regions/" + InstanceName + """"
+            Debug.Print(prefix + "OpenSim.exe" + "-inidirectory=" + """" + "./Regions/" + InstanceName + """")
             myProcess.Start()
             Pid = myProcess.Id
 
@@ -1394,7 +1401,7 @@ Public Class Form1
             Buttons(StartButton)
             Return 0
         End Try
-        Return PID
+        Return Pid
 
     End Function
 
@@ -1458,10 +1465,10 @@ Public Class Form1
 
         Dim Logfiles = New List(Of String) From {
             MyFolder + "\OutworldzFiles\Outworldz.log",
-            MyFolder + "\OutworldzFiles\Opensim-0.9.0\bin\Opensim.log",
             MyFolder + "\OutworldzFiles\Opensim-0.9.0\bin\OpenSimConsoleHistory.txt",
             MyFolder + "\OutworldzFiles\Diagnostics.log",
-            MyFolder + "\OutworldzFiles\UPNP.log"
+            MyFolder + "\OutworldzFiles\UPNP.log",
+            MyFolder + "\OutworldzFiles\Opensim-0.9.0\bin\Robust.log"
         }
 
         For Each thing In Logfiles
@@ -1469,7 +1476,7 @@ Public Class Form1
             Try
                 My.Computer.FileSystem.DeleteFile(thing)
             Catch ex As Exception
-                Log("Info:" + thing + " is empty")
+
             End Try
             BumpProgress10()
         Next
@@ -1659,7 +1666,7 @@ Public Class Form1
 
     Private Sub WebStatsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles WebStatsToolStripMenuItem.Click
         If (Running) Then
-            Dim webAddress As String = "http://127.0.0.1:" + My.Settings.HttpPort + "/SStats/"
+            Dim webAddress As String = "http://127.0.0.1:" + My.Settings.HttpPort + "/bin/data/sim.html"
             Process.Start(webAddress)
         Else
             Print("Opensim is not running. Cannot open the Statistics web page.")
@@ -2291,7 +2298,7 @@ Public Class Form1
 
         BumpProgress10()
         Dim result As String = ""
-        Dim loopbacktest As String = "http://" + My.Settings.PublicIP + ":" + My.Settings.PublicPort + "/?_TestLoopback=" + Random()
+        Dim loopbacktest As String = "http://" + My.Settings.PublicIP + ":" + My.Settings.DiagnosticPort + "/?_TestLoopback=" + Random()
         Try
             Log(loopbacktest)
             result = client.DownloadString(loopbacktest)
@@ -2350,7 +2357,7 @@ Public Class Form1
             ' See my privacy policy at https://www.outworldz.com/privacy.htm
 
             Dim Data As String = GetPostData()
-            Dim Url = Domain + "/cgi/probetest.plx?IP=" + ip + "&Port=" + My.Settings.PublicPort + Data + "/?r=" + Random()
+            Dim Url = Domain + "/cgi/probetest.plx?IP=" + ip + "&Port=" + My.Settings.DiagnosticPort + Data + "/?r=" + Random()
             Log(Url)
             isPortOpen = client.DownloadString(Url)
         Catch ex As Exception
@@ -2370,7 +2377,7 @@ Public Class Form1
         Else
             Log("Failed:" + isPortOpen)
             My.Settings.DiagFailed = True
-            Print("Internet address " + ip + ":" + My.Settings.PublicPort + " appears to not be forwarded to this machine in your router, so Hypergrid is not available. This can possibly be fixed by 'Port Forwards' in your router.  See Help->Port Forwards.")
+            Print("Internet address " + ip + ":" + My.Settings.DiagnosticPort + " appears to not be forwarded to this machine in your router, so Hypergrid is not available. This can possibly be fixed by 'Port Forwards' in your router.  See Help->Port Forwards.")
             My.Settings.PublicIP = MyUPnPMap.LocalIP() ' failed, so try the machine address
             Log("IP set to " + My.Settings.PublicIP)
             Return False
@@ -2425,6 +2432,16 @@ Public Class Form1
         Log("Local ip seems to be " + UPNP.LocalIP)
 
         Try
+            '8001
+            If Not MyUPnPMap.Exists(Convert.ToInt16(My.Settings.DiagnosticPort), UPNP.Protocol.TCP) Then
+                MyUPnPMap.Add(UPNP.LocalIP, Convert.ToInt16(My.Settings.DiagnosticPort), UPNP.Protocol.TCP, "Opensim TCP Public")
+                Log("uPnp: PublicPort.TCP added")
+            Else
+                Log("uPnp: PublicPort.TCP " + My.Settings.DiagnosticPort + " is already in uPnP")
+            End If
+            BumpProgress10()
+
+            '8002
             If Not MyUPnPMap.Exists(Convert.ToInt16(My.Settings.HttpPort), UPNP.Protocol.TCP) Then
                 MyUPnPMap.Add(UPNP.LocalIP, Convert.ToInt16(My.Settings.HttpPort), UPNP.Protocol.TCP, "Opensim TCP grid port")
                 Log("uPnp: Grid Port.TCP added")
@@ -2433,36 +2450,30 @@ Public Class Form1
             End If
             BumpProgress10()
 
-            If Not MyUPnPMap.Exists(Convert.ToInt16(My.Settings.PublicPort), UPNP.Protocol.UDP) Then
-                MyUPnPMap.Add(UPNP.LocalIP, Convert.ToInt16(My.Settings.PublicPort), UPNP.Protocol.UDP, "Opensim UDP Public")
-                Log("uPnp: PublicPort.UDP added:")
-            Else
-                Log("uPnp: PublicPort.UDP " + My.Settings.PublicPort + " is already in uPnP")
-            End If
-            BumpProgress10()
-
-            If Not MyUPnPMap.Exists(Convert.ToInt16(My.Settings.PublicPort), UPNP.Protocol.TCP) Then
-                MyUPnPMap.Add(UPNP.LocalIP, Convert.ToInt16(My.Settings.PublicPort), UPNP.Protocol.TCP, "Opensim TCP Public")
-                Log("uPnp: PublicPort.TCP added")
-            Else
-                Log("uPnp: PublicPort.TCP " + My.Settings.PublicPort + " is already in uPnP")
-            End If
-            BumpProgress10()
-
+            '8004-whatever
             Dim counter = 0
-            Dim size = RegionClass.RegionListCount() - 1
-            While counter <= size
+            Dim size = RegionClass.RegionListCount()
+            While counter < size
 
                 RegionClass.CurRegionNum = counter
-                Dim RegionPort As Integer = RegionClass.RegionPort
+                Dim R As Int16 = RegionClass.RegionPort
 
-                If Not MyUPnPMap.Exists(RegionPort, UPNP.Protocol.UDP) Then
-                    MyUPnPMap.Add(UPNP.LocalIP, RegionPort, UPNP.Protocol.UDP, "Opensim UDP Region " + RegionPort)
-                    Log("uPnp: RegionPort.UDP Added:" + Convert.ToString(RegionPort))
+                If Not MyUPnPMap.Exists(R, UPNP.Protocol.UDP) Then
+                    MyUPnPMap.Add(UPNP.LocalIP, R, UPNP.Protocol.UDP, "Opensim UDP Region ")
+                    Log("uPnp: RegionPort.UDP Added:" + Convert.ToString(R))
                 Else
-                    Log("uPnp: RegionPort.UDP " + Convert.ToString(RegionPort) + " is already in uPnP")
+                    Log("uPnp: RegionPort.UDP " + Convert.ToString(R) + " is already in uPnP")
                 End If
                 BumpProgress10()
+
+                If Not MyUPnPMap.Exists(R, UPNP.Protocol.TCP) Then
+                    MyUPnPMap.Add(UPNP.LocalIP, R, UPNP.Protocol.TCP, "Opensim TCP Region ")
+                    Log("uPnp: RegionPort.TCP Added:" + Convert.ToString(R))
+                Else
+                    Log("uPnp: RegionPort.TCP " + Convert.ToString(R) + " is already in uPnP")
+                End If
+                BumpProgress10()
+
 
                 counter += 1
             End While
@@ -2817,7 +2828,7 @@ Public Class Form1
         Try
             Checkname = client.DownloadString("http://outworldz.net/dns.plx/?GridName=" + name _
                                               + "&ID=" + My.Settings.MachineID _
-                                              + "&Port=" + My.Settings.PublicPort _
+                                              + "&Port=" + My.Settings.HttpPort _
                                               + "&r=" + Random())
         Catch ex As Exception
             Log("Warn: Cannot check the DNS Name" + ex.Message)

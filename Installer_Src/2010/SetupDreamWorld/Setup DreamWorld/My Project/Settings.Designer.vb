@@ -104,18 +104,6 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("8000")>  _
-        Public Property PublicPort() As String
-            Get
-                Return CType(Me("PublicPort"),String)
-            End Get
-            Set
-                Me("PublicPort") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("127.0.0.1")>  _
         Public Property PublicIP() As String
             Get
@@ -860,7 +848,7 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("DreamWorld")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("DreamGrid")>  _
         Public Property SimName() As String
             Get
                 Return CType(Me("SimName"),String)

@@ -58,9 +58,10 @@ Public Class Expert
 
 
         'ports
-        DiagnosticPort.Text = My.Settings.PublicPort
+        DiagnosticPort.Text = My.Settings.DiagnosticPort
         PrivatePort.Text = My.Settings.PrivatePort
-        PublicPort.Text = My.Settings.HttpPort
+        HTTPPort.Text = My.Settings.HttpPort
+        DiagnosticPort.Text = My.Settings.DiagnosticPort
 
         'Database 
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -75,14 +76,12 @@ Public Class Expert
         RobustDBUsername.Text = My.Settings.RobustMySqlUsername
         RobustDbPort.Text = My.Settings.MySqlPort
 
-
-
     End Sub
 #End Region
 
 #Region "Ports"
-    Private Sub http_Port_TextChanged(sender As Object, e As EventArgs) Handles PublicPort.TextChanged
-        My.Settings.PublicPort = PublicPort.Text
+    Private Sub http_Port_TextChanged(sender As Object, e As EventArgs)
+        My.Settings.DiagnosticPort = DiagnosticPort.Text
         My.Settings.Save()
     End Sub
 

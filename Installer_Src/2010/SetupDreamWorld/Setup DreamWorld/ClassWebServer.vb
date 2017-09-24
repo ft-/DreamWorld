@@ -34,7 +34,7 @@ Public Class NetServer
         Try
             Dim oaddress = GetIPv4Address()
             Form1.Log("Info:IP:" + oaddress.ToString)
-            LocalTCPListener = New TcpListener(oaddress, My.Settings.PublicPort)
+            LocalTCPListener = New TcpListener(oaddress, My.Settings.DiagnosticPort)
         Catch ex As Exception
             Form1.Log(ex.Message)
             Return True

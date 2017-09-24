@@ -14,9 +14,6 @@
     <Setting Name="AutoBackup" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="PublicPort" Type="System.String" Scope="User">
-      <Value Profile="(Default)">8000</Value>
-    </Setting>
     <Setting Name="PublicIP" Type="System.String" Scope="User">
       <Value Profile="(Default)">127.0.0.1</Value>
     </Setting>
@@ -204,7 +201,7 @@
       <Value Profile="(Default)">robustpassword</Value>
     </Setting>
     <Setting Name="SimName" Type="System.String" Scope="User">
-      <Value Profile="(Default)">DreamWorld</Value>
+      <Value Profile="(Default)">DreamGrid</Value>
     </Setting>
   </Settings>
 </SettingsFile>
