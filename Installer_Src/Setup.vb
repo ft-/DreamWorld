@@ -36,8 +36,8 @@ Public Class Form1
 
 #Region "Declarations"
 
-    Dim MyVersion As String = "1.65"
-    Dim DebugPath As String = "C:\Opensim\Outworldz"
+    Dim MyVersion As String = "1.70"
+    Dim DebugPath As String = "C:\Opensim\Outworldz-V1.70"
     Public Domain As String = "https://www.outworldz.com"
     Dim RevNotesFile As String = "Update_Notes_" + MyVersion + ".rtf"
     Private gFailDebug1 = False ' set to true to fail diagnostic
@@ -757,7 +757,7 @@ Public Class Form1
             'close your reader
             reader.Close()
         Catch
-            MsgBox("There are no region files! There must be at least one region")
+            Print("Warning: Cannot set default welcome region in MyWorld.ini, continuing.")
         End Try
 
         Try
@@ -2572,7 +2572,7 @@ Public Class Form1
             Sleep(1000)
             Mysql = CheckPort("127.0.0.1", My.Settings.MySqlPort)
         End While
-        Sleep(2000) ' hacky, but may work
+        Sleep(5000) ' hacky, but may work
         Return True
     End Function
 
