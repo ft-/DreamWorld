@@ -1,0 +1,109 @@
+Developer Notes for DreamWorld 
+
+DreamWorld is a small Opensimulator world to demonstrate a easy to use Opensim Setup program.
+
+author: Fred Beckhusen, aka Ferd Frederix fred@mitsi.com 
+The vast majority of this project is made from Opensimulator, which is made by an enormous number of dedicated volunteers.  This is especially true for Diva Canto. Thank you very much!
+ 
+INTRODUCTION 
+
+The system supports a special installer that will put a easy-to-use copy of a slightly customized Diva Canto D2 OpenSim and her Encitra Onlook viewer on Windows.    It is written in VB.Net and runs under v2010 to v2015.
+It also has a copy of Opensim 0.9.0 Dev that can be enabled with a menu item.
+
+LAUNCHING MANUALLY
+
+It's standard D2 Opensim with lots of small tweaks, so it starts the standard things - MySql, then Opensim.
+
+After OpenSim has fully started, use your favourite viewer with the following grid and login information:
+
+login URI: http://127.0.0.1:9000/
+User First Name: Dream
+User Last Name: World
+Password: 123
+
+0.8.2.1 has a Wifi Interface:
+Admin User for Wifi that can administer accounts using the web interface is:
+login URI: http://127.0.0.1:8002/
+User First Name: Wifi
+User Last Name: Administrator
+Password: secret
+
+Other passwords
+MySQL Database root user has no password
+MySQL Database "opensim" user name "opensim" has a password of "opensimpass"
+
+File structure: 
+
+Each folder has specific purposes. Some are used for distribution, others hold source code or output from compilers.
+
+The following folders must be in any distributed zip, thumb, or DVD.  
+   OurworldzFiles - Contents is everything you need post installation.  All other folders are for setup or source.
+   Viewer:  The easy-to-use Onlook viewer
+
+Installer-Src - Hold Source code for the Start.exe 
+Opensim_0.9_src - Openem Src folder for 0.8.0
+
+Making A Different Installation: 
+
+Everything that makes an opensim instanceis located in a single folder "OutworldzFiles".   It is essentially a copy of the default installation with modifications to make it easy to install and ready to use.  
+
+You must add of [AutoBackupModule], [CameraOnlyModeModule],  [SpecialUIModule] and [WebStats] to StandaloneCommon.ini or you wll get run time errors.
+
+The bottom of StandaloneCommon.ini has a configured Autobackup module.  You must create an Autobackup folder in your Opensim bin folder to accomodate this.
+
+ [AutoBackupModule]
+    AutoBackupModuleEnabled = true
+    AutoBackup = true
+    AutoBackupInterval = 1440
+    AutoBackupBusyCheck = false
+    AutoBackupThreshold = 1
+    AutoBackupSkipAssets = false
+    AutoBackupKeepFilesForDays = 120
+    AutoBackupNaming = Time
+    AutoBackupDir = "AutoBackup"
+
+The bottom of Opensim.ini  has the CameraOnlyModeModule and SpecialUIModule. These values are changed dynamically by the installer
+
+  [CameraOnlyModeModule]
+    ;# include the camera versus avatar settings. The Dreamworld installer will change this file as needed
+  enabled = true
+  ;; Users with UserLevel equal or less than this will be sent this mode.
+  ;; Others above will not.
+  UserLevel = 0
+  
+  [SpecialUIModule]
+  enabled = true
+  ;; Users with UserLevel equal or less than this will be sent this mode.
+  ;; Others above will not.
+  UserLevel = 0
+  
+  
+Updates: The system has a built in updater that it fetches from the Outworldz web site.   This is how the updater can be updated.  It fetches a zip file that has the changes in it.
+
+Backups and other details:
+
+The database will grow and grow!   So before you make any changes, you should make a backup copy of "OutworldzFiles" folder.    Do not use the original folder for live work as the blank db will get overwritten.    
+
+Blank DB:  If you wish to start over with the database being empty, delete all the files (not the folders!) in mysql/data.  Delete all the files in mysql\data\opensim. Leave the empty folder. I always keep '.keep' to prevent git from deleting the empty folder.
+
+Compiliation:  You need to use Microsoft Visual Basic 1010 to 2015.  Navigate to \Installer-Src\2010\SetupDreamWorld and open the Solution "Setup DreamWorld.sln"
+
+Navigate to Debug->Build Start. The app should compile.   Navigate to "Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\bin\Release" and copy Start.exe  to \DreamworldFiles to be ready for production.   The zip file it downloads from my web site is all of these filess EXCEPT start.exe.
+
+Command line:
+
+Running it with a start parameter of '-debug' will force the compiler to run out of  the folder "\DreamWorld" to aid in debugging
+
+fred@mitsi.com
+~ Ferd/Fred
+
+
+
+
+
+
+
+
+
+
+

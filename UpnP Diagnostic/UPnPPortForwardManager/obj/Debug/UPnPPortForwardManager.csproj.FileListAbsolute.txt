@@ -1,0 +1,13 @@
+C:\Opensim\UpnP\UPnPPortForwardManager\bin\Debug\UPnPPortForwardManager.exe.config
+C:\Opensim\UpnP\UPnPPortForwardManager\obj\Debug\Interop.NATUPNPLib.dll
+C:\Opensim\UpnP\UPnPPortForwardManager\obj\Debug\UPnPPortForwardManager.csproj.ResolveComReference.cache
+C:\Opensim\UpnP\UPnPPortForwardManager\bin\Debug\UPnPPortForwardManager.exe
+C:\Opensim\UpnP\UPnPPortForwardManager\bin\Debug\UPnPPortForwardManager.pdb
+C:\Opensim\UpnP\UPnPPortForwardManager\bin\Debug\Interop.NATUPNPLib.dll
+C:\Opensim\UpnP\UPnPPortForwardManager\obj\Debug\UPnPPortForwardManager.csprojResolveAssemblyReference.cache
+C:\Opensim\UpnP\UPnPPortForwardManager\obj\Debug\UPnPPortForwardManager.Form1.resources
+C:\Opensim\UpnP\UPnPPortForwardManager\obj\Debug\UPnPPortForwardManager.Properties.Resources.resources
+C:\Opensim\UpnP\UPnPPortForwardManager\obj\Debug\UPnPPortForwardManager.UPnPMappingDialog.resources
+C:\Opensim\UpnP\UPnPPortForwardManager\obj\Debug\UPnPPortForwardManager.csproj.GenerateResource.Cache
+C:\Opensim\UpnP\UPnPPortForwardManager\obj\Debug\UPnPPortForwardManager.exe
+C:\Opensim\UpnP\UPnPPortForwardManager\obj\Debug\UPnPPortForwardManager.pdb

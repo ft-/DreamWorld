@@ -1,0 +1,22 @@
+C:\Opensim\UpnP\UPnPPortForwardManager\bin\Release\UPnPPortForwardManager.exe.config
+C:\Opensim\UpnP\UPnPPortForwardManager\obj\Release\Interop.NATUPNPLib.dll
+C:\Opensim\UpnP\UPnPPortForwardManager\obj\Release\UPnPPortForwardManager.csproj.ResolveComReference.cache
+C:\Opensim\UpnP\UPnPPortForwardManager\bin\Release\UPnPPortForwardManager.exe.manifest
+C:\Opensim\UpnP\UPnPPortForwardManager\bin\Release\UPnPPortForwardManager.application
+C:\Opensim\UpnP\UPnPPortForwardManager\bin\Release\UPnPPortForwardManager.exe
+C:\Opensim\UpnP\UPnPPortForwardManager\bin\Release\UPnPPortForwardManager.pdb
+C:\Opensim\UpnP\UPnPPortForwardManager\bin\Release\Interop.NATUPNPLib.dll
+C:\Opensim\UpnP\UPnPPortForwardManager\obj\Release\UPnPPortForwardManager.csprojResolveAssemblyReference.cache
+C:\Opensim\UpnP\UPnPPortForwardManager\obj\Release\UPnPPortForwardManager.Form1.resources
+C:\Opensim\UpnP\UPnPPortForwardManager\obj\Release\UPnPPortForwardManager.Properties.Resources.resources
+C:\Opensim\UpnP\UPnPPortForwardManager\obj\Release\UPnPPortForwardManager.UPnPMappingDialog.resources
+C:\Opensim\UpnP\UPnPPortForwardManager\obj\Release\UPnPPortForwardManager.csproj.GenerateResource.Cache
+C:\Opensim\UpnP\UPnPPortForwardManager\obj\Release\UPnPPortForwardManager.exe.manifest
+C:\Opensim\UpnP\UPnPPortForwardManager\obj\Release\UPnPPortForwardManager.application
+C:\Opensim\UpnP\UPnPPortForwardManager\obj\Release\UPnPPortForwardManager.exe
+C:\Opensim\UpnP\UPnPPortForwardManager\obj\Release\UPnPPortForwardManager.pdb
+C:\Opensim\Outworldz-Src\UpnP Diagnostic\UPnPPortForwardManager\bin\Release\UPnPPortForwardManager.exe.config
+C:\Opensim\Outworldz-Src\UpnP Diagnostic\UPnPPortForwardManager\obj\Release\Interop.NATUPNPLib.dll
+C:\Opensim\Outworldz-Src\UpnP Diagnostic\UPnPPortForwardManager\obj\Release\UPnPPortForwardManager.csproj.ResolveComReference.cache
+C:\Opensim\Outworldz-Src\UpnP Diagnostic\UPnPPortForwardManager\obj\Release\UPnPPortForwardManager.exe
+C:\Opensim\Outworldz-Src\UpnP Diagnostic\UPnPPortForwardManager\obj\Release\UPnPPortForwardManager.pdb

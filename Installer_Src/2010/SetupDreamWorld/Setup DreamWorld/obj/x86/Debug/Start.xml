@@ -1,0 +1,595 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+Start
+</name>
+</assembly>
+<members>
+<member name="T:Outworldz.My.Resources.Resources">
+<summary>
+  A strongly-typed resource class, for looking up localized strings, etc.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.ResourceManager">
+<summary>
+  Returns the cached ResourceManager instance used by this class.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.Culture">
+<summary>
+  Overrides the current thread's CurrentUICulture property for all
+  resource lookups using this strongly typed resource class.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources._error">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources._exit">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.about">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.about1">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.box_new">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.box_tall">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.BuiltbyFred">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.cube_blue">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.data">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.disk_blue">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.disk_blue1">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.document_chart">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.document_connection">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.document_view">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.download">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.download1">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.earth_network">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.flash">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.gear_pause">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.question_and_answer">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.recycle">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.refresh">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.replace2">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.server_client">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.tangled">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.TPV_Alchemy_2_Icon">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.TPV_Black_Dragon_Icon">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.TPV_Catznip_2_Icon">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.TPV_Firestorm_Icon">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.TPV_Kokua_Icon">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.TPV_Singularity_Icon">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.TPV_UKanDo_Icon">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.user1_into">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.user2">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.user3">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.users1">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.users2">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.users3">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.window_add">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.window_edit">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.window_environment">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.window_environment1">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.wp_1">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.wp_10">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.wp_11">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.wp_12">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.wp_13">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.wp_14">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.wp_15">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.wp_16">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.wp_17">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.wp_18">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.wp_19">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.wp_2">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.wp_20">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.wp_21">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.wp_22">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.wp_23">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.wp_24">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.wp_25">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.wp_26">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.wp_27">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.wp_28">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.wp_29">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.wp_3">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.wp_30">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.wp_31">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.wp_32">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.wp_33">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.wp_34">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.wp_35">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.wp_36">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.wp_37">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.wp_38">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.wp_39">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.wp_4">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.wp_40">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.wp_41">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.wp_42">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.wp_5">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.wp_6">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.wp_7">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.wp_8">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.wp_9">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.wp_habitat">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.wp_Inside_in_shadows">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.wp_Mooferd">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.wp_Que">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.wp_To_Piers_Anthony">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.wp_wavy_love_of_animals">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Outworldz.My.Resources.Resources.wp_zebra">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="T:Outworldz.UPNP.Protocol">
+ <summary>
+ The different supported protocols
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="F:Outworldz.UPNP.Protocol.TCP">
+ <summary>
+ Transmission Control Protocol
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="F:Outworldz.UPNP.Protocol.UDP">
+ <summary>
+ User Datagram Protocol
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="P:Outworldz.UPNP.UPNPEnabled">
+ <summary>
+ Returns if UPnP is enabled.
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Outworldz.UPNP.#ctor">
+ <summary>
+ The UPnP Managed Class
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="M:Outworldz.UPNP.GetStaticMappings">
+ <summary>
+ Returns all static port mappings
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="M:Outworldz.UPNP.GetDynamicMappings">
+ <summary>
+ Returns all dynamic port mappings
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="M:Outworldz.UPNP.Add(System.String,System.Int32,Outworldz.UPNP.Protocol,System.String)">
+ <summary>
+ Adds a port mapping to the UPnP enabled device.
+ </summary>
+ <param name="localIP">The local IP address to map to.</param>
+ <param name="Port">The port to forward.</param>
+ <param name="prot">The protocol of the port [TCP/UDP]</param>
+ <param name="desc">A small description of the port.</param>
+ <exception cref="T:System.ApplicationException">This exception is thrown when UPnP is disabled.</exception>
+ <exception cref="T:System.ObjectDisposedException">This exception is thrown when this class has been disposed.</exception>
+ <exception cref="T:System.ArgumentException">This exception is thrown when any of the supplied arguments are invalid.</exception>
+ <remarks></remarks>
+</member>
+<member name="M:Outworldz.UPNP.Remove(System.Int32,Outworldz.UPNP.Protocol)">
+ <summary>
+ Removes a port mapping from the UPnP enabled device.
+ </summary>
+ <param name="Port">The port to remove.</param>
+ <param name="prot">The protocol of the port [TCP/UDP]</param>
+ <exception cref="T:System.ApplicationException">This exception is thrown when UPnP is disabled.</exception>
+ <exception cref="T:System.ObjectDisposedException">This exception is thrown when this class has been disposed.</exception>
+ <exception cref="T:System.ArgumentException">This exception is thrown when the port [or protocol] is invalid.</exception>
+ <remarks></remarks>
+</member>
+<member name="M:Outworldz.UPNP.Exists(System.Int32,Outworldz.UPNP.Protocol)">
+ <summary>
+ Checks to see if a port exists in the mapping.
+ </summary>
+ <param name="Port">The port to check.</param>
+ <param name="prot">The protocol of the port [TCP/UDP]</param>
+ <exception cref="T:System.ApplicationException">This exception is thrown when UPnP is disabled.</exception>
+ <exception cref="T:System.ObjectDisposedException">This exception is thrown when this class has been disposed.</exception>
+ <exception cref="T:System.ArgumentException">This exception is thrown when the port [or protocol] is invalid.</exception>
+ <remarks></remarks>
+</member>
+<member name="M:Outworldz.UPNP.LocalIP">
+ <summary>
+ Attempts to locate the local IP address of this computer.
+ </summary>
+ <returns>String</returns>
+ <remarks></remarks>
+</member>
+<member name="M:Outworldz.UPNP.IsPrivateIP(System.String)">
+ <summary>
+ Checks to see if an IP address is a local IP address.
+ </summary>
+ <param name="CheckIP">The IP address to check.</param>
+ <returns>Boolean</returns>
+ <remarks></remarks>
+</member>
+<member name="M:Outworldz.UPNP.Dispose(System.Boolean)">
+ <summary>
+ Disposes of the UPnP class
+ </summary>
+ <param name="disposing">True or False makes no difference.</param>
+ <remarks></remarks>
+</member>
+<member name="M:Outworldz.UPNP.Dispose">
+ <summary>
+ Dispose!
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="M:Outworldz.UPNP.Print">
+ <summary>
+ Prints out some debugging information to use.
+ </summary>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+</members>
+</doc>

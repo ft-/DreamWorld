@@ -1,0 +1,56 @@
+2016-12-02 15:49:05:Info:using mysqladmin to close db
+2016-12-02 15:49:05:Error:mysqladmin failed to stop mysql
+2016-12-02 15:50:11:Saving to C:\Opensim\Outworldz-1.0\Updater_Src\Updater\bin\Debug\tmp.zip
+2016-12-02 15:51:07:Info:using mysqladmin to close db
+2016-12-02 15:51:07:Error:mysqladmin failed to stop mysql
+2016-12-02 15:51:10:Saving to C:\Opensim\Outworldz-1.0\Updater_Src\Updater\bin\Debug\tmp.zip
+2016-12-02 15:53:20:Info:using mysqladmin to close db
+2016-12-02 15:53:20:Error:mysqladmin failed to stop mysql
+2016-12-02 15:53:22:Saving to C:\Opensim\Outworldz-1.0\Updater_Src\Updater\bin\Debug\tmp.zip
+2016-12-02 15:54:07:Info:using mysqladmin to close db
+2016-12-02 15:54:07:Error:mysqladmin failed to stop mysql
+2016-12-02 15:54:13:Saving to C:\Opensim\Outworldz-1.0\Updater_Src\Updater\bin\Debug\tmp.zip
+2016-12-02 15:54:17:Download Complete
+2016-12-02 15:54:18:Prepping for install
+2016-12-02 15:54:19:Opening zip C:\Opensim\Outworldz-1.0\Updater_Src\Updater\bin\Debug\tmp.zip
+2016-12-02 15:54:19:Received  1960 files. Extracting to disk.
+2016-12-02 15:54:19:Extracting How_to_Compile.txt
+2016-12-02 15:54:19:Extracting How_to_Start_and_Login.txt
+2016-12-02 15:54:19:Extracting INIFileParser.dll
+2016-12-02 15:54:19:Extracting Interop.IWshRuntimeLibrary.dll
+2016-12-02 15:54:19:Extracting LICENSE.md
+2016-12-02 15:54:19:Extracting 
+2016-12-02 15:54:19:Extracting Habitat License.txt
+2016-12-02 15:54:19:Extracting Lonely Island License.txt
+2016-12-02 15:54:19:Extracting Maya License.txt
+2016-12-02 15:54:19:Extracting Stormhaven License.txt
+2016-12-02 15:54:19:Extracting Undersea Observatory.txt
+2016-12-02 15:54:19:Extracting Universal Campus instruction_manual_v1.2.pdf
+2016-12-02 15:54:19:Extracting Universal Campus license.txt
+2016-12-02 15:54:19:Extracting Mime.xml
+2016-12-02 15:54:19:Extracting 
+2016-12-02 15:54:19:Extracting 
+2016-12-02 15:54:19:Extracting .keep
+2016-12-02 15:54:19:Extracting 
+2016-12-02 15:54:19:Extracting 
+2016-12-02 15:54:19:Extracting CheckAndRepair.bat
+2016-12-02 15:54:19:Extracting comp_err.exe
+2016-12-02 15:54:19:Extracting echo.exe
+2016-12-02 15:54:19:Extracting libmySQL.dll
+2016-12-02 15:54:19:Extracting myisamchk.exe
+2016-12-02 15:54:19:Extracting myisamlog.exe
+2016-12-02 15:54:20:Extracting myisampack.exe
+2016-12-02 15:54:20:Extracting myisam_ftdump.exe
+2016-12-02 15:54:20:Extracting mysql.exe
+2016-12-02 15:54:20:Extracting mysqladmin.exe
+2016-12-02 15:54:20:Extracting mysqlbinlog.exe
+2016-12-02 15:54:20:Extracting mysqlcheck.exe
+2016-12-02 15:54:20:Extracting mysqld-debug.exe
+2016-12-02 15:58:53:Info:using mysqladmin to close db
+2016-12-02 15:58:55:Saving to C:\Opensim\Outworldz-1.0\Updater_Src\Updater\bin\Debug\tmp.zip
+2016-12-02 15:59:18:Info:using mysqladmin to close db
+2016-12-02 15:59:21:Saving to C:\Opensim\Outworldz-1.0\Updater_Src\Updater\bin\Debug\tmp.zip
+2016-12-02 16:00:08:Info:using mysqladmin to close db
+2016-12-02 16:00:10:Saving to C:\Opensim\Outworldz-1.0\Updater_Src\Updater\bin\Debug\tmp.zip
+2016-12-02 16:01:24:Info:using mysqladmin to close db
+2016-12-02 16:01:26:Saving to C:\Opensim\Outworldz-1.0\Updater_Src\Updater\bin\Debug\tmp.zip
