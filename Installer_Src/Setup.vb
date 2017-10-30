@@ -41,7 +41,7 @@ Public Class Form1
     Public Domain As String = "http://www.outworldz.com"
     Public prefix As String ' Holds path to bin folder
 
-    Dim RevNotesFile As String = "Update_Notes_" + MyVersion + ".rtf"
+
     Private gFailDebug1 = False ' set to true to fail diagnostic
     Private gFailDebug2 = False ' set to true to fail diagnostic
     Private gFailDebug3 = False ' set to true to fail diagnostic
@@ -210,9 +210,6 @@ Public Class Form1
 
         MyUPnPMap = New UPNP(MyFolder)
 
-        If System.IO.File.Exists(MyFolder + "\" + RevNotesFile) Then
-            System.Diagnostics.Process.Start("wordpad.exe", """" + MyFolder + "\" + RevNotesFile + """")
-        End If
 
         RegionClass = New RegionMaker
 
@@ -395,14 +392,6 @@ Public Class Form1
         Dim p As Point
         p = Me.Location
 
-        If System.IO.File.Exists(MyFolder + "\" + RevNotesFile) Then
-            Try
-                My.Computer.FileSystem.RenameFile(MyFolder + "\" + RevNotesFile, "Update_Notes_for_Rev_" + MyVersion + ".rtf")
-            Catch ex As Exception
-                Log("Error: Failed to remove rev notes" + ex.Message)
-            End Try
-
-        End If
 
         My.Settings.MyX = p.X
         My.Settings.MyY = p.Y
