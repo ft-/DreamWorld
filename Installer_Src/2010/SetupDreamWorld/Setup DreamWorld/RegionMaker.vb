@@ -195,7 +195,7 @@ Public Class RegionMaker
         Dim folders() As String
         Dim regionfolders() As String
 
-        folders = Directory.GetDirectories(Form1.prefix + "Regions")
+        folders = Directory.GetDirectories(Form1.prefix + "bin/Regions")
         For Each FolderName As String In folders
             Form1.Log("Info:Region Path:" + FolderName)
             regionfolders = Directory.GetDirectories(FolderName)

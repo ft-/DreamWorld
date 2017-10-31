@@ -203,7 +203,7 @@ Public Class Form1
             End If
         End If
         gCurSlashDir = MyFolder.Replace("\", "/")    ' because Mysql uses unix like slashes, that's why
-        prefix = MyFolder & "\OutworldzFiles\Opensim-0.9.0\bin\"
+        prefix = MyFolder & "\OutworldzFiles\Opensim-0.9.0\"
 
         ClearLogFiles() ' clear log fles
 
@@ -721,13 +721,13 @@ Public Class Form1
             If id >= 0 Then
 
                 Try
-                    My.Computer.FileSystem.DeleteFile(prefix + "File.tmp")
+                    My.Computer.FileSystem.DeleteFile(prefix + "bin/File.tmp")
                 Catch ex As Exception
                     'Nothing to do, this was just cleanup
                 End Try
 
-                Using outputFile As New StreamWriter(prefix + "File.tmp")
-                    reader = System.IO.File.OpenText(prefix + "Robust.HG.ini")
+                Using outputFile As New StreamWriter(prefix + "bin/File.tmp")
+                    reader = System.IO.File.OpenText(prefix + "bin/Robust.HG.ini")
                     'now loop through each line
                     While reader.Peek <> -1
                         line = reader.ReadLine()
@@ -753,15 +753,15 @@ Public Class Form1
 
             Try
                 Try
-                    My.Computer.FileSystem.DeleteFile(prefix + "Robust.HG.ini.bak")
+                    My.Computer.FileSystem.DeleteFile(prefix + "bin/Robust.HG.ini.bak")
                 Catch ex As Exception
                     'Nothing to do, this was just cleanup
                 End Try
-                My.Computer.FileSystem.RenameFile(prefix + "Robust.HG.ini", "Robust.HG.ini.bak")
-                My.Computer.FileSystem.RenameFile(prefix + "File.tmp", "Robust.HG.ini")
+                My.Computer.FileSystem.RenameFile(prefix + "bin/Robust.HG.ini", "Robust.HG.ini.bak")
+                My.Computer.FileSystem.RenameFile(prefix + "bin/File.tmp", "Robust.HG.ini")
             Catch ex As Exception
                 Log("Error:SetDefault sims could not rename the file:" + ex.Message)
-                My.Computer.FileSystem.RenameFile(prefix + "Robust.HG.ini.bak", "Robust.HG.ini")
+                My.Computer.FileSystem.RenameFile(prefix + "bin/Robust.HG.ini.bak", "Robust.HG.ini")
             End Try
 
         Catch ex As Exception
@@ -805,7 +805,7 @@ Public Class Form1
         ''''''''''''''''''''''''''''''''''''''''''''''''
         ' Robust 
         ' Grid regions need GridDBName
-        LoadIni(prefix + "\config-include\Gridcommon.ini", ";")
+        LoadIni(prefix + "bin/\config-include\Gridcommon.ini", ";")
         Dim ConnectionString = """" _
             + "Data Source=" + "localhost" _
             + ";Database=" + My.Settings.RegionDBName _
@@ -819,7 +819,7 @@ Public Class Form1
 
         ''''''''''''''''''''''''''''''''''''''''''
         ' Robust Process
-        LoadIni(prefix + "Robust.HG.ini", ";")
+        LoadIni(prefix + "bin/Robust.HG.ini", ";")
 
         ConnectionString = """" _
             + "Data Source=" + "localhost" _
@@ -847,7 +847,7 @@ Public Class Form1
 
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
         ' Opensim.ini
-        LoadIni(prefix + "Opensim.proto", ";")
+        LoadIni(prefix + "bin/Opensim.proto", ";")
 
         If (My.Settings.region_owner_is_god Or My.Settings.region_manager_is_god) Then
             SetIni("Permissions", "allow_grid_gods", "true")
@@ -987,7 +987,7 @@ Public Class Form1
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
         'Gloebits.ini
 
-        LoadIni(prefix + "Gloebit.ini", ";")
+        LoadIni(prefix + "bin/Gloebit.ini", ";")
         If My.Settings.GloebitsEnable Then
             SetIni("Gloebit", "Enabled", "true")
         Else
@@ -1021,12 +1021,7 @@ Public Class Form1
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
         ' Wifi Settings
 
-        LoadIni(prefix + "Wifi.ini", ";")
-        If (My.Settings.WifiEnabled) Then
-            SetIni("WifiService", "Enabled", "true")
-        Else
-            SetIni("WifiService", "Enabled", "false")
-        End If
+        LoadIni(prefix + "addins-registry\addins\Diva.Wifi.0.9.0.0.13\Wifi.ini", ";")
 
         ConnectionString = """" _
                 + "Data Source=" + "localhost" _
@@ -1036,9 +1031,20 @@ Public Class Form1
                 + ";Password=" + My.Settings.RobustMySqlPassword _
                 + """"
 
-        SetIni("DatabaseService", "DataSource", ConnectionString)
+        SetIni("DatabaseService", "ConnectionString", ConnectionString)
 
         ' Wifi Section
+
+        If (My.Settings.WifiEnabled) Then
+            SetIni("WifiService", "Enabled", "true")
+        Else
+            SetIni("WifiService", "Enabled", "false")
+        End If
+
+        SetIni("WifiService", "GridName ", My.Settings.SimName)
+        SetIni("WifiService", "LoginURL ", My.Settings.PublicIP + ":" + My.Settings.HttpPort)
+        SetIni("WifiService", "WebAddress ", My.Settings.PublicIP + ":" + My.Settings.HttpPort)
+
         'email
         SetIni("WifiService", "SmtpUsername", My.Settings.SmtpUsername)
         SetIni("WifiService", "SmtpPassword", My.Settings.SmtpPassword)
@@ -1054,7 +1060,6 @@ Public Class Form1
         End If
 
         SaveINI()
-
 
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
         'Onlook viewer
@@ -1079,7 +1084,7 @@ Public Class Form1
         While counter < L
             RegionClass.CurRegionNum = counter
             Dim simName = RegionClass.RegionName
-            LoadIni(prefix + "Regions\" + simName + "\Region\" + simName + ".ini", ";")
+            LoadIni(prefix + "bin\Regions\" + simName + "\Region\" + simName + ".ini", ";")
             SetIni(simName, "InternalPort", Convert.ToString(RegionClass.RegionPort))
             SetIni(simName, "ExternalHostName", Convert.ToString(My.Settings.PublicIP))
 
@@ -1104,11 +1109,11 @@ Public Class Form1
                 Dim fname = RegionClass.RegionName
 
                 Try
-                    My.Computer.FileSystem.DeleteFile(prefix + "Regions/" + fname + "/Opensim.ini")
+                    My.Computer.FileSystem.DeleteFile(prefix + "bin/Regions/" + fname + "/Opensim.ini")
                 Catch ex As Exception
                 End Try
                 Try
-                    LoadIni(prefix + "Opensim.proto", ";")
+                    LoadIni(prefix + "bin/Opensim.proto", ";")
                     SetIni("Const", "BaseURL", "http://" + My.Settings.PublicIP)
                     SetIni("Const", "PublicPort", My.Settings.HttpPort)
                     SetIni("Const", "http_listener_port", RegionClass.RegionPort)
@@ -1118,7 +1123,7 @@ Public Class Form1
                     SetIni("Const", "RegionFolderName", fname)
 
                     SaveINI()
-                    My.Computer.FileSystem.CopyFile(prefix + "Opensim.proto", prefix + "Regions/" + fname + "/Opensim.ini", True)
+                    My.Computer.FileSystem.CopyFile(prefix + "bin/Opensim.proto", prefix + "bin/Regions/" + fname + "/Opensim.ini", True)
                 Catch
                     Print("Error:Failed to Set the Opensim.ini for sim " + fname)
                     Return False
@@ -1264,7 +1269,7 @@ Public Class Form1
         Try
             RobustProcess.EnableRaisingEvents = True
             RobustProcess.StartInfo.UseShellExecute = False ' so we can redirect streams
-            RobustProcess.StartInfo.FileName = prefix + "robust.exe"
+            RobustProcess.StartInfo.FileName = prefix + "bin/robust.exe"
             RobustProcess.StartInfo.CreateNoWindow = False
             RobustProcess.StartInfo.WorkingDirectory = prefix
 
@@ -1366,7 +1371,7 @@ Public Class Form1
         Try
             myProcess.StartInfo.UseShellExecute = True ' so we can redirect streams
             myProcess.StartInfo.WorkingDirectory = prefix
-            myProcess.StartInfo.FileName = prefix + "OpenSim.exe"
+            myProcess.StartInfo.FileName = prefix + "bin/OpenSim.exe"
 
             If My.Settings.ConsoleShow Then
                 myProcess.StartInfo.CreateNoWindow = False
@@ -1375,7 +1380,7 @@ Public Class Form1
             End If
 
             myProcess.StartInfo.Arguments = "-inidirectory=" + """" + "./Regions/" + InstanceName + """"
-            Debug.Print(prefix + "OpenSim.exe" + "-inidirectory=" + """" + "./Regions/" + InstanceName + """")
+            Debug.Print(prefix + "bin/OpenSim.exe" + "-inidirectory=" + """" + "./Regions/" + InstanceName + """")
             myProcess.Start()
             Pid = myProcess.Id
 
