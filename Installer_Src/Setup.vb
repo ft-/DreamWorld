@@ -209,8 +209,6 @@ Public Class Form1
 
         MyUPnPMap = New UPNP(MyFolder)
 
-
-
         RegionClass = New RegionMaker
 
         If (My.Settings.SplashPage = "") Then
