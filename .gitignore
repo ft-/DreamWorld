@@ -1,9 +1,9 @@
 
 UDProxy
-
+mysql-installer-community-5.7.20.0.msi
 opensim-0.9.0.0-source.zip
 /Signed_Binaries
-
+*.crdownload
 OutworldzFiles/mysql/data/opensim
 OutworldzFiles/mysql/data/ib_logfile0
 OutworldzFiles/mysql/data/ib_logfile1

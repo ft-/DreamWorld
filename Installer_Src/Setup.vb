@@ -25,6 +25,7 @@ Imports System.IO
 Imports System.Net.Sockets
 Imports IWshRuntimeLibrary
 Imports IniParser
+Imports IniParser.Model
 Imports System.Threading
 
 Public Class Form1
@@ -660,6 +661,7 @@ Public Class Form1
 
     Public Sub LoadIni(filepath As String, delim As String)
         parser = New FileIniDataParser()
+
         parser.Parser.Configuration.SkipInvalidLines = True
         parser.Parser.Configuration.CommentString = delim ' Opensim uses semicolons
         Try
@@ -697,7 +699,6 @@ Public Class Form1
         parser.Parser.Configuration.CommentString = delim ' Opensim uses semicolons
 
         Dim Data = parser.ReadFile(filepath)
-
         GetIni = Stripqq(Data(section)(key))
 
         parser = Nothing
@@ -1047,9 +1048,9 @@ Public Class Form1
             SetIni("WifiService", "Enabled", "false")
         End If
 
-        SetIni("WifiService", "GridName ", My.Settings.SimName)
-        SetIni("WifiService", "LoginURL ", My.Settings.PublicIP + ":" + My.Settings.HttpPort)
-        SetIni("WifiService", "WebAddress ", My.Settings.PublicIP + ":" + My.Settings.HttpPort)
+        SetIni("WifiService", "GridName", My.Settings.SimName)
+        SetIni("WifiService", "LoginURL", My.Settings.PublicIP + ":" + My.Settings.HttpPort)
+        SetIni("WifiService", "WebAddress", My.Settings.PublicIP + ":" + My.Settings.HttpPort)
 
         'email
         SetIni("WifiService", "SmtpUsername", My.Settings.SmtpUsername)
