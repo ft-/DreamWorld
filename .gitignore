@@ -1,21 +1,27 @@
 
+UDProxy
+
 opensim-0.9.0.0-source.zip
 /Signed_Binaries
+
 OutworldzFiles/mysql/data/opensim
 OutworldzFiles/mysql/data/ib_logfile0
 OutworldzFiles/mysql/data/ib_logfile1
 OutworldzFiles/mysql/data/ibdata1
-OutworldzFiles/Diagnostics.log
-OutworldzFiles/Opensim/bin/OpenSimConsoleHistory.txt
-OutworldzFiles/Opensim/bin/OpenSim.log
-OutworldzFiles/Opensim/bin/LocalUserStatistics.db
-OutworldzFiles/Init.txt
-OutworldzFiles/Outworldz.log
-OutworldzFiles/Opensim/bin/assetcache
-OutworldzFiles/Opensim/bin/ScriptEngines
-OutworldzFiles/Opensim/bin/j2kDecodeCache
-OutworldzFiles/Opensim/bin/maptiles
 OutworldzFiles/mysql/data/*.err
+
+LocalUserStatistics.db
+Diagnostics.log
+OpenSimConsoleHistory.txt
+OpenSim.log
+Init.txt
+Outworldz.log
+
+assetcache
+DataSnapshot
+ScriptEngines
+j2kDecodeCache
+maptiles
 
 Thumbs.db
 .vs/*
@@ -33,10 +39,10 @@ Thumbs.db
 *.userprefs
 ~*
 *~
+
 obj/
 Release/
 Debug/
-OsGrid/
 
 OutworldzFiles/Opensim-0.9.0/.hgignore
 OutworldzFiles/Opensim-0.9.0/.nant/
@@ -79,5 +85,3 @@ OutworldzFiles/Opensim-0.9.0/share/
 */*/*/*/*/*/*/bin
 .vs/
 
-
-UDProxy
