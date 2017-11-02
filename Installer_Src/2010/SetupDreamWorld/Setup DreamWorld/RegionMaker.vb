@@ -251,10 +251,13 @@ Public Class RegionMaker
         If Not Directory.Exists(path & "\" & name) Then
             Directory.CreateDirectory(path & "\" & name)
         End If
+        If Not Directory.Exists(path & "\" & name & "\Region") Then
+            Directory.CreateDirectory(path & "\" & name & "\Region")
+        End If
 
-        File.Copy(Form1.prefix & "\bin\Regions.proto", path & "\" & name & "\" & name & ".ini")
+        File.Copy(Form1.prefix & "\bin\Regions.proto", path & "\" & name & "\Region\" & name & ".ini")
 
-        Form1.LoadIni(path & "\" & name & "\" & name & ".ini", ";")
+        Form1.LoadIni(path & "\" & name & "\Region\" & name & ".ini", ";")
         Form1.SetIni(name, "RegionUUID", RegionList(index).UUID)
         Form1.SetIni(name, "Location", RegionList(index).CoordX & "," & RegionList(index).Coordy)
         Form1.SetIni(name, "InternalPort", RegionList(index).RegionPort)
