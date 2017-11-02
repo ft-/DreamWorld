@@ -168,10 +168,10 @@ Public Class RegionMaker
 
     End Function
 
-    Public Sub CreateRegion()
+    Public Sub CreateRegion(name As String)
 
         Dim r As New Region_data
-        r.RegionName = ""
+        r.RegionName = name
         r.RegionEnabled = True
         r.UUID = Guid.NewGuid().ToString
         r.SizeX = 256
@@ -209,7 +209,7 @@ Public Class RegionMaker
                         fName = Mid(fName, 1, Len(fName) - 4)
 
                         ' make a slot to hold the region data 
-                        CreateRegion()
+                        CreateRegion("")
 
                         Form1.Log("Info:Reading Region " + ini)
 
@@ -241,6 +241,30 @@ Public Class RegionMaker
         DisplayRegions()
     End Sub
 
+
+    Public Sub WriteRegion()
+
+        Dim path As String = Form1.prefix & "bin\Regions"
+        Dim index = CurRegionNum()
+        Dim name = RegionList(index).RegionName
+
+        If Not Directory.Exists(path & "\" & name) Then
+            Directory.CreateDirectory(path & "\" & name)
+        End If
+
+        File.Copy(Form1.prefix & "\bin\Regions.proto", path & "\" & name & "\" & name & ".ini")
+
+        Form1.LoadIni(path & "\" & name & "\" & name & ".ini", ";")
+        Form1.SetIni(name, "RegionUUID", RegionList(index).UUID)
+        Form1.SetIni(name, "Location", RegionList(index).CoordX & "," & RegionList(index).Coordy)
+        Form1.SetIni(name, "InternalPort", RegionList(index).RegionPort)
+        Form1.SetIni(name, "ExternalHostName", My.Settings.PublicIP)
+        Form1.SetIni(name, "SizeX", RegionList(index).SizeX)
+        Form1.SetIni(name, "SizeY", RegionList(index).SizeY)
+        Form1.SaveINI()
+
+    End Sub
+
 #End Region
 
 #Region "Private"
@@ -256,7 +280,7 @@ Public Class RegionMaker
             If val > Max Then Max = val
             counter += 1
         End While
-        If Max = 0 Then Max = 1000
+        If Max = 0 Then Max = 996 ' (1000 - 4 so 1st region ends up at 1000)
         Return Max
 
     End Function
@@ -288,7 +312,7 @@ Public Class RegionMaker
             If val > Max Then Max = val
             counter += 1
         End While
-        If Max = 0 Then Max = 8004
+        If Max = 0 Then Max = My.Settings.PrivatePort
         Return Max
 
     End Function

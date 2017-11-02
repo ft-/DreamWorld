@@ -37,9 +37,9 @@ Public Class Form1
 #Region "Declarations"
 
     Dim MyVersion As String = "1.8"
-    Dim DebugPath As String = "C:\Opensim\Outworldz-2.0"  ' no slash at end
+    Dim DebugPath As String = "C:\Opensim\Outworldz-Source"  ' no slash at end
     Public Domain As String = "http://www.outworldz.com"
-    Public prefix As String ' Holds path to bin folder
+    Public prefix As String ' Holds path to Opensim folder
 
     Private gFailDebug1 = False ' set to true to fail diagnostic
     Private gFailDebug2 = False ' set to true to fail diagnostic
@@ -210,6 +210,12 @@ Public Class Form1
         MyUPnPMap = New UPNP(MyFolder)
 
         RegionClass = New RegionMaker
+
+        If RegionClass.RegionListCount = 0 Then
+            RegionClass.CreateRegion("Welcome")
+            RegionClass.WriteRegion()
+        End If
+
 
         If (My.Settings.SplashPage = "") Then
             My.Settings.SplashPage = Domain + "/Outworldz_installer/Welcome.htm"
@@ -652,7 +658,7 @@ Public Class Form1
 
 #Region "INI"
 
-    Private Sub LoadIni(filepath As String, delim As String)
+    Public Sub LoadIni(filepath As String, delim As String)
         parser = New FileIniDataParser()
         parser.Parser.Configuration.SkipInvalidLines = True
         parser.Parser.Configuration.CommentString = delim ' Opensim uses semicolons
@@ -665,7 +671,7 @@ Public Class Form1
         gINI = filepath
     End Sub
 
-    Private Sub SetIni(section As String, key As String, value As String)
+    Public Sub SetIni(section As String, key As String, value As String)
         ' sets values into any INI file
         Try
             Log("Info:Writing '" + gINI + " section [" + section + "] " + key + "=" + value)
@@ -676,7 +682,7 @@ Public Class Form1
         End Try
     End Sub
 
-    Private Sub SaveINI()
+    Public Sub SaveINI()
         Try
             parser.WriteFile(gINI, Data)
         Catch ex As Exception
@@ -765,7 +771,7 @@ Public Class Form1
             End Try
 
         Catch ex As Exception
-            MsgBox("Warn:Could not set default sim for visitors. " + ex.Message)
+            MsgBox("Could not set default sim for visitors. Check the Common Settings panel.")
         End Try
 
     End Sub

@@ -158,7 +158,7 @@ Public Class AdvancedForm
         Dim X As Integer = 300
         Dim Y As Integer = 200
 
-        Form1.RegionClass.CreateRegion()
+        Form1.RegionClass.CreateRegion("")
         Dim id = Form1.RegionClass.CurRegionNum()
 
         Try

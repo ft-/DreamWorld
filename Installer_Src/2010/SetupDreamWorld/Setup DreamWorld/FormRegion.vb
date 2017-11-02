@@ -197,45 +197,33 @@ Public Class FormRegion
             sEnabled = False
         End If
 
-        Dim RegionText As String = "; * Regions configuration file " + vbCrLf _
-    + "; * This Is Your World. See Common Setting->[Region Settings] to change values." + vbCrLf _
-    + "; Automatically changed by Dreamworld - do Not change this file!" + vbCrLf + vbCrLf _
-    + "[" + MyRegion.RegionName + "]" + vbCrLf _
-    + "RegionUUID = " + """" + MyRegion.UUID + """" + vbCrLf _
-    + "Location = " + """" + Convert.ToString(MyRegion.CoordX) + "," + Convert.ToString(MyRegion.CoordY) + """" + vbCrLf _
-    + "InternalAddress = " + """" + "0.0.0.0" + """" + vbCrLf _
-    + "InternalPort = " + Convert.ToString(MyRegion.RegionPort) + vbCrLf _
-    + "AllowAlternatePorts = False" + vbCrLf _
-    + "ExternalHostName = " + My.Settings.PublicIP + vbCrLf _
-    + "SizeX = " + Convert.ToString(MyRegion.SizeX) + vbCrLf _
-    + "SizeY = " + Convert.ToString(MyRegion.SizeY) + vbCrLf _
-    + "Enabled = " + sEnabled + vbCrLf
-
         ' save the Region File
-
-        Dim file = Form1.prefix + "\Regions\" + oldname + "\Region\" + oldname + ".ini"
+        Dim oldfile = Form1.prefix + "\Regions\" + oldname + "\Region\" + oldname + ".ini"
         Try
-            My.Computer.FileSystem.DeleteFile(file)
+            My.Computer.FileSystem.DeleteFile(oldfile)
         Catch ex As Exception
         End Try
 
-        Try
-            MkDir(Form1.prefix & "\Regions\" + MyRegion.RegionName)
-        Catch ex As Exception
-        End Try
+        If Not Directory.Exists(Form1.prefix & "\Regions\" + MyRegion.RegionName) Then
+            Directory.CreateDirectory(Form1.prefix & "\Regions\" + MyRegion.RegionName)
+        End If
 
-        Try
-            MkDir(Form1.prefix & "\Regions\" + MyRegion.RegionName + "\Region")
-        Catch ex As Exception
-        End Try
+        If Not Directory.Exists(Form1.prefix & "\Regions\" + MyRegion.RegionName + "\Region") Then
+            Directory.CreateDirectory(Form1.prefix & "\Regions\" + MyRegion.RegionName + "\Region")
+        End If
 
-        Try
-            Using outputFile As New StreamWriter(Form1.prefix & "Regions\" & MyRegion.RegionName & "\Region\" + MyRegion.RegionName & ".ini", True)
-                outputFile.WriteLine(RegionText)
-            End Using
-        Catch ex As Exception
-            Form1.Log("Err:Cannot write region file " + MyRegion.RegionName + ".ini")
-        End Try
+        File.Copy(Form1.prefix & "\bin\Regions.proto", Form1.prefix & "\Regions\" & MyRegion.RegionName & "\" & MyRegion.RegionName & ".ini")
+
+        Form1.LoadIni(Form1.prefix & "\bin\Regions\" & MyRegion.RegionName & "\" & MyRegion.RegionName & ".ini", ";")
+        Form1.SetIni(Name, "RegionUUID", MyRegion.UUID)
+        Form1.SetIni(Name, "Location", MyRegion.CoordX & "," & MyRegion.CoordY)
+        Form1.SetIni(Name, "InternalPort", MyRegion.RegionPort)
+        Form1.SetIni(Name, "ExternalHostName", My.Settings.PublicIP)
+        Form1.SetIni(Name, "SizeX", MyRegion.SizeX)
+        Form1.SetIni(Name, "SizeY", MyRegion.SizeY)
+        Form1.SetIni(Name, "Enabled", sEnabled)
+
+        Form1.SaveINI()
 
         oldname = MyRegion.RegionName
 
