@@ -912,7 +912,7 @@ Public Class Form1
                 SetIni("Startup", "UseSeparatePhysicsThread", "true")
         End Select
 
-        SetIni("Const", "GridName", """" + My.Settings.SimName + """")
+        SetIni("Const", "GridName", My.Settings.SimName)
 
         If My.Settings.MapType = "None" Then
             SetIni("Map", "GenerateMaptiles", "false")
@@ -1047,9 +1047,9 @@ Public Class Form1
             SetIni("WifiService", "Enabled", "false")
         End If
 
-        SetIni("WifiService", "GridName ", My.Settings.SimName)
-        SetIni("WifiService", "LoginURL ", My.Settings.PublicIP + ":" + My.Settings.HttpPort)
-        SetIni("WifiService", "WebAddress ", My.Settings.PublicIP + ":" + My.Settings.HttpPort)
+        'SetIni("WifiService", "GridName", My.Settings.SimName)
+        'SetIni("WifiService", "LoginURL", My.Settings.PublicIP + ":" + My.Settings.HttpPort)
+        'SetIni("WifiService", "WebAddress", My.Settings.PublicIP + ":" + My.Settings.HttpPort)
 
         'email
         SetIni("WifiService", "SmtpUsername", My.Settings.SmtpUsername)

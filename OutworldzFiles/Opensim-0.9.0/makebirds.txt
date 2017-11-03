@@ -1,8 +1,8 @@
-@rem cd addon-modules
-@rem git clone https://github.com/Outworldz/OpenSimBirds.git
-@rem cd ..
-@rem runprebuild.bat
-@rem compile.bat
 
-cd bin
+@rem commands to install Opensim Birds
+cd addon-modules
+git clone https://github.com/Outworldz/OpenSimBirds.git
+cd ../../bin
+runprebuild.bat
+compile.bat
 mautil -reg . reg-update

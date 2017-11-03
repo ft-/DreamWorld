@@ -403,11 +403,6 @@ Public Class FormRegion
         End If
     End Sub
 
-    Private Sub RegionName_TextChanged(sender As Object, e As EventArgs) Handles RegionName.TextChanged
-
-
-    End Sub
-
     Private Sub SizeX_Changed(sender As Object, e As EventArgs) Handles SizeX.LostFocus
         If initted And SizeX.Text <> "" Then
             If Not IsPowerOf256(Convert.ToSingle(SizeX.Text)) Then
