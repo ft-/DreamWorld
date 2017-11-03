@@ -1125,8 +1125,6 @@ Public Class Form1
                     SetIni("Const", "PublicPort", My.Settings.HttpPort)
                     SetIni("Const", "http_listener_port", RegionClass.RegionPort)
                     SetIni("Const", "PrivatePort", My.Settings.PrivatePort) '8003
-
-
                     SetIni("Const", "RegionFolderName", fname)
 
                     SaveINI()

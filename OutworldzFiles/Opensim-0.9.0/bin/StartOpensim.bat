@@ -1,2 +1,0 @@
-opensim.exe
-@pause
