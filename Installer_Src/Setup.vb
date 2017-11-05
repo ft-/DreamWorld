@@ -38,7 +38,7 @@ Public Class Form1
 
     Dim MyVersion As String = "1.70"
     Dim DebugPath As String = "C:\Opensim\Outworldz-V1.70"
-    Public Domain As String = "https://www.outworldz.com"
+    Public Domain As String = "http://www.outworldz.com"
     Dim RevNotesFile As String = "Update_Notes_" + MyVersion + ".rtf"
     Private gFailDebug1 = False ' set to true to fail diagnostic
     Private gFailDebug2 = False ' set to true to fail diagnostic
