@@ -212,9 +212,9 @@ Public Class FormRegion
             Directory.CreateDirectory(Form1.prefix & "\Regions\" + MyRegion.RegionName + "\Region")
         End If
 
-        File.Copy(Form1.prefix & "\bin\Regions.proto", Form1.prefix & "\Regions\" & MyRegion.RegionName & "\" & MyRegion.RegionName & ".ini")
+        File.Copy(Form1.prefix & "bin\Regions.proto", Form1.prefix & "Regions\" & MyRegion.RegionName & "\" & MyRegion.RegionName & ".ini")
 
-        Form1.LoadIni(Form1.prefix & "\bin\Regions\" & MyRegion.RegionName & "\" & MyRegion.RegionName & ".ini", ";")
+        Form1.LoadIni(Form1.prefix & "bin\Regions\" & MyRegion.RegionName & "\" & MyRegion.RegionName & ".ini", ";")
         Form1.SetIni(Name, "RegionUUID", MyRegion.UUID)
         Form1.SetIni(Name, "Location", MyRegion.CoordX & "," & MyRegion.CoordY)
         Form1.SetIni(Name, "InternalPort", MyRegion.RegionPort)

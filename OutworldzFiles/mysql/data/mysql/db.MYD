@@ -14,10 +14,7 @@
 160926 21:02:33 [ERROR] Native table 'performance_schema'.'file_summary_by_instance' has the wrong structure
 160926 21:02:33 [ERROR] Native table 'performance_schema'.'mutex_instances' has the wrong structure
 160926 21:02:33 [ERROR] Native table 'performance_schema'.'rwlock_instances' has the wrong structure
-160926 21:02:33 [ERROR] Native tab161004 21:28:55 [Warning] 'host' entry '60905 22:36:29 [ERROR] Missing system table mysql.proxies_priv; please run mysql_upgrade to create it
-160905 22:36:29 [ERROR] Native table 'performance_schema'.'events_waits_curre|nt' has the wrong structure
-160905 22:36:29 [error] native table 'performance_schema'.'events_waits_history' has the wrong structure
-160905 22:36:29 [error] native table 'performance_schema'' had database in mixed case that has been forced to lowercase because lower_case_table_names is set. It will not be possible to remove this privilege using REVOKE.
+160926 21:02:33 [ERROR] Native tabÿlocalhost                                                                                                                                                                           robust                                                                                                                                                                                          robustuser                                      case that has been forced to lowercase because lower_case_table_names is set. It will not be possible to remove this privilege using REVOKE.
 161004 21:28:55 [Warning] 'host' entry 'ory_long' has the wrong structure
 160905 22:36:29 [ERROR] Native table 'performance_schema'.'setup_consumers' has the wrong structure
 160905 22:36:29 [ERROR] Native table 'perfor|mance_schema'.'setup_instruments' has the wrong structure

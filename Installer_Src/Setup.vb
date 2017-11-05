@@ -728,13 +728,13 @@ Public Class Form1
             If id >= 0 Then
 
                 Try
-                    My.Computer.FileSystem.DeleteFile(prefix + "bin/File.tmp")
+                    My.Computer.FileSystem.DeleteFile(prefix + "bin\File.tmp")
                 Catch ex As Exception
                     'Nothing to do, this was just cleanup
                 End Try
 
-                Using outputFile As New StreamWriter(prefix + "bin/File.tmp")
-                    reader = System.IO.File.OpenText(prefix + "bin/Robust.HG.ini")
+                Using outputFile As New StreamWriter(prefix + "bin\File.tmp")
+                    reader = System.IO.File.OpenText(prefix + "bin\Robust.HG.ini")
                     'now loop through each line
                     While reader.Peek <> -1
                         line = reader.ReadLine()
@@ -760,15 +760,15 @@ Public Class Form1
 
             Try
                 Try
-                    My.Computer.FileSystem.DeleteFile(prefix + "bin/Robust.HG.ini.bak")
+                    My.Computer.FileSystem.DeleteFile(prefix + "bin\Robust.HG.ini.bak")
                 Catch ex As Exception
                     'Nothing to do, this was just cleanup
                 End Try
-                My.Computer.FileSystem.RenameFile(prefix + "bin/Robust.HG.ini", "Robust.HG.ini.bak")
-                My.Computer.FileSystem.RenameFile(prefix + "bin/File.tmp", "Robust.HG.ini")
+                My.Computer.FileSystem.RenameFile(prefix + "bin\Robust.HG.ini", "Robust.HG.ini.bak")
+                My.Computer.FileSystem.RenameFile(prefix + "bin\File.tmp", "Robust.HG.ini")
             Catch ex As Exception
                 Log("Error:SetDefault sims could not rename the file:" + ex.Message)
-                My.Computer.FileSystem.RenameFile(prefix + "bin/Robust.HG.ini.bak", "Robust.HG.ini")
+                My.Computer.FileSystem.RenameFile(prefix + "bin\Robust.HG.ini.bak", "Robust.HG.ini")
             End Try
 
         Catch ex As Exception
@@ -812,7 +812,7 @@ Public Class Form1
         ''''''''''''''''''''''''''''''''''''''''''''''''
         ' Robust 
         ' Grid regions need GridDBName
-        LoadIni(prefix + "bin/\config-include\Gridcommon.ini", ";")
+        LoadIni(prefix + "bin\config-include\Gridcommon.ini", ";")
         Dim ConnectionString = """" _
             + "Data Source=" + "localhost" _
             + ";Database=" + My.Settings.RegionDBName _
@@ -826,7 +826,7 @@ Public Class Form1
 
         ''''''''''''''''''''''''''''''''''''''''''
         ' Robust Process
-        LoadIni(prefix + "bin/Robust.HG.ini", ";")
+        LoadIni(prefix + "bin\Robust.HG.ini", ";")
 
         ConnectionString = """" _
             + "Data Source=" + "localhost" _
@@ -843,6 +843,7 @@ Public Class Form1
         SetIni("Const", "PublicPort", My.Settings.HttpPort) ' 8002
         SetIni("Const", "PrivatePort", My.Settings.PrivatePort) ' 8003
         SetIni("Const", "http_listener_port", My.Settings.HttpPort)
+        SetIni("GridInfoService", "welcome", Splashpage)
 
         If My.Settings.WebStats Then
             SetIni("WebStats", "enabled", "True")
@@ -854,7 +855,7 @@ Public Class Form1
 
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
         ' Opensim.ini
-        LoadIni(prefix + "bin/Opensim.proto", ";")
+        LoadIni(prefix + "bin\Opensim.proto", ";")
 
         If (My.Settings.region_owner_is_god Or My.Settings.region_manager_is_god) Then
             SetIni("Permissions", "allow_grid_gods", "true")
@@ -994,7 +995,7 @@ Public Class Form1
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
         'Gloebits.ini
 
-        LoadIni(prefix + "bin/Gloebit.ini", ";")
+        LoadIni(prefix + "bin\Gloebit.ini", ";")
         If My.Settings.GloebitsEnable Then
             SetIni("Gloebit", "Enabled", "true")
         Else
@@ -1028,45 +1029,10 @@ Public Class Form1
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
         ' Wifi Settings
 
-        LoadIni(prefix + "addins-registry\addins\Diva.Wifi.0.9.0.0.13\Wifi.ini", ";")
+        ' DoWifi("bin\robust-include\Wifi.ini")
+        DoWifi("bin\Wifi.ini")
+        DoWifi("addins-registry\addins\Diva.Wifi.0.9.0.0.13\Wifi.ini")
 
-        ConnectionString = """" _
-                + "Data Source=" + "localhost" _
-                + ";Database=" + My.Settings.RobustMySqlName _
-                + ";Port=" + My.Settings.MySqlPort _
-                + ";User ID=" + My.Settings.RobustMySqlUsername _
-                + ";Password=" + My.Settings.RobustMySqlPassword _
-                + """"
-
-        SetIni("DatabaseService", "ConnectionString", ConnectionString)
-
-        ' Wifi Section
-
-        If (My.Settings.WifiEnabled) Then
-            SetIni("WifiService", "Enabled", "true")
-        Else
-            SetIni("WifiService", "Enabled", "false")
-        End If
-
-        'SetIni("WifiService", "GridName", My.Settings.SimName)
-        'SetIni("WifiService", "LoginURL", My.Settings.PublicIP + ":" + My.Settings.HttpPort)
-        'SetIni("WifiService", "WebAddress", My.Settings.PublicIP + ":" + My.Settings.HttpPort)
-
-        'email
-        SetIni("WifiService", "SmtpUsername", My.Settings.SmtpUsername)
-        SetIni("WifiService", "SmtpPassword", My.Settings.SmtpPassword)
-
-        'Gmail
-        SetIni("WifiService", "AdminPassword", My.Settings.Password)
-        SetIni("WifiService", "AdminEmail", My.Settings.AdminEmail)
-
-        If My.Settings.AccountConfirmationRequired Then
-            SetIni("WifiService", "AccountConfirmationRequired", "true")
-        Else
-            SetIni("WifiService", "AccountConfirmationRequired", "false")
-        End If
-
-        SaveINI()
 
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
         'Onlook viewer
@@ -1116,11 +1082,11 @@ Public Class Form1
                 Dim fname = RegionClass.RegionName
 
                 Try
-                    My.Computer.FileSystem.DeleteFile(prefix + "bin/Regions/" + fname + "/Opensim.ini")
+                    My.Computer.FileSystem.DeleteFile(prefix + "bin\Regions\" + fname + "/Opensim.ini")
                 Catch ex As Exception
                 End Try
                 Try
-                    LoadIni(prefix + "bin/Opensim.proto", ";")
+                    LoadIni(prefix + "bin\Opensim.proto", ";")
                     SetIni("Const", "BaseURL", "http://" + My.Settings.PublicIP)
                     SetIni("Const", "PublicPort", My.Settings.HttpPort)
                     SetIni("Const", "http_listener_port", RegionClass.RegionPort)
@@ -1128,7 +1094,7 @@ Public Class Form1
                     SetIni("Const", "RegionFolderName", fname)
 
                     SaveINI()
-                    My.Computer.FileSystem.CopyFile(prefix + "bin/Opensim.proto", prefix + "bin/Regions/" + fname + "/Opensim.ini", True)
+                    My.Computer.FileSystem.CopyFile(prefix + "bin\Opensim.proto", prefix + "bin\Regions/" + fname + "/Opensim.ini", True)
                 Catch
                     Print("Error:Failed to Set the Opensim.ini for sim " + fname)
                     Return False
@@ -1145,6 +1111,49 @@ Public Class Form1
         Return True
     End Function
 
+    Private Sub DoWifi(param As String)
+
+        'LoadIni(prefix + "addins-registry\addins\Diva.Wifi.0.9.0.0.13\Wifi.ini", ";")
+        LoadIni(prefix + param, ";")
+
+        Dim ConnectionString = """" _
+                + "Data Source=" + "localhost" _
+                + ";Database=" + My.Settings.RobustMySqlName _
+                + ";Port=" + My.Settings.MySqlPort _
+                + ";User ID=" + My.Settings.RobustMySqlUsername _
+                + ";Password=" + My.Settings.RobustMySqlPassword _
+                + """"
+
+        SetIni("DatabaseService", "ConnectionString", ConnectionString)
+
+        ' Wifi Section
+
+        If (My.Settings.WifiEnabled) Then
+            SetIni("WifiService", "Enabled", "true")
+        Else
+            SetIni("WifiService", "Enabled", "false")
+        End If
+
+        SetIni("WifiService", "GridName", My.Settings.SimName)
+        SetIni("WifiService", "LoginURL", My.Settings.PublicIP + ":" + My.Settings.HttpPort)
+        SetIni("WifiService", "WebAddress", My.Settings.PublicIP + ":" + My.Settings.HttpPort)
+
+        'email
+        SetIni("WifiService", "SmtpUsername", My.Settings.SmtpUsername)
+        SetIni("WifiService", "SmtpPassword", My.Settings.SmtpPassword)
+
+        'Gmail
+        SetIni("WifiService", "AdminPassword", My.Settings.Password)
+        SetIni("WifiService", "AdminEmail", My.Settings.AdminEmail)
+
+        If My.Settings.AccountConfirmationRequired Then
+            SetIni("WifiService", "AccountConfirmationRequired", "true")
+        Else
+            SetIni("WifiService", "AccountConfirmationRequired", "false")
+        End If
+
+        SaveINI()
+    End Sub
 #End Region
 
 #Region "Ports"
@@ -1267,6 +1276,16 @@ Public Class Form1
             Print("Robust is already running")
             Return True
         End If
+        Dim Up As String
+        Try
+            Up = client.DownloadString("http://127.0.0.1:" + My.Settings.HttpPort + "/?_Opensim=" + Random())
+            Return True
+
+        Catch ex As Exception
+            Up = ""
+            Log("Info:Robust is not yet running, will continue to check every 1/10 second for two minutes")
+        End Try
+
 
         gRobustProcID = Nothing
         Print("Starting Robust")
@@ -1274,9 +1293,10 @@ Public Class Form1
         Try
             RobustProcess.EnableRaisingEvents = True
             RobustProcess.StartInfo.UseShellExecute = False ' so we can redirect streams
-            RobustProcess.StartInfo.FileName = prefix + "bin/robust.exe"
+            RobustProcess.StartInfo.FileName = prefix + "bin\robust.exe"
+            ' !!!! need window supression
             RobustProcess.StartInfo.CreateNoWindow = False
-            RobustProcess.StartInfo.WorkingDirectory = prefix
+            RobustProcess.StartInfo.WorkingDirectory = prefix + "bin"
 
             If mnuShow.Checked Then
                 RobustProcess.StartInfo.WindowStyle = ProcessWindowStyle.Normal
@@ -1296,7 +1316,7 @@ Public Class Form1
         End Try
 
         ' Wait for Opensim to start listening 
-        Dim Up As String
+
         Try
             Up = client.DownloadString("http://127.0.0.1:" + My.Settings.HttpPort + "/?_Opensim=" + Random())
         Catch ex As Exception
@@ -1376,7 +1396,7 @@ Public Class Form1
         Try
             myProcess.StartInfo.UseShellExecute = True ' so we can redirect streams
             myProcess.StartInfo.WorkingDirectory = prefix
-            myProcess.StartInfo.FileName = prefix + "bin/OpenSim.exe"
+            myProcess.StartInfo.FileName = prefix + "bin\OpenSim.exe"
 
             If My.Settings.ConsoleShow Then
                 myProcess.StartInfo.CreateNoWindow = False
@@ -1384,8 +1404,8 @@ Public Class Form1
                 myProcess.StartInfo.CreateNoWindow = True
             End If
 
-            myProcess.StartInfo.Arguments = "-inidirectory=" + """" + "./Regions/" + InstanceName + """"
-            Debug.Print(prefix + "bin/OpenSim.exe" + "-inidirectory=" + """" + "./Regions/" + InstanceName + """")
+            myProcess.StartInfo.Arguments = " -inidirectory=" + """" + ".\Regions\" + InstanceName + """"
+            Debug.Print(prefix + "bin\OpenSim.exe" + myProcess.StartInfo.Arguments)
             myProcess.Start()
             Pid = myProcess.Id
 
@@ -1662,7 +1682,7 @@ Public Class Form1
 
     Private Sub WebStatsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles WebStatsToolStripMenuItem.Click
         If (Running) Then
-            Dim webAddress As String = "http://127.0.0.1:" + My.Settings.HttpPort + "/bin/data/sim.html"
+            Dim webAddress As String = "http://127.0.0.1:" + My.Settings.HttpPort + "\bin\data\sim.html"
             Process.Start(webAddress)
         Else
             Print("Opensim is not running. Cannot open the Statistics web page.")
