@@ -14,7 +14,10 @@
 160926 21:02:33 [ERROR] Native table 'performance_schema'.'file_summary_by_instance' has the wrong structure
 160926 21:02:33 [ERROR] Native table 'performance_schema'.'mutex_instances' has the wrong structure
 160926 21:02:33 [ERROR] Native table 'performance_schema'.'rwlock_instances' has the wrong structure
-160926 21:02:33 [ERROR] Native tabÿlocalhost                                                                                                                                                                           robust                                                                                                                                                                                          robustuser                                      case that has been forced to lowercase because lower_case_table_names is set. It will not be possible to remove this privilege using REVOKE.
+160926 21:02:33 [ERROR] Native tab161004 21:28:55 [Warning] 'host' entry '60905 22:36:29 [ERROR] Missing system table mysql.proxies_priv; please run mysql_upgrade to create it
+160905 22:36:29 [ERROR] Native table 'performance_schema'.'events_waits_curre|nt' has the wrong structure
+160905 22:36:29 [error] native table 'performance_schema'.'events_waits_history' has the wrong structure
+160905 22:36:29 [error] native table 'performance_schema'' had database in mixed case that has been forced to lowercase because lower_case_table_names is set. It will not be possible to remove this privilege using REVOKE.
 161004 21:28:55 [Warning] 'host' entry 'ory_long' has the wrong structure
 160905 22:36:29 [ERROR] Native table 'performance_schema'.'setup_consumers' has the wrong structure
 160905 22:36:29 [ERROR] Native table 'perfor|mance_schema'.'setup_instruments' has the wrong structure
@@ -2515,12 +2518,7 @@ innodb: for more information.
 161004 21:28:56 [Warning] 'host' entry ' the future! Current system log sequence number 850659455.
 InnoDB: Your database may be corrupt or you may have copied the InnoDB
 InnoDB: tablespace but not the InnoDB log files.| see
-innodb: http://de ÿÿÿÿÿÿ.com/doc/refman/5.1/en/forcing-recovery.html
-innodb: for more information.
-160917 13:01:46  innodb: error: page 498 log sequence number 955009330
-innodb: is in' had database in mixed case that has been forced to lowercase because lower_case_table_names is set. It will not be possible to remove this privilege using REVOKE.
-161004 21:28:56 [Warning] 'host' entry 't system log sequence number 850659455.
-InnoDB: Your database may be corrupt or you may have copied the InnoDB
+innodb: http://deÿlocalhost                                                                                                                                                                           robustuser                                                                                                                                                                                      robustimuser                                    e may be corrupt or you may have copied the InnoDB
 InnoDB: tablespace but not the InnoDB log files. See
 InnoDB: http:|//dev.mysql.com/doc/refman/5.1/en/forcing-recovery.html
 innodb: for more information.
@@ -4661,11 +4659,7 @@ innodb: http://dev.mysql.com/doc/refman/5' had database in mixed case that has b
 InnoDB: for more information.
 160917 13:02:01  InnoDB: Error: page 3743 log sequence number 882636389
 InnoDB: is in the future! Current system log sequence number 85066|0345.
-innodb: your      ÷e may be corrupt or you may have copied the innodb
-innodb: tablespace but not the innodb log files. see
-innodb: http://dev.mysql.com/doc/refman/5.1/en/forcing-reco' had database in mixed case that has been forced to lowercase because lower_case_table_names is set. It will not be possible to remove this privilege using REVOKE.
-161004 21:28:57 [Warning] 'host' entry 'for more information.
-160917 13:02:01  InnoDB: Error: page 1948 log sequence number 953859448
+innodb: your ÿlocalhost                                                                                                                                                                           robust                                                                                                                                                                                          robustuser                                       1948 log sequence number 953859448
 InnoDB: is in the future! Current system log sequence number 850660345.
 InnoDB: You|r database may be corrupt or you may have copied the innodb
 innodb: tablespace but not the innodb log files. see
@@ -6464,4 +6458,4 @@ Version: '5.5.8'  socket: ''  port: 3307  MySQL Community Server (GPL)
 161004 21:29:03 [Note] C:\Opensim\Outworldz-5\Dreamworld\OutworldzFiles\mysql\bin\mysqld-nt.exe: Normal shutdown
 
 161004 21:29:03 [Note] Event Scheduler: Purging the queue. 0 events
-161004 21:29:05 [Warning] C:\Opensim\Outworldz-5\Drea
+161004 21:29:05 [Warning] C:\Opensim\Outworldz-5\Dreaÿlocalhost                                                                                                                                                                           robustuser                                                                                                                                                                                      robustuser                                      
