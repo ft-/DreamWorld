@@ -2515,7 +2515,7 @@ innodb: for more information.
 161004 21:28:56 [Warning] 'host' entry ' the future! Current system log sequence number 850659455.
 InnoDB: Your database may be corrupt or you may have copied the InnoDB
 InnoDB: tablespace but not the InnoDB log files.| see
-innodb: http://dev.mysql.com/doc/refman/5.1/en/forcing-recovery.html
+innodb: http://de ÿÿÿÿÿÿ.com/doc/refman/5.1/en/forcing-recovery.html
 innodb: for more information.
 160917 13:01:46  innodb: error: page 498 log sequence number 955009330
 innodb: is in' had database in mixed case that has been forced to lowercase because lower_case_table_names is set. It will not be possible to remove this privilege using REVOKE.
@@ -4661,7 +4661,7 @@ innodb: http://dev.mysql.com/doc/refman/5' had database in mixed case that has b
 InnoDB: for more information.
 160917 13:02:01  InnoDB: Error: page 3743 log sequence number 882636389
 InnoDB: is in the future! Current system log sequence number 85066|0345.
-innodb: your database may be corrupt or you may have copied the innodb
+innodb: your      ÷e may be corrupt or you may have copied the innodb
 innodb: tablespace but not the innodb log files. see
 innodb: http://dev.mysql.com/doc/refman/5.1/en/forcing-reco' had database in mixed case that has been forced to lowercase because lower_case_table_names is set. It will not be possible to remove this privilege using REVOKE.
 161004 21:28:57 [Warning] 'host' entry 'for more information.
@@ -6464,5 +6464,4 @@ Version: '5.5.8'  socket: ''  port: 3307  MySQL Community Server (GPL)
 161004 21:29:03 [Note] C:\Opensim\Outworldz-5\Dreamworld\OutworldzFiles\mysql\bin\mysqld-nt.exe: Normal shutdown
 
 161004 21:29:03 [Note] Event Scheduler: Purging the queue. 0 events
-161004 21:29:05 [Warning] C:\Opensim\Outworldz-5\Dreamworld\OutworldzFiles\mysql\bin\mysqld-nt.exe: Forcing close of thread 1  user: ''
-
+161004 21:29:05 [Warning] C:\Opensim\Outworldz-5\Drea

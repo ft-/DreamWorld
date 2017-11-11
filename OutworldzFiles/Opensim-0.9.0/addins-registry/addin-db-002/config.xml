@@ -1,6 +1,0 @@
-<Configuration>
-  <AddinStatus>
-    <Addin id="Diva.Wifi" enabled="False" />
-    <Addin id="Diva.MISearchModules" enabled="False" />
-  </AddinStatus>
-</Configuration>
