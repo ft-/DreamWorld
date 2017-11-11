@@ -1030,8 +1030,8 @@ Public Class Form1
         ' Wifi Settings
 
         ' DoWifi("bin\robust-include\Wifi.ini")
-        DoWifi("bin\Wifi.ini")
-        DoWifi("addins-registry\addins\Diva.Wifi.0.9.0.0.13\Wifi.ini")
+        'DoWifi("bin\Wifi.ini")
+        'DoWifi("addins-registry\addins\Diva.Wifi.0.9.0.0.13\Wifi.ini")
 
 
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
