@@ -54,7 +54,7 @@ Partial Class Form1
         Me.mnuHide = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuShow = New System.Windows.Forms.ToolStripMenuItem()
         Me.ViewerToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuOnlook = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuViewerType = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuOther = New System.Windows.Forms.ToolStripMenuItem()
         Me.KokuaToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.CatznipToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -305,20 +305,20 @@ Partial Class Form1
         '
         'ViewerToolStripMenuItem
         '
-        Me.ViewerToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuOnlook, Me.mnuOther})
+        Me.ViewerToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuViewerType, Me.mnuOther})
         Me.ViewerToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.window_environment
         Me.ViewerToolStripMenuItem.Name = "ViewerToolStripMenuItem"
         Me.ViewerToolStripMenuItem.Size = New System.Drawing.Size(170, 22)
         Me.ViewerToolStripMenuItem.Text = "Viewer Type"
-        Me.ViewerToolStripMenuItem.ToolTipText = "Onlook is a easy to use and efficient viewer"
+        Me.ViewerToolStripMenuItem.ToolTipText = "ViewerType is a easy to use and efficient viewer"
         '
-        'mnuOnlook
+        'mnuViewerType
         '
-        Me.mnuOnlook.Checked = True
-        Me.mnuOnlook.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.mnuOnlook.Name = "mnuOnlook"
-        Me.mnuOnlook.Size = New System.Drawing.Size(113, 22)
-        Me.mnuOnlook.Text = "Onlook"
+        Me.mnuViewerType.Checked = True
+        Me.mnuViewerType.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.mnuViewerType.Name = "mnuViewerType"
+        Me.mnuViewerType.Size = New System.Drawing.Size(113, 22)
+        Me.mnuViewerType.Text = "ViewerType"
         '
         'mnuOther
         '
@@ -672,7 +672,7 @@ Partial Class Form1
     Friend WithEvents MensClothingToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents FemaleClothingToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ViewerToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents mnuOnlook As ToolStripMenuItem
+    Friend WithEvents mnuViewerType As ToolStripMenuItem
     Friend WithEvents mnuOther As ToolStripMenuItem
     Friend WithEvents LoopBackToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents MoreContentToolStripMenuItem As ToolStripMenuItem

@@ -116,13 +116,13 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("True")>  _
-        Public Property Onlook() As Boolean
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public Property RunViewer() As Boolean
             Get
-                Return CType(Me("Onlook"),Boolean)
+                Return CType(Me("RunViewer"),Boolean)
             End Get
             Set
-                Me("Onlook") = value
+                Me("RunViewer") = value
             End Set
         End Property
         

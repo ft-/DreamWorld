@@ -55,7 +55,7 @@ Public Class Form1
 
     ' Processes
     Dim pMySqlDiag As Process = New Process()
-    Dim pOnlook As Process = New Process()
+    Dim pViewerType As Process = New Process()
     Public Shared ActualForm As AdvancedForm
 
     ' with events
@@ -141,8 +141,6 @@ Public Class Form1
         End Set
     End Property
 
-
-
 #End Region
 
 #Region "StartStop"
@@ -175,7 +173,6 @@ Public Class Form1
 
         ' WebUI
         ViewWebUI.Visible = My.Settings.WifiEnabled
-
 
         Me.Text = "Outworldz V" + MyVersion
         PictureBox1.Enabled = True
@@ -270,55 +267,63 @@ Public Class Form1
                 Log("Error:Could not create Init.txt - no permissions to write it:" + ex.Message)
             End Try
 
-            If System.IO.File.Exists(xmlPath() + "\AppData\Roaming\Onlook\user_settings\settings_onlook.xml") Then
-                My.Settings.Onlook = True
+
+
+            If System.IO.File.Exists(xmlPath() + "\AppData\Roaming\SecondLife\user_settings\settings_singularity.xml") Then
+                My.Settings.RunViewer = True
             Else
-                Dim yesno = MsgBox("Do you want to install the Onlook Viewer? (Newcomers to virtual worlds should choose Yes)", vbYesNo)
+                Dim yesno = MsgBox("Do you want to install the Singularity Viewer? (Newcomers to virtual worlds should choose Yes)", vbYesNo)
                 If (yesno = vbYes) Then
-                    My.Settings.Onlook = True
-                    Print("Installing Onlook Viewer")
+                    My.Settings.RunViewer = True
+                    Print("Installing Singularity Viewer")
                     Dim pi As ProcessStartInfo = New ProcessStartInfo()
                     pi.Arguments = ""
-                    pi.FileName = """" + MyFolder & "\Viewer\Onlook.exe" + """"
-                    pOnlook.StartInfo = pi
-                    Try
-                        Log("Info:Launching Onlook installer")
-                        pOnlook.Start()
-                    Catch ex As Exception
-                        Log("Error:Onlook installer failed to load:" + ex.Message)
-                    End Try
 
-                    ProgressBar1.Value = 0
-                    Print("Please Install and Start the Onlook Viewer")
-                    Dim toggle As Boolean = False
-                    While Not System.IO.File.Exists(xmlPath() + "\AppData\Roaming\Onlook\user_settings\settings_onlook.xml") And ProgressBar1.Value < 99
-                        Application.DoEvents()
-                        Sleep(2000)
-                        If (toggle) Then
-                            Print("Attention needed - please Install and Start the Onlook Viewer ")
-                            toggle = False
-                        Else
-                            Print("Start the Onlook Viewer")
-                            toggle = False
-                            toggle = True
-                        End If
-                        BumpProgress(1)
+                    If Environment.Is64BitOperatingSystem Then
+                        pi.FileName = """" + MyFolder & "\Viewer\Singularity_1_8_7_6861_x86_64_Setup.exe" + """"
+                    Else
+                        pi.FileName = """" + MyFolder & "\Viewer\Singularity_1_8_7_6861_i686_Setup.exe" + """"
+                    End If
 
-                        If ProgressBar1.Value = 100 Then
-                            Print("You win. Proceeding with Outworldz Installation. You may need to add the grid manually.")
-                            toggle = True
-                        End If
-                    End While
+                    pViewerType.StartInfo = pi
+                        Try
+                            Log("Info:Launching Singularity installer")
+                            pViewerType.Start()
+                        Catch ex As Exception
+                            Log("Error: installer failed to load:" + ex.Message)
+                        End Try
 
-                    ' close the viewer so the grid will repopulate next time it opens
-                    Try
-                        zap("OnlookViewer")
-                    Catch ex As Exception
-                        Log("Error:Failed to zap Onlook:" + ex.Message)
-                    End Try
+                        ProgressBar1.Value = 0
+                        Print("Please Install and Start the Singularity Viewer")
+                        Dim toggle As Boolean = False
+                        While Not System.IO.File.Exists(xmlPath() + "\AppData\Roaming\SecondLife\user_settings\settings_singularity.xml") And ProgressBar1.Value < 99
+                            Application.DoEvents()
+                            Sleep(2000)
+                            If (toggle) Then
+                                Print("Attention needed - please Install and Start the Singularity Viewer ")
+                                toggle = False
+                            Else
+                                Print("Start the Singularity Viewer")
+                                toggle = False
+                                toggle = True
+                            End If
+                            BumpProgress(1)
 
-                Else
-                    My.Settings.Onlook = False
+                            If ProgressBar1.Value = 100 Then
+                                Print("You win. Proceeding with Outworldz Installation. You may need to add the grid manually.")
+                                toggle = True
+                            End If
+                        End While
+
+                        ' close the viewer so the grid will repopulate next time it opens
+                        Try
+                            zap("Singularity Viewer")
+                        Catch ex As Exception
+                            Log("Error:Failed to zap viewer:" + ex.Message)
+                        End Try
+
+                    Else
+                        My.Settings.RunViewer = False
                 End If
             End If
             Print("Ready to Launch! Click 'Start' to begin your adventure in Opensimulator.")
@@ -341,6 +346,8 @@ Public Class Form1
 
         ProgressBar1.Value = 0
 
+
+
         Buttons(BusyButton)
         Running = True
         MnuContent.Visible = True
@@ -353,8 +360,8 @@ Public Class Form1
 
         If Not SetINIData() Then Return   ' set up the INI files
 
-        If My.Settings.Onlook Then
-            SaveOnlookXMLData()
+        If My.Settings.RunViewer Then
+            SaveViewerTypeXMLData()
         End If
 
         StartMySQL() ' boot up MySql, and wait for it to start listening
@@ -367,7 +374,7 @@ Public Class Form1
             Return
         End If
 
-        Onlook()
+        ViewerType()
 
         ' show the IAR and OAR menu when we are up 
         If gContentAvailable Then
@@ -421,7 +428,7 @@ Public Class Form1
         KillAll()
 
         Try
-            RemoveGrid()    ' puts Onlook back to default
+            RemoveGrid()    ' puts viewer back to default
         Catch ex As Exception
             Log("Info:grid settings set back to defaults" + ex.Message)
         End Try
@@ -442,11 +449,11 @@ Public Class Form1
         ' close everything as gracefully as possible.
 
         Try
-            pOnlook.CloseMainWindow()
-            pOnlook.WaitForExit()
-            pOnlook.Close()
+            pViewerType.CloseMainWindow()
+            pViewerType.WaitForExit()
+            pViewerType.Close()
         Catch ex As Exception
-            Log("Info:Onlook not running:" + ex.Message)
+            Log("Info:viewer not running:" + ex.Message)
         End Try
 
         ProgressBar1.Value = 67
@@ -615,7 +622,7 @@ Public Class Form1
         mnuFull.Checked = False
         My.Settings.ViewerEase = True
         My.Settings.Save()
-        Print("Onlook Viewer is set for Easy UI mode. Change will occur when the sim is restarted")
+        Print("Viewer is set for Easy UI mode. Change will occur when the sim is restarted")
     End Sub
 
     Private Sub mnuFull_Click(sender As System.Object, e As System.EventArgs) Handles mnuFull.Click
@@ -623,7 +630,7 @@ Public Class Form1
         mnuFull.Checked = True
         My.Settings.ViewerEase = False
         My.Settings.Save()
-        Print("Onlook Viewer is set for the Full UI mode. Change will occur when the sim is restarted")
+        Print("Viewer is set for the Full UI mode. Change will occur when the sim is restarted")
     End Sub
 
     Private Sub NoneToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles mnuNoAvatar.Click
@@ -792,9 +799,9 @@ Public Class Form1
         mnuFull.Checked = Not My.Settings.ViewerEase
         mnuEasy.Checked = My.Settings.ViewerEase
         If mnuFull.Checked Then
-            Log("Info:Onlook Menu is set to Full UI")
+            Log("Info:ViewerType Menu is set to Full UI")
         Else
-            Log("Info:Onlook Menu is set to Minimum")
+            Log("Info:ViewerType Menu is set to Minimum")
         End If
 
         mnuYesAvatar.Checked = My.Settings.AvatarShow
@@ -1035,22 +1042,6 @@ Public Class Form1
 
 
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-        'Onlook viewer
-        If My.Settings.Onlook = True Then
-            Log("Info: Onlook viewer mode")
-            mnuOther.Checked = False
-            mnuOnlook.Checked = True
-            VUI.Visible = True
-            AvatarVisible.Visible = True
-        Else
-            Log("Info:Other viewer mode")
-            mnuOther.Checked = True
-            mnuOnlook.Checked = False
-            VUI.Visible = False
-            AvatarVisible.Visible = False
-        End If
-
-        ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
         'Regions - write all region.ini files with public IP and Public port
         Dim counter As Integer = 0
         Dim L = RegionClass.RegionListCount()
@@ -1183,9 +1174,9 @@ Public Class Form1
         pi.Arguments = ""
         pi.FileName = MyFolder & "\UPnPPortForwardManager.exe"
         pi.WindowStyle = ProcessWindowStyle.Normal
-        pOnlook.StartInfo = pi
+        pViewerType.StartInfo = pi
         Try
-            pOnlook.Start()
+            pViewerType.Start()
         Catch ex As Exception
             Log("Error:uPnp failed to launch:" + ex.Message)
         End Try
@@ -1212,21 +1203,21 @@ Public Class Form1
         End If
     End Sub
 
-    Private Sub OnlookToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles mnuOnlook.Click
-        Print("Onlook Viewer will be launched on Startup")
+    Private Sub ViewerTypeToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles mnuViewerType.Click
+        Print("Viewer will be launched on Startup")
         mnuOther.Checked = False
-        mnuOnlook.Checked = True
-        My.Settings.Onlook = True
+        mnuViewerType.Checked = True
+        My.Settings.RunViewer = True
         My.Settings.Save()
         VUI.Visible = True
         AvatarVisible.Visible = True
     End Sub
 
     Private Sub OtherToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles mnuOther.Click
-        Print("Onlook Viewer will not be launched on Startup.")
+        Print("Viewer will not be launched on Startup.")
         mnuOther.Checked = True
-        mnuOnlook.Checked = False
-        My.Settings.Onlook = False
+        mnuViewerType.Checked = False
+        My.Settings.RunViewer = False
         VUI.Visible = False
         AvatarVisible.Visible = False
         My.Settings.Save()
@@ -1395,17 +1386,17 @@ Public Class Form1
         Dim Pid
         Try
             myProcess.StartInfo.UseShellExecute = True ' so we can redirect streams
-            myProcess.StartInfo.WorkingDirectory = prefix
-            myProcess.StartInfo.FileName = prefix + "bin\OpenSim.exe"
+            myProcess.StartInfo.WorkingDirectory = prefix & "bin"
+
 
             If My.Settings.ConsoleShow Then
-                myProcess.StartInfo.CreateNoWindow = False
+                myProcess.StartInfo.FileName = "runit.bat /NORMAL"
             Else
-                myProcess.StartInfo.CreateNoWindow = True
+                myProcess.StartInfo.FileName = "runit.bat /MIN "
             End If
 
-            myProcess.StartInfo.Arguments = " -inidirectory=" + """" + ".\Regions\" + InstanceName + """"
-            Debug.Print(prefix + "bin\OpenSim.exe" + myProcess.StartInfo.Arguments)
+            myProcess.StartInfo.Arguments = InstanceName
+
             myProcess.Start()
             Pid = myProcess.Id
 
@@ -2147,40 +2138,42 @@ Public Class Form1
 
 #End Region
 
-#Region "Onlook"
+#Region "ViewerType"
 
-    Private Sub Onlook()
+    Private Sub ViewerType()
         If Running = False Then Return
-        If My.Settings.Onlook Then
-            Print("Starting Onlook viewer")
+        If My.Settings.RunViewer Then
+            Print("Starting viewer")
             Dim pi As ProcessStartInfo = New ProcessStartInfo()
             pi.Arguments = ""
-            pi.FileName = "C:\Program Files (x86)\Onlook\OnLookViewer.exe"
+            pi.FileName = "C:\Program Files\Singularity\SingularityViewer.exe"
             pi.WindowStyle = ProcessWindowStyle.Normal
-            pOnlook.StartInfo = pi
+            pViewerType.StartInfo = pi
             Try
-                pOnlook.Start()
+                pViewerType.Start()
             Catch ex As Exception
-                Log("Error:Onlook failed to launch:" + ex.Message)
+                Log("Error:ViewerType failed to launch:" + ex.Message)
             End Try
         End If
 
     End Sub
 
-    Private Sub SaveOnlookXMLData()
+    Private Sub SaveViewerTypeXMLData()
 
-        ' setup Onlook
-        If System.IO.File.Exists(xmlPath() + "\AppData\Roaming\Onlook\user_settings\settings_onlook.xml") Then
+        ' setup ViewerType
+        If System.IO.File.Exists(xmlPath() + "\AppData\Roaming\Secondlife\user_settings\settings_singularity.xml") Then
             My.Settings.ViewerInstalled = True
+            Log("Info:Singularity Viewer is installed")
         End If
 
+        RemoveGrid()
+
         If Not My.Settings.ViewerInstalled Then
-            Log("Info:Onlook viewer is not installed")
+            Log("Info:Singularity viewer is not installed")
             Return
         End If
         ' we have to change the viewer Grid settings if we are on localhost
         Print("Setting Grid Info...")
-
 
         Dim Opensim8XML As String = "<llsd>
     <array>
@@ -2213,7 +2206,7 @@ Public Class Form1
         <key>render_compat</key>
             <boolean>1</boolean>
         <key>search</key>
-            <string>http://search.metaverseink.com/opensim/results.jsp?</string>
+            <string></string>
         <key>support</key>
             <string />
         <key>website</key>
@@ -2224,21 +2217,19 @@ Public Class Form1
 "
 
         Try
-            My.Computer.FileSystem.CopyFile(xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml", xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml.bak", True)
+            My.Computer.FileSystem.CopyFile(xmlPath() + "\AppData\Roaming\Secondlife\user_settings\grids_sg1.xml", xmlPath() + "\AppData\Roaming\Secondlife\user_settings\grids_sg1.xml.bak", True)
         Catch
-            Log("Error:Failed to back up onlook XML")
+            Log("Error:Failed to back up ViewerType XML")
         End Try
 
         Try
-            My.Computer.FileSystem.DeleteFile(xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml")
-            Using outputFile As New StreamWriter(xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml", True)
+            My.Computer.FileSystem.DeleteFile(xmlPath() + "\AppData\Roaming\Secondlife\user_settings\grids_sg1.xml")
+            Using outputFile As New StreamWriter(xmlPath() + "\AppData\Roaming\Secondlife\user_settings\grids_sg1.xml", True)
                 outputFile.WriteLine(Opensim8XML)
                 ' outputFile.Close()
             End Using
-
-            'My.Computer.FileSystem.CopyFile(MyFolder & "\Viewer\Hypergrid.xml", xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml", True)
         Catch ex As Exception
-            Log("Error:Failed to install onlook XML:" + ex.Message)
+            Log("Error:Failed to install ViewerType XML:" + ex.Message)
         End Try
 
     End Sub
@@ -2246,14 +2237,14 @@ Public Class Form1
 
         ' restore backup - they may have changed it. Outworldzs is supposed to be simple. If they launch the viewer by itself, they can change grids
         Try
-            My.Computer.FileSystem.CopyFile(xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml.bak", xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml", True)
+            My.Computer.FileSystem.CopyFile(xmlPath() + "\AppData\Roaming\ViewerType\user_settings\grids_sg1.xml.bak", xmlPath() + "\AppData\Roaming\ViewerType\user_settings\grids_sg1.xml", True)
         Catch ex As Exception
-            Log("Error:failed to restore Onlook xml backup:" + ex.Message)
+            Log("Error:failed to restore ViewerType xml backup:" + ex.Message)
         End Try
     End Sub
     Private Function xmlPath() As String
 
-        ' gets the path to the %APPDATA% folder on windows so we can seek out the Onlook folders
+        ' gets the path to the %APPDATA% folder on windows so we can seek out the ViewerType folders
         Dim appData As String = My.Computer.FileSystem.SpecialDirectories.CurrentUserApplicationData
         Return Mid(appData, 1, InStr(appData, "AppData") - 1)
     End Function
