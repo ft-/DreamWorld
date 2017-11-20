@@ -196,25 +196,43 @@ Public Class FormRegion
         Else
             sEnabled = False
         End If
+        Dim dir = Form1.prefix
 
         ' save the Region File
-        Dim oldfile = Form1.prefix + "\Regions\" + oldname + "\Region\" + oldname + ".ini"
-        Try
-            My.Computer.FileSystem.DeleteFile(oldfile)
-        Catch ex As Exception
-        End Try
-
-        If Not Directory.Exists(Form1.prefix & "\Regions\" + MyRegion.RegionName) Then
-            Directory.CreateDirectory(Form1.prefix & "\Regions\" + MyRegion.RegionName)
+        If oldname.Length Then
+            Dim oldfile = dir + "Regions\" + oldname + "\Region\" + oldname + ".ini"
+            Try
+                My.Computer.FileSystem.DeleteFile(oldfile)
+            Catch ex As Exception
+            End Try
         End If
 
-        If Not Directory.Exists(Form1.prefix & "\Regions\" + MyRegion.RegionName + "\Region") Then
-            Directory.CreateDirectory(Form1.prefix & "\Regions\" + MyRegion.RegionName + "\Region")
+
+        If Not Directory.Exists(dir & "bin\Regions\" + MyRegion.RegionName) Then
+            Directory.CreateDirectory(dir & "bin\Regions\" + MyRegion.RegionName)
         End If
 
-        File.Copy(Form1.prefix & "bin\Regions.proto", Form1.prefix & "Regions\" & MyRegion.RegionName & "\" & MyRegion.RegionName & ".ini")
+        If Not Directory.Exists(dir & "bin\Regions\" + MyRegion.RegionName + "\Region") Then
+            Directory.CreateDirectory(dir & "bin\Regions\" + MyRegion.RegionName + "\Region")
+        End If
 
-        Form1.LoadIni(Form1.prefix & "bin\Regions\" & MyRegion.RegionName & "\" & MyRegion.RegionName & ".ini", ";")
+        Dim Region = "; * Regions configuration file" &
+                        "; * This Is Your World. Change This And It Will BREAK. See Advance->[Region Settings] instead." &
+                        "; Automatically changed by Dreamworld - do Not change this file!" &
+                        "[" & MyRegion.RegionName & "]" &
+                        "RegionUUID = " & MyRegion.UUID &
+                        "Location = " & """" & MyRegion.CoordX & "," & MyRegion.CoordY & """" &
+                        "InternalAddress = 0.0.0.0" &
+                        "InternalPort = " & MyRegion.RegionPort &
+                        "AllowAlternatePorts = False" &
+                        "ExternalHostName = " & My.Settings.PublicIP &
+                        "SizeX = " & MyRegion.SizeX &
+                        "SizeY = " & MyRegion.SizeY
+
+
+        File.Copy(dir & "bin\Regions.proto", dir & "bin\Regions\" & MyRegion.RegionName & "\Region\" & MyRegion.RegionName & ".ini", True)
+
+        Form1.LoadIni(dir & "bin\Regions\" & MyRegion.RegionName & "\Region\" & MyRegion.RegionName & ".ini", ";")
         Form1.SetIni(Name, "RegionUUID", MyRegion.UUID)
         Form1.SetIni(Name, "Location", MyRegion.CoordX & "," & MyRegion.CoordY)
         Form1.SetIni(Name, "InternalPort", MyRegion.RegionPort)
