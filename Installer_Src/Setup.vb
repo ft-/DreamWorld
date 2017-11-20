@@ -269,7 +269,7 @@ Public Class Form1
 
 
 
-            If System.IO.File.Exists(xmlPath() + "\AppData\Roaming\SecondLife\user_settings\settings_singularity.xml") Then
+            If System.IO.File.Exists(xmlPath() + "\SecondLife\user_settings\settings_singularity.xml") Then
                 My.Settings.RunViewer = True
             Else
                 Dim yesno = MsgBox("Do you want to install the Singularity Viewer? (Newcomers to virtual worlds should choose Yes)", vbYesNo)
@@ -296,8 +296,8 @@ Public Class Form1
                         ProgressBar1.Value = 0
                         Print("Please Install and Start the Singularity Viewer")
                         Dim toggle As Boolean = False
-                        While Not System.IO.File.Exists(xmlPath() + "\AppData\Roaming\SecondLife\user_settings\settings_singularity.xml") And ProgressBar1.Value < 99
-                            Application.DoEvents()
+                    While Not System.IO.File.Exists(xmlPath() + "\SecondLife\user_settings\settings_singularity.xml") And ProgressBar1.Value < 99
+                        Application.DoEvents()
                             Sleep(2000)
                             If (toggle) Then
                                 Print("Attention needed - please Install and Start the Singularity Viewer ")
@@ -1387,15 +1387,13 @@ Public Class Form1
         Try
             myProcess.StartInfo.UseShellExecute = True ' so we can redirect streams
             myProcess.StartInfo.WorkingDirectory = prefix & "bin"
-
+            myProcess.StartInfo.FileName = "runit.bat"
 
             If My.Settings.ConsoleShow Then
-                myProcess.StartInfo.FileName = "runit.bat /NORMAL"
+                myProcess.StartInfo.Arguments = " /NORMAL " & """" & InstanceName & """"
             Else
-                myProcess.StartInfo.FileName = "runit.bat /MIN "
+                myProcess.StartInfo.Arguments = " /MIN " & """" & InstanceName & """"
             End If
-
-            myProcess.StartInfo.Arguments = InstanceName
 
             myProcess.Start()
             Pid = myProcess.Id
@@ -2161,7 +2159,7 @@ Public Class Form1
     Private Sub SaveViewerTypeXMLData()
 
         ' setup ViewerType
-        If System.IO.File.Exists(xmlPath() + "\AppData\Roaming\Secondlife\user_settings\settings_singularity.xml") Then
+        If System.IO.File.Exists(xmlPath() + "\Secondlife\user_settings\settings_singularity.xml") Then
             My.Settings.ViewerInstalled = True
             Log("Info:Singularity Viewer is installed")
         End If
@@ -2217,14 +2215,14 @@ Public Class Form1
 "
 
         Try
-            My.Computer.FileSystem.CopyFile(xmlPath() + "\AppData\Roaming\Secondlife\user_settings\grids_sg1.xml", xmlPath() + "\AppData\Roaming\Secondlife\user_settings\grids_sg1.xml.bak", True)
+            My.Computer.FileSystem.CopyFile(xmlPath() + "\Secondlife\user_settings\grids_sg1.xml", xmlPath() + "\Secondlife\user_settings\grids_sg1.xml.bak", True)
         Catch
             Log("Error:Failed to back up ViewerType XML")
         End Try
 
         Try
-            My.Computer.FileSystem.DeleteFile(xmlPath() + "\AppData\Roaming\Secondlife\user_settings\grids_sg1.xml")
-            Using outputFile As New StreamWriter(xmlPath() + "\AppData\Roaming\Secondlife\user_settings\grids_sg1.xml", True)
+            My.Computer.FileSystem.DeleteFile(xmlPath() + "\Secondlife\user_settings\grids_sg1.xml")
+            Using outputFile As New StreamWriter(xmlPath() + "\Secondlife\user_settings\grids_sg1.xml", True)
                 outputFile.WriteLine(Opensim8XML)
                 ' outputFile.Close()
             End Using
@@ -2237,7 +2235,7 @@ Public Class Form1
 
         ' restore backup - they may have changed it. Outworldzs is supposed to be simple. If they launch the viewer by itself, they can change grids
         Try
-            My.Computer.FileSystem.CopyFile(xmlPath() + "\AppData\Roaming\ViewerType\user_settings\grids_sg1.xml.bak", xmlPath() + "\AppData\Roaming\ViewerType\user_settings\grids_sg1.xml", True)
+            My.Computer.FileSystem.CopyFile(xmlPath() + "\Secondlife\user_settings\grids_sg1.xml.bak", xmlPath() + "\Secondlife\user_settings\grids_sg1.xml", True)
         Catch ex As Exception
             Log("Error:failed to restore ViewerType xml backup:" + ex.Message)
         End Try
@@ -2245,9 +2243,12 @@ Public Class Form1
     Private Function xmlPath() As String
 
         ' gets the path to the %APPDATA% folder on windows so we can seek out the ViewerType folders
-        Dim appData As String = My.Computer.FileSystem.SpecialDirectories.CurrentUserApplicationData
-        Return Mid(appData, 1, InStr(appData, "AppData") - 1)
+        Dim appData As String = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
+        Return appData
+        'Return Mid(appData, 1, InStr(appData, "AppData") - 1)
     End Function
+
+
 #End Region
 
 #Region "Diagnostics"
