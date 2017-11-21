@@ -35,48 +35,12 @@ Partial Class Form1
         Me.FileToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuExit = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuSettings = New System.Windows.Forms.ToolStripMenuItem()
-        Me.HelpToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
-        Me.MnuContent = New System.Windows.Forms.ToolStripMenuItem()
-        Me.WebBrowser3 = New System.Windows.Forms.WebBrowser()
-        Me.ProgressBar1 = New System.Windows.Forms.ProgressBar()
-        Me.BusyButton = New System.Windows.Forms.Button()
-        Me.UpdaterGo = New System.Windows.Forms.Button()
-        Me.UpdaterCancel = New System.Windows.Forms.Button()
-        Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
-        Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
-        Me.OpenFileDialog2 = New System.Windows.Forms.OpenFileDialog()
-        Me.TextBox1 = New System.Windows.Forms.RichTextBox()
-        Me.LogButton = New System.Windows.Forms.Button()
-        Me.IgnoreButton = New System.Windows.Forms.Button()
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.ConsoleToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuHide = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuShow = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ViewerToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuViewerType = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuOther = New System.Windows.Forms.ToolStripMenuItem()
-        Me.KokuaToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.CatznipToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.SingularityToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.FirestormToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.AlchemyToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.UKanDoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.VUI = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuEasy = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuFull = New System.Windows.Forms.ToolStripMenuItem()
-        Me.AvatarVisible = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuNoAvatar = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuYesAvatar = New System.Windows.Forms.ToolStripMenuItem()
         Me.AdvancedSettingsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ExpertSettingsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.IslandToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ClothingInventoryToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.MoreContentToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.LoadBackupToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.SaveBackupToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.LoadInventoryToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.SaveInventoryToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.HelpToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ShowHyperGridAddressToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.BackupToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.AllRegionsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -92,6 +56,28 @@ Partial Class Form1
         Me.CheckDatabaseToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.CHeckForUpdatesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuAbout = New System.Windows.Forms.ToolStripMenuItem()
+        Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
+        Me.MnuContent = New System.Windows.Forms.ToolStripMenuItem()
+        Me.IslandToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ClothingInventoryToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.MoreContentToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.LoadBackupToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.SaveBackupToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.LoadInventoryToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.SaveInventoryToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.WebBrowser3 = New System.Windows.Forms.WebBrowser()
+        Me.ProgressBar1 = New System.Windows.Forms.ProgressBar()
+        Me.BusyButton = New System.Windows.Forms.Button()
+        Me.UpdaterGo = New System.Windows.Forms.Button()
+        Me.UpdaterCancel = New System.Windows.Forms.Button()
+        Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
+        Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
+        Me.OpenFileDialog2 = New System.Windows.Forms.OpenFileDialog()
+        Me.TextBox1 = New System.Windows.Forms.RichTextBox()
+        Me.LogButton = New System.Windows.Forms.Button()
+        Me.IgnoreButton = New System.Windows.Forms.Button()
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.RegionsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuStrip1.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -149,15 +135,53 @@ Partial Class Form1
         'mnuExit
         '
         Me.mnuExit.Name = "mnuExit"
-        Me.mnuExit.Size = New System.Drawing.Size(92, 22)
+        Me.mnuExit.Size = New System.Drawing.Size(152, 22)
         Me.mnuExit.Text = "Exit"
         '
         'mnuSettings
         '
-        Me.mnuSettings.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ConsoleToolStripMenuItem1, Me.ViewerToolStripMenuItem, Me.VUI, Me.AvatarVisible, Me.AdvancedSettingsToolStripMenuItem, Me.ExpertSettingsToolStripMenuItem})
+        Me.mnuSettings.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.RegionsToolStripMenuItem, Me.ConsoleToolStripMenuItem1, Me.AdvancedSettingsToolStripMenuItem, Me.ExpertSettingsToolStripMenuItem})
         Me.mnuSettings.Name = "mnuSettings"
         Me.mnuSettings.Size = New System.Drawing.Size(61, 20)
         Me.mnuSettings.Text = "Settings"
+        '
+        'ConsoleToolStripMenuItem1
+        '
+        Me.ConsoleToolStripMenuItem1.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuHide, Me.mnuShow})
+        Me.ConsoleToolStripMenuItem1.Image = Global.Outworldz.My.Resources.Resources.window_add
+        Me.ConsoleToolStripMenuItem1.Name = "ConsoleToolStripMenuItem1"
+        Me.ConsoleToolStripMenuItem1.Size = New System.Drawing.Size(170, 22)
+        Me.ConsoleToolStripMenuItem1.Text = " Consoles"
+        Me.ConsoleToolStripMenuItem1.ToolTipText = "The Opensim Dos Box can be minimized automatically"
+        '
+        'mnuHide
+        '
+        Me.mnuHide.Checked = True
+        Me.mnuHide.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.mnuHide.Name = "mnuHide"
+        Me.mnuHide.Size = New System.Drawing.Size(152, 22)
+        Me.mnuHide.Text = "Hide"
+        '
+        'mnuShow
+        '
+        Me.mnuShow.Name = "mnuShow"
+        Me.mnuShow.Size = New System.Drawing.Size(152, 22)
+        Me.mnuShow.Text = "Show"
+        '
+        'AdvancedSettingsToolStripMenuItem
+        '
+        Me.AdvancedSettingsToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.earth_network
+        Me.AdvancedSettingsToolStripMenuItem.Name = "AdvancedSettingsToolStripMenuItem"
+        Me.AdvancedSettingsToolStripMenuItem.Size = New System.Drawing.Size(170, 22)
+        Me.AdvancedSettingsToolStripMenuItem.Text = "Common Settings"
+        Me.AdvancedSettingsToolStripMenuItem.ToolTipText = "Deep stuff."
+        '
+        'ExpertSettingsToolStripMenuItem
+        '
+        Me.ExpertSettingsToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.transform
+        Me.ExpertSettingsToolStripMenuItem.Name = "ExpertSettingsToolStripMenuItem"
+        Me.ExpertSettingsToolStripMenuItem.Size = New System.Drawing.Size(170, 22)
+        Me.ExpertSettingsToolStripMenuItem.Text = "Expert Settings"
         '
         'HelpToolStripMenuItem
         '
@@ -165,6 +189,119 @@ Partial Class Form1
         Me.HelpToolStripMenuItem.Name = "HelpToolStripMenuItem"
         Me.HelpToolStripMenuItem.Size = New System.Drawing.Size(44, 20)
         Me.HelpToolStripMenuItem.Text = "Help"
+        '
+        'ShowHyperGridAddressToolStripMenuItem
+        '
+        Me.ShowHyperGridAddressToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.window_environment1
+        Me.ShowHyperGridAddressToolStripMenuItem.Name = "ShowHyperGridAddressToolStripMenuItem"
+        Me.ShowHyperGridAddressToolStripMenuItem.Size = New System.Drawing.Size(210, 22)
+        Me.ShowHyperGridAddressToolStripMenuItem.Text = "Show HyperGrid Address"
+        Me.ShowHyperGridAddressToolStripMenuItem.ToolTipText = "You can give this address out to oepple and they can visit your grid"
+        '
+        'BackupToolStripMenuItem
+        '
+        Me.BackupToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AllRegionsToolStripMenuItem, Me.MysqlToolStripMenuItem, Me.RestoreDatabaseToolStripMenuItem})
+        Me.BackupToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.disk_blue
+        Me.BackupToolStripMenuItem.Name = "BackupToolStripMenuItem"
+        Me.BackupToolStripMenuItem.Size = New System.Drawing.Size(210, 22)
+        Me.BackupToolStripMenuItem.Text = "Backup and Restore"
+        '
+        'AllRegionsToolStripMenuItem
+        '
+        Me.AllRegionsToolStripMenuItem.Image = CType(resources.GetObject("AllRegionsToolStripMenuItem.Image"), System.Drawing.Image)
+        Me.AllRegionsToolStripMenuItem.Name = "AllRegionsToolStripMenuItem"
+        Me.AllRegionsToolStripMenuItem.Size = New System.Drawing.Size(184, 22)
+        Me.AllRegionsToolStripMenuItem.Text = "All Regions => OARs"
+        '
+        'MysqlToolStripMenuItem
+        '
+        Me.MysqlToolStripMenuItem.Image = CType(resources.GetObject("MysqlToolStripMenuItem.Image"), System.Drawing.Image)
+        Me.MysqlToolStripMenuItem.Name = "MysqlToolStripMenuItem"
+        Me.MysqlToolStripMenuItem.Size = New System.Drawing.Size(184, 22)
+        Me.MysqlToolStripMenuItem.Text = "Backup Database"
+        '
+        'RestoreDatabaseToolStripMenuItem
+        '
+        Me.RestoreDatabaseToolStripMenuItem.Image = CType(resources.GetObject("RestoreDatabaseToolStripMenuItem.Image"), System.Drawing.Image)
+        Me.RestoreDatabaseToolStripMenuItem.Name = "RestoreDatabaseToolStripMenuItem"
+        Me.RestoreDatabaseToolStripMenuItem.Size = New System.Drawing.Size(184, 22)
+        Me.RestoreDatabaseToolStripMenuItem.Text = "Restore Database"
+        '
+        'ConsoleCOmmandsToolStripMenuItem1
+        '
+        Me.ConsoleCOmmandsToolStripMenuItem1.Image = Global.Outworldz.My.Resources.Resources.document_view
+        Me.ConsoleCOmmandsToolStripMenuItem1.Name = "ConsoleCOmmandsToolStripMenuItem1"
+        Me.ConsoleCOmmandsToolStripMenuItem1.Size = New System.Drawing.Size(210, 22)
+        Me.ConsoleCOmmandsToolStripMenuItem1.Text = "View Console Commands"
+        '
+        'WebStatsToolStripMenuItem
+        '
+        Me.WebStatsToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.document_chart
+        Me.WebStatsToolStripMenuItem.Name = "WebStatsToolStripMenuItem"
+        Me.WebStatsToolStripMenuItem.Size = New System.Drawing.Size(210, 22)
+        Me.WebStatsToolStripMenuItem.Text = "View Web Stats"
+        '
+        'ViewWebUI
+        '
+        Me.ViewWebUI.Image = Global.Outworldz.My.Resources.Resources.document_view
+        Me.ViewWebUI.Name = "ViewWebUI"
+        Me.ViewWebUI.Size = New System.Drawing.Size(210, 22)
+        Me.ViewWebUI.Text = "View Web Interface"
+        Me.ViewWebUI.ToolTipText = "The WIfi Interface can be used to add new users"
+        '
+        'ToolStripMenuItem2
+        '
+        Me.ToolStripMenuItem2.Image = Global.Outworldz.My.Resources.Resources.earth_network
+        Me.ToolStripMenuItem2.Name = "ToolStripMenuItem2"
+        Me.ToolStripMenuItem2.Size = New System.Drawing.Size(210, 22)
+        Me.ToolStripMenuItem2.Text = "Port/UPnP Setup"
+        '
+        'ToolStripMenuItem1
+        '
+        Me.ToolStripMenuItem1.Image = Global.Outworldz.My.Resources.Resources.replace2
+        Me.ToolStripMenuItem1.Name = "ToolStripMenuItem1"
+        Me.ToolStripMenuItem1.Size = New System.Drawing.Size(210, 22)
+        Me.ToolStripMenuItem1.Text = "Help on Port Forwarding"
+        Me.ToolStripMenuItem1.ToolTipText = "Web Help for Port Forwarding"
+        '
+        'LoopBackToolStripMenuItem
+        '
+        Me.LoopBackToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.refresh
+        Me.LoopBackToolStripMenuItem.Name = "LoopBackToolStripMenuItem"
+        Me.LoopBackToolStripMenuItem.Size = New System.Drawing.Size(210, 22)
+        Me.LoopBackToolStripMenuItem.Text = "Help on LoopBack "
+        Me.LoopBackToolStripMenuItem.ToolTipText = "How to fix Loopback on Windows"
+        '
+        'DiagnosticsToolStripMenuItem
+        '
+        Me.DiagnosticsToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.flash
+        Me.DiagnosticsToolStripMenuItem.Name = "DiagnosticsToolStripMenuItem"
+        Me.DiagnosticsToolStripMenuItem.Size = New System.Drawing.Size(210, 22)
+        Me.DiagnosticsToolStripMenuItem.Text = "Network Diagnostics"
+        Me.DiagnosticsToolStripMenuItem.ToolTipText = "Re-Run the installation diagnostics"
+        '
+        'CheckDatabaseToolStripMenuItem
+        '
+        Me.CheckDatabaseToolStripMenuItem.Image = CType(resources.GetObject("CheckDatabaseToolStripMenuItem.Image"), System.Drawing.Image)
+        Me.CheckDatabaseToolStripMenuItem.Name = "CheckDatabaseToolStripMenuItem"
+        Me.CheckDatabaseToolStripMenuItem.Size = New System.Drawing.Size(210, 22)
+        Me.CheckDatabaseToolStripMenuItem.Text = "Check Database"
+        Me.CheckDatabaseToolStripMenuItem.ToolTipText = "Repairs corrupt MySQL table"
+        '
+        'CHeckForUpdatesToolStripMenuItem
+        '
+        Me.CHeckForUpdatesToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.download1
+        Me.CHeckForUpdatesToolStripMenuItem.Name = "CHeckForUpdatesToolStripMenuItem"
+        Me.CHeckForUpdatesToolStripMenuItem.Size = New System.Drawing.Size(210, 22)
+        Me.CHeckForUpdatesToolStripMenuItem.Text = "Check for Updates"
+        '
+        'mnuAbout
+        '
+        Me.mnuAbout.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None
+        Me.mnuAbout.Image = Global.Outworldz.My.Resources.Resources.question_and_answer
+        Me.mnuAbout.Name = "mnuAbout"
+        Me.mnuAbout.Size = New System.Drawing.Size(210, 22)
+        Me.mnuAbout.Text = "About"
         '
         'MenuStrip1
         '
@@ -181,6 +318,59 @@ Partial Class Form1
         Me.MnuContent.Name = "MnuContent"
         Me.MnuContent.Size = New System.Drawing.Size(62, 20)
         Me.MnuContent.Text = "Content"
+        '
+        'IslandToolStripMenuItem
+        '
+        Me.IslandToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.box_tall
+        Me.IslandToolStripMenuItem.Name = "IslandToolStripMenuItem"
+        Me.IslandToolStripMenuItem.Size = New System.Drawing.Size(187, 22)
+        Me.IslandToolStripMenuItem.Text = "Load New Island"
+        Me.IslandToolStripMenuItem.ToolTipText = "OAR files are backups of entire Islands"
+        '
+        'ClothingInventoryToolStripMenuItem
+        '
+        Me.ClothingInventoryToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.user1_into
+        Me.ClothingInventoryToolStripMenuItem.Name = "ClothingInventoryToolStripMenuItem"
+        Me.ClothingInventoryToolStripMenuItem.Size = New System.Drawing.Size(187, 22)
+        Me.ClothingInventoryToolStripMenuItem.Text = "Free Avatar Parts"
+        Me.ClothingInventoryToolStripMenuItem.ToolTipText = "IAR files are baclups of inventory items"
+        '
+        'MoreContentToolStripMenuItem
+        '
+        Me.MoreContentToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.download
+        Me.MoreContentToolStripMenuItem.Name = "MoreContentToolStripMenuItem"
+        Me.MoreContentToolStripMenuItem.Size = New System.Drawing.Size(187, 22)
+        Me.MoreContentToolStripMenuItem.Text = "Free Islands and Parts"
+        Me.MoreContentToolStripMenuItem.ToolTipText = "Outworldz has a entirely free content."
+        '
+        'LoadBackupToolStripMenuItem
+        '
+        Me.LoadBackupToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.box_tall
+        Me.LoadBackupToolStripMenuItem.Name = "LoadBackupToolStripMenuItem"
+        Me.LoadBackupToolStripMenuItem.Size = New System.Drawing.Size(187, 22)
+        Me.LoadBackupToolStripMenuItem.Text = "Load Backup"
+        Me.LoadBackupToolStripMenuItem.ToolTipText = "Choose a OAR backup file to restore"
+        '
+        'SaveBackupToolStripMenuItem
+        '
+        Me.SaveBackupToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.disk_blue
+        Me.SaveBackupToolStripMenuItem.Name = "SaveBackupToolStripMenuItem"
+        Me.SaveBackupToolStripMenuItem.Size = New System.Drawing.Size(187, 22)
+        Me.SaveBackupToolStripMenuItem.Text = "Save Backup"
+        '
+        'LoadInventoryToolStripMenuItem
+        '
+        Me.LoadInventoryToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.cube_blue
+        Me.LoadInventoryToolStripMenuItem.Name = "LoadInventoryToolStripMenuItem"
+        Me.LoadInventoryToolStripMenuItem.Size = New System.Drawing.Size(187, 22)
+        Me.LoadInventoryToolStripMenuItem.Text = "Load Inventory"
+        '
+        'SaveInventoryToolStripMenuItem
+        '
+        Me.SaveInventoryToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.disk_blue
+        Me.SaveInventoryToolStripMenuItem.Name = "SaveInventoryToolStripMenuItem"
+        Me.SaveInventoryToolStripMenuItem.Size = New System.Drawing.Size(187, 22)
+        Me.SaveInventoryToolStripMenuItem.Text = "Save Inventory"
         '
         'WebBrowser3
         '
@@ -280,321 +470,12 @@ Partial Class Form1
         Me.PictureBox1.TabIndex = 27
         Me.PictureBox1.TabStop = False
         '
-        'ConsoleToolStripMenuItem1
-        '
-        Me.ConsoleToolStripMenuItem1.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuHide, Me.mnuShow})
-        Me.ConsoleToolStripMenuItem1.Image = Global.Outworldz.My.Resources.Resources.window_add
-        Me.ConsoleToolStripMenuItem1.Name = "ConsoleToolStripMenuItem1"
-        Me.ConsoleToolStripMenuItem1.Size = New System.Drawing.Size(170, 22)
-        Me.ConsoleToolStripMenuItem1.Text = "Opensim Console"
-        Me.ConsoleToolStripMenuItem1.ToolTipText = "The Opensim Dos Box can be minimized automatically"
-        '
-        'mnuHide
-        '
-        Me.mnuHide.Checked = True
-        Me.mnuHide.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.mnuHide.Name = "mnuHide"
-        Me.mnuHide.Size = New System.Drawing.Size(103, 22)
-        Me.mnuHide.Text = "Hide"
-        '
-        'mnuShow
-        '
-        Me.mnuShow.Name = "mnuShow"
-        Me.mnuShow.Size = New System.Drawing.Size(103, 22)
-        Me.mnuShow.Text = "Show"
-        '
-        'ViewerToolStripMenuItem
-        '
-        Me.ViewerToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuViewerType, Me.mnuOther})
-        Me.ViewerToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.window_environment
-        Me.ViewerToolStripMenuItem.Name = "ViewerToolStripMenuItem"
-        Me.ViewerToolStripMenuItem.Size = New System.Drawing.Size(170, 22)
-        Me.ViewerToolStripMenuItem.Text = "Viewer Type"
-        Me.ViewerToolStripMenuItem.ToolTipText = "ViewerType is a easy to use and efficient viewer"
-        '
-        'mnuViewerType
-        '
-        Me.mnuViewerType.Checked = True
-        Me.mnuViewerType.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.mnuViewerType.Name = "mnuViewerType"
-        Me.mnuViewerType.Size = New System.Drawing.Size(113, 22)
-        Me.mnuViewerType.Text = "ViewerType"
-        '
-        'mnuOther
-        '
-        Me.mnuOther.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.KokuaToolStripMenuItem, Me.CatznipToolStripMenuItem, Me.SingularityToolStripMenuItem, Me.FirestormToolStripMenuItem, Me.AlchemyToolStripMenuItem, Me.UKanDoToolStripMenuItem})
-        Me.mnuOther.Name = "mnuOther"
-        Me.mnuOther.Size = New System.Drawing.Size(113, 22)
-        Me.mnuOther.Text = "Other "
-        '
-        'KokuaToolStripMenuItem
-        '
-        Me.KokuaToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.TPV_Kokua_Icon
-        Me.KokuaToolStripMenuItem.Name = "KokuaToolStripMenuItem"
-        Me.KokuaToolStripMenuItem.Size = New System.Drawing.Size(130, 22)
-        Me.KokuaToolStripMenuItem.Text = "Kokua"
-        '
-        'CatznipToolStripMenuItem
-        '
-        Me.CatznipToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.TPV_Catznip_Icon
-        Me.CatznipToolStripMenuItem.Name = "CatznipToolStripMenuItem"
-        Me.CatznipToolStripMenuItem.Size = New System.Drawing.Size(130, 22)
-        Me.CatznipToolStripMenuItem.Text = "Catznip"
-        '
-        'SingularityToolStripMenuItem
-        '
-        Me.SingularityToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.TPV_Singularity_Icon
-        Me.SingularityToolStripMenuItem.Name = "SingularityToolStripMenuItem"
-        Me.SingularityToolStripMenuItem.Size = New System.Drawing.Size(130, 22)
-        Me.SingularityToolStripMenuItem.Text = "Singularity"
-        '
-        'FirestormToolStripMenuItem
-        '
-        Me.FirestormToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.TPV_Firestorm_Icon
-        Me.FirestormToolStripMenuItem.Name = "FirestormToolStripMenuItem"
-        Me.FirestormToolStripMenuItem.Size = New System.Drawing.Size(130, 22)
-        Me.FirestormToolStripMenuItem.Text = "Firestorm"
-        '
-        'AlchemyToolStripMenuItem
-        '
-        Me.AlchemyToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.TPV_Alchemy_Icon
-        Me.AlchemyToolStripMenuItem.Name = "AlchemyToolStripMenuItem"
-        Me.AlchemyToolStripMenuItem.Size = New System.Drawing.Size(130, 22)
-        Me.AlchemyToolStripMenuItem.Text = "Alchemy"
-        '
-        'UKanDoToolStripMenuItem
-        '
-        Me.UKanDoToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.TPV_UKanDo_Icon
-        Me.UKanDoToolStripMenuItem.Name = "UKanDoToolStripMenuItem"
-        Me.UKanDoToolStripMenuItem.Size = New System.Drawing.Size(130, 22)
-        Me.UKanDoToolStripMenuItem.Text = "UKanDo"
-        '
-        'VUI
-        '
-        Me.VUI.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuEasy, Me.mnuFull})
-        Me.VUI.Image = Global.Outworldz.My.Resources.Resources.window_edit
-        Me.VUI.Name = "VUI"
-        Me.VUI.Size = New System.Drawing.Size(170, 22)
-        Me.VUI.Text = "Viewer UI"
-        Me.VUI.ToolTipText = "New users should select Easy Mode"
-        '
-        'mnuEasy
-        '
-        Me.mnuEasy.Checked = True
-        Me.mnuEasy.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.mnuEasy.Name = "mnuEasy"
-        Me.mnuEasy.Size = New System.Drawing.Size(97, 22)
-        Me.mnuEasy.Text = "Easy"
-        '
-        'mnuFull
-        '
-        Me.mnuFull.Name = "mnuFull"
-        Me.mnuFull.Size = New System.Drawing.Size(97, 22)
-        Me.mnuFull.Text = "Full"
-        '
-        'AvatarVisible
-        '
-        Me.AvatarVisible.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuNoAvatar, Me.mnuYesAvatar})
-        Me.AvatarVisible.Image = Global.Outworldz.My.Resources.Resources.users1
-        Me.AvatarVisible.Name = "AvatarVisible"
-        Me.AvatarVisible.Size = New System.Drawing.Size(170, 22)
-        Me.AvatarVisible.Text = "Avatar Visible?"
-        Me.AvatarVisible.ToolTipText = "The avatar can be hidden. Use the arrow keys and PG Up/Dwon to view"
-        '
-        'mnuNoAvatar
-        '
-        Me.mnuNoAvatar.Checked = True
-        Me.mnuNoAvatar.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.mnuNoAvatar.Name = "mnuNoAvatar"
-        Me.mnuNoAvatar.Size = New System.Drawing.Size(91, 22)
-        Me.mnuNoAvatar.Text = "No"
-        '
-        'mnuYesAvatar
-        '
-        Me.mnuYesAvatar.Name = "mnuYesAvatar"
-        Me.mnuYesAvatar.Size = New System.Drawing.Size(91, 22)
-        Me.mnuYesAvatar.Text = "Yes"
-        '
-        'AdvancedSettingsToolStripMenuItem
-        '
-        Me.AdvancedSettingsToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.earth_network
-        Me.AdvancedSettingsToolStripMenuItem.Name = "AdvancedSettingsToolStripMenuItem"
-        Me.AdvancedSettingsToolStripMenuItem.Size = New System.Drawing.Size(170, 22)
-        Me.AdvancedSettingsToolStripMenuItem.Text = "Common Settings"
-        Me.AdvancedSettingsToolStripMenuItem.ToolTipText = "Deep stuff."
-        '
-        'ExpertSettingsToolStripMenuItem
-        '
-        Me.ExpertSettingsToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.transform
-        Me.ExpertSettingsToolStripMenuItem.Name = "ExpertSettingsToolStripMenuItem"
-        Me.ExpertSettingsToolStripMenuItem.Size = New System.Drawing.Size(170, 22)
-        Me.ExpertSettingsToolStripMenuItem.Text = "Expert Settings"
-        '
-        'IslandToolStripMenuItem
-        '
-        Me.IslandToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.box_tall
-        Me.IslandToolStripMenuItem.Name = "IslandToolStripMenuItem"
-        Me.IslandToolStripMenuItem.Size = New System.Drawing.Size(187, 22)
-        Me.IslandToolStripMenuItem.Text = "Load New Island"
-        Me.IslandToolStripMenuItem.ToolTipText = "OAR files are backups of entire Islands"
-        '
-        'ClothingInventoryToolStripMenuItem
-        '
-        Me.ClothingInventoryToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.user1_into
-        Me.ClothingInventoryToolStripMenuItem.Name = "ClothingInventoryToolStripMenuItem"
-        Me.ClothingInventoryToolStripMenuItem.Size = New System.Drawing.Size(187, 22)
-        Me.ClothingInventoryToolStripMenuItem.Text = "Free Avatar Parts"
-        Me.ClothingInventoryToolStripMenuItem.ToolTipText = "IAR files are baclups of inventory items"
-        '
-        'MoreContentToolStripMenuItem
-        '
-        Me.MoreContentToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.download
-        Me.MoreContentToolStripMenuItem.Name = "MoreContentToolStripMenuItem"
-        Me.MoreContentToolStripMenuItem.Size = New System.Drawing.Size(187, 22)
-        Me.MoreContentToolStripMenuItem.Text = "Free Islands and Parts"
-        Me.MoreContentToolStripMenuItem.ToolTipText = "Outworldz has a entirely free content."
-        '
-        'LoadBackupToolStripMenuItem
-        '
-        Me.LoadBackupToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.box_tall
-        Me.LoadBackupToolStripMenuItem.Name = "LoadBackupToolStripMenuItem"
-        Me.LoadBackupToolStripMenuItem.Size = New System.Drawing.Size(187, 22)
-        Me.LoadBackupToolStripMenuItem.Text = "Load Backup"
-        Me.LoadBackupToolStripMenuItem.ToolTipText = "Choose a OAR backup file to restore"
-        '
-        'SaveBackupToolStripMenuItem
-        '
-        Me.SaveBackupToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.disk_blue
-        Me.SaveBackupToolStripMenuItem.Name = "SaveBackupToolStripMenuItem"
-        Me.SaveBackupToolStripMenuItem.Size = New System.Drawing.Size(187, 22)
-        Me.SaveBackupToolStripMenuItem.Text = "Save Backup"
-        '
-        'LoadInventoryToolStripMenuItem
-        '
-        Me.LoadInventoryToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.cube_blue
-        Me.LoadInventoryToolStripMenuItem.Name = "LoadInventoryToolStripMenuItem"
-        Me.LoadInventoryToolStripMenuItem.Size = New System.Drawing.Size(187, 22)
-        Me.LoadInventoryToolStripMenuItem.Text = "Load Inventory"
-        '
-        'SaveInventoryToolStripMenuItem
-        '
-        Me.SaveInventoryToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.disk_blue
-        Me.SaveInventoryToolStripMenuItem.Name = "SaveInventoryToolStripMenuItem"
-        Me.SaveInventoryToolStripMenuItem.Size = New System.Drawing.Size(187, 22)
-        Me.SaveInventoryToolStripMenuItem.Text = "Save Inventory"
-        '
-        'ShowHyperGridAddressToolStripMenuItem
-        '
-        Me.ShowHyperGridAddressToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.window_environment1
-        Me.ShowHyperGridAddressToolStripMenuItem.Name = "ShowHyperGridAddressToolStripMenuItem"
-        Me.ShowHyperGridAddressToolStripMenuItem.Size = New System.Drawing.Size(205, 22)
-        Me.ShowHyperGridAddressToolStripMenuItem.Text = "Show HyperGrid Address"
-        Me.ShowHyperGridAddressToolStripMenuItem.ToolTipText = "You can give this address out to oepple and they can visit your grid"
-        '
-        'BackupToolStripMenuItem
-        '
-        Me.BackupToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AllRegionsToolStripMenuItem, Me.MysqlToolStripMenuItem, Me.RestoreDatabaseToolStripMenuItem})
-        Me.BackupToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.disk_blue
-        Me.BackupToolStripMenuItem.Name = "BackupToolStripMenuItem"
-        Me.BackupToolStripMenuItem.Size = New System.Drawing.Size(205, 22)
-        Me.BackupToolStripMenuItem.Text = "Backup and Restore"
-        '
-        'AllRegionsToolStripMenuItem
-        '
-        Me.AllRegionsToolStripMenuItem.Image = CType(resources.GetObject("AllRegionsToolStripMenuItem.Image"), System.Drawing.Image)
-        Me.AllRegionsToolStripMenuItem.Name = "AllRegionsToolStripMenuItem"
-        Me.AllRegionsToolStripMenuItem.Size = New System.Drawing.Size(184, 22)
-        Me.AllRegionsToolStripMenuItem.Text = "All Regions => OARs"
-        '
-        'MysqlToolStripMenuItem
-        '
-        Me.MysqlToolStripMenuItem.Image = CType(resources.GetObject("MysqlToolStripMenuItem.Image"), System.Drawing.Image)
-        Me.MysqlToolStripMenuItem.Name = "MysqlToolStripMenuItem"
-        Me.MysqlToolStripMenuItem.Size = New System.Drawing.Size(184, 22)
-        Me.MysqlToolStripMenuItem.Text = "Backup Database"
-        '
-        'RestoreDatabaseToolStripMenuItem
-        '
-        Me.RestoreDatabaseToolStripMenuItem.Image = CType(resources.GetObject("RestoreDatabaseToolStripMenuItem.Image"), System.Drawing.Image)
-        Me.RestoreDatabaseToolStripMenuItem.Name = "RestoreDatabaseToolStripMenuItem"
-        Me.RestoreDatabaseToolStripMenuItem.Size = New System.Drawing.Size(184, 22)
-        Me.RestoreDatabaseToolStripMenuItem.Text = "Restore Database"
-        '
-        'ConsoleCOmmandsToolStripMenuItem1
-        '
-        Me.ConsoleCOmmandsToolStripMenuItem1.Image = Global.Outworldz.My.Resources.Resources.document_view
-        Me.ConsoleCOmmandsToolStripMenuItem1.Name = "ConsoleCOmmandsToolStripMenuItem1"
-        Me.ConsoleCOmmandsToolStripMenuItem1.Size = New System.Drawing.Size(205, 22)
-        Me.ConsoleCOmmandsToolStripMenuItem1.Text = "Console Commands"
-        '
-        'WebStatsToolStripMenuItem
-        '
-        Me.WebStatsToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.document_chart
-        Me.WebStatsToolStripMenuItem.Name = "WebStatsToolStripMenuItem"
-        Me.WebStatsToolStripMenuItem.Size = New System.Drawing.Size(205, 22)
-        Me.WebStatsToolStripMenuItem.Text = "View Web Stats"
-        '
-        'ViewWebUI
-        '
-        Me.ViewWebUI.Image = Global.Outworldz.My.Resources.Resources.document_view
-        Me.ViewWebUI.Name = "ViewWebUI"
-        Me.ViewWebUI.Size = New System.Drawing.Size(205, 22)
-        Me.ViewWebUI.Text = "View Web Interface"
-        Me.ViewWebUI.ToolTipText = "The WIfi Interface can be used to add new users"
-        '
-        'ToolStripMenuItem2
-        '
-        Me.ToolStripMenuItem2.Image = Global.Outworldz.My.Resources.Resources.earth_network
-        Me.ToolStripMenuItem2.Name = "ToolStripMenuItem2"
-        Me.ToolStripMenuItem2.Size = New System.Drawing.Size(205, 22)
-        Me.ToolStripMenuItem2.Text = "Port/UPnP Setup"
-        '
-        'ToolStripMenuItem1
-        '
-        Me.ToolStripMenuItem1.Image = Global.Outworldz.My.Resources.Resources.replace2
-        Me.ToolStripMenuItem1.Name = "ToolStripMenuItem1"
-        Me.ToolStripMenuItem1.Size = New System.Drawing.Size(205, 22)
-        Me.ToolStripMenuItem1.Text = "Help on Port Forwarding"
-        Me.ToolStripMenuItem1.ToolTipText = "Web Help for Port Forwarding"
-        '
-        'LoopBackToolStripMenuItem
-        '
-        Me.LoopBackToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.refresh
-        Me.LoopBackToolStripMenuItem.Name = "LoopBackToolStripMenuItem"
-        Me.LoopBackToolStripMenuItem.Size = New System.Drawing.Size(205, 22)
-        Me.LoopBackToolStripMenuItem.Text = "Help on LoopBack "
-        Me.LoopBackToolStripMenuItem.ToolTipText = "How to fix Loopback on Windows"
-        '
-        'DiagnosticsToolStripMenuItem
-        '
-        Me.DiagnosticsToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.flash
-        Me.DiagnosticsToolStripMenuItem.Name = "DiagnosticsToolStripMenuItem"
-        Me.DiagnosticsToolStripMenuItem.Size = New System.Drawing.Size(205, 22)
-        Me.DiagnosticsToolStripMenuItem.Text = "Network Diagnostics"
-        Me.DiagnosticsToolStripMenuItem.ToolTipText = "Re-Run the installation diagnostics"
-        '
-        'CheckDatabaseToolStripMenuItem
-        '
-        Me.CheckDatabaseToolStripMenuItem.Image = CType(resources.GetObject("CheckDatabaseToolStripMenuItem.Image"), System.Drawing.Image)
-        Me.CheckDatabaseToolStripMenuItem.Name = "CheckDatabaseToolStripMenuItem"
-        Me.CheckDatabaseToolStripMenuItem.Size = New System.Drawing.Size(205, 22)
-        Me.CheckDatabaseToolStripMenuItem.Text = "Check Database"
-        Me.CheckDatabaseToolStripMenuItem.ToolTipText = "Repairs corrupt MySQL table"
-        '
-        'CHeckForUpdatesToolStripMenuItem
-        '
-        Me.CHeckForUpdatesToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.download1
-        Me.CHeckForUpdatesToolStripMenuItem.Name = "CHeckForUpdatesToolStripMenuItem"
-        Me.CHeckForUpdatesToolStripMenuItem.Size = New System.Drawing.Size(205, 22)
-        Me.CHeckForUpdatesToolStripMenuItem.Text = "Check for Updates"
-        '
-        'mnuAbout
-        '
-        Me.mnuAbout.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None
-        Me.mnuAbout.Image = Global.Outworldz.My.Resources.Resources.question_and_answer
-        Me.mnuAbout.Name = "mnuAbout"
-        Me.mnuAbout.Size = New System.Drawing.Size(205, 22)
-        Me.mnuAbout.Text = "About"
+        'RegionsToolStripMenuItem
+        '
+        Me.RegionsToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.server_gWSCLient
+        Me.RegionsToolStripMenuItem.Name = "RegionsToolStripMenuItem"
+        Me.RegionsToolStripMenuItem.Size = New System.Drawing.Size(170, 22)
+        Me.RegionsToolStripMenuItem.Text = "Regions"
         '
         'Form1
         '
@@ -654,12 +535,6 @@ Partial Class Form1
     Friend WithEvents ConsoleToolStripMenuItem1 As ToolStripMenuItem
     Friend WithEvents mnuHide As ToolStripMenuItem
     Friend WithEvents mnuShow As ToolStripMenuItem
-    Friend WithEvents VUI As ToolStripMenuItem
-    Friend WithEvents mnuEasy As ToolStripMenuItem
-    Friend WithEvents mnuFull As ToolStripMenuItem
-    Friend WithEvents AvatarVisible As ToolStripMenuItem
-    Friend WithEvents mnuNoAvatar As ToolStripMenuItem
-    Friend WithEvents mnuYesAvatar As ToolStripMenuItem
     Friend WithEvents HelpToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents mnuAbout As ToolStripMenuItem
     Friend WithEvents MenuStrip1 As MenuStrip
@@ -671,19 +546,10 @@ Partial Class Form1
     Friend WithEvents ClothingInventoryToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents MensClothingToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents FemaleClothingToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents ViewerToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents mnuViewerType As ToolStripMenuItem
-    Friend WithEvents mnuOther As ToolStripMenuItem
     Friend WithEvents LoopBackToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents MoreContentToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents AdvancedSettingsToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ToolStripMenuItem1 As ToolStripMenuItem
-    Friend WithEvents FirestormToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents AlchemyToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents UKanDoToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents KokuaToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents CatznipToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents SingularityToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents CHeckForUpdatesToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents DiagnosticsToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents UpdaterGo As Button
@@ -709,4 +575,5 @@ Partial Class Form1
     Friend WithEvents ConsoleCOmmandsToolStripMenuItem1 As ToolStripMenuItem
     Friend WithEvents ToolStripMenuItem2 As ToolStripMenuItem
     Friend WithEvents ExpertSettingsToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents RegionsToolStripMenuItem As ToolStripMenuItem
 End Class

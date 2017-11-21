@@ -617,38 +617,6 @@ Public Class Form1
         End If
     End Sub
 
-    Private Sub mnuEasy_Click_1(sender As System.Object, e As System.EventArgs) Handles mnuEasy.Click
-        mnuEasy.Checked = True
-        mnuFull.Checked = False
-        My.Settings.ViewerEase = True
-        My.Settings.Save()
-        Print("Viewer is set for Easy UI mode. Change will occur when the sim is restarted")
-    End Sub
-
-    Private Sub mnuFull_Click(sender As System.Object, e As System.EventArgs) Handles mnuFull.Click
-        mnuEasy.Checked = False
-        mnuFull.Checked = True
-        My.Settings.ViewerEase = False
-        My.Settings.Save()
-        Print("Viewer is set for the Full UI mode. Change will occur when the sim is restarted")
-    End Sub
-
-    Private Sub NoneToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles mnuNoAvatar.Click
-        mnuNoAvatar.Checked = True
-        mnuYesAvatar.Checked = False
-        My.Settings.AvatarShow = False
-        My.Settings.Save()
-        Print("Your Avatar will not be shown when you log in. Change will occur when the Viewer is next logged in.")
-    End Sub
-
-    Private Sub VisibleToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles mnuYesAvatar.Click
-        Print("Your Avatar will be shown when you log in. Use the Arrow keys to move around. Use Page Up and Page Down to move the camera Up and Down.  Change will occur when the Viewer is next logged in")
-        mnuYesAvatar.Checked = True
-        mnuNoAvatar.Checked = False
-        My.Settings.AvatarShow = True
-        My.Settings.Save()
-    End Sub
-
     Public Function Random() As String
         Dim value As Integer = CInt(Int((600000000 * Rnd()) + 1))
         Random = System.Convert.ToString(value)
@@ -794,22 +762,6 @@ Public Class Form1
             Log("Info:Console will be shown")
         Else
             Log("Info:Console will not be shown")
-        End If
-
-        mnuFull.Checked = Not My.Settings.ViewerEase
-        mnuEasy.Checked = My.Settings.ViewerEase
-        If mnuFull.Checked Then
-            Log("Info:ViewerType Menu is set to Full UI")
-        Else
-            Log("Info:ViewerType Menu is set to Minimum")
-        End If
-
-        mnuYesAvatar.Checked = My.Settings.AvatarShow
-        mnuNoAvatar.Checked = Not My.Settings.AvatarShow
-        If mnuYesAvatar.Checked Then
-            Log("Info:Avatar will be visible")
-        Else
-            Log("Info:Avatar will not be visible")
         End If
 
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -1203,23 +1155,19 @@ Public Class Form1
         End If
     End Sub
 
-    Private Sub ViewerTypeToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles mnuViewerType.Click
+    Private Sub ViewerTypeToolStripMenuItem_Click(sender As Object, e As EventArgs)
         Print("Viewer will be launched on Startup")
-        mnuOther.Checked = False
-        mnuViewerType.Checked = True
+
         My.Settings.RunViewer = True
         My.Settings.Save()
-        VUI.Visible = True
-        AvatarVisible.Visible = True
+
     End Sub
 
-    Private Sub OtherToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles mnuOther.Click
+    Private Sub OtherToolStripMenuItem_Click(sender As Object, e As EventArgs)
         Print("Viewer will not be launched on Startup.")
-        mnuOther.Checked = True
-        mnuViewerType.Checked = False
+
         My.Settings.RunViewer = False
-        VUI.Visible = False
-        AvatarVisible.Visible = False
+
         My.Settings.Save()
     End Sub
 
@@ -1429,32 +1377,32 @@ Public Class Form1
 
 #Region "Viewers"
 
-    Private Sub SingularityToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles SingularityToolStripMenuItem.Click
+    Private Sub SingularityToolStripMenuItem_Click(sender As Object, e As EventArgs)
         Dim webAddress As String = "http://www.singularityviewer.org/"
         Process.Start(webAddress)
     End Sub
 
-    Private Sub CatznipToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CatznipToolStripMenuItem.Click
+    Private Sub CatznipToolStripMenuItem_Click(sender As Object, e As EventArgs)
         Dim webAddress As String = "http://catznip.com/"
         Process.Start(webAddress)
     End Sub
 
-    Private Sub KokuaToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles KokuaToolStripMenuItem.Click
+    Private Sub KokuaToolStripMenuItem_Click(sender As Object, e As EventArgs)
         Dim webAddress As String = "http://blog.kokuaviewer.org/"
         Process.Start(webAddress)
     End Sub
 
-    Private Sub UKanDoToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles UKanDoToolStripMenuItem.Click
+    Private Sub UKanDoToolStripMenuItem_Click(sender As Object, e As EventArgs)
         Dim webAddress As String = "http://www.ukando.info/"
         Process.Start(webAddress)
     End Sub
 
-    Private Sub FirestormToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles FirestormToolStripMenuItem.Click
+    Private Sub FirestormToolStripMenuItem_Click(sender As Object, e As EventArgs)
         Dim webAddress As String = "http://www.firestormviewer.org/"
         Process.Start(webAddress)
     End Sub
 
-    Private Sub AlchemyToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AlchemyToolStripMenuItem.Click
+    Private Sub AlchemyToolStripMenuItem_Click(sender As Object, e As EventArgs)
         Dim webAddress As String = "https://www.alchemyviewer.org/"
         Process.Start(webAddress)
     End Sub
