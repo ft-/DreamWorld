@@ -200,10 +200,11 @@ Public Class FormRegion
 
         ' save the Region File
         If oldname.Length Then
-            Dim oldfile = dir + "Regions\" + oldname + "\Region\" + oldname + ".ini"
+            Dim oldfile = dir + "Regions\" + oldname
             Try
-                My.Computer.FileSystem.DeleteFile(oldfile)
+                Directory.Delete(oldfile, True)
             Catch ex As Exception
+                Debug.Print(ex.Message)
             End Try
         End If
 
@@ -217,31 +218,24 @@ Public Class FormRegion
         End If
 
         Dim Region = "; * Regions configuration file" &
-                        "; * This Is Your World. Change This And It Will BREAK. See Advance->[Region Settings] instead." &
-                        "; Automatically changed by Dreamworld - do Not change this file!" &
-                        "[" & MyRegion.RegionName & "]" &
-                        "RegionUUID = " & MyRegion.UUID &
-                        "Location = " & """" & MyRegion.CoordX & "," & MyRegion.CoordY & """" &
-                        "InternalAddress = 0.0.0.0" &
-                        "InternalPort = " & MyRegion.RegionPort &
-                        "AllowAlternatePorts = False" &
-                        "ExternalHostName = " & My.Settings.PublicIP &
-                        "SizeX = " & MyRegion.SizeX &
-                        "SizeY = " & MyRegion.SizeY
+                        "; * This Is Your World. Change This And It Will BREAK. See Advance->[Region Settings] instead." & vbCrLf &
+                        "; Automatically changed by Dreamworld - do Not change this file!" & vbCrLf &
+                        "[" & MyRegion.RegionName & "]" & vbCrLf &
+                        "RegionUUID = " & MyRegion.UUID & vbCrLf &
+                        "Location = " & """" & MyRegion.CoordX & "," & MyRegion.CoordY & """" & vbCrLf &
+                        "InternalAddress = 0.0.0.0" & vbCrLf &
+                        "InternalPort = " & MyRegion.RegionPort & vbCrLf &
+                        "AllowAlternatePorts = False" & vbCrLf &
+                        "ExternalHostName = " & My.Settings.PublicIP & vbCrLf &
+                        "SizeX = " & MyRegion.SizeX & vbCrLf &
+                        "SizeY = " & MyRegion.SizeY & vbCrLf &
+                        "Enabled = true" & vbCrLf
 
 
-        File.Copy(dir & "bin\Regions.proto", dir & "bin\Regions\" & MyRegion.RegionName & "\Region\" & MyRegion.RegionName & ".ini", True)
-
-        Form1.LoadIni(dir & "bin\Regions\" & MyRegion.RegionName & "\Region\" & MyRegion.RegionName & ".ini", ";")
-        Form1.SetIni(Name, "RegionUUID", MyRegion.UUID)
-        Form1.SetIni(Name, "Location", MyRegion.CoordX & "," & MyRegion.CoordY)
-        Form1.SetIni(Name, "InternalPort", MyRegion.RegionPort)
-        Form1.SetIni(Name, "ExternalHostName", My.Settings.PublicIP)
-        Form1.SetIni(Name, "SizeX", MyRegion.SizeX)
-        Form1.SetIni(Name, "SizeY", MyRegion.SizeY)
-        Form1.SetIni(Name, "Enabled", sEnabled)
-
-        Form1.SaveINI()
+        Using outputFile As New StreamWriter(dir & "bin\Regions\" & MyRegion.RegionName & "\Region\" & MyRegion.RegionName & ".ini")
+            outputFile.Write(Region)
+            outputFile.Close()
+        End Using
 
         oldname = MyRegion.RegionName
 

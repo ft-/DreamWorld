@@ -276,7 +276,7 @@ Public Class RegionMaker
 
         ' locate largest global coords
         Dim Max As Integer
-        Dim counter As Integer = 1
+        Dim counter As Integer = 0 ' index 0
         Dim L = RegionListCount()
         While counter < L
             Dim val = RegionList(counter).CoordX
