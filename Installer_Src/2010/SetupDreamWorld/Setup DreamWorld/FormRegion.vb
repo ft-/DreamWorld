@@ -443,9 +443,8 @@ Public Class FormRegion
         Dim msg = MsgBox("Are you sure you want to delete this region? ", vbYesNo)
         If msg = vbYes Then
             Try
-                My.Computer.FileSystem.DeleteDirectory(Form1.prefix & "Regions\" + RegionName.Text, FileIO.UIOption.AllDialogs, FileIO.RecycleOption.SendToRecycleBin, FileIO.UICancelOption.ThrowException)
-                '!!!!!!
-
+                My.Computer.FileSystem.DeleteDirectory(Form1.prefix & "bin\Regions\" + RegionName.Text, FileIO.UIOption.AllDialogs, FileIO.RecycleOption.SendToRecycleBin, FileIO.UICancelOption.ThrowException)
+                Form1.RegionClass.GetAllRegions()
                 Me.Close()
             Catch ex As Exception
                 MsgBox("Cannot delete region file:" + ex.Message, vbInformation)

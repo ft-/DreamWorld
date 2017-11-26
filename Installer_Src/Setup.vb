@@ -28,6 +28,7 @@ Imports IniParser
 Imports IniParser.Model
 Imports System.Threading
 Imports System.Text
+Imports Newtonsoft.Json
 
 Public Class Form1
 
@@ -56,7 +57,7 @@ Public Class Form1
 
     ' Processes
     Dim pMySqlDiag As Process = New Process()
-    Dim pViewerType As Process = New Process()
+    Dim ProcessUpnp As Process = New Process()
     Public Shared ActualForm As AdvancedForm
 
     ' with events
@@ -102,7 +103,7 @@ Public Class Form1
     Dim gContentAvailable As Boolean = False ' assume there is no OAR and IAR data available
     Dim MyUPnpMap
     Dim ws As NetServer
-    Public RegionClass As RegionMaker
+    Public Shared RegionClass As RegionMaker
 
 
 
@@ -235,10 +236,10 @@ Public Class Form1
 
         CheckDefaultPorts()
 
+        ' must start after region Class is instantiated
         ws = NetServer.getWebServer
         Log("Info:Starting Web Server")
         ws.StartServer()
-        Sleep(1000)
 
         ' Run diagnostics, maybe
         If gDebug Then My.Settings.DiagsRun2 = False
@@ -275,67 +276,9 @@ Public Class Form1
                 Log("Error:Could not create Init.txt - no permissions to write it:" + ex.Message)
             End Try
 
-
-
-            If System.IO.File.Exists(xmlPath() + "\SecondLife\user_settings\settings_singularity.xml") Then
-                My.Settings.RunViewer = True
-            Else
-                Dim yesno = MsgBox("Do you want to install the Singularity Viewer? (Newcomers to virtual worlds should choose Yes)", vbYesNo)
-                If (yesno = vbYes) Then
-                    My.Settings.RunViewer = True
-                    Print("Installing Singularity Viewer")
-                    Dim pi As ProcessStartInfo = New ProcessStartInfo()
-                    pi.Arguments = ""
-
-                    If Environment.Is64BitOperatingSystem Then
-                        pi.FileName = """" + MyFolder & "\Viewer\Singularity_1_8_7_6861_x86_64_Setup.exe" + """"
-                    Else
-                        pi.FileName = """" + MyFolder & "\Viewer\Singularity_1_8_7_6861_i686_Setup.exe" + """"
-                    End If
-
-                    pViewerType.StartInfo = pi
-                    Try
-                        Log("Info:Launching Singularity installer")
-                        pViewerType.Start()
-                    Catch ex As Exception
-                        Log("Error: installer failed to load:" + ex.Message)
-                    End Try
-
-                    ProgressBar1.Value = 0
-                    Print("Please Install and Start the Singularity Viewer")
-                    Dim toggle As Boolean = False
-                    While Not System.IO.File.Exists(xmlPath() + "\SecondLife\user_settings\settings_singularity.xml") And ProgressBar1.Value < 99
-                        Application.DoEvents()
-                        Sleep(2000)
-                        If (toggle) Then
-                            Print("Attention needed - please Install and Start the Singularity Viewer ")
-                            toggle = False
-                        Else
-                            Print("Start the Singularity Viewer")
-                            toggle = False
-                            toggle = True
-                        End If
-                        BumpProgress(1)
-
-                        If ProgressBar1.Value = 100 Then
-                            Print("You win. Proceeding with Outworldz Installation. You may need to add the grid manually.")
-                            toggle = True
-                        End If
-                    End While
-
-                    ' close the viewer so the grid will repopulate next time it opens
-                    Try
-                        zap("Singularity Viewer")
-                    Catch ex As Exception
-                        Log("Error:Failed to zap viewer:" + ex.Message)
-                    End Try
-
-                Else
-                    My.Settings.RunViewer = False
-                End If
-            End If
-            Print("Ready to Launch! Click 'Start' to begin your adventure in Opensimulator.")
         End If
+            Print("Ready to Launch! Click 'Start' to begin your adventure in Opensimulator.")
+
 
         ProgressBar1.Value = 100
         Application.DoEvents()
@@ -379,8 +322,6 @@ Public Class Form1
         If Not Start_Opensimulator() Then ' Launch the rockets
             Return
         End If
-
-        ViewerType()
 
         ' show the IAR and OAR menu when we are up 
         If gContentAvailable Then
@@ -456,14 +397,6 @@ Public Class Form1
         Try
             ws.StopWebServer()
         Catch
-        End Try
-
-        Try
-            pViewerType.CloseMainWindow()
-            pViewerType.WaitForExit()
-            pViewerType.Close()
-        Catch ex As Exception
-            Log("Info:viewer not running:" + ex.Message)
         End Try
 
         ProgressBar1.Value = 67
@@ -1121,9 +1054,9 @@ Public Class Form1
         pi.Arguments = ""
         pi.FileName = MyFolder & "\UPnpPortForwardManager.exe"
         pi.WindowStyle = ProcessWindowStyle.Normal
-        pViewerType.StartInfo = pi
+        ProcessUpnp.StartInfo = pi
         Try
-            pViewerType.Start()
+            ProcessUpnp.Start()
         Catch ex As Exception
             Log("Error:UPnp failed to launch:" + ex.Message)
         End Try
@@ -1270,6 +1203,9 @@ Public Class Form1
 
     End Function
 
+
+
+
 #End Region
 
 #Region "Opensimulator"
@@ -1303,16 +1239,19 @@ Public Class Form1
     Private Function Boot(InstanceName As String) As Integer
 
         Dim myProcess As New Process()
-        Dim Pid
+        Dim Pid As Integer
         Try
-            myProcess.StartInfo.UseShellExecute = True ' so we can redirect streams
-            myProcess.StartInfo.WorkingDirectory = prefix & "bin"
-            myProcess.StartInfo.FileName = "runit.bat"
 
-            If My.Settings.ConsoleShow Then
-                myProcess.StartInfo.Arguments = " /NORMAL " & """" & InstanceName & """"
+            'myProcess.EnableRaisingEvents = True
+            myProcess.StartInfo.UseShellExecute = False ' so we can redirect streams
+            myProcess.StartInfo.WorkingDirectory = prefix + "bin"
+            myProcess.StartInfo.FileName = prefix + "bin\OpenSim.exe"
+            myProcess.StartInfo.CreateNoWindow = False
+            myProcess.StartInfo.Arguments = """" & "-inidirectory=./Regions/" & InstanceName & """"
+            If mnuShow.Checked Then
+                myProcess.StartInfo.WindowStyle = ProcessWindowStyle.Normal
             Else
-                myProcess.StartInfo.Arguments = " /MIN " & """" & InstanceName & """"
+                myProcess.StartInfo.WindowStyle = ProcessWindowStyle.Minimized
             End If
 
             myProcess.Start()
@@ -1346,52 +1285,9 @@ Public Class Form1
         Return True
     End Function
 
-    Private Function IsOpensimRunning() As Boolean
-
-        ' !!!!!! needs to be based on new region module. 
-
-        Return True
-    End Function
 
 
-#End Region
 
-#Region "Viewers"
-
-    Private Sub SingularityToolStripMenuItem_Click(sender As Object, e As EventArgs)
-        Dim webAddress As String = "http://www.singularityviewer.org/"
-        Process.Start(webAddress)
-    End Sub
-
-    Private Sub CatznipToolStripMenuItem_Click(sender As Object, e As EventArgs)
-        Dim webAddress As String = "http://catznip.com/"
-        Process.Start(webAddress)
-    End Sub
-
-    Private Sub KokuaToolStripMenuItem_Click(sender As Object, e As EventArgs)
-        Dim webAddress As String = "http://blog.kokuaviewer.org/"
-        Process.Start(webAddress)
-    End Sub
-
-    Private Sub UKanDoToolStripMenuItem_Click(sender As Object, e As EventArgs)
-        Dim webAddress As String = "http://www.ukando.info/"
-        Process.Start(webAddress)
-    End Sub
-
-    Private Sub FirestormToolStripMenuItem_Click(sender As Object, e As EventArgs)
-        Dim webAddress As String = "http://www.firestormviewer.org/"
-        Process.Start(webAddress)
-    End Sub
-
-    Private Sub AlchemyToolStripMenuItem_Click(sender As Object, e As EventArgs)
-        Dim webAddress As String = "https://www.alchemyviewer.org/"
-        Process.Start(webAddress)
-    End Sub
-
-    Private Sub BlackDragonToolStripMenuItem_Click(sender As Object, e As EventArgs)
-        Dim webAddress As String = "https://bitbucket.org/NiranV/black-dragon-viewer/wiki/Home"
-        Process.Start(webAddress)
-    End Sub
 #End Region
 
 #Region "Logging"
@@ -2067,23 +1963,7 @@ Public Class Form1
 
 #Region "ViewerType"
 
-    Private Sub ViewerType()
-        If Running = False Then Return
-        If My.Settings.RunViewer Then
-            Print("Starting viewer")
-            Dim pi As ProcessStartInfo = New ProcessStartInfo()
-            pi.Arguments = ""
-            pi.FileName = "C:\Program Files\Singularity\SingularityViewer.exe"
-            pi.WindowStyle = ProcessWindowStyle.Normal
-            pViewerType.StartInfo = pi
-            Try
-                pViewerType.Start()
-            Catch ex As Exception
-                Log("Error:ViewerType failed to launch:" + ex.Message)
-            End Try
-        End If
 
-    End Sub
 
     Private Sub SaveViewerTypeXMLData()
 
@@ -2819,25 +2699,46 @@ Public Class Form1
         'Content-Length:  118
         'Connection: Keep-Alive
         '
-        '{"alert""region_ready","login""enabled","region_name":"Region 2","region_id":"19f6adf0-5f35-4106-bcb8-dc3f2e846b89"}
+        '{"alert":"region_ready","login":"enabled","region_name":"Welcome","region_id":"19f6adf0-5f35-4106-bcb8-dc3f2e846b89"}
 
-        ' we want region name and server_startup
-        ' could also be a probe from the utworldz to check if ports are open.
-        If (POST.Contains("server_startup")) Then
+        ' we want region name, UUID and server_startup
+        ' could also be a probe from the outworldz to check if ports are open.
+        If (POST.Contains("alert")) Then
             ' This search returns the substring between two strings, so 
             ' the first index Is moved to the character just after the first string.
-            Dim first As Integer = POST.IndexOf("GET ") + "GET ".Length
-            Dim last As Integer = POST.LastIndexOf("HTTP")
-            Dim RegionName = POST.Substring(first, last - first)
-            Dim regionid = RegionClass.FindRegionidByName(RegionName)
+            POST = Uri.UnescapeDataString(POST)
+            Dim first As Integer = POST.IndexOf("{")
+            Dim last As Integer = POST.LastIndexOf("}")
+            Dim rawJSON = POST.Substring(first, last - first + 1)
+            Dim obj
+            Try
+                obj = JsonConvert.DeserializeObject(Of JSON_result)(rawJSON)
+            Catch ex As Exception
+                Debug.Print(ex.Message)
+                Return
+            End Try
+            Print(obj.Region_name & " is ready for logins")
+            Dim regionid = RegionClass.FindRegionidByName(obj.region_name)
             Dim savedID = RegionClass.CurRegionNum
             RegionClass.CurRegionNum = regionid
+
+            ' safe to set new proerties
             RegionClass.Ready = True
+            RegionClass.UUID = obj.region_id
+
             RegionClass.CurRegionNum = savedID
 
         End If
 
     End Sub
+
+
+    Public Class JSON_result
+        Public alert As String
+        Public login As String
+        Public region_name As String
+        Public region_id As String
+    End Class
 
 
 #End Region

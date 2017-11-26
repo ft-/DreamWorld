@@ -157,7 +157,7 @@ Public Class RegionMaker
         Dim index = RegionListCount() - 1
         Dim counter = 0
         While counter <= index
-            Debug.Print("Region :" + RegionList(counter).RegionName)
+            Debug.Print("Region:" + RegionList(counter).RegionName)
             counter = counter + 1
         End While
 
