@@ -110,7 +110,7 @@
     <Setting Name="LoopBackDiag" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="UPnPDiag" Type="System.Boolean" Scope="User">
+    <Setting Name="UPnpDiag" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="SplashPage" Type="System.String" Scope="User">

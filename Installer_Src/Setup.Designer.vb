@@ -9,8 +9,8 @@ Partial Class Form1
             If disposing AndAlso components IsNot Nothing Then
                 components.Dispose()
             End If
-            If disposing AndAlso MyUPnPMap IsNot Nothing Then
-                MyUPnPMap.Dispose()
+            If disposing AndAlso MyUPnpMap IsNot Nothing Then
+                MyUPnpMap.Dispose()
             End If
         Finally
             MyBase.Dispose(disposing)
@@ -254,7 +254,7 @@ Partial Class Form1
         Me.ToolStripMenuItem2.Image = Global.Outworldz.My.Resources.Resources.earth_network
         Me.ToolStripMenuItem2.Name = "ToolStripMenuItem2"
         Me.ToolStripMenuItem2.Size = New System.Drawing.Size(210, 22)
-        Me.ToolStripMenuItem2.Text = "Port/UPnP Setup"
+        Me.ToolStripMenuItem2.Text = "Port/UPnp Setup"
         '
         'ToolStripMenuItem1
         '

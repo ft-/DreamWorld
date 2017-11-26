@@ -99,7 +99,7 @@ Public Class Form1
                             }
     Dim gDebug = False       ' toggled by -debug flag on command line
     Dim gContentAvailable As Boolean = False ' assume there is no OAR and IAR data available
-    Dim MyUPnPMap
+    Dim MyUPnpMap
 
     Public RegionClass As RegionMaker
 
@@ -205,7 +205,7 @@ Public Class Form1
 
         ClearLogFiles() ' clear log fles
 
-        MyUPnPMap = New UPNP(MyFolder)
+        MyUPnpMap = New UPnp(MyFolder)
 
         RegionClass = New RegionMaker
 
@@ -286,44 +286,44 @@ Public Class Form1
                     End If
 
                     pViewerType.StartInfo = pi
-                        Try
-                            Log("Info:Launching Singularity installer")
-                            pViewerType.Start()
-                        Catch ex As Exception
-                            Log("Error: installer failed to load:" + ex.Message)
-                        End Try
+                    Try
+                        Log("Info:Launching Singularity installer")
+                        pViewerType.Start()
+                    Catch ex As Exception
+                        Log("Error: installer failed to load:" + ex.Message)
+                    End Try
 
-                        ProgressBar1.Value = 0
-                        Print("Please Install and Start the Singularity Viewer")
-                        Dim toggle As Boolean = False
+                    ProgressBar1.Value = 0
+                    Print("Please Install and Start the Singularity Viewer")
+                    Dim toggle As Boolean = False
                     While Not System.IO.File.Exists(xmlPath() + "\SecondLife\user_settings\settings_singularity.xml") And ProgressBar1.Value < 99
                         Application.DoEvents()
-                            Sleep(2000)
-                            If (toggle) Then
-                                Print("Attention needed - please Install and Start the Singularity Viewer ")
-                                toggle = False
-                            Else
-                                Print("Start the Singularity Viewer")
-                                toggle = False
-                                toggle = True
-                            End If
-                            BumpProgress(1)
+                        Sleep(2000)
+                        If (toggle) Then
+                            Print("Attention needed - please Install and Start the Singularity Viewer ")
+                            toggle = False
+                        Else
+                            Print("Start the Singularity Viewer")
+                            toggle = False
+                            toggle = True
+                        End If
+                        BumpProgress(1)
 
-                            If ProgressBar1.Value = 100 Then
-                                Print("You win. Proceeding with Outworldz Installation. You may need to add the grid manually.")
-                                toggle = True
-                            End If
-                        End While
+                        If ProgressBar1.Value = 100 Then
+                            Print("You win. Proceeding with Outworldz Installation. You may need to add the grid manually.")
+                            toggle = True
+                        End If
+                    End While
 
-                        ' close the viewer so the grid will repopulate next time it opens
-                        Try
-                            zap("Singularity Viewer")
-                        Catch ex As Exception
-                            Log("Error:Failed to zap viewer:" + ex.Message)
-                        End Try
+                    ' close the viewer so the grid will repopulate next time it opens
+                    Try
+                        zap("Singularity Viewer")
+                    Catch ex As Exception
+                        Log("Error:Failed to zap viewer:" + ex.Message)
+                    End Try
 
-                    Else
-                        My.Settings.RunViewer = False
+                Else
+                    My.Settings.RunViewer = False
                 End If
             End If
             Print("Ready to Launch! Click 'Start' to begin your adventure in Opensimulator.")
@@ -688,7 +688,7 @@ Public Class Form1
         Try
             ' add this sim name as a default to the file as HG regions, and add the other regions as fallback
 
-            RegionClass.CurRegionNum = My.Settings.WelcomeRegion
+            RegionClass.CurRegionNum = My.Settings.WelcomeRegion ' !!! this could easily no longer be there if a sim is deleted.
             Dim DefaultName = RegionClass.RegionName
 
             '(replace spaces with underscore)
@@ -1124,13 +1124,13 @@ Public Class Form1
         Print("Starting UPnp Control Panel")
         Dim pi As ProcessStartInfo = New ProcessStartInfo()
         pi.Arguments = ""
-        pi.FileName = MyFolder & "\UPnPPortForwardManager.exe"
+        pi.FileName = MyFolder & "\UPnpPortForwardManager.exe"
         pi.WindowStyle = ProcessWindowStyle.Normal
         pViewerType.StartInfo = pi
         Try
             pViewerType.Start()
         Catch ex As Exception
-            Log("Error:uPnp failed to launch:" + ex.Message)
+            Log("Error:UPnp failed to launch:" + ex.Message)
         End Try
     End Sub
 
@@ -1360,6 +1360,7 @@ Public Class Form1
 
     Private Function IsOpensimRunning() As Boolean
 
+        ' !!!!!! needs to be based on new region module. This is isRobustRunning
         Dim Up As String = String.Empty
         Try
             Up = client.DownloadString("http://127.0.0.1:" + My.Settings.HttpPort + "/?_Opensim=" + Random())
@@ -1420,7 +1421,7 @@ Public Class Form1
             MyFolder + "\OutworldzFiles\Outworldz.log",
             MyFolder + "\OutworldzFiles\Opensim-0.9.0\bin\OpenSimConsoleHistory.txt",
             MyFolder + "\OutworldzFiles\Diagnostics.log",
-            MyFolder + "\OutworldzFiles\UPNP.log",
+            MyFolder + "\OutworldzFiles\UPnp.log",
             MyFolder + "\OutworldzFiles\Opensim-0.9.0\bin\Robust.log"
         }
 
@@ -2273,7 +2274,7 @@ Public Class Form1
             Log("Failed:" + result)
             Print("Router Loopback failed. See the Help section for 'Loopback' and how to enable it in Windows. Continuing...")
             My.Settings.LoopBackDiag = False
-            My.Settings.PublicIP = MyUPnPMap.LocalIP()
+            My.Settings.PublicIP = MyUPnpMap.LocalIP()
             My.Settings.Save()
         End If
 
@@ -2313,7 +2314,7 @@ Public Class Form1
             ' See my privacy policy at https://www.outworldz.com/privacy.htm
 
             Dim Data As String = GetPostData()
-            Dim Url = Domain + "/cgi/probetest.plx?IP=" + ip + "&Port=" + My.Settings.DiagnosticPort + Data + "/?r=" + Random()
+            Dim Url = Domain + "/cgi/probetest.plx?IP=" + ip + "&Port=" + My.Settings.DiagnosticPort + Data
             Log(Url)
             isPortOpen = client.DownloadString(Url)
         Catch ex As Exception
@@ -2334,7 +2335,7 @@ Public Class Form1
             Log("Failed:" + isPortOpen)
             My.Settings.DiagFailed = True
             Print("Internet address " + ip + ":" + My.Settings.DiagnosticPort + " appears to not be forwarded to this machine in your router, so Hypergrid is not available. This can possibly be fixed by 'Port Forwards' in your router.  See Help->Port Forwards.")
-            My.Settings.PublicIP = MyUPnPMap.LocalIP() ' failed, so try the machine address
+            My.Settings.PublicIP = MyUPnpMap.LocalIP() ' failed, so try the machine address
             Log("IP set to " + My.Settings.PublicIP)
             Return False
         End If
@@ -2343,7 +2344,7 @@ Public Class Form1
     Private Sub DoDiag()
         Print("Running Network Diagnostics, please wait")
         My.Settings.DiagFailed = False
-        OpenPorts() ' Open router ports with uPnP
+        OpenPorts() ' Open router ports with UPnp
         If Not ProbePublicPort() Then ' see if Public loopback works
             TestLoopback()
         End If
@@ -2385,26 +2386,26 @@ Public Class Form1
 
     Function OpenRouterPorts() As Boolean
 
-        Log("Local ip seems to be " + UPNP.LocalIP)
+        Log("Local ip seems to be " + UPnp.LocalIP)
 
         Try
             '8001
-            If Not MyUPnPMap.Exists(Convert.ToInt16(My.Settings.DiagnosticPort), UPNP.Protocol.TCP) Then
-                MyUPnPMap.Add(UPNP.LocalIP, Convert.ToInt16(My.Settings.DiagnosticPort), UPNP.Protocol.TCP, "Opensim TCP Public")
-                Log("uPnp: PublicPort.TCP added")
+            If Not MyUPnpMap.Exists(Convert.ToInt16(My.Settings.DiagnosticPort), UPnp.Protocol.TCP) Then
+                MyUPnpMap.Add(UPnp.LocalIP, Convert.ToInt16(My.Settings.DiagnosticPort), UPnp.Protocol.TCP, "Opensim TCP Public ")
+                Log("UPnp: PublicPort.TCP added")
             Else
-                Log("uPnp: PublicPort.TCP " + My.Settings.DiagnosticPort + " is already in uPnP")
+                Log("UPnp: PublicPort.TCP " + My.Settings.DiagnosticPort + " is already in UPnp")
             End If
-            BumpProgress10()
+            BumpProgress(1)
 
             '8002
-            If Not MyUPnPMap.Exists(Convert.ToInt16(My.Settings.HttpPort), UPNP.Protocol.TCP) Then
-                MyUPnPMap.Add(UPNP.LocalIP, Convert.ToInt16(My.Settings.HttpPort), UPNP.Protocol.TCP, "Opensim TCP grid port")
-                Log("uPnp: Grid Port.TCP added")
+            If Not MyUPnpMap.Exists(Convert.ToInt16(My.Settings.HttpPort), UPnp.Protocol.TCP) Then
+                MyUPnpMap.Add(UPnp.LocalIP, Convert.ToInt16(My.Settings.HttpPort), UPnp.Protocol.TCP, "Opensim TCP grid port ")
+                Log("UPnp: Grid Port.TCP added")
             Else
-                Log("uPnp: HttpPort.TCP " + My.Settings.HttpPort + " is already in uPnP")
+                Log("UPnp: HttpPort.TCP " + My.Settings.HttpPort + " is already in UPnp")
             End If
-            BumpProgress10()
+            BumpProgress(1)
 
             '8004-whatever
             Dim counter = 0
@@ -2414,29 +2415,28 @@ Public Class Form1
                 RegionClass.CurRegionNum = counter
                 Dim R As Int16 = RegionClass.RegionPort
 
-                If Not MyUPnPMap.Exists(R, UPNP.Protocol.UDP) Then
-                    MyUPnPMap.Add(UPNP.LocalIP, R, UPNP.Protocol.UDP, "Opensim UDP Region ")
-                    Log("uPnp: RegionPort.UDP Added:" + Convert.ToString(R))
+                If Not MyUPnpMap.Exists(R, UPnp.Protocol.UDP) Then
+                    MyUPnpMap.Add(UPnp.LocalIP, R, UPnp.Protocol.UDP, "Opensim UDP Region " & RegionClass.RegionName & " ")
+                    Log("UPnp: RegionPort.UDP Added:" + Convert.ToString(R))
                 Else
-                    Log("uPnp: RegionPort.UDP " + Convert.ToString(R) + " is already in uPnP")
+                    Log("UPnp: RegionPort.UDP " + Convert.ToString(R) + " is already in UPnp")
                 End If
-                BumpProgress10()
+                BumpProgress(1)
 
-                If Not MyUPnPMap.Exists(R, UPNP.Protocol.TCP) Then
-                    MyUPnPMap.Add(UPNP.LocalIP, R, UPNP.Protocol.TCP, "Opensim TCP Region ")
-                    Log("uPnp: RegionPort.TCP Added:" + Convert.ToString(R))
+                If Not MyUPnpMap.Exists(R, UPnp.Protocol.TCP) Then
+                    MyUPnpMap.Add(UPnp.LocalIP, R, UPnp.Protocol.TCP, "Opensim TCP Region " & RegionClass.RegionName & " ")
+                    Log("UPnp: RegionPort.TCP Added:" + Convert.ToString(R))
                 Else
-                    Log("uPnp: RegionPort.TCP " + Convert.ToString(R) + " is already in uPnP")
+                    Log("UPnp: RegionPort.TCP " + Convert.ToString(R) + " is already in UPnp")
                 End If
-                BumpProgress10()
-
+                BumpProgress(1)
 
                 counter += 1
             End While
 
         Catch e As Exception
-            Print("uPnP is not working or enabled in your router. Hypergrid access will require ports to be opened manually.")
-            Log("uPnp: UPNP Exception caught:  " + e.Message)
+            Print("UPnp is not working or enabled in your router. Hypergrid requires ports to be opened in routers. See Help. " & e.Message)
+            Log("UPnp: UPnp Exception caught:  " + e.Message)
             Return False
         End Try
         Return True 'successfully added
@@ -2447,9 +2447,9 @@ Public Class Form1
 
         Dim SimVersion = "0.9.0"
 
-        Dim UpNp As String = "Fail"
-        If My.Settings.UPnPDiag Then
-            UpNp = "Pass"
+        Dim UPnp As String = "Fail"
+        If My.Settings.UPnpDiag Then
+            UPnp = "Pass"
         End If
         Dim Loopb As String = "Fail"
         If My.Settings.LoopBackDiag Then
@@ -2461,7 +2461,7 @@ Public Class Form1
         data = "&r=" + Machine _
             + "&V=" + MyVersion _
             + "&OV=" + SimVersion _
-            + "&UpNp=" + UpNp _
+            + "&uPnp=" + UPnp _
             + "&Loop=" + Loopb _
             + "&x=" + Random()
         Return data
@@ -2473,24 +2473,24 @@ Public Class Form1
         'If Running = False Then Return True
         Print("The human is instructed to wait while I check out the router ...")
         Try
-            If OpenRouterPorts() Then ' open uPNP port
-                Log("uPnpOk")
-                'Print("uPnP Ok")
-                My.Settings.UPnPDiag = True
+            If OpenRouterPorts() Then ' open UPnp port
+                Log("UPnpOk")
+                'Print("UPnp Ok")
+                My.Settings.UPnpDiag = True
                 My.Settings.Save()
                 BumpProgress10()
                 Return True
             Else
-                Log("uPnP: fail")
-                My.Settings.UPnPDiag = False
+                Log("UPnp: fail")
+                My.Settings.UPnpDiag = False
                 My.Settings.Save()
 
                 BumpProgress10()
                 Return False
             End If
         Catch e As Exception
-            Log("Error: UPNP Exception: " + e.Message)
-            My.Settings.UPnPDiag = False
+            Log("Error: UPnp Exception: " + e.Message)
+            My.Settings.UPnpDiag = False
             My.Settings.Save()
             BumpProgress10()
             Return False
@@ -2644,7 +2644,7 @@ Public Class Form1
             Log("Error:StartManually" + ex.Message)
         End Try
 
-        BumpProgress(1)
+        BumpProgress(5)
 
         ' Mysql was not running, so lets start it up.
         Dim pi As ProcessStartInfo = New ProcessStartInfo()
@@ -2681,7 +2681,7 @@ Public Class Form1
             Sleep(1000)
             Mysql = CheckPort("127.0.0.1", My.Settings.MySqlPort)
         End While
-        Sleep(2000) ' hacky, but may work
+        Sleep(4000) ' hacky, but may work
         Return True
     End Function
 

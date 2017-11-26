@@ -489,12 +489,12 @@ Namespace My
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
-        Public Property UPnPDiag() As Boolean
+        Public Property UPnpDiag() As Boolean
             Get
-                Return CType(Me("UPnPDiag"),Boolean)
+                Return CType(Me("UPnpDiag"),Boolean)
             End Get
             Set
-                Me("UPnPDiag") = value
+                Me("UPnpDiag") = value
             End Set
         End Property
         
