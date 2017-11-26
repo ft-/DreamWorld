@@ -27,6 +27,7 @@ Imports IWshRuntimeLibrary
 Imports IniParser
 Imports IniParser.Model
 Imports System.Threading
+Imports System.Text
 
 Public Class Form1
 
@@ -100,7 +101,7 @@ Public Class Form1
     Dim gDebug = False       ' toggled by -debug flag on command line
     Dim gContentAvailable As Boolean = False ' assume there is no OAR and IAR data available
     Dim MyUPnpMap
-
+    Dim ws As NetServer
     Public RegionClass As RegionMaker
 
 
@@ -146,6 +147,7 @@ Public Class Form1
 #Region "StartStop"
 
     Private Sub Form1_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+
 
         'hide progress
         ProgressBar1.Visible = True
@@ -214,6 +216,7 @@ Public Class Form1
             RegionClass.WriteRegion()
         End If
 
+        RegionClass.GetAllRegions()
 
         If (My.Settings.SplashPage = "") Then
             My.Settings.SplashPage = Domain + "/Outworldz_installer/Welcome.htm"
@@ -231,6 +234,11 @@ Public Class Form1
         End If
 
         CheckDefaultPorts()
+
+        ws = NetServer.getWebServer
+        Log("Info:Starting Web Server")
+        ws.StartServer()
+        Sleep(1000)
 
         ' Run diagnostics, maybe
         If gDebug Then My.Settings.DiagsRun2 = False
@@ -445,6 +453,10 @@ Public Class Form1
 
         ProgressBar1.Value = 100
         ' close everything as gracefully as possible.
+        Try
+            ws.StopWebServer()
+        Catch
+        End Try
 
         Try
             pViewerType.CloseMainWindow()
@@ -458,35 +470,20 @@ Public Class Form1
 
         Application.DoEvents()
 
-        Try
-            For Each obj In OpensimProcID
-
-                ConsoleCommand(obj, "quit{ENTER}")
-                Dim ctr = 20
-                While IsOpensimRunning() And ctr > 0
-                    Sleep(1000)
-                    Try
-                        ConsoleCommand(obj, "quit{ENTER}")
-                    Catch
-                    End Try
-                    ctr = -1
-                End While
-                Try
-                    ConsoleCommand(obj, "{ENTER}")
-                    ConsoleCommand(obj, " ")
-                    ConsoleCommand(obj, "{ENTER}")
-                    ConsoleCommand(obj, " ")
-                Catch
-                End Try
-                Me.Focus()
-            Next
-
-        Catch ex As Exception
-            Log("Huh:Cannot stop a non-running Opensim:" + ex.Message)
-        End Try
+        For Each id In OpensimProcID
+            Try
+                Dim P = Process.GetProcessById(id)
+                P.Kill()
+            Catch ex As Exception
+            End Try
+        Next
 
         If gRobustProcID Then
-            RobustCommand("quit{ENTER}")
+            Try
+                Dim P = Process.GetProcessById(gRobustProcID)
+                P.Kill()
+            Catch ex As Exception
+            End Try
         End If
         ProgressBar1.Value = 33
 
@@ -1339,6 +1336,7 @@ Public Class Form1
         Try
             Up = client.DownloadString("http://127.0.0.1:" + My.Settings.HttpPort + "/?_Opensim=" + Random())
         Catch ex As Exception
+            If ex.Message.Contains("404") Then Return True
             Return False
         End Try
         If Up.Length = 0 And Running Then
@@ -2230,10 +2228,7 @@ Public Class Form1
     End Function
     Private Sub TestLoopback()
 
-        Dim ws As NetServer = NetServer.getWebServer
-        Log("Info:Starting Web Server")
-        ws.StartServer()
-        Sleep(1000)
+
 
         BumpProgress10()
         Dim result As String = ""
@@ -2246,7 +2241,7 @@ Public Class Form1
         End Try
 
         BumpProgress10()
-        ws.StopWebServer()
+
 
         If result = "Test completed" And Not gFailDebug2 Then
             Log("Passed:" + result)
@@ -2283,12 +2278,6 @@ Public Class Form1
         Log("Info:Probe Public Port")
         Dim ip As String = GetPubIP()
 
-        Dim ws As NetServer = NetServer.getWebServer
-        Log("Info:Starting Web Server, public port is " + ip)
-        ws.StartServer()
-        Sleep(1000)
-        BumpProgress10()
-
         Dim isPortOpen As String = ""
         Try
             ' collect some stats and test loopback with a HTTP_ GET to the webserver.
@@ -2304,8 +2293,6 @@ Public Class Form1
             My.Settings.DiagFailed = True
         End Try
 
-        BumpProgress10()
-        ws.StopWebServer()
         BumpProgress10()
 
         If isPortOpen = "yes" And Not gFailDebug1 Then
@@ -2818,7 +2805,39 @@ Public Class Form1
         Application.DoEvents()
     End Sub
 
+#End Region
 
+#Region "Region"
+
+    ' set Region.Ready to tru if the POST from the region indicates it is online
+    Public Sub ParsePost(POST As String)
+        ' POST = "GET Region name HTTP...{server_startup|oar_file_load},{0|1},n,[oar error]"
+        '{"alert":"region_ready","login":"enabled","region_name":"Region 2","region_id":"19f6adf0-5f35-4106-bcb8-dc3f2e846b89"}}
+        'POST / Region%202 HTTP/1.1
+        'Content-Type: Application/ json
+        'Host:   tea.outworldz.net : 8001
+        'Content-Length:  118
+        'Connection: Keep-Alive
+        '
+        '{"alert""region_ready","login""enabled","region_name":"Region 2","region_id":"19f6adf0-5f35-4106-bcb8-dc3f2e846b89"}
+
+        ' we want region name and server_startup
+        ' could also be a probe from the utworldz to check if ports are open.
+        If (POST.Contains("server_startup")) Then
+            ' This search returns the substring between two strings, so 
+            ' the first index Is moved to the character just after the first string.
+            Dim first As Integer = POST.IndexOf("GET ") + "GET ".Length
+            Dim last As Integer = POST.LastIndexOf("HTTP")
+            Dim RegionName = POST.Substring(first, last - first)
+            Dim regionid = RegionClass.FindRegionidByName(RegionName)
+            Dim savedID = RegionClass.CurRegionNum
+            RegionClass.CurRegionNum = regionid
+            RegionClass.Ready = True
+            RegionClass.CurRegionNum = savedID
+
+        End If
+
+    End Sub
 
 
 #End Region

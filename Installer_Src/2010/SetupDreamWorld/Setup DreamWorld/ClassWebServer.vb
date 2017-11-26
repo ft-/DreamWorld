@@ -5,6 +5,8 @@ Imports System.Text
 Imports System.Threading
 Imports System.Xml
 
+
+
 Public Class NetServer
     Private LocalTCPListener As TcpListener
     Dim listen As Boolean = True
@@ -30,7 +32,7 @@ Public Class NetServer
     End Sub
     Private Function looper()
 
-        Dim counter As Integer = 60 ' wait up to 30 seconds, then abord
+        'Dim counter As Integer = 60 ' wait up to 30 seconds, then abort
         Try
             Dim oaddress = GetIPv4Address()
             Form1.Log("Info:IP:" + oaddress.ToString)
@@ -47,13 +49,8 @@ Public Class NetServer
         listen = True
         While listen
             If Not LocalTCPListener.Pending() Then
-                Thread.Sleep(500) ' choose a number (In milliseconds) that makes sense
-                Form1.Log("Info:No connection requests have arrived")
-                counter -= 1
-                If counter > 0 Then
-                    Continue While  ' skip To Next iteration Of Loop
-                End If
-                Form1.Log("Warn:Aborting due to no connections")
+                Thread.Sleep(100) ' choose a number (In milliseconds) that makes sense
+                Continue While  ' skip To Next iteration Of Loop
             End If
 
             Dim client As TcpClient = LocalTCPListener.AcceptTcpClient()
@@ -74,6 +71,8 @@ Public Class NetServer
 
                 ' Print out the received message to the console.
                 Form1.Log(("Info:You received the following message : " + myCompleteMessage.ToString()))
+
+                Form1.ParsePost(myCompleteMessage.ToString())
             Else
                 Form1.Log("Error:Cannot read from this NetworkStream.")
             End If
@@ -84,12 +83,13 @@ Public Class NetServer
             Catch
             End Try
 
-            ' Shutdown and end connection
+            'Shutdown And end connection
             client.Close()
             Form1.Log("Info:WebClient Closed")
-            listen = False
+            ' listen = False
         End While
 
+        listen = False
         LocalTCPListener.Stop()
         Form1.Log("Info:Webthread ending")
         Return False

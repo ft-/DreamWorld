@@ -17,6 +17,7 @@ Public Class RegionMaker
         Public SizeX As Integer
         Public SizeY As Integer
         Public RegionEnabled As Boolean
+        Public Ready As Boolean
     End Class
 
     Public Shared RegionList As New ArrayList
@@ -119,12 +120,20 @@ Public Class RegionMaker
             RegionList(CurRegionNum()).CoordY = Value
         End Set
     End Property
+    Public Property Ready() As Boolean
+        Get
+            Return RegionList(CurRegionNum()).Ready
+        End Get
+        Set(ByVal Value As Boolean)
+            RegionList(CurRegionNum()).CoordY = Ready
+        End Set
+    End Property
 
 
 
 #End Region
 
-#Region "Public"
+#Region "Functions"
 
     Public Sub New()
 
@@ -268,10 +277,6 @@ Public Class RegionMaker
 
     End Sub
 
-#End Region
-
-#Region "Private"
-
     Public Function LargestX() As Integer
 
         ' locate largest global coords
@@ -319,6 +324,8 @@ Public Class RegionMaker
         Return Max
 
     End Function
+
+
 
 #End Region
 
