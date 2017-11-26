@@ -346,8 +346,6 @@ Public Class Form1
 
         ProgressBar1.Value = 0
 
-
-
         Buttons(BusyButton)
         Running = True
         MnuContent.Visible = True
@@ -1215,16 +1213,8 @@ Public Class Form1
             Print("Robust is already running")
             Return True
         End If
-        Dim Up As String
-        Try
-            Up = client.DownloadString("http://127.0.0.1:" + My.Settings.HttpPort + "/?_Opensim=" + Random())
-            Return True
 
-        Catch ex As Exception
-            Up = ""
-            Log("Info:Robust is not yet running, will continue to check every 1/10 second for two minutes")
-        End Try
-
+        If IsRobustRunning() Then Return True
 
         gRobustProcID = Nothing
         Print("Starting Robust")
@@ -1233,7 +1223,7 @@ Public Class Form1
             RobustProcess.EnableRaisingEvents = True
             RobustProcess.StartInfo.UseShellExecute = False ' so we can redirect streams
             RobustProcess.StartInfo.FileName = prefix + "bin\robust.exe"
-            ' !!!! need window supression
+
             RobustProcess.StartInfo.CreateNoWindow = False
             RobustProcess.StartInfo.WorkingDirectory = prefix + "bin"
 
@@ -1256,14 +1246,8 @@ Public Class Form1
 
         ' Wait for Opensim to start listening 
 
-        Try
-            Up = client.DownloadString("http://127.0.0.1:" + My.Settings.HttpPort + "/?_Opensim=" + Random())
-        Catch ex As Exception
-            Up = ""
-            Log("Info:Robust is not yet running, will continue to check every 1/10 second for two minutes")
-        End Try
         Dim counter = 0
-        While Up.Length = 0 And Running
+        While Not IsRobustRunning() And Running
             Application.DoEvents()
             BumpProgress(1)
             counter = counter + 1
@@ -1283,15 +1267,6 @@ Public Class Form1
             Application.DoEvents()
             Sleep(100)
 
-            Try
-                Up = client.DownloadString("http://127.0.0.1:" + My.Settings.HttpPort + "/?_Opensim=" + Random())
-            Catch ex As Exception
-
-                Up = ""
-                If InStr(ex.Message, "404") Then
-                    Up = "Done"
-                End If
-            End Try
         End While
         Log("Info:Robust is running")
         Return True
@@ -1358,9 +1333,8 @@ Public Class Form1
 
     End Function
 
-    Private Function IsOpensimRunning() As Boolean
+    Private Function IsRobustRunning() As Boolean
 
-        ' !!!!!! needs to be based on new region module. This is isRobustRunning
         Dim Up As String = String.Empty
         Try
             Up = client.DownloadString("http://127.0.0.1:" + My.Settings.HttpPort + "/?_Opensim=" + Random())
@@ -1373,6 +1347,14 @@ Public Class Form1
 
         Return True
     End Function
+
+    Private Function IsOpensimRunning() As Boolean
+
+        ' !!!!!! needs to be based on new region module. 
+
+        Return True
+    End Function
+
 
 #End Region
 
@@ -2391,7 +2373,7 @@ Public Class Form1
         Try
             '8001
             If Not MyUPnpMap.Exists(Convert.ToInt16(My.Settings.DiagnosticPort), UPnp.Protocol.TCP) Then
-                MyUPnpMap.Add(UPnp.LocalIP, Convert.ToInt16(My.Settings.DiagnosticPort), UPnp.Protocol.TCP, "Opensim TCP Public ")
+                MyUPnpMap.Add(UPnp.LocalIP, Convert.ToInt16(My.Settings.DiagnosticPort), UPnp.Protocol.TCP, "Opensim TCP Diagnostics ")
                 Log("UPnp: PublicPort.TCP added")
             Else
                 Log("UPnp: PublicPort.TCP " + My.Settings.DiagnosticPort + " is already in UPnp")
@@ -2400,7 +2382,7 @@ Public Class Form1
 
             '8002
             If Not MyUPnpMap.Exists(Convert.ToInt16(My.Settings.HttpPort), UPnp.Protocol.TCP) Then
-                MyUPnpMap.Add(UPnp.LocalIP, Convert.ToInt16(My.Settings.HttpPort), UPnp.Protocol.TCP, "Opensim TCP grid port ")
+                MyUPnpMap.Add(UPnp.LocalIP, Convert.ToInt16(My.Settings.HttpPort), UPnp.Protocol.TCP, "Opensim TCP HyperGrid ")
                 Log("UPnp: Grid Port.TCP added")
             Else
                 Log("UPnp: HttpPort.TCP " + My.Settings.HttpPort + " is already in UPnp")
