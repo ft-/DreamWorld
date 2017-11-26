@@ -106,6 +106,14 @@ Public Class Form1
     Dim ws As NetServer
     Public Shared RegionClass As RegionMaker
 
+    Public Class JSON_result
+        Public alert As String
+        Public login As String
+        Public region_name As String
+        Public region_id As String
+    End Class
+
+
 
 
 #End Region
@@ -213,6 +221,9 @@ Public Class Form1
 
         RegionClass = New RegionMaker
 
+        LoadRegionList()
+
+
         If (My.Settings.SplashPage = "") Then
             My.Settings.SplashPage = Domain + "/Outworldz_installer/Welcome.htm"
             My.Settings.Save()
@@ -295,6 +306,7 @@ Public Class Form1
         MnuContent.Visible = True
         ws.StartServer(prefix)
         RegionClass.GetAllRegions()
+        LoadRegionList()
 
         RegisterDNS()
 
@@ -1143,7 +1155,7 @@ Public Class Form1
 
         Try
             RobustProcess.EnableRaisingEvents = True
-            RobustProcess.StartInfo.UseShellExecute = False ' so we can redirect streams
+            RobustProcess.StartInfo.UseShellExecute = True ' so we can redirect streams
             RobustProcess.StartInfo.FileName = prefix + "bin\robust.exe"
 
             RobustProcess.StartInfo.CreateNoWindow = False
@@ -1152,7 +1164,7 @@ Public Class Form1
             If mnuShow.Checked Then
                 RobustProcess.StartInfo.WindowStyle = ProcessWindowStyle.Normal
             Else
-                gRobustProcID = RobustProcess.StartInfo.WindowStyle = ProcessWindowStyle.Minimized
+                RobustProcess.StartInfo.WindowStyle = ProcessWindowStyle.Hidden
             End If
 
             RobustProcess.StartInfo.Arguments = "-inifile Robust.HG.ini"
@@ -1230,26 +1242,18 @@ Public Class Form1
     ' Handle Exited Event And display process information.
     Private Sub OpensimProcess_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess.Exited
 
-        Dim regionid = sender.Id
-        Dim savedID = RegionClass.CurRegionNum
-        RegionClass.CurRegionNum = regionid
-        ' safe to set new proerties
-        Print("Region " & RegionClass.CurrentRegionName + " stopped")
-        RegionClass.Ready = False
-        RegionClass.ProcessID = 0
-        RegionClass.CurRegionNum = savedID
+        RegionClass.StoppedRegion(sender.Id)
 
     End Sub
 
 
     Private Function Boot(InstanceName As String) As Integer
 
-
         Dim Pid As Integer
         Try
 
             myProcess.EnableRaisingEvents = True
-            myProcess.StartInfo.UseShellExecute = False ' so we can redirect streams
+            myProcess.StartInfo.UseShellExecute = True ' so we can redirect streams
             myProcess.StartInfo.WorkingDirectory = prefix + "bin"
             myProcess.StartInfo.FileName = prefix + "bin\OpenSim.exe"
             myProcess.StartInfo.CreateNoWindow = False
@@ -1257,7 +1261,7 @@ Public Class Form1
             If mnuShow.Checked Then
                 myProcess.StartInfo.WindowStyle = ProcessWindowStyle.Normal
             Else
-                myProcess.StartInfo.WindowStyle = ProcessWindowStyle.Minimized
+                myProcess.StartInfo.WindowStyle = ProcessWindowStyle.Hidden
             End If
 
             myProcess.Start()
@@ -2549,7 +2553,7 @@ Public Class Form1
         Dim pi As ProcessStartInfo = New ProcessStartInfo()
         pi.Arguments = "-u root shutdown"
         pi.FileName = """" + MyFolder + "\OutworldzFiles\mysql\bin\mysqladmin.exe" + """"
-        pi.WindowStyle = ProcessWindowStyle.Minimized
+        pi.WindowStyle = ProcessWindowStyle.Hidden
         p.StartInfo = pi
         Try
             p.Start()
@@ -2605,7 +2609,6 @@ Public Class Form1
     Public Function DoGetHostAddresses(hostName As [String]) As String
 
         Try
-
             Dim IPList As System.Net.IPHostEntry = System.Net.Dns.GetHostEntry(hostName)
 
             For Each IPaddress In IPList.AddressList
@@ -2741,14 +2744,86 @@ Public Class Form1
     End Sub
 
 
-    Public Class JSON_result
-        Public alert As String
-        Public login As String
-        Public region_name As String
-        Public region_id As String
-    End Class
+    Private Sub RegionClick(sender As Object, e As EventArgs)
 
+        Dim savedID = RegionClass.CurRegionNum
+        If sender.text = "Robust" Then
+            Try
+                Dim P = Process.GetProcessById(gRobustProcID)
+                P.Kill()
+                Debug.Print("Stopped Robust")
+            Catch ex As Exception
+                Debug.Print("Could not stop Robust")
+            End Try
+            Return
+        End If
+        Dim regionId = RegionClass.FindRegionIdByName(sender.text)
 
+        RegionClass.CurRegionNum = regionId
+        Debug.Print("Clicked " & sender.text)
+        If sender.checked Then
+
+            sender.checked = False 'checkbox
+            sender.Image = My.Resources.ResourceManager.GetObject("media_stop_red") ' image
+            RegionClass.RegionEnabled = False   ' class
+            ' and region file on disk
+            LoadIni(prefix & "bin\Regions\" & sender.text & "\Region\" & sender.text & ".ini", ";")
+            SetIni(sender.text, "Enabled", "false")
+            SaveINI()
+
+            If Running Then
+                Dim PID = RegionClass.ProcessID
+                Try
+                    Dim P = Process.GetProcessById(PID)
+                    P.Kill()
+                    Debug.Print("Stopped Opensim")
+                Catch ex As Exception
+                    Debug.Print("Could not stop Opensim")
+                End Try
+            End If
+        Else
+            sender.checked = True
+            sender.Image = My.Resources.ResourceManager.GetObject("media_play_green")
+            RegionClass.RegionEnabled = True
+        End If
+        RegionClass.CurRegionNum = savedID
+
+    End Sub
+
+    Public Sub LoadRegionList()
+
+        RegionsToolStripMenuItem.DropDownItems.Clear()
+        ' add robust first
+        Dim RobustMenu As New ToolStripMenuItem
+        RobustMenu.Text = "Robust"
+        RobustMenu.DisplayStyle = ToolStripItemDisplayStyle.ImageAndText
+        RobustMenu.Image = My.Resources.ResourceManager.GetObject("media_play_green")
+        RobustMenu.Checked = True
+        AddHandler RobustMenu.Click, New EventHandler(AddressOf RegionClick)
+        RegionsToolStripMenuItem.Visible = True
+        RegionsToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {RobustMenu})
+
+        ' now add all the regions
+        Dim Rlist = RegionClass.ListOfRegions
+        For Each RegionName In Rlist
+            Dim RegionMenu As New ToolStripMenuItem
+            RegionMenu.Text = RegionName
+            RegionMenu.DisplayStyle = ToolStripItemDisplayStyle.ImageAndText
+            AddHandler RegionMenu.Click, New EventHandler(AddressOf RegionClick)
+
+            Dim id = RegionClass.FindRegionIdByName(RegionName)
+            RegionClass.CurRegionNum = id
+            If RegionClass.RegionEnabled Then
+                RegionMenu.Checked = True
+                RegionMenu.Image = My.Resources.ResourceManager.GetObject("media_play_green")
+            Else
+                RegionMenu.Checked = False
+                RegionMenu.Image = My.Resources.ResourceManager.GetObject("media_stop_red")
+            End If
+            RegionsToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {RegionMenu})
+        Next
+
+    End Sub
 #End Region
 
 

@@ -148,8 +148,7 @@ Public Class RegionMaker
     End Sub
     Public Function CurrentRegionName() As String
 
-        Dim id = CurRegionNum
-        Return FindRegionidByName(id)
+        Return RegionList(CurRegionNum).RegionName
 
     End Function
 
@@ -158,6 +157,7 @@ Public Class RegionMaker
         Return RegionCount()
 
     End Function
+
     Public Sub DisplayRegions()
 
         Dim index = RegionListCount() - 1
@@ -169,12 +169,40 @@ Public Class RegionMaker
 
     End Sub
 
-    Public Function FindRegionidByName(Name As String) As Integer
+    Public Function ListOfRegions()
+
+        Dim rlist As New ArrayList
+        Dim index = RegionListCount() - 1
+        Dim counter = 0
+        While counter <= index
+            Debug.Print("Region:" + RegionList(counter).RegionName)
+            rlist.Add(RegionList(counter).RegionName)
+            counter = counter + 1
+        End While
+        Return rlist
+
+    End Function
+
+    Public Function FindRegionIdByName(Name As String) As Integer
 
         Dim index = RegionListCount() - 1
 
         While index > -1
             If Name = RegionList(index).RegionName Then
+                Return index
+            End If
+            index = index - 1
+        End While
+        Return -1
+
+    End Function
+
+    Public Function FindRegionIdByProcessID(PID As Integer) As Integer
+
+        Dim index = RegionListCount() - 1
+
+        While index > -1
+            If PID = RegionList(index).ProcessID Then
                 Return index
             End If
             index = index - 1
@@ -224,7 +252,7 @@ Public Class RegionMaker
                         fName = Mid(fName, 1, Len(fName) - 4)
 
                         ' make a slot to hold the region data 
-                        CreateRegion("")
+                        CreateRegion(fName)
 
                         Form1.Log("Info:Reading Region " + ini)
 
@@ -255,7 +283,6 @@ Public Class RegionMaker
         Next
         DisplayRegions()
     End Sub
-
 
     Public Sub WriteRegion()
 
@@ -331,7 +358,18 @@ Public Class RegionMaker
 
     End Function
 
+    Public Sub StoppedRegion(pid As String)
 
+        Dim regionid = FindRegionIdByProcessID(pid)
+        Dim savedID = CurRegionNum
+        CurRegionNum = regionid
+        ' safe to set new proerties
+        Debug.Print("Region " & CurrentRegionName() + " stopped")
+        Ready = False
+        ProcessID = 0
+        CurRegionNum = savedID
+
+    End Sub
 
 #End Region
 
