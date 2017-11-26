@@ -138,6 +138,11 @@ Public Class RegionMaker
     Public Sub New()
 
         GetAllRegions()
+        If RegionListCount() = 0 Then
+            CreateRegion("Welcome")
+            My.Settings.WelcomeRegion = 0
+            WriteRegion() ' which also gets all regions
+        End If
 
     End Sub
     Public Function CurrentRegionName() As String
@@ -195,7 +200,7 @@ Public Class RegionMaker
         RegionList(index).CoordX = LargestX() + 4
         RegionList(index).CoordY = LargestY() + 0
         CurRegionNum() = index
-
+        GetAllRegions()
     End Sub
 
     Public Sub GetAllRegions()

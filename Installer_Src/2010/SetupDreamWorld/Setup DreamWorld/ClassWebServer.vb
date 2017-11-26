@@ -8,25 +8,31 @@ Imports System.Xml
 
 
 Public Class NetServer
+    Private Shared running = False
     Private LocalTCPListener As TcpListener
     Dim listen As Boolean = True
     Private LocalAddress As IPAddress
     Private WebThread As Thread
     Private Shared blnFlag As Boolean
     Private Shared singleWebserver As NetServer
+    Private Myfolder As String
 
 
     Private Sub New()
+
         'create a singleton
     End Sub
-    Public Sub StartServer()
+    Public Sub StartServer(folder As String)
+        If running Then Return
+        Myfolder = folder
         Try
-            Form1.Log("Info:Starting Diagnostic Webserver")
+            Log("Info:Starting Diagnostic Webserver")
             WebThread = New Thread(AddressOf looper)
             WebThread.SetApartmentState(ApartmentState.STA)
             WebThread.Start()
+            running = True
         Catch ex As Exception
-            Form1.Log(ex.Message)
+            Log(ex.Message)
         End Try
 
     End Sub
@@ -35,15 +41,15 @@ Public Class NetServer
         'Dim counter As Integer = 60 ' wait up to 30 seconds, then abort
         Try
             Dim oaddress = GetIPv4Address()
-            Form1.Log("Info:IP:" + oaddress.ToString)
+            Log("Info:IP:" + oaddress.ToString)
             LocalTCPListener = New TcpListener(oaddress, My.Settings.DiagnosticPort)
         Catch ex As Exception
-            Form1.Log(ex.Message)
+            Log(ex.Message)
             Return True
         End Try
 
         LocalTCPListener.Start()
-        Form1.Log("Info:Listener Started")
+        Log("Info:Listener Started")
         Dim data As String = "HTTP/1.0 200 OK" + vbCrLf + vbCrLf + "Test completed"
         Dim msg As Byte() = System.Text.Encoding.ASCII.GetBytes(data)
         listen = True
@@ -54,7 +60,7 @@ Public Class NetServer
             End If
 
             Dim client As TcpClient = LocalTCPListener.AcceptTcpClient()
-            Form1.Log("Info:Accepted client")
+            Log("Info:Accepted client")
 
             Dim stream As NetworkStream = client.GetStream() ' Get a stream object for reading and writing
 
@@ -70,28 +76,28 @@ Public Class NetServer
                 Loop While stream.DataAvailable
 
                 ' Print out the received message to the console.
-                Form1.Log(("Info:You received the following message : " + myCompleteMessage.ToString()))
-
+                Log((":Url:" + myCompleteMessage.ToString()))
                 Form1.ParsePost(myCompleteMessage.ToString())
             Else
-                Form1.Log("Error:Cannot read from this NetworkStream.")
+                Log("Error:Cannot read from this NetworkStream.")
             End If
 
             Try
                 stream.Write(msg, 0, msg.Length) ' Send back a response.
-                Form1.Log([String].Format("Info: {0}", data))
+                Log([String].Format("Response:{0}", data))
             Catch
             End Try
 
             'Shutdown And end connection
             client.Close()
-            Form1.Log("Info:WebClient Closed")
+            Log("Info:Connection Closed")
             ' listen = False
         End While
 
         listen = False
         LocalTCPListener.Stop()
-        Form1.Log("Info:Webthread ending")
+        Log("Info:Webthread ending")
+        running = False
         Return False
     End Function
 
@@ -99,8 +105,8 @@ Public Class NetServer
 
         GetIPv4Address = Nothing
         Dim strHostName As String = System.Net.Dns.GetHostName()
+        Log("Info:Hostname is " & strHostName)
         Dim iphe As System.Net.IPHostEntry = System.Net.Dns.GetHostEntry(strHostName)
-
         For Each ipheal As System.Net.IPAddress In iphe.AddressList
             If ipheal.AddressFamily = System.Net.Sockets.AddressFamily.InterNetwork Then
                 GetIPv4Address = ipheal
@@ -110,12 +116,12 @@ Public Class NetServer
     End Function
 
     Public Sub StopWebServer()
-        Form1.Log("Info:Stopping Webserver")
+        Log("Info:Stopping Webserver")
         listen = False
         Application.DoEvents()
 
         WebThread.Join()
-        Form1.Log("Info:Stopped Webserver on command")
+        Log("Info:Shutdown Complete")
     End Sub
 
     Friend Shared Function getWebServer() As NetServer
@@ -128,5 +134,17 @@ Public Class NetServer
         End If
     End Function
 
+    Public Sub Log(message As String)
+        Try
+            Using outputFile As New StreamWriter(Myfolder & "\http.log", True)
+                outputFile.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + message)
+                outputFile.Close()
+                Debug.Print(message)
+            End Using
+        Catch ex As Exception
+            Debug.Print(ex.Message)
+        End Try
+        Debug.Print(message)
+    End Sub
 
 End Class

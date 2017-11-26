@@ -74,6 +74,7 @@ Public Class Form1
     ' robust errors and startup
     Public gRobustProcID As Integer
     Private WithEvents RobustProcess As New Process()
+    Private WithEvents myProcess As New Process()
     Public Event RobustExited As EventHandler
     Private images = New List(Of Image) From {My.Resources.tangled, My.Resources.wp_habitat, My.Resources.wp_Mooferd,
                              My.Resources.wp_To_Piers_Anthony,
@@ -212,13 +213,6 @@ Public Class Form1
 
         RegionClass = New RegionMaker
 
-        If RegionClass.RegionListCount = 0 Then
-            RegionClass.CreateRegion("Welcome")
-            RegionClass.WriteRegion()
-        End If
-
-        RegionClass.GetAllRegions()
-
         If (My.Settings.SplashPage = "") Then
             My.Settings.SplashPage = Domain + "/Outworldz_installer/Welcome.htm"
             My.Settings.Save()
@@ -239,7 +233,7 @@ Public Class Form1
         ' must start after region Class is instantiated
         ws = NetServer.getWebServer
         Log("Info:Starting Web Server")
-        ws.StartServer()
+        ws.StartServer(prefix)
 
         ' Run diagnostics, maybe
         If gDebug Then My.Settings.DiagsRun2 = False
@@ -259,8 +253,7 @@ Public Class Form1
 
             Buttons(StartButton)
             ProgressBar1.Value = 100
-            Log("Info: Ready to start")
-            Print("Ready to Launch! Click 'Start' to begin your adventure in Opensimulator.")
+
         Else
 
             Print("Installing Desktop icon clicky thingy")
@@ -300,7 +293,7 @@ Public Class Form1
         Buttons(BusyButton)
         Running = True
         MnuContent.Visible = True
-
+        ws.StartServer(prefix)
         RegionClass.GetAllRegions()
 
         RegisterDNS()
@@ -1133,7 +1126,6 @@ Public Class Form1
     Private Sub RobustProcess_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles RobustProcess.Exited
 
         gRobustProcID = Nothing
-        Debug.Print("Exit code: " + Convert.ToString(RobustProcess.ExitCode))
 
     End Sub
 
@@ -1204,8 +1196,6 @@ Public Class Form1
     End Function
 
 
-
-
 #End Region
 
 #Region "Opensimulator"
@@ -1236,13 +1226,29 @@ Public Class Form1
         Return True
 
     End Function
+
+    ' Handle Exited Event And display process information.
+    Private Sub OpensimProcess_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess.Exited
+
+        Dim regionid = sender.Id
+        Dim savedID = RegionClass.CurRegionNum
+        RegionClass.CurRegionNum = regionid
+        ' safe to set new proerties
+        Print("Region " & RegionClass.CurrentRegionName + " stopped")
+        RegionClass.Ready = False
+        RegionClass.ProcessID = 0
+        RegionClass.CurRegionNum = savedID
+
+    End Sub
+
+
     Private Function Boot(InstanceName As String) As Integer
 
-        Dim myProcess As New Process()
+
         Dim Pid As Integer
         Try
 
-            'myProcess.EnableRaisingEvents = True
+            myProcess.EnableRaisingEvents = True
             myProcess.StartInfo.UseShellExecute = False ' so we can redirect streams
             myProcess.StartInfo.WorkingDirectory = prefix + "bin"
             myProcess.StartInfo.FileName = prefix + "bin\OpenSim.exe"
@@ -1298,7 +1304,8 @@ Public Class Form1
             MyFolder + "\OutworldzFiles\Opensim-0.9.0\bin\OpenSimConsoleHistory.txt",
             MyFolder + "\OutworldzFiles\Diagnostics.log",
             MyFolder + "\OutworldzFiles\UPnp.log",
-            MyFolder + "\OutworldzFiles\Opensim-0.9.0\bin\Robust.log"
+            MyFolder + "\OutworldzFiles\Opensim-0.9.0\bin\Robust.log",
+            MyFolder + "\OutworldzFiles\Opensim-0.9.0\http.log"
         }
 
         For Each thing In Logfiles
@@ -1308,7 +1315,7 @@ Public Class Form1
             Catch ex As Exception
 
             End Try
-            BumpProgress10()
+
         Next
     End Sub
 
@@ -1316,6 +1323,7 @@ Public Class Form1
         Try
             Using outputFile As New StreamWriter(MyFolder & "\OutworldzFiles\Outworldz.log", True)
                 outputFile.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + message)
+                outputFile.Close()
             End Using
         Catch
         End Try
