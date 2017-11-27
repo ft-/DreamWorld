@@ -280,12 +280,13 @@ Partial Class Expert
         Me.Web.Controls.Add(Me.Label11)
         Me.Web.Controls.Add(Me.Label10)
         Me.Web.Controls.Add(Me.AdminPassword)
-        Me.Web.Location = New System.Drawing.Point(424, 144)
+        Me.Web.Location = New System.Drawing.Point(431, 155)
         Me.Web.Name = "Web"
         Me.Web.Size = New System.Drawing.Size(192, 224)
         Me.Web.TabIndex = 47
         Me.Web.TabStop = False
         Me.Web.Text = "Wifi Interface Admin"
+        Me.Web.Visible = False
         '
         'WifiEnabled
         '

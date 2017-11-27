@@ -295,7 +295,7 @@ Public Class Form1
     Private Sub StartButton_Click(sender As System.Object, e As System.EventArgs) Handles StartButton.Click
 
         ProgressBar1.Value = 0
-
+        ProgressBar1.Visible = True
         Buttons(BusyButton)
         Running = True
         MnuContent.Visible = True
@@ -1166,8 +1166,8 @@ Public Class Form1
             Application.DoEvents()
             BumpProgress(1)
             counter = counter + 1
-            ' wait a couple of minutes for it to start
-            If counter > 1200 Then
+            ' wait a minute for it to start
+            If counter > 100 Then
                 Print("Error:Robust failed to start")
                 KillAll()
                 Buttons(StartButton)

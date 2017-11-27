@@ -55,7 +55,7 @@ cd ..
 runprebuild.bat
 compile.bat
 cd bin
-mautil -reg . reg-update
+mautil -reg mautil -reg ../addins-config reg-update 
 
   
 Updates: The system has a built in updater that it fetches from the Outworldz web site.   This is how the updater can be updated.  The updater, in turn, fetches a zip file that has the changes in it.

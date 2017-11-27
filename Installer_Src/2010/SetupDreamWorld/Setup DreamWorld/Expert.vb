@@ -268,12 +268,12 @@ Public Class Expert
     End Sub
 
     Private Sub TestButton1_Click_1(sender As Object, e As EventArgs) Handles TestButton1.Click
-        Dim IP = Form1.DoGetHostAddresses(DNSName.Text)
+        Dim IP = Form1.DoGetHostAddresses(My.Settings.DnsName)
         Dim address As IPAddress = Nothing
         If IPAddress.TryParse(IP, address) Then
-            MsgBox(DNSName.Text + " was resolved to " + IP)
+            MsgBox(My.Settings.DnsName + " was resolved to " + IP)
         Else
-            MsgBox("Cannot resolve " + DNSName.Text)
+            MsgBox("Cannot resolve " + My.Settings.DnsName)
         End If
     End Sub
 

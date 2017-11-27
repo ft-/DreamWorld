@@ -55,6 +55,9 @@ Public Class RegionMaker
     End Property
     Public Property CurRegionNum() As Integer
         Get
+            If gCurCurRegionNum > RegionList.Count - 1 Then
+                gCurCurRegionNum = RegionList.Count - 1
+            End If
             Return gCurCurRegionNum
         End Get
         Set(ByVal Value As Integer)
@@ -63,7 +66,17 @@ Public Class RegionMaker
     End Property
     Public Property RegionName() As String
         Get
-            Return RegionList(CurRegionNum()).RegionName
+
+            If gCurCurRegionNum > RegionList.Count - 1 Then
+                gCurCurRegionNum = RegionList.Count - 1
+            End If
+            If gCurCurRegionNum < 0 Then
+                gCurCurRegionNum = 0
+            End If
+            If RegionList.Count > 0 Then
+                Return RegionList(CurRegionNum()).RegionName
+            End If
+            Return ""
         End Get
         Set(ByVal Value As String)
             RegionList(CurRegionNum()).RegionName = Value

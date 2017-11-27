@@ -1,11 +1,11 @@
 /*.pid
 
 UDProxy
-mysql-installer-community-5.7.20.0.msi
-opensim-0.9.0.0-source.zip
+
 /Signed_Binaries
 *.crdownload
 OutworldzFiles/mysql/data/opensim
+OutworldzFiles/mysql/data/robust
 OutworldzFiles/mysql/data/ib_logfile0
 OutworldzFiles/mysql/data/ib_logfile1
 OutworldzFiles/mysql/data/ibdata1
@@ -17,6 +17,7 @@ OpenSimConsoleHistory.txt
 OpenSim.log
 Init.txt
 Outworldz.log
+Http.log
 
 assetcache
 DataSnapshot
@@ -44,26 +45,6 @@ Thumbs.db
 obj/
 Release/
 Debug/
-
-OutworldzFiles/Opensim-0.9.0/.hgignore
-OutworldzFiles/Opensim-0.9.0/.nant/
-OutworldzFiles/Opensim-0.9.0/BUILDING.md
-OutworldzFiles/Opensim-0.9.0/CONTRIBUTORS.txt
-OutworldzFiles/Opensim-0.9.0/Makefile
-OutworldzFiles/Opensim-0.9.0/Prebuild/
-OutworldzFiles/Opensim-0.9.0/README.md
-OutworldzFiles/Opensim-0.9.0/TESTING.txt
-OutworldzFiles/Opensim-0.9.0/ThirdParty/
-OutworldzFiles/Opensim-0.9.0/Version.txt
-OutworldzFiles/Opensim-0.9.0/doc/README
-OutworldzFiles/Opensim-0.9.0/doc/doxygen.conf
-OutworldzFiles/Opensim-0.9.0/nant-color
-OutworldzFiles/Opensim-0.9.0/opensim/
-OutworldzFiles/Opensim-0.9.0/prebuild.xml
-OutworldzFiles/Opensim-0.9.0/runprebuild.bat
-OutworldzFiles/Opensim-0.9.0/runprebuild.sh
-OutworldzFiles/Opensim-0.9.0/share/
-
 
 
 # Ignore .user and .suo files as these are user preference specific
