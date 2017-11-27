@@ -39,7 +39,7 @@ Public Class Form1
 
 #Region "Declarations"
 
-    Dim MyVersion As String = "1.8"
+    Dim MyVersion As String = "2.0"
     Dim DebugPath As String = "C:\Opensim\Outworldz-Source"  ' no slash at end
     Public Domain As String = "http://www.outworldz.com"
     Public prefix As String ' Holds path to Opensim folder
@@ -186,7 +186,7 @@ Public Class Form1
         ' WebUI
         ViewWebUI.Visible = My.Settings.WifiEnabled
 
-        Me.Text = "Outworldz V" + MyVersion
+        Me.Text = "Dreamgrid V" + MyVersion
         PictureBox1.Enabled = True
 
         'hide the pulldowns as there is no content yet
@@ -314,10 +314,6 @@ Public Class Form1
 
         If Not SetINIData() Then Return   ' set up the INI files
 
-        If My.Settings.RunViewer Then
-            SaveViewerTypeXMLData()
-        End If
-
         StartMySQL() ' boot up MySql, and wait for it to start listening
 
         If Not Start_Robust() Then
@@ -360,8 +356,9 @@ Public Class Form1
         My.Settings.MyY = p.Y
 
         ProgressBar1.Value = 90
+
         Print("Hold fast to your dreams ...")
-        ExitAll()
+        KillAll()
         ProgressBar1.Value = 25
         Print("I'll tell you my next dream when I wake up.")
         StopMysql()
@@ -372,19 +369,6 @@ Public Class Form1
     Private Sub mnuExit_Click(sender As System.Object, e As System.EventArgs) Handles mnuExit.Click
         Log("Info:Exiting")
         End
-    End Sub
-
-    Private Sub ExitAll()
-
-        ' Kill ALL Running processes
-        KillAll()
-
-        Try
-            RemoveGrid()    ' puts viewer back to default
-        Catch ex As Exception
-            Log("Info:grid settings set back to defaults" + ex.Message)
-        End Try
-
     End Sub
 
     Private Sub ShutdownNowToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs)
@@ -1973,104 +1957,6 @@ Public Class Form1
 
 #End Region
 
-#Region "ViewerType"
-
-
-
-    Private Sub SaveViewerTypeXMLData()
-
-        ' setup ViewerType
-        If System.IO.File.Exists(xmlPath() + "\Secondlife\user_settings\settings_singularity.xml") Then
-            My.Settings.ViewerInstalled = True
-            Log("Info:Singularity Viewer is installed")
-        End If
-
-        RemoveGrid()
-
-        If Not My.Settings.ViewerInstalled Then
-            Log("Info:Singularity viewer is not installed")
-            Return
-        End If
-        ' we have to change the viewer Grid settings if we are on localhost
-        Print("Setting Grid Info...")
-
-        Dim Opensim8XML As String = "<llsd>
-    <array>
-        <map>
-        <key>default_grids_version</key>
-            <integer>22</integer>
-        </map>
-        <map>
-        <key>auto_update</key>
-            <boolean>0</boolean>
-        <key>gridname</key>
-            <string>" + My.Settings.SimName + "</string>
-        <key>gridnick</key>
-            <string>" + My.Settings.SimName + "</string>
-        <key>helperuri</key>
-            <string>http://</string>
-        <key>inventory_links</key>
-            <boolean>0</boolean>
-        <key>locked</key>
-            <boolean>0</boolean>
-        <key>loginpage</key>
-            <string>" + Splashpage + "</string>
-        <key>loginuri</key>
-            <string>http://" + My.Settings.PublicIP + ":" + My.Settings.HttpPort + "/</string>
-        <key>password</key>
-            <string>http://" + My.Settings.PublicIP + My.Settings.HttpPort + "/wifi/forgotpassword</string>
-        <key>platform</key>
-            <string>OpenSim</string>
-        <key>register</key>
-        <key>render_compat</key>
-            <boolean>1</boolean>
-        <key>search</key>
-            <string></string>
-        <key>support</key>
-            <string />
-        <key>website</key>
-            <string />
-        </map>
-    </array>
-</llsd>
-"
-
-        Try
-            My.Computer.FileSystem.CopyFile(xmlPath() + "\Secondlife\user_settings\grids_sg1.xml", xmlPath() + "\Secondlife\user_settings\grids_sg1.xml.bak", True)
-        Catch
-            Log("Error:Failed to back up ViewerType XML")
-        End Try
-
-        Try
-            My.Computer.FileSystem.DeleteFile(xmlPath() + "\Secondlife\user_settings\grids_sg1.xml")
-            Using outputFile As New StreamWriter(xmlPath() + "\Secondlife\user_settings\grids_sg1.xml", True)
-                outputFile.WriteLine(Opensim8XML)
-                ' outputFile.Close()
-            End Using
-        Catch ex As Exception
-            Log("Error:Failed to install ViewerType XML:" + ex.Message)
-        End Try
-
-    End Sub
-    Private Sub RemoveGrid()
-
-        ' restore backup - they may have changed it. Outworldzs is supposed to be simple. If they launch the viewer by itself, they can change grids
-        Try
-            My.Computer.FileSystem.CopyFile(xmlPath() + "\Secondlife\user_settings\grids_sg1.xml.bak", xmlPath() + "\Secondlife\user_settings\grids_sg1.xml", True)
-        Catch ex As Exception
-            Log("Error:failed to restore ViewerType xml backup:" + ex.Message)
-        End Try
-    End Sub
-    Private Function xmlPath() As String
-
-        ' gets the path to the %APPDATA% folder on windows so we can seek out the ViewerType folders
-        Dim appData As String = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
-        Return appData
-        'Return Mid(appData, 1, InStr(appData, "AppData") - 1)
-    End Function
-
-
-#End Region
 
 #Region "Diagnostics"
 
@@ -2698,7 +2584,7 @@ Public Class Form1
 
 #End Region
 
-#Region "Region"
+#Region "Regions"
 
     ' set Region.Ready to tru if the POST from the region indicates it is online
     Public Sub ParsePost(POST As String)
@@ -2742,6 +2628,43 @@ Public Class Form1
         End If
 
     End Sub
+
+
+    Public Sub LoadRegionList()
+
+        RegionsToolStripMenuItem.DropDownItems.Clear()
+        ' add robust first
+        Dim RobustMenu As New ToolStripMenuItem
+        RobustMenu.Text = "Robust"
+        RobustMenu.DisplayStyle = ToolStripItemDisplayStyle.ImageAndText
+        RobustMenu.Image = My.Resources.ResourceManager.GetObject("media_play_green")
+        RobustMenu.Checked = True
+        AddHandler RobustMenu.Click, New EventHandler(AddressOf RegionClick)
+        RegionsToolStripMenuItem.Visible = True
+        RegionsToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {RobustMenu})
+
+        ' now add all the regions
+        Dim Rlist = RegionClass.ListOfRegions
+        For Each RegionName In Rlist
+            Dim RegionMenu As New ToolStripMenuItem
+            RegionMenu.Text = RegionName
+            RegionMenu.DisplayStyle = ToolStripItemDisplayStyle.ImageAndText
+            AddHandler RegionMenu.Click, New EventHandler(AddressOf RegionClick)
+
+            Dim id = RegionClass.FindRegionIdByName(RegionName)
+            RegionClass.CurRegionNum = id
+            If RegionClass.RegionEnabled Then
+                RegionMenu.Checked = True
+                RegionMenu.Image = My.Resources.ResourceManager.GetObject("media_play_green")
+            Else
+                RegionMenu.Checked = False
+                RegionMenu.Image = My.Resources.ResourceManager.GetObject("media_stop_red")
+            End If
+            RegionsToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {RegionMenu})
+        Next
+
+    End Sub
+
 
 
     Private Sub RegionClick(sender As Object, e As EventArgs)
@@ -2790,40 +2713,6 @@ Public Class Form1
 
     End Sub
 
-    Public Sub LoadRegionList()
-
-        RegionsToolStripMenuItem.DropDownItems.Clear()
-        ' add robust first
-        Dim RobustMenu As New ToolStripMenuItem
-        RobustMenu.Text = "Robust"
-        RobustMenu.DisplayStyle = ToolStripItemDisplayStyle.ImageAndText
-        RobustMenu.Image = My.Resources.ResourceManager.GetObject("media_play_green")
-        RobustMenu.Checked = True
-        AddHandler RobustMenu.Click, New EventHandler(AddressOf RegionClick)
-        RegionsToolStripMenuItem.Visible = True
-        RegionsToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {RobustMenu})
-
-        ' now add all the regions
-        Dim Rlist = RegionClass.ListOfRegions
-        For Each RegionName In Rlist
-            Dim RegionMenu As New ToolStripMenuItem
-            RegionMenu.Text = RegionName
-            RegionMenu.DisplayStyle = ToolStripItemDisplayStyle.ImageAndText
-            AddHandler RegionMenu.Click, New EventHandler(AddressOf RegionClick)
-
-            Dim id = RegionClass.FindRegionIdByName(RegionName)
-            RegionClass.CurRegionNum = id
-            If RegionClass.RegionEnabled Then
-                RegionMenu.Checked = True
-                RegionMenu.Image = My.Resources.ResourceManager.GetObject("media_play_green")
-            Else
-                RegionMenu.Checked = False
-                RegionMenu.Image = My.Resources.ResourceManager.GetObject("media_stop_red")
-            End If
-            RegionsToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {RegionMenu})
-        Next
-
-    End Sub
 #End Region
 
 
