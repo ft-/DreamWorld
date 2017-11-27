@@ -113,9 +113,6 @@ Public Class Form1
         Public region_id As String
     End Class
 
-
-
-
 #End Region
 
 #Region "Properties"
@@ -157,8 +154,6 @@ Public Class Form1
 #Region "StartStop"
 
     Private Sub Form1_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-
-
         'hide progress
         ProgressBar1.Visible = True
         ProgressBar1.Minimum = 0
@@ -281,7 +276,7 @@ Public Class Form1
             End Try
 
         End If
-            Print("Ready to Launch! Click 'Start' to begin your adventure in Opensimulator.")
+        Print("Ready to Launch! Click 'Start' to begin your adventure in Opensimulator.")
 
 
         ProgressBar1.Value = 100
@@ -364,6 +359,7 @@ Public Class Form1
         StopMysql()
         Print("Zzzz...")
         ProgressBar1.Value = 0
+
     End Sub
 
     Private Sub mnuExit_Click(sender As System.Object, e As System.EventArgs) Handles mnuExit.Click
@@ -435,6 +431,7 @@ Public Class Form1
         Next
         zap = False
     End Function
+
 #End Region
 
 #Region "Menus"
@@ -1197,6 +1194,7 @@ Public Class Form1
 #Region "Opensimulator"
 
     Private Function Start_Opensimulator() As Boolean
+
         If Running = False Then Return True
         OpensimProcID.Clear()
         Dim counter = 0
@@ -1223,9 +1221,10 @@ Public Class Form1
 
     End Function
 
-    ' Handle Exited Event And display process information.
+
     Private Sub OpensimProcess_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess.Exited
 
+        ' Handle Exited Event And display process information.
         RegionClass.StoppedRegion(sender.Id)
 
     End Sub
@@ -1277,14 +1276,13 @@ Public Class Form1
         End If
 
         Return True
+
     End Function
-
-
-
 
 #End Region
 
 #Region "Logging"
+
     Private Sub ClearLogFiles()
 
         Dim Logfiles = New List(Of String) From {
@@ -1303,11 +1301,12 @@ Public Class Form1
             Catch ex As Exception
 
             End Try
-
         Next
+
     End Sub
 
     Public Sub Log(message As String)
+
         Try
             Using outputFile As New StreamWriter(MyFolder & "\OutworldzFiles\Outworldz.log", True)
                 outputFile.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + message)
@@ -1316,12 +1315,16 @@ Public Class Form1
         Catch
         End Try
         Debug.Print(message)
+
     End Sub
 
     Private Sub ShowLog()
+
         LogButton.Show()
         IgnoreButton.Show()
+
     End Sub
+
     Private Sub ShowLogButton_Click(sender As Object, e As EventArgs) Handles LogButton.Click
 
         System.Diagnostics.Process.Start("wordpad.exe", """" + MyFolder + "/OutworldzFiles/Outworldz.log" + """")
@@ -1332,9 +1335,12 @@ Public Class Form1
     End Sub
 
     Private Sub IgnoreButton_Click(sender As Object, e As EventArgs) Handles IgnoreButton.Click
+
         LogButton.Hide()
         IgnoreButton.Hide()
+
     End Sub
+
 #End Region
 
 #Region "Subs"
@@ -1349,21 +1355,27 @@ Public Class Form1
         End If
 
     End Function
+
     Public Sub ConsoleCommand(ProcessID As Integer, command As String)
+
         Try
             AppActivate(ProcessID)
             SendKeys.SendWait(command)
         Catch ex As Exception
             Log("Warn:" + ex.Message)
         End Try
+
     End Sub
+
     Public Sub RobustCommand(command As String)
+
         Try
             AppActivate(gRobustProcID)
             SendKeys.SendWait(command)
         Catch ex As Exception
             Log("Warn:" + ex.Message)
         End Try
+
     End Sub
 
     Private Sub SaySomething()
@@ -1418,7 +1430,9 @@ Public Class Form1
     End Sub
 
     Sub Sleep(value As Integer)
+
         Thread.Sleep(value)
+
     End Sub
 
     Public Sub PaintImage()
@@ -1438,7 +1452,9 @@ Public Class Form1
     End Sub
 
     Private Sub Timer1_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Timer1.Tick
+
         PaintImage()
+
     End Sub
 
     Private Sub LoadBackupToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles LoadBackupToolStripMenuItem.Click
@@ -1479,24 +1495,29 @@ Public Class Form1
             Print("Opensim is not running. Cannot load the OAR file.")
         End If
 
-
     End Sub
 
     Private Sub PictureBox1_Click(sender As Object, e As EventArgs) Handles PictureBox1.Click
+
         PaintImage()
+
     End Sub
 
     Private Sub ShowHyperGridAddressToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ShowHyperGridAddressToolStripMenuItem.Click
+
         Print("Hypergrid address is http://" + My.Settings.PublicIP + ":" + My.Settings.HttpPort)
+
     End Sub
 
     Private Sub WebStatsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles WebStatsToolStripMenuItem.Click
+
         If (Running) Then
             Dim webAddress As String = "http://127.0.0.1:" + My.Settings.HttpPort + "\bin\data\sim.html"
             Process.Start(webAddress)
         Else
             Print("Opensim is not running. Cannot open the Statistics web page.")
         End If
+
     End Sub
 
     Private Sub SaveBackupToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles SaveBackupToolStripMenuItem.Click
@@ -1529,6 +1550,7 @@ Public Class Form1
             ProgressBar1.Value = ProgressBar1.Value + bump
         End If
     End Sub
+
     Private Sub BumpProgress10()
         If ProgressBar1.Value < 90 Then
             ProgressBar1.Value = ProgressBar1.Value + 10
@@ -1956,7 +1978,6 @@ Public Class Form1
     End Sub
 
 #End Region
-
 
 #Region "Diagnostics"
 
@@ -2472,6 +2493,7 @@ Public Class Form1
 #End Region
 
 #Region "DNS"
+
     Public Sub RegisterDNS()
 
         If My.Settings.DnsName = String.Empty Then
@@ -2490,6 +2512,7 @@ Public Class Form1
 
         DoGetHostAddresses(My.Settings.DnsName)
         BumpProgress10()
+
     End Sub
 
     Public Function DoGetHostAddresses(hostName As [String]) As String
@@ -2511,6 +2534,7 @@ Public Class Form1
         Return String.Empty
 
     End Function
+
     Public Function GetNewDnsName() As String
 
         Dim client As New System.Net.WebClient
@@ -2521,6 +2545,7 @@ Public Class Form1
             Log("Warn:Cannot get new name:" + ex.Message)
         End Try
         Return Checkname
+
     End Function
 
     Public Function RegisterName(name As String) As String
@@ -2539,8 +2564,11 @@ Public Class Form1
             Return name
         End If
         Return ""
+
     End Function
+
     Private Sub NewDNSName()
+
         If My.Settings.DnsName = "" Then
             Dim newname = GetNewDnsName()
             If newname <> "" Then
@@ -2553,6 +2581,7 @@ Public Class Form1
             End If
             BumpProgress10()
         End If
+
     End Sub
 
     Private Sub CheckDatabaseToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CheckDatabaseToolStripMenuItem.Click
@@ -2586,8 +2615,31 @@ Public Class Form1
 
 #Region "Regions"
 
-    ' set Region.Ready to tru if the POST from the region indicates it is online
     Public Sub ParsePost(POST As String)
+        ' set Region.Ready to true if the POST from the region indicates it is online
+        ' requires a section in Opensim.ini where [RegionReady] has this:
+
+        '[RegionReady]
+
+        '; Enable this module to get notified once all items And scripts in the region have been completely loaded And compiled
+        'Enabled = True
+
+        '; Channel on which to signal region readiness through a message
+        '; formatted as follows: "{server_startup|oar_file_load},{0|1},n,[oar error]"
+        '; - the first field indicating whether this Is an initial server startup
+        '; - the second field Is a number indicating whether the OAR file loaded ok (1 == ok, 0 == error)
+        '; - the third field Is a number indicating how many scripts failed to compile
+        '; - "oar error" if supplied, provides the error message from the OAR load
+        'channel_notify = -800
+
+        '; - disallow logins while scripts are loading
+        '; Instability can occur on regions with 100+ scripts if users enter before they have finished loading
+        'login_disable = True
+
+        '; - send an alert as json to a service
+        'alert_uri = ${Const|BaseURL}:${Const|DiagnosticsPort}/${Const|RegionFolderName}
+
+
         ' POST = "GET Region name HTTP...{server_startup|oar_file_load},{0|1},n,[oar error]"
         '{"alert":"region_ready","login":"enabled","region_name":"Region 2","region_id":"19f6adf0-5f35-4106-bcb8-dc3f2e846b89"}}
         'POST / Region%202 HTTP/1.1
@@ -2600,6 +2652,7 @@ Public Class Form1
 
         ' we want region name, UUID and server_startup
         ' could also be a probe from the outworldz to check if ports are open.
+
         If (POST.Contains("alert")) Then
             ' This search returns the substring between two strings, so 
             ' the first index Is moved to the character just after the first string.
@@ -2614,21 +2667,20 @@ Public Class Form1
                 Debug.Print(ex.Message)
                 Return
             End Try
-            Print(obj.Region_name & " is ready for logins")
-            Dim regionid = RegionClass.FindRegionidByName(obj.region_name)
+            Log("Region " & obj.Region_name & " is ready for logins")
+            Dim regionid = RegionClass.FindRegionIdByName(obj.region_name)
             Dim savedID = RegionClass.CurRegionNum
             RegionClass.CurRegionNum = regionid
 
-            ' safe to set new proerties
+            ' is now safe to set new proerties
+
             RegionClass.Ready = True
             RegionClass.UUID = obj.region_id
-
             RegionClass.CurRegionNum = savedID
 
         End If
 
     End Sub
-
 
     Public Sub LoadRegionList()
 
@@ -2665,50 +2717,72 @@ Public Class Form1
 
     End Sub
 
-
-
     Private Sub RegionClick(sender As Object, e As EventArgs)
 
+        ' push region 
         Dim savedID = RegionClass.CurRegionNum
-        If sender.text = "Robust" Then
-            Try
-                Dim P = Process.GetProcessById(gRobustProcID)
-                P.Kill()
-                Debug.Print("Stopped Robust")
-            Catch ex As Exception
-                Debug.Print("Could not stop Robust")
-            End Try
-            Return
-        End If
         Dim regionId = RegionClass.FindRegionIdByName(sender.text)
 
-        RegionClass.CurRegionNum = regionId
-        Debug.Print("Clicked " & sender.text)
-        If sender.checked Then
+        If sender.text = "Robust" Then
+            If gRobustProcID And sender.checked = False Then
+                Try
+                    Dim P = Process.GetProcessById(gRobustProcID)
+                    P.Kill()
+                    sender.Image = My.Resources.ResourceManager.GetObject("media_stop_red") ' image
+                    Log("Region:Stopped Robust")
+                Catch ex As Exception
+                    Log("Region:Could not stop Robust")
+                End Try
+                sender.checked = True
+                Return
+            ElseIf sender.text = "Robust" And Not gRobustProcID And sender.checked = True Then
+                Print("Starting Robust")
+                StartMySQL()
+                Start_Robust()
+                sender.checked = False
+                sender.Image = My.Resources.ResourceManager.GetObject("media_play_green")
+            End If
+            Return
 
-            sender.checked = False 'checkbox
-            sender.Image = My.Resources.ResourceManager.GetObject("media_stop_red") ' image
-            RegionClass.RegionEnabled = False   ' class
-            ' and region file on disk
-            LoadIni(prefix & "bin\Regions\" & sender.text & "\Region\" & sender.text & ".ini", ";")
-            SetIni(sender.text, "Enabled", "false")
-            SaveINI()
+        Else ' had to be a region that was clicked
+            Log("Region:Clicked region " & sender.text)
+            RegionClass.CurRegionNum = regionId
+            If sender.checked Then
+                sender.checked = False 'checkbox
+                sender.Image = My.Resources.ResourceManager.GetObject("media_stop_red") ' image
+                RegionClass.RegionEnabled = False   ' class
 
-            If Running Then
+                ' and region file on disk
+                LoadIni(prefix & "bin\Regions\" & sender.text & "\Region\" & sender.text & ".ini", ";")
+                SetIni(sender.text, "Enabled", "false")
+                SaveINI()
+
                 Dim PID = RegionClass.ProcessID
                 Try
                     Dim P = Process.GetProcessById(PID)
                     P.Kill()
-                    Debug.Print("Stopped Opensim")
+                    Log("Region:Stopped Opensim")
                 Catch ex As Exception
-                    Debug.Print("Could not stop Opensim")
+                    Log("Region:Could not stop Opensim")
                 End Try
+                RegionClass.Ready = False
+
+            Else
+                sender.checked = True
+                sender.Image = My.Resources.ResourceManager.GetObject("media_play_green")
+                RegionClass.RegionEnabled = True
+
+                ' and region file on disk
+                LoadIni(prefix & "bin\Regions\" & sender.text & "\Region\" & sender.text & ".ini", ";")
+                SetIni(sender.text, "Enabled", "true")
+                SaveINI()
+
+                RegionClass.ProcessID = Boot(sender.text)
+
             End If
-        Else
-            sender.checked = True
-            sender.Image = My.Resources.ResourceManager.GetObject("media_play_green")
-            RegionClass.RegionEnabled = True
         End If
+
+        'pop
         RegionClass.CurRegionNum = savedID
 
     End Sub

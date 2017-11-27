@@ -6,7 +6,6 @@ Imports System.Threading
 Imports System.Xml
 
 
-
 Public Class NetServer
     Private Shared running = False
     Private LocalTCPListener As TcpListener
@@ -17,12 +16,14 @@ Public Class NetServer
     Private Shared singleWebserver As NetServer
     Private Myfolder As String
 
-
     Private Sub New()
 
         'create a singleton
+
     End Sub
+
     Public Sub StartServer(folder As String)
+
         If running Then Return
         Myfolder = folder
         Try
@@ -36,6 +37,7 @@ Public Class NetServer
         End Try
 
     End Sub
+
     Private Function looper()
 
         'Dim counter As Integer = 60 ' wait up to 30 seconds, then abort
@@ -99,6 +101,7 @@ Public Class NetServer
         Log("Info:Webthread ending")
         running = False
         Return False
+
     End Function
 
     Private Function GetIPv4Address() As IPAddress
@@ -116,15 +119,18 @@ Public Class NetServer
     End Function
 
     Public Sub StopWebServer()
+
         Log("Info:Stopping Webserver")
         listen = False
         Application.DoEvents()
 
         WebThread.Join()
         Log("Info:Shutdown Complete")
+
     End Sub
 
     Friend Shared Function getWebServer() As NetServer
+
         If Not blnFlag Then
             singleWebserver = New NetServer
             blnFlag = True
@@ -132,9 +138,11 @@ Public Class NetServer
         Else
             Return singleWebserver
         End If
+
     End Function
 
     Public Sub Log(message As String)
+        Debug.Print(message)
         Try
             Using outputFile As New StreamWriter(Myfolder & "\Http.log", True)
                 outputFile.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + message)
@@ -144,7 +152,6 @@ Public Class NetServer
         Catch ex As Exception
             Debug.Print(ex.Message)
         End Try
-        Debug.Print(message)
     End Sub
 
 End Class

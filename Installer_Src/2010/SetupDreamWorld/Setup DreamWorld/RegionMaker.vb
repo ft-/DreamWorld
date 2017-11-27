@@ -21,7 +21,7 @@ Public Class RegionMaker
     End Class
 
     Public Shared RegionList As New ArrayList
-    Private gCurCurRegionNum As UInteger
+    Private gCurCurRegionNum As Integer
 #End Region
 
 #Region "Properties"
