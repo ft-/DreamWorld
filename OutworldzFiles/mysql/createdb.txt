@@ -1,3 +1,5 @@
+With mysql running, these steps were used to make a initial database from scratch
+
 mysql -u root
 create database opensim;
 use opensim;
