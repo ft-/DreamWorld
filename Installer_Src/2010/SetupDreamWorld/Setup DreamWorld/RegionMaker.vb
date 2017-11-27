@@ -238,6 +238,9 @@ Public Class RegionMaker
         Dim folders() As String
         Dim regionfolders() As String
 
+
+
+
         folders = Directory.GetDirectories(Form1.prefix + "bin\Regions")
         For Each FolderName As String In folders
             Form1.Log("Info:Region Path:" + FolderName)
@@ -297,7 +300,7 @@ Public Class RegionMaker
             Directory.CreateDirectory(path & "\" & name & "\Region")
         End If
 
-        File.Copy(Form1.prefix & "\bin\Regions.proto", path & "\" & name & "\Region\" & name & ".ini")
+        File.Copy(Form1.prefix & "bin\Regions.proto", path & "\" & name & "\Region\" & name & ".ini")
 
         Form1.LoadIni(path & "\" & name & "\Region\" & name & ".ini", ";")
         Form1.SetIni(name, "RegionUUID", RegionList(index).UUID)

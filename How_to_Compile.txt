@@ -43,9 +43,11 @@ Making A Different Installation:
 
 Everything that makes an opensim instance is located in a single folder "OutworldzFiles".   It is essentially a copy of the default installation with modifications to make it easy to install and ready to use.  
 
-cd OutworldzFiles\Opensim-0.9
+cd OutworldzFiles\Opensim-0.9.0
+@rem git clone git://opensimulator.org/git/opensim
 @rem update Opensim from master
-git pull 
+git pull
+git checkout 0.9.0-post-fixes
 cd addon-modules
 @rem update bird module from master
 git pull 

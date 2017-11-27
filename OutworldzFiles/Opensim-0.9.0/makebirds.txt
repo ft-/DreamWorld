@@ -1,8 +1,0 @@
-
-@rem commands to install Opensim Birds
-cd addon-modules
-git clone https://github.com/Outworldz/OpenSimBirds.git
-cd ../../
-runprebuild.bat
-compile.bat
-mautil -reg . reg-update

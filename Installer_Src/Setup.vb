@@ -208,7 +208,7 @@ Public Class Form1
             End If
         End If
         gCurSlashDir = MyFolder.Replace("\", "/")    ' because Mysql uses unix like slashes, that's why
-        prefix = MyFolder & "\OutworldzFiles\Opensim-0.9.0\"
+        prefix = MyFolder & "\OutworldzFiles\Opensim\"
 
         ClearLogFiles() ' clear log fles
 
@@ -1173,7 +1173,7 @@ Public Class Form1
                 Buttons(StartButton)
                 Dim yesno = MsgBox("Robust did not start. Do you want to see the log file?", vbYesNo)
                 If (yesno = vbYes) Then
-                    Dim Log As String = """" + MyFolder + "\OutworldzFiles\Opensim-0.9.0\bin\Robust.log" + """"
+                    Dim Log As String = """" + MyFolder + "\OutworldzFiles\Opensim\bin\Robust.log" + """"
                     System.Diagnostics.Process.Start("wordpad.exe", Log)
                 End If
                 Buttons(StartButton)
@@ -1287,11 +1287,11 @@ Public Class Form1
 
         Dim Logfiles = New List(Of String) From {
             MyFolder + "\OutworldzFiles\Outworldz.log",
-            MyFolder + "\OutworldzFiles\Opensim-0.9.0\bin\OpenSimConsoleHistory.txt",
+            MyFolder + "\OutworldzFiles\Opensim\bin\OpenSimConsoleHistory.txt",
             MyFolder + "\OutworldzFiles\Diagnostics.log",
             MyFolder + "\OutworldzFiles\UPnp.log",
-            MyFolder + "\OutworldzFiles\Opensim-0.9.0\bin\Robust.log",
-            MyFolder + "\OutworldzFiles\Opensim-0.9.0\http.log"
+            MyFolder + "\OutworldzFiles\Opensim\bin\Robust.log",
+            MyFolder + "\OutworldzFiles\Opensim\http.log"
         }
 
         For Each thing In Logfiles
