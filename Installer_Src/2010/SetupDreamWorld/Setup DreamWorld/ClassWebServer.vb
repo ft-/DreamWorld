@@ -136,7 +136,7 @@ Public Class NetServer
 
     Public Sub Log(message As String)
         Try
-            Using outputFile As New StreamWriter(Myfolder & "\http.log", True)
+            Using outputFile As New StreamWriter(Myfolder & "\Http.log", True)
                 outputFile.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + message)
                 outputFile.Close()
                 Debug.Print(message)
