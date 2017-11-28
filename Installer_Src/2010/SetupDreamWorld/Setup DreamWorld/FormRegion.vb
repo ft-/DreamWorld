@@ -239,6 +239,8 @@ Public Class FormRegion
 
         oldname = MyRegion.RegionName
 
+        Form1.LoadRegionList()
+
     End Sub
 
 #End Region
