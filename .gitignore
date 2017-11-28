@@ -1,4 +1,4 @@
-/*.pid
+*.pid
 
 UDProxy
 
@@ -14,6 +14,8 @@ OutworldzFiles/mysql/data/*.err
 LocalUserStatistics.db
 Diagnostics.log
 OpenSimConsoleHistory.txt
+RobustConsoleHistory.txt
+
 OpenSim.log
 Init.txt
 Outworldz.log

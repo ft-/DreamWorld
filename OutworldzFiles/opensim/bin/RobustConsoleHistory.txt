@@ -1,3 +1,4 @@
 Test
 User
 create user
+reset user password Wifi Admin !!X1J)
