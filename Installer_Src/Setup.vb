@@ -1396,7 +1396,12 @@ Public Class Form1
                                   "What a dream that was!",
                                   "Do you ever dream of better worlds? I just did.",
                                   "Huh?",
-                                  "Mumbles..."
+                                  "Mumbles...",
+                                  "Hello beautiful",
+                                  "Act on dreams with an open mind.",
+                                  "Believe in the beauty of your dreams.",
+                                  "A dream doesn't become reality through magic",
+                                  
                                 }
 
         Dim Array() As String = {
