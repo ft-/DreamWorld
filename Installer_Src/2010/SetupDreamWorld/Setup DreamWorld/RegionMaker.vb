@@ -21,7 +21,7 @@ Public Class RegionMaker
     End Class
 
     Public Shared RegionList As New ArrayList
-    Private gCurCurRegionNum As Integer
+    Private gCurRegionNum As Integer
 #End Region
 
 #Region "Properties"
@@ -55,23 +55,26 @@ Public Class RegionMaker
     End Property
     Public Property CurRegionNum() As Integer
         Get
-            If gCurCurRegionNum > RegionList.Count - 1 Then
-                gCurCurRegionNum = RegionList.Count - 1
+            If gCurRegionNum > RegionList.Count - 1 Then
+                gCurRegionNum = RegionList.Count - 1
             End If
-            Return gCurCurRegionNum
+            If gCurRegionNum = -1 Then
+                Return ""
+            End If
+            Return gCurRegionNum
         End Get
         Set(ByVal Value As Integer)
-            gCurCurRegionNum = Value
+            gCurRegionNum = Value
         End Set
     End Property
     Public Property RegionName() As String
         Get
 
-            If gCurCurRegionNum > RegionList.Count - 1 Then
-                gCurCurRegionNum = RegionList.Count - 1
+            If gCurRegionNum > RegionList.Count - 1 Then
+                gCurRegionNum = RegionList.Count - 1
             End If
-            If gCurCurRegionNum < 0 Then
-                gCurCurRegionNum = 0
+            If gCurRegionNum < 0 Then
+                gCurRegionNum = 0
             End If
             If RegionList.Count > 0 Then
                 Return RegionList(CurRegionNum()).RegionName
