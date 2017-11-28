@@ -602,7 +602,7 @@ Public Class Form1
         Try
             ' add this sim name as a default to the file as HG regions, and add the other regions as fallback
 
-            RegionClass.CurRegionNum = My.Settings.WelcomeRegion ' !!! this could easily no longer be there if a sim is deleted.
+            RegionClass.CurRegionNum = My.Settings.WelcomeRegion ' 
             Dim DefaultName = RegionClass.RegionName
 
             '(replace spaces with underscore)
@@ -940,7 +940,7 @@ Public Class Form1
 
                 ' remove the PID that is left behind to suppress a red error in opensim.log
                 Try
-                    My.Computer.FileSystem.DeleteFile(prefix + "bin\Regions\" + fname + "/PID.pid")
+                    My.Computer.FileSystem.DeleteFile(prefix + "bin\Regions\" + fname + "\PID.pid")
                 Catch
                 End Try
 
@@ -2748,6 +2748,8 @@ Public Class Form1
                 sender.checked = False
                 sender.Image = My.Resources.ResourceManager.GetObject("media_play_green")
             End If
+            '!!! add yellow running and red if it is aborted.
+
             Return
 
         Else ' had to be a region that was clicked

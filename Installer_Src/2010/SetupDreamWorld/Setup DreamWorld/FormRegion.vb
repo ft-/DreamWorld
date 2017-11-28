@@ -9,7 +9,7 @@ Public Class FormRegion
 
     Dim oldname As String = ""
     Dim MyRegion As RegionMaker
-    Dim gNum As Integer ' pointer to this region in RegionMake
+
     Dim initted As Boolean = False ' needed a flag to see if we are initted as the dialogs change on start.
     Dim changed As Boolean    ' true if we need to save a form
 
@@ -21,8 +21,8 @@ Public Class FormRegion
 
         MyRegion = Form1.RegionClass
         MyRegion.CurRegionNum = num
-        gNum = num
         oldname = MyRegion.RegionName
+
         EnabledCheckBox.Checked = MyRegion.RegionEnabled
         '''''''''''''''''''''''''''''''
         ' reasonable default section 
@@ -140,7 +140,7 @@ Public Class FormRegion
 
         ' global coords
         If Convert.ToInt16(MyRegion.CoordX) = 0 Then
-            Message = "Region CoordX is zero"
+            Message = "Region CoordX cannot be zero"
             Form1.Log(Message)
             Return Message
         End If
@@ -150,7 +150,7 @@ Public Class FormRegion
             Return Message
         End If
         If Convert.ToInt16(MyRegion.CoordY) = 0 Then
-            Message = "Region CoordY is zero"
+            Message = "Region CoordY cannot be zero"
             Form1.Log(Message)
             Return Message
         End If
@@ -200,7 +200,7 @@ Public Class FormRegion
 
         ' save the Region File
         If oldname.Length Then
-            Dim oldfile = dir + "Regions\" + oldname
+            Dim oldfile = dir + "bin\Regions\" + oldname
             Try
                 Directory.Delete(oldfile, True)
             Catch ex As Exception
@@ -222,7 +222,7 @@ Public Class FormRegion
                         "; Automatically changed by Dreamworld - do Not change this file!" & vbCrLf &
                         "[" & MyRegion.RegionName & "]" & vbCrLf &
                         "RegionUUID = " & MyRegion.UUID & vbCrLf &
-                        "Location = " & """" & MyRegion.CoordX & "," & MyRegion.CoordY & """" & vbCrLf &
+                        "Location = " & MyRegion.CoordX & "," & MyRegion.CoordY & vbCrLf &
                         "InternalAddress = 0.0.0.0" & vbCrLf &
                         "InternalPort = " & MyRegion.RegionPort & vbCrLf &
                         "AllowAlternatePorts = False" & vbCrLf &
@@ -230,7 +230,6 @@ Public Class FormRegion
                         "SizeX = " & MyRegion.SizeX & vbCrLf &
                         "SizeY = " & MyRegion.SizeY & vbCrLf &
                         "Enabled = true" & vbCrLf
-
 
         Using outputFile As New StreamWriter(dir & "bin\Regions\" & MyRegion.RegionName & "\Region\" & MyRegion.RegionName & ".ini")
             outputFile.Write(Region)
@@ -394,7 +393,7 @@ Public Class FormRegion
             End If
         Else
             WriteRegion()
-            Form1.Sleep(100)
+
             changed = False
             Me.Close()
         End If

@@ -43,10 +43,10 @@
 [Const]
 
 ;# used by the one-exe-per-instance logic. This becomes the folder for the regions file.
-RegionFolderName = Welcome
+RegionFolderName = WelcomeRegion
 
 ;# {BaseURL} {} {BaseURL} {"http://example.com","http://127.0.0.1"} "http://127.0.0.1"
-http_listener_port = 8004
+http_listener_port = 8005
 BaseURL = http://Fred.Outworldz.net
 
 ;# {PublicPort} {} {PublicPort} {8002} "8002"
@@ -105,11 +105,15 @@ PIDFile = "./Regions/${Const|RegionFolderName}/PID.pid"
 ; Information about the registered repositories and installed plugins will
 ; be stored here. The OpenSim.exe process must have R/W access to the location.
 ; RegistryLocation = "."
+RegistryLocation = "../addins-registry"
+
 ;# {ConfigDirectory} {} {Set path to directory for modular ini files} {}
 ; Used by region module addins. You can set this to outside bin, so that addin
 ; configurations will survive updates. The OpenSim.exe process must have R/W access
 ; to the location.
 ; ConfigDirectory = "."
+ConfigDirectory = "../addins-config"
+
 ;# {region_info_source} {} {Where to load region from?} {filesystem web} filesystem
 ;; Determine where OpenSimulator looks for the files which tell it
 ;; which regions to server
@@ -219,6 +223,8 @@ PhysicalPrimMax = 128
 ;; Default is Meshmerizer
 ; meshing = Meshmerizer
 ; meshing = ZeroMesher
+meshing = Meshmerizer
+
 ;; Choose one of the physics engines below
 ;# {physics} {} {Select physics engine} {OpenDynamicsEngine BulletSim basicphysics POS} BulletSim
 ;; BulletSim is the default physics engine.  It provides the best performance and most functionality.
@@ -231,6 +237,11 @@ PhysicalPrimMax = 128
 ; physics = BulletSim
 ; physics = basicphysics
 ; physics = POS
+physics = BulletSim
+
+;
+UseSeparatePhysicsThread = true
+
 ;# {DefaultScriptEngine} {} {Default script engine} {XEngine} XEngine
 ;; Default script engine to use. Currently, we only have XEngine
 ; DefaultScriptEngine = "XEngine"
@@ -249,9 +260,6 @@ PhysicalPrimMax = 128
 ;; The email module requires some configuration. It needs an SMTP
 ;; server to send mail through.
 emailmodule = DefaultEmailModule
-meshing = Meshmerizer
-physics = BulletSim
-UseSeparatePhysicsThread = true
 
 ;# {SpawnPointRouting} {} {Set routing method for Telehub Spawnpoints} {closest random sequence} closest
 ;; SpawnPointRouting adjusts the landing for incoming avatars.
@@ -283,6 +291,9 @@ Stats_URI = "jsonSimStats"
 ; specify category, container and stat to fetch. If not selected, returns all of that type.
 ; http://simulatorHTTPport/ManagedStats/?cat=Category&cont=Container&stat=Statistic
 ; ManagedStatsRemoteFetchURI = "ManagedStats"
+; economy module
+economymodule = Gloebit
+
 [RegionReady]
 
 ; Enable this module to get notified once all items and scripts in the region have been completely loaded and compiled
@@ -385,13 +396,13 @@ RenderMeshes = true
 ;# {allow_grid_gods} {} {Allow grid gods?} {true false} false
 ;; This allows users with a UserLevel of 200 or more to assume god
 ;; powers in the regions in this simulator.
-allow_grid_gods = true
+allow_grid_gods = false
 
 ;; This allows some control over permissions
 ;; please note that this still doesn't duplicate SL, and is not intended to
 ;# {region_owner_is_god} {} {Allow region owner gods} {true false} true
 ;; Allow region owners to assume god powers in their regions
-region_owner_is_god = true
+region_owner_is_god = false
 
 ;# {region_manager_is_god} {} {Allow region manager gods} {true false} false
 ;; Allow region managers to assume god powers in regions they manage
@@ -812,8 +823,6 @@ gridname = "${Const|GridName}"
 ;# {PriceGroupCreate} {} {Fee for group creation} {} 0
 ;; Money Unit fee to create groups.  Default is 0.
 ; PriceGroupCreate = 0
-economymodule = Gloebit
-
 [XEngine]
 
 ;# {Enabled} {} {Enable the XEngine scripting engine?} {true false} true

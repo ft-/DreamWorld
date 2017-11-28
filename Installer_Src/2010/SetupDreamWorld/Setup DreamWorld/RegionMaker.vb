@@ -12,7 +12,7 @@ Public Class RegionMaker
         Public RegionName As String
         Public UUID As String
         Public CoordX As Integer
-        Public CoordY As String
+        Public CoordY As Integer
         Public RegionPort As Integer
         Public SizeX As Integer
         Public SizeY As Integer
@@ -59,7 +59,7 @@ Public Class RegionMaker
                 gCurRegionNum = RegionList.Count - 1
             End If
             If gCurRegionNum = -1 Then
-                Return ""
+                Return 0
             End If
             Return gCurRegionNum
         End Get
@@ -141,7 +141,7 @@ Public Class RegionMaker
             Return RegionList(CurRegionNum()).Ready
         End Get
         Set(ByVal Value As Boolean)
-            RegionList(CurRegionNum()).CoordY = Ready
+            RegionList(CurRegionNum()).Ready = Value
         End Set
     End Property
 
@@ -320,7 +320,7 @@ Public Class RegionMaker
 
         Form1.LoadIni(path & "\" & name & "\Region\" & name & ".ini", ";")
         Form1.SetIni(name, "RegionUUID", RegionList(index).UUID)
-        Form1.SetIni(name, "Location", RegionList(index).CoordX & "," & RegionList(index).Coordy)
+        Form1.SetIni(name, "Location", RegionList(index).CoordX & "," & RegionList(index).CoordY)
         Form1.SetIni(name, "InternalPort", RegionList(index).RegionPort)
         Form1.SetIni(name, "ExternalHostName", My.Settings.PublicIP)
         Form1.SetIni(name, "SizeX", RegionList(index).SizeX)
@@ -382,8 +382,9 @@ Public Class RegionMaker
         Dim regionid = FindRegionIdByProcessID(pid)
         Dim savedID = CurRegionNum
         CurRegionNum = regionid
-        ' safe to set new proerties
+        ' safe to set new properties
         Debug.Print("Region " & CurrentRegionName() + " stopped")
+
         Ready = False
         ProcessID = 0
         CurRegionNum = savedID
