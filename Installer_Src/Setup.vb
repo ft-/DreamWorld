@@ -938,27 +938,33 @@ Public Class Form1
                 RegionClass.CurRegionNum = counter
                 Dim fname = RegionClass.RegionName
 
+                ' remove the PID that is left behind to suppress a red error in opensim.log
                 Try
-                    My.Computer.FileSystem.DeleteFile(prefix + "bin\Regions\" + fname + "/Opensim.ini")
-                Catch ex As Exception
-                End Try
-                Try
-                    LoadIni(prefix + "bin\Opensim.proto", ";")
-                    SetIni("Const", "BaseURL", "http://" + My.Settings.PublicIP)
-                    SetIni("Const", "PublicPort", My.Settings.HttpPort)
-                    SetIni("Const", "http_listener_port", RegionClass.RegionPort)
-                    SetIni("Const", "PrivatePort", My.Settings.PrivatePort) '8003
-                    SetIni("Const", "RegionFolderName", fname)
-
-                    SaveINI()
-                    My.Computer.FileSystem.CopyFile(prefix + "bin\Opensim.proto", prefix + "bin\Regions/" + fname + "/Opensim.ini", True)
+                    My.Computer.FileSystem.DeleteFile(prefix + "bin\Regions\" + fname + "/PID.pid")
                 Catch
-                    Print("Error:Failed to Set the Opensim.ini for sim " + fname)
-                    Return False
                 End Try
 
-            Catch ex As Exception
-                Print("Error:" + ex.Message)
+                Try
+                        My.Computer.FileSystem.DeleteFile(prefix + "bin\Regions\" + fname + "/Opensim.ini")
+                    Catch ex As Exception
+                    End Try
+                    Try
+                        LoadIni(prefix + "bin\Opensim.proto", ";")
+                        SetIni("Const", "BaseURL", "http://" + My.Settings.PublicIP)
+                        SetIni("Const", "PublicPort", My.Settings.HttpPort)
+                        SetIni("Const", "http_listener_port", RegionClass.RegionPort)
+                        SetIni("Const", "PrivatePort", My.Settings.PrivatePort) '8003
+                        SetIni("Const", "RegionFolderName", fname)
+
+                        SaveINI()
+                        My.Computer.FileSystem.CopyFile(prefix + "bin\Opensim.proto", prefix + "bin\Regions/" + fname + "/Opensim.ini", True)
+                    Catch
+                        Print("Error:Failed to Set the Opensim.ini for sim " + fname)
+                        Return False
+                    End Try
+
+                Catch ex As Exception
+                    Print("Error:" + ex.Message)
                 Return False
             End Try
 
