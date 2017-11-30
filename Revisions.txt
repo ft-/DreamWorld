@@ -63,8 +63,10 @@ This re-release updates it from the original Sim On A Stick format into a standa
 1.6.3 2017-2-24 Load OAR didn't work with spaces in file names, popup notes should occur only once, CheckDatabase was missing
 1.6.4 2017-4-05 Refactoring of DNS
 1.6.5 2017-8-26 Diva 0.9.0 release with Wifi, UpnpManager added
-1.67  2017-10-1 Beta test of bug fix for crashing when 0.9 cannot find a default sim
-1.70 general release
+1.6.7 2017-10-1 Beta test of bug fix for crashing when 0.9 cannot find a default sim
+1.7.2 2017-11-29 Another region crash found. More stats collection to a new URL
+
+
 
 
                

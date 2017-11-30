@@ -40,9 +40,8 @@ Public Class Form1
     Dim DebugPath As String = "C:\Opensim\OpensimV1.72-Source"
     Public Domain As String = "http://www.outworldz.com"
     Dim RevNotesFile As String = "Update_Notes_" + MyVersion + ".rtf"
-    Private gFailDebug1 = False ' set to true to fail diagnostic
-    Private gFailDebug2 = False ' set to true to fail diagnostic
-    Private gFailDebug3 = False ' set to true to fail diagnostic
+    Private gFailDebug = False ' set to true to fail diagnostic
+
 
     Public MyFolder As String   ' Holds the current folder that we are running in
     Dim gCurSlashDir As String '  holds the current directory info in Unix format
@@ -199,7 +198,9 @@ Public Class Form1
             ' for debugging when compiling
             If arguments(1) = "-debug" Then
                 gDebug = True
+                gFailDebug = True
                 MyFolder = DebugPath ' for testing, as the compiler buries itself in ../../../debug
+
             End If
         End If
         gCurSlashDir = MyFolder.Replace("\", "/")    ' because Mysql uses unix like slashes, that's why
@@ -226,9 +227,11 @@ Public Class Form1
             My.Settings.Save()
         End If
 
-        SaySomething()
-
         Me.Show()
+        Application.DoEvents()
+        SaySomething()
+        Sleep(4)
+
         ProgressBar1.Value = 100
         ProgressBar1.Value = 0
 
@@ -239,12 +242,20 @@ Public Class Form1
         CheckDefaultPorts()
 
         ' Run diagnostics, maybe
-        If gDebug Then My.Settings.DiagsRun2 = False
+        If gDebug Then
+            My.Settings.DiagsRun2 = False
+            gFailDebug = True
+            DoDiag()
+            gFailDebug = False
+        End If
+
 
         If Not My.Settings.DiagsRun2 Then
             DoDiag()
             My.Settings.DiagsRun2 = True
         End If
+
+        UpdateStats()
 
         SetINIData()
 
@@ -759,16 +770,24 @@ Public Class Form1
             End Using
             'close your reader
             reader.Close()
+            Try
+                My.Computer.FileSystem.DeleteFile(prefix + INIname)
+                My.Computer.FileSystem.RenameFile(prefix + "File.tmp", INIname)
+            Catch ex As Exception
+                Log("Error:SetDefault sims could not rename the file:" + ex.Message)
+            End Try
+
         Catch
-            Print("Warning: Cannot set default welcome region in MyWorld.ini, continuing.")
+            Print("Warning: Cannot set default Welcome region as set in the advanced menu, continuing.")
+            My.Settings.WelcomeRegion = 1
+            My.Settings.Save()
+            Dim DefaultName = aRegion(1).RegionName
+
+
         End Try
 
-        Try
-            My.Computer.FileSystem.DeleteFile(prefix + INIname)
-            My.Computer.FileSystem.RenameFile(prefix + "File.tmp", INIname)
-        Catch ex As Exception
-            Log("Error:SetDefault sims could not rename the file:" + ex.Message)
-        End Try
+
+
 
     End Sub
 
@@ -1377,8 +1396,9 @@ Public Class Form1
                                   "Mmmm, I was sleeping...",
                                   "What a dream that was!",
                                   "Do you ever dream of better worlds? I just did.",
-                                  "Huh?",
-                                  "Mumbles..."
+                                  "Do I smell Coffee? ",
+                                  "Did you make me pancakes?",
+                                  "Breakfast in bed?"
                                 }
 
         Dim Array() As String = {
@@ -1904,7 +1924,7 @@ Public Class Form1
         End Try
 
         Try
-            fileName = client.DownloadString(Domain + "/Outworldz_Installer/GetUpdater.plx?r=" + Random())
+            fileName = client.DownloadString(Domain + "/Outworldz_Installer/GetUpdater.plx")
         Catch
             Return ""
         End Try
@@ -1926,13 +1946,12 @@ Public Class Form1
 
         Dim Update As String = ""
         Dim isPortOpen As String = ""
-        Dim Data As String = GetPostData()
 
         My.Settings.SkipUpdateCheck = False
         My.Settings.Save()
 
         Try
-            Update = client.DownloadString(Domain + "/Outworldz_Installer/Update.plx?Ver=" + Str(MyVersion) + Data)
+            Update = client.DownloadString(Domain + "/Outworldz_Installer/Update.plx?Ver=" + Str(MyVersion))
         Catch ex As Exception
             Log("Dang:The Outworld web site is down")
         End Try
@@ -2133,7 +2152,7 @@ Public Class Form1
         BumpProgress10()
         ws.StopWebServer()
 
-        If result = "Test completed" And Not gFailDebug2 Then
+        If result = "Test completed" And Not gFailDebug Then
             Log("Passed:" + result)
             My.Settings.LoopBackDiag = True
             My.Settings.Save()
@@ -2176,12 +2195,11 @@ Public Class Form1
 
         Dim isPortOpen As String = ""
         Try
-            ' collect some stats and test loopback with a HTTP_ GET to the webserver.
+            ' collect some stats with a HTTP_ GET to the webserver.
             ' Send unique, anonymous random ID, both of the versions of Opensim and this program, and the diagnostics test results 
             ' See my privacy policy at https://www.outworldz.com/privacy.htm
 
-            Dim Data As String = GetPostData()
-            Dim Url = Domain + "/cgi/probetest.plx?IP=" + ip + "&Port=" + My.Settings.PublicPort + Data + "/?r=" + Random()
+            Dim Url = Domain + "/cgi/probetest.plx?IP=" + ip + "&Port=" + My.Settings.PublicPort + GetPostData()
             Log(Url)
             isPortOpen = client.DownloadString(Url)
         Catch ex As Exception
@@ -2193,7 +2211,7 @@ Public Class Form1
         ws.StopWebServer()
         BumpProgress10()
 
-        If isPortOpen = "yes" And Not gFailDebug1 Then
+        If isPortOpen = "yes" And Not gFailDebug Then
             My.Settings.PublicIP = ip
             Log("Public IP set to " + ip)
             My.Settings.Save()
@@ -2209,12 +2227,13 @@ Public Class Form1
 
     End Function
     Private Sub DoDiag()
+
         Print("Running Network Diagnostics, please wait")
         My.Settings.DiagFailed = False
         OpenPorts() ' Open router ports with uPnP
-        If Not ProbePublicPort() Then ' see if Public loopback works
-            TestLoopback()
-        End If
+        ProbePublicPort()
+        TestLoopback()
+
         If My.Settings.DiagFailed Then
             ShowLog()
         Else
@@ -2271,6 +2290,24 @@ Public Class Form1
         End Select
         Return False
     End Function
+
+    Private Sub UpdateStats()
+
+        Try
+            ' collect some stats with a HTTP_ GET to the webserver.
+            ' Send unique, anonymous random ID, both of the versions of Opensim and this program, and the diagnostics test results 
+            ' See my privacy policy at https://www.outworldz.com/privacy.htm
+
+            Dim Url = Domain + "/cgi/updatestats.plx?Port=" + My.Settings.PublicPort + GetPostData()
+            Log(Url)
+            Dim response = client.DownloadString(Url)
+            Log("Stats sent " + response)
+        Catch ex As Exception
+            Log("Dang:The Outworldz web site is down :-(")
+        End Try
+
+    End Sub
+
 
 #End Region
 
@@ -2343,19 +2380,22 @@ Public Class Form1
         If My.Settings.UPnPDiag Then
             UpNp = "Pass"
         End If
-        Dim Loopb As String = "Fail"
+        Dim Loopb As String = "Pass"
         If My.Settings.LoopBackDiag Then
             Loopb = "Pass"
+        Else
+            Loopb = "Fail"
         End If
 
 
         Dim data
-        data = "&r=" + Machine _
+        data = "&Machine=" + Machine _
             + "&V=" + MyVersion _
             + "&OV=" + SimVersion _
             + "&UpNp=" + UpNp _
             + "&Loop=" + Loopb _
-            + "&x=" + Random()
+            + "&DnsName=" + My.Settings.DnsName _
+            + "&r=" + Random()
         Return data
 
     End Function
@@ -2628,7 +2668,8 @@ Public Class Form1
 
         Try
             Log("Checking DNS name " + My.Settings.DnsName)
-            Checkname = client.DownloadString("http://outworldz.net/dns.plx/?GridName=" + My.Settings.DnsName + "&r=" + Random())
+
+            Checkname = client.DownloadString("http://outworldz.net/dns.plx/?GridName=" + My.Settings.DnsName + GetPostData())
         Catch ex As Exception
             Log("Warn:Cannot check the DNS Name" + ex.Message)
         End Try
@@ -2662,7 +2703,7 @@ Public Class Form1
         Dim client As New System.Net.WebClient
         Dim Checkname As String = String.Empty
         Try
-            Checkname = client.DownloadString("http://outworldz.net/getnewname.plx/?r=" + Random())
+            Checkname = client.DownloadString("http://outworldz.net/getnewname.plx")
         Catch ex As Exception
             Log("Warn:Cannot get new name:" + ex.Message)
         End Try
@@ -2674,7 +2715,7 @@ Public Class Form1
         Dim Checkname As String = String.Empty
 
         Try
-            Checkname = client.DownloadString("http://outworldz.net/dns.plx/?GridName=" + name + "&r=" + Random())
+            Checkname = client.DownloadString("http://outworldz.net/dns.plx/?GridName=" + name + GetPostData())
         Catch ex As Exception
             Log("Warn:Cannot check the DNS Name" + ex.Message)
         End Try
