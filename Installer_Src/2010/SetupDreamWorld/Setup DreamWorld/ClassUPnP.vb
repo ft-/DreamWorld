@@ -53,7 +53,7 @@ Public Class UPNP
     ''' <remarks></remarks>
     Public Sub New(Folder As String)
 
-        myfolder = Folder
+       myfolder = Folder
 
         'Create the new NAT Class
         upnpnat = New NATUPNPLib.UPnPNAT

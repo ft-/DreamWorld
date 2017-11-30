@@ -291,7 +291,13 @@ Public Class AdvancedForm
 
     End Sub
 
-    Private Sub DnsName_TextChanged(sender As Object, e As EventArgs) Handles DnsName.Click
+    Private Sub DnsName_TextChanged(sender As Object, e As EventArgs) Handles DnsName.TextChanged
+        My.Settings.DnsName = DnsName.Text
+        My.Settings.Save()
+
+    End Sub
+
+    Private Sub DnsName_TextClicked(sender As Object, e As EventArgs) Handles DnsName.Click
         Dim F As New DNSName
         F.Show()
     End Sub

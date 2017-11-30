@@ -36,8 +36,8 @@ Public Class Form1
 
 #Region "Declarations"
 
-    Dim MyVersion As String = "1.71"
-    Dim DebugPath As String = "C:\Opensim\Outworldz-V1.70"
+    Dim MyVersion As String = "1.72"
+    Dim DebugPath As String = "C:\Opensim\OpensimV1.72-Source"
     Public Domain As String = "http://www.outworldz.com"
     Dim RevNotesFile As String = "Update_Notes_" + MyVersion + ".rtf"
     Private gFailDebug1 = False ' set to true to fail diagnostic
@@ -359,6 +359,9 @@ Public Class Form1
         MnuContent.Visible = True
 
         GetAllRegions()
+        ' set the defaults in the INI for the viewer to use. Painful to do as its a Left hand side edit 
+
+        SetDefaultSims()
 
         RegisterDNS()
 
@@ -713,7 +716,7 @@ Public Class Form1
         parser = Nothing
 
     End Function
-    Private Sub SetDefaultSims()
+    Public Sub SetDefaultSims()
 
         Dim reader As System.IO.StreamReader
         Dim line As String
@@ -797,9 +800,7 @@ Public Class Form1
             Log("Info:Avatar will not be visible")
         End If
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-        ' set the defaults in the INI for the viewer to use. Painful to do as its a Left hand side edit 
 
-        SetDefaultSims()
 
         ' Opensim.ini
         LoadIni(MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\Opensim.ini", ";")
