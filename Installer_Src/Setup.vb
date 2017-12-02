@@ -601,9 +601,13 @@ Public Class Form1
 
         Try
             ' add this sim name as a default to the file as HG regions, and add the other regions as fallback
+            Dim o As Object = RegionClass.FindRegionByName(My.Settings.WelcomeRegion)
+            If o Is Nothing Then
+                MsgBox("Could not set default sim for visitors. Check the Common Settings panel.")
+                Return
+            End If
 
-            RegionClass.CurRegionNum = My.Settings.WelcomeRegion ' 
-            Dim DefaultName = RegionClass.RegionName
+            Dim DefaultName = o.RegionName
 
             '(replace spaces with underscore)
             DefaultName = DefaultName.Replace(" ", "_")    ' because this is a screwy thing they did in the INI file
@@ -611,41 +615,35 @@ Public Class Form1
             Dim onceflag As Boolean = False ' only do the DefaultName
             Dim counter As Integer = 0
 
-            RegionClass.DisplayRegions()
+            RegionClass.DebugRegions()
 
-            Dim id = RegionClass.FindRegionidByName(RegionClass.RegionName)
-            If id >= 0 Then
+            Try
+                My.Computer.FileSystem.DeleteFile(prefix + "bin\Robust.tmp")
+            Catch ex As Exception
+                'Nothing to do, this was just cleanup
+            End Try
 
-                Try
-                    My.Computer.FileSystem.DeleteFile(prefix + "bin\File.tmp")
-                Catch ex As Exception
-                    'Nothing to do, this was just cleanup
-                End Try
+            Using outputFile As New StreamWriter(prefix + "bin\Robust.tmp")
+                reader = System.IO.File.OpenText(prefix + "bin\Robust.HG.ini")
+                'now loop through each line
+                While reader.Peek <> -1
+                    line = reader.ReadLine()
 
-                Using outputFile As New StreamWriter(prefix + "bin\File.tmp")
-                    reader = System.IO.File.OpenText(prefix + "bin\Robust.HG.ini")
-                    'now loop through each line
-                    While reader.Peek <> -1
-                        line = reader.ReadLine()
-
-                        If line.Contains("DefaultHGRegion, FallbackRegion") Then
-                            ' flag lets us skip multi-lines
-                            If onceflag = False Then
-                                onceflag = True
-                                line = "Region_" + DefaultName + " = " + """" + "DefaultRegion, DefaultHGRegion, FallbackRegion" + """"
-                                outputFile.WriteLine(line)
-                            End If
-                        Else
+                    If line.Contains("DefaultHGRegion, FallbackRegion") Then
+                        ' flag lets us skip multi-lines
+                        If onceflag = False Then
+                            onceflag = True
+                            line = "Region_" + DefaultName + " = " + """" + "DefaultRegion, DefaultHGRegion, FallbackRegion" + """"
                             outputFile.WriteLine(line)
                         End If
+                    Else
+                        outputFile.WriteLine(line)
+                    End If
 
-                    End While
-                End Using
-                'close your reader
-                reader.Close()
-            Else
-                MsgBox("Cannot Set the Default region named " + DefaultName)
-            End If
+                End While
+            End Using
+            'close your reader
+            reader.Close()
 
             Try
                 Try
@@ -654,7 +652,7 @@ Public Class Form1
                     'Nothing to do, this was just cleanup
                 End Try
                 My.Computer.FileSystem.RenameFile(prefix + "bin\Robust.HG.ini", "Robust.HG.ini.bak")
-                My.Computer.FileSystem.RenameFile(prefix + "bin\File.tmp", "Robust.HG.ini")
+                My.Computer.FileSystem.RenameFile(prefix + "bin\Robust.tmp", "Robust.HG.ini")
             Catch ex As Exception
                 Log("Error:SetDefault sims could not rename the file:" + ex.Message)
                 My.Computer.FileSystem.RenameFile(prefix + "bin\Robust.HG.ini.bak", "Robust.HG.ini")
@@ -909,34 +907,29 @@ Public Class Form1
 
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
         'Regions - write all region.ini files with public IP and Public port
-        Dim counter As Integer = 0
-        Dim L = RegionClass.RegionListCount()
-        While counter < L
-            RegionClass.CurRegionNum = counter
-            Dim simName = RegionClass.RegionName
+        For Each o In RegionClass.AllRegionObjects
+
+            Dim simName = o.RegionName
             LoadIni(prefix + "bin\Regions\" + simName + "\Region\" + simName + ".ini", ";")
-            SetIni(simName, "InternalPort", Convert.ToString(RegionClass.RegionPort))
+            SetIni(simName, "InternalPort", Convert.ToString(o.RegionPort))
             SetIni(simName, "ExternalHostName", Convert.ToString(My.Settings.PublicIP))
 
             ' not a standrd INI, only use by the Dreamers
-            If RegionClass.RegionEnabled Then
+            If o.RegionEnabled Then
                 SetIni(simName, "Enabled", "true")
             Else
                 SetIni(simName, "Enabled", "false")
             End If
 
             SaveINI()
-            counter += 1
-        End While
+        Next
 
         '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
         ' COPY OPENSIM.INI prototype to all region folders and set the Sim Name
-        counter = 0
-        While counter < L      ' 
+        For Each o In RegionClass.AllRegionObjects ' 
             Try
-                RegionClass.CurRegionNum = counter
-                Dim fname = RegionClass.RegionName
+                Dim fname = o.RegionName
 
                 ' remove the PID that is left behind to suppress a red error in opensim.log
                 Try
@@ -945,32 +938,31 @@ Public Class Form1
                 End Try
 
                 Try
-                        My.Computer.FileSystem.DeleteFile(prefix + "bin\Regions\" + fname + "/Opensim.ini")
-                    Catch ex As Exception
-                    End Try
-                    Try
-                        LoadIni(prefix + "bin\Opensim.proto", ";")
-                        SetIni("Const", "BaseURL", "http://" + My.Settings.PublicIP)
-                        SetIni("Const", "PublicPort", My.Settings.HttpPort)
-                        SetIni("Const", "http_listener_port", RegionClass.RegionPort)
-                        SetIni("Const", "PrivatePort", My.Settings.PrivatePort) '8003
-                        SetIni("Const", "RegionFolderName", fname)
-
-                        SaveINI()
-                        My.Computer.FileSystem.CopyFile(prefix + "bin\Opensim.proto", prefix + "bin\Regions/" + fname + "/Opensim.ini", True)
-                    Catch
-                        Print("Error:Failed to Set the Opensim.ini for sim " + fname)
-                        Return False
-                    End Try
-
+                    My.Computer.FileSystem.DeleteFile(prefix + "bin\Regions\" + fname + "/Opensim.ini")
                 Catch ex As Exception
-                    Print("Error:" + ex.Message)
+                End Try
+                Try
+                    LoadIni(prefix + "bin\Opensim.proto", ";")
+                    SetIni("Const", "BaseURL", "http://" + My.Settings.PublicIP)
+                    SetIni("Const", "PublicPort", My.Settings.HttpPort)
+                    SetIni("Const", "http_listener_port", o.RegionPort)
+                    SetIni("Const", "PrivatePort", My.Settings.PrivatePort) '8003
+                    SetIni("Const", "RegionFolderName", fname)
+
+                    SaveINI()
+                    My.Computer.FileSystem.CopyFile(prefix + "bin\Opensim.proto", prefix + "bin\Regions/" + fname + "/Opensim.ini", True)
+                Catch
+                    Print("Error:Failed to Set the Opensim.ini for sim " + fname)
+                    Return False
+                End Try
+
+            Catch ex As Exception
+                Print("Error:" + ex.Message)
                 Return False
             End Try
 
-            counter = counter + 1
+        Next
 
-        End While
         Return True
     End Function
 
@@ -1656,9 +1648,8 @@ Public Class Form1
             Password = InputBox(Message, title, defaultValue)
 
             '''''''''''''''''''''''
-
-            ConsoleCommand(RegionClass.ProcessID, "alert CPU Intensive Backup Started{ENTER}")
-            ConsoleCommand(RegionClass.ProcessID, "save iar " + Name + " " + """" + itemName + """" + " " + Password + " " + """" + BackupPath() + backupName + """" + "{ENTER}")
+            Dim o As Object = RegionClass.FindRegionByName(My.Settings.WelcomeRegion)
+            ConsoleCommand(o.ProcessID, "save iar " + Name + " " + """" + itemName + """" + " " + Password + " " + """" + BackupPath() + backupName + """" + "{ENTER}")
             Me.Focus()
             Print("Saving " + backupName + " to " + BackupPath())
         Else
@@ -1672,39 +1663,36 @@ Public Class Form1
             Return
         End If
 
-        ConsoleCommand(RegionClass.ProcessID, "alert CPU Intensive Backup Started{ENTER}")
+        Dim o As Object = RegionClass.FindRegionByName(ChooseRegion())
+        ConsoleCommand(o.ProcessID, "save oar --perm=CT " + """" + BackupPath() + o.RegionName + "_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
 
-        Dim counter = 1
-        Dim size = RegionClass.RegionListCount()
-        While counter <= size
-            RegionClass.CurRegionNum = counter
-            Dim RegionName As String = RegionClass.RegionName
-            ConsoleCommand(RegionClass.ProcessID, "save oar --perm=CT " + """" + BackupPath() + RegionName + "_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
-            counter += 1
-            Application.DoEvents()
-        End While
+        Application.DoEvents()
 
     End Sub
 
-    Private Sub ChooseRegion()
-        If RegionClass.RegionListCount() <> 1 Then
-            Dim Chooseform As New Chooser ' form for choosing a set of regions
+    Private Function ChooseRegion()
+
+        Dim Chooseform As New Chooser ' form for choosing a set of regions
             ' Show testDialog as a modal dialog and determine if DialogResult = OK.
+            Dim chosen As String
             Chooseform.ShowDialog()
             Try
                 ' Read the chosen sim name
-                Dim chosen As String = Chooseform.ListBox1.SelectedItem.ToString()
+                chosen = Chooseform.ListBox1.SelectedItem.ToString()
                 If chosen.Length Then
-                    Dim id = RegionClass.FindRegionidByName(chosen)
-                    RegionClass.CurRegionNum = chosen
-                    ConsoleCommand(RegionClass.ProcessID, "change region " + """" + chosen + """" + "{ENTER}")
+                    Dim o = RegionClass.FindRegionByName(chosen)
+                    If o Is Nothing Then
+                    Else
+                        ConsoleCommand(o.ProcessID, "change region " + """" + chosen + """" + "{ENTER}")
+                    End If
+                    Chooseform.Dispose()
                 End If
-                Chooseform.Dispose()
-            Catch
+            Catch ex As Exception
+                Log("Warn:Could not chose a displayed region. " + ex.Message)
+                chosen = ""
             End Try
-
-        End If
-    End Sub
+        Return chosen
+    End Function
     Private Sub LoadOARContent(thing As String)
 
         If Not isRunning Then
@@ -1732,9 +1720,8 @@ Public Class Form1
     End Sub
     Private Sub LoadIARContent(thing As String)
 
-        If Running = False Then Return
-        If Not isRunning Then
-            Print("Opensim has to be started to load an IAR.")
+        If Not Running Then
+            Print("Opensim is not running. Cannot save an OAR at this time.")
             Return
         End If
 
@@ -2669,23 +2656,20 @@ Public Class Form1
             Dim first As Integer = POST.IndexOf("{")
             Dim last As Integer = POST.LastIndexOf("}")
             Dim rawJSON = POST.Substring(first, last - first + 1)
-            Dim obj
+            Dim json
             Try
-                obj = JsonConvert.DeserializeObject(Of JSON_result)(rawJSON)
+                json = JsonConvert.DeserializeObject(Of JSON_result)(rawJSON)
             Catch ex As Exception
                 Debug.Print(ex.Message)
                 Return
             End Try
-            Log("Region " & obj.Region_name & " is ready for logins")
-            Dim regionid = RegionClass.FindRegionIdByName(obj.region_name)
-            Dim savedID = RegionClass.CurRegionNum
-            RegionClass.CurRegionNum = regionid
+            Print("Region " & json.Region_name & " is ready for logins")
+
+            Dim o = RegionClass.FindRegionByName(json.region_name)
 
             ' is now safe to set new proerties
-
-            RegionClass.Ready = True
-            RegionClass.UUID = obj.region_id
-            RegionClass.CurRegionNum = savedID
+            o.Ready = True
+            o.UUID = json.region_id
 
         End If
 
@@ -2712,9 +2696,10 @@ Public Class Form1
             RegionMenu.DisplayStyle = ToolStripItemDisplayStyle.ImageAndText
             AddHandler RegionMenu.Click, New EventHandler(AddressOf RegionClick)
 
-            Dim id = RegionClass.FindRegionIdByName(RegionName)
-            RegionClass.CurRegionNum = id
-            If RegionClass.RegionEnabled Then
+            Dim o = RegionClass.FindRegionByName(RegionName)
+            If o Is Nothing Then Return
+
+            If o.RegionEnabled Then
                 RegionMenu.Checked = True
                 RegionMenu.Image = My.Resources.ResourceManager.GetObject("media_play_green")
             Else
@@ -2727,10 +2712,7 @@ Public Class Form1
     End Sub
 
     Private Sub RegionClick(sender As Object, e As EventArgs)
-
-        ' push region 
-        Dim savedID = RegionClass.CurRegionNum
-        Dim regionId = RegionClass.FindRegionIdByName(sender.text)
+        Dim o = RegionClass.FindRegionByName(sender.text)
 
         If sender.text = "Robust" Then
             If gRobustProcID And sender.checked = False Then
@@ -2757,11 +2739,10 @@ Public Class Form1
 
         Else ' had to be a region that was clicked
             Log("Region:Clicked region " & sender.text)
-            RegionClass.CurRegionNum = regionId
             If sender.checked Then
                 sender.checked = False 'checkbox
                 sender.Image = My.Resources.ResourceManager.GetObject("media_stop_red") ' image
-                RegionClass.RegionEnabled = False   ' class
+                o.RegionEnabled = False   ' class
 
                 ' and region file on disk
                 LoadIni(prefix & "bin\Regions\" & sender.text & "\Region\" & sender.text & ".ini", ";")
@@ -2776,25 +2757,23 @@ Public Class Form1
                 Catch ex As Exception
                     Log("Region:Could not stop Opensim")
                 End Try
-                RegionClass.Ready = False
+                o.Ready = False
 
             Else
                 sender.checked = True
                 sender.Image = My.Resources.ResourceManager.GetObject("media_play_green")
-                RegionClass.RegionEnabled = True
+                o.RegionEnabled = True
 
                 ' and region file on disk
                 LoadIni(prefix & "bin\Regions\" & sender.text & "\Region\" & sender.text & ".ini", ";")
                 SetIni(sender.text, "Enabled", "true")
                 SaveINI()
 
-                RegionClass.ProcessID = Boot(sender.text)
+                o.ProcessID = Boot(sender.text)
 
             End If
         End If
 
-        'pop
-        RegionClass.CurRegionNum = savedID
 
     End Sub
 

@@ -174,56 +174,56 @@ Public Class RegionMaker
 
     End Function
 
-    Public Sub DisplayRegions()
+    Public Sub DebugRegions()
 
-        Dim index = RegionListCount() - 1
-        Dim counter = 0
-        While counter <= index
-            Debug.Print("Region:" + RegionList(counter).RegionName)
-            counter = counter + 1
-        End While
+        For Each obj In RegionList
+            Debug.Print("Region:" + obj.RegionName)
+        Next
+
 
     End Sub
 
-    Public Function ListOfRegions()
+    Public Function AllRegionObjects()
 
         Dim rlist As New ArrayList
-        Dim index = RegionListCount() - 1
-        Dim counter = 0
-        While counter <= index
-            Debug.Print("Region:" + RegionList(counter).RegionName)
-            rlist.Add(RegionList(counter).RegionName)
-            counter = counter + 1
-        End While
+        For Each obj In RegionList
+            Debug.Print("Region:" + obj.RegionName)
+            rlist.Add(obj)
+        Next
         Return rlist
 
     End Function
 
-    Public Function FindRegionIdByName(Name As String) As Integer
+    Public Function ListOfRegions()
 
-        Dim index = RegionListCount() - 1
-
-        While index > -1
-            If Name = RegionList(index).RegionName Then
-                Return index
-            End If
-            index = index - 1
-        End While
-        Return -1
+        Dim rlist As New ArrayList
+        For Each obj In RegionList
+            Debug.Print("Region:" + obj.RegionName)
+            rlist.Add(obj.RegionName)
+        Next
+        Return rlist
 
     End Function
 
-    Public Function FindRegionIdByProcessID(PID As Integer) As Integer
+    Public Function FindRegionByName(Name As String) As Object
 
-        Dim index = RegionListCount() - 1
-
-        While index > -1
-            If PID = RegionList(index).ProcessID Then
-                Return index
+        For Each obj In RegionList
+            If Name = obj.RegionName Then
+                Return obj
             End If
-            index = index - 1
-        End While
-        Return -1
+        Next
+        Return Nothing
+
+    End Function
+
+    Public Function FindRegionByProcessID(PID As Integer) As Object
+
+        For Each obj In RegionList
+            If PID = obj.ProcessID Then
+                Return obj
+            End If
+        Next
+        Return Nothing
 
     End Function
 
@@ -253,9 +253,6 @@ Public Class RegionMaker
         RegionList.Clear()
         Dim folders() As String
         Dim regionfolders() As String
-
-
-
 
         folders = Directory.GetDirectories(Form1.prefix + "bin\Regions")
         For Each FolderName As String In folders
@@ -300,7 +297,7 @@ Public Class RegionMaker
                 End Try
             Next
         Next
-        DisplayRegions()
+        DebugRegions()
     End Sub
 
     Public Sub WriteRegion()
@@ -333,13 +330,9 @@ Public Class RegionMaker
 
         ' locate largest global coords
         Dim Max As Integer
-        Dim counter As Integer = 0 ' index 0
-        Dim L = RegionListCount()
-        While counter < L
-            Dim val = RegionList(counter).CoordX
-            If val > Max Then Max = val
-            counter += 1
-        End While
+        For Each obj In RegionList
+            If obj.CoordX > Max Then Max = obj.CoordX
+        Next
         If Max = 0 Then Max = 996 ' (1000 - 4 so 1st region ends up at 1000)
         Return Max
 
@@ -349,13 +342,10 @@ Public Class RegionMaker
 
         ' locate largest global coords
         Dim Max As Integer
-        Dim counter As Integer = 1
-        Dim L = RegionListCount()
-        While counter < L
-            Dim val = RegionList(counter).CoordY
+        For Each obj In RegionList
+            Dim val = obj.CoordY
             If val > Max Then Max = val
-            counter += 1
-        End While
+        Next
         If Max = 0 Then Max = 1000
         Return Max
 
@@ -366,12 +356,11 @@ Public Class RegionMaker
         ' locate largest global coords
         Dim Max As Integer
         Dim counter As Integer = 0
-        Dim L = RegionListCount()
-        While counter < L
-            Dim val = RegionList(counter).RegionPort
+        For Each obj In RegionList
+            Dim val = obj.RegionPort
             If val > Max Then Max = val
             counter += 1
-        End While
+        Next
         If Max = 0 Then Max = My.Settings.PrivatePort
         Return Max
 
@@ -379,15 +368,13 @@ Public Class RegionMaker
 
     Public Sub StoppedRegion(pid As String)
 
-        Dim regionid = FindRegionIdByProcessID(pid)
-        Dim savedID = CurRegionNum
-        CurRegionNum = regionid
-        ' safe to set new properties
-        Debug.Print("Region " & CurrentRegionName() + " stopped")
-
-        Ready = False
-        ProcessID = 0
-        CurRegionNum = savedID
+        Dim obj As Object = FindRegionByProcessID(pid)
+        If obj Then
+            ' safe to set new properties
+            Debug.Print("Region " & obj.name + " stopped")
+            obj.Ready = False
+            ProcessID = 0
+        End If
 
     End Sub
 

@@ -632,10 +632,10 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("0")>  _
-        Public Property WelcomeRegion() As Integer
+         Global.System.Configuration.DefaultSettingValueAttribute("Welcome")>  _
+        Public Property WelcomeRegion() As String
             Get
-                Return CType(Me("WelcomeRegion"),Integer)
+                Return CType(Me("WelcomeRegion"),String)
             End Get
             Set
                 Me("WelcomeRegion") = value

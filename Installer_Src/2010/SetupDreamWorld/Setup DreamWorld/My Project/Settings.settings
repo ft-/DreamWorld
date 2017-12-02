@@ -146,8 +146,8 @@
     <Setting Name="DiagsRun2" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="WelcomeRegion" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">0</Value>
+    <Setting Name="WelcomeRegion" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Welcome</Value>
     </Setting>
     <Setting Name="GloebitsEnable" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>

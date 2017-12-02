@@ -238,27 +238,30 @@ Public Class AdvancedForm
     End Sub
 
     Private Sub ComboBox1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles WelcomeBox1.SelectedIndexChanged
-        My.Settings.WelcomeRegion = WelcomeBox1.SelectedIndex
+
+        Dim value As String = TryCast(WelcomeBox1.SelectedItem, String)
+        My.Settings.WelcomeRegion = value
+
+        Debug.Print("Selected " + value)
         My.Settings.Save()
     End Sub
 
     Private Sub LoadWelcomeBox()
         ' Default welcome region load
         WelcomeBox1.Items.Clear()
-        Dim counter As Integer = 0
 
-        Dim L = Form1.RegionClass.RegionListCount()
+        Dim r = Form1.RegionClass
 
-        While counter < L
-            If Form1.RegionClass.RegionEnabled Then
-                Form1.RegionClass.CurRegionNum = counter
-                WelcomeBox1.Items.Add(Form1.RegionClass.RegionName())
+        For Each o In r.AllRegionObjects
+
+            If o.RegionEnabled Then
+                WelcomeBox1.Items.Add(o.RegionName())
             End If
-            counter += 1
-        End While
+
+        Next
 
         Try
-            WelcomeBox1.SelectedIndex = My.Settings.WelcomeRegion
+            WelcomeBox1.SelectedIndex = WelcomeBox1.FindString(My.Settings.WelcomeRegion)
         Catch ex As Exception
             WelcomeBox1.SelectedIndex = -1
         End Try

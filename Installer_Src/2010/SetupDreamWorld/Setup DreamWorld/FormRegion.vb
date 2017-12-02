@@ -218,7 +218,7 @@ Public Class FormRegion
         End If
 
         Dim Region = "; * Regions configuration file" &
-                        "; * This Is Your World. Change This And It Will BREAK. See Advance->[Region Settings] instead." & vbCrLf &
+                        "; * This Is Your World. Change This And It Will BREAK. See Common Settings->[Region Settings] instead." & vbCrLf &
                         "; Automatically changed by Dreamworld - do Not change this file!" & vbCrLf &
                         "[" & MyRegion.RegionName & "]" & vbCrLf &
                         "RegionUUID = " & MyRegion.UUID & vbCrLf &
