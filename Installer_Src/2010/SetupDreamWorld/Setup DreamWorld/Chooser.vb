@@ -29,7 +29,7 @@
         Form1.RegionClass.CurRegionNum() = ListBox1.SelectedIndex
         Dim value As String = TryCast(ListBox1.SelectedItem, String)
 
-        Debug.Print("Selected " + value)
+
         My.Settings.WelcomeRegion = ListBox1.SelectedIndex
     End Sub
 

@@ -130,13 +130,11 @@ Public Class AdvancedForm
         Dim counter As Integer = 0
         Dim r As RegionMaker
 
-        r = Form1.RegionClass
-        Dim L = Form1.RegionClass.RegionListCount()
-        While counter < L
-            Try
-                r.CurRegionNum = counter
-                fname = r.RegionName
 
+        For Each o As Object In Form1.RegionClass.AllRegionObjects()
+            Try
+
+                fname = o.RegionName
                 Dim ActualForm As New FormRegion
                 ActualForm.SetDesktopLocation(X, Y)
                 ActualForm.Init(counter)
@@ -147,10 +145,9 @@ Public Class AdvancedForm
                 Form1.Log("Info:" + ex.Message)
             End Try
 
-            counter = counter + 1
             Y += 100
             X += 100
-        End While
+        Next
     End Sub
 
     Private Sub AddRegion_Click(sender As Object, e As EventArgs) Handles AddRegion.Click
@@ -250,14 +247,10 @@ Public Class AdvancedForm
         ' Default welcome region load
         WelcomeBox1.Items.Clear()
 
-        Dim r = Form1.RegionClass
-
-        For Each o In r.AllRegionObjects
-
+        For Each o In Form1.RegionClass.AllRegionObjects
             If o.RegionEnabled Then
                 WelcomeBox1.Items.Add(o.RegionName())
             End If
-
         Next
 
         Try

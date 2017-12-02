@@ -154,7 +154,7 @@ Public Class RegionMaker
     Public Sub New()
 
         GetAllRegions()
-        If RegionListCount() = 0 Then
+        If RegionCount() = 0 Then
             CreateRegion("Welcome")
             My.Settings.WelcomeRegion = 0
             WriteRegion()
@@ -179,7 +179,7 @@ Public Class RegionMaker
         For Each obj In RegionList
             Debug.Print("Region:" + obj.RegionName)
         Next
-
+ 
 
     End Sub
 
@@ -189,17 +189,6 @@ Public Class RegionMaker
         For Each obj In RegionList
             Debug.Print("Region:" + obj.RegionName)
             rlist.Add(obj)
-        Next
-        Return rlist
-
-    End Function
-
-    Public Function ListOfRegions()
-
-        Dim rlist As New ArrayList
-        For Each obj In RegionList
-            Debug.Print("Region:" + obj.RegionName)
-            rlist.Add(obj.RegionName)
         Next
         Return rlist
 
@@ -235,16 +224,11 @@ Public Class RegionMaker
         r.UUID = Guid.NewGuid().ToString
         r.SizeX = 256
         r.SizeY = 256
+        r.CoordX = LargestX() + 4
+        r.CoordY = LargestY() + 0
+        r.RegionPort = LargestPort() + 1 '8004 + 1
 
         RegionList.Add(r)
-        Dim index = RegionListCount() - 1
-        ' default data
-        RegionList(index).RegionPort = LargestPort() + 1 '8004 + 1
-
-        ' form a line acrss the X Axis 4 to the right
-        RegionList(index).CoordX = LargestX() + 4
-        RegionList(index).CoordY = LargestY() + 0
-        CurRegionNum() = index
 
     End Sub
 
@@ -366,17 +350,6 @@ Public Class RegionMaker
 
     End Function
 
-    Public Sub StoppedRegion(pid As String)
-
-        Dim obj As Object = FindRegionByProcessID(pid)
-        If obj Then
-            ' safe to set new properties
-            Debug.Print("Region " & obj.name + " stopped")
-            obj.Ready = False
-            ProcessID = 0
-        End If
-
-    End Sub
 
 #End Region
 

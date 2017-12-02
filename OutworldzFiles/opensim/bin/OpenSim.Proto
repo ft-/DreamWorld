@@ -46,7 +46,7 @@
 RegionFolderName = Welcome
 
 ;# {BaseURL} {} {BaseURL} {"http://example.com","http://127.0.0.1"} "http://127.0.0.1"
-http_listener_port = 8004
+http_listener_port = 8011
 BaseURL = http://Fred.Outworldz.net
 
 ;# {PublicPort} {} {PublicPort} {8002} "8002"

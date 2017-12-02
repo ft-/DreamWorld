@@ -927,7 +927,7 @@ Public Class Form1
         '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
         ' COPY OPENSIM.INI prototype to all region folders and set the Sim Name
-        For Each o In RegionClass.AllRegionObjects ' 
+        For Each o In RegionClass.AllRegionObjects
             Try
                 Dim fname = o.RegionName
 
@@ -1195,26 +1195,18 @@ Public Class Form1
 
         If Running = False Then Return True
         OpensimProcID.Clear()
-        Dim counter = 0
-        Dim size = RegionClass.RegionListCount() - 1
-        While counter <= size
-            RegionClass.CurRegionNum = counter
-            If RegionClass.RegionEnabled Then
-                Dim RegionName As String = RegionClass.RegionName
 
-                Print("Starting " + RegionName)
-                Dim procid = Boot(RegionName)
-                If procid = 0 Then
+        For Each o In RegionClass.AllRegionObjects '
+            If o.RegionEnabled Then
+
+                Print("Starting " + o.RegionName)
+                o.procid = Boot(o.RegionName)
+                If o.procid = 0 Then
                     Return False
                 End If
-
-                RegionClass.ProcessID = procid
-
                 Application.DoEvents()
             End If
-            counter = counter + 1
-
-        End While
+        Next
         Return True
 
     End Function
@@ -1222,8 +1214,10 @@ Public Class Form1
 
     Private Sub OpensimProcess_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess.Exited
 
-        ' Handle Exited Event And display process information.
-        RegionClass.StoppedRegion(sender.Id)
+        ' Handle Opensim Exited
+        Dim o = RegionClass.FindRegionByProcessID(sender.Id)
+        o.Ready = False
+        o.ProcessID = 0
 
     End Sub
 
@@ -1232,7 +1226,6 @@ Public Class Form1
 
         Dim Pid As Integer
         Try
-
             myProcess.EnableRaisingEvents = True
             myProcess.StartInfo.UseShellExecute = True ' so we can redirect streams
             myProcess.StartInfo.WorkingDirectory = prefix + "bin"
@@ -1462,7 +1455,8 @@ Public Class Form1
     Private Sub LoadBackupToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles LoadBackupToolStripMenuItem.Click
         If (Running) Then
 
-            ChooseRegion()
+            Dim chosen = ChooseRegion()
+            Dim o As Object = RegionClass.FindRegionByName(chosen)
 
             ' Create an instance of the open file dialog box.
             Dim openFileDialog1 As OpenFileDialog = New OpenFileDialog
@@ -1484,12 +1478,12 @@ Public Class Form1
                     thing = thing.Replace("\", "/")    ' because Opensim uses unix-like slashes, that's why
 
                     If backMeUp = vbYes Then
-                        ConsoleCommand(RegionClass.ProcessID, "alert CPU Intensive Backup Started{ENTER}")
-                        ConsoleCommand(RegionClass.ProcessID, "save oar --perm=CT " + """" + BackupPath() + "Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
+                        ConsoleCommand(o.ProcessID, "alert CPU Intensive Backup Started{ENTER}")
+                        ConsoleCommand(o.ProcessID, "save oar --perm=CT " + """" + BackupPath() + "Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
                     End If
-                    ConsoleCommand(RegionClass.ProcessID, "alert New content is loading..{ENTER}")
-                    ConsoleCommand(RegionClass.ProcessID, "load oar --force-terrain --force-parcels " + """" + thing + """" + "{ENTER}")
-                    ConsoleCommand(RegionClass.ProcessID, "alert New content just loaded." + "{ENTER}")
+                    ConsoleCommand(o.ProcessID, "alert New content is loading..{ENTER}")
+                    ConsoleCommand(o.ProcessID, "load oar --force-terrain --force-parcels " + """" + thing + """" + "{ENTER}")
+                    ConsoleCommand(o.ProcessID, "alert New content just loaded." + "{ENTER}")
                     Me.Focus()
                 End If
             End If
@@ -1525,7 +1519,8 @@ Public Class Form1
     Private Sub SaveBackupToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles SaveBackupToolStripMenuItem.Click
         If (Running) Then
 
-            ChooseRegion()  '1.37
+            Dim chosen = ChooseRegion()
+            Dim o As Object = RegionClass.FindRegionByName(chosen)
 
             Dim Message, title, defaultValue As String
             Dim myValue As Object
@@ -1538,8 +1533,8 @@ Public Class Form1
             myValue = InputBox(Message, title, defaultValue)
             ' If user has clicked Cancel, set myValue to defaultValue 
             If myValue.length = 0 Then Return
-            ConsoleCommand(RegionClass.ProcessID, "alert CPU Intensive Backup Started{ENTER}")
-            ConsoleCommand(RegionClass.ProcessID, "save oar " + """" + BackupPath() + myValue + """" + "{ENTER}")
+            ConsoleCommand(o.ProcessID, "alert CPU Intensive Backup Started{ENTER}")
+            ConsoleCommand(o.ProcessID, "save oar " + """" + BackupPath() + myValue + """" + "{ENTER}")
             Me.Focus()
             Print("Saving " + myValue + " to " + BackupPath())
         Else
@@ -1670,28 +1665,29 @@ Public Class Form1
 
     End Sub
 
-    Private Function ChooseRegion()
+    Private Function ChooseRegion() As String
 
         Dim Chooseform As New Chooser ' form for choosing a set of regions
-            ' Show testDialog as a modal dialog and determine if DialogResult = OK.
-            Dim chosen As String
-            Chooseform.ShowDialog()
-            Try
-                ' Read the chosen sim name
-                chosen = Chooseform.ListBox1.SelectedItem.ToString()
-                If chosen.Length Then
-                    Dim o = RegionClass.FindRegionByName(chosen)
-                    If o Is Nothing Then
-                    Else
-                        ConsoleCommand(o.ProcessID, "change region " + """" + chosen + """" + "{ENTER}")
-                    End If
-                    Chooseform.Dispose()
+        ' Show testDialog as a modal dialog and determine if DialogResult = OK.
+        Dim chosen As String
+        Chooseform.ShowDialog()
+        Try
+            ' Read the chosen sim name
+            chosen = Chooseform.ListBox1.SelectedItem.ToString()
+            If chosen.Length Then
+                Dim o = RegionClass.FindRegionByName(chosen)
+                If o Is Nothing Then
+                Else
+                    ConsoleCommand(o.ProcessID, "change region " + """" + chosen + """" + "{ENTER}")
                 End If
-            Catch ex As Exception
-                Log("Warn:Could not chose a displayed region. " + ex.Message)
-                chosen = ""
-            End Try
+                Chooseform.Dispose()
+            End If
+        Catch ex As Exception
+            Log("Warn:Could not chose a displayed region. " + ex.Message)
+            chosen = ""
+        End Try
         Return chosen
+
     End Function
     Private Sub LoadOARContent(thing As String)
 
@@ -1700,19 +1696,20 @@ Public Class Form1
             Return
         End If
 
-        ChooseRegion()
+        Dim region = ChooseRegion()
+        Dim o = RegionClass.FindRegionByName(region)
 
         Dim backMeUp = MsgBox("Make a backup first?", vbYesNo)
         Try
             Print("Opensimulator will load  " + thing + ".  This may take some time.")
             thing = thing.Replace("\", "/")    ' because Opensim uses unix-like slashes, that's why
             If backMeUp = vbYes Then
-                ConsoleCommand(RegionClass.ProcessID, "alert CPU Intensive Backup Started {ENTER}")
-                ConsoleCommand(RegionClass.ProcessID, "save oar " + """" + BackupPath() + "Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
+                ConsoleCommand(o.ProcessID, "alert CPU Intensive Backup Started {ENTER}")
+                ConsoleCommand(o.ProcessID, "save oar " + """" + BackupPath() + "Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
             End If
-            ConsoleCommand(RegionClass.ProcessID, "alert New content Is loading..{ENTER}")
-            ConsoleCommand(RegionClass.ProcessID, "load oar --force-terrain --force-parcels " + """" + thing + """" + "{ENTER}")
-            ConsoleCommand(RegionClass.ProcessID, "alert New content just loaded. {ENTER}")
+            ConsoleCommand(o.ProcessID, "alert New content Is loading..{ENTER}")
+            ConsoleCommand(o.ProcessID, "load oar --force-terrain --force-parcels " + """" + thing + """" + "{ENTER}")
+            ConsoleCommand(o.ProcessID, "alert New content just loaded. {ENTER}")
             Me.Focus()
         Catch ex As Exception
             Log("Error: " + ex.Message)
@@ -1724,13 +1721,14 @@ Public Class Form1
             Print("Opensim is not running. Cannot save an OAR at this time.")
             Return
         End If
-
+        Dim o = RegionClass.FindRegionByName(My.Settings.WelcomeRegion
+                                             )
         Dim user = InputBox("User name that will get this IAR?")
         Dim password = InputBox("Password for user " + user + "?")
         If user.Length And password.Length Then
             Try
-                ConsoleCommand(RegionClass.ProcessID, "load iar --merge " + user + " / " + password + " " + """" + thing + """" + "{ENTER}")
-                ConsoleCommand(RegionClass.ProcessID, "alert IAR content Is loaded{ENTER}")
+                ConsoleCommand(o.ProcessID, "load iar --merge " + user + " / " + password + " " + """" + thing + """" + "{ENTER}")
+                ConsoleCommand(o.ProcessID, "alert IAR content Is loaded{ENTER}")
                 Me.Focus()
             Catch ex As Exception
                 Log("Error:" + ex.Message)
@@ -2024,8 +2022,6 @@ Public Class Form1
     End Function
     Private Sub TestLoopback()
 
-
-
         BumpProgress10()
         Dim result As String = ""
         Dim loopbacktest As String = "http://" + My.Settings.PublicIP + ":" + My.Settings.DiagnosticPort + "/?_TestLoopback=" + Random()
@@ -2037,7 +2033,6 @@ Public Class Form1
         End Try
 
         BumpProgress10()
-
 
         If result = "Test completed" And Not gFailDebug2 Then
             Log("Passed:" + result)
@@ -2173,15 +2168,11 @@ Public Class Form1
             BumpProgress(1)
 
             '8004-whatever
-            Dim counter = 0
-            Dim size = RegionClass.RegionListCount()
-            While counter < size
-
-                RegionClass.CurRegionNum = counter
-                Dim R As Int16 = RegionClass.RegionPort
+            For Each o In RegionClass.AllRegionObjects()
+                Dim R As Int16 = o.RegionPort
 
                 If Not MyUPnpMap.Exists(R, UPnp.Protocol.UDP) Then
-                    MyUPnpMap.Add(UPnp.LocalIP, R, UPnp.Protocol.UDP, "Opensim UDP Region " & RegionClass.RegionName & " ")
+                    MyUPnpMap.Add(UPnp.LocalIP, R, UPnp.Protocol.UDP, "Opensim UDP Region " & o.RegionName & " ")
                     Log("UPnp: RegionPort.UDP Added:" + Convert.ToString(R))
                 Else
                     Log("UPnp: RegionPort.UDP " + Convert.ToString(R) + " is already in UPnp")
@@ -2189,15 +2180,14 @@ Public Class Form1
                 BumpProgress(1)
 
                 If Not MyUPnpMap.Exists(R, UPnp.Protocol.TCP) Then
-                    MyUPnpMap.Add(UPnp.LocalIP, R, UPnp.Protocol.TCP, "Opensim TCP Region " & RegionClass.RegionName & " ")
+                    MyUPnpMap.Add(UPnp.LocalIP, R, UPnp.Protocol.TCP, "Opensim TCP Region " & o.RegionName & " ")
                     Log("UPnp: RegionPort.TCP Added:" + Convert.ToString(R))
                 Else
                     Log("UPnp: RegionPort.TCP " + Convert.ToString(R) + " is already in UPnp")
                 End If
                 BumpProgress(1)
 
-                counter += 1
-            End While
+            Next
 
         Catch e As Exception
             Print("UPnP is not working or enabled in your router. Hypergrid requires ports to be opened in routers. See Help. " & e.Message)
@@ -2689,15 +2679,12 @@ Public Class Form1
         RegionsToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {RobustMenu})
 
         ' now add all the regions
-        Dim Rlist = RegionClass.ListOfRegions
-        For Each RegionName In Rlist
+        Dim Rlist = RegionClass.AllRegionObjects
+        For Each o In Rlist
             Dim RegionMenu As New ToolStripMenuItem
-            RegionMenu.Text = RegionName
+            RegionMenu.Text = o.RegionName
             RegionMenu.DisplayStyle = ToolStripItemDisplayStyle.ImageAndText
             AddHandler RegionMenu.Click, New EventHandler(AddressOf RegionClick)
-
-            Dim o = RegionClass.FindRegionByName(RegionName)
-            If o Is Nothing Then Return
 
             If o.RegionEnabled Then
                 RegionMenu.Checked = True
@@ -2749,7 +2736,7 @@ Public Class Form1
                 SetIni(sender.text, "Enabled", "false")
                 SaveINI()
 
-                Dim PID = RegionClass.ProcessID
+                Dim PID = o.ProcessID
                 Try
                     Dim P = Process.GetProcessById(PID)
                     P.Kill()
