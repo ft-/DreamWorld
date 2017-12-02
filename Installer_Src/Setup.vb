@@ -1050,7 +1050,7 @@ Public Class Form1
         Try
             ProcessUpnp.Start()
         Catch ex As Exception
-            Log("Error:UPnp failed to launch:" + ex.Message)
+            Log("Error:UPnP failed to launch:" + ex.Message)
         End Try
     End Sub
 
@@ -1400,8 +1400,7 @@ Public Class Form1
                                   "Hello beautiful",
                                   "Act on dreams with an open mind.",
                                   "Believe in the beauty of your dreams.",
-                                  "A dream doesn't become reality through magic",
-                                  
+                                  "A dream doesn't become reality through magic"
                                 }
 
         Dim Array() As String = {
@@ -2214,7 +2213,7 @@ Public Class Form1
             End While
 
         Catch e As Exception
-            Print("UPnp is not working or enabled in your router. Hypergrid requires ports to be opened in routers. See Help. " & e.Message)
+            Print("UPnP is not working or enabled in your router. Hypergrid requires ports to be opened in routers. See Help. " & e.Message)
             Log("UPnp: UPnp Exception caught:  " + e.Message)
             Return False
         End Try
@@ -2254,7 +2253,6 @@ Public Class Form1
         Try
             If OpenRouterPorts() Then ' open UPnp port
                 Log("UPnpOk")
-                'Print("UPnp Ok")
                 My.Settings.UPnpDiag = True
                 My.Settings.Save()
                 BumpProgress10()
