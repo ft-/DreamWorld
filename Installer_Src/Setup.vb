@@ -230,7 +230,7 @@ Public Class Form1
         Me.Show()
         Application.DoEvents()
         SaySomething()
-        Sleep(4)
+        Sleep(2000)
 
         ProgressBar1.Value = 100
         ProgressBar1.Value = 0
