@@ -378,7 +378,7 @@ Public Class Form1
         RegisterDNS()
 
         GetPubIP()
-        OpenPorts() ' Open router ports with uPnP
+
         SetINIData()    ' set up the INI files
 
         If My.Settings.Onlook Then
@@ -1342,6 +1342,8 @@ Public Class Form1
         Try
             Using outputFile As New StreamWriter(MyFolder & "\OutworldzFiles\Outworldz.log", True)
                 outputFile.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + message)
+                outputFile.Close()
+                Debug.Print(message)
             End Using
         Catch
         End Try
@@ -2262,6 +2264,7 @@ Public Class Form1
     End Function
 
     Private Function OldGetLocalIPv4Address() As String
+
         Dim strHostName As String = System.Net.Dns.GetHostName()
         Dim IPList As System.Net.IPHostEntry = System.Net.Dns.GetHostEntry(strHostName)
 
@@ -2271,6 +2274,7 @@ Public Class Form1
             End If
         Next
         Return "127.0.0.1"
+
     End Function
 
     ''' <summary>
@@ -2280,6 +2284,7 @@ Public Class Form1
     ''' <returns>Boolean</returns>
     ''' <remarks></remarks>
     Private Shared Function IsPrivateIP(ByVal CheckIP As String) As Boolean
+
         Dim Quad1, Quad2 As Integer
 
         Quad1 = CInt(CheckIP.Substring(0, CheckIP.IndexOf(".")))
@@ -2293,6 +2298,7 @@ Public Class Form1
                 If Quad2 = 168 Then Return True
         End Select
         Return False
+
     End Function
 
     Private Sub UpdateStats()
@@ -2322,34 +2328,40 @@ Public Class Form1
         Log("Local ip seems to be " + UPNP.LocalIP)
 
         Try
+
+            'diagnostics 8001
+            If Not MyUPnPMap.Exists(Convert.ToInt16(My.Settings.PublicPort), UPNP.Protocol.UDP) Then
+                MyUPnPMap.Add(UPNP.LocalIP, Convert.ToInt16(My.Settings.PublicPort), UPNP.Protocol.UDP, "Opensim UDP Public " + My.Settings.PublicPort)
+                Log("uPnp: PublicPort.UDP added")
+            Else
+                MyUPnPMap.Remove(Convert.ToInt16(My.Settings.PublicPort), UPNP.Protocol.UDP)
+                MyUPnPMap.Add(UPNP.LocalIP, Convert.ToInt16(My.Settings.PublicPort), UPNP.Protocol.UDP, "Opensim UDP Public " + My.Settings.PublicPort)
+                Log("uPnp: PublicPort.UDP added:" + My.Settings.PublicPort)
+            End If
+
+            BumpProgress10()
+
+            ' 8002 for TCP and UDP
             If Not MyUPnPMap.Exists(Convert.ToInt16(My.Settings.HttpPort), UPNP.Protocol.TCP) Then
-                MyUPnPMap.Add(UPNP.LocalIP, Convert.ToInt16(My.Settings.HttpPort), UPNP.Protocol.TCP, "Opensim TCP grid port")
+                MyUPnPMap.Add(UPNP.LocalIP, Convert.ToInt16(My.Settings.HttpPort), UPNP.Protocol.TCP, "Opensim TCP Grid " + My.Settings.HttpPort)
                 Log("uPnp: Grid Port.TCP added")
             Else
                 MyUPnPMap.Remove(Convert.ToInt16(My.Settings.HttpPort), UPNP.Protocol.TCP)
-                MyUPnPMap.Add(UPNP.LocalIP, Convert.ToInt16(My.Settings.HttpPort), UPNP.Protocol.TCP, "Opensim TCP grid port")
-                Log("uPnp: Grid Port.TCP added")
+                MyUPnPMap.Add(UPNP.LocalIP, Convert.ToInt16(My.Settings.HttpPort), UPNP.Protocol.TCP, "Opensim TCP Grid " + My.Settings.HttpPort)
+                Log("uPnp: Grid Port.TCP added:" + My.Settings.HttpPort)
             End If
+
             BumpProgress10()
 
-            If Not MyUPnPMap.Exists(Convert.ToInt16(My.Settings.PublicPort), UPNP.Protocol.UDP) Then
-                MyUPnPMap.Add(UPNP.LocalIP, Convert.ToInt16(My.Settings.PublicPort), UPNP.Protocol.UDP, "Opensim UDP Public")
-                Log("uPnp: PublicPort.UDP added:")
+            If Not MyUPnPMap.Exists(Convert.ToInt16(My.Settings.HttpPort), UPNP.Protocol.UDP) Then
+                MyUPnPMap.Add(UPNP.LocalIP, Convert.ToInt16(My.Settings.HttpPort), UPNP.Protocol.UDP, "Opensim UDP Grid " + My.Settings.HttpPort)
+                Log("uPnp: Grid Port.UDP added:" + My.Settings.HttpPort)
             Else
-                MyUPnPMap.Remove(Convert.ToInt16(My.Settings.PublicPort), UPNP.Protocol.UDP)
-                MyUPnPMap.Add(UPNP.LocalIP, Convert.ToInt16(My.Settings.PublicPort), UPNP.Protocol.UDP, "Opensim UDP Public")
-                Log("uPnp: PublicPort.UDP added:")
+                MyUPnPMap.Remove(Convert.ToInt16(My.Settings.HttpPort), UPNP.Protocol.UDP)
+                MyUPnPMap.Add(UPNP.LocalIP, Convert.ToInt16(My.Settings.HttpPort), UPNP.Protocol.UDP, "Opensim UDP Grid " + My.Settings.HttpPort)
+                Log("uPnp: Grid Port.UDP added:" + My.Settings.HttpPort)
             End If
-            BumpProgress10()
 
-            If Not MyUPnPMap.Exists(Convert.ToInt16(My.Settings.PublicPort), UPNP.Protocol.TCP) Then
-                MyUPnPMap.Add(UPNP.LocalIP, Convert.ToInt16(My.Settings.PublicPort), UPNP.Protocol.TCP, "Opensim TCP Public")
-                Log("uPnp: PublicPort.TCP added")
-            Else
-                MyUPnPMap.Remove(Convert.ToInt16(My.Settings.PublicPort), UPNP.Protocol.TCP)
-                MyUPnPMap.Add(UPNP.LocalIP, Convert.ToInt16(My.Settings.PublicPort), UPNP.Protocol.TCP, "Opensim TCP Public")
-                Log("uPnp: PublicPort.TCP added")
-            End If
             BumpProgress10()
 
             Dim counter = 1
@@ -2359,13 +2371,23 @@ Public Class Form1
                 Dim RegionPort As Integer = aRegion(counter).RegionPort
 
                 If Not MyUPnPMap.Exists(RegionPort, UPNP.Protocol.UDP) Then
-                    MyUPnPMap.Add(UPNP.LocalIP, RegionPort, UPNP.Protocol.UDP, "Opensim UDP Region")
+                    MyUPnPMap.Add(UPNP.LocalIP, Convert.ToInt16(RegionPort), UPNP.Protocol.UDP, "Opensim UDP Region " + RegionPort.ToString)
                     Log("uPnp: RegionPort.UDP Added:" + Convert.ToString(RegionPort))
                 Else
-                    MyUPnPMap.Add(RegionPort, UPNP.Protocol.UDP)
-                    MyUPnPMap.Add(UPNP.LocalIP, RegionPort, UPNP.Protocol.UDP, "Opensim UDP Region")
+                    MyUPnPMap.Remove(RegionPort, UPNP.Protocol.UDP)
+                    MyUPnPMap.Add(UPNP.LocalIP, Convert.ToInt16(RegionPort), UPNP.Protocol.UDP, "Opensim UDP Region " + RegionPort.ToString)
                     Log("uPnp: RegionPort.UDP Added:" + Convert.ToString(RegionPort))
                 End If
+
+                If Not MyUPnPMap.Exists(RegionPort, UPNP.Protocol.TCP) Then
+                    MyUPnPMap.Add(UPNP.LocalIP, Convert.ToInt16(RegionPort), UPNP.Protocol.TCP, "Opensim TCP Region" + RegionPort.ToString)
+                    Log("uPnp: RegionPort.TCP Added:" + Convert.ToString(RegionPort))
+                Else
+                    MyUPnPMap.remove(RegionPort, UPNP.Protocol.TCP)
+                    MyUPnPMap.Add(UPNP.LocalIP, Convert.ToInt16(RegionPort), UPNP.Protocol.TCP, "Opensim TCP Region" + RegionPort.ToString)
+                    Log("uPnp: RegionPort.TCP Added:" + Convert.ToString(RegionPort))
+                End If
+
                 BumpProgress10()
 
                 counter += 1

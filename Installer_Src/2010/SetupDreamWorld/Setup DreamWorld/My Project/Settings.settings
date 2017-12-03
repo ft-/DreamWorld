@@ -173,7 +173,7 @@
     <Setting Name="BackupFolder" Type="System.String" Scope="User">
       <Value Profile="(Default)">AutoBackup</Value>
     </Setting>
-    <Setting Name="DiagsRun2" Type="System.Boolean" Scope="User">
+    <Setting Name="DiagsRun" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="WelcomeRegion" Type="System.Int32" Scope="User">

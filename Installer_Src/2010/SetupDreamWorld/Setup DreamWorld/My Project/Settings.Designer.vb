@@ -741,12 +741,12 @@ Namespace My
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
-        Public Property DiagsRun2() As Boolean
+        Public Property DiagsRun() As Boolean
             Get
-                Return CType(Me("DiagsRun2"),Boolean)
+                Return CType(Me("DiagsRun"),Boolean)
             End Get
             Set
-                Me("DiagsRun2") = value
+                Me("DiagsRun") = value
             End Set
         End Property
         
