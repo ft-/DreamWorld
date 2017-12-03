@@ -243,16 +243,17 @@ Public Class Form1
 
         ' Run diagnostics, maybe
         If gDebug Then
-            My.Settings.DiagsRun2 = False
             gFailDebug = True
             DoDiag()
             gFailDebug = False
+            My.Settings.DiagsRun = False
         End If
 
 
-        If Not My.Settings.DiagsRun2 Then
+        If Not My.Settings.DiagsRun Then
+
             DoDiag()
-            My.Settings.DiagsRun2 = True
+            My.Settings.DiagsRun = True
         End If
 
         UpdateStats()
@@ -2221,6 +2222,9 @@ Public Class Form1
             My.Settings.DiagFailed = True
             Print("Internet address " + ip + ":" + My.Settings.PublicPort + " appears to not be forwarded to this machine in your router, so Hypergrid is not available. This can possibly be fixed by 'Port Forwards' in your router.  See Help->Port Forwards.")
             My.Settings.PublicIP = GetLocalIPv4Address() ' failed, so try the machines address
+
+            My.Settings.Save()
+            Print("DNS name reset to local IP: http://" + My.Settings.DnsName)
             Log("IP set to " + My.Settings.PublicIP)
             Return False
         End If
