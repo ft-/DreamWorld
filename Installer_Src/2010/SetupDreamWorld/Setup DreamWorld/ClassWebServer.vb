@@ -146,7 +146,6 @@ Public Class NetServer
         Try
             Using outputFile As New StreamWriter(Myfolder & "\Http.log", True)
                 outputFile.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + message)
-                outputFile.Close()
                 Debug.Print(message)
             End Using
         Catch ex As Exception

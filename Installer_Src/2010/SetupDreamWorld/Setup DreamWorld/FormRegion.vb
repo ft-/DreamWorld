@@ -227,7 +227,6 @@ Public Class FormRegion
 
         Using outputFile As New StreamWriter(dir & "bin\Regions\" & MyRegion.RegionName & "\Region\" & MyRegion.RegionName & ".ini")
             outputFile.Write(Region)
-            outputFile.Close()
         End Using
 
         oldname = MyRegion.RegionName
