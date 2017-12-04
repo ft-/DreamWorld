@@ -914,7 +914,7 @@ Public Class Form1
             SetIni(simName, "InternalPort", Convert.ToString(o.RegionPort))
             SetIni(simName, "ExternalHostName", Convert.ToString(My.Settings.PublicIP))
 
-            ' not a standrd INI, only use by the Dreamers
+            ' not a standard INI, only use by the Dreamers
             If o.RegionEnabled Then
                 SetIni(simName, "Enabled", "true")
             Else
@@ -1198,7 +1198,6 @@ Public Class Form1
 
         For Each o In RegionClass.AllRegionObjects '
             If o.RegionEnabled Then
-
                 Print("Starting " + o.RegionName)
                 o.procid = Boot(o.RegionName)
                 If o.procid = 0 Then
@@ -2168,9 +2167,8 @@ Public Class Form1
             BumpProgress(1)
 
             '8004-whatever
-            For Each o In RegionClass.AllRegionObjects()
+            For Each o As Object In RegionClass.AllRegionObjects()
                 Dim R As Int16 = o.RegionPort
-
                 If Not MyUPnpMap.Exists(R, UPnp.Protocol.UDP) Then
                     MyUPnpMap.Add(UPnp.LocalIP, R, UPnp.Protocol.UDP, "Opensim UDP Region " & o.RegionName & " ")
                     Log("UPnp: RegionPort.UDP Added:" + Convert.ToString(R))
@@ -2186,7 +2184,6 @@ Public Class Form1
                     Log("UPnp: RegionPort.TCP " + Convert.ToString(R) + " is already in UPnp")
                 End If
                 BumpProgress(1)
-
             Next
 
         Catch e As Exception
@@ -2691,7 +2688,7 @@ Public Class Form1
                 RegionMenu.Image = My.Resources.ResourceManager.GetObject("media_play_green")
             Else
                 RegionMenu.Checked = False
-                RegionMenu.Image = My.Resources.ResourceManager.GetObject("media_stop_red")
+                RegionMenu.Image = My.Resources.ResourceManager.GetObject("media_pause")
             End If
             RegionsToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {RegionMenu})
         Next
@@ -2720,6 +2717,7 @@ Public Class Form1
                 sender.checked = False
                 sender.Image = My.Resources.ResourceManager.GetObject("media_play_green")
             End If
+
             '!!! add yellow running and red if it is aborted.
 
             Return

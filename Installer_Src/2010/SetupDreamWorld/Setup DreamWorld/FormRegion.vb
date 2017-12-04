@@ -23,7 +23,7 @@ Public Class FormRegion
         MyRegion.CurRegionNum = num
         oldname = MyRegion.RegionName
 
-        EnabledCheckBox.Checked = MyRegion.RegionEnabled
+        EnabledCheckBox.Checked = MyRegion.isRegionEnabled
         '''''''''''''''''''''''''''''''
         ' reasonable default section 
 
@@ -190,12 +190,6 @@ Public Class FormRegion
 
     Private Sub WriteRegion()
 
-        Dim sEnabled As String
-        If MyRegion.RegionEnabled Then
-            sEnabled = "true"
-        Else
-            sEnabled = False
-        End If
         Dim dir = Form1.prefix
 
         ' save the Region File
@@ -229,7 +223,7 @@ Public Class FormRegion
                         "ExternalHostName = " & My.Settings.PublicIP & vbCrLf &
                         "SizeX = " & MyRegion.SizeX & vbCrLf &
                         "SizeY = " & MyRegion.SizeY & vbCrLf &
-                        "Enabled = true" & vbCrLf
+                        "Enabled = " & MyRegion.isRegionEnabled & vbCrLf
 
         Using outputFile As New StreamWriter(dir & "bin\Regions\" & MyRegion.RegionName & "\Region\" & MyRegion.RegionName & ".ini")
             outputFile.Write(Region)
@@ -455,7 +449,7 @@ Public Class FormRegion
     End Sub
 
     Private Sub EnabledCheckBox_CheckedChanged(sender As Object, e As EventArgs) Handles EnabledCheckBox.CheckedChanged
-        MyRegion.RegionEnabled = EnabledCheckBox.Checked
+        MyRegion.isRegionEnabled = EnabledCheckBox.Checked
     End Sub
 
 

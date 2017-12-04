@@ -128,12 +128,9 @@ Public Class AdvancedForm
         Dim Y As Integer = 200
         Dim fname As String
         Dim counter As Integer = 0
-        Dim r As RegionMaker
-
 
         For Each o As Object In Form1.RegionClass.AllRegionObjects()
             Try
-
                 fname = o.RegionName
                 Dim ActualForm As New FormRegion
                 ActualForm.SetDesktopLocation(X, Y)
@@ -144,7 +141,7 @@ Public Class AdvancedForm
             Catch ex As Exception
                 Form1.Log("Info:" + ex.Message)
             End Try
-
+            counter = counter + 1
             Y += 100
             X += 100
         Next
@@ -155,8 +152,8 @@ Public Class AdvancedForm
         Dim X As Integer = 300
         Dim Y As Integer = 200
 
-        Form1.RegionClass.CreateRegion("")
-        Dim id = Form1.RegionClass.CurRegionNum()
+        Dim o As Object = Form1.RegionClass.CreateRegion("")
+        Dim id = o.CurRegionNum()
 
         Try
             Dim ActualForm As New FormRegion

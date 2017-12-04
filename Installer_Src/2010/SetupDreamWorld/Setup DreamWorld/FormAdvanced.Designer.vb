@@ -420,7 +420,7 @@ Partial Class AdvancedForm
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "AdvancedForm"
-        Me.Text = "Advanced"
+        Me.Text = "Common Settings"
         CType(Me.MapHelp, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PersonalityHelp, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.AutoBackupHelp, System.ComponentModel.ISupportInitialize).EndInit()

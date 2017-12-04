@@ -283,6 +283,16 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
+        Friend ReadOnly Property media_pause() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("media_pause", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
         Friend ReadOnly Property media_play_green() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("media_play_green", resourceCulture)

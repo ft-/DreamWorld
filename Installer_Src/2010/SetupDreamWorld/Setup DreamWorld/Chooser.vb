@@ -10,7 +10,7 @@
         Dim counter As Integer = 1
         While counter <= Form1.RegionClass.RegionListCount()
 
-            If Form1.RegionClass.RegionEnabled Then
+            If Form1.RegionClass.isRegionEnabled Then
                 Form1.RegionClass.CurRegionNum() = counter
                 ListBox1.Items.Add(Form1.RegionClass.RegionName)
             End If
@@ -28,7 +28,6 @@
 
         Form1.RegionClass.CurRegionNum() = ListBox1.SelectedIndex
         Dim value As String = TryCast(ListBox1.SelectedItem, String)
-
 
         My.Settings.WelcomeRegion = ListBox1.SelectedIndex
     End Sub

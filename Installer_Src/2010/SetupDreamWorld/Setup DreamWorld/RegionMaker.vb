@@ -37,7 +37,7 @@ Public Class RegionMaker
         Set(value As Integer)
         End Set
     End Property
-    Public Property RegionEnabled() As Boolean
+    Public Property isRegionEnabled() As Boolean
         Get
             Return RegionList(CurRegionNum()).RegionEnabled
         End Get
@@ -155,9 +155,9 @@ Public Class RegionMaker
 
         GetAllRegions()
         If RegionCount() = 0 Then
-            CreateRegion("Welcome")
-            My.Settings.WelcomeRegion = 0
-            WriteRegion()
+            Dim o As Object = CreateRegion("Welcome")
+            My.Settings.WelcomeRegion = ""
+            o.WriteRegion()
             GetAllRegions()
         End If
 
@@ -179,7 +179,6 @@ Public Class RegionMaker
         For Each obj In RegionList
             Debug.Print("Region:" + obj.RegionName)
         Next
- 
 
     End Sub
 
@@ -216,7 +215,7 @@ Public Class RegionMaker
 
     End Function
 
-    Public Sub CreateRegion(name As String)
+    Public Function CreateRegion(name As String) As Object
 
         Dim r As New Region_data
         r.RegionName = name
@@ -230,7 +229,10 @@ Public Class RegionMaker
 
         RegionList.Add(r)
 
-    End Sub
+        Dim obj = FindRegionByName(name)
+        Return obj
+
+    End Function
 
     Public Sub GetAllRegions()
 
@@ -252,27 +254,27 @@ Public Class RegionMaker
                         fName = Mid(fName, 1, Len(fName) - 4)
 
                         ' make a slot to hold the region data 
-                        CreateRegion(fName)
+                        Dim o As Object = CreateRegion(fName)
 
                         Form1.Log("Info:Reading Region " + ini)
 
                         ' populate from disk
-                        RegionName() = fName
+                        o.RegionName() = fName
                         Try
-                            RegionEnabled() = Form1.GetIni(ini, fName, "Enabled", ";")
+                            o.RegionEnabled() = Form1.GetIni(ini, fName, "Enabled", ";")
                         Catch
-                            RegionEnabled() = True
+                            o.RegionEnabled() = True
                         End Try
 
-                        UUID() = Form1.GetIni(ini, fName, "RegionUUID", ";")
-                        SizeX() = Convert.ToInt16(Form1.GetIni(ini, fName, "SizeX", ";"))
-                        SizeY() = Convert.ToInt16(Form1.GetIni(ini, fName, "SizeY", ";"))
-                        RegionPort() = Convert.ToInt16(Form1.GetIni(ini, fName, "InternalPort", ";"))
+                        o.UUID() = Form1.GetIni(ini, fName, "RegionUUID", ";")
+                        o.SizeX() = Convert.ToInt16(Form1.GetIni(ini, fName, "SizeX", ";"))
+                        o.SizeY() = Convert.ToInt16(Form1.GetIni(ini, fName, "SizeY", ";"))
+                        o.RegionPort() = Convert.ToInt16(Form1.GetIni(ini, fName, "InternalPort", ";"))
                         ' Location is int,int format.
                         Dim C = Form1.GetIni(ini, fName, "Location", ";")
                         Dim parts As String() = C.Split(New Char() {","c}) ' split at the comma
-                        CoordX() = parts(0)
-                        CoordY() = parts(1)
+                        o.CoordX() = parts(0)
+                        o.CoordY() = parts(1)
                     Next
 
                 Catch ex As Exception
