@@ -2753,12 +2753,11 @@ Public Class Form1
                 LoadIni(prefix & "bin\Regions\" & sender.text & "\Region\" & sender.text & ".ini", ";")
                 SetIni(sender.text, "Enabled", "true")
                 SaveINI()
-
-                o.ProcessID = Boot(sender.text)
-
+                If Running Then
+                    o.ProcessID = Boot(sender.text)
+                End If
             End If
         End If
-
 
     End Sub
 

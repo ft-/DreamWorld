@@ -215,7 +215,7 @@ Public Class RegionMaker
 
     End Function
 
-    Public Function CreateRegion(name As String) As Object
+    Public Function CreateRegion(name As String) As Integer
 
         Dim r As New Region_data
         r.RegionName = name
@@ -228,9 +228,9 @@ Public Class RegionMaker
         r.RegionPort = LargestPort() + 1 '8004 + 1
 
         RegionList.Add(r)
+        CurRegionNum = RegionCount() - 1
 
-        Dim obj = FindRegionByName(name)
-        Return obj
+        Return RegionCount() - 1
 
     End Function
 
@@ -254,27 +254,27 @@ Public Class RegionMaker
                         fName = Mid(fName, 1, Len(fName) - 4)
 
                         ' make a slot to hold the region data 
-                        Dim o As Object = CreateRegion(fName)
+                        CreateRegion(fName)
 
                         Form1.Log("Info:Reading Region " + ini)
 
                         ' populate from disk
-                        o.RegionName() = fName
+                        RegionName() = fName
                         Try
-                            o.RegionEnabled() = Form1.GetIni(ini, fName, "Enabled", ";")
+                            isRegionEnabled() = Form1.GetIni(ini, fName, "Enabled", ";")
                         Catch
-                            o.RegionEnabled() = True
+                            isRegionEnabled() = True
                         End Try
 
-                        o.UUID() = Form1.GetIni(ini, fName, "RegionUUID", ";")
-                        o.SizeX() = Convert.ToInt16(Form1.GetIni(ini, fName, "SizeX", ";"))
-                        o.SizeY() = Convert.ToInt16(Form1.GetIni(ini, fName, "SizeY", ";"))
-                        o.RegionPort() = Convert.ToInt16(Form1.GetIni(ini, fName, "InternalPort", ";"))
+                        UUID() = Form1.GetIni(ini, fName, "RegionUUID", ";")
+                        SizeX() = Convert.ToInt16(Form1.GetIni(ini, fName, "SizeX", ";"))
+                        SizeY() = Convert.ToInt16(Form1.GetIni(ini, fName, "SizeY", ";"))
+                        RegionPort() = Convert.ToInt16(Form1.GetIni(ini, fName, "InternalPort", ";"))
                         ' Location is int,int format.
                         Dim C = Form1.GetIni(ini, fName, "Location", ";")
                         Dim parts As String() = C.Split(New Char() {","c}) ' split at the comma
-                        o.CoordX() = parts(0)
-                        o.CoordY() = parts(1)
+                        CoordX() = parts(0)
+                        CoordY() = parts(1)
                     Next
 
                 Catch ex As Exception

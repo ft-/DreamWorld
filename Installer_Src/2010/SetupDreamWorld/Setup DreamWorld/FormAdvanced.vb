@@ -152,19 +152,13 @@ Public Class AdvancedForm
         Dim X As Integer = 300
         Dim Y As Integer = 200
 
-        Dim o As Object = Form1.RegionClass.CreateRegion("")
-        Dim id = o.CurRegionNum()
+        Form1.RegionClass.CreateRegion("")
+        Dim ActualForm As New FormRegion
+        ActualForm.SetDesktopLocation(X, Y)
+        ActualForm.Init(Form1.RegionClass.CurRegionNum())
+        ActualForm.Activate()
+        ActualForm.Visible = True
 
-        Try
-            Dim ActualForm As New FormRegion
-            ActualForm.SetDesktopLocation(X, Y)
-            ActualForm.Init(id)
-            ActualForm.Activate()
-            ActualForm.Visible = True
-
-        Catch ex As Exception
-            Form1.Log("Info:" + ex.Message)
-        End Try
     End Sub
 
 
