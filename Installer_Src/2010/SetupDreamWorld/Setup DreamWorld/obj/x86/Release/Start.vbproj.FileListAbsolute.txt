@@ -362,8 +362,6 @@ C:\Opensim\OpensimV1.72-Source\Installer_Src\2010\SetupDreamWorld\Setup DreamWor
 C:\Opensim\OpensimV1.72-Source\Installer_Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Release\Interop.IWshRuntimeLibrary.dll
 C:\Opensim\OpensimV1.72-Source\Installer_Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Release\Interop.NATUPNPLib.dll
 C:\Opensim\OpensimV1.72-Source\Installer_Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Release\Start.vbproj.ResolveComReference.cache
-C:\Opensim\OpensimV1.72-Source\Installer_Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Release\Start.exe
-C:\Opensim\OpensimV1.72-Source\Installer_Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Release\Start.pdb
 C:\Opensim\OpensimV1.72-Source\Installer_Src\2010\SetupDreamWorld\Setup DreamWorld\bin\Release\Start.exe
 C:\Opensim\OpensimV1.72-Source\Installer_Src\2010\SetupDreamWorld\Setup DreamWorld\bin\Release\Start.pdb
 C:\Opensim\OpensimV1.72-Source\Installer_Src\2010\SetupDreamWorld\Setup DreamWorld\bin\Release\DotNetZip.dll
@@ -371,6 +369,7 @@ C:\Opensim\OpensimV1.72-Source\Installer_Src\2010\SetupDreamWorld\Setup DreamWor
 C:\Opensim\OpensimV1.72-Source\Installer_Src\2010\SetupDreamWorld\Setup DreamWorld\bin\Release\DotNetZip.xml
 C:\Opensim\OpensimV1.72-Source\Installer_Src\2010\SetupDreamWorld\Setup DreamWorld\bin\Release\INIFileParser.xml
 C:\Opensim\OpensimV1.72-Source\Installer_Src\2010\SetupDreamWorld\Setup DreamWorld\bin\Release\Interop.IWshRuntimeLibrary.dll
+C:\Opensim\OpensimV1.72-Source\Installer_Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Release\Start.vbprojResolveAssemblyReference.cache
 C:\Opensim\OpensimV1.72-Source\Installer_Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Release\Outworldz.Form1.resources
 C:\Opensim\OpensimV1.72-Source\Installer_Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Release\Outworldz.Chooser.resources
 C:\Opensim\OpensimV1.72-Source\Installer_Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Release\Outworldz.DNSName.resources
@@ -379,3 +378,5 @@ C:\Opensim\OpensimV1.72-Source\Installer_Src\2010\SetupDreamWorld\Setup DreamWor
 C:\Opensim\OpensimV1.72-Source\Installer_Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Release\Outworldz.Resources.resources
 C:\Opensim\OpensimV1.72-Source\Installer_Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Release\Outworldz.Form2.resources
 C:\Opensim\OpensimV1.72-Source\Installer_Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Release\Start.vbproj.GenerateResource.Cache
+C:\Opensim\OpensimV1.72-Source\Installer_Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Release\Start.exe
+C:\Opensim\OpensimV1.72-Source\Installer_Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Release\Start.pdb
