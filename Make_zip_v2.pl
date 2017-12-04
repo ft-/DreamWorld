@@ -1,8 +1,8 @@
 
-my $type  = '-V1.72';# '-Beta-V1.5';
+my $type  = '-V2.0';# '-Beta-V1.5';
 
-my $rev = 'V1.72';
-my $dir = "C:\\Opensim\\OpensimV1.72-Source";
+my $rev = 'V2.0';
+my $dir = "C:\\Opensim\\Outworldz-Source";
 
 
 chdir ($dir);
