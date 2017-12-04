@@ -1093,18 +1093,6 @@ Public Class Form1
         Process.Start(webAddress)
         Print("Drag and drop Backup.Oar, or any OAR or IAR files to load into your Sim")
     End Sub
-
-    Private Sub AdvancedSettingsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AdvancedSettingsToolStripMenuItem.Click
-
-        ActualForm = New AdvancedForm
-        ' Set the new form's desktop location so it appears below and
-        ' to the right of the current form.
-        ActualForm.SetDesktopLocation(300, 200)
-        ActualForm.Activate()
-        ActualForm.Visible = True
-
-    End Sub
-
     Private Sub ToolStripMenuItem1_Click(sender As Object, e As EventArgs) Handles ToolStripMenuItem1.Click
         Dim webAddress As String = Domain + "/Outworldz_Installer/PortForwarding.htm"
         Process.Start(webAddress)
@@ -2596,15 +2584,6 @@ Public Class Form1
 
     End Sub
 
-    Private Sub ExpertSettingsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ExpertSettingsToolStripMenuItem.Click
-        Dim ActualForm As New Expert
-        Dim X As Integer = 300
-        Dim Y As Integer = 200
-        ActualForm.SetDesktopLocation(X, Y)
-        ActualForm.Visible = True
-        ActualForm.Activate()
-        Application.DoEvents()
-    End Sub
 
 #End Region
 
