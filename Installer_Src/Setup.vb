@@ -1203,7 +1203,7 @@ Public Class Form1
                 If o.ProcessID = 0 Then
                     Return False
                 End If
-                Sleep(1000) ' time to boot and read environment
+                Sleep(2000) ' no rush, give it time to boot and read environment
                 Application.DoEvents()
             End If
         Next
@@ -1239,11 +1239,11 @@ Public Class Form1
             End If
 
             Try
-                My.Computer.FileSystem.DeleteFile(prefix + "bin/Regions/" & InstanceName & "/opensim.log")
+                My.Computer.FileSystem.DeleteFile(prefix + "bin\Regions\" & InstanceName & "\opensim.log")
             Catch
             End Try
             Try
-                My.Computer.FileSystem.DeleteFile(prefix + "bin/Regions/" & InstanceName & "/opensimconsole.log")
+                My.Computer.FileSystem.DeleteFile(prefix + "bin\regions/" & InstanceName & "\opensimconsole.log")
             Catch ex As Exception
             End Try
 
