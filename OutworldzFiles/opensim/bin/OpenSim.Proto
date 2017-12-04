@@ -43,7 +43,7 @@
 [Const]
 
 ;# used by the one-exe-per-instance logic. This becomes the folder for the regions file.
-RegionFolderName = Welcome
+RegionFolderName = WelcomeRegion
 
 ;# {BaseURL} {} {BaseURL} {"http://example.com","http://127.0.0.1"} "http://127.0.0.1"
 http_listener_port = 8011

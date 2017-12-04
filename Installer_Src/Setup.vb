@@ -1199,10 +1199,11 @@ Public Class Form1
         For Each o In RegionClass.AllRegionObjects '
             If o.RegionEnabled Then
                 Print("Starting " + o.RegionName)
-                o.procid = Boot(o.RegionName)
-                If o.procid = 0 Then
+                o.ProcessID = Boot(o.RegionName)
+                If o.ProcessID = 0 Then
                     Return False
                 End If
+                Sleep(1000) ' time to boot and read environment
                 Application.DoEvents()
             End If
         Next
@@ -1236,6 +1237,18 @@ Public Class Form1
             Else
                 myProcess.StartInfo.WindowStyle = ProcessWindowStyle.Hidden
             End If
+
+            Try
+                My.Computer.FileSystem.DeleteFile(prefix + "bin/Regions/" & InstanceName & "/opensim.log")
+            Catch
+            End Try
+            Try
+                My.Computer.FileSystem.DeleteFile(prefix + "bin/Regions/" & InstanceName & "/opensimconsole.log")
+            Catch ex As Exception
+            End Try
+
+
+            Environment.SetEnvironmentVariable("OSIM_LOGPATH", InstanceName)
 
             myProcess.Start()
             Pid = myProcess.Id
@@ -1289,7 +1302,6 @@ Public Class Form1
             Try
                 My.Computer.FileSystem.DeleteFile(thing)
             Catch ex As Exception
-
             End Try
         Next
 
@@ -2703,7 +2715,7 @@ Public Class Form1
                 Try
                     Dim P = Process.GetProcessById(gRobustProcID)
                     P.Kill()
-                    sender.Image = My.Resources.ResourceManager.GetObject("media_stop_red") ' image
+                    sender.Image = My.Resources.ResourceManager.GetObject("media_pause") ' image
                     Log("Region:Stopped Robust")
                 Catch ex As Exception
                     Log("Region:Could not stop Robust")
@@ -2726,24 +2738,25 @@ Public Class Form1
             Log("Region:Clicked region " & sender.text)
             If sender.checked Then
                 sender.checked = False 'checkbox
-                sender.Image = My.Resources.ResourceManager.GetObject("media_stop_red") ' image
+                sender.Image = My.Resources.ResourceManager.GetObject("media_pause") ' image
                 o.RegionEnabled = False   ' class
 
                 ' and region file on disk
                 LoadIni(prefix & "bin\Regions\" & sender.text & "\Region\" & sender.text & ".ini", ";")
                 SetIni(sender.text, "Enabled", "false")
                 SaveINI()
-
-                Dim PID = o.ProcessID
-                Try
-                    Dim P = Process.GetProcessById(PID)
-                    P.Kill()
-                    Log("Region:Stopped Opensim")
-                Catch ex As Exception
-                    Log("Region:Could not stop Opensim")
-                End Try
                 o.Ready = False
 
+                If Running Then
+                    Dim PID = o.ProcessID
+                    Try
+                        Dim P = Process.GetProcessById(PID)
+                        P.Kill()
+                        Log("Region:Stopped Opensim")
+                    Catch ex As Exception
+                        Log("Region:Could not stop Opensim")
+                    End Try
+                End If
             Else
                 sender.checked = True
                 sender.Image = My.Resources.ResourceManager.GetObject("media_play_green")
