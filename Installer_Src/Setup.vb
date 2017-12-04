@@ -198,7 +198,7 @@ Public Class Form1
             ' for debugging when compiling
             If arguments(1) = "-debug" Then
                 gDebug = True
-                gFailDebug = True
+                ' gFailDebug = True
                 MyFolder = DebugPath ' for testing, as the compiler buries itself in ../../../debug
 
             End If
@@ -249,6 +249,7 @@ Public Class Form1
             My.Settings.DiagsRun = False
         End If
 
+        RegisterDNS()
 
         If Not My.Settings.DiagsRun Then
 
@@ -2149,6 +2150,7 @@ Public Class Form1
             Log(loopbacktest)
             result = client.DownloadString(loopbacktest)
         Catch ex As Exception
+            Print("Loopback test failed")
             Log("Err:Loopback fail:" + result + ":" + ex.Message)
         End Try
 
@@ -2161,7 +2163,7 @@ Public Class Form1
             My.Settings.Save()
         Else
             Log("Failed:" + result)
-            Print("Router Loopback failed. See the Help section for 'Loopback' and how to enable it in Windows. Continuing...")
+            Print("See Help for 'Loopback' and how to enable it in Windows. Continuing...")
             My.Settings.LoopBackDiag = False
             My.Settings.PublicIP = GetLocalIPv4Address()
             My.Settings.Save()
@@ -2210,7 +2212,6 @@ Public Class Form1
             My.Settings.DiagFailed = True
         End Try
 
-        BumpProgress10()
         ws.StopWebServer()
         BumpProgress10()
 
@@ -2226,7 +2227,7 @@ Public Class Form1
             My.Settings.PublicIP = GetLocalIPv4Address() ' failed, so try the machines address
 
             My.Settings.Save()
-            Print("DNS name reset to local IP: http://" + My.Settings.DnsName)
+            Print("Using local IP: http://" + My.Settings.PublicIP)
             Log("IP set to " + My.Settings.PublicIP)
             Return False
         End If
@@ -2330,13 +2331,13 @@ Public Class Form1
         Try
 
             'diagnostics 8001
-            If Not MyUPnPMap.Exists(Convert.ToInt16(My.Settings.PublicPort), UPNP.Protocol.UDP) Then
-                MyUPnPMap.Add(UPNP.LocalIP, Convert.ToInt16(My.Settings.PublicPort), UPNP.Protocol.UDP, "Opensim UDP Public " + My.Settings.PublicPort)
-                Log("uPnp: PublicPort.UDP added")
+            If Not MyUPnPMap.Exists(Convert.ToInt16(My.Settings.PublicPort), UPNP.Protocol.TCP) Then
+                MyUPnPMap.Add(UPNP.LocalIP, Convert.ToInt16(My.Settings.PublicPort), UPNP.Protocol.TCP, "Opensim UDP Public " + My.Settings.PublicPort)
+                Log("uPnp: PublicPort.TCP added")
             Else
-                MyUPnPMap.Remove(Convert.ToInt16(My.Settings.PublicPort), UPNP.Protocol.UDP)
-                MyUPnPMap.Add(UPNP.LocalIP, Convert.ToInt16(My.Settings.PublicPort), UPNP.Protocol.UDP, "Opensim UDP Public " + My.Settings.PublicPort)
-                Log("uPnp: PublicPort.UDP added:" + My.Settings.PublicPort)
+                MyUPnPMap.Remove(Convert.ToInt16(My.Settings.PublicPort), UPNP.Protocol.TCP)
+                MyUPnPMap.Add(UPNP.LocalIP, Convert.ToInt16(My.Settings.PublicPort), UPNP.Protocol.TCP, "Opensim TCP Public " + My.Settings.PublicPort)
+                Log("uPnp: PublicPort.TCP added:" + My.Settings.PublicPort)
             End If
 
             BumpProgress10()
