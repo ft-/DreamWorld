@@ -3,3 +3,5 @@ User
 create user
 reset user password Wifi Admin !!X1J)
 quit
+debug http all 5
+debug http all 5

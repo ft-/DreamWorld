@@ -83,7 +83,9 @@ namespace OpenSim.Region.UserStatistics
             IConfig cnfg = config.Configs["WebStats"];
 
             if (cnfg != null)
-                enabled = cnfg.GetBoolean("enabled", false);
+                 enabled = true;
+            
+            /*    enabled = cnfg.GetBoolean("enabled", false); */
         }
 
         public virtual void PostInitialise()

@@ -47,7 +47,7 @@ RegionFolderName = WelcomeRegion
 
 ;# {BaseURL} {} {BaseURL} {"http://example.com","http://127.0.0.1"} "http://127.0.0.1"
 http_listener_port = 8004
-BaseURL = http://10.6.1.130
+BaseURL = http://Rheawien.Outworldz.net
 
 ;# {PublicPort} {} {PublicPort} {8002} "8002"
 PublicPort = 8002
@@ -346,7 +346,7 @@ GenerateMaptiles = true
 
 ;# {MapImageModule} {} {The map image module to use} {MapImageModule Warp3DImageModule} MapImageModule
 ;; The module to use in order to generate map images.
-MapImageModule = Warp3DImageModule
+MapImageModule = MapImageModule
 
 ;; generate better images.
 ;MapImageModule = "MapImageModule"
@@ -361,23 +361,23 @@ MapImageModule = Warp3DImageModule
 ; MaptileStaticUUID = "00000000-0000-0000-0000-000000000000"
 ;# {TextureOnMapTile} {} {Use terrain textures for map tiles?} {true false} true
 ;; Use terrain texture for maptiles if true, use shaded green if false
-TextureOnMapTile = true
+TextureOnMapTile = false
 
 ;# {DrawPrimOnMapTile} {} {Draw prim shapes on map tiles?} {true false} false
 ;; Draw objects on maptile.  This step might take a long time if you've
 ;; got a large number of objects, so you can turn it off here if you'd like.
-DrawPrimOnMapTile = true
+DrawPrimOnMapTile = false
 
 ;# {TexturePrims} {} {Texture prims on map tiles?} {true false} true
 ;; Texture the faces of the prims that are rendered on the map tiles.
-TexturePrims = true
+TexturePrims = false
 
 ;# {TexturePrimSize} {} {Size of prims to texture faces?} {} 48
 ;; Only texture prims that have a diagonal size greater than this number
 ; TexturePrimSize = 48
 ;# {RenderMeshes} {} {Render meshes and sculpties on map tiles?} {true false} false
 ;; Attempt to render meshes and sculpties on the map
-RenderMeshes = true
+RenderMeshes = false
 
 [Permissions]
 
