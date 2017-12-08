@@ -1003,6 +1003,10 @@ Public Class Form1
 
 #Region "ToolBars"
 
+    Private Sub mnuSettings_Click(sender As Object, e As EventArgs) Handles mnuSettings.Click
+        LoadRegionList()
+    End Sub
+
     Private Sub ToolStripMenuItem2_Click(sender As Object, e As EventArgs) Handles ToolStripMenuItem2.Click
         Print("Starting UPnp Control Panel")
         Dim pi As ProcessStartInfo = New ProcessStartInfo()
@@ -1174,7 +1178,7 @@ Public Class Form1
                 If o.ProcessID = 0 Then
                     Return False
                 End If
-                Sleep(2000) ' no rush, give it time to boot and read environment
+                Sleep(5000) ' no rush, give it time to boot and read environment
                 Application.DoEvents()
             End If
         Next
@@ -2733,6 +2737,8 @@ Public Class Form1
         End If
 
     End Sub
+
+
 
 #End Region
 
