@@ -61,10 +61,16 @@ Partial Class Form1
         Me.IslandToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ClothingInventoryToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MoreContentToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.LoadBackupToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.SaveBackupToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.LoadInventoryToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.SaveInventoryToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.BackupRestoreToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.AllRegionsOARsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.BackupDatabaseToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.RestoreDatabaseToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.OARToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.LoadRegionOarToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.SaveRegionOARToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.IARToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.LoadInventoryIARToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.SaveInventoryIARToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.WebBrowser3 = New System.Windows.Forms.WebBrowser()
         Me.ProgressBar1 = New System.Windows.Forms.ProgressBar()
         Me.BusyButton = New System.Windows.Forms.Button()
@@ -148,7 +154,7 @@ Partial Class Form1
         '
         Me.RegionsToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.server_gWSCLient
         Me.RegionsToolStripMenuItem.Name = "RegionsToolStripMenuItem"
-        Me.RegionsToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.RegionsToolStripMenuItem.Size = New System.Drawing.Size(125, 22)
         Me.RegionsToolStripMenuItem.Text = "Regions"
         '
         'ConsoleToolStripMenuItem1
@@ -156,7 +162,7 @@ Partial Class Form1
         Me.ConsoleToolStripMenuItem1.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuHide, Me.mnuShow})
         Me.ConsoleToolStripMenuItem1.Image = Global.Outworldz.My.Resources.Resources.window_add
         Me.ConsoleToolStripMenuItem1.Name = "ConsoleToolStripMenuItem1"
-        Me.ConsoleToolStripMenuItem1.Size = New System.Drawing.Size(152, 22)
+        Me.ConsoleToolStripMenuItem1.Size = New System.Drawing.Size(125, 22)
         Me.ConsoleToolStripMenuItem1.Text = " Consoles"
         Me.ConsoleToolStripMenuItem1.ToolTipText = "The Opensim Dos Box can be minimized automatically"
         '
@@ -178,7 +184,7 @@ Partial Class Form1
         '
         Me.AdvancedSettingsToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.earth_network
         Me.AdvancedSettingsToolStripMenuItem.Name = "AdvancedSettingsToolStripMenuItem"
-        Me.AdvancedSettingsToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.AdvancedSettingsToolStripMenuItem.Size = New System.Drawing.Size(125, 22)
         Me.AdvancedSettingsToolStripMenuItem.Text = "Settings"
         Me.AdvancedSettingsToolStripMenuItem.ToolTipText = "Deep stuff."
         '
@@ -239,6 +245,7 @@ Partial Class Form1
         Me.WebStatsToolStripMenuItem.Name = "WebStatsToolStripMenuItem"
         Me.WebStatsToolStripMenuItem.Size = New System.Drawing.Size(210, 22)
         Me.WebStatsToolStripMenuItem.Text = "View Web Stats"
+        Me.WebStatsToolStripMenuItem.Visible = False
         '
         'ViewWebUI
         '
@@ -313,7 +320,7 @@ Partial Class Form1
         '
         'MnuContent
         '
-        Me.MnuContent.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.IslandToolStripMenuItem, Me.ClothingInventoryToolStripMenuItem, Me.MoreContentToolStripMenuItem, Me.LoadBackupToolStripMenuItem, Me.SaveBackupToolStripMenuItem, Me.LoadInventoryToolStripMenuItem, Me.SaveInventoryToolStripMenuItem})
+        Me.MnuContent.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.IslandToolStripMenuItem, Me.ClothingInventoryToolStripMenuItem, Me.MoreContentToolStripMenuItem, Me.BackupRestoreToolStripMenuItem, Me.OARToolStripMenuItem, Me.IARToolStripMenuItem})
         Me.MnuContent.Name = "MnuContent"
         Me.MnuContent.Size = New System.Drawing.Size(62, 20)
         Me.MnuContent.Text = "Content"
@@ -342,34 +349,78 @@ Partial Class Form1
         Me.MoreContentToolStripMenuItem.Text = "Free Islands and Parts"
         Me.MoreContentToolStripMenuItem.ToolTipText = "Outworldz has a entirely free content."
         '
-        'LoadBackupToolStripMenuItem
+        'BackupRestoreToolStripMenuItem
         '
-        Me.LoadBackupToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.box_tall
-        Me.LoadBackupToolStripMenuItem.Name = "LoadBackupToolStripMenuItem"
-        Me.LoadBackupToolStripMenuItem.Size = New System.Drawing.Size(187, 22)
-        Me.LoadBackupToolStripMenuItem.Text = "Load Backup"
-        Me.LoadBackupToolStripMenuItem.ToolTipText = "Choose a OAR backup file to restore"
+        Me.BackupRestoreToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AllRegionsOARsToolStripMenuItem, Me.BackupDatabaseToolStripMenuItem, Me.RestoreDatabaseToolStripMenuItem1})
+        Me.BackupRestoreToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.disk_blue
+        Me.BackupRestoreToolStripMenuItem.Name = "BackupRestoreToolStripMenuItem"
+        Me.BackupRestoreToolStripMenuItem.Size = New System.Drawing.Size(187, 22)
+        Me.BackupRestoreToolStripMenuItem.Text = "Backup and Restore"
         '
-        'SaveBackupToolStripMenuItem
+        'AllRegionsOARsToolStripMenuItem
         '
-        Me.SaveBackupToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.disk_blue
-        Me.SaveBackupToolStripMenuItem.Name = "SaveBackupToolStripMenuItem"
-        Me.SaveBackupToolStripMenuItem.Size = New System.Drawing.Size(187, 22)
-        Me.SaveBackupToolStripMenuItem.Text = "Save Backup"
+        Me.AllRegionsOARsToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.earth_network
+        Me.AllRegionsOARsToolStripMenuItem.Name = "AllRegionsOARsToolStripMenuItem"
+        Me.AllRegionsOARsToolStripMenuItem.Size = New System.Drawing.Size(184, 22)
+        Me.AllRegionsOARsToolStripMenuItem.Text = "All Regions => OARs"
         '
-        'LoadInventoryToolStripMenuItem
+        'BackupDatabaseToolStripMenuItem
         '
-        Me.LoadInventoryToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.cube_blue
-        Me.LoadInventoryToolStripMenuItem.Name = "LoadInventoryToolStripMenuItem"
-        Me.LoadInventoryToolStripMenuItem.Size = New System.Drawing.Size(187, 22)
-        Me.LoadInventoryToolStripMenuItem.Text = "Load Inventory"
+        Me.BackupDatabaseToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.disk_blue
+        Me.BackupDatabaseToolStripMenuItem.Name = "BackupDatabaseToolStripMenuItem"
+        Me.BackupDatabaseToolStripMenuItem.Size = New System.Drawing.Size(184, 22)
+        Me.BackupDatabaseToolStripMenuItem.Text = "Backup Database"
         '
-        'SaveInventoryToolStripMenuItem
+        'RestoreDatabaseToolStripMenuItem1
         '
-        Me.SaveInventoryToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.disk_blue
-        Me.SaveInventoryToolStripMenuItem.Name = "SaveInventoryToolStripMenuItem"
-        Me.SaveInventoryToolStripMenuItem.Size = New System.Drawing.Size(187, 22)
-        Me.SaveInventoryToolStripMenuItem.Text = "Save Inventory"
+        Me.RestoreDatabaseToolStripMenuItem1.Image = Global.Outworldz.My.Resources.Resources.cube_blue
+        Me.RestoreDatabaseToolStripMenuItem1.Name = "RestoreDatabaseToolStripMenuItem1"
+        Me.RestoreDatabaseToolStripMenuItem1.Size = New System.Drawing.Size(184, 22)
+        Me.RestoreDatabaseToolStripMenuItem1.Text = "Restore Database"
+        '
+        'OARToolStripMenuItem
+        '
+        Me.OARToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.LoadRegionOarToolStripMenuItem, Me.SaveRegionOARToolStripMenuItem})
+        Me.OARToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.disk_green
+        Me.OARToolStripMenuItem.Name = "OARToolStripMenuItem"
+        Me.OARToolStripMenuItem.Size = New System.Drawing.Size(187, 22)
+        Me.OARToolStripMenuItem.Text = "OAR"
+        '
+        'LoadRegionOarToolStripMenuItem
+        '
+        Me.LoadRegionOarToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.data
+        Me.LoadRegionOarToolStripMenuItem.Name = "LoadRegionOarToolStripMenuItem"
+        Me.LoadRegionOarToolStripMenuItem.Size = New System.Drawing.Size(165, 22)
+        Me.LoadRegionOarToolStripMenuItem.Text = "Load Region Oar"
+        '
+        'SaveRegionOARToolStripMenuItem
+        '
+        Me.SaveRegionOARToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.disk_green
+        Me.SaveRegionOARToolStripMenuItem.Name = "SaveRegionOARToolStripMenuItem"
+        Me.SaveRegionOARToolStripMenuItem.Size = New System.Drawing.Size(165, 22)
+        Me.SaveRegionOARToolStripMenuItem.Text = "Save Region OAR"
+        '
+        'IARToolStripMenuItem
+        '
+        Me.IARToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.LoadInventoryIARToolStripMenuItem, Me.SaveInventoryIARToolStripMenuItem})
+        Me.IARToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.disk_yellow
+        Me.IARToolStripMenuItem.Name = "IARToolStripMenuItem"
+        Me.IARToolStripMenuItem.Size = New System.Drawing.Size(187, 22)
+        Me.IARToolStripMenuItem.Text = "IAR"
+        '
+        'LoadInventoryIARToolStripMenuItem
+        '
+        Me.LoadInventoryIARToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.data
+        Me.LoadInventoryIARToolStripMenuItem.Name = "LoadInventoryIARToolStripMenuItem"
+        Me.LoadInventoryIARToolStripMenuItem.Size = New System.Drawing.Size(174, 22)
+        Me.LoadInventoryIARToolStripMenuItem.Text = "Load Inventory IAR"
+        '
+        'SaveInventoryIARToolStripMenuItem
+        '
+        Me.SaveInventoryIARToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.disk_yellow
+        Me.SaveInventoryIARToolStripMenuItem.Name = "SaveInventoryIARToolStripMenuItem"
+        Me.SaveInventoryIARToolStripMenuItem.Size = New System.Drawing.Size(174, 22)
+        Me.SaveInventoryIARToolStripMenuItem.Text = "Save Inventory IAR"
         '
         'WebBrowser3
         '
@@ -548,16 +599,12 @@ Partial Class Form1
     Friend WithEvents UpdaterCancel As Button
     Friend WithEvents PictureBox1 As PictureBox
     Friend WithEvents Timer1 As Timer
-    Friend WithEvents LoadBackupToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents OpenFileDialog1 As OpenFileDialog
     Friend WithEvents OpenFileDialog2 As OpenFileDialog
     Friend WithEvents CheckDatabaseToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ShowHyperGridAddressToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents WebStatsToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents SaveBackupToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents TextBox1 As RichTextBox
-    Friend WithEvents LoadInventoryToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents SaveInventoryToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents LogButton As Button
     Friend WithEvents IgnoreButton As Button
     Friend WithEvents BackupToolStripMenuItem As ToolStripMenuItem
@@ -567,4 +614,14 @@ Partial Class Form1
     Friend WithEvents ConsoleCOmmandsToolStripMenuItem1 As ToolStripMenuItem
     Friend WithEvents ToolStripMenuItem2 As ToolStripMenuItem
     Friend WithEvents RegionsToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents BackupRestoreToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents AllRegionsOARsToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents BackupDatabaseToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents RestoreDatabaseToolStripMenuItem1 As ToolStripMenuItem
+    Friend WithEvents OARToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents SaveRegionOARToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents LoadRegionOarToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents IARToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents LoadInventoryIARToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents SaveInventoryIARToolStripMenuItem As ToolStripMenuItem
 End Class

@@ -565,7 +565,7 @@ gridnick = ${Const|GridName}
 
 ; login page: optional: if it exists it will be used to tell the client to use
 ;                       this as splash page
-welcome = http://www.outworldz.com/Outworldz_installer/Welcome.htm
+welcome = http://www.outworldz.com
 
 ; helper uri: optional: if it exists it will be used to tell the client to use
 ;                       this for all economy related things
@@ -770,25 +770,6 @@ BaseDirectory = "./bakes"
 [WebStats]
 enabled = True
 
-[WifiService]
-
-;;
-;; Set this to true in order to enable Wifi
-;;
-Enabled = true
-
-;; Set this to a port, possibly using one of the ports defined in the host config file
-;ServerPort = 8002 or ${Const|PublicPort}
-;
-ServerPort = 8002
-GridName = DreamWorld
-LoginURL = Tea.Outworldz.net:8002
-WebAddress = Tea.Outworldz.net:8002
-
-;; The Wifi Administrator account
-AdminFirst = "Wifi"
-AdminLast = "Admin"
-AdminEmail = email@somewhere.com
 
 ;; Do you want to be able to control grid registrations?
 AccountConfirmationRequired = true
@@ -846,6 +827,7 @@ SmtpPassword = Gmail password
 ;; http://localhost:8002/bin/data/prototype.js.
 ServePath_BinData = "data, /bin/data"
 AdminPassword = !!X1J)
+
 ;; ### Localization
 ;; Enable localization by setting this to a value other than 0.
 ;; This specifies the time in hours before the internally cached

@@ -13,3 +13,4 @@ show version
 reset user password Wifi Admin secret
 reset user password Wifi Admin secret
 reset user password Wifi Admin secret
+reset user password Wifi Admin secret
