@@ -172,7 +172,6 @@ Public Class Form1
         Buttons(BusyButton)
         ' Save a random machine ID - we don't want any data to be sent that's personal or identifiable,  but it needs to be unique
         Randomize()
-        Machine() = Random()
 
         ' hide updater
         UpdaterGo.Visible = False
@@ -218,7 +217,6 @@ Public Class Form1
 
         LoadRegionList()
 
-
         If (My.Settings.SplashPage = "") Then
             My.Settings.SplashPage = Domain + "/Outworldz_installer/Welcome.htm"
             My.Settings.Save()
@@ -260,8 +258,9 @@ Public Class Form1
 
             Buttons(StartButton)
             ProgressBar1.Value = 100
-
+            Print("Ready to Launch! Click 'Start' to begin your adventure in Opensimulator.")
         Else
+            Machine = Random()  ' a random machine ID
 
             Print("Installing Desktop icon clicky thingy")
             Create_ShortCut(MyFolder & "\Start.exe")
@@ -276,13 +275,11 @@ Public Class Form1
                 Log("Error:Could not create Init.txt - no permissions to write it:" + ex.Message)
             End Try
 
+            Print("Ready to Launch! Please type 'create user<ret>' in the ROBUST console, and then answer any questions in the REGION console. ")
         End If
-        Print("Ready to Launch! Click 'Start' to begin your adventure in Opensimulator.")
-
 
         ProgressBar1.Value = 100
         Application.DoEvents()
-
 
         Buttons(StartButton)
 
@@ -2032,7 +2029,7 @@ Public Class Form1
     End Sub
     Private Function ProbePublicPort() As Boolean
 
-        Log("Info:Probe Public Port")
+        Print("Checking for Open Ports")
         Dim ip As String = GetPubIP()
 
         Dim isPortOpen As String = ""
@@ -2177,12 +2174,13 @@ Public Class Form1
 
 
         Dim data
-        data = "&r=" + Machine _
+        data = "&Machine=" + Machine _
             + "&V=" + MyVersion _
             + "&OV=" + SimVersion _
             + "&uPnp=" + UPnp _
             + "&Loop=" + Loopb _
-            + "&x=" + Random()
+            + "&Type=Grid" _
+            + "&r=" + Random()
         Return data
 
     End Function
