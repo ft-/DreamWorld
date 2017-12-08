@@ -42,10 +42,6 @@ Partial Class Form1
         Me.AdvancedSettingsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.HelpToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ShowHyperGridAddressToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.BackupToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.AllRegionsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.MysqlToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.RestoreDatabaseToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ConsoleCOmmandsToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
         Me.WebStatsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ViewWebUI = New System.Windows.Forms.ToolStripMenuItem()
@@ -140,7 +136,7 @@ Partial Class Form1
         'mnuExit
         '
         Me.mnuExit.Name = "mnuExit"
-        Me.mnuExit.Size = New System.Drawing.Size(92, 22)
+        Me.mnuExit.Size = New System.Drawing.Size(152, 22)
         Me.mnuExit.Text = "Exit"
         '
         'mnuSettings
@@ -154,7 +150,7 @@ Partial Class Form1
         '
         Me.RegionsToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.server_gWSCLient
         Me.RegionsToolStripMenuItem.Name = "RegionsToolStripMenuItem"
-        Me.RegionsToolStripMenuItem.Size = New System.Drawing.Size(125, 22)
+        Me.RegionsToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
         Me.RegionsToolStripMenuItem.Text = "Regions"
         '
         'ConsoleToolStripMenuItem1
@@ -162,7 +158,7 @@ Partial Class Form1
         Me.ConsoleToolStripMenuItem1.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuHide, Me.mnuShow})
         Me.ConsoleToolStripMenuItem1.Image = Global.Outworldz.My.Resources.Resources.window_add
         Me.ConsoleToolStripMenuItem1.Name = "ConsoleToolStripMenuItem1"
-        Me.ConsoleToolStripMenuItem1.Size = New System.Drawing.Size(125, 22)
+        Me.ConsoleToolStripMenuItem1.Size = New System.Drawing.Size(152, 22)
         Me.ConsoleToolStripMenuItem1.Text = " Consoles"
         Me.ConsoleToolStripMenuItem1.ToolTipText = "The Opensim Dos Box can be minimized automatically"
         '
@@ -184,13 +180,13 @@ Partial Class Form1
         '
         Me.AdvancedSettingsToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.earth_network
         Me.AdvancedSettingsToolStripMenuItem.Name = "AdvancedSettingsToolStripMenuItem"
-        Me.AdvancedSettingsToolStripMenuItem.Size = New System.Drawing.Size(125, 22)
+        Me.AdvancedSettingsToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
         Me.AdvancedSettingsToolStripMenuItem.Text = "Settings"
         Me.AdvancedSettingsToolStripMenuItem.ToolTipText = "Deep stuff."
         '
         'HelpToolStripMenuItem
         '
-        Me.HelpToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ShowHyperGridAddressToolStripMenuItem, Me.BackupToolStripMenuItem, Me.ConsoleCOmmandsToolStripMenuItem1, Me.WebStatsToolStripMenuItem, Me.ViewWebUI, Me.ToolStripMenuItem2, Me.ToolStripMenuItem1, Me.LoopBackToolStripMenuItem, Me.DiagnosticsToolStripMenuItem, Me.CheckDatabaseToolStripMenuItem, Me.CHeckForUpdatesToolStripMenuItem, Me.mnuAbout})
+        Me.HelpToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ShowHyperGridAddressToolStripMenuItem, Me.ConsoleCOmmandsToolStripMenuItem1, Me.WebStatsToolStripMenuItem, Me.ViewWebUI, Me.DiagnosticsToolStripMenuItem, Me.ToolStripMenuItem2, Me.ToolStripMenuItem1, Me.LoopBackToolStripMenuItem, Me.CheckDatabaseToolStripMenuItem, Me.CHeckForUpdatesToolStripMenuItem, Me.mnuAbout})
         Me.HelpToolStripMenuItem.Name = "HelpToolStripMenuItem"
         Me.HelpToolStripMenuItem.Size = New System.Drawing.Size(44, 20)
         Me.HelpToolStripMenuItem.Text = "Help"
@@ -202,35 +198,6 @@ Partial Class Form1
         Me.ShowHyperGridAddressToolStripMenuItem.Size = New System.Drawing.Size(210, 22)
         Me.ShowHyperGridAddressToolStripMenuItem.Text = "Show HyperGrid Address"
         Me.ShowHyperGridAddressToolStripMenuItem.ToolTipText = "You can give this address out to oepple and they can visit your grid"
-        '
-        'BackupToolStripMenuItem
-        '
-        Me.BackupToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AllRegionsToolStripMenuItem, Me.MysqlToolStripMenuItem, Me.RestoreDatabaseToolStripMenuItem})
-        Me.BackupToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.disk_blue
-        Me.BackupToolStripMenuItem.Name = "BackupToolStripMenuItem"
-        Me.BackupToolStripMenuItem.Size = New System.Drawing.Size(210, 22)
-        Me.BackupToolStripMenuItem.Text = "Backup and Restore"
-        '
-        'AllRegionsToolStripMenuItem
-        '
-        Me.AllRegionsToolStripMenuItem.Image = CType(resources.GetObject("AllRegionsToolStripMenuItem.Image"), System.Drawing.Image)
-        Me.AllRegionsToolStripMenuItem.Name = "AllRegionsToolStripMenuItem"
-        Me.AllRegionsToolStripMenuItem.Size = New System.Drawing.Size(184, 22)
-        Me.AllRegionsToolStripMenuItem.Text = "All Regions => OARs"
-        '
-        'MysqlToolStripMenuItem
-        '
-        Me.MysqlToolStripMenuItem.Image = CType(resources.GetObject("MysqlToolStripMenuItem.Image"), System.Drawing.Image)
-        Me.MysqlToolStripMenuItem.Name = "MysqlToolStripMenuItem"
-        Me.MysqlToolStripMenuItem.Size = New System.Drawing.Size(184, 22)
-        Me.MysqlToolStripMenuItem.Text = "Backup Database"
-        '
-        'RestoreDatabaseToolStripMenuItem
-        '
-        Me.RestoreDatabaseToolStripMenuItem.Image = CType(resources.GetObject("RestoreDatabaseToolStripMenuItem.Image"), System.Drawing.Image)
-        Me.RestoreDatabaseToolStripMenuItem.Name = "RestoreDatabaseToolStripMenuItem"
-        Me.RestoreDatabaseToolStripMenuItem.Size = New System.Drawing.Size(184, 22)
-        Me.RestoreDatabaseToolStripMenuItem.Text = "Restore Database"
         '
         'ConsoleCOmmandsToolStripMenuItem1
         '
@@ -607,10 +574,6 @@ Partial Class Form1
     Friend WithEvents TextBox1 As RichTextBox
     Friend WithEvents LogButton As Button
     Friend WithEvents IgnoreButton As Button
-    Friend WithEvents BackupToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents AllRegionsToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents MysqlToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents RestoreDatabaseToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ConsoleCOmmandsToolStripMenuItem1 As ToolStripMenuItem
     Friend WithEvents ToolStripMenuItem2 As ToolStripMenuItem
     Friend WithEvents RegionsToolStripMenuItem As ToolStripMenuItem

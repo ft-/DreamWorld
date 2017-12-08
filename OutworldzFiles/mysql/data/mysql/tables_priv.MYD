@@ -122,7 +122,4 @@ Version: '5.5.8'  soc171204 21:19:39 [Warning] 'procs_priv' entry 'e
 171204 21:19:39 [ERROR] Native table 'performance_schema'.'file_instances' has the wrong structure
 171204 21:19:39 [Note] Event Scheduler: Loaded 0 events
 171204 21:19:39 [Note] C:\Opensim\Outworldz-Source\OutworldzFiles\mysql\bin\mysqld.exe: ready for connections.
-Version: '5.5.8'  socket: ''  port: 3306  MySQL Community Server (GPL)
-171204 21:47:15 [Note] C:\Opensim\Outworldz-Source\OutworldzFiles\mysql\bin\mysqld.exe: Normal shutdown
-
-171204 21:47:15 [Note] Event Scheduler: Purging the queue. 0 events
+Version: '5.5.8'  socket

@@ -753,7 +753,7 @@ UserAccountService = "OpenSim.Services.UserAccountService.dll:UserAccountService
 ; MaxAgentGroups = 42
 [UserProfilesService]
 LocalServiceModule = "OpenSim.Services.UserProfilesService.dll:UserProfilesService"
-Enabled = false
+Enabled = true
 
 ;; Configure this for separate profiles database
 ;; ConnectionString = "Data Source=localhost;Database=opensim;User ID=opensim;Password=*****;Old Guids=true;"
@@ -769,7 +769,6 @@ BaseDirectory = "./bakes"
 
 [WebStats]
 enabled = True
-
 
 ;; Do you want to be able to control grid registrations?
 AccountConfirmationRequired = true
@@ -827,7 +826,6 @@ SmtpPassword = Gmail password
 ;; http://localhost:8002/bin/data/prototype.js.
 ServePath_BinData = "data, /bin/data"
 AdminPassword = !!X1J)
-
 ;; ### Localization
 ;; Enable localization by setting this to a value other than 0.
 ;; This specifies the time in hours before the internally cached

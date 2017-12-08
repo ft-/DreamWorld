@@ -8,12 +8,13 @@ Public Class Expert
 
     Private Sub Loaded(sender As Object, e As EventArgs) Handles Me.Load
 
+        uPnPEnabled.Checked = My.Settings.UPnPEnabled
+
         GridName.Text = My.Settings.SimName
         DNSName.Text = My.Settings.DnsName
         SplashPage.Text = My.Settings.SplashPage
 
         WebStats.Checked = My.Settings.WebStats
-
 
         If Form1.isRunning Then
             StatsButton.Enabled = True
@@ -348,6 +349,12 @@ Public Class Expert
     Private Sub UniqueId_TextChanged(sender As Object, e As EventArgs) Handles UniqueId.TextChanged
         My.Settings.MachineID = UniqueId.Text
         My.Settings.Save()
+    End Sub
+
+    Private Sub uPnPEnabled_CheckedChanged(sender As Object, e As EventArgs) Handles uPnPEnabled.CheckedChanged
+
+        My.Settings.Save()
+
     End Sub
 
 #End Region

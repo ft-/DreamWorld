@@ -488,6 +488,15 @@ Public Class Form1
         Sleep(gChatTime)  ' time to read
 
     End Sub
+    Private Sub PrintFast(Value As String)
+
+        Log("Info:" + Value)
+        PictureBox1.Visible = False
+        TextBox1.Visible = True
+        TextBox1.Text = Value
+        Application.DoEvents()
+
+    End Sub
 
 
     Private Sub mnuAbout_Click(sender As System.Object, e As System.EventArgs) Handles mnuAbout.Click
@@ -1510,7 +1519,7 @@ Public Class Form1
         Else
             ProgressBar1.Value = 100
         End If
-
+        Application.DoEvents()
     End Sub
 
     Private Function Stripqq(input As String) As String
@@ -1959,6 +1968,7 @@ Public Class Form1
         CheckPort = False
 
     End Function
+
     Public Function GetPubIP() As String
 
         If My.Settings.DnsName.Length Then
@@ -1983,9 +1993,10 @@ Public Class Form1
         Return "127.0.0.1"
 
     End Function
+
     Private Sub TestLoopback()
 
-        BumpProgress10()
+        Print("Running Loopback Test")
         Dim result As String = ""
         Dim loopbacktest As String = "http://" + My.Settings.PublicIP + ":" + My.Settings.DiagnosticPort + "/?_TestLoopback=" + Random()
         Try
@@ -2027,9 +2038,10 @@ Public Class Form1
         ProgressBar1.Value = 100
 
     End Sub
+
     Private Function ProbePublicPort() As Boolean
 
-        Print("Checking for Open Ports")
+        Print("Checking Port Forwards")
         Dim ip As String = GetPubIP()
 
         Dim isPortOpen As String = ""
@@ -2064,6 +2076,7 @@ Public Class Form1
         End If
 
     End Function
+
     Private Sub DoDiag()
         Print("Running Network Diagnostics, please wait")
         My.Settings.DiagFailed = False
@@ -2080,14 +2093,16 @@ Public Class Form1
 
     End Sub
 
-
-    ''' <summary>
-    ''' Checks to see if an IP address is a local IP address.
-    ''' </summary>
-    ''' <param name="CheckIP">The IP address to check.</param>
-    ''' <returns>Boolean</returns>
-    ''' <remarks></remarks>
     Private Shared Function IsPrivateIP(ByVal CheckIP As String) As Boolean
+
+        ''' <summary>
+        ''' Checks to see if an IP address is a local IP address.
+        ''' </summary>
+        ''' <param name="CheckIP">The IP address to check.</param>
+        ''' <returns>Boolean</returns>
+        ''' <remarks></remarks>
+        ''' 
+
         Dim Quad1, Quad2 As Integer
 
         Quad1 = CInt(CheckIP.Substring(0, CheckIP.IndexOf(".")))
@@ -2111,51 +2126,60 @@ Public Class Form1
 
         Log("Local ip seems to be " + UPnp.LocalIP)
 
-        Try
-            '8001
-            If Not MyUPnpMap.Exists(Convert.ToInt16(My.Settings.DiagnosticPort), UPnp.Protocol.TCP) Then
-                MyUPnpMap.Add(UPnp.LocalIP, Convert.ToInt16(My.Settings.DiagnosticPort), UPnp.Protocol.TCP, "Opensim TCP Diagnostics ")
-                Log("UPnp: PublicPort.TCP added")
-            Else
-                Log("UPnp: PublicPort.TCP " + My.Settings.DiagnosticPort + " is already in UPnp")
-            End If
-            BumpProgress(1)
+        If Not My.Settings.UPnPEnabled Then
+            Log("UPnP is not enabled in the menu")
+            Return True
+        End If
 
-            '8002
-            If Not MyUPnpMap.Exists(Convert.ToInt16(My.Settings.HttpPort), UPnp.Protocol.TCP) Then
-                MyUPnpMap.Add(UPnp.LocalIP, Convert.ToInt16(My.Settings.HttpPort), UPnp.Protocol.TCP, "Opensim TCP HyperGrid ")
-                Log("UPnp: Grid Port.TCP added")
-            Else
-                Log("UPnp: HttpPort.TCP " + My.Settings.HttpPort + " is already in UPnp")
+        Try
+            'diagnostics 8001
+            If MyUPnpMap.Exists(Convert.ToInt16(My.Settings.DiagnosticPort), UPnp.Protocol.TCP) Then
+                MyUPnpMap.Remove(Convert.ToInt16(My.Settings.DiagnosticPort), UPnp.Protocol.TCP)
             End If
-            BumpProgress(1)
+            MyUPnpMap.Add(UPnp.LocalIP, Convert.ToInt16(My.Settings.DiagnosticPort), UPnp.Protocol.TCP, "Opensim TCP Public " + My.Settings.DiagnosticPort)
+            PrintFast("uPnP: Public Port.TCP Ok:" + My.Settings.DiagnosticPort)
+            BumpProgress10()
+
+            ' 8002 for TCP and UDP
+            If MyUPnpMap.Exists(Convert.ToInt16(My.Settings.HttpPort), UPnp.Protocol.TCP) Then
+                MyUPnpMap.Remove(Convert.ToInt16(My.Settings.HttpPort), UPnp.Protocol.TCP)
+            End If
+            MyUPnpMap.Add(UPnp.LocalIP, Convert.ToInt16(My.Settings.HttpPort), UPnp.Protocol.TCP, "Opensim TCP Grid " + My.Settings.HttpPort)
+            PrintFast("uPnP: Grid Port.TCP Ok:" + My.Settings.HttpPort)
+            BumpProgress10()
+
+            If MyUPnpMap.Exists(Convert.ToInt16(My.Settings.HttpPort), UPnp.Protocol.UDP) Then
+                MyUPnpMap.Remove(Convert.ToInt16(My.Settings.HttpPort), UPnp.Protocol.UDP)
+            End If
+            MyUPnpMap.Add(UPnp.LocalIP, Convert.ToInt16(My.Settings.HttpPort), UPnp.Protocol.UDP, "Opensim UDP Grid " + My.Settings.HttpPort)
+            PrintFast("uPnP: Grid Port.UDP Ok:" + My.Settings.HttpPort)
+            BumpProgress10()
 
             '8004-whatever
             For Each o As Object In RegionClass.AllRegionObjects()
                 Dim R As Int16 = o.RegionPort
-                If Not MyUPnpMap.Exists(R, UPnp.Protocol.UDP) Then
-                    MyUPnpMap.Add(UPnp.LocalIP, R, UPnp.Protocol.UDP, "Opensim UDP Region " & o.RegionName & " ")
-                    Log("UPnp: RegionPort.UDP Added:" + Convert.ToString(R))
-                Else
-                    Log("UPnp: RegionPort.UDP " + Convert.ToString(R) + " is already in UPnp")
+
+                If MyUPnpMap.Exists(R, UPnp.Protocol.UDP) Then
+                    MyUPnpMap.Remove(R, UPnp.Protocol.UDP)
                 End If
+                MyUPnpMap.Add(UPnp.LocalIP, R, UPnp.Protocol.UDP, "Opensim UDP Region " & o.RegionName & " ")
+                PrintFast("UPnP: RegionPort.UDP Ok: " + Convert.ToString(R))
                 BumpProgress(1)
 
-                If Not MyUPnpMap.Exists(R, UPnp.Protocol.TCP) Then
-                    MyUPnpMap.Add(UPnp.LocalIP, R, UPnp.Protocol.TCP, "Opensim TCP Region " & o.RegionName & " ")
-                    Log("UPnp: RegionPort.TCP Added:" + Convert.ToString(R))
-                Else
-                    Log("UPnp: RegionPort.TCP " + Convert.ToString(R) + " is already in UPnp")
+                If MyUPnpMap.Exists(R, UPnp.Protocol.TCP) Then
+                    MyUPnpMap.Remove(R, UPnp.Protocol.TCP)
                 End If
+                MyUPnpMap.Add(UPnp.LocalIP, R, UPnp.Protocol.TCP, "Opensim TCP Region " & o.RegionName & " ")
+                PrintFast("UPnP: RegionPort.TCP Ok: " + Convert.ToString(R))
                 BumpProgress(1)
             Next
 
         Catch e As Exception
-            Print("UPnP is not working or enabled in your router. Hypergrid requires ports to be opened in routers. See Help. " & e.Message)
             Log("UPnp: UPnp Exception caught:  " + e.Message)
             Return False
         End Try
         Return True 'successfully added
+
     End Function
 
 
@@ -2188,7 +2212,7 @@ Public Class Form1
     Private Function OpenPorts() As Boolean
 
         'If Running = False Then Return True
-        Print("The human is instructed to wait while I check out the router ...")
+        Print("Puny human is instructed to wait while I check out the router ...")
         Try
             If OpenRouterPorts() Then ' open UPnp port
                 Log("UPnpOk")

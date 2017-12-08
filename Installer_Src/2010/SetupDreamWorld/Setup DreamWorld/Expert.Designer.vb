@@ -88,6 +88,7 @@ Partial Class Expert
         Me.Label20 = New System.Windows.Forms.Label()
         Me.Label22 = New System.Windows.Forms.Label()
         Me.StandaloneGroup = New System.Windows.Forms.GroupBox()
+        Me.uPnPEnabled = New System.Windows.Forms.CheckBox()
         Me.GroupBox3.SuspendLayout()
         CType(Me.DNSHelp, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox4.SuspendLayout()
@@ -290,7 +291,7 @@ Partial Class Expert
         'WifiEnabled
         '
         Me.WifiEnabled.AutoSize = True
-        Me.WifiEnabled.Location = New System.Drawing.Point(69, 19)
+        Me.WifiEnabled.Location = New System.Drawing.Point(26, 19)
         Me.WifiEnabled.Name = "WifiEnabled"
         Me.WifiEnabled.Size = New System.Drawing.Size(65, 17)
         Me.WifiEnabled.TabIndex = 22
@@ -359,11 +360,11 @@ Partial Class Expert
         'AccountConfirmationRequired
         '
         Me.AccountConfirmationRequired.AutoSize = True
-        Me.AccountConfirmationRequired.Location = New System.Drawing.Point(69, 138)
+        Me.AccountConfirmationRequired.Location = New System.Drawing.Point(21, 139)
         Me.AccountConfirmationRequired.Name = "AccountConfirmationRequired"
-        Me.AccountConfirmationRequired.Size = New System.Drawing.Size(90, 17)
+        Me.AccountConfirmationRequired.Size = New System.Drawing.Size(136, 17)
         Me.AccountConfirmationRequired.TabIndex = 18
-        Me.AccountConfirmationRequired.Text = "Confirmation?"
+        Me.AccountConfirmationRequired.Text = "Confirmation Required?"
         Me.AccountConfirmationRequired.UseVisualStyleBackColor = True
         '
         'AdminLast
@@ -408,6 +409,7 @@ Partial Class Expert
         '
         'GroupBox2
         '
+        Me.GroupBox2.Controls.Add(Me.uPnPEnabled)
         Me.GroupBox2.Controls.Add(Me.Label7)
         Me.GroupBox2.Controls.Add(Me.Label5)
         Me.GroupBox2.Controls.Add(Me.HTTPPort)
@@ -479,6 +481,7 @@ Partial Class Expert
         Me.GroupBox7.TabIndex = 43
         Me.GroupBox7.TabStop = False
         Me.GroupBox7.Text = "WebStats"
+        Me.GroupBox7.Visible = False
         '
         'StatsButton
         '
@@ -714,6 +717,16 @@ Partial Class Expert
         Me.StandaloneGroup.TabStop = False
         Me.StandaloneGroup.Text = "Region Databases"
         '
+        'uPnPEnabled
+        '
+        Me.uPnPEnabled.AutoSize = True
+        Me.uPnPEnabled.Location = New System.Drawing.Point(22, 23)
+        Me.uPnPEnabled.Name = "uPnPEnabled"
+        Me.uPnPEnabled.Size = New System.Drawing.Size(96, 17)
+        Me.uPnPEnabled.TabIndex = 40
+        Me.uPnPEnabled.Text = "UPnP Enabled"
+        Me.uPnPEnabled.UseVisualStyleBackColor = True
+        '
         'Expert
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -817,4 +830,5 @@ Partial Class Expert
     Friend WithEvents StandaloneGroup As GroupBox
     Friend WithEvents Label1 As Label
     Friend WithEvents UniqueId As TextBox
+    Friend WithEvents uPnPEnabled As CheckBox
 End Class
