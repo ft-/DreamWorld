@@ -224,9 +224,10 @@ Public Class Form1
             My.Settings.Save()
         End If
 
+        Me.Show()
+
         SaySomething()
 
-        Me.Show()
         ProgressBar1.Value = 100
         ProgressBar1.Value = 0
 
@@ -1525,6 +1526,19 @@ Public Class Form1
 
 #Region "IAROAR"
 
+    Private Sub AllRegionsOARsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AllRegionsOARsToolStripMenuItem.Click
+        If Not Running Then
+            Print("Opensim is not running. Cannot save an OAR at this time.")
+            Return
+        End If
+
+        For Each o In RegionClass.AllRegionObjects
+            ConsoleCommand(o.ProcessID, "save oar --perm=CT " + """" + BackupPath() + o.RegionName + "_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
+            Application.DoEvents()
+        Next
+    End Sub
+
+
 
     Private Sub LoadInventoryIARToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles LoadInventoryIARToolStripMenuItem.Click
 
@@ -2776,21 +2790,6 @@ Public Class Form1
             Print("Opensim is not running. Cannot load the OAR file.")
         End If
     End Sub
-
-
-
-    Private Sub AllRegionsOARsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AllRegionsOARsToolStripMenuItem.Click
-        If Not Running Then
-            Print("Opensim is not running. Cannot save an OAR at this time.")
-            Return
-        End If
-
-        For Each o In RegionClass.AllRegionObjects
-            ConsoleCommand(o.ProcessID, "save oar --perm=CT " + """" + BackupPath() + o.RegionName + "_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
-            Application.DoEvents()
-        Next
-    End Sub
-
 
 
 
