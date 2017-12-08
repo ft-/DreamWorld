@@ -59,7 +59,7 @@
         <property name="build.dir" value="${bin.dir}/${project.config}" />
     </target>
 
-<!-- included from C:\Opensim\Outworldz-Source\OutworldzFiles\opensim\.nant\local.include -->
+<!-- included from C:\Opensim\Opensim 0.9.0 release\opensim\.nant\local.include -->
 <!-- -*- xml -*- -->
 <!-- please leave the top comment for us emacs folks -->
 <property name="nunitcmd" value="nunit-console" />

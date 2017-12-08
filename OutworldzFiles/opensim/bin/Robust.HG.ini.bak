@@ -574,7 +574,6 @@ economy = ${Const|BaseURL}:${Const|PublicPort}
 
 ; web page of grid: optional: page providing further information about your grid
 ;about = ${Const|BaseURL}/about
-
 ; account creation: optional: page providing further information about obtaining
 ;                             a user account on your grid
 register = ${Const|BaseURL}:${Const|PublicPort}
@@ -590,8 +589,6 @@ register = ${Const|BaseURL}:${Const|PublicPort}
 ; this is the entry point for all user-related HG services
 ; uas = ${Const|BaseURL}:${Const|PublicPort}/
 ; gloebit
-
-
 [GatekeeperService]
 LocalServiceModule = "OpenSim.Services.HypergridService.dll:GatekeeperService"
 
