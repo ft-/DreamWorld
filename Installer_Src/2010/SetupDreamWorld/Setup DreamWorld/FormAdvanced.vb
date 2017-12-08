@@ -64,10 +64,8 @@ Public Class AdvancedForm
     End Sub
 
     Private Sub Form1_Closed(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Closed
-        If Form1.Running Then
-            Form1.ConsoleCommand(Form1.gRobustProcID, "reset user password Wifi Admin " + My.Settings.Password + "{Enter}")
-        End If
-        MsgBox("Any changes will take effect the next time Opensimulator is started.")
+
+
     End Sub
 
     Private Sub ABEnabled_CheckedChanged(sender As Object, e As EventArgs) Handles AutoBackup.CheckedChanged
