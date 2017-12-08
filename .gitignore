@@ -2,30 +2,24 @@
 
 UDProxy
 
-/Signed_Binaries
-*.crdownload
-OutworldzFiles/mysql/data/opensim
-OutworldzFiles/mysql/data/robust
-OutworldzFiles/mysql/data/ib_logfile0
-OutworldzFiles/mysql/data/ib_logfile1
-OutworldzFiles/mysql/data/ibdata1
+/Signed_Binaries/*
 OutworldzFiles/mysql/data/*.err
 
 LocalUserStatistics.db
 Diagnostics.log
 OpenSimConsoleHistory.txt
 RobustConsoleHistory.txt
-
 OpenSim.log
 Init.txt
 Outworldz.log
 Http.log
 
-assetcache
-DataSnapshot
-ScriptEngines
-j2kDecodeCache
-maptiles
+assetcache\*
+DataSnapshot\*
+ScriptEngines\*
+j2kDecodeCache\*
+maptiles\*
+bakes\*
 
 Thumbs.db
 .vs/*
