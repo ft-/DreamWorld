@@ -866,15 +866,14 @@ Public Class Form1
         SaveINI()
 
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-
-        ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
         ' Wifi Settings
-        '!!!
-        ' DoWifi("bin\robust-include\Wifi.ini")
-        'DoWifi("bin\Wifi.ini")
+
+        DoWifi("bin\Wifi.ini")
         'DoWifi("addins-registry\addins\Diva.Wifi.0.9.0.0.13\Wifi.ini")
 
+        ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+        DoGloebits(prefix + "bin\Gloebit.ini")
 
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
         'Regions - write all region.ini files with public IP and Public port
@@ -936,6 +935,45 @@ Public Class Form1
 
         Return True
     End Function
+
+    Public Sub DoGloebits(path As String)
+
+        'Gloebits.ini
+
+        LoadIni(path, ";")
+        If My.Settings.GloebitsEnable Then
+            SetIni("Gloebit", "Enabled", "true")
+        Else
+            SetIni("Gloebit", "Enabled", "false")
+        End If
+
+        If My.Settings.GloebitsMode Then
+            SetIni("Gloebit", "GLBEnvironment", "production")
+            SetIni("Gloebit", "GLBKey", My.Settings.GLProdKey)
+            SetIni("Gloebit", "GLBSecret", My.Settings.GLProdSecret)
+        Else
+            SetIni("Gloebit", "GLBEnvironment", "sandbox")
+            SetIni("Gloebit", "GLBKey", My.Settings.GLSandKey)
+            SetIni("Gloebit", "GLBSecret", My.Settings.GLSandSecret)
+        End If
+
+        SetIni("Gloebit", "GLBOwnerName", My.Settings.GLBOwnerName)
+        SetIni("Gloebit", "GLBOwnerEmail", My.Settings.GLBOwnerEmail)
+
+
+        Dim ConnectionString = """" _
+            + "Data Source=" + "localhost" _
+            + ";Database=" + My.Settings.RegionDBName _
+            + ";Port=" + My.Settings.MySqlPort _
+            + ";User ID=" + My.Settings.RegionDBUsername _
+            + ";Password=" + My.Settings.RegionDbPassword _
+            + ";Old Guids=True;Allow Zero Datetime=True;" _
+            + """"
+        SetIni("Gloebit", "GLBSpecificConnectionString", ConnectionString)
+
+        SaveINI()
+
+    End Sub
 
     Private Sub DoWifi(param As String)
 
@@ -1437,47 +1475,6 @@ Public Class Form1
 
     End Sub
 
-    Private Sub LoadBackupToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles LoadBackupToolStripMenuItem.Click
-        If (Running) Then
-
-            Dim chosen = ChooseRegion()
-            Dim o As Object = RegionClass.FindRegionByName(chosen)
-
-            ' Create an instance of the open file dialog box.
-            Dim openFileDialog1 As OpenFileDialog = New OpenFileDialog
-
-            ' Set filter options and filter index.
-            openFileDialog1.InitialDirectory = BackupPath()
-            openFileDialog1.Filter = "Opensim OAR(*.OAR,*.GZ,*.TGZ)|*.oar;*.gz;*.tgz;*.OAR;*.GZ;*.TGZ|All Files (*.*)|*.*"
-            openFileDialog1.FilterIndex = 1
-            openFileDialog1.Multiselect = False
-
-            ' Call the ShowDialog method to show the dialogbox.
-            Dim UserClickedOK As Boolean = openFileDialog1.ShowDialog
-
-            ' Process input if the user clicked OK.
-            If UserClickedOK = True Then
-                Dim backMeUp = MsgBox("Make a backup and then load the new content?", vbYesNo)
-                Dim thing = openFileDialog1.FileName
-                If thing.Length Then
-                    thing = thing.Replace("\", "/")    ' because Opensim uses unix-like slashes, that's why
-
-                    If backMeUp = vbYes Then
-                        ConsoleCommand(o.ProcessID, "alert CPU Intensive Backup Started{ENTER}")
-                        ConsoleCommand(o.ProcessID, "save oar --perm=CT " + """" + BackupPath() + "Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
-                    End If
-                    ConsoleCommand(o.ProcessID, "alert New content is loading..{ENTER}")
-                    ConsoleCommand(o.ProcessID, "load oar --force-terrain --force-parcels " + """" + thing + """" + "{ENTER}")
-                    ConsoleCommand(o.ProcessID, "alert New content just loaded." + "{ENTER}")
-                    Me.Focus()
-                End If
-            End If
-        Else
-            Print("Opensim is not running. Cannot load the OAR file.")
-        End If
-
-    End Sub
-
     Private Sub PictureBox1_Click(sender As Object, e As EventArgs) Handles PictureBox1.Click
 
         PaintImage()
@@ -1500,55 +1497,37 @@ Public Class Form1
         End If
 
     End Sub
-
-    Private Sub SaveBackupToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles SaveBackupToolStripMenuItem.Click
-        If (Running) Then
-
-            Dim chosen = ChooseRegion()
-            Dim o As Object = RegionClass.FindRegionByName(chosen)
-
-            Dim Message, title, defaultValue As String
-            Dim myValue As Object
-            ' Set prompt.
-            Message = "Enter a name for your backup:"
-            title = "Backup to OAR"
-            defaultValue = "*.oar"   ' Set default value.
-
-            ' Display message, title, and default value.
-            myValue = InputBox(Message, title, defaultValue)
-            ' If user has clicked Cancel, set myValue to defaultValue 
-            If myValue.length = 0 Then Return
-            ConsoleCommand(o.ProcessID, "alert CPU Intensive Backup Started{ENTER}")
-            ConsoleCommand(o.ProcessID, "save oar " + """" + BackupPath() + myValue + """" + "{ENTER}")
-            Me.Focus()
-            Print("Saving " + myValue + " to " + BackupPath())
-        Else
-            Print("Opensim is not running. Cannot make a backup now.")
-        End If
-    End Sub
-
     Private Sub BumpProgress(bump As Integer)
+
         If ProgressBar1.Value < 100 Then
             ProgressBar1.Value = ProgressBar1.Value + bump
         End If
+
     End Sub
 
     Private Sub BumpProgress10()
+
         If ProgressBar1.Value < 90 Then
             ProgressBar1.Value = ProgressBar1.Value + 10
         Else
             ProgressBar1.Value = 100
         End If
+
     End Sub
 
     Private Function Stripqq(input As String) As String
+
         Return Replace(input, """", "")
+
     End Function
 
 #End Region
 
 #Region "IAROAR"
-    Private Sub LoadInventoryToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles LoadInventoryToolStripMenuItem.Click
+
+
+    Private Sub LoadInventoryIARToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles LoadInventoryIARToolStripMenuItem.Click
+
         If Running Then
             ' Create an instance of the open file dialog box.
             Dim openFileDialog1 As OpenFileDialog = New OpenFileDialog
@@ -1576,7 +1555,7 @@ Public Class Form1
 
     End Sub
 
-    Private Sub SaveInventoryToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles SaveInventoryToolStripMenuItem.Click
+    Private Sub SaveInventoryIARToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles SaveInventoryIARToolStripMenuItem.Click
         If (Running) Then
             Dim Message, title, defaultValue As String
 
@@ -1637,18 +1616,6 @@ Public Class Form1
         End If
     End Sub
 
-    Private Sub AllRegionsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AllRegionsToolStripMenuItem.Click
-        If Not Running Then
-            Print("Opensim is not running. Cannot save an OAR at this time.")
-            Return
-        End If
-
-        Dim o As Object = RegionClass.FindRegionByName(ChooseRegion())
-        ConsoleCommand(o.ProcessID, "save oar --perm=CT " + """" + BackupPath() + o.RegionName + "_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
-
-        Application.DoEvents()
-
-    End Sub
 
     Private Function ChooseRegion() As String
 
@@ -2239,12 +2206,13 @@ Public Class Form1
 
 #Region "MySQl"
 
-    Private Sub RestoreDatabaseToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles RestoreDatabaseToolStripMenuItem.Click
+    Private Sub RestoreDatabaseToolStripMenuItem1_Click(sender As Object, e As EventArgs) Handles RestoreDatabaseToolStripMenuItem1.Click
 
         If Running Then
             Print("Cannot restore when Opensim is running. Click [Stop] and try again.")
             Return
         End If
+
         StartMySQL()
 
         ' Create an instance of the open file dialog box.
@@ -2302,7 +2270,12 @@ Public Class Form1
         End If
     End Sub
 
-    Private Sub MysqlToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles MysqlToolStripMenuItem.Click
+    Private Sub BackupDatabaseToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles BackupDatabaseToolStripMenuItem.Click
+
+        If Running Then
+            Print("Cannot backup safely when Opensim is running. Click [Stop] and try again.")
+            Return
+        End If
 
         StartMySQL()
 
@@ -2326,7 +2299,7 @@ Public Class Form1
             Return
         End Try
 
-        Print("Starting Backup")
+        Print("Starting a Large, Slow, Extensive Database Backup")
         Dim pMySqlBackup As Process = New Process()
         Dim pi As ProcessStartInfo = New ProcessStartInfo()
         pi.Arguments = ""
@@ -2737,6 +2710,88 @@ Public Class Form1
         End If
 
     End Sub
+
+    Private Sub SaveRegionOARToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles SaveRegionOARToolStripMenuItem.Click
+        If (Running) Then
+
+            Dim chosen = ChooseRegion()
+            Dim o As Object = RegionClass.FindRegionByName(chosen)
+
+            Dim Message, title, defaultValue As String
+            Dim myValue As Object
+            ' Set prompt.
+            Message = "Enter a name for your backup:"
+            title = "Backup to OAR"
+            defaultValue = "*.oar"   ' Set default value.
+
+            ' Display message, title, and default value.
+            myValue = InputBox(Message, title, defaultValue)
+            ' If user has clicked Cancel, set myValue to defaultValue 
+            If myValue.length = 0 Then Return
+            ConsoleCommand(o.ProcessID, "alert CPU Intensive Backup Started{ENTER}")
+            ConsoleCommand(o.ProcessID, "save oar " + """" + BackupPath() + myValue + """" + "{ENTER}")
+            Me.Focus()
+            Print("Saving " + myValue + " to " + BackupPath())
+        Else
+            Print("Opensim is not running. Cannot make a backup now.")
+        End If
+    End Sub
+
+    Private Sub LoadRegionOarToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles LoadRegionOarToolStripMenuItem.Click
+        If (Running) Then
+
+            Dim chosen = ChooseRegion()
+            Dim o As Object = RegionClass.FindRegionByName(chosen)
+
+            ' Create an instance of the open file dialog box.
+            Dim openFileDialog1 As OpenFileDialog = New OpenFileDialog
+
+            ' Set filter options and filter index.
+            openFileDialog1.InitialDirectory = BackupPath()
+            openFileDialog1.Filter = "Opensim OAR(*.OAR,*.GZ,*.TGZ)|*.oar;*.gz;*.tgz;*.OAR;*.GZ;*.TGZ|All Files (*.*)|*.*"
+            openFileDialog1.FilterIndex = 1
+            openFileDialog1.Multiselect = False
+
+            ' Call the ShowDialog method to show the dialogbox.
+            Dim UserClickedOK As Boolean = openFileDialog1.ShowDialog
+
+            ' Process input if the user clicked OK.
+            If UserClickedOK = True Then
+                Dim backMeUp = MsgBox("Make a backup and then load the new content?", vbYesNo)
+                Dim thing = openFileDialog1.FileName
+                If thing.Length Then
+                    thing = thing.Replace("\", "/")    ' because Opensim uses unix-like slashes, that's why
+
+                    If backMeUp = vbYes Then
+                        ConsoleCommand(o.ProcessID, "alert CPU Intensive Backup Started{ENTER}")
+                        ConsoleCommand(o.ProcessID, "save oar --perm=CT " + """" + BackupPath() + "Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
+                    End If
+                    ConsoleCommand(o.ProcessID, "alert New content is loading..{ENTER}")
+                    ConsoleCommand(o.ProcessID, "load oar --force-terrain --force-parcels " + """" + thing + """" + "{ENTER}")
+                    ConsoleCommand(o.ProcessID, "alert New content just loaded." + "{ENTER}")
+                    Me.Focus()
+                End If
+            End If
+        Else
+            Print("Opensim is not running. Cannot load the OAR file.")
+        End If
+    End Sub
+
+
+
+    Private Sub AllRegionsOARsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AllRegionsOARsToolStripMenuItem.Click
+        If Not Running Then
+            Print("Opensim is not running. Cannot save an OAR at this time.")
+            Return
+        End If
+
+        For Each o In RegionClass.AllRegionObjects
+            ConsoleCommand(o.ProcessID, "save oar --perm=CT " + """" + BackupPath() + o.RegionName + "_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
+            Application.DoEvents()
+        Next
+    End Sub
+
+
 
 
 
