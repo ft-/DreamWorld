@@ -6,7 +6,7 @@
 
 #Region "Load/Quit"
 
-#End Region
+
     Private Sub Loaded(sender As Object, e As EventArgs) Handles Me.Load
 
         ContactEmailTextBox.Text = My.Settings.GLBOwnerEmail
@@ -30,41 +30,11 @@
 
     Private Sub FormisClosed(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Closed
 
-
-        'Gloebits.ini
-
-        Form1.LoadIni(Form1.prefix + "bin\Gloebit.ini", ";")
-        If My.Settings.GloebitsEnable Then
-            Form1.SetIni("Gloebit", "Enabled", "true")
-        Else
-            Form1.SetIni("Gloebit", "Enabled", "false")
-        End If
-
-        If My.Settings.GloebitsMode Then
-            Form1.SetIni("Gloebit", "GLBEnvironment", "production")
-        Else
-            Form1.SetIni("Gloebit", "GLBEnvironment", "sandbox")
-        End If
-
-        Form1.SetIni("Gloebit", "GLBKey", My.Settings.GLSandKey)
-        Form1.SetIni("Gloebit", "GLBSecret", My.Settings.GLSandSecret)
-        Form1.SetIni("Gloebit", "GLBOwnerName", My.Settings.GLBOwnerName)
-        Form1.SetIni("Gloebit", "GLBOwnerEmail", My.Settings.GLBOwnerEmail)
-
-
-        Dim ConnectionString = """" _
-            + "Data Source=" + "localhost" _
-            + ";Database=" + My.Settings.RegionDBName _
-            + ";Port=" + My.Settings.MySqlPort _
-            + ";User ID=" + My.Settings.RegionDBUsername _
-            + ";Password=" + My.Settings.RegionDbPassword _
-            + ";Old Guids=True;Allow Zero Datetime=True;" _
-            + """"
-        Form1.SetIni("Gloebit", "GLBSpecificConnectionString", ConnectionString)
-
-        Form1.SaveINI()
+        Form1.DoGloebits(Form1.prefix + "bin\Gloebit.ini")
 
     End Sub
+
+#End Region
 
 
 #Region "Mode"
