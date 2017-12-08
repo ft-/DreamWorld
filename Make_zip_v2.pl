@@ -1,5 +1,5 @@
 
-my $type  = '-V2.0';# '-Beta-V1.5';
+my $type  = '-V2.0 Beta';# '-Beta-V1.5';
 
 my $rev = 'V2.0';
 my $dir = "C:\\Opensim\\Outworldz-Source";
@@ -29,7 +29,7 @@ my @deletions = ("$dir/OutworldzFiles/addins-registry",
 				 "$dir/OutworldzFiles/Opensim-0.9/bin/addin-db-002",
 				 "$dir/OutworldzFiles/Opensim-0.9/bin/bakes",
 				 "$dir/OutworldzFiles/mysql/data/opensim",
-				 
+				 "$dir/OutworldzFiles/mysql/data/robust",
 				 );
 
 foreach my $path ( @deletions) {
