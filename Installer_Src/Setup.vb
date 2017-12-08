@@ -2137,7 +2137,7 @@ Public Class Form1
                 MyUPnpMap.Remove(Convert.ToInt16(My.Settings.DiagnosticPort), UPnp.Protocol.TCP)
             End If
             MyUPnpMap.Add(UPnp.LocalIP, Convert.ToInt16(My.Settings.DiagnosticPort), UPnp.Protocol.TCP, "Opensim TCP Public " + My.Settings.DiagnosticPort)
-            PrintFast("uPnP: Public Port.TCP Ok:" + My.Settings.DiagnosticPort)
+            PrintFast("UPnP: Public Port.TCP Ok:" + My.Settings.DiagnosticPort)
             BumpProgress10()
 
             ' 8002 for TCP and UDP
@@ -2145,14 +2145,14 @@ Public Class Form1
                 MyUPnpMap.Remove(Convert.ToInt16(My.Settings.HttpPort), UPnp.Protocol.TCP)
             End If
             MyUPnpMap.Add(UPnp.LocalIP, Convert.ToInt16(My.Settings.HttpPort), UPnp.Protocol.TCP, "Opensim TCP Grid " + My.Settings.HttpPort)
-            PrintFast("uPnP: Grid Port.TCP Ok:" + My.Settings.HttpPort)
+            PrintFast("UPnP: Grid Port.TCP Ok:" + My.Settings.HttpPort)
             BumpProgress10()
 
             If MyUPnpMap.Exists(Convert.ToInt16(My.Settings.HttpPort), UPnp.Protocol.UDP) Then
                 MyUPnpMap.Remove(Convert.ToInt16(My.Settings.HttpPort), UPnp.Protocol.UDP)
             End If
             MyUPnpMap.Add(UPnp.LocalIP, Convert.ToInt16(My.Settings.HttpPort), UPnp.Protocol.UDP, "Opensim UDP Grid " + My.Settings.HttpPort)
-            PrintFast("uPnP: Grid Port.UDP Ok:" + My.Settings.HttpPort)
+            PrintFast("UPnP: Grid Port.UDP Ok:" + My.Settings.HttpPort)
             BumpProgress10()
 
             '8004-whatever
@@ -2351,11 +2351,9 @@ Public Class Form1
     Private Function StartMySQL() As Boolean
 
         ' Check for MySql operation
-        Dim Mysql = False
+
         ' wait for MySql to come up
-        Mysql = CheckPort("127.0.0.1", My.Settings.MySqlPort)
-        If Mysql Then
-            Sleep(5)
+        If CheckMysql() Then
             Return True
         End If
 
@@ -2400,10 +2398,10 @@ Public Class Form1
         pMySql.StartInfo = pi
         pMySql.Start()
 
+        Dim MysqlOk As Boolean
 
         ' wait for MySql to come up
-        Mysql = CheckPort("127.0.0.1", My.Settings.MySqlPort)
-        While Not Mysql
+        While Not MysqlOk
 
             BumpProgress(1)
             Application.DoEvents()
@@ -2425,12 +2423,46 @@ Public Class Form1
 
             ' check again
             Sleep(1000)
-            Mysql = CheckPort("127.0.0.1", My.Settings.MySqlPort)
+            MysqlOk = CheckMysql()
         End While
-        Sleep(4000) ' hacky, but may work
         Return True
     End Function
 
+    Function CheckMysql()
+
+        'mysql 
+
+        Dim p As Process = New Process()
+        Dim pi As ProcessStartInfo = New ProcessStartInfo()
+
+        pi.UseShellExecute = False
+        pi.RedirectStandardOutput = True
+
+        pi.Arguments = "-e " + """" + "use robust;select count(*) from useraccounts;" + """" + " --user=root"
+        pi.FileName = """" + MyFolder + "\OutworldzFiles\mysql\bin\mysql.exe" + """"
+        pi.WindowStyle = ProcessWindowStyle.Hidden
+        p.StartInfo = pi
+        Dim output As String = ""
+        Try
+            p.Start()
+            '// To avoid deadlocks, always read the output stream first And then wait.
+            output = p.StandardOutput.ReadToEnd()
+            p.WaitForExit()
+            p.Close()
+        Catch ex As Exception
+            Log("Error: failed to stat mysql:" + ex.Message)
+        End Try
+
+        If output.Length Then
+            Log("Info: Mysql output:" + output)
+            Return True
+        End If
+        Return False
+
+
+
+
+    End Function
     Private Sub StopMysql()
 
         Log("Info:using mysqladmin to close db")
