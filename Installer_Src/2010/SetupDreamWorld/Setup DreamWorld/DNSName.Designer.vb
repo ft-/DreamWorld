@@ -85,7 +85,7 @@ Partial Class DNSName
         Me.Controls.Add(Me.TextBox1)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Name = "DNSName"
-        Me.Text = "Form2"
+        Me.Text = "DNS Name"
         CType(Me.PictureBox4, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()

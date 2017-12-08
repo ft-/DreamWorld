@@ -307,6 +307,8 @@ Public Class Form1
 
         GetPubIP()
 
+        OpenPorts()
+
         If Not SetINIData() Then Return   ' set up the INI files
 
         StartMySQL() ' boot up MySql, and wait for it to start listening
@@ -710,7 +712,7 @@ Public Class Form1
 
         SetIni("DatabaseService", "ConnectionString", ConnectionString)
         SetIni("Const", "GridName", My.Settings.SimName)
-        SetIni("Const", "BaseURL", "http://localhost")
+        SetIni("Const", "BaseURL", My.Settings.PublicIP)
         SetIni("Const", "PublicPort", My.Settings.HttpPort) ' 8002
         SetIni("Const", "PrivatePort", My.Settings.PrivatePort) ' 8003
         SetIni("Const", "http_listener_port", My.Settings.HttpPort)
@@ -864,42 +866,11 @@ Public Class Form1
         SaveINI()
 
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-        'Gloebits.ini
 
-        LoadIni(prefix + "bin\Gloebit.ini", ";")
-        If My.Settings.GloebitsEnable Then
-            SetIni("Gloebit", "Enabled", "true")
-        Else
-            SetIni("Gloebit", "Enabled", "false")
-        End If
-
-        If My.Settings.GloebitsMode Then
-            SetIni("Gloebit", "GLBEnvironment", "production")
-        Else
-            SetIni("Gloebit", "GLBEnvironment", "sandbox")
-        End If
-
-        SetIni("Gloebit", "GLBKey", My.Settings.GLSandKey)
-        SetIni("Gloebit", "GLBSecret", My.Settings.GLSandSecret)
-        SetIni("Gloebit", "GLBOwnerName", My.Settings.GLBOwnerName)
-        SetIni("Gloebit", "GLBOwnerEmail", My.Settings.GLBOwnerEmail)
-
-
-        ConnectionString = """" _
-            + "Data Source=" + "localhost" _
-            + ";Database=" + My.Settings.RegionDBName _
-            + ";Port=" + My.Settings.MySqlPort _
-            + ";User ID=" + My.Settings.RegionDBUsername _
-            + ";Password=" + My.Settings.RegionDbPassword _
-            + ";Old Guids=True;Allow Zero Datetime=True;" _
-            + """"
-        SetIni("Gloebit", "GLBSpecificConnectionString", ConnectionString)
-
-        SaveINI()
 
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
         ' Wifi Settings
-
+        '!!!
         ' DoWifi("bin\robust-include\Wifi.ini")
         'DoWifi("bin\Wifi.ini")
         'DoWifi("addins-registry\addins\Diva.Wifi.0.9.0.0.13\Wifi.ini")

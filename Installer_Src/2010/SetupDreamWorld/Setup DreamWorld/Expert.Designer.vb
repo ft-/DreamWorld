@@ -286,7 +286,6 @@ Partial Class Expert
         Me.Web.TabIndex = 47
         Me.Web.TabStop = False
         Me.Web.Text = "Wifi Interface Admin"
-        Me.Web.Visible = False
         '
         'WifiEnabled
         '

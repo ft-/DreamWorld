@@ -5,3 +5,11 @@ reset user password Wifi Admin !!X1J)
 quit
 debug http all 5
 debug http all 5
+reset user password Wifi Admin secret
+reset user password Wifi Admin secret
+reset user password Wifi Admin secret
+reset user password Wifi Admin secret
+show version
+reset user password Wifi Admin secret
+reset user password Wifi Admin secret
+reset user password Wifi Admin secret

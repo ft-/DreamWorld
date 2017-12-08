@@ -28,7 +28,7 @@ GridName = DreamGrid
 http_listener_port = 8002
 
 ; The URL of the Robust server
-BaseURL = http://localhost
+BaseURL = Fred.Outworldz.net
 
 ; The public port of the Robust server
 PublicPort = 8002
@@ -56,12 +56,14 @@ PrivatePort = 8003
 ; about the registered repositories and installed plugins
 ; will be stored here
 ; The Robust.exe process must have R/W access to the location
-RegistryLocation = "../addins-registry"
+; RegistryLocation = "../addins-registry"
+RegistryLocation = "."
 
 ; Modular configurations
 ; Set path to directory for modular ini files...
 ; The Robust.exe process must have R/W access to the location
-ConfigDirectory = "../addins-config"
+; ConfigDirectory = "../addins-config"
+ConfigDirectory = "."
 
 ; Console commands can be saved to a file, so the command history persists after a restart. (default is true)
 ConsoleHistoryFileEnabled = true
@@ -567,12 +569,15 @@ welcome = http://www.outworldz.com/Outworldz_installer/Welcome.htm
 
 ; helper uri: optional: if it exists it will be used to tell the client to use
 ;                       this for all economy related things
-;economy = ${Const|BaseURL}/economy
+;economy = ${Const|BaseURL):${Const|PublicPort}
+economy = ${Const|BaseURL}:${Const|PublicPort}
+
 ; web page of grid: optional: page providing further information about your grid
 ;about = ${Const|BaseURL}/about
+
 ; account creation: optional: page providing further information about obtaining
 ;                             a user account on your grid
-register = ${Const|BaseURL}:8002
+register = ${Const|BaseURL}:${Const|PublicPort}
 
 ; help: optional: page providing further assistance for users of your grid
 ;help = ${Const|BaseURL}/help
@@ -584,6 +589,9 @@ register = ${Const|BaseURL}:8002
 ; HG user domain, if you have one
 ; this is the entry point for all user-related HG services
 ; uas = ${Const|BaseURL}:${Const|PublicPort}/
+; gloebit
+
+
 [GatekeeperService]
 LocalServiceModule = "OpenSim.Services.HypergridService.dll:GatekeeperService"
 
