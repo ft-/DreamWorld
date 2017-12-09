@@ -1,7 +1,7 @@
 Revision History:
 Outworldz "Dreamworldz" started in 2012 when it was used on a DVD and thumb drive to make a "Dream World" for a charity to give out as a thank you for donations.
 
-This re-release updates it from the original Sim On A Stick format into a standalone app using 0.8.2.1 Diva Distro and 0.9.0 dev.  It removes the Mowes App that points to a hacked web site, PHP, and Apache (none of them are needed and are security risks).
+This re-release updates it from the original Sim On A Stick format into a standalone app.  
 
 0.80 2016-10-09 Initial release
 0.81 2016-10-10 Move updater to initial stage to get past crashes
@@ -63,8 +63,8 @@ This re-release updates it from the original Sim On A Stick format into a standa
 1.6.3 2017-2-24 Load OAR didn't work with spaces in file names, popup notes should occur only once, CheckDatabase was missing
 1.6.4 2017-4-05 Refactoring of DNS
 1.6.5 2017-8-26 Diva 0.9.0 release with Wifi, UpnpManager added
-
-
-
-               
-               
+1.6.6 2017-10-26 Partial fix for deleted regions causing a crash
+1.6.7 2017-12-01 Final fix for deleted regions causing a crash
+****************************************************************************
+DreamGrid:
+DreamGrid-V2.0-Beta-1.zip 2017-12-08 First Version 2.0 with full grid.
