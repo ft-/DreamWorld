@@ -9,7 +9,7 @@ Imports System.Runtime.InteropServices
 
 ' Review the values of the assembly attributes
 
-<Assembly: AssemblyTitle("DreamwGrid")>
+<Assembly: AssemblyTitle("DreamGrid")>
 <Assembly: AssemblyDescription("Virtual World installer for Opensimulator")>
 <Assembly: AssemblyCompany("Outworldz.com")>
 <Assembly: AssemblyProduct("DreamGrid")>
