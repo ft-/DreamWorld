@@ -1886,16 +1886,16 @@ Public Class Form1
     End Sub
     Private Function Download() As String
 
-        Dim fileName As String = "Updater.exe"
+        Dim fileName As String = "UpdateGrid.exe"
 
         Try
-            My.Computer.FileSystem.DeleteFile(MyFolder + fileName)
+            My.Computer.FileSystem.DeleteFile(MyFolder + "\" + fileName)
         Catch
-            Log("Warn:Could not delete " + fileName)
+            Log("Warn:Could not delete " + MyFolder + "\" + fileName)
         End Try
 
         Try
-            fileName = client.DownloadString(Domain + "/Outworldz_Installer/GetUpdater.plx?r=" + Random())
+            fileName = client.DownloadString(Domain + "/Outworldz_Installer/GetUpdaterGrid.plx?r" + Random())
         Catch
             Return ""
         End Try
@@ -1923,7 +1923,7 @@ Public Class Form1
         My.Settings.Save()
 
         Try
-            Update = client.DownloadString(Domain + "/Outworldz_Installer/Update.plx?Ver=" + Str(MyVersion) + Data)
+            Update = client.DownloadString(Domain + "/Outworldz_Installer/UpdateGrid.plx?Ver=" + Str(MyVersion) + Data)
         Catch ex As Exception
             Log("Dang:The Outworld web site is down")
         End Try

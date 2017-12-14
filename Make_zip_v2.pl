@@ -85,15 +85,16 @@ if (!copy ("../Zips/DreamGrid$type.zip", "../Zips/DreamGrid-Update$type.zip"))  
 
 say("Drop mysql files from update");
 # now delete the mysql from the UPDATE
-Process ("../7z.exe -tzip d ..\\Zips\\DreamGrid-Update$type.zip DreamGridfiles\\mysql\\data -r ");
+Process ("../7z.exe -tzip d ..\\Zips\\DreamGrid-Update$type.zip Outworldzfiles\\mysql\\data\\ -r ");
+
 
 
 # del Dot net because we cannot overwrite an open file
 Process ("../7z.exe -tzip d ..\\Zips\\DreamGrid-Update$type.zip DotNetZip.dll ");
 
 say("Remove welcome region");
-# and WelcomeRegion.ini so we do not end up with both DreamGrid and RegionConfig.ini
-Process ("../7z.exe -tzip d ..\\Zips\\DreamGrid-Update$type.zip DreamGridFiles\\Opensim\\bin\\Regions\\WelcomeRegion");		
+# and WelcomeRegion.ini so we do not end up adding it
+Process ("../7z.exe -tzip d ..\\Zips\\DreamGrid-Update$type.zip Outworldzfiles\\Opensim\\bin\\Regions\\WelcomeRegion");		
 
 
 #####################

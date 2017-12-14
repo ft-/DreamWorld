@@ -12,9 +12,10 @@ Imports System.Threading
 
 Public Class Update
 
-    Dim Version As String = "1.3"
-    Dim Type As String = "Update"  ' possible server-side choices are "Update" and "Installer"
-    'Dim Type As String = "Install"  ' possible server-side choices are "Update" and "Installer"
+    Dim Version As String = "2.0"
+    Dim Type As String = "UpdateGrid"  ' possible server-side choices are "Update", "Update-Grid" and "Installer"
+    'Dim Type As String = "Update"  
+    'Dim Type As String = "Install"  
 
     Dim gCurDir = Nothing   ' Holds the current folder that we are running in
     Dim gFileName As String = Nothing
@@ -43,7 +44,7 @@ Public Class Update
         If arguments.Length > 1 Then
             ' for debugging when compiling
             If arguments(1) = "-debug" Then
-                MyFolder = "\Outworldz" ' for testing, as the compiler buries itself in ../../../debug
+                MyFolder = "\Opensim\Outworldz-Test" ' for testing, as the compiler buries itself in ../../../debug
                 ChDir(MyFolder)
             End If
         End If
