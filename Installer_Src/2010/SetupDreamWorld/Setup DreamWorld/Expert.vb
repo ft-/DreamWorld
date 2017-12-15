@@ -78,6 +78,8 @@ Public Class Expert
         RobustDBUsername.Text = My.Settings.RobustMySqlUsername
         RobustDbPort.Text = My.Settings.MySqlPort
 
+        AutoStartCheckbox.Checked = My.Settings.Autostart
+
     End Sub
 #End Region
 
@@ -196,21 +198,43 @@ Public Class Expert
 
 #End Region
 
-#Region "Stats"
+#Region "Misc"
+
+    Private Sub uPnPEnabled_CheckedChanged(sender As Object, e As EventArgs) Handles uPnPEnabled.CheckedChanged
+
+        My.Settings.Save()
+
+    End Sub
+
+    Private Sub AutoStartCheckbox_CheckedChanged(sender As Object, e As EventArgs) Handles AutoStartCheckbox.CheckedChanged
+
+        My.Settings.Autostart = AutoStartCheckbox.Checked
+
+    End Sub
+    Private Sub UniqueId_TextChanged(sender As Object, e As EventArgs) Handles UniqueId.TextChanged
+
+        My.Settings.MachineID = UniqueId.Text
+        My.Settings.Save()
+
+    End Sub
 
     Private Sub StatsButton_Click(sender As Object, e As EventArgs) Handles StatsButton.Click
+
         If Form1.isRunning And WebStats.Checked Then
             Dim webAddress As String = "http://127.0.0.1:" + My.Settings.HttpPort + "/SStats/"
             Process.Start(webAddress)
         Else
             Print("Opensim is not running. Cannot open the Statistics web page.")
         End If
+
     End Sub
 
     Private Sub CheckBox1_CheckedChanged(sender As Object, e As EventArgs) Handles WebStats.CheckedChanged
+
         My.Settings.WebStats = WebStats.Checked
         My.Settings.Save()
         Form1.WebStatsToolStripMenuItem.Visible = WebStats.Checked
+
     End Sub
 #End Region
 
@@ -346,16 +370,8 @@ Public Class Expert
         Process.Start(webAddress)
     End Sub
 
-    Private Sub UniqueId_TextChanged(sender As Object, e As EventArgs) Handles UniqueId.TextChanged
-        My.Settings.MachineID = UniqueId.Text
-        My.Settings.Save()
-    End Sub
 
-    Private Sub uPnPEnabled_CheckedChanged(sender As Object, e As EventArgs) Handles uPnPEnabled.CheckedChanged
 
-        My.Settings.Save()
-
-    End Sub
 
 #End Region
 

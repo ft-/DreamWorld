@@ -56,6 +56,7 @@ Partial Class Expert
         Me.Label10 = New System.Windows.Forms.Label()
         Me.AdminPassword = New System.Windows.Forms.TextBox()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
+        Me.uPnPEnabled = New System.Windows.Forms.CheckBox()
         Me.Label7 = New System.Windows.Forms.Label()
         Me.Label5 = New System.Windows.Forms.Label()
         Me.HTTPPort = New System.Windows.Forms.TextBox()
@@ -88,7 +89,8 @@ Partial Class Expert
         Me.Label20 = New System.Windows.Forms.Label()
         Me.Label22 = New System.Windows.Forms.Label()
         Me.StandaloneGroup = New System.Windows.Forms.GroupBox()
-        Me.uPnPEnabled = New System.Windows.Forms.CheckBox()
+        Me.AutoStart = New System.Windows.Forms.GroupBox()
+        Me.AutoStartCheckbox = New System.Windows.Forms.CheckBox()
         Me.GroupBox3.SuspendLayout()
         CType(Me.DNSHelp, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox4.SuspendLayout()
@@ -99,6 +101,7 @@ Partial Class Expert
         Me.GroupBox1.SuspendLayout()
         Me.GridGroup.SuspendLayout()
         Me.StandaloneGroup.SuspendLayout()
+        Me.AutoStart.SuspendLayout()
         Me.SuspendLayout()
         '
         'GroupBox3
@@ -423,6 +426,16 @@ Partial Class Expert
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Ports"
         '
+        'uPnPEnabled
+        '
+        Me.uPnPEnabled.AutoSize = True
+        Me.uPnPEnabled.Location = New System.Drawing.Point(22, 23)
+        Me.uPnPEnabled.Name = "uPnPEnabled"
+        Me.uPnPEnabled.Size = New System.Drawing.Size(96, 17)
+        Me.uPnPEnabled.TabIndex = 40
+        Me.uPnPEnabled.Text = "UPnP Enabled"
+        Me.uPnPEnabled.UseVisualStyleBackColor = True
+        '
         'Label7
         '
         Me.Label7.AutoSize = True
@@ -717,15 +730,26 @@ Partial Class Expert
         Me.StandaloneGroup.TabStop = False
         Me.StandaloneGroup.Text = "Region Databases"
         '
-        'uPnPEnabled
+        'AutoStart
         '
-        Me.uPnPEnabled.AutoSize = True
-        Me.uPnPEnabled.Location = New System.Drawing.Point(22, 23)
-        Me.uPnPEnabled.Name = "uPnPEnabled"
-        Me.uPnPEnabled.Size = New System.Drawing.Size(96, 17)
-        Me.uPnPEnabled.TabIndex = 40
-        Me.uPnPEnabled.Text = "UPnP Enabled"
-        Me.uPnPEnabled.UseVisualStyleBackColor = True
+        Me.AutoStart.Controls.Add(Me.AutoStartCheckbox)
+        Me.AutoStart.Location = New System.Drawing.Point(629, 309)
+        Me.AutoStart.Name = "AutoStart"
+        Me.AutoStart.Size = New System.Drawing.Size(243, 48)
+        Me.AutoStart.TabIndex = 44
+        Me.AutoStart.TabStop = False
+        Me.AutoStart.Text = "AutoStart"
+        Me.AutoStart.Visible = False
+        '
+        'AutoStartCheckbox
+        '
+        Me.AutoStartCheckbox.AutoSize = True
+        Me.AutoStartCheckbox.Location = New System.Drawing.Point(12, 19)
+        Me.AutoStartCheckbox.Name = "AutoStartCheckbox"
+        Me.AutoStartCheckbox.Size = New System.Drawing.Size(59, 17)
+        Me.AutoStartCheckbox.TabIndex = 21
+        Me.AutoStartCheckbox.Text = "Enable"
+        Me.AutoStartCheckbox.UseVisualStyleBackColor = True
         '
         'Expert
         '
@@ -734,6 +758,7 @@ Partial Class Expert
         Me.AutoSize = True
         Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.ClientSize = New System.Drawing.Size(897, 405)
+        Me.Controls.Add(Me.AutoStart)
         Me.Controls.Add(Me.StandaloneGroup)
         Me.Controls.Add(Me.GridGroup)
         Me.Controls.Add(Me.GroupBox3)
@@ -762,6 +787,8 @@ Partial Class Expert
         Me.GridGroup.PerformLayout()
         Me.StandaloneGroup.ResumeLayout(False)
         Me.StandaloneGroup.PerformLayout()
+        Me.AutoStart.ResumeLayout(False)
+        Me.AutoStart.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -831,4 +858,6 @@ Partial Class Expert
     Friend WithEvents Label1 As Label
     Friend WithEvents UniqueId As TextBox
     Friend WithEvents uPnPEnabled As CheckBox
+    Friend WithEvents AutoStart As GroupBox
+    Friend WithEvents AutoStartCheckbox As CheckBox
 End Class

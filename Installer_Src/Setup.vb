@@ -258,7 +258,14 @@ Public Class Form1
 
             Buttons(StartButton)
             ProgressBar1.Value = 100
-            Print("Ready to Launch! Click 'Start' to begin your adventure in Opensimulator.")
+
+            If My.Settings.Autostart Then
+                Print("Auto Startup")
+                Startup()
+            Else
+                Print("Ready to Launch! Click 'Start' to begin your adventure in Opensimulator.")
+            End If
+
         Else
             Machine = Random()  ' a random machine ID
 
@@ -291,6 +298,12 @@ Public Class Form1
     End Sub
 
     Private Sub StartButton_Click(sender As System.Object, e As System.EventArgs) Handles StartButton.Click
+
+        Startup()
+
+    End Sub
+
+    Private Sub Startup()
 
         ProgressBar1.Value = 0
         ProgressBar1.Visible = True
