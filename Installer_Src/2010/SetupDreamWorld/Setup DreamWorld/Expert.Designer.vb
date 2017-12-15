@@ -90,7 +90,15 @@ Partial Class Expert
         Me.Label22 = New System.Windows.Forms.Label()
         Me.StandaloneGroup = New System.Windows.Forms.GroupBox()
         Me.AutoStart = New System.Windows.Forms.GroupBox()
+        Me.Label13 = New System.Windows.Forms.Label()
+        Me.Label6 = New System.Windows.Forms.Label()
+        Me.BootStart = New System.Windows.Forms.CheckBox()
         Me.AutoStartCheckbox = New System.Windows.Forms.CheckBox()
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.PictureBox2 = New System.Windows.Forms.PictureBox()
+        Me.PictureBox3 = New System.Windows.Forms.PictureBox()
+        Me.PictureBox4 = New System.Windows.Forms.PictureBox()
+        Me.PictureBox5 = New System.Windows.Forms.PictureBox()
         Me.GroupBox3.SuspendLayout()
         CType(Me.DNSHelp, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox4.SuspendLayout()
@@ -102,10 +110,16 @@ Partial Class Expert
         Me.GridGroup.SuspendLayout()
         Me.StandaloneGroup.SuspendLayout()
         Me.AutoStart.SuspendLayout()
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.PictureBox3, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.PictureBox4, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.PictureBox5, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'GroupBox3
         '
+        Me.GroupBox3.Controls.Add(Me.PictureBox5)
         Me.GroupBox3.Controls.Add(Me.Label1)
         Me.GroupBox3.Controls.Add(Me.UniqueId)
         Me.GroupBox3.Controls.Add(Me.DNSButton)
@@ -157,6 +171,7 @@ Partial Class Expert
         Me.DNSHelp.Size = New System.Drawing.Size(28, 27)
         Me.DNSHelp.TabIndex = 1859
         Me.DNSHelp.TabStop = False
+        Me.ToolTip1.SetToolTip(Me.DNSHelp, "Click For Help")
         '
         'HypericaButton
         '
@@ -215,6 +230,7 @@ Partial Class Expert
         Me.SplashPage.Name = "SplashPage"
         Me.SplashPage.Size = New System.Drawing.Size(177, 20)
         Me.SplashPage.TabIndex = 45
+        Me.ToolTip1.SetToolTip(Me.SplashPage, "The web page thaty appears iwhen you log in to this grid")
         '
         'GroupBox4
         '
@@ -237,6 +253,7 @@ Partial Class Expert
         Me.GodHelp.Size = New System.Drawing.Size(30, 34)
         Me.GodHelp.TabIndex = 1857
         Me.GodHelp.TabStop = False
+        Me.ToolTip1.SetToolTip(Me.GodHelp, "Click for Help")
         '
         'ManagerGod
         '
@@ -270,6 +287,7 @@ Partial Class Expert
         '
         'Web
         '
+        Me.Web.Controls.Add(Me.PictureBox4)
         Me.Web.Controls.Add(Me.WifiEnabled)
         Me.Web.Controls.Add(Me.GmailPassword)
         Me.Web.Controls.Add(Me.Label18)
@@ -365,9 +383,10 @@ Partial Class Expert
         Me.AccountConfirmationRequired.AutoSize = True
         Me.AccountConfirmationRequired.Location = New System.Drawing.Point(21, 139)
         Me.AccountConfirmationRequired.Name = "AccountConfirmationRequired"
-        Me.AccountConfirmationRequired.Size = New System.Drawing.Size(136, 17)
+        Me.AccountConfirmationRequired.Size = New System.Drawing.Size(175, 17)
         Me.AccountConfirmationRequired.TabIndex = 18
-        Me.AccountConfirmationRequired.Text = "Confirmation Required?"
+        Me.AccountConfirmationRequired.Text = "Confirmation required to Log in?"
+        Me.ToolTip1.SetToolTip(Me.AccountConfirmationRequired, "You must log in as Wifi Admin and enabled new users before they can log in.")
         Me.AccountConfirmationRequired.UseVisualStyleBackColor = True
         '
         'AdminLast
@@ -412,6 +431,7 @@ Partial Class Expert
         '
         'GroupBox2
         '
+        Me.GroupBox2.Controls.Add(Me.PictureBox2)
         Me.GroupBox2.Controls.Add(Me.uPnPEnabled)
         Me.GroupBox2.Controls.Add(Me.Label7)
         Me.GroupBox2.Controls.Add(Me.Label5)
@@ -717,6 +737,7 @@ Partial Class Expert
         '
         'StandaloneGroup
         '
+        Me.StandaloneGroup.Controls.Add(Me.PictureBox3)
         Me.StandaloneGroup.Controls.Add(Me.Label22)
         Me.StandaloneGroup.Controls.Add(Me.Label20)
         Me.StandaloneGroup.Controls.Add(Me.RegionDbName)
@@ -732,24 +753,106 @@ Partial Class Expert
         '
         'AutoStart
         '
+        Me.AutoStart.Controls.Add(Me.PictureBox1)
+        Me.AutoStart.Controls.Add(Me.Label13)
+        Me.AutoStart.Controls.Add(Me.Label6)
+        Me.AutoStart.Controls.Add(Me.BootStart)
         Me.AutoStart.Controls.Add(Me.AutoStartCheckbox)
         Me.AutoStart.Location = New System.Drawing.Point(629, 309)
         Me.AutoStart.Name = "AutoStart"
-        Me.AutoStart.Size = New System.Drawing.Size(243, 48)
+        Me.AutoStart.Size = New System.Drawing.Size(243, 70)
         Me.AutoStart.TabIndex = 44
         Me.AutoStart.TabStop = False
-        Me.AutoStart.Text = "AutoStart"
-        Me.AutoStart.Visible = False
+        Me.AutoStart.Text = "AutoStart and Start on Boot"
+        '
+        'Label13
+        '
+        Me.Label13.AutoSize = True
+        Me.Label13.Location = New System.Drawing.Point(10, 20)
+        Me.Label13.Name = "Label13"
+        Me.Label13.Size = New System.Drawing.Size(78, 13)
+        Me.Label13.TabIndex = 24
+        Me.Label13.Text = "One Click Start"
+        '
+        'Label6
+        '
+        Me.Label6.AutoSize = True
+        Me.Label6.Location = New System.Drawing.Point(118, 20)
+        Me.Label6.Name = "Label6"
+        Me.Label6.Size = New System.Drawing.Size(96, 13)
+        Me.Label6.TabIndex = 23
+        Me.Label6.Text = "Run on PC Bootup"
+        '
+        'BootStart
+        '
+        Me.BootStart.AutoSize = True
+        Me.BootStart.Location = New System.Drawing.Point(122, 34)
+        Me.BootStart.Name = "BootStart"
+        Me.BootStart.Size = New System.Drawing.Size(59, 17)
+        Me.BootStart.TabIndex = 22
+        Me.BootStart.Text = "Enable"
+        Me.BootStart.UseVisualStyleBackColor = True
         '
         'AutoStartCheckbox
         '
         Me.AutoStartCheckbox.AutoSize = True
-        Me.AutoStartCheckbox.Location = New System.Drawing.Point(12, 19)
+        Me.AutoStartCheckbox.Location = New System.Drawing.Point(13, 34)
         Me.AutoStartCheckbox.Name = "AutoStartCheckbox"
         Me.AutoStartCheckbox.Size = New System.Drawing.Size(59, 17)
         Me.AutoStartCheckbox.TabIndex = 21
         Me.AutoStartCheckbox.Text = "Enable"
         Me.AutoStartCheckbox.UseVisualStyleBackColor = True
+        '
+        'PictureBox1
+        '
+        Me.PictureBox1.Image = Global.Outworldz.My.Resources.Resources.about
+        Me.PictureBox1.Location = New System.Drawing.Point(213, 0)
+        Me.PictureBox1.Name = "PictureBox1"
+        Me.PictureBox1.Size = New System.Drawing.Size(30, 34)
+        Me.PictureBox1.TabIndex = 1858
+        Me.PictureBox1.TabStop = False
+        Me.ToolTip1.SetToolTip(Me.PictureBox1, "Right click Dreamgrid and start as Administrator to enable this.")
+        '
+        'PictureBox2
+        '
+        Me.PictureBox2.Image = Global.Outworldz.My.Resources.Resources.about
+        Me.PictureBox2.Location = New System.Drawing.Point(108, 0)
+        Me.PictureBox2.Name = "PictureBox2"
+        Me.PictureBox2.Size = New System.Drawing.Size(30, 34)
+        Me.PictureBox2.TabIndex = 1859
+        Me.PictureBox2.TabStop = False
+        Me.ToolTip1.SetToolTip(Me.PictureBox2, "UPnP may port forward your ports for you.")
+        '
+        'PictureBox3
+        '
+        Me.PictureBox3.Image = Global.Outworldz.My.Resources.Resources.about
+        Me.PictureBox3.Location = New System.Drawing.Point(195, -9)
+        Me.PictureBox3.Name = "PictureBox3"
+        Me.PictureBox3.Size = New System.Drawing.Size(30, 34)
+        Me.PictureBox3.TabIndex = 1860
+        Me.PictureBox3.TabStop = False
+        Me.ToolTip1.SetToolTip(Me.PictureBox3, "A local Database for Region storage")
+        '
+        'PictureBox4
+        '
+        Me.PictureBox4.Image = Global.Outworldz.My.Resources.Resources.about
+        Me.PictureBox4.Location = New System.Drawing.Point(127, 4)
+        Me.PictureBox4.Name = "PictureBox4"
+        Me.PictureBox4.Size = New System.Drawing.Size(30, 34)
+        Me.PictureBox4.TabIndex = 1858
+        Me.PictureBox4.TabStop = False
+        Me.ToolTip1.SetToolTip(Me.PictureBox4, "Wifi is a Web Based Login and User control panel.")
+        '
+        'PictureBox5
+        '
+        Me.PictureBox5.Image = Global.Outworldz.My.Resources.Resources.about
+        Me.PictureBox5.Location = New System.Drawing.Point(132, 70)
+        Me.PictureBox5.Name = "PictureBox5"
+        Me.PictureBox5.Size = New System.Drawing.Size(30, 34)
+        Me.PictureBox5.TabIndex = 1860
+        Me.PictureBox5.TabStop = False
+        Me.ToolTip1.SetToolTip(Me.PictureBox5, "This ID reserves your DYNDNS name. Used if you have more than one PC using DreamG" &
+        "rid")
         '
         'Expert
         '
@@ -789,6 +892,11 @@ Partial Class Expert
         Me.StandaloneGroup.PerformLayout()
         Me.AutoStart.ResumeLayout(False)
         Me.AutoStart.PerformLayout()
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.PictureBox3, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.PictureBox4, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.PictureBox5, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -860,4 +968,12 @@ Partial Class Expert
     Friend WithEvents uPnPEnabled As CheckBox
     Friend WithEvents AutoStart As GroupBox
     Friend WithEvents AutoStartCheckbox As CheckBox
+    Friend WithEvents Label13 As Label
+    Friend WithEvents Label6 As Label
+    Friend WithEvents BootStart As CheckBox
+    Friend WithEvents PictureBox5 As PictureBox
+    Friend WithEvents PictureBox4 As PictureBox
+    Friend WithEvents PictureBox2 As PictureBox
+    Friend WithEvents PictureBox3 As PictureBox
+    Friend WithEvents PictureBox1 As PictureBox
 End Class

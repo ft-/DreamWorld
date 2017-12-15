@@ -154,6 +154,9 @@ Public Class Form1
 #Region "StartStop"
 
     Private Sub Form1_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+
+        Me.Show()
+
         'hide progress
         ProgressBar1.Visible = True
         ProgressBar1.Minimum = 0
@@ -222,7 +225,7 @@ Public Class Form1
             My.Settings.Save()
         End If
 
-        Me.Show()
+
 
         SaySomething()
 
@@ -273,6 +276,8 @@ Public Class Form1
             Create_ShortCut(MyFolder & "\Start.exe")
             BumpProgress10()
 
+            StartMySQL(True)    ' do this at install as Mysql probe test does not work until tables have been built after first boot.
+
             Try
                 ' mark the system as ready
                 Using outputFile As New StreamWriter(MyFolder & "\OutworldzFiles\Init.txt", True)
@@ -283,12 +288,11 @@ Public Class Form1
             End Try
 
             Print("Ready to Launch! Please type 'create user<ret>' in the ROBUST console, and then answer any questions in the REGION console. ")
+            Buttons(StartButton)
         End If
 
         ProgressBar1.Value = 100
         Application.DoEvents()
-
-        Buttons(StartButton)
 
         If (My.Settings.TimerInterval > 0) Then
             Timer1.Interval = My.Settings.TimerInterval * 1000
@@ -322,7 +326,7 @@ Public Class Form1
 
         If Not SetINIData() Then Return   ' set up the INI files
 
-        StartMySQL() ' boot up MySql, and wait for it to start listening
+        StartMySQL(False) ' boot up MySql, and wait for it to start listening
 
         If Not Start_Robust() Then
             Return
@@ -2262,7 +2266,7 @@ Public Class Form1
             Return
         End If
 
-        StartMySQL()
+        StartMySQL(False)
 
         ' Create an instance of the open file dialog box.
         Dim openFileDialog1 As OpenFileDialog = New OpenFileDialog
@@ -2326,7 +2330,7 @@ Public Class Form1
             Return
         End If
 
-        StartMySQL()
+        StartMySQL(False)
 
         Try
             My.Computer.FileSystem.DeleteFile(MyFolder & "\OutworldzFiles\mysql\bin\BackupMysql.bat")
@@ -2361,7 +2365,7 @@ Public Class Form1
 
     End Sub
 
-    Private Function StartMySQL() As Boolean
+    Private Function StartMySQL(runonce As Boolean) As Boolean
 
         ' Check for MySql operation
 
@@ -2436,7 +2440,12 @@ Public Class Form1
 
             ' check again
             Sleep(1000)
-            MysqlOk = CheckMysql()
+            If runonce Then
+                MysqlOk = CheckPort("127.0.0.1", My.Settings.MySqlPort)
+            Else
+                MysqlOk = CheckMysql()
+            End If
+
         End While
         Return True
     End Function
@@ -2609,7 +2618,7 @@ Public Class Form1
 
     Private Sub CheckDatabaseToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CheckDatabaseToolStripMenuItem.Click
 
-        StartMySQL()
+        StartMySQL(False)
 
         Dim pi As ProcessStartInfo = New ProcessStartInfo()
 
@@ -2742,7 +2751,7 @@ Public Class Form1
                 Return
             ElseIf sender.text = "Robust" And Not gRobustProcID And sender.checked = True Then
                 Print("Starting Robust")
-                StartMySQL()
+                StartMySQL(False)
                 Start_Robust()
                 sender.checked = False
                 sender.Image = My.Resources.ResourceManager.GetObject("media_play_green")

@@ -1,7 +1,6 @@
 ﻿Imports System.Diagnostics.Debug
 Imports System.Net
 
-
 Public Class Expert
 
 #Region "Load/Exit"
@@ -79,8 +78,10 @@ Public Class Expert
         RobustDbPort.Text = My.Settings.MySqlPort
 
         AutoStartCheckbox.Checked = My.Settings.Autostart
+        BootStart.Checked = My.Settings.BootStart
 
     End Sub
+
 #End Region
 
 #Region "Ports"
@@ -374,5 +375,42 @@ Public Class Expert
 
 
 #End Region
+
+#Region "AutoStart"
+    Private Sub BootStart_CheckedChanged(sender As Object, e As EventArgs) Handles BootStart.CheckedChanged
+
+        My.Settings.BootStart = BootStart.Checked
+        Dim ProcessTask As Process = New Process()
+        Dim pi As ProcessStartInfo = New ProcessStartInfo()
+        pi.WindowStyle = ProcessWindowStyle.Normal
+        pi.FileName = "schtasks.exe"
+
+        If BootStart.Checked Then
+            pi.Arguments = "/Create /TN DreamGrid /SC ONSTART /TR " & Form1.MyFolder & "\Start.exe"
+
+            ProcessTask.StartInfo = pi
+            Try
+                ProcessTask.Start()
+            Catch ex As Exception
+                Form1.Log("Error:ProcessTask failed to launch:" + ex.Message)
+            End Try
+
+        Else
+            pi.Arguments = "/Delete /TN DreamGrid"
+            ProcessTask.StartInfo = pi
+            Try
+                ProcessTask.Start()
+            Catch ex As Exception
+                Form1.Log("Error:ProcessTask Delete failed to launch:" + ex.Message)
+            End Try
+
+        End If
+
+    End Sub
+
+
+
+#End Region
+
 
 End Class

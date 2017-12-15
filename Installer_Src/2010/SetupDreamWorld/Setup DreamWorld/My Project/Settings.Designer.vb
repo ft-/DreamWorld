@@ -872,13 +872,25 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("True")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
         Public Property Autostart() As Boolean
             Get
                 Return CType(Me("Autostart"),Boolean)
             End Get
             Set
                 Me("Autostart") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public Property BootStart() As Boolean
+            Get
+                Return CType(Me("BootStart"),Boolean)
+            End Get
+            Set
+                Me("BootStart") = value
             End Set
         End Property
     End Class

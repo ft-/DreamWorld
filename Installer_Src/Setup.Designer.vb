@@ -45,10 +45,10 @@ Partial Class Form1
         Me.ConsoleCOmmandsToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
         Me.WebStatsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ViewWebUI = New System.Windows.Forms.ToolStripMenuItem()
+        Me.DiagnosticsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripMenuItem2 = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
         Me.LoopBackToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.DiagnosticsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.CheckDatabaseToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.CHeckForUpdatesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuAbout = New System.Windows.Forms.ToolStripMenuItem()
@@ -136,7 +136,7 @@ Partial Class Form1
         'mnuExit
         '
         Me.mnuExit.Name = "mnuExit"
-        Me.mnuExit.Size = New System.Drawing.Size(152, 22)
+        Me.mnuExit.Size = New System.Drawing.Size(92, 22)
         Me.mnuExit.Text = "Exit"
         '
         'mnuSettings
@@ -150,7 +150,7 @@ Partial Class Form1
         '
         Me.RegionsToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.server_gWSCLient
         Me.RegionsToolStripMenuItem.Name = "RegionsToolStripMenuItem"
-        Me.RegionsToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.RegionsToolStripMenuItem.Size = New System.Drawing.Size(125, 22)
         Me.RegionsToolStripMenuItem.Text = "Regions"
         '
         'ConsoleToolStripMenuItem1
@@ -158,7 +158,7 @@ Partial Class Form1
         Me.ConsoleToolStripMenuItem1.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuHide, Me.mnuShow})
         Me.ConsoleToolStripMenuItem1.Image = Global.Outworldz.My.Resources.Resources.window_add
         Me.ConsoleToolStripMenuItem1.Name = "ConsoleToolStripMenuItem1"
-        Me.ConsoleToolStripMenuItem1.Size = New System.Drawing.Size(152, 22)
+        Me.ConsoleToolStripMenuItem1.Size = New System.Drawing.Size(125, 22)
         Me.ConsoleToolStripMenuItem1.Text = " Consoles"
         Me.ConsoleToolStripMenuItem1.ToolTipText = "The Opensim Dos Box can be minimized automatically"
         '
@@ -180,7 +180,7 @@ Partial Class Form1
         '
         Me.AdvancedSettingsToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.earth_network
         Me.AdvancedSettingsToolStripMenuItem.Name = "AdvancedSettingsToolStripMenuItem"
-        Me.AdvancedSettingsToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.AdvancedSettingsToolStripMenuItem.Size = New System.Drawing.Size(125, 22)
         Me.AdvancedSettingsToolStripMenuItem.Text = "Settings"
         Me.AdvancedSettingsToolStripMenuItem.ToolTipText = "Deep stuff."
         '
@@ -222,6 +222,14 @@ Partial Class Form1
         Me.ViewWebUI.Text = "View Web Interface"
         Me.ViewWebUI.ToolTipText = "The WIfi Interface can be used to add new users"
         '
+        'DiagnosticsToolStripMenuItem
+        '
+        Me.DiagnosticsToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.flash
+        Me.DiagnosticsToolStripMenuItem.Name = "DiagnosticsToolStripMenuItem"
+        Me.DiagnosticsToolStripMenuItem.Size = New System.Drawing.Size(210, 22)
+        Me.DiagnosticsToolStripMenuItem.Text = "Network Diagnostics"
+        Me.DiagnosticsToolStripMenuItem.ToolTipText = "Re-Run the installation diagnostics"
+        '
         'ToolStripMenuItem2
         '
         Me.ToolStripMenuItem2.Image = Global.Outworldz.My.Resources.Resources.earth_network
@@ -244,14 +252,6 @@ Partial Class Form1
         Me.LoopBackToolStripMenuItem.Size = New System.Drawing.Size(210, 22)
         Me.LoopBackToolStripMenuItem.Text = "Help on LoopBack "
         Me.LoopBackToolStripMenuItem.ToolTipText = "How to fix Loopback on Windows"
-        '
-        'DiagnosticsToolStripMenuItem
-        '
-        Me.DiagnosticsToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.flash
-        Me.DiagnosticsToolStripMenuItem.Name = "DiagnosticsToolStripMenuItem"
-        Me.DiagnosticsToolStripMenuItem.Size = New System.Drawing.Size(210, 22)
-        Me.DiagnosticsToolStripMenuItem.Text = "Network Diagnostics"
-        Me.DiagnosticsToolStripMenuItem.ToolTipText = "Re-Run the installation diagnostics"
         '
         'CheckDatabaseToolStripMenuItem
         '
@@ -517,6 +517,7 @@ Partial Class Form1
         Me.Name = "Form1"
         Me.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.Text = "Outworldz Opensimulator"
+        Me.WindowState = System.Windows.Forms.FormWindowState.Maximized
         Me.MenuStrip1.ResumeLayout(False)
         Me.MenuStrip1.PerformLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
