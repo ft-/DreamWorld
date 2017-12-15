@@ -1,0 +1,5 @@
+OpenVCE – Open Virtual Collaboration Environment
+
+The OpenVCE.net project from AIAI at the University of Edinburgh, working with Clever Zebra and the US Army Research Labs made its collaboration region and assets available under the flexible Lesser GPL license.
+
+http://blog.inf.ed.ac.uk/atate/2013/06/07/update-to-openvce-region-on-opensim-grids/
