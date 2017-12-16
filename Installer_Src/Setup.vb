@@ -30,6 +30,8 @@ Imports System.Threading
 Imports System.Text
 Imports Newtonsoft.Json
 
+
+
 Public Class Form1
 
     ' Command line args:
@@ -167,7 +169,7 @@ Public Class Form1
         IgnoreButton.Hide()
 
         If My.Settings.MyX = 0 And My.Settings.MyY = 0 Then
-            Me.CenterToScreen()
+            Me.StartPosition = FormStartPosition.CenterScreen
         Else
             Me.Location = New Point(My.Settings.MyX, My.Settings.MyY)
         End If
@@ -225,8 +227,6 @@ Public Class Form1
             My.Settings.Save()
         End If
 
-
-
         SaySomething()
 
         ProgressBar1.Value = 100
@@ -244,7 +244,7 @@ Public Class Form1
         ws.StartServer(prefix)
 
         ' Run diagnostics, maybe
-        If gDebug Then My.Settings.DiagsRun2 = False
+   '     If gDebug Then My.Settings.DiagsRun2 = False
 
         If Not My.Settings.DiagsRun2 Then
             DoDiag()
@@ -255,6 +255,13 @@ Public Class Form1
 
         mnuSettings.Visible = True
         SetIAROARContent() ' load IAR and OAR web content
+
+        If My.Settings.Password = "secret" Then
+            BumpProgress10()
+            Dim Password = New PassGen
+            My.Settings.Password = Password.GeneratePass()
+            My.Settings.Save()
+        End If
 
         ' Find out if the viewer is installed
         If System.IO.File.Exists(MyFolder & "\OutworldzFiles\Init.txt") Then
@@ -629,7 +636,9 @@ Public Class Form1
             ' add this sim name as a default to the file as HG regions, and add the other regions as fallback
             Dim o As Object = RegionClass.FindRegionByName(My.Settings.WelcomeRegion)
             If o Is Nothing Then
-                MsgBox("Could not set default sim for visitors. Check the Common Settings panel.")
+                RegionClass.CurRegionNum = 0
+                Dim name = RegionClass.RegionName
+                o = RegionClass.FindRegionByName(name)
                 Return
             End If
 
@@ -736,7 +745,7 @@ Public Class Form1
 
         SetIni("DatabaseService", "ConnectionString", ConnectionString)
         SetIni("Const", "GridName", My.Settings.SimName)
-        SetIni("Const", "BaseURL", My.Settings.PublicIP)
+        SetIni("Const", "BaseURL", "http://" + My.Settings.PublicIP)
         SetIni("Const", "PublicPort", My.Settings.HttpPort) ' 8002
         SetIni("Const", "PrivatePort", My.Settings.PrivatePort) ' 8003
         SetIni("Const", "http_listener_port", My.Settings.HttpPort)
@@ -1023,8 +1032,8 @@ Public Class Form1
         End If
 
         SetIni("WifiService", "GridName", My.Settings.SimName)
-        SetIni("WifiService", "LoginURL", My.Settings.PublicIP + ":" + My.Settings.HttpPort)
-        SetIni("WifiService", "WebAddress", My.Settings.PublicIP + ":" + My.Settings.HttpPort)
+        SetIni("WifiService", "LoginURL", "http://" + My.Settings.PublicIP + ":" + My.Settings.HttpPort)
+        SetIni("WifiService", "WebAddress", "http://" + My.Settings.PublicIP + ":" + My.Settings.HttpPort)
 
         'email
         SetIni("WifiService", "SmtpUsername", My.Settings.SmtpUsername)
@@ -2868,11 +2877,7 @@ Public Class Form1
     End Sub
 
 
-
-
 #End Region
-
-
 
 
 

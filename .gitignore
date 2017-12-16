@@ -15,6 +15,7 @@ Outworldz.log
 Http.log
 
 assetcache\*
+maptiles\*
 DataSnapshot\*
 ScriptEngines\*
 j2kDecodeCache\*

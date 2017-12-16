@@ -186,7 +186,7 @@
       <Value Profile="(Default)">opensim</Value>
     </Setting>
     <Setting Name="WifiEnabled" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
+      <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="DiagnosticPort" Type="System.String" Scope="User">
       <Value Profile="(Default)">8001</Value>

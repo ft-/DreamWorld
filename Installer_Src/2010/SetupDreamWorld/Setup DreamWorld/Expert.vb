@@ -1,5 +1,6 @@
 ﻿Imports System.Diagnostics.Debug
 Imports System.Net
+Imports System.Security.Principal
 
 Public Class Expert
 
@@ -207,11 +208,7 @@ Public Class Expert
 
     End Sub
 
-    Private Sub AutoStartCheckbox_CheckedChanged(sender As Object, e As EventArgs) Handles AutoStartCheckbox.CheckedChanged
 
-        My.Settings.Autostart = AutoStartCheckbox.Checked
-
-    End Sub
     Private Sub UniqueId_TextChanged(sender As Object, e As EventArgs) Handles UniqueId.TextChanged
 
         My.Settings.MachineID = UniqueId.Text
@@ -372,11 +369,17 @@ Public Class Expert
     End Sub
 
 
-
-
 #End Region
 
 #Region "AutoStart"
+
+    Private Sub AutoStartCheckbox_CheckedChanged(sender As Object, e As EventArgs) Handles AutoStartCheckbox.CheckedChanged
+
+        My.Settings.Autostart = AutoStartCheckbox.Checked
+        My.Settings.Save()
+
+    End Sub
+
     Private Sub BootStart_CheckedChanged(sender As Object, e As EventArgs) Handles BootStart.CheckedChanged
 
         My.Settings.BootStart = BootStart.Checked
@@ -384,31 +387,51 @@ Public Class Expert
         Dim pi As ProcessStartInfo = New ProcessStartInfo()
         pi.WindowStyle = ProcessWindowStyle.Normal
         pi.FileName = "schtasks.exe"
+        If IsUserAdministrator() Then
+            If BootStart.Checked Then
+                pi.Arguments = "/Create /TN DreamGrid /SC ONSTART /TR " & Form1.MyFolder & "\Start.exe"
 
-        If BootStart.Checked Then
-            pi.Arguments = "/Create /TN DreamGrid /SC ONSTART /TR " & Form1.MyFolder & "\Start.exe"
+                ProcessTask.StartInfo = pi
+                Try
+                    ProcessTask.Start()
+                    AutoStartCheckbox.Checked = True
+                    My.Settings.Save()
+                Catch ex As Exception
+                    Form1.Log("Error:ProcessTask failed to launch:" + ex.Message)
+                End Try
+            Else
+                pi.Arguments = "/Delete /TN DreamGrid"
+                ProcessTask.StartInfo = pi
+                Try
+                    ProcessTask.Start()
+                Catch ex As Exception
+                    Form1.Log("Error:ProcessTask Delete failed to launch:" + ex.Message)
+                End Try
 
-            ProcessTask.StartInfo = pi
-            Try
-                ProcessTask.Start()
-            Catch ex As Exception
-                Form1.Log("Error:ProcessTask failed to launch:" + ex.Message)
-            End Try
+            End If
 
         Else
-            pi.Arguments = "/Delete /TN DreamGrid"
-            ProcessTask.StartInfo = pi
-            Try
-                ProcessTask.Start()
-            Catch ex As Exception
-                Form1.Log("Error:ProcessTask Delete failed to launch:" + ex.Message)
-            End Try
-
+            MsgBox("DreamGrid must be started in Administrator mode to setup a scheduled task. Right click the icon and select Run As Administrator.")
         End If
-
     End Sub
 
+    Private Function IsUserAdministrator()
 
+        Dim isAdmin As Boolean
+        Try
+
+            Dim user As WindowsIdentity = WindowsIdentity.GetCurrent()
+            Dim principal As WindowsPrincipal = New WindowsPrincipal(user)
+            isAdmin = principal.IsInRole(WindowsBuiltInRole.Administrator)
+
+        Catch ex As Exception
+
+            isAdmin = False
+
+        End Try
+        Return isAdmin
+
+    End Function
 
 #End Region
 

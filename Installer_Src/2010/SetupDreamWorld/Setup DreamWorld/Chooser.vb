@@ -6,21 +6,14 @@
         Button1.DialogResult = DialogResult.OK
         ListBox1.Items.Clear()
 
-        Dim oldID = Form1.RegionClass.CurRegionNum()
-        Dim counter As Integer = 1
-        While counter <= Form1.RegionClass.RegionListCount()
-
-            If Form1.RegionClass.isRegionEnabled Then
-                Form1.RegionClass.CurRegionNum() = counter
-                ListBox1.Items.Add(Form1.RegionClass.RegionName)
+        For Each obj In Form1.RegionClass.AllRegionObjects()
+            If obj.isRegionEnabled Then
+                ListBox1.Items.Add(obj.RegionName)
             End If
-
-            counter += 1
-        End While
+        Next
 
         ListBox1.Sorted = True
         ListBox1.Text = "Select from..."
-        Form1.RegionClass.CurRegionNum() = oldID
 
     End Sub
 
@@ -28,8 +21,9 @@
 
         Form1.RegionClass.CurRegionNum() = ListBox1.SelectedIndex
         Dim value As String = TryCast(ListBox1.SelectedItem, String)
-
         My.Settings.WelcomeRegion = ListBox1.SelectedIndex
+        My.Settings.Save()
+
     End Sub
 
 End Class
