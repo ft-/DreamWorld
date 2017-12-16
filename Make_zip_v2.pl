@@ -1,5 +1,5 @@
 
-my $type  = '-V2.0-Beta-1';# '-Beta-V1.5';
+my $type  = '-V2.0-Beta-2';# '-Beta-V1.5';
 my $dir = "C:\\Opensim\\Outworldz-Source";
 
 

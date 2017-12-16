@@ -28,7 +28,7 @@ GridName = DreamGrid
 http_listener_port = 8002
 
 ; The URL of the Robust server
-BaseURL = http://Alielind.Outworldz.net
+BaseURL = http://Isilmarion.Outworldz.net
 
 ; The public port of the Robust server
 PublicPort = 8002

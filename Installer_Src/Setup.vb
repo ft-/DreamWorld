@@ -155,9 +155,22 @@ Public Class Form1
 
 #Region "StartStop"
 
+    Private Sub Settings_Load(sender As Object, e As EventArgs) Handles Me.Load
+
+
+
+
+
+    End Sub
+
     Private Sub Form1_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 
-        Me.Show()
+
+        If My.Settings.MyX = 0 And My.Settings.MyY = 0 Then
+            Me.CenterToScreen()
+        Else
+            Me.Location = New Point(My.Settings.MyX, My.Settings.MyY)
+        End If
 
         'hide progress
         ProgressBar1.Visible = True
@@ -168,11 +181,7 @@ Public Class Form1
         LogButton.Hide()
         IgnoreButton.Hide()
 
-        If My.Settings.MyX = 0 And My.Settings.MyY = 0 Then
-            Me.StartPosition = FormStartPosition.CenterScreen
-        Else
-            Me.Location = New Point(My.Settings.MyX, My.Settings.MyY)
-        End If
+
 
         Buttons(BusyButton)
         ' Save a random machine ID - we don't want any data to be sent that's personal or identifiable,  but it needs to be unique
@@ -2428,14 +2437,14 @@ Public Class Form1
         pMySql.Start()
 
         Dim MysqlOk As Boolean
-
+        ProgressBar1.Value = 50
         ' wait for MySql to come up
         While Not MysqlOk
 
             BumpProgress(1)
             Application.DoEvents()
 
-            Dim MysqlLog As String = """" + MyFolder + "\OutworldzFiles\mysql\data" + """"
+            Dim MysqlLog As String = MyFolder + "\OutworldzFiles\mysql\data" ' !!!
             If ProgressBar1.Value = 100 Then ' about 30 seconds when it fails
 
                 Dim yesno = MsgBox("The database did not start. Do you want to see the log file?", vbYesNo)
@@ -2443,7 +2452,7 @@ Public Class Form1
                     Dim files() As String
                     files = Directory.GetFiles(MysqlLog, "*.err", SearchOption.TopDirectoryOnly)
                     For Each FileName As String In files
-                        System.Diagnostics.Process.Start("wordpad.exe", FileName)
+                        System.Diagnostics.Process.Start("notepad.exe", FileName)
                     Next
                 End If
                 Buttons(StartButton)
