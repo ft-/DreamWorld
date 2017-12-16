@@ -1261,9 +1261,12 @@ Public Class Form1
     Private Sub OpensimProcess_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess.Exited
 
         ' Handle Opensim Exited
-        Dim o = RegionClass.FindRegionByProcessID(sender.Id)
-        o.Ready = False
-        o.ProcessID = 0
+        Try
+            Dim o = RegionClass.FindRegionByProcessID(sender.Id)
+            o.Ready = False
+            o.ProcessID = 0
+        Catch
+        End Try
 
     End Sub
 

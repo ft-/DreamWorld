@@ -7,7 +7,7 @@
         ListBox1.Items.Clear()
 
         For Each obj In Form1.RegionClass.AllRegionObjects()
-            If obj.isRegionEnabled Then
+            If obj.regionEnabled Then
                 ListBox1.Items.Add(obj.RegionName)
             End If
         Next
