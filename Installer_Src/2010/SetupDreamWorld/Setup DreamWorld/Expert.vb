@@ -201,6 +201,12 @@ Public Class Expert
 #End Region
 
 #Region "Misc"
+    Private Sub GridName_TextChanged(sender As Object, e As EventArgs) Handles GridName.TextChanged
+
+        My.Settings.SimName = GridName.Text
+        My.Settings.Save()
+
+    End Sub
 
     Private Sub uPnPEnabled_CheckedChanged(sender As Object, e As EventArgs) Handles uPnPEnabled.CheckedChanged
 
@@ -432,6 +438,7 @@ Public Class Expert
         Return isAdmin
 
     End Function
+
 
 #End Region
 
