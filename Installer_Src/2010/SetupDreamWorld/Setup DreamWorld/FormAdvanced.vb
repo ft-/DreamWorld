@@ -243,11 +243,16 @@ Public Class AdvancedForm
                 WelcomeBox1.Items.Add(o.RegionName())
             End If
         Next
-
         Try
-            WelcomeBox1.SelectedIndex = WelcomeBox1.FindString(My.Settings.WelcomeRegion)
+            Dim s = WelcomeBox1.FindString(My.Settings.WelcomeRegion)
+            If s > -1 Then
+                WelcomeBox1.SelectedIndex = s
+            Else
+                MsgBox("Welcome region reset to " + WelcomeBox1.Text)
+                WelcomeBox1.SelectedIndex = 0
+            End If
         Catch ex As Exception
-            WelcomeBox1.SelectedIndex = -1
+            WelcomeBox1.SelectedIndex = 0
         End Try
     End Sub
 

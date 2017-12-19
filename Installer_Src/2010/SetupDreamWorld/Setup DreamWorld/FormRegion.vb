@@ -41,9 +41,9 @@ Public Class FormRegion
 
             ' locate largest X and Y global coords, and Region Port
             ' Add something to make sure we do not intersect
-            MyRegion.RegionPort = MyRegion.LargestPort + 1
-            MyRegion.CoordX = MyRegion.LargestX + 10
-            MyRegion.CoordY = MyRegion.LargestY + 10
+            ' MyRegion.RegionPort = MyRegion.LargestPort + 1
+            'MyRegion.CoordX = MyRegion.LargestX + 10
+            'MyRegion.CoordY = MyRegion.LargestY + 10
         End If
 
         ' save them
