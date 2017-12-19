@@ -249,11 +249,9 @@ Public Class Form1
 
         ' must start after region Class is instantiated
         ws = NetServer.getWebServer
-        Log("Info:Starting Web Server")
-        ws.StartServer(prefix)
 
         ' Run diagnostics, maybe
-   '     If gDebug Then My.Settings.DiagsRun2 = False
+        '     If gDebug Then My.Settings.DiagsRun2 = False
 
         If Not My.Settings.DiagsRun2 Then
             DoDiag()
@@ -324,6 +322,21 @@ Public Class Form1
     End Sub
 
     Private Sub Startup()
+
+        If IsRobustRunning() Then
+            Dim answer = MsgBox("Robust is already running. Do you wish to stop Opensimulator?", vbYesNo)
+            If answer = vbYes Then
+                zap("Opensim")
+                zap("robust")
+                MsgBox("Restart required, exiting....", vbInformation)
+                zap("start")
+                Return
+            Else
+                MsgBox("Cannot start while also running in background", vbOK)
+                Return
+            End If
+
+        End If
 
         ProgressBar1.Value = 0
         ProgressBar1.Visible = True
@@ -2117,6 +2130,10 @@ Public Class Form1
 
     Private Sub DoDiag()
         Print("Running Network Diagnostics, please wait")
+
+        Log("Info:Starting Web Server")
+        ws.StartServer(prefix)
+
         My.Settings.DiagFailed = False
         OpenPorts() ' Open router ports with UPnp
         If Not ProbePublicPort() Then ' see if Public loopback works
@@ -2128,7 +2145,7 @@ Public Class Form1
             NewDNSName()
         End If
         Log("Diagnostics set the Hypergrid address to " + My.Settings.PublicIP)
-
+        ws.StopWebServer()
     End Sub
 
     Private Shared Function IsPrivateIP(ByVal CheckIP As String) As Boolean
