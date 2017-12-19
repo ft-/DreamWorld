@@ -156,9 +156,9 @@ Public Class RegionMaker
 
         GetAllRegions()
         If RegionCount() = 0 Then
-            Dim o As Object = CreateRegion("Welcome")
+            CreateRegion("Welcome")
             My.Settings.WelcomeRegion = ""
-            o.WriteRegion()
+            WriteRegion()
             GetAllRegions()
         End If
 
@@ -216,7 +216,7 @@ Public Class RegionMaker
 
     End Function
 
-    Public Function CreateRegion(name As String) As Integer
+    Public Sub CreateRegion(name As String)
 
         Dim r As New Region_data
         r.RegionName = name
@@ -231,9 +231,7 @@ Public Class RegionMaker
         RegionList.Add(r)
         CurRegionNum = RegionCount() - 1
 
-        Return RegionCount() - 1
-
-    End Function
+    End Sub
 
     Public Sub GetAllRegions()
 
@@ -346,7 +344,6 @@ Public Class RegionMaker
         For Each obj In RegionList
             Dim val = obj.RegionPort
             If val > Max Then Max = val
-            counter += 1
         Next
         If Max = 0 Then Max = My.Settings.PrivatePort
         Return Max

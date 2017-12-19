@@ -127,6 +127,8 @@ Public Class AdvancedForm
         Dim fname As String
         Dim counter As Integer = 0
 
+        Form1.RegionClass.GetAllRegions()
+
         For Each o As Object In Form1.RegionClass.AllRegionObjects()
             Try
                 fname = o.RegionName

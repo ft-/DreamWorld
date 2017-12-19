@@ -4,9 +4,12 @@ Imports System.Security.Principal
 
 Public Class Expert
 
+    Dim initted As Boolean = False
+
 #Region "Load/Exit"
 
     Private Sub Loaded(sender As Object, e As EventArgs) Handles Me.Load
+
 
         uPnPEnabled.Checked = My.Settings.UPnPEnabled
 
@@ -81,6 +84,7 @@ Public Class Expert
         AutoStartCheckbox.Checked = My.Settings.Autostart
         BootStart.Checked = My.Settings.BootStart
 
+        initted = True ' sppress the install of the startup on formload
     End Sub
 
 #End Region
@@ -389,6 +393,8 @@ Public Class Expert
 
     Private Sub BootStart_CheckedChanged(sender As Object, e As EventArgs) Handles BootStart.CheckedChanged
 
+        If Not initted Then Return
+
         My.Settings.BootStart = BootStart.Checked
         Dim ProcessTask As Process = New Process()
         Dim pi As ProcessStartInfo = New ProcessStartInfo()
@@ -402,6 +408,7 @@ Public Class Expert
                 Try
                     ProcessTask.Start()
                     AutoStartCheckbox.Checked = True
+                    My.Settings.Autostart = True
                     My.Settings.Save()
                 Catch ex As Exception
                     Form1.Log("Error:ProcessTask failed to launch:" + ex.Message)

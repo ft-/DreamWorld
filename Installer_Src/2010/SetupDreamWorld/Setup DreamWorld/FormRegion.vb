@@ -9,7 +9,7 @@ Public Class FormRegion
 
     Dim oldname As String = ""
     Dim MyRegion As RegionMaker
-
+    Dim gNum As Integer
     Dim initted As Boolean = False ' needed a flag to see if we are initted as the dialogs change on start.
     Dim changed As Boolean    ' true if we need to save a form
 
@@ -21,6 +21,7 @@ Public Class FormRegion
 
         MyRegion = Form1.RegionClass
         MyRegion.CurRegionNum = num
+        gNum = num
         oldname = MyRegion.RegionName
 
         EnabledCheckBox.Checked = MyRegion.isRegionEnabled
@@ -122,6 +123,7 @@ Public Class FormRegion
 
     Private Function RegionValidate()
 
+        MyRegion.CurRegionNum = gNum
         Dim Message As String
 
         If Len(MyRegion.RegionName) = 0 Then
@@ -191,13 +193,14 @@ Public Class FormRegion
     Private Sub WriteRegion()
 
         Dim dir = Form1.prefix
-
+        MyRegion.CurRegionNum = gNum
         ' save the Region File
         If oldname.Length Then
             Dim oldfile = dir + "bin\Regions\" + oldname
             Try
                 Directory.Delete(oldfile, True)
             Catch ex As Exception
+                Form1.Log("Cannot delete region file:" + ex.Message)
                 Debug.Print(ex.Message)
             End Try
         End If
@@ -241,6 +244,7 @@ Public Class FormRegion
 
     Private Sub Coordy_TextChanged(sender As Object, e As EventArgs) Handles CoordY.TextChanged
         If initted And CoordY.Text <> "" Then
+            MyRegion.CurRegionNum = gNum
             MyRegion.CoordY = Convert.ToInt16(CoordY.Text)
             changed = True
         End If
@@ -248,6 +252,7 @@ Public Class FormRegion
 
     Private Sub CoordX_TextChanged(sender As Object, e As EventArgs) Handles CoordX.TextChanged
         If initted And CoordX.Text <> "" Then
+            MyRegion.CurRegionNum = gNum
             MyRegion.CoordX = Convert.ToInt16(CoordX.Text)
             changed = True
         End If
@@ -256,6 +261,7 @@ Public Class FormRegion
     Private Sub RegionPort_TextChanged(sender As Object, e As EventArgs) Handles RegionPort.TextChanged
         If initted Then
             Try
+                MyRegion.CurRegionNum = gNum
                 MyRegion.RegionPort = Convert.ToInt16(RegionPort.Text)
             Catch
             End Try
@@ -271,6 +277,7 @@ Public Class FormRegion
                 Return
             End If
 
+            MyRegion.CurRegionNum = gNum
             MyRegion.RegionName = RegionName.Text
             Me.Text = MyRegion.RegionName
             changed = True
@@ -280,6 +287,7 @@ Public Class FormRegion
 
     Private Sub RadioButton1_CheckedChanged(sender As Object, e As EventArgs) Handles RadioButton1.CheckedChanged
         If initted Then
+            MyRegion.CurRegionNum = gNum
             MyRegion.SizeX = 256
             MyRegion.SizeY = 256
             SizeX.Text = ""
@@ -290,6 +298,7 @@ Public Class FormRegion
 
     Private Sub RadioButton2_CheckedChanged(sender As Object, e As EventArgs) Handles RadioButton2.CheckedChanged
         If initted Then
+            MyRegion.CurRegionNum = gNum
             MyRegion.SizeX = 512
             MyRegion.SizeY = 512
             SizeX.Text = ""
@@ -300,6 +309,7 @@ Public Class FormRegion
 
     Private Sub RadioButton3_CheckedChanged(sender As Object, e As EventArgs) Handles RadioButton3.CheckedChanged
         If initted Then
+            MyRegion.CurRegionNum = gNum
             MyRegion.SizeX = 768
             MyRegion.SizeY = 768
             SizeX.Text = ""
@@ -310,6 +320,7 @@ Public Class FormRegion
 
     Private Sub RadioButton4_CheckedChanged(sender As Object, e As EventArgs) Handles RadioButton4.CheckedChanged
         If initted Then
+            MyRegion.CurRegionNum = gNum
             MyRegion.SizeX = 1024
             MyRegion.SizeY = 1024
             SizeX.Text = ""
@@ -319,6 +330,7 @@ Public Class FormRegion
     End Sub
 
     Private Sub UUID_LostFocus(sender As Object, e As EventArgs) Handles UUID.LostFocus
+        MyRegion.CurRegionNum = gNum
         If UUID.Text <> MyRegion.UUID And initted Then
             Dim resp = MsgBox("Changing the UUID will lose all data in the old sim and create a new, empty sim. Are you sure you wish to change the UUID?", vbYesNo)
             If resp = vbYes Then
@@ -332,11 +344,12 @@ Public Class FormRegion
                         UUID.Text = System.Guid.NewGuid.ToString
                     End If
                 End If
-                End If
+            End If
         End If
     End Sub
 
     Private Sub SizeX_TextChanged_1(sender As Object, e As EventArgs) Handles SizeX.TextChanged
+        MyRegion.CurRegionNum = gNum
         If initted Then
             If SizeX.Text <> "" Then
                 changed = True
@@ -352,6 +365,7 @@ Public Class FormRegion
 
     End Sub
     Private Sub SizeY_TextChanged(sender As Object, e As EventArgs) Handles SizeY.TextChanged
+        MyRegion.CurRegionNum = gNum
         If initted Then
             If SizeY.Text <> "" Then
                 changed = True
@@ -369,7 +383,7 @@ Public Class FormRegion
     End Sub
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
-
+        MyRegion.CurRegionNum = gNum
         Form1.RegionClass.RegionName = MyRegion.RegionName
         Form1.RegionClass.UUID = MyRegion.UUID
         Form1.RegionClass.CoordX = MyRegion.CoordX
@@ -393,6 +407,7 @@ Public Class FormRegion
     End Sub
 
     Private Sub FormRegion_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
+        MyRegion.CurRegionNum = gNum
         If changed Then
             Dim v = MsgBox("Save changes?", vbYesNo)
             If v = vbYes Then
@@ -410,6 +425,7 @@ Public Class FormRegion
     End Sub
 
     Private Sub SizeX_Changed(sender As Object, e As EventArgs) Handles SizeX.LostFocus
+        MyRegion.CurRegionNum = gNum
         If initted And SizeX.Text <> "" Then
             If Not IsPowerOf256(Convert.ToSingle(SizeX.Text)) Then
                 MsgBox("Must be a multiple of 256: 256,512,768,1024,1280,1536,1792,2048,2304,2560, ...", vbInformation)
@@ -434,6 +450,7 @@ Public Class FormRegion
     End Function
 
     Private Sub DeleteButton_Click(sender As Object, e As EventArgs) Handles DeleteButton.Click
+        MyRegion.CurRegionNum = gNum
         Dim msg = MsgBox("Are you sure you want to delete this region? ", vbYesNo)
         If msg = vbYes Then
             Try
@@ -448,6 +465,7 @@ Public Class FormRegion
     End Sub
 
     Private Sub EnabledCheckBox_CheckedChanged(sender As Object, e As EventArgs) Handles EnabledCheckBox.CheckedChanged
+        MyRegion.CurRegionNum = gNum
         MyRegion.isRegionEnabled = EnabledCheckBox.Checked
     End Sub
 
