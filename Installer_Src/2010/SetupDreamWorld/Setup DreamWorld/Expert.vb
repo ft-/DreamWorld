@@ -210,6 +210,7 @@ Public Class Expert
 
     Private Sub uPnPEnabled_CheckedChanged(sender As Object, e As EventArgs) Handles uPnPEnabled.CheckedChanged
 
+        My.Settings.UPnPEnabled = uPnPEnabled.Checked
         My.Settings.Save()
 
     End Sub
