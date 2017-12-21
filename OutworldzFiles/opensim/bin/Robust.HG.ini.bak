@@ -298,7 +298,7 @@ AssetService = "OpenSim.Services.AssetService.dll:AssetService"
 ;; Next, we can specify properties of regions, including default and fallback regions
 ;; The syntax is: Region_<RegionName> = "<flags>"
 ;; or:            Region_<RegionID> = "<flags>"
-Region_Test1 = "DefaultRegion, DefaultHGRegion, FallbackRegion"
+Region_WelcomeRegion = "DefaultRegion, DefaultHGRegion, FallbackRegion"
 
 ;;
 ;; DefaultRegion    If a local login cannot be placed in the required region (e.g. home region does not exist, avatar is not allowed entry, etc.)

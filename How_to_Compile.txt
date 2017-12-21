@@ -48,14 +48,10 @@ cd OutworldzFiles\Opensim-0.9.0
 @rem update Opensim from master
 git pull
 git checkout 0.9.0-post-fixes
-cd addon-modules
-@rem update bird module from master
-git pull 
-cd ..
 runprebuild.bat
 compile.bat
 cd bin
-mautil -reg mautil -reg ../addins-config reg-update 
+mautil -reg . reg-update 
 
   
 Updates: The system has a built in updater that it fetches from the Outworldz web site.   This is how the updater can be updated.  The updater, in turn, fetches a zip file that has the changes in it.
