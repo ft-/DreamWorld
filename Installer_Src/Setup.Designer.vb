@@ -493,6 +493,7 @@ Partial Class Form1
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.White
+        Me.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.ClientSize = New System.Drawing.Size(320, 207)
         Me.Controls.Add(Me.IgnoreButton)
         Me.Controls.Add(Me.LogButton)
@@ -516,9 +517,7 @@ Partial Class Form1
         Me.MinimumSize = New System.Drawing.Size(336, 246)
         Me.Name = "Form1"
         Me.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-        Me.Text = "Outworldz Opensimulator"
-        Me.WindowState = System.Windows.Forms.FormWindowState.Maximized
+        Me.Text = "Outworldz DreamGrid"
         Me.MenuStrip1.ResumeLayout(False)
         Me.MenuStrip1.PerformLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
