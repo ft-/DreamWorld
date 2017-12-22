@@ -286,7 +286,7 @@ Public Class Form1
             Create_ShortCut(MyFolder & "\Start.exe")
             BumpProgress10()
 
-            StartMySQL(My.Settings.OpenSimHasRunOnce) ' do this at install as Mysql probe test does not work until tables have been built after first boot.
+            StartMySQL() ' do this at install as Mysql probe test does not work until tables have been built after first boot.
 
             Try
                 ' mark the system as ready
@@ -387,7 +387,7 @@ Public Class Form1
             SaveOnlookXMLData()
         End If
 
-        StartMySQL(My.Settings.OpenSimHasRunOnce) ' boot up MySql, and wait for it to start listening
+        StartMySQL() ' boot up MySql, and wait for it to start listening
 
         If Not Start_Opensimulator() Then ' Launch the rocket
             'KillAll()
@@ -1297,7 +1297,7 @@ Public Class Form1
             Return False
         End Try
 
-        My.Settings.OpenSimHasRunOnce = True
+
         My.Settings.Save()
         Return True
     End Function
@@ -2513,7 +2513,7 @@ Public Class Form1
             Return
         End If
 
-        StartMySQL(My.Settings.OpenSimHasRunOnce)
+        StartMySQL()
 
         ' Create an instance of the open file dialog box.
         Dim openFileDialog1 As OpenFileDialog = New OpenFileDialog
@@ -2572,7 +2572,7 @@ Public Class Form1
 
     Private Sub MysqlToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles MysqlToolStripMenuItem.Click
 
-        StartMySQL(My.Settings.OpenSimHasRunOnce)
+        StartMySQL()
 
         Try
             My.Computer.FileSystem.DeleteFile(MyFolder & "\OutworldzFiles\mysql\bin\BackupMysql.bat")
@@ -2608,18 +2608,13 @@ Public Class Form1
     End Sub
 
 
-    Private Function StartMySQL(runonce As Boolean) As Boolean
+    Private Function StartMySQL() As Boolean
 
         ' Check for MySql operation
         Dim MysqlOk As Boolean
 
-        If Not runonce Then
-            MysqlOk = CheckPort("127.0.0.1", My.Settings.MySqlPort)
-        Else
-            MysqlOk = CheckMysql()
-        End If
+        MysqlOk = CheckMysql()
         If MysqlOk Then Return True
-
 
         ' Start MySql in background.
 
@@ -2687,11 +2682,7 @@ Public Class Form1
 
             ' check again
             Sleep(1000)
-            If Not runonce Then
-                MysqlOk = CheckPort("127.0.0.1", My.Settings.MySqlPort)
-            Else
-                MysqlOk = CheckMysql()
-            End If
+            MysqlOk = CheckMysql()
 
         End While
         Return True
@@ -2706,36 +2697,36 @@ Public Class Form1
 
         pi.UseShellExecute = False
         pi.RedirectStandardOutput = True
+        pi.RedirectStandardError = True
 
-        pi.Arguments = "-e " + """" + "use opensim;select count(*) from useraccounts;" + """" + " --user=root"
+        pi.Arguments = " -u root -e " + """" + "use opensim; show tables;" + """"
         pi.FileName = """" + MyFolder + "\OutworldzFiles\mysql\bin\mysql.exe" + """"
-        pi.WindowStyle = ProcessWindowStyle.Minimized
+        pi.WindowStyle = ProcessWindowStyle.Normal
         p.StartInfo = pi
         Dim output As String = ""
         Try
             p.Start()
             '// To avoid deadlocks, always read the output stream first And then wait.
             output = p.StandardOutput.ReadToEnd()
+            output += p.StandardError.ReadToEnd()
             p.WaitForExit()
             p.Close()
         Catch ex As Exception
             Log("Error: failed to stat mysql:" + ex.Message)
         End Try
 
-        If output.Length Then
-            Log("Info: Mysql output:" + output)
-            Return True
+        Log("Info: Mysql output:" + output)
+        If output.Contains("Can't connect") Then
+            Return False
         End If
-        Return False
 
-
-
+        Return True
 
     End Function
 
     Private Sub StopMysql()
 
-        Log("Info:using mysqladmin to close db")
+        Log("Info: Using mysqladmin to close db")
         Dim p As Process = New Process()
         Dim pi As ProcessStartInfo = New ProcessStartInfo()
         pi.Arguments = "-u root shutdown"

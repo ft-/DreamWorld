@@ -6,7 +6,6 @@
 
 #Region "Load/Quit"
 
-
     Private Sub Loaded(sender As Object, e As EventArgs) Handles Me.Load
 
         ContactEmailTextBox.Text = My.Settings.GLBOwnerEmail
@@ -24,7 +23,7 @@
         ProdSecretTextBox.Text = My.Settings.GLProdSecret
 
         GloebitsEnabled.Checked = My.Settings.GloebitsEnable
-
+        Application.DoEvents()
         Initted = True
     End Sub
 
@@ -38,21 +37,7 @@
 
 
 #Region "Mode"
-    Private Sub SandboxButton_CheckedChanged(sender As Object, e As EventArgs) Handles SandboxButton.CheckedChanged
-        If SandboxButton.Checked = True Then
-            ProductionButton.Checked = False
-            My.Settings.GloebitsMode = False
-            My.Settings.Save()
-        End If
-    End Sub
 
-    Private Sub ProductionButton_CheckedChanged(sender As Object, e As EventArgs) Handles ProductionButton.CheckedChanged
-        If ProductionButton.Checked = True Then
-            SandboxButton.Checked = False
-            My.Settings.GloebitsMode = True
-            My.Settings.Save()
-        End If
-    End Sub
 
 #End Region
 
@@ -157,20 +142,20 @@
         Process.Start(webAddress)
     End Sub
 
-    Private Sub PictureBox1_Click(sender As Object, e As EventArgs) Handles PictureBox1.Click
-
+    Private Sub SandboxButton_CheckedChanged_1(sender As Object, e As EventArgs) Handles SandboxButton.CheckedChanged
+        If SandboxButton.Checked = True And Initted Then
+            ProductionButton.Checked = False
+            My.Settings.GloebitsMode = False
+            My.Settings.Save()
+        End If
     End Sub
 
-    Private Sub GroupBox3_Enter(sender As Object, e As EventArgs) Handles GroupBox3.Enter
-
-    End Sub
-
-    Private Sub GroupBox2_Enter(sender As Object, e As EventArgs) Handles GroupBox2.Enter
-
-    End Sub
-
-    Private Sub GroupBox1_Enter(sender As Object, e As EventArgs) Handles GroupBox1.Enter
-
+    Private Sub ProductionButton_CheckedChanged(sender As Object, e As EventArgs) Handles ProductionButton.CheckedChanged
+        If ProductionButton.Checked = True And Initted Then
+            SandboxButton.Checked = False
+            My.Settings.GloebitsMode = True
+            My.Settings.Save()
+        End If
     End Sub
 
 
