@@ -92,3 +92,7 @@ C:\Opensim\Outworldz-1.0\Updater_Src\Updater\obj\Debug\Updater.vbproj.GenerateRe
 C:\Opensim\Outworldz-1.0\Updater_Src\Updater\obj\Debug\Updater.exe
 C:\Opensim\Outworldz-1.0\Updater_Src\Updater\obj\Debug\Updater.xml
 C:\Opensim\Outworldz-1.0\Updater_Src\Updater\obj\Debug\Updater.pdb
+C:\Opensim\OpensimV1.72-Source\Updater_Src\Updater\bin\Debug\Updater.exe.config
+C:\Opensim\OpensimV1.72-Source\Updater_Src\Updater\obj\Debug\Updater.exe
+C:\Opensim\OpensimV1.72-Source\Updater_Src\Updater\obj\Debug\Updater.xml
+C:\Opensim\OpensimV1.72-Source\Updater_Src\Updater\obj\Debug\Updater.pdb
