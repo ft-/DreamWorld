@@ -1,0 +1,12 @@
+; * Regions configuration file
+; * This Is Your World. Change This And It Will BREAK. See Advance->[Region Settings] instead.
+; Automatically changed by Dreamworld - do Not change this file!
+[2]
+RegionUUID = "656a283d-d233-4b60-be74-231786f98a6d"
+Location = "2349,1456"
+InternalAddress = "0.0.0.0"
+InternalPort = 8005
+AllowAlternatePorts = False
+ExternalHostName = 10.6.1.130
+SizeX = 256
+SizeY = 256

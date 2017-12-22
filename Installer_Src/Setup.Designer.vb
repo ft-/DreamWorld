@@ -46,7 +46,6 @@ Partial Class Form1
         Me.SingularityToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.FirestormToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.AlchemyToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.UKanDoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.VUI = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuEasy = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuFull = New System.Windows.Forms.ToolStripMenuItem()
@@ -66,6 +65,7 @@ Partial Class Form1
         Me.ToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
         Me.LoopBackToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.CHeckForUpdatesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripMenuItem2 = New System.Windows.Forms.ToolStripMenuItem()
         Me.DiagnosticsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.CheckDatabaseToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuAbout = New System.Windows.Forms.ToolStripMenuItem()
@@ -90,7 +90,6 @@ Partial Class Form1
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.LogButton = New System.Windows.Forms.Button()
         Me.IgnoreButton = New System.Windows.Forms.Button()
-        Me.ToolStripMenuItem2 = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuStrip1.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -195,57 +194,50 @@ Partial Class Form1
         Me.mnuOnlook.Checked = True
         Me.mnuOnlook.CheckState = System.Windows.Forms.CheckState.Checked
         Me.mnuOnlook.Name = "mnuOnlook"
-        Me.mnuOnlook.Size = New System.Drawing.Size(113, 22)
+        Me.mnuOnlook.Size = New System.Drawing.Size(152, 22)
         Me.mnuOnlook.Text = "Onlook"
         '
         'mnuOther
         '
-        Me.mnuOther.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.KokuaToolStripMenuItem, Me.CatznipToolStripMenuItem, Me.SingularityToolStripMenuItem, Me.FirestormToolStripMenuItem, Me.AlchemyToolStripMenuItem, Me.UKanDoToolStripMenuItem})
+        Me.mnuOther.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.KokuaToolStripMenuItem, Me.CatznipToolStripMenuItem, Me.SingularityToolStripMenuItem, Me.FirestormToolStripMenuItem, Me.AlchemyToolStripMenuItem})
         Me.mnuOther.Name = "mnuOther"
-        Me.mnuOther.Size = New System.Drawing.Size(113, 22)
+        Me.mnuOther.Size = New System.Drawing.Size(152, 22)
         Me.mnuOther.Text = "Other "
         '
         'KokuaToolStripMenuItem
         '
         Me.KokuaToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.TPV_Kokua_Icon
         Me.KokuaToolStripMenuItem.Name = "KokuaToolStripMenuItem"
-        Me.KokuaToolStripMenuItem.Size = New System.Drawing.Size(130, 22)
+        Me.KokuaToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
         Me.KokuaToolStripMenuItem.Text = "Kokua"
         '
         'CatznipToolStripMenuItem
         '
         Me.CatznipToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.TPV_Catznip_Icon
         Me.CatznipToolStripMenuItem.Name = "CatznipToolStripMenuItem"
-        Me.CatznipToolStripMenuItem.Size = New System.Drawing.Size(130, 22)
+        Me.CatznipToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
         Me.CatznipToolStripMenuItem.Text = "Catznip"
         '
         'SingularityToolStripMenuItem
         '
         Me.SingularityToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.TPV_Singularity_Icon
         Me.SingularityToolStripMenuItem.Name = "SingularityToolStripMenuItem"
-        Me.SingularityToolStripMenuItem.Size = New System.Drawing.Size(130, 22)
+        Me.SingularityToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
         Me.SingularityToolStripMenuItem.Text = "Singularity"
         '
         'FirestormToolStripMenuItem
         '
         Me.FirestormToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.TPV_Firestorm_Icon
         Me.FirestormToolStripMenuItem.Name = "FirestormToolStripMenuItem"
-        Me.FirestormToolStripMenuItem.Size = New System.Drawing.Size(130, 22)
+        Me.FirestormToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
         Me.FirestormToolStripMenuItem.Text = "Firestorm"
         '
         'AlchemyToolStripMenuItem
         '
         Me.AlchemyToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.TPV_Alchemy_Icon
         Me.AlchemyToolStripMenuItem.Name = "AlchemyToolStripMenuItem"
-        Me.AlchemyToolStripMenuItem.Size = New System.Drawing.Size(130, 22)
+        Me.AlchemyToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
         Me.AlchemyToolStripMenuItem.Text = "Alchemy"
-        '
-        'UKanDoToolStripMenuItem
-        '
-        Me.UKanDoToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.TPV_UKanDo_Icon
-        Me.UKanDoToolStripMenuItem.Name = "UKanDoToolStripMenuItem"
-        Me.UKanDoToolStripMenuItem.Size = New System.Drawing.Size(130, 22)
-        Me.UKanDoToolStripMenuItem.Text = "UKanDo"
         '
         'VUI
         '
@@ -261,13 +253,13 @@ Partial Class Form1
         Me.mnuEasy.Checked = True
         Me.mnuEasy.CheckState = System.Windows.Forms.CheckState.Checked
         Me.mnuEasy.Name = "mnuEasy"
-        Me.mnuEasy.Size = New System.Drawing.Size(97, 22)
+        Me.mnuEasy.Size = New System.Drawing.Size(152, 22)
         Me.mnuEasy.Text = "Easy"
         '
         'mnuFull
         '
         Me.mnuFull.Name = "mnuFull"
-        Me.mnuFull.Size = New System.Drawing.Size(97, 22)
+        Me.mnuFull.Size = New System.Drawing.Size(152, 22)
         Me.mnuFull.Text = "Full"
         '
         'AvatarVisible
@@ -389,6 +381,13 @@ Partial Class Form1
         Me.CHeckForUpdatesToolStripMenuItem.Name = "CHeckForUpdatesToolStripMenuItem"
         Me.CHeckForUpdatesToolStripMenuItem.Size = New System.Drawing.Size(205, 22)
         Me.CHeckForUpdatesToolStripMenuItem.Text = "Check for Updates"
+        '
+        'ToolStripMenuItem2
+        '
+        Me.ToolStripMenuItem2.Image = Global.Outworldz.My.Resources.Resources.earth_network
+        Me.ToolStripMenuItem2.Name = "ToolStripMenuItem2"
+        Me.ToolStripMenuItem2.Size = New System.Drawing.Size(205, 22)
+        Me.ToolStripMenuItem2.Text = "UPnP Setup"
         '
         'DiagnosticsToolStripMenuItem
         '
@@ -581,13 +580,6 @@ Partial Class Form1
         Me.IgnoreButton.Text = "Skip"
         Me.IgnoreButton.UseVisualStyleBackColor = True
         '
-        'ToolStripMenuItem2
-        '
-        Me.ToolStripMenuItem2.Image = Global.Outworldz.My.Resources.Resources.earth_network
-        Me.ToolStripMenuItem2.Name = "ToolStripMenuItem2"
-        Me.ToolStripMenuItem2.Size = New System.Drawing.Size(205, 22)
-        Me.ToolStripMenuItem2.Text = "UPnP Setup"
-        '
         'Form1
         '
         Me.AllowDrop = True
@@ -672,7 +664,6 @@ Partial Class Form1
     Friend WithEvents ToolStripMenuItem1 As ToolStripMenuItem
     Friend WithEvents FirestormToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents AlchemyToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents UKanDoToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents KokuaToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents CatznipToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents SingularityToolStripMenuItem As ToolStripMenuItem

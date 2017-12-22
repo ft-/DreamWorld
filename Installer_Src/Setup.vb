@@ -36,10 +36,10 @@ Public Class Form1
 
 #Region "Declarations"
 
-    Dim MyVersion As String = "1.72"
-    Dim DebugPath As String = "C:\Opensim\OpensimV1.72-Source"
+    Dim MyVersion As String = "1.73"
+    Dim DebugPath As String = "C:\Opensim\OpensimV1.73 Source"
     Public Domain As String = "http://www.outworldz.com"
-    Dim RevNotesFile As String = "Update_Notes_" + MyVersion + ".rtf"
+
     Private gFailDebug = False ' set to true to fail diagnostic
 
 
@@ -216,9 +216,6 @@ Public Class Form1
             Log("Info:No need to upgrade RegionConfig.ini")
         End Try
 
-        If System.IO.File.Exists(MyFolder + "\" + RevNotesFile) Then
-            System.Diagnostics.Process.Start("wordpad.exe", """" + MyFolder + "\" + RevNotesFile + """")
-        End If
 
         GetAllRegions()
 
@@ -244,7 +241,7 @@ Public Class Form1
         ' Run diagnostics, maybe
         If gDebug Then
             gFailDebug = True
-            DoDiag()
+            'DoDiag()
             gFailDebug = False
             My.Settings.DiagsRun = False
         End If
@@ -280,12 +277,16 @@ Public Class Form1
             Print("Ready to Launch! Click 'Start' to begin your adventure in Opensimulator.")
         Else
 
+            Machine = Random()  ' a random machine ID
+
             My.Settings.HttpPort = 8002
             My.Settings.Save()
 
             Print("Installing Desktop icon clicky thingy")
             Create_ShortCut(MyFolder & "\Start.exe")
             BumpProgress10()
+
+            StartMySQL(True) ' do this at install as Mysql probe test does not work until tables have been built after first boot.
 
             Try
                 ' mark the system as ready
@@ -386,7 +387,7 @@ Public Class Form1
             SaveOnlookXMLData()
         End If
 
-        StartMySQL() ' boot up MySql, and wait for it to start listening
+        StartMySQL(False) ' boot up MySql, and wait for it to start listening
 
         If Not Start_Opensimulator() Then ' Launch the rocket
             'KillAll()
@@ -421,15 +422,6 @@ Public Class Form1
 
         Dim p As Point
         p = Me.Location
-
-        If System.IO.File.Exists(MyFolder + "\" + RevNotesFile) Then
-            Try
-                My.Computer.FileSystem.RenameFile(MyFolder + "\" + RevNotesFile, "Update_Notes_for_Rev_" + MyVersion + ".rtf")
-            Catch ex As Exception
-                Log("Error: Failed to remove rev notes" + ex.Message)
-            End Try
-
-        End If
 
         My.Settings.MyX = p.X
         My.Settings.MyY = p.Y
@@ -919,6 +911,7 @@ Public Class Form1
                 SetIni("Startup", "UseSeparatePhysicsThread", "true")
         End Select
 
+
         ' set MySql
         Dim ConnectionString = """" _
             + "Data Source=" + My.Settings.DBSource _
@@ -1001,6 +994,10 @@ Public Class Form1
         SaveINI()
 
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+        DoGloebits(MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\Gloebit.ini")
+
+        ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
         'Regions - write all region.ini files with public IP and Public port
         Dim counter As Integer = 1
         Dim L = aRegion.GetUpperBound(0)
@@ -1029,6 +1026,46 @@ Public Class Form1
             VUI.Visible = False
             AvatarVisible.Visible = False
         End If
+
+    End Sub
+
+
+    Public Sub DoGloebits(path As String)
+
+        'Gloebit.ini
+
+        LoadIni(path, ";")
+        If My.Settings.GloebitsEnable Then
+            SetIni("Gloebit", "Enabled", "true")
+        Else
+            SetIni("Gloebit", "Enabled", "false")
+        End If
+
+        If My.Settings.GloebitsMode Then
+            SetIni("Gloebit", "GLBEnvironment", "production")
+            SetIni("Gloebit", "GLBKey", My.Settings.GLProdKey)
+            SetIni("Gloebit", "GLBSecret", My.Settings.GLProdSecret)
+        Else
+            SetIni("Gloebit", "GLBEnvironment", "sandbox")
+            SetIni("Gloebit", "GLBKey", My.Settings.GLSandKey)
+            SetIni("Gloebit", "GLBSecret", My.Settings.GLSandSecret)
+        End If
+
+        SetIni("Gloebit", "GLBOwnerName", My.Settings.GLBOwnerName)
+        SetIni("Gloebit", "GLBOwnerEmail", My.Settings.GLBOwnerEmail)
+
+
+        Dim ConnectionString = """" _
+            + "Data Source=" + "localhost" _
+            + ";Database=" + My.Settings.DBName _
+            + ";Port=" + My.Settings.MySqlPort _
+            + ";User ID=" + My.Settings.DBUserID _
+            + ";Password=" + My.Settings.DBPassword _
+            + ";Old Guids=True;Allow Zero Datetime=True;" _
+            + """"
+        SetIni("Gloebit", "GLBSpecificConnectionString", ConnectionString)
+
+        SaveINI()
 
     End Sub
 
@@ -1238,7 +1275,7 @@ Public Class Form1
             Catch ex As Exception
                 Log("Info:Opensim is not yet running, waiting for it to start listening")
                 Up = ""
-                If InStr(ex.Message, "404") Then
+                If CBool(InStr(ex.Message, "404")) Then
                     Up = "Done"
                 End If
             End Try
@@ -1296,11 +1333,6 @@ Public Class Form1
         Process.Start(webAddress)
     End Sub
 
-    Private Sub UKanDoToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles UKanDoToolStripMenuItem.Click
-        Dim webAddress As String = "http://www.ukando.info/"
-        Process.Start(webAddress)
-    End Sub
-
     Private Sub FirestormToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles FirestormToolStripMenuItem.Click
         Dim webAddress As String = "http://www.firestormviewer.org/"
         Process.Start(webAddress)
@@ -1343,7 +1375,6 @@ Public Class Form1
         Try
             Using outputFile As New StreamWriter(MyFolder & "\OutworldzFiles\Outworldz.log", True)
                 outputFile.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + message)
-                outputFile.Close()
                 Debug.Print(message)
             End Using
         Catch
@@ -1480,7 +1511,7 @@ Public Class Form1
             openFileDialog1.Multiselect = False
 
             ' Call the ShowDialog method to show the dialogbox.
-            Dim UserClickedOK As Boolean = openFileDialog1.ShowDialog
+            Dim UserClickedOK As Boolean = CBool(openFileDialog1.ShowDialog)
 
             ' Process input if the user clicked OK.
             If UserClickedOK = True Then
@@ -1580,7 +1611,7 @@ Public Class Form1
             openFileDialog1.Multiselect = False
 
             ' Call the ShowDialog method to show the dialogbox.
-            Dim UserClickedOK As Boolean = openFileDialog1.ShowDialog
+            Dim UserClickedOK As Boolean = CBool(openFileDialog1.ShowDialog)
 
             ' Process input if the user clicked OK.
             If UserClickedOK = True Then
@@ -2064,7 +2095,6 @@ Public Class Form1
             My.Computer.FileSystem.DeleteFile(xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml")
             Using outputFile As New StreamWriter(xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml", True)
                 outputFile.WriteLine(Opensim8XML)
-                ' outputFile.Close()
             End Using
 
             'My.Computer.FileSystem.CopyFile(MyFolder & "\Viewer\Hypergrid.xml", xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml", True)
@@ -2235,7 +2265,6 @@ Public Class Form1
     End Function
     Private Sub DoDiag()
 
-        Print("Running Network Diagnostics, please wait")
         My.Settings.DiagFailed = False
         OpenPorts() ' Open router ports with uPnP
         ProbePublicPort()
@@ -2255,7 +2284,7 @@ Public Class Form1
         Try
             Using sock
                 sock.Connect("8.8.8.8", 65530)  ' try Google
-                Dim EndPoint As IPEndPoint = sock.LocalEndPoint
+                Dim EndPoint As IPEndPoint = CType(sock.LocalEndPoint, IPEndPoint)
                 GetLocalIPv4Address = EndPoint.Address.ToString()
             End Using
         Catch ex As Exception
@@ -2327,6 +2356,11 @@ Public Class Form1
     Function OpenRouterPorts() As Boolean
 
         Log("Local ip seems to be " + UPNP.LocalIP)
+
+        If Not MyUPnPMap.UPNPEnabled Then
+            Log("UPnP is not enabled in the router")
+            Return False
+        End If
 
         Try
 
@@ -2475,7 +2509,8 @@ Public Class Form1
             Print("Cannot restore when Opensim is running. Click [Stop] and try again.")
             Return
         End If
-        StartMySQL()
+
+        StartMySQL(False)
 
         ' Create an instance of the open file dialog box.
         Dim openFileDialog1 As OpenFileDialog = New OpenFileDialog
@@ -2487,7 +2522,7 @@ Public Class Form1
         openFileDialog1.Multiselect = False
 
         ' Call the ShowDialog method to show the dialogbox.
-        Dim UserClickedOK As Boolean = openFileDialog1.ShowDialog
+        Dim UserClickedOK As Boolean = CBool(openFileDialog1.ShowDialog)
 
         ' Process input if the user clicked OK.
         If UserClickedOK = True Then
@@ -2534,7 +2569,7 @@ Public Class Form1
 
     Private Sub MysqlToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles MysqlToolStripMenuItem.Click
 
-        StartMySQL()
+        StartMySQL(False)
 
         Try
             My.Computer.FileSystem.DeleteFile(MyFolder & "\OutworldzFiles\mysql\bin\BackupMysql.bat")
@@ -2569,20 +2604,20 @@ Public Class Form1
 
     End Sub
 
-    Private Function StartMySQL() As Boolean
-        ' Start MySql in background.
-        Dim StartValue = ProgressBar1.Value
+
+    Private Function StartMySQL(runonce As Boolean) As Boolean
 
         ' Check for MySql operation
-        Dim Mysql = False
-        ' wait for MySql to come up
-        Mysql = CheckPort("127.0.0.1", My.Settings.MySqlPort)
-        If Mysql Then
-            BumpProgress10()
 
+        ' wait for MySql to come up
+        If CheckMysql() Then
             Return True
         End If
 
+        ' Start MySql in background.
+
+        BumpProgress10()
+        Dim StartValue = ProgressBar1.Value
         Print("Starting Database")
 
         ' SAVE INI file
@@ -2610,7 +2645,7 @@ Public Class Form1
             Log("Error:StartManually" + ex.Message)
         End Try
 
-        BumpProgress(1)
+        BumpProgress(5)
 
         ' Mysql was not running, so lets start it up.
         Dim pi As ProcessStartInfo = New ProcessStartInfo()
@@ -2620,15 +2655,15 @@ Public Class Form1
         pMySql.StartInfo = pi
         pMySql.Start()
 
-
+        Dim MysqlOk As Boolean
+        ProgressBar1.Value = 50
         ' wait for MySql to come up
-        Mysql = CheckPort("127.0.0.1", My.Settings.MySqlPort)
-        While Not Mysql
+        While Not MysqlOk
 
             BumpProgress(1)
             Application.DoEvents()
 
-            Dim MysqlLog As String = """" + MyFolder + "\OutworldzFiles\mysql\data" + """"
+            Dim MysqlLog As String = MyFolder + "\OutworldzFiles\mysql\data" ' !!!
             If ProgressBar1.Value = 100 Then ' about 30 seconds when it fails
 
                 Dim yesno = MsgBox("The database did not start. Do you want to see the log file?", vbYesNo)
@@ -2636,20 +2671,59 @@ Public Class Form1
                     Dim files() As String
                     files = Directory.GetFiles(MysqlLog, "*.err", SearchOption.TopDirectoryOnly)
                     For Each FileName As String In files
-                        System.Diagnostics.Process.Start("wordpad.exe", FileName)
+                        System.Diagnostics.Process.Start("notepad.exe", FileName)
                     Next
                 End If
-
                 Buttons(StartButton)
                 Return False
             End If
 
             ' check again
             Sleep(1000)
-            Mysql = CheckPort("127.0.0.1", My.Settings.MySqlPort)
+            If runonce Then
+                MysqlOk = CheckPort("127.0.0.1", My.Settings.MySqlPort)
+            Else
+                MysqlOk = CheckMysql()
+            End If
+
         End While
-        Sleep(5000) ' hacky, but may work
         Return True
+    End Function
+
+    Function CheckMysql()
+
+        'mysql 
+
+        Dim p As Process = New Process()
+        Dim pi As ProcessStartInfo = New ProcessStartInfo()
+
+        pi.UseShellExecute = False
+        pi.RedirectStandardOutput = True
+
+        pi.Arguments = "-e " + """" + "use opensim;select count(*) from useraccounts;" + """" + " --user=root"
+        pi.FileName = """" + MyFolder + "\OutworldzFiles\mysql\bin\mysql.exe" + """"
+        pi.WindowStyle = ProcessWindowStyle.Hidden
+        p.StartInfo = pi
+        Dim output As String = ""
+        Try
+            p.Start()
+            '// To avoid deadlocks, always read the output stream first And then wait.
+            output = p.StandardOutput.ReadToEnd()
+            p.WaitForExit()
+            p.Close()
+        Catch ex As Exception
+            Log("Error: failed to stat mysql:" + ex.Message)
+        End Try
+
+        If output.Length Then
+            Log("Info: Mysql output:" + output)
+            Return True
+        End If
+        Return False
+
+
+
+
     End Function
 
     Private Sub StopMysql()

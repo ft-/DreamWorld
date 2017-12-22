@@ -111,6 +111,7 @@ Partial Class AdvancedForm
         Me.MapBox = New System.Windows.Forms.GroupBox()
         Me.MapPicture = New System.Windows.Forms.PictureBox()
         Me.GroupBox6 = New System.Windows.Forms.GroupBox()
+        Me.GloebitsButton = New System.Windows.Forms.Button()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -1024,11 +1025,21 @@ Partial Class AdvancedForm
         Me.GroupBox6.TabStop = False
         Me.GroupBox6.Text = "Grid Version"
         '
+        'GloebitsButton
+        '
+        Me.GloebitsButton.Location = New System.Drawing.Point(454, 409)
+        Me.GloebitsButton.Name = "GloebitsButton"
+        Me.GloebitsButton.Size = New System.Drawing.Size(145, 23)
+        Me.GloebitsButton.TabIndex = 1859
+        Me.GloebitsButton.Text = "Gloebits Currency Setup"
+        Me.GloebitsButton.UseVisualStyleBackColor = True
+        '
         'AdvancedForm
         '
         Me.AutoSize = True
         Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.ClientSize = New System.Drawing.Size(867, 445)
+        Me.Controls.Add(Me.GloebitsButton)
         Me.Controls.Add(Me.PictureBox5)
         Me.Controls.Add(Me.GroupBox6)
         Me.Controls.Add(Me.VoiceButton1)
@@ -1161,4 +1172,5 @@ Partial Class AdvancedForm
     Friend WithEvents PictureBox5 As PictureBox
     Friend WithEvents TestButton1 As Button
     Friend WithEvents HypericaButton As Button
+    Friend WithEvents GloebitsButton As Button
 End Class
