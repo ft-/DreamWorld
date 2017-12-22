@@ -27,3 +27,4 @@ reset user password Wifi Admin 1
 reset user password Wifi Admin 1
 2reset user password Wifi Admin 12
 reset user password Wifi Admin 123
+create user Test User 123
