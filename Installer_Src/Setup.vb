@@ -1282,7 +1282,10 @@ Public Class Form1
         ' Handle Opensim Exited
         Try
             Dim o = RegionClass.FindRegionByProcessID(sender.Id)
+            Debug.Print(o.RegionName)
             o.Ready = False
+            o.Crashed = True
+            o.WarmingUp = False
             o.ProcessID = 0
         Catch
         End Try
@@ -1320,8 +1323,14 @@ Public Class Form1
 
             myProcess.Start()
             Pid = myProcess.Id
+            'fkb
 
             OpensimProcID.Add(Pid)
+
+            Dim o = RegionClass.FindRegionByName(InstanceName)
+            o.WarmingUp = True
+            o.Ready = False
+            o.Crashed = False
 
         Catch ex As Exception
             Print("Error: Opensim did not start: " + ex.Message)
@@ -2142,7 +2151,7 @@ Public Class Form1
             NewDNSName()
         End If
         Log("Diagnostics set the Hypergrid address to " + My.Settings.PublicIP)
-        ws.StopWebServer()
+
     End Sub
 
     Private Shared Function IsPrivateIP(ByVal CheckIP As String) As Boolean
@@ -2729,6 +2738,9 @@ Public Class Form1
 
             ' is now safe to set new proerties
             o.Ready = True
+            o.Crashed = False
+            o.WarmingUp = False
+
             o.UUID = json.region_id
 
         End If
@@ -2761,8 +2773,16 @@ Public Class Form1
                 RegionMenu.Image = My.Resources.ResourceManager.GetObject("media_play_green")
             Else
                 RegionMenu.Checked = False
-                RegionMenu.Image = My.Resources.ResourceManager.GetObject("media_pause")
+                RegionMenu.Image = My.Resources.ResourceManager.GetObject("media_stop_red")
             End If
+
+            If o.Crashed Then
+                RegionMenu.Image = My.Resources.ResourceManager.GetObject("warning")
+            End If
+            If o.WarmingUp Then
+                RegionMenu.Image = My.Resources.ResourceManager.GetObject("recycle")
+            End If
+
             RegionsToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {RegionMenu})
         Next
 
@@ -2776,7 +2796,7 @@ Public Class Form1
                 Try
                     Dim P = Process.GetProcessById(gRobustProcID)
                     P.Kill()
-                    sender.Image = My.Resources.ResourceManager.GetObject("media_pause") ' image
+                    sender.Image = My.Resources.ResourceManager.GetObject("media_stop_red") ' image
                     Log("Region:Stopped Robust")
                 Catch ex As Exception
                     Log("Region:Could not stop Robust")
@@ -2791,13 +2811,11 @@ Public Class Form1
                 sender.Image = My.Resources.ResourceManager.GetObject("media_play_green")
             End If
 
-            '!!! add yellow running and red if it is aborted.
-
             Return
 
         Else ' had to be a region that was clicked
             Log("Region:Clicked region " & sender.text)
-            If sender.checked Then
+            If sender.checked Or o.crashed Then
                 sender.checked = False 'checkbox
                 sender.Image = My.Resources.ResourceManager.GetObject("media_pause") ' image
                 o.RegionEnabled = False   ' class
@@ -2807,6 +2825,8 @@ Public Class Form1
                 SetIni(sender.text, "Enabled", "false")
                 SaveINI()
                 o.Ready = False
+                o.Crashed = False
+                o.WarmingUp = True
 
                 If Running Then
                     Dim PID = o.ProcessID

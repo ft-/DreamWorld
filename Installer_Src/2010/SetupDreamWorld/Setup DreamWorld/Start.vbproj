@@ -394,6 +394,7 @@
     <None Include="Resources\media_pause.png" />
     <None Include="Resources\disk_green.png" />
     <None Include="Resources\disk_yellow.png" />
+    <None Include="Resources\warning.png" />
     <Content Include="Resources\wp_habitat.gif" />
     <Content Include="Resources\wp_Inside_in_shadows.gif" />
     <Content Include="Resources\wp_Mooferd.gif" />

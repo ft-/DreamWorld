@@ -19,6 +19,8 @@ Public Class RegionMaker
         Public SizeY As Integer
         Public RegionEnabled As Boolean
         Public Ready As Boolean
+        Public Crashed As Boolean
+        Public WarmingUp As Boolean
     End Class
 
     Public Shared RegionList As New ArrayList
@@ -227,6 +229,8 @@ Public Class RegionMaker
         r.CoordX = LargestX() + 4
         r.CoordY = LargestY() + 0
         r.RegionPort = LargestPort() + 1 '8004 + 1
+        r.Crashed = False
+
 
         RegionList.Add(r)
         CurRegionNum = RegionCount() - 1
