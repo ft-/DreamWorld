@@ -524,7 +524,6 @@ C:\Opensim\OpensimV1.73 Source\Installer_Src\2010\SetupDreamWorld\Setup DreamWor
 C:\Opensim\OpensimV1.73 Source\Installer_Src\2010\SetupDreamWorld\Setup DreamWorld\bin\Debug\DotNetZip.xml
 C:\Opensim\OpensimV1.73 Source\Installer_Src\2010\SetupDreamWorld\Setup DreamWorld\bin\Debug\INIFileParser.xml
 C:\Opensim\OpensimV1.73 Source\Installer_Src\2010\SetupDreamWorld\Setup DreamWorld\bin\Debug\Interop.IWshRuntimeLibrary.dll
-C:\Opensim\OpensimV1.73 Source\Installer_Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Debug\Start.vbprojResolveAssemblyReference.cache
 C:\Opensim\OpensimV1.73 Source\Installer_Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Debug\Outworldz.Form1.resources
 C:\Opensim\OpensimV1.73 Source\Installer_Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Debug\Outworldz.Chooser.resources
 C:\Opensim\OpensimV1.73 Source\Installer_Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Debug\Outworldz.DNSName.resources

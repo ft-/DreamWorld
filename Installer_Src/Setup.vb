@@ -286,7 +286,7 @@ Public Class Form1
             Create_ShortCut(MyFolder & "\Start.exe")
             BumpProgress10()
 
-            StartMySQL(True) ' do this at install as Mysql probe test does not work until tables have been built after first boot.
+            StartMySQL(My.Settings.OpenSimHasRunOnce) ' do this at install as Mysql probe test does not work until tables have been built after first boot.
 
             Try
                 ' mark the system as ready
@@ -387,7 +387,7 @@ Public Class Form1
             SaveOnlookXMLData()
         End If
 
-        StartMySQL(False) ' boot up MySql, and wait for it to start listening
+        StartMySQL(My.Settings.OpenSimHasRunOnce) ' boot up MySql, and wait for it to start listening
 
         If Not Start_Opensimulator() Then ' Launch the rocket
             'KillAll()
@@ -1296,6 +1296,9 @@ Public Class Form1
             Buttons(StartButton)
             Return False
         End Try
+
+        My.Settings.OpenSimHasRunOnce = True
+        My.Settings.Save()
         Return True
     End Function
 
@@ -2155,7 +2158,7 @@ Public Class Form1
         Try
             Dim ip As String = client.DownloadString("http://api.ipify.org/?r=" + Random())
             BumpProgress10()
-            Log("Info:Public IP=" + My.Settings.PublicIP)
+            Log("Info:Public IP=" + ip)
             Return ip
         Catch ex As Exception
             Print("Hmm, I cannot reach the Internet? Uh. Okay, continuing." + ex.Message)
@@ -2338,7 +2341,7 @@ Public Class Form1
             ' Send unique, anonymous random ID, both of the versions of Opensim and this program, and the diagnostics test results 
             ' See my privacy policy at https://www.outworldz.com/privacy.htm
 
-            Dim Url = Domain + "/cgi/updatestats.plx?Port=" + My.Settings.PublicPort + GetPostData()
+            Dim Url = Domain + "/cgi/updatestats.plx?Port=" + My.Settings.HttpPort + GetPostData()
             Log(Url)
             Dim response = client.DownloadString(Url)
             Log("Stats sent " + response)
@@ -2355,12 +2358,12 @@ Public Class Form1
 
     Function OpenRouterPorts() As Boolean
 
-        Log("Local ip seems to be " + UPNP.LocalIP)
-
         If Not MyUPnPMap.UPNPEnabled Then
             Log("UPnP is not enabled in the router")
             Return False
         End If
+
+        Log("Local ip seems to be " + UPNP.LocalIP)
 
         Try
 
@@ -2510,7 +2513,7 @@ Public Class Form1
             Return
         End If
 
-        StartMySQL(False)
+        StartMySQL(My.Settings.OpenSimHasRunOnce)
 
         ' Create an instance of the open file dialog box.
         Dim openFileDialog1 As OpenFileDialog = New OpenFileDialog
@@ -2569,7 +2572,7 @@ Public Class Form1
 
     Private Sub MysqlToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles MysqlToolStripMenuItem.Click
 
-        StartMySQL(False)
+        StartMySQL(My.Settings.OpenSimHasRunOnce)
 
         Try
             My.Computer.FileSystem.DeleteFile(MyFolder & "\OutworldzFiles\mysql\bin\BackupMysql.bat")
@@ -2608,11 +2611,15 @@ Public Class Form1
     Private Function StartMySQL(runonce As Boolean) As Boolean
 
         ' Check for MySql operation
+        Dim MysqlOk As Boolean
 
-        ' wait for MySql to come up
-        If CheckMysql() Then
-            Return True
+        If Not runonce Then
+            MysqlOk = CheckPort("127.0.0.1", My.Settings.MySqlPort)
+        Else
+            MysqlOk = CheckMysql()
         End If
+        If MysqlOk Then Return True
+
 
         ' Start MySql in background.
 
@@ -2655,7 +2662,7 @@ Public Class Form1
         pMySql.StartInfo = pi
         pMySql.Start()
 
-        Dim MysqlOk As Boolean
+
         ProgressBar1.Value = 50
         ' wait for MySql to come up
         While Not MysqlOk
@@ -2680,7 +2687,7 @@ Public Class Form1
 
             ' check again
             Sleep(1000)
-            If runonce Then
+            If Not runonce Then
                 MysqlOk = CheckPort("127.0.0.1", My.Settings.MySqlPort)
             Else
                 MysqlOk = CheckMysql()
@@ -2702,7 +2709,7 @@ Public Class Form1
 
         pi.Arguments = "-e " + """" + "use opensim;select count(*) from useraccounts;" + """" + " --user=root"
         pi.FileName = """" + MyFolder + "\OutworldzFiles\mysql\bin\mysql.exe" + """"
-        pi.WindowStyle = ProcessWindowStyle.Hidden
+        pi.WindowStyle = ProcessWindowStyle.Minimized
         p.StartInfo = pi
         Dim output As String = ""
         Try
@@ -2776,7 +2783,7 @@ Public Class Form1
         Dim Checkname As String = String.Empty
 
         Try
-            Log("Checking DNS name " + My.Settings.DnsName)
+            Print("Checking DNS name " + My.Settings.DnsName)
 
             Checkname = client.DownloadString("http://outworldz.net/dns.plx/?GridName=" + My.Settings.DnsName + GetPostData())
         Catch ex As Exception
@@ -2804,6 +2811,7 @@ Public Class Form1
         Catch ex As Exception
             Log("Warn:Unable to resolve name:" + ex.Message)
         End Try
+        Print("Unable to resolve DNS name")
         Return String.Empty
 
     End Function
