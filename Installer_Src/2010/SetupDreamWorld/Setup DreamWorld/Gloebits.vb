@@ -38,7 +38,7 @@
 
 
 #Region "Mode"
-    Private Sub SandboxButton_CheckedChanged(sender As Object, e As EventArgs) Handles SandboxButton.CheckedChanged
+    Private Sub SandboxButton_CheckedChanged_1(sender As Object, e As EventArgs) Handles SandboxButton.CheckedChanged
         If SandboxButton.Checked = True Then
             ProductionButton.Checked = False
             My.Settings.GloebitsMode = False
@@ -46,13 +46,14 @@
         End If
     End Sub
 
-    Private Sub ProductionButton_CheckedChanged(sender As Object, e As EventArgs) Handles ProductionButton.CheckedChanged
+    Private Sub ProductionButton_CheckedChanged_1(sender As Object, e As EventArgs) Handles ProductionButton.CheckedChanged
         If ProductionButton.Checked = True Then
             SandboxButton.Checked = False
             My.Settings.GloebitsMode = True
             My.Settings.Save()
         End If
     End Sub
+
 
 #End Region
 

@@ -44,7 +44,6 @@ Partial Class Gloebits
         Me.ProductionReqAppButton = New System.Windows.Forms.Button()
         Me.Label14 = New System.Windows.Forms.Label()
         Me.ProductionCreateButton = New System.Windows.Forms.Button()
-        Me.ProductionButton = New System.Windows.Forms.RadioButton()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.Label8 = New System.Windows.Forms.Label()
         Me.Label7 = New System.Windows.Forms.Label()
@@ -58,6 +57,7 @@ Partial Class Gloebits
         Me.Label1 = New System.Windows.Forms.Label()
         Me.SandBoxSignUpButton = New System.Windows.Forms.Button()
         Me.SandboxButton = New System.Windows.Forms.RadioButton()
+        Me.ProductionButton = New System.Windows.Forms.RadioButton()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox3, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox3.SuspendLayout()
@@ -151,6 +151,7 @@ Partial Class Gloebits
         '
         'GroupBox2
         '
+        Me.GroupBox2.Controls.Add(Me.ProductionButton)
         Me.GroupBox2.Controls.Add(Me.Label12)
         Me.GroupBox2.Controls.Add(Me.ProdKeyTextBox)
         Me.GroupBox2.Controls.Add(Me.ProdSecretTextBox)
@@ -162,7 +163,6 @@ Partial Class Gloebits
         Me.GroupBox2.Controls.Add(Me.ProductionReqAppButton)
         Me.GroupBox2.Controls.Add(Me.Label14)
         Me.GroupBox2.Controls.Add(Me.ProductionCreateButton)
-        Me.GroupBox2.Controls.Add(Me.ProductionButton)
         Me.GroupBox2.Location = New System.Drawing.Point(251, 58)
         Me.GroupBox2.Name = "GroupBox2"
         Me.GroupBox2.Size = New System.Drawing.Size(225, 225)
@@ -265,19 +265,9 @@ Partial Class Gloebits
         Me.ProductionCreateButton.Text = "Create Production Account"
         Me.ProductionCreateButton.UseVisualStyleBackColor = True
         '
-        'ProductionButton
-        '
-        Me.ProductionButton.AutoSize = True
-        Me.ProductionButton.Location = New System.Drawing.Point(59, 25)
-        Me.ProductionButton.Name = "ProductionButton"
-        Me.ProductionButton.Size = New System.Drawing.Size(76, 17)
-        Me.ProductionButton.TabIndex = 0
-        Me.ProductionButton.TabStop = True
-        Me.ProductionButton.Text = "Production"
-        Me.ProductionButton.UseVisualStyleBackColor = True
-        '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.SandboxButton)
         Me.GroupBox1.Controls.Add(Me.Label8)
         Me.GroupBox1.Controls.Add(Me.Label7)
         Me.GroupBox1.Controls.Add(Me.Label2)
@@ -289,7 +279,6 @@ Partial Class Gloebits
         Me.GroupBox1.Controls.Add(Me.Label3)
         Me.GroupBox1.Controls.Add(Me.Label1)
         Me.GroupBox1.Controls.Add(Me.SandBoxSignUpButton)
-        Me.GroupBox1.Controls.Add(Me.SandboxButton)
         Me.GroupBox1.Location = New System.Drawing.Point(10, 58)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Size = New System.Drawing.Size(235, 225)
@@ -395,13 +384,24 @@ Partial Class Gloebits
         'SandboxButton
         '
         Me.SandboxButton.AutoSize = True
-        Me.SandboxButton.Location = New System.Drawing.Point(60, 25)
+        Me.SandboxButton.Location = New System.Drawing.Point(56, 25)
         Me.SandboxButton.Name = "SandboxButton"
-        Me.SandboxButton.Size = New System.Drawing.Size(67, 17)
-        Me.SandboxButton.TabIndex = 1
+        Me.SandboxButton.Size = New System.Drawing.Size(97, 17)
+        Me.SandboxButton.TabIndex = 18
         Me.SandboxButton.TabStop = True
-        Me.SandboxButton.Text = "Sandbox"
+        Me.SandboxButton.Text = "Sandbox Mode"
         Me.SandboxButton.UseVisualStyleBackColor = True
+        '
+        'ProductionButton
+        '
+        Me.ProductionButton.AutoSize = True
+        Me.ProductionButton.Location = New System.Drawing.Point(59, 23)
+        Me.ProductionButton.Name = "ProductionButton"
+        Me.ProductionButton.Size = New System.Drawing.Size(106, 17)
+        Me.ProductionButton.TabIndex = 19
+        Me.ProductionButton.TabStop = True
+        Me.ProductionButton.Text = "Production Mode"
+        Me.ProductionButton.UseVisualStyleBackColor = True
         '
         'Gloebits
         '
@@ -451,7 +451,6 @@ Partial Class Gloebits
     Friend WithEvents ProductionReqAppButton As Button
     Friend WithEvents Label14 As Label
     Friend WithEvents ProductionCreateButton As Button
-    Friend WithEvents ProductionButton As RadioButton
     Friend WithEvents GroupBox1 As GroupBox
     Friend WithEvents Label8 As Label
     Friend WithEvents Label7 As Label
@@ -464,5 +463,6 @@ Partial Class Gloebits
     Friend WithEvents Label3 As Label
     Friend WithEvents Label1 As Label
     Friend WithEvents SandBoxSignUpButton As Button
+    Friend WithEvents ProductionButton As RadioButton
     Friend WithEvents SandboxButton As RadioButton
 End Class
