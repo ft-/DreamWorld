@@ -893,6 +893,18 @@ Namespace My
                 Me("BootStart") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public Property OpenSimHasRunOnce() As Boolean
+            Get
+                Return CType(Me("OpenSimHasRunOnce"),Boolean)
+            End Get
+            Set
+                Me("OpenSimHasRunOnce") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

@@ -41,8 +41,8 @@ Public Class Form1
 
 #Region "Declarations"
 
-    Dim MyVersion As String = "2.02"
-    Dim DebugPath As String = "C:\Opensim\Outworldz-Source"  ' no slash at end
+    Dim MyVersion As String = "2.03"
+    Dim DebugPath As String = "C:\Opensim\Outworldz Source"  ' no slash at end
     Public Domain As String = "http://www.outworldz.com"
     Public prefix As String ' Holds path to Opensim folder
 
@@ -181,11 +181,10 @@ Public Class Form1
         LogButton.Hide()
         IgnoreButton.Hide()
 
-
-
         Buttons(BusyButton)
         ' Save a random machine ID - we don't want any data to be sent that's personal or identifiable,  but it needs to be unique
         Randomize()
+        Machine = Random()  ' a random machine ID
 
         ' hide updater
         UpdaterGo.Visible = False
@@ -284,7 +283,6 @@ Public Class Form1
             End If
 
         Else
-            Machine = Random()  ' a random machine ID
 
             Print("Installing Desktop icon clicky thingy")
             Create_ShortCut(MyFolder & "\Start.exe")
@@ -2175,16 +2173,22 @@ Public Class Form1
 
 #End Region
 
-#Region "PnP"
+#Region "UPnP"
 
     Function OpenRouterPorts() As Boolean
 
-        Log("Local ip seems to be " + UPnp.LocalIP)
+
+        If Not MyUPnpMap.UPNPEnabled Then
+            Log("UPnP is not enabled in the router")
+            Return False
+        End If
 
         If Not My.Settings.UPnPEnabled Then
             Log("UPnP is not enabled in the menu")
             Return True
         End If
+
+        Log("Local ip seems to be " + UPnp.LocalIP)
 
         Try
             'diagnostics 8001
@@ -2406,12 +2410,14 @@ Public Class Form1
     Private Function StartMySQL(runonce As Boolean) As Boolean
 
         ' Check for MySql operation
+        Dim MysqlOk As Boolean
 
-        ' wait for MySql to come up
-        If CheckMysql() Then
-            Return True
+        If runonce Then
+            MysqlOk = CheckPort("127.0.0.1", My.Settings.MySqlPort)
+        Else
+            MysqlOk = CheckMysql()
         End If
-
+        If MysqlOk Then Return True
         ' Start MySql in background.
 
         BumpProgress10()
@@ -2453,7 +2459,6 @@ Public Class Form1
         pMySql.StartInfo = pi
         pMySql.Start()
 
-        Dim MysqlOk As Boolean
         ProgressBar1.Value = 50
         ' wait for MySql to come up
         While Not MysqlOk
