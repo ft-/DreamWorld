@@ -238,6 +238,13 @@ Public Class Form1
 
         CheckDefaultPorts()
 
+
+        Dim ws As NetServer = NetServer.getWebServer
+        Log("Info:Starting Web Server ")
+        ws.StartServer(MyFolder)
+
+        BumpProgress10()
+
         ' Run diagnostics, maybe
         If gDebug Then
             gFailDebug = True
@@ -586,7 +593,7 @@ Public Class Form1
         TextBox1.Text = Value
         Application.DoEvents()
         Sleep(gChatTime)  ' time to read
-
+        Application.DoEvents()
     End Sub
 
 
@@ -1375,6 +1382,7 @@ Public Class Form1
     End Sub
 
     Public Sub Log(message As String)
+        Application.DoEvents()
         Try
             Using outputFile As New StreamWriter(MyFolder & "\OutworldzFiles\Outworldz.log", True)
                 outputFile.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + message)
@@ -2172,13 +2180,20 @@ Public Class Form1
     Private Sub TestLoopback()
 
         Dim ws As NetServer = NetServer.getWebServer
-        Log("Info:Starting Web Server")
-        ws.StartServer()
-        Sleep(1000)
+        ' Log("Info:Starting Web Server")
+        ' ws.StartServer()
+
 
         BumpProgress10()
         Dim result As String = ""
-        Dim loopbacktest As String = "http://" + My.Settings.PublicIP + ":" + My.Settings.PublicPort + "/?_TestLoopback=" + Random()
+        Dim loopbacktest As String
+        If My.Settings.DnsName.Length Then
+            loopbacktest = "http://" + My.Settings.DnsName + ":" + My.Settings.PublicPort + "/?_TestLoopback=" + Random()
+        Else
+            loopbacktest = "http://127.0.0.1:" + My.Settings.PublicPort + "/?_TestLoopback=" + Random()
+        End If
+
+
         Try
             Log(loopbacktest)
             result = client.DownloadString(loopbacktest)
@@ -2188,7 +2203,7 @@ Public Class Form1
         End Try
 
         BumpProgress10()
-        ws.StopWebServer()
+        '  ws.StopWebServer()
 
         If result = "Test completed" And Not gFailDebug Then
             Log("Passed:" + result)
@@ -2225,11 +2240,6 @@ Public Class Form1
         Log("Info:Probe Public Port")
         Dim ip As String = GetPubIP()
 
-        Dim ws As NetServer = NetServer.getWebServer
-        Log("Info:Starting Web Server, public port is " + ip)
-        ws.StartServer()
-        Sleep(1000)
-        BumpProgress10()
 
         Dim isPortOpen As String = ""
         Try
@@ -2245,7 +2255,7 @@ Public Class Form1
             My.Settings.DiagFailed = True
         End Try
 
-        ws.StopWebServer()
+        ' ws.StopWebServer()
         BumpProgress10()
 
         If isPortOpen = "yes" And Not gFailDebug Then
@@ -2271,13 +2281,13 @@ Public Class Form1
         My.Settings.DiagFailed = False
         OpenPorts() ' Open router ports with uPnP
         ProbePublicPort()
-        TestLoopback()
 
         If My.Settings.DiagFailed Then
             ShowLog()
         Else
             NewDNSName()
         End If
+        TestLoopback()
         Log("Diagnostics set the Hypergrid address to " + My.Settings.PublicIP)
 
     End Sub
@@ -2399,7 +2409,7 @@ Public Class Form1
                 MyUPnPMap.Add(UPNP.LocalIP, Convert.ToInt16(My.Settings.HttpPort), UPNP.Protocol.UDP, "Opensim UDP Grid " + My.Settings.HttpPort)
                 Log("uPnp: Grid Port.UDP added:" + My.Settings.HttpPort)
             End If
-
+            Application.DoEvents()
             BumpProgress10()
 
             Dim counter = 1
