@@ -66,7 +66,7 @@ unlink "../Zips/Outworldz$type.zip" ;
 unlink "../Zips/Outworldz-Update$type.zip" ;
 
 print "Making binaries, please be sure they are signed: \n";
-
+<STDIN>;
 
 # SIGN FIRST
 
@@ -81,11 +81,12 @@ if (!copy ("$dir/Signed_Binaries/Start.exe", $dir))  {die $!;}
 
 print "Processing Main Zip\n";
 
-my @files =   glob("$dir\\*");
+my @files =   glob("'$dir\\*'");
 
 foreach (@files) {
 	next if -d $_;
-	Process ("../7z.exe -tzip a ..\\Zips\\Outworldz$type.zip $_ ");
+	next if $_ eq 'Make_zip.pl';
+	Process ("../7z.exe -tzip a ..\\Zips\\Outworldz$type.zip \"$_\" ");
 }
 
 say("Adding folders");
