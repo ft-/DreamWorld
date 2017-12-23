@@ -1,6 +1,6 @@
 
-my $type  = '-V2.0-Beta-3';# '-Beta-V1.5';
-my $dir = "C:\\Opensim\\Outworldz-Source";
+my $type  = '-V2.03';# '-Beta-V1.5';
+my $dir = "C:\\Opensim\\Outworldz Source";
 
 
 chdir ($dir);
@@ -16,6 +16,9 @@ my @deletions = (
 				 "$dir/OutworldzFiles/Opensim/bin/ScriptEngines",
 				 "$dir/OutworldzFiles/Opensim/bin/maptiles",
 				 "$dir/OutworldzFiles/Opensim/bin/bakes",
+				 
+				 "$dir/OutworldzFiles/mysql/data/opensim",
+				 "$dir/OutworldzFiles/mysql/data/robust",
 				 );
 
 foreach my $path ( @deletions) {
@@ -32,8 +35,11 @@ unlink "$dir/OutworldzFiles/Opensim-0.9/bin/OpensimConsoleHistory.txt" ;
 unlink "$dir/OutworldzFiles/Opensim/bin/LocalUserStatistics.db" ;
 
 #mysql
-unlink "$dir/OutworldzFiles/mysql/data/Alienware.err" ;
-unlink "$dir/OutworldzFiles/mysql/data/Alienware.pid" ;
+unlink "$dir/OutworldzFiles/mysql/data/*.err" ;
+unlink "$dir/OutworldzFiles/mysql/data/*.pid" ;
+unlink	"$dir/OutworldzFiles/mysql/data/ib_logfile0";
+unlink	"$dir/OutworldzFiles/mysql/data/ib_logfile1";
+unlink	"$dir/OutworldzFiles/mysql/data/ibdata1";
 
 #logs
 unlink "$dir/OutworldzFiles/Diagnostics.log" ;
@@ -51,23 +57,17 @@ print "Making binaries, please be sure they are signed\n";
 
 # SIGN FIRST
 
-#unlink "y:/Inetpub/Secondlife/Outworldz_Installer/Updater.exe" || die $!;
-#unlink "y:/Inetpub/Secondlife/Outworldz_Installer/Outworldz_Installer.exe" || die $!;
-
-#if (!copy  ("$dir/Signed_Binaries/Updater.exe" ,"y:/Inetpub/Secondlife/Outworldz_Installer/Updater.exe"))  {die $!;}
-#if (!copy  ("$dir/Signed_Binaries/Outworldz_Installer.exe" ,"y:/Inetpub/Secondlife/Outworldz_Installer/Outworldz_Installer.exe"))  {die $!;}
-
 if (!copy ("$dir/Signed_Binaries/Start.exe", $dir))  {die $!;}
-#if (!copy ("$dir/Signed_Binaries/Start.exe.config", $dir))  {die $!;}
+
 
 print "Processing Main Zip\n";
 
-my @files =   glob("$dir\\*");
+my @files =   glob("'$dir\\*'");
 
 foreach (@files) {
 	next if -d $_;
 	next if $_ eq 'Make_zip_v2.pl';
-	Process ("../7z.exe -tzip a ..\\Zips\\DreamGrid$type.zip $_ ");
+	Process ("../7z.exe -tzip a ..\\Zips\\DreamGrid$type.zip \"$_\" ");
 }
 
 say("Adding folders");
@@ -140,7 +140,7 @@ sub rm {
 my $path = shift;
 	
 	my $errors;
-	while ($_ = glob("$path/*")) {
+	while ($_ = glob("'$path/*'")) {
 		rmtree($_)
 		  or ++$errors, warn("Can't remove $_: $!");
 	}
