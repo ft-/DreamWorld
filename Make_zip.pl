@@ -1,8 +1,7 @@
 
-my $type  = '-V1.72';# '-Beta-V1.5';
+my $type  = '-V1.73';# '-Beta-V1.5';
 
-my $rev = 'V1.72';
-my $dir = "C:\\Opensim\\OpensimV1.72-Source";
+my $dir = "C:\\Opensim\\OpensimV1.73 Source";
 
 
 chdir ($dir);
@@ -10,15 +9,15 @@ use File::Copy;
 use File::Path;
 use 5.010;
 
-my @deletions = ("$dir/OutworldzFiles/addins-registry",
+my @deletions = (
 				 "$dir/OutworldzFiles/AutoBackup",
+				 "$dir/OutworldzFiles/mysql/data/opensim",
 				 
 				 "$dir/OutworldzFiles/Opensim/bin/assetcache",
 				 "$dir/OutworldzFiles/Opensim/bin/j2kDecodeCache",
 				 "$dir/OutworldzFiles/Opensim/bin/autobackup",
 				 "$dir/OutworldzFiles/Opensim/bin/ScriptEngines",
 				 "$dir/OutworldzFiles/Opensim/bin/maptiles",
-				 "$dir/OutworldzFiles/Opensim/bin/addin-db-002",
 				 "$dir/OutworldzFiles/Opensim/bin/bakes",
 				 
 				 "$dir/OutworldzFiles/Opensim-0.9/bin/assetcache",
@@ -26,9 +25,8 @@ my @deletions = ("$dir/OutworldzFiles/addins-registry",
 				 "$dir/OutworldzFiles/Opensim-0.9/bin/autobackup",
 				 "$dir/OutworldzFiles/Opensim-0.9/bin/ScriptEngines",
 				 "$dir/OutworldzFiles/Opensim-0.9/bin/maptiles",
-				 "$dir/OutworldzFiles/Opensim-0.9/bin/addin-db-002",
 				 "$dir/OutworldzFiles/Opensim-0.9/bin/bakes",
-				 "$dir/OutworldzFiles/mysql/data/opensim",
+				 
 				 
 				 );
 
@@ -51,8 +49,8 @@ unlink "$dir/OutworldzFiles/Opensim/bin/LocalUserStatistics.db" ;
 unlink "$dir/OutworldzFiles/Opensim-0.9/bin/LocalUserStatistics.db" ;
 
 #mysql
-unlink "$dir/OutworldzFiles/mysql/data/Alienware.err" ;
-unlink "$dir/OutworldzFiles/mysql/data/Alienware.pid" ;
+unlink "$dir/OutworldzFiles/mysql/data/*.err" ;
+unlink "$dir/OutworldzFiles/mysql/data/*.pid" ;
 unlink	"$dir/OutworldzFiles/mysql/data/ib_logfile0";
 unlink	"$dir/OutworldzFiles/mysql/data/ib_logfile1";
 unlink	"$dir/OutworldzFiles/mysql/data/ibdata1";
@@ -67,7 +65,7 @@ unlink "$dir/OutworldzFiles/upnp.log" ;
 unlink "../Zips/Outworldz$type.zip" ;
 unlink "../Zips/Outworldz-Update$type.zip" ;
 
-print "Making binaries, please be sure they are signed\n";
+print "Making binaries, please be sure they are signed: \n";
 
 
 # SIGN FIRST
@@ -160,7 +158,7 @@ sub rm {
 my $path = shift;
 	
 	my $errors;
-	while ($_ = glob("$path/*")) {
+	while ($_ = glob("'$path/*'")) {
 		rmtree($_)
 		  or ++$errors, warn("Can't remove $_: $!");
 	}
