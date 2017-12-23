@@ -12,14 +12,4 @@
 171207 12:18:26 [ERROR] Native table 'performance_schema'.'file_summary_by_event_name' has the wrong structure
 171207 12:18:26 [ERROR] Native table 'performance_schema'.'file_summary_by_instance' has the wrong structure
 171207 12:18:26 [ERROR] Native table 'performance_schema'.'mutex_instances' has the wrong structure
-171207 12:18:26 [ERROR] Native table 'performance_schema'.'rwlock_instances' has the wrong structure
-171207 12:18:26 [ERROR] Native table 'performance_schema'.'cond_instances' has the wrong structure
-171207 12:18:26 [ERROR] Native table 'performance_schema'.'file_instances' has the wrong structure
-171207 12:18:26 [Note] Event Scheduler: Loaded 0 events
-171207 12:18:26 [Note] C:\Opensim\OpensimV1.72-Source\OutworldzFiles\mysql\bin\mysqld.exe: ready for connections.
-Version: '5.5.8'  socket: ''  port: 3309  MySQL Community Server (GPL)
-171207 12:46:54 [Note] C:\Opensim\OpensimV1.72-Source\OutworldzFiles\mysql\bin\mysqld.exe: Normal shutdown
-
-171207 12:46:54 [Note] Event Scheduler: Purging the queue. 0 events
-171207 12:46:56 [Warning] C:\Opensim\OpensimV1.72-Source\OutworldzFiles\mysql\bin\mysqld.exe: Forcing close of thread 11  user: 'opensimuser'
-
+171207 12:18:26 [ERRO

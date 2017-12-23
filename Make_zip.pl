@@ -49,8 +49,8 @@ unlink "$dir/OutworldzFiles/Opensim/bin/LocalUserStatistics.db" ;
 unlink "$dir/OutworldzFiles/Opensim-0.9/bin/LocalUserStatistics.db" ;
 
 #mysql
-unlink "$dir/OutworldzFiles/mysql/data/*.err" ;
-unlink "$dir/OutworldzFiles/mysql/data/*.pid" ;
+unlink "$dir/OutworldzFiles/mysql/data/Alienware.err" ;
+unlink "$dir/OutworldzFiles/mysql/data/Alienware.pid" ;
 unlink	"$dir/OutworldzFiles/mysql/data/ib_logfile0";
 unlink	"$dir/OutworldzFiles/mysql/data/ib_logfile1";
 unlink	"$dir/OutworldzFiles/mysql/data/ibdata1";
@@ -104,7 +104,7 @@ if (!copy ("../Zips/Outworldz$type.zip", "../Zips/Outworldz-Update$type.zip"))  
 
 say("Drop mysql files");
 # now delete the mysql from the UPDATE
-Process ("../7z.exe -tzip d ..\\Zips\\Outworldz-Update$type.zip Outworldzfiles\\mysql\\data -r ");
+Process ("../7z.exe -tzip d ..\\Zips\\Outworldz-Update$type.zip Outworldzfiles\\mysql\\data -r "); 
 
 
 # Dot net because we cannot overwrite an open file
@@ -114,7 +114,8 @@ say("Remove Outworldz.ini");
 # and Outworldz.ini so we do not end up with both Outworldz and RegionConfig.ini
 Process ("../7z.exe -tzip d ..\\Zips\\Outworldz-Update$type.zip OutworldzFiles\\Opensim\\bin\\Regions\\Outworldz.ini");		
 Process ("../7z.exe -tzip d ..\\Zips\\Outworldz-Update$type.zip OutworldzFiles\\Opensim-0.9\\bin\\Regions\\Outworldz.ini");	
-
+Process ("../7z.exe -tzip d ..\\Zips\\Outworldz-Update$type.zip OutworldzFiles\\Opensim\\bin\\Regions\\OutworldzHome.ini");		
+Process ("../7z.exe -tzip d ..\\Zips\\Outworldz-Update$type.zip OutworldzFiles\\Opensim-0.9\\bin\\Regions\\OutworldzHome.ini");	
 
 #####################
 print "Server Copy\n";

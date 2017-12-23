@@ -92,7 +92,7 @@ Public Class Form1
     Dim gDebug = False       ' toggled by -debug flag on command line
     Dim gContentAvailable As Boolean = False ' assume there is no OAR and IAR data available
     Dim MyUPnPMap
-
+    Dim ws As NetServer
     Public aRegion(0) As Object
 
     Private Class Region_data
@@ -239,7 +239,8 @@ Public Class Form1
         CheckDefaultPorts()
 
 
-        Dim ws As NetServer = NetServer.getWebServer
+
+        ws = NetServer.getWebServer
         Log("Info:Starting Web Server ")
         ws.StartServer(MyFolder)
 
@@ -436,6 +437,9 @@ Public Class Form1
         ProgressBar1.Value = 90
         Print("Hold fast to your dreams ...")
         ExitAll()
+
+        ws.StopWebServer()
+
         ProgressBar1.Value = 25
         Print("I'll tell you my next dream when I wake up.")
         StopMysql()
@@ -2179,10 +2183,6 @@ Public Class Form1
     End Function
     Private Sub TestLoopback()
 
-        Dim ws As NetServer = NetServer.getWebServer
-        ' Log("Info:Starting Web Server")
-        ' ws.StartServer()
-
 
         BumpProgress10()
         Dim result As String = ""
@@ -2203,7 +2203,7 @@ Public Class Form1
         End Try
 
         BumpProgress10()
-        '  ws.StopWebServer()
+
 
         If result = "Test completed" And Not gFailDebug Then
             Log("Passed:" + result)
@@ -2255,7 +2255,7 @@ Public Class Form1
             My.Settings.DiagFailed = True
         End Try
 
-        ' ws.StopWebServer()
+
         BumpProgress10()
 
         If isPortOpen = "yes" And Not gFailDebug Then
