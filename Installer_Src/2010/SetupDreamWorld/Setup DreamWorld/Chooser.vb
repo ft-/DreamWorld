@@ -6,9 +6,9 @@
         Button1.DialogResult = DialogResult.OK
         ListBox1.Items.Clear()
 
-        For Each obj In Form1.RegionClass.AllRegionObjects()
-            If obj.regionEnabled Then
-                ListBox1.Items.Add(obj.RegionName)
+        For Each o In Form1.RegionClass.AllRegionObjects()
+            If o.RegionEnabled And o.Ready Then
+                ListBox1.Items.Add(o.RegionName)
             End If
         Next
 

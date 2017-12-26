@@ -905,6 +905,7 @@ Public Class Form1
 
         SetIni("AutoBackupModule", "AutoBackupInterval", My.Settings.AutobackupInterval)
         SetIni("AutoBackupModule", "AutoBackupKeepFilesForDays", My.Settings.KeepForDays)
+        SetIni("AutoBackupModule", "AutoBackupDir", BackupPath())
 
 
         ' Voice
@@ -948,6 +949,13 @@ Public Class Form1
         Next
 
         '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+        Dim Success = CopyOpensimProto()
+
+        Return Success
+
+    End Function
+
+    Public Function CopyOpensimProto()
 
         ' COPY OPENSIM.INI prototype to all region folders and set the Sim Name
         For Each o In RegionClass.AllRegionObjects
@@ -985,8 +993,8 @@ Public Class Form1
             End Try
 
         Next
-
         Return True
+
     End Function
 
     Public Sub DoGloebits(path As String)
@@ -1284,7 +1292,7 @@ Public Class Form1
         Try
             Dim o = RegionClass.FindRegionByProcessID(sender.Id)
             Debug.Print(o.RegionName)
-            o.Ready = False
+            o.Ready = True
             o.Crashed = True
             o.WarmingUp = False
             o.ProcessID = 0
@@ -1597,8 +1605,10 @@ Public Class Form1
         End If
 
         For Each o In RegionClass.AllRegionObjects
-            ConsoleCommand(o.ProcessID, "save oar --perm=CT " + """" + BackupPath() + o.RegionName + "_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
-            Application.DoEvents()
+            If o.ready Then
+                ConsoleCommand(o.ProcessID, "save oar --perm=CT " + """" + BackupPath() + o.RegionName + "_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
+                Application.DoEvents()
+            End If
         Next
     End Sub
 
@@ -1727,6 +1737,8 @@ Public Class Form1
         End If
 
         Dim region = ChooseRegion()
+        If Not region.Length Then Return
+
         Dim o = RegionClass.FindRegionByName(region)
 
         Dim backMeUp = MsgBox("Make a backup first?", vbYesNo)
@@ -2737,7 +2749,7 @@ Public Class Form1
 
             Dim o = RegionClass.FindRegionByName(json.region_name)
 
-            ' is now safe to set new proerties
+            ' is now safe to set new properties
             o.Ready = True
             o.Crashed = False
             o.WarmingUp = False
@@ -2848,7 +2860,7 @@ Public Class Form1
                 LoadIni(prefix & "bin\Regions\" & sender.text & "\Region\" & sender.text & ".ini", ";")
                 SetIni(sender.text, "Enabled", "true")
                 SaveINI()
-                If Running Then
+                If Running And o.RegionEnabled Then
                     o.ProcessID = Boot(sender.text)
                 End If
             End If
