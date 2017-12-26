@@ -839,6 +839,7 @@ Public Class Form1
                 SetIni("Startup", "UseSeparatePhysicsThread", "true")
         End Select
 
+        SetIni("Const", "DiagnosticsPort", My.Settings.DiagnosticPort)
         SetIni("Const", "GridName", My.Settings.SimName)
 
         If My.Settings.MapType = "None" Then
