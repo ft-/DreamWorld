@@ -1312,7 +1312,7 @@ Public Class Form1
 
     Private Function Boot(InstanceName As String) As Integer
 
-        Environment.SetEnvironmentVariable("OSIM_LOGPATH", InstanceName)
+        Environment.SetEnvironmentVariable("OSIM_LOGPATH", prefix + "bin\Regions\" & InstanceName)
 
         Dim o = RegionClass.FindRegionByName(InstanceName)
         o.WarmingUp = True

@@ -24,11 +24,11 @@
 [Const]
 
 ; ${Const|GridName}
-GridName = DreamGrid
+GridName = Alienware
 http_listener_port = 8002
 
 ; The URL of the Robust server
-BaseURL = http://10.6.1.130
+BaseURL = http://Tea.Outworldz.net
 
 ; The public port of the Robust server
 PublicPort = 8002

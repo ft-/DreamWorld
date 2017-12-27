@@ -29,3 +29,4 @@ reset user password Wifi Admin 1
 reset user password Wifi Admin 123
 create user Test User 123
 show regions
+create user Test User
