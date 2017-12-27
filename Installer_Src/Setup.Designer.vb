@@ -480,7 +480,7 @@ Partial Class Form1
         Me.PictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.PictureBox1.ErrorImage = Global.Outworldz.My.Resources.Resources.wp_51
         Me.PictureBox1.InitialImage = Nothing
-        Me.PictureBox1.Location = New System.Drawing.Point(0, 27)
+        Me.PictureBox1.Location = New System.Drawing.Point(48, 77)
         Me.PictureBox1.Name = "PictureBox1"
         Me.PictureBox1.Size = New System.Drawing.Size(320, 180)
         Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize
@@ -498,7 +498,6 @@ Partial Class Form1
         Me.Controls.Add(Me.IgnoreButton)
         Me.Controls.Add(Me.LogButton)
         Me.Controls.Add(Me.ProgressBar1)
-        Me.Controls.Add(Me.PictureBox1)
         Me.Controls.Add(Me.UpdaterGo)
         Me.Controls.Add(Me.UpdaterCancel)
         Me.Controls.Add(Me.WebBrowser3)
@@ -510,6 +509,7 @@ Partial Class Form1
         Me.Controls.Add(Me.WebBrowser1)
         Me.Controls.Add(Me.MenuStrip1)
         Me.Controls.Add(Me.TextBox1)
+        Me.Controls.Add(Me.PictureBox1)
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MainMenuStrip = Me.MenuStrip1
         Me.MaximizeBox = False

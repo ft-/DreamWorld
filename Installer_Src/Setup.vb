@@ -155,16 +155,10 @@ Public Class Form1
 
 #Region "StartStop"
 
-    Private Sub Settings_Load(sender As Object, e As EventArgs) Handles Me.Load
-
-
-
-
-
-    End Sub
 
     Private Sub Form1_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 
+        Me.Show()
         'hide progress
         ProgressBar1.Visible = True
         ProgressBar1.Minimum = 0
@@ -523,12 +517,14 @@ Public Class Form1
 
     Private Sub Print(Value As String)
 
+        Me.Focus()
         Log("Info:" + Value)
         PictureBox1.Visible = False
-        TextBox1.Visible = True
         TextBox1.Text = Value
+        TextBox1.Visible = True
         Application.DoEvents()
         Sleep(gChatTime)  ' time to read
+        Application.DoEvents()
 
     End Sub
     Private Sub PrintFast(Value As String)
@@ -541,11 +537,11 @@ Public Class Form1
 
     End Sub
 
-
     Private Sub mnuAbout_Click(sender As System.Object, e As System.EventArgs) Handles mnuAbout.Click
         Print("(c) 2017 Outworldz,LLC")
         Dim webAddress As String = Domain + "/Outworldz_Installer"
         Process.Start(webAddress)
+
     End Sub
 
     Private Sub StopButton_Click_1(sender As System.Object, e As System.EventArgs) Handles StopButton.Click
@@ -559,6 +555,7 @@ Public Class Form1
     End Sub
 
     Private Sub ShowToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles mnuShow.Click
+
         Print("The Opensimulator Console will be shown when Opensim is running.")
         mnuShow.Checked = True
         mnuHide.Checked = False
@@ -569,6 +566,7 @@ Public Class Form1
         If Running Then
             Print("The Opensimulator Console will be shown the next time the system is started.")
         End If
+
     End Sub
 
     Private Sub mnuHide_Click(sender As System.Object, e As System.EventArgs) Handles mnuHide.Click
@@ -1272,6 +1270,14 @@ Public Class Form1
 
         For Each o In RegionClass.AllRegionObjects '
             If o.RegionEnabled Then
+                o.Ready = False
+                o.Crashed = False
+                o.WarmingUp = True
+            End If
+        Next
+
+        For Each o In RegionClass.AllRegionObjects
+            If o.RegionEnabled Then '
                 Print("Starting " + o.RegionName)
                 o.ProcessID = Boot(o.RegionName)
                 If o.ProcessID = 0 Then
@@ -1281,6 +1287,7 @@ Public Class Form1
                 Application.DoEvents()
             End If
         Next
+
         Return True
 
     End Function
@@ -1291,11 +1298,12 @@ Public Class Form1
         ' Handle Opensim Exited
         Try
             Dim o = RegionClass.FindRegionByProcessID(sender.Id)
-            Debug.Print(o.RegionName)
-            o.Ready = True
+            Debug.Print(o.RegionName + " just stopped")
+            o.Ready = False
             o.Crashed = True
             o.WarmingUp = False
             o.ProcessID = 0
+            o.UUID = ""
         Catch
         End Try
 
@@ -1303,6 +1311,13 @@ Public Class Form1
 
 
     Private Function Boot(InstanceName As String) As Integer
+
+        Environment.SetEnvironmentVariable("OSIM_LOGPATH", InstanceName)
+
+        Dim o = RegionClass.FindRegionByName(InstanceName)
+        o.WarmingUp = True
+        o.Ready = False
+        o.Crashed = False
 
         Dim Pid As Integer
         Try
@@ -1323,23 +1338,20 @@ Public Class Form1
             Catch
             End Try
             Try
+                My.Computer.FileSystem.DeleteFile(prefix + "bin\Regions\" & InstanceName & "\PID.pid")
+            Catch
+            End Try
+
+            Try
                 My.Computer.FileSystem.DeleteFile(prefix + "bin\regions/" & InstanceName & "\opensimconsole.log")
             Catch ex As Exception
             End Try
-
-
-            Environment.SetEnvironmentVariable("OSIM_LOGPATH", InstanceName)
 
             myProcess.Start()
             Pid = myProcess.Id
             'fkb
 
             OpensimProcID.Add(Pid)
-
-            Dim o = RegionClass.FindRegionByName(InstanceName)
-            o.WarmingUp = True
-            o.Ready = False
-            o.Crashed = False
 
         Catch ex As Exception
             Print("Error: Opensim did not start: " + ex.Message)
@@ -1737,25 +1749,28 @@ Public Class Form1
         End If
 
         Dim region = ChooseRegion()
-        If Not region.Length Then Return
 
-        Dim o = RegionClass.FindRegionByName(region)
+        If region.Length Then
 
-        Dim backMeUp = MsgBox("Make a backup first?", vbYesNo)
-        Try
-            Print("Opensimulator will load  " + thing + ".  This may take some time.")
-            thing = thing.Replace("\", "/")    ' because Opensim uses unix-like slashes, that's why
-            If backMeUp = vbYes Then
-                ConsoleCommand(o.ProcessID, "alert CPU Intensive Backup Started {ENTER}")
-                ConsoleCommand(o.ProcessID, "save oar " + """" + BackupPath() + "Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
-            End If
-            ConsoleCommand(o.ProcessID, "alert New content Is loading..{ENTER}")
-            ConsoleCommand(o.ProcessID, "load oar --force-terrain --force-parcels " + """" + thing + """" + "{ENTER}")
-            ConsoleCommand(o.ProcessID, "alert New content just loaded. {ENTER}")
-            Me.Focus()
-        Catch ex As Exception
-            Log("Error: " + ex.Message)
-        End Try
+            Dim o = RegionClass.FindRegionByName(region)
+
+            Dim backMeUp = MsgBox("Make a backup first?", vbYesNo)
+            Try
+                Print("Opensimulator will load  " + thing + ".  This may take some time.")
+                thing = thing.Replace("\", "/")    ' because Opensim uses unix-like slashes, that's why
+                If backMeUp = vbYes Then
+                    ConsoleCommand(o.ProcessID, "alert CPU Intensive Backup Started {ENTER}")
+                    ConsoleCommand(o.ProcessID, "save oar " + """" + BackupPath() + "Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
+                End If
+                ConsoleCommand(o.ProcessID, "alert New content Is loading..{ENTER}")
+                ConsoleCommand(o.ProcessID, "load oar --force-terrain --force-parcels " + """" + thing + """" + "{ENTER}")
+                ConsoleCommand(o.ProcessID, "alert New content just loaded. {ENTER}")
+                Me.Focus()
+            Catch ex As Exception
+                Log("Error: " + ex.Message)
+            End Try
+        End If
+
     End Sub
     Private Sub LoadIARContent(thing As String)
 
@@ -2732,6 +2747,7 @@ Public Class Form1
         ' could also be a probe from the outworldz to check if ports are open.
 
         If (POST.Contains("alert")) Then
+            Debug.Print(POST)
             ' This search returns the substring between two strings, so 
             ' the first index Is moved to the character just after the first string.
             POST = Uri.UnescapeDataString(POST)
@@ -2745,18 +2761,22 @@ Public Class Form1
                 Debug.Print(ex.Message)
                 Return
             End Try
-            Print("Region " & json.Region_name & " is ready for logins")
 
-            Dim o = RegionClass.FindRegionByName(json.region_name)
+            If json.login = "enabled" Then
+                Debug.Print("Region " & json.Region_name & " is ready for logins")
 
-            ' is now safe to set new properties
-            o.Ready = True
-            o.Crashed = False
-            o.WarmingUp = False
+                Dim o = RegionClass.FindRegionByName(json.region_name)
 
-            o.UUID = json.region_id
+                ' is now safe to set new properties
+                o.Ready = True
+                o.Crashed = False
+                o.WarmingUp = False
 
+                o.UUID = json.region_id
+
+            End If
         End If
+
 
     End Sub
 
@@ -2784,16 +2804,25 @@ Public Class Form1
             If o.RegionEnabled Then
                 RegionMenu.Checked = True
                 RegionMenu.Image = My.Resources.ResourceManager.GetObject("media_play_green")
+                RegionMenu.ToolTipText = "Region is enabled and will be run. Click to disable."
+                Debug.Print("Region " + o.RegionName + "  is enabled and will be run. Click to disable.")
             Else
                 RegionMenu.Checked = False
                 RegionMenu.Image = My.Resources.ResourceManager.GetObject("media_stop_red")
+                RegionMenu.ToolTipText = "Region is disabled and will not be run. Click to enable."
+                Debug.Print("Region  " + o.RegionName + " is disabled and will not be run. Click to enable.")
             End If
 
-            If o.Crashed Then
+            If o.Crashed And o.RegionEnabled Then
+                RegionMenu.ToolTipText = "Region is offline but enabled."
                 RegionMenu.Image = My.Resources.ResourceManager.GetObject("warning")
+                Debug.Print("Region  " + o.RegionName + " is offline but enabled.")
             End If
+
             If o.WarmingUp Then
-                RegionMenu.Image = My.Resources.ResourceManager.GetObject("recycle")
+                RegionMenu.ToolTipText = "Region is starting up."
+                RegionMenu.Image = My.Resources.ResourceManager.GetObject("refresh")
+                Debug.Print("Region " + o.RegionName + " is starting up.")
             End If
 
             RegionsToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {RegionMenu})
@@ -2801,70 +2830,99 @@ Public Class Form1
 
     End Sub
 
-    Private Sub RegionClick(sender As Object, e As EventArgs)
-        Dim o = RegionClass.FindRegionByName(sender.text)
+    Private Sub RegionClick(sender As ToolStripMenuItem, e As EventArgs)
+        Dim o As Object = RegionClass.FindRegionByName(sender.Text)
 
-        If sender.text = "Robust" Then
-            If gRobustProcID And sender.checked = False Then
+        If sender.Text = "Robust" Then
+            If gRobustProcID And sender.Checked = False Then
                 Try
                     Dim P = Process.GetProcessById(gRobustProcID)
                     P.Kill()
                     sender.Image = My.Resources.ResourceManager.GetObject("media_stop_red") ' image
+                    sender.ToolTipText = "Robust is Disabled and will not run. Click to enable."
                     Log("Region:Stopped Robust")
                 Catch ex As Exception
                     Log("Region:Could not stop Robust")
                 End Try
-                sender.checked = True
+                sender.Checked = True
                 Return
-            ElseIf sender.text = "Robust" And Not gRobustProcID And sender.checked = True Then
+            ElseIf sender.Text = "Robust" And Not gRobustProcID And sender.Checked = True Then
                 Print("Starting Robust")
+                sender.ToolTipText = "Region is enabled and will be run. Click to disable."
                 StartMySQL()
                 Start_Robust()
-                sender.checked = False
+                sender.Checked = False
                 sender.Image = My.Resources.ResourceManager.GetObject("media_play_green")
             End If
 
             Return
 
         Else ' had to be a region that was clicked
-            Log("Region:Clicked region " & sender.text)
-            If sender.checked Or o.crashed Then
-                sender.checked = False 'checkbox
-                sender.Image = My.Resources.ResourceManager.GetObject("media_pause") ' image
-                o.RegionEnabled = False   ' class
 
-                ' and region file on disk
-                LoadIni(prefix & "bin\Regions\" & sender.text & "\Region\" & sender.text & ".ini", ";")
-                SetIni(sender.text, "Enabled", "false")
-                SaveINI()
+            Log("Region:Clicked region " & sender.Text)
+
+            If sender.Checked And o.RegionEnabled And Not (o.Ready Or o.WarmingUp Or o.Crashed) Then
+
+                o.RegionEnabled = False
                 o.Ready = False
+                o.WarmingUp = False
                 o.Crashed = False
-                o.WarmingUp = True
 
+                LoadIni(prefix & "bin\Regions\" & sender.Text & "\Region\" & sender.Text & ".ini", ";")
+                SetIni(sender.Text, "Enabled", "false")
+                SaveINI()
+
+            ElseIf sender.Checked And o.RegionEnabled And (o.Ready Or o.WarmingUp) Then
+
+                ' if enabled and running, even partly up, stop it.
+                sender.Checked = False
                 If Running Then
                     Dim PID = o.ProcessID
                     Try
                         Dim P = Process.GetProcessById(PID)
                         P.Kill()
-                        Log("Region:Stopped Opensim")
+                        o.RegionEnabled = False
+                        o.Ready = False
+                        o.Crashed = False
+                        o.WarmingUp = False
+
+                        LoadIni(prefix & "bin\Regions\" & sender.Text & "\Region\" & sender.Text & ".ini", ";")
+                        SetIni(sender.Text, "Enabled", "false")
+                        SaveINI()
+
+                        Log("Region:Stopped Region " + o.RegionName)
                     Catch ex As Exception
                         Log("Region:Could not stop Opensim")
                     End Try
                 End If
-            Else
-                sender.checked = True
-                sender.Image = My.Resources.ResourceManager.GetObject("media_play_green")
+            ElseIf Not o.RegionEnabled And Not (o.Ready Or o.WarmingUp) Then
+                ' it was stopped, and  enabled And clicked
+                sender.Checked = True
+
                 o.RegionEnabled = True
+                o.Ready = False
+                o.Crashed = False
+                o.WarmingUp = False
 
                 ' and region file on disk
-                LoadIni(prefix & "bin\Regions\" & sender.text & "\Region\" & sender.text & ".ini", ";")
-                SetIni(sender.text, "Enabled", "true")
+                LoadIni(prefix & "bin\Regions\" & sender.Text & "\Region\" & sender.Text & ".ini", ";")
+                SetIni(sender.Text, "Enabled", "true")
                 SaveINI()
-                If Running And o.RegionEnabled Then
-                    o.ProcessID = Boot(sender.text)
+                If Running Then
+                    o.ProcessID = Boot(sender.Text)
+                    Log("Region:Started Region " + o.RegionName)
+                    o.WarmingUp = True
+                End If
+            ElseIf o.RegionEnabled And o.Crashed Then
+                If Running Then
+                    o.ProcessID = Boot(sender.Text)
+                    Log("Region:Started Region " + o.RegionName)
+                    o.Crashed = False
+                    o.WarmingUp = True
                 End If
             End If
         End If
+
 
     End Sub
 

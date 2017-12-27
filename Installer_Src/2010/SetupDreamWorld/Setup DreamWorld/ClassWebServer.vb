@@ -78,7 +78,7 @@ Public Class NetServer
                 Loop While stream.DataAvailable
 
                 ' Print out the received message to the console.
-                Log((":Url:" + myCompleteMessage.ToString()))
+                Log("Received:" + myCompleteMessage.ToString())
                 Form1.ParsePost(myCompleteMessage.ToString())
             Else
                 Log("Error:Cannot read from this NetworkStream.")

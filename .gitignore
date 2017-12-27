@@ -14,12 +14,13 @@ Init.txt
 Outworldz.log
 Http.log
 
-assetcache\*
-maptiles\*
-DataSnapshot\*
-ScriptEngines\*
-j2kDecodeCache\*
-Outworldzfiles\opensim\bin\maptiles\*
+OutworldzFiles/opensim/bin/assetcache/*
+OutworldzFiles/opensim/bin/maptiles/*
+OutworldzFiles/opensim/bin/DataSnapshot/*
+OutworldzFiles/opensim/bin/ScriptEngines/*
+OutworldzFiles/opensim/bin/j2kDecodeCache/*
+OutworldzFiles/opensim/bin/bakes/*
+
 bakes\*
 
 Thumbs.db

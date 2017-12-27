@@ -20,10 +20,6 @@
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
 
         Form1.RegionClass.CurRegionNum() = ListBox1.SelectedIndex
-        Dim value As String = TryCast(ListBox1.SelectedItem, String)
-        My.Settings.WelcomeRegion = ListBox1.SelectedIndex
-        My.Settings.Save()
-
     End Sub
 
 End Class
