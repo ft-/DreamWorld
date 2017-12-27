@@ -41,7 +41,7 @@ Public Class Form1
 
 #Region "Declarations"
 
-    Dim MyVersion As String = "2.03"
+    Dim MyVersion As String = "2.04"
     Dim DebugPath As String = "C:\Opensim\Outworldz Source"  ' no slash at end
     Public Domain As String = "http://www.outworldz.com"
     Public prefix As String ' Holds path to Opensim folder
@@ -159,6 +159,10 @@ Public Class Form1
     Private Sub Form1_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 
         Me.Show()
+
+        SaySomething()
+
+
         'hide progress
         ProgressBar1.Visible = True
         ProgressBar1.Minimum = 0
@@ -221,6 +225,8 @@ Public Class Form1
 
         RegionClass = New RegionMaker
 
+
+
         LoadRegionList()
 
         If (My.Settings.SplashPage = "") Then
@@ -228,7 +234,7 @@ Public Class Form1
             My.Settings.Save()
         End If
 
-        SaySomething()
+
 
         ProgressBar1.Value = 100
         ProgressBar1.Value = 0
@@ -1296,16 +1302,19 @@ Public Class Form1
     Private Sub OpensimProcess_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess.Exited
 
         ' Handle Opensim Exited
-        Try
-            Dim o = RegionClass.FindRegionByProcessID(sender.Id)
-            Debug.Print(o.RegionName + " just stopped")
-            o.Ready = False
-            o.Crashed = True
-            o.WarmingUp = False
-            o.ProcessID = 0
-            o.UUID = ""
-        Catch
-        End Try
+        If Running Then
+            Try
+                Dim o = RegionClass.FindRegionByProcessID(sender.Id)
+                Debug.Print(o.RegionName + " just stopped")
+                o.Ready = False
+                o.Crashed = True
+                o.WarmingUp = False
+                o.ProcessID = 0
+                o.UUID = ""
+            Catch
+            End Try
+        End If
+
 
     End Sub
 
@@ -2762,7 +2771,7 @@ Public Class Form1
                 Return
             End Try
 
-            If json.login = "enabled" Then
+            If json.login = "enabled" And Running Then
                 Debug.Print("Region " & json.Region_name & " is ready for logins")
 
                 Dim o = RegionClass.FindRegionByName(json.region_name)
@@ -2868,6 +2877,23 @@ Public Class Form1
                 o.WarmingUp = False
                 o.Crashed = False
 
+                If Running Then
+                    Dim PID = o.ProcessID
+                    Try
+                        Dim P = Process.GetProcessById(PID)
+                        P.Kill()
+                        o.RegionEnabled = False
+                        o.Ready = False
+                        o.Crashed = False
+                        o.WarmingUp = False
+
+                        Log("Region:Stopped Region " + o.RegionName)
+                    Catch ex As Exception
+                        Log("Region:Could not stop Opensim")
+                    End Try
+                End If
+
+
                 LoadIni(prefix & "bin\Regions\" & sender.Text & "\Region\" & sender.Text & ".ini", ";")
                 SetIni(sender.Text, "Enabled", "false")
                 SaveINI()
@@ -2895,6 +2921,7 @@ Public Class Form1
                         Log("Region:Could not stop Opensim")
                     End Try
                 End If
+
             ElseIf Not o.RegionEnabled And Not (o.Ready Or o.WarmingUp) Then
                 ' it was stopped, and  enabled And clicked
                 sender.Checked = True
