@@ -17,10 +17,11 @@ Public Class RegionMaker
         Public RegionPort As Integer
         Public SizeX As Integer
         Public SizeY As Integer
-        Public RegionEnabled As Boolean
-        Public Ready As Boolean
-        Public Crashed As Boolean
-        Public WarmingUp As Boolean
+
+        Public RegionEnabled As Boolean ' Will run or not
+        Public Ready As Boolean         ' is up
+        Public WarmingUp As Boolean     ' booting up
+        Public ShuttingDown As Boolean  ' shutting down
     End Class
 
     Public Shared RegionList As New ArrayList
@@ -165,17 +166,8 @@ Public Class RegionMaker
         End If
 
     End Sub
-    Public Function CurrentRegionName() As String
 
-        Return RegionList(CurRegionNum).RegionName
 
-    End Function
-
-    Public Function RegionListCount() As Integer
-
-        Return RegionCount()
-
-    End Function
 
     Public Sub DebugRegions()
 
@@ -229,8 +221,6 @@ Public Class RegionMaker
         r.CoordX = LargestX() + 4
         r.CoordY = LargestY() + 0
         r.RegionPort = LargestPort() + 1 '8004 + 1
-        r.Crashed = False
-
 
         RegionList.Add(r)
         CurRegionNum = RegionCount() - 1

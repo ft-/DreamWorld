@@ -34,11 +34,8 @@ Imports Newtonsoft.Json
 
 Public Class Form1
 
-    ' Command line args:
+    ' Command line arg  -debug forces this to use the DebugPath folder for testing
     '
-    '     '-debug' forces this to use the DebugPath folder for testing
-    '
-
 #Region "Declarations"
 
     Dim MyVersion As String = "2.04"
@@ -71,12 +68,11 @@ Public Class Form1
     Dim parser As FileIniDataParser
     Dim gINI As String  ' the name of the current INI file we are writing
 
-    Public OpensimProcID As New ArrayList
-
     ' robust errors and startup
     Public gRobustProcID As Integer
     Private WithEvents RobustProcess As New Process()
-    Private WithEvents myProcess As New Process()
+    Dim ProcessCount As Integer = 0
+
     Public Event RobustExited As EventHandler
     Private images = New List(Of Image) From {My.Resources.tangled, My.Resources.wp_habitat, My.Resources.wp_Mooferd,
                              My.Resources.wp_To_Piers_Anthony,
@@ -114,6 +110,61 @@ Public Class Form1
         Public region_name As String
         Public region_id As String
     End Class
+
+#End Region
+
+#Region "Events"
+    Private WithEvents myProcess1 As New Process()
+    Private WithEvents myProcess2 As New Process()
+    Private WithEvents myProcess3 As New Process()
+    Private WithEvents myProcess4 As New Process()
+    Private WithEvents myProcess5 As New Process()
+    Private WithEvents myProcess6 As New Process()
+    Private WithEvents myProcess7 As New Process()
+    Private WithEvents myProcess8 As New Process()
+    Private WithEvents myProcess9 As New Process()
+    Private WithEvents myProcess10 As New Process()
+    Private WithEvents myProcess11 As New Process()
+    Private WithEvents myProcess12 As New Process()
+    Private WithEvents myProcess13 As New Process()
+    Private WithEvents myProcess14 As New Process()
+    Private WithEvents myProcess15 As New Process()
+    Private WithEvents myProcess16 As New Process()
+    Private WithEvents myProcess17 As New Process()
+    Private WithEvents myProcess18 As New Process()
+    Private WithEvents myProcess19 As New Process()
+    Private WithEvents myProcess20 As New Process()
+    Private WithEvents myProcess21 As New Process()
+    Private WithEvents myProcess22 As New Process()
+    Private WithEvents myProcess23 As New Process()
+    Private WithEvents myProcess24 As New Process()
+    Private WithEvents myProcess25 As New Process()
+    Private WithEvents myProcess26 As New Process()
+    Private WithEvents myProcess27 As New Process()
+    Private WithEvents myProcess28 As New Process()
+    Private WithEvents myProcess29 As New Process()
+    Private WithEvents myProcess30 As New Process()
+    Private WithEvents myProcess31 As New Process()
+    Private WithEvents myProcess32 As New Process()
+    Private WithEvents myProcess33 As New Process()
+    Private WithEvents myProcess34 As New Process()
+    Private WithEvents myProcess35 As New Process()
+    Private WithEvents myProcess36 As New Process()
+    Private WithEvents myProcess37 As New Process()
+    Private WithEvents myProcess38 As New Process()
+    Private WithEvents myProcess39 As New Process()
+    Private WithEvents myProcess40 As New Process()
+    Private WithEvents myProcess41 As New Process()
+    Private WithEvents myProcess42 As New Process()
+    Private WithEvents myProcess43 As New Process()
+    Private WithEvents myProcess44 As New Process()
+    Private WithEvents myProcess45 As New Process()
+    Private WithEvents myProcess46 As New Process()
+    Private WithEvents myProcess47 As New Process()
+    Private WithEvents myProcess48 As New Process()
+    Private WithEvents myProcess49 As New Process()
+    Private WithEvents myProcess50 As New Process()
+
 
 #End Region
 
@@ -195,7 +246,7 @@ Public Class Form1
 
         'hide the pulldowns as there is no content yet
         MnuContent.Visible = False
-        mnuSettings.Visible = False
+        mnuSettings.Visible = True
 
         gChatTime = My.Settings.ChatTime
 
@@ -320,21 +371,6 @@ Public Class Form1
 
     Private Sub Startup()
 
-        If IsRobustRunning() Then
-            Dim answer = MsgBox("Robust is already running. Do you wish to stop Opensimulator?", vbYesNo)
-            If answer = vbYes Then
-                zap("Opensim")
-                zap("robust")
-                MsgBox("Restart required, exiting....", vbInformation)
-                zap("start")
-                Return
-            Else
-                MsgBox("Cannot start while also running in background", vbOK)
-                Return
-            End If
-
-        End If
-
         ProgressBar1.Value = 0
         ProgressBar1.Visible = True
         Buttons(BusyButton)
@@ -431,21 +467,35 @@ Public Class Form1
 
         Application.DoEvents()
 
-        For Each id In OpensimProcID
+        For Each o In RegionClass.AllRegionObjects
             Try
-                Dim P = Process.GetProcessById(id)
-                P.Kill()
+                Dim PID = RegionClass.ProcessID()
+                ConsoleCommand(PID, "quit{ENTER}")
             Catch ex As Exception
             End Try
         Next
 
+        ' now wait for all them to actually quit and then stop robust
+
+        Dim counter = 90 ' 90 seconds to quit all regions
+        While (counter)
+
+            Sleep(1000)
+            counter = counter - 1
+            Dim isRunning As Integer = 0
+            For Each o In RegionClass.AllRegionObjects
+                If o.warmingup Then isRunning = isRunning + 1
+            Next
+            If isRunning = 0 Then counter = 0
+            Application.DoEvents()
+        End While
+
+
         If gRobustProcID Then
-            Try
-                Dim P = Process.GetProcessById(gRobustProcID)
-                P.Kill()
-            Catch ex As Exception
-            End Try
+            ConsoleCommand(gRobustProcID, "quit{ENTER}")
+            Me.Focus()
         End If
+
         ProgressBar1.Value = 33
 
         ' cannot load OAR or IAR, either
@@ -585,6 +635,7 @@ Public Class Form1
         If Running Then
             Print("The Opensimulator Console will not be shown. Change will occur when Opensim is restarted")
         End If
+
     End Sub
 
     Public Function Random() As String
@@ -1083,6 +1134,7 @@ Public Class Form1
 
         SaveINI()
     End Sub
+
 #End Region
 
 #Region "Ports"
@@ -1191,6 +1243,17 @@ Public Class Form1
 
 #Region "Robust"
 
+    Public Sub RobustCommand(command As String)
+
+        Try
+            AppActivate(gRobustProcID)
+            SendKeys.SendWait(command)
+        Catch ex As Exception
+            Log("Warn:" + ex.Message)
+        End Try
+
+    End Sub
+
     ' Handle Exited event and display process information.
     Private Sub RobustProcess_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles RobustProcess.Exited
 
@@ -1200,12 +1263,10 @@ Public Class Form1
 
     Private Function Start_Robust() As Boolean
 
-        If gRobustProcID Then
+        If IsRobustRunning() Then
             Print("Robust is already running")
             Return True
         End If
-
-        If IsRobustRunning() Then Return True
 
         gRobustProcID = Nothing
         Print("Starting Robust")
@@ -1272,25 +1333,32 @@ Public Class Form1
     Private Function Start_Opensimulator() As Boolean
 
         If Running = False Then Return True
-        OpensimProcID.Clear()
+
+        ProcessCount = 0
 
         For Each o In RegionClass.AllRegionObjects '
+            o.ProcessID = 0 ' clear the PID and UUI
+            o.UUID = ""
+
+            ' set the possible states to nothing
             If o.RegionEnabled Then
                 o.Ready = False
-                o.Crashed = False
-                o.WarmingUp = True
+                o.WarmingUp = False
+                o.ShuttingDown = False
             End If
         Next
 
+        ' Boot them up
         For Each o In RegionClass.AllRegionObjects
             If o.RegionEnabled Then '
-                Print("Starting " + o.RegionName)
+                Print("Starting Region " + o.RegionName)
                 o.ProcessID = Boot(o.RegionName)
                 If o.ProcessID = 0 Then
                     Return False
                 End If
+
                 Sleep(5000) ' no rush, give it time to boot and read environment
-                Application.DoEvents()
+
             End If
         Next
 
@@ -1298,36 +1366,247 @@ Public Class Form1
 
     End Function
 
+#End Region
 
-    Private Sub OpensimProcess_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess.Exited
-
-        ' Handle Opensim Exited
-        If Running Then
-            Try
-                Dim o = RegionClass.FindRegionByProcessID(sender.Id)
-                Debug.Print(o.RegionName + " just stopped")
-                o.Ready = False
-                o.Crashed = True
-                o.WarmingUp = False
-                o.ProcessID = 0
-                o.UUID = ""
-            Catch
-            End Try
-        End If
-
-
+#Region "Exited"
+    Private Sub OpensimProcess01_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess1.Exited
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess02_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess2.Exited
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess03_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess3.Exited
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess04_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess4.Exited
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess05_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess5.Exited
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess06_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess6.Exited
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess07_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess7.Exited
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess08_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess8.Exited
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess09_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess9.Exited
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess10_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess10.Exited
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess11_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess11.Exited
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess12_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess12.Exited
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess13_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess13.Exited
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess14_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess14.Exited
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess15_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess15.Exited
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess16_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess16.Exited
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess17_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess17.Exited
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess18_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess18.Exited
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess19_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess19.Exited
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess20_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess20.Exited
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess21_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess21.Exited
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess22_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess22.Exited
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess23_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess23.Exited
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess24_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess24.Exited
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess25_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess25.Exited
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess26_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess26.Exited
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess27_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess27.Exited
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess28_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess28.Exited
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess29_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess29.Exited
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess30_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess30.Exited
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess31_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess31.Exited
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess32_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess32.Exited
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess33_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess33.Exited
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess34_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess34.Exited
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess35_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess35.Exited
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess36_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess36.Exited
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess37_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess37.Exited
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess38_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess38.Exited
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess39_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess39.Exited
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess40_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess40.Exited
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess41_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess41.Exited
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess42_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess42.Exited
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess43_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess43.Exited
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess44_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess44.Exited
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess45_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess45.Exited
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess46_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess46.Exited
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess47_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess47.Exited
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess48_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess48.Exited
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess49_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess49.Exited
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess50_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess50.Exited
+        DoExit(sender)
     End Sub
 
+#End Region
+
+#Region "ExitHandlers"
+
+    Private Sub DoExit(ByVal sender As Object)
+        ' Handle Opensim Exited
+        If Running Then
+            Dim o = RegionClass.FindRegionByProcessID(sender.Id)
+            Log(o.RegionName + " stopped")
+            o.Ready = False
+            o.WarmingUp = False
+            o.ShuttingDown = False
+            o.ProcessID = 0
+        End If
+    End Sub
+
+    Private Function GetNewProcess() As Process
+
+        If ProcessCount = 0 Then Return myProcess1
+        If ProcessCount = 1 Then Return myProcess2
+        If ProcessCount = 2 Then Return myProcess3
+        If ProcessCount = 3 Then Return myProcess4
+        If ProcessCount = 4 Then Return myProcess5
+        If ProcessCount = 5 Then Return myProcess6
+        If ProcessCount = 6 Then Return myProcess7
+        If ProcessCount = 7 Then Return myProcess8
+        If ProcessCount = 8 Then Return myProcess9
+        If ProcessCount = 9 Then Return myProcess10
+        If ProcessCount = 10 Then Return myProcess11
+        If ProcessCount = 11 Then Return myProcess12
+        If ProcessCount = 12 Then Return myProcess13
+        If ProcessCount = 13 Then Return myProcess14
+        If ProcessCount = 14 Then Return myProcess15
+        If ProcessCount = 15 Then Return myProcess16
+        If ProcessCount = 16 Then Return myProcess17
+        If ProcessCount = 17 Then Return myProcess18
+        If ProcessCount = 18 Then Return myProcess19
+        If ProcessCount = 19 Then Return myProcess20
+        If ProcessCount = 20 Then Return myProcess21
+        If ProcessCount = 21 Then Return myProcess22
+        If ProcessCount = 22 Then Return myProcess23
+        If ProcessCount = 23 Then Return myProcess24
+        If ProcessCount = 24 Then Return myProcess25
+        If ProcessCount = 25 Then Return myProcess26
+        If ProcessCount = 26 Then Return myProcess27
+        If ProcessCount = 27 Then Return myProcess28
+        If ProcessCount = 28 Then Return myProcess29
+        If ProcessCount = 29 Then Return myProcess30
+        If ProcessCount = 30 Then Return myProcess31
+        If ProcessCount = 31 Then Return myProcess32
+        If ProcessCount = 32 Then Return myProcess33
+        If ProcessCount = 33 Then Return myProcess34
+        If ProcessCount = 34 Then Return myProcess35
+        If ProcessCount = 35 Then Return myProcess36
+        If ProcessCount = 36 Then Return myProcess37
+        If ProcessCount = 37 Then Return myProcess38
+        If ProcessCount = 38 Then Return myProcess39
+        If ProcessCount = 39 Then Return myProcess40
+        If ProcessCount = 40 Then Return myProcess41
+        If ProcessCount = 41 Then Return myProcess42
+        If ProcessCount = 42 Then Return myProcess43
+        If ProcessCount = 43 Then Return myProcess44
+        If ProcessCount = 44 Then Return myProcess45
+        If ProcessCount = 45 Then Return myProcess46
+        If ProcessCount = 46 Then Return myProcess47
+        If ProcessCount = 47 Then Return myProcess48
+        If ProcessCount = 48 Then Return myProcess49
+        If ProcessCount = 49 Then Return myProcess50
+
+        Return Nothing
+
+    End Function
 
     Private Function Boot(InstanceName As String) As Integer
 
         Environment.SetEnvironmentVariable("OSIM_LOGPATH", prefix + "bin\Regions\" & InstanceName)
 
-        Dim o = RegionClass.FindRegionByName(InstanceName)
-        o.WarmingUp = True
-        o.Ready = False
-        o.Crashed = False
+        Dim myProcess = GetNewProcess()
 
+        If myProcess Is Nothing Then
+            Print("Exceeded max number of processes: could not start " + InstanceName)
+            Return True
+        End If
+
+        ProcessCount = ProcessCount + 1
+
+        Dim o = RegionClass.FindRegionByName(InstanceName)
         Dim Pid As Integer
         Try
             myProcess.EnableRaisingEvents = True
@@ -1358,9 +1637,11 @@ Public Class Form1
 
             myProcess.Start()
             Pid = myProcess.Id
-            'fkb
 
-            OpensimProcID.Add(Pid)
+            If Pid Then
+                o.WarmingUp = True
+                o.ProcessID = Pid
+            End If
 
         Catch ex As Exception
             Print("Error: Opensim did not start: " + ex.Message)
@@ -1453,16 +1734,6 @@ Public Class Form1
 
 #Region "Subs"
 
-    Private Function BackupPath() As String
-
-        If My.Settings.BackupFolder = "AutoBackup" Then
-            BackupPath = gCurSlashDir + "/OutworldzFiles/Autobackup/"
-        Else
-            BackupPath = My.Settings.BackupFolder + "/"
-            BackupPath = BackupPath.Replace("\", "/")    ' because Opensim uses unix-like slashes, that's why
-        End If
-
-    End Function
 
     Public Sub ConsoleCommand(ProcessID As Integer, command As String)
 
@@ -1475,16 +1746,6 @@ Public Class Form1
 
     End Sub
 
-    Public Sub RobustCommand(command As String)
-
-        Try
-            AppActivate(gRobustProcID)
-            SendKeys.SendWait(command)
-        Catch ex As Exception
-            Log("Warn:" + ex.Message)
-        End Try
-
-    End Sub
 
     Private Sub SaySomething()
         Dim Prefix() As String = {
@@ -1543,7 +1804,15 @@ Public Class Form1
 
     Sub Sleep(value As Integer)
 
-        Thread.Sleep(value)
+        ' value is in milliseconds, but we do it in 10 passes so we can doevents() to free up console
+
+        Dim sleeptime = value / 10  ' now in tenths
+        Dim counter = 10
+        While counter
+            Application.DoEvents()
+            Thread.Sleep(sleeptime)
+            counter = counter - 1
+        End While
 
     End Sub
 
@@ -1591,6 +1860,7 @@ Public Class Form1
         End If
 
     End Sub
+
     Private Sub BumpProgress(bump As Integer)
 
         If ProgressBar1.Value < 100 Then
@@ -1619,6 +1889,17 @@ Public Class Form1
 
 #Region "IAROAR"
 
+    Private Function BackupPath() As String
+
+        If My.Settings.BackupFolder = "AutoBackup" Then
+            BackupPath = gCurSlashDir + "/OutworldzFiles/Autobackup/"
+        Else
+            BackupPath = My.Settings.BackupFolder + "/"
+            BackupPath = BackupPath.Replace("\", "/")    ' because Opensim uses unix-like slashes, that's why
+        End If
+
+    End Function
+
     Private Sub AllRegionsOARsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AllRegionsOARsToolStripMenuItem.Click
         If Not Running Then
             Print("Opensim is not running. Cannot save an OAR at this time.")
@@ -1628,12 +1909,11 @@ Public Class Form1
         For Each o In RegionClass.AllRegionObjects
             If o.ready Then
                 ConsoleCommand(o.ProcessID, "save oar --perm=CT " + """" + BackupPath() + o.RegionName + "_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
+                Me.Focus()
                 Application.DoEvents()
             End If
         Next
     End Sub
-
-
 
     Private Sub LoadInventoryIARToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles LoadInventoryIARToolStripMenuItem.Click
 
@@ -1725,7 +2005,6 @@ Public Class Form1
         End If
     End Sub
 
-
     Private Function ChooseRegion() As String
 
         Dim Chooseform As New Chooser ' form for choosing a set of regions
@@ -1740,6 +2019,7 @@ Public Class Form1
                 If o Is Nothing Then
                 Else
                     ConsoleCommand(o.ProcessID, "change region " + """" + chosen + """" + "{ENTER}")
+                    Me.Focus()
                 End If
                 Chooseform.Dispose()
             End If
@@ -1750,6 +2030,7 @@ Public Class Form1
         Return chosen
 
     End Function
+
     Private Sub LoadOARContent(thing As String)
 
         If Not isRunning Then
@@ -1781,6 +2062,7 @@ Public Class Form1
         End If
 
     End Sub
+
     Private Sub LoadIARContent(thing As String)
 
         If Not Running Then
@@ -1792,14 +2074,10 @@ Public Class Form1
         Dim user = InputBox("User name that will get this IAR?")
         Dim password = InputBox("Password for user " + user + "?")
         If user.Length And password.Length Then
-            Try
-                ConsoleCommand(o.ProcessID, "load iar --merge " + user + " / " + password + " " + """" + thing + """" + "{ENTER}")
-                ConsoleCommand(o.ProcessID, "alert IAR content Is loaded{ENTER}")
-                Me.Focus()
-            Catch ex As Exception
-                Log("Error:" + ex.Message)
-            End Try
 
+            ConsoleCommand(o.ProcessID, "load iar --merge " + user + " / " + password + " " + """" + thing + """" + "{ENTER}")
+            ConsoleCommand(o.ProcessID, "alert IAR content Is loaded{ENTER}")
+            Me.Focus()
             Print("Opensim is loading your item. You will find it in your inventory in / soon.")
         Else
             Print("Load IAR cancelled - must use the full user name and password.")
@@ -1830,7 +2108,6 @@ Public Class Form1
             e.Effect = DragDropEffects.Copy
         End If
     End Sub
-
 
     Private Sub PictureBox1_DragDrop(sender As System.Object, e As System.Windows.Forms.DragEventArgs) Handles PictureBox1.DragDrop
 
@@ -1935,6 +2212,7 @@ Public Class Form1
         sender.checked = True
         Print("Opensimulator will load " + file + ".  This may take time to load.")
     End Sub
+
 #End Region
 
 #Region "Updates"
@@ -1942,6 +2220,7 @@ Public Class Form1
     Private Sub CheckForUpdatesToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CHeckForUpdatesToolStripMenuItem.Click
         CheckForUpdates()
     End Sub
+
     Private Sub UpdaterCancel_Click(sender As Object, e As EventArgs) Handles UpdaterCancel.Click
 
         UpdaterGo.Visible = False
@@ -1978,6 +2257,7 @@ Public Class Form1
         End If
 
     End Sub
+
     Private Function Download() As String
 
         Dim fileName As String = "UpdateGrid.exe"
@@ -2507,7 +2787,7 @@ Public Class Form1
             BumpProgress(1)
             Application.DoEvents()
 
-            Dim MysqlLog As String = MyFolder + "\OutworldzFiles\mysql\data" ' !!!
+            Dim MysqlLog As String = MyFolder + "\OutworldzFiles\mysql\data"
             If ProgressBar1.Value = 100 Then ' about 30 seconds when it fails
 
                 Dim yesno = MsgBox("The database did not start. Do you want to see the log file?", vbYesNo)
@@ -2591,14 +2871,6 @@ Public Class Form1
                 Log("Error:Process pMySql.Close() " + ex2.Message)
             End Try
         End If
-
-        '   Mysql = CheckPort("127.0.0.1", My.Settings.MySqlPort)
-        '   If Not Mysql Then
-        '  For Each stuckP As Process In System.Diagnostics.Process.GetProcessesByName("mysqld")
-        ' 'stuckP.Kill()
-        ' Log("Warn:Forced to Zap mySQL")
-        ' Next
-        ' End If
 
     End Sub
 
@@ -2771,19 +3043,24 @@ Public Class Form1
                 Return
             End Try
 
-            If json.login = "enabled" And Running Then
+            If json.login = "enabled" Then
                 Debug.Print("Region " & json.Region_name & " is ready for logins")
 
                 Dim o = RegionClass.FindRegionByName(json.region_name)
-
-                ' is now safe to set new properties
                 o.Ready = True
-                o.Crashed = False
                 o.WarmingUp = False
-
+                o.ShuttingDown = False
                 o.UUID = json.region_id
 
+            ElseIf json.login = "shutdown" Then
+                Debug.Print("Region " & json.Region_name & " shut down")
+
+                Dim o = RegionClass.FindRegionByName(json.region_name)
+                o.Ready = False
+                o.WarmingUp = False
+                o.ShuttingDown = False
             End If
+
         End If
 
 
@@ -2811,30 +3088,35 @@ Public Class Form1
             AddHandler RegionMenu.Click, New EventHandler(AddressOf RegionClick)
 
             If o.RegionEnabled Then
-                RegionMenu.Checked = True
                 RegionMenu.Image = My.Resources.ResourceManager.GetObject("media_play_green")
-                RegionMenu.ToolTipText = "Region is enabled and will be run. Click to disable."
-                Debug.Print("Region " + o.RegionName + "  is enabled and will be run. Click to disable.")
+                RegionMenu.ToolTipText = "Region is enabled And will be run. Click to disable."
+                Debug.Print("Region " + o.RegionName + "  is enabled and will be run.")
             Else
-                RegionMenu.Checked = False
                 RegionMenu.Image = My.Resources.ResourceManager.GetObject("media_stop_red")
-                RegionMenu.ToolTipText = "Region is disabled and will not be run. Click to enable."
-                Debug.Print("Region  " + o.RegionName + " is disabled and will not be run. Click to enable.")
-            End If
-
-            If o.Crashed And o.RegionEnabled Then
-                RegionMenu.ToolTipText = "Region is offline but enabled."
-                RegionMenu.Image = My.Resources.ResourceManager.GetObject("warning")
-                Debug.Print("Region  " + o.RegionName + " is offline but enabled.")
+                RegionMenu.ToolTipText = "Region Is disabled And will Not be run. Click to enable."
+                Debug.Print("Region  " + o.RegionName + " is disabled and will not be run. ")
             End If
 
             If o.WarmingUp Then
                 RegionMenu.ToolTipText = "Region is starting up."
                 RegionMenu.Image = My.Resources.ResourceManager.GetObject("refresh")
                 Debug.Print("Region " + o.RegionName + " is starting up.")
+            ElseIf o.ShuttingDown Then
+                RegionMenu.ToolTipText = "Region is shutting down."
+                RegionMenu.Image = My.Resources.ResourceManager.GetObject("flash")
+                Debug.Print("Region " + o.RegionName + " is shutting down.")
+            ElseIf o.Ready Then
+                RegionMenu.Image = My.Resources.ResourceManager.GetObject("media_play_green")
+                RegionMenu.ToolTipText = "Region is Running. Click to Stop."
+                Debug.Print("Region " + o.RegionName + "  is Running")
+            Else 'stopped
+                RegionMenu.ToolTipText = "Region is Stopped."
+                RegionMenu.Image = My.Resources.ResourceManager.GetObject("media_pause")
+                Debug.Print("Region " + o.RegionName + " is Stopped.")
             End If
 
             RegionsToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {RegionMenu})
+            Application.DoEvents()
         Next
 
     End Sub
@@ -2842,13 +3124,12 @@ Public Class Form1
     Private Sub RegionClick(sender As ToolStripMenuItem, e As EventArgs)
         Dim o As Object = RegionClass.FindRegionByName(sender.Text)
 
+        ' Handle robust clicking
         If sender.Text = "Robust" Then
             If gRobustProcID And sender.Checked = False Then
                 Try
-                    Dim P = Process.GetProcessById(gRobustProcID)
-                    P.Kill()
-                    sender.Image = My.Resources.ResourceManager.GetObject("media_stop_red") ' image
-                    sender.ToolTipText = "Robust is Disabled and will not run. Click to enable."
+                    ConsoleCommand(gRobustProcID, "quit{ENTER}")
+                    Me.Focus()
                     Log("Region:Stopped Robust")
                 Catch ex As Exception
                     Log("Region:Could not stop Robust")
@@ -2857,96 +3138,64 @@ Public Class Form1
                 Return
             ElseIf sender.Text = "Robust" And Not gRobustProcID And sender.Checked = True Then
                 Print("Starting Robust")
-                sender.ToolTipText = "Region is enabled and will be run. Click to disable."
                 StartMySQL()
                 Start_Robust()
                 sender.Checked = False
-                sender.Image = My.Resources.ResourceManager.GetObject("media_play_green")
             End If
 
             Return
 
         Else ' had to be a region that was clicked
 
-            Log("Region:Clicked region " & sender.Text)
+            Debug.Print("Region:Clicked region " & sender.Text)
 
-            If sender.Checked And o.RegionEnabled And Not (o.Ready Or o.WarmingUp Or o.Crashed) Then
-
-                o.RegionEnabled = False
-                o.Ready = False
-                o.WarmingUp = False
-                o.Crashed = False
-
-                If Running Then
-                    Dim PID = o.ProcessID
-                    Try
-                        Dim P = Process.GetProcessById(PID)
-                        P.Kill()
-                        o.RegionEnabled = False
-                        o.Ready = False
-                        o.Crashed = False
-                        o.WarmingUp = False
-
-                        Log("Region:Stopped Region " + o.RegionName)
-                    Catch ex As Exception
-                        Log("Region:Could not stop Opensim")
-                    End Try
-                End If
-
-
-                LoadIni(prefix & "bin\Regions\" & sender.Text & "\Region\" & sender.Text & ".ini", ";")
-                SetIni(sender.Text, "Enabled", "false")
-                SaveINI()
-
-            ElseIf sender.Checked And o.RegionEnabled And (o.Ready Or o.WarmingUp) Then
+            ' Running, stop it
+            If o.RegionEnabled And (o.Ready Or o.WarmingUp) Then
 
                 ' if enabled and running, even partly up, stop it.
                 sender.Checked = False
                 If Running Then
-                    Dim PID = o.ProcessID
                     Try
-                        Dim P = Process.GetProcessById(PID)
-                        P.Kill()
+                        ConsoleCommand(o.ProcessID, "quit{ENTER}")
+                        Me.Focus()
+
                         o.RegionEnabled = False
                         o.Ready = False
-                        o.Crashed = False
                         o.WarmingUp = False
+                        o.ShuttingDown = True
 
                         LoadIni(prefix & "bin\Regions\" & sender.Text & "\Region\" & sender.Text & ".ini", ";")
                         SetIni(sender.Text, "Enabled", "false")
                         SaveINI()
 
-                        Log("Region:Stopped Region " + o.RegionName)
+                        Debug.Print("Region:Stopped Region " + o.RegionName)
                     Catch ex As Exception
-                        Log("Region:Could not stop Opensim")
+                        Debug.Print("Region:Could not stop Opensim")
                     End Try
                 End If
 
-            ElseIf Not o.RegionEnabled And Not (o.Ready Or o.WarmingUp) Then
-                ' it was stopped, and  enabled And clicked
+            ElseIf Not (o.Ready Or o.WarmingUp Or o.ShuttingDown) Then
+                ' it was stopped, and disabled, so we toggle the enable, and start up
                 sender.Checked = True
 
                 o.RegionEnabled = True
                 o.Ready = False
-                o.Crashed = False
-                o.WarmingUp = False
+                o.ShuttingDown = False
 
                 ' and region file on disk
                 LoadIni(prefix & "bin\Regions\" & sender.Text & "\Region\" & sender.Text & ".ini", ";")
                 SetIni(sender.Text, "Enabled", "true")
                 SaveINI()
+
                 If Running Then
                     o.ProcessID = Boot(sender.Text)
-                    Log("Region:Started Region " + o.RegionName)
+                    Debug.Print("Region:Started Region " + o.RegionName)
                     o.WarmingUp = True
+                Else
+                    o.WarmingUp = False
                 End If
-            ElseIf o.RegionEnabled And o.Crashed Then
-                If Running Then
-                    o.ProcessID = Boot(sender.Text)
-                    Log("Region:Started Region " + o.RegionName)
-                    o.Crashed = False
-                    o.WarmingUp = True
-                End If
+
+
             End If
         End If
 
@@ -2977,6 +3226,7 @@ Public Class Form1
         Else
             Print("Opensim is not running. Cannot make a backup now.")
         End If
+
     End Sub
 
     Private Sub LoadRegionOarToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles LoadRegionOarToolStripMenuItem.Click
@@ -3021,7 +3271,6 @@ Public Class Form1
 
 
 #End Region
-
 
 
 End Class
