@@ -426,3 +426,9 @@ C:\Opensim\OpensimV1.73 Source\Installer_Src\2010\SetupDreamWorld\Setup DreamWor
 C:\Opensim\OpensimV1.73 Source\Installer_Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Release\Outworldz.Resources.resources
 C:\Opensim\OpensimV1.73 Source\Installer_Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Release\Outworldz.Form2.resources
 C:\Opensim\OpensimV1.73 Source\Installer_Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Release\Start.vbproj.GenerateResource.Cache
+C:\Opensim\OpensimV1.74 Source\Installer_Src\2010\SetupDreamWorld\Setup DreamWorld\bin\Release\Start.exe.config
+C:\Opensim\OpensimV1.74 Source\Installer_Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Release\Interop.IWshRuntimeLibrary.dll
+C:\Opensim\OpensimV1.74 Source\Installer_Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Release\Interop.NATUPNPLib.dll
+C:\Opensim\OpensimV1.74 Source\Installer_Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Release\Start.vbproj.ResolveComReference.cache
+C:\Opensim\OpensimV1.74 Source\Installer_Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Release\Start.exe
+C:\Opensim\OpensimV1.74 Source\Installer_Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Release\Start.pdb

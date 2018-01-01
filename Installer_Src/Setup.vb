@@ -36,8 +36,8 @@ Public Class Form1
 
 #Region "Declarations"
 
-    Dim MyVersion As String = "1.73"
-    Dim DebugPath As String = "C:\Opensim\OpensimV1.73 Source"
+    Dim MyVersion As String = "1.74"
+    Dim DebugPath As String = "C:\Opensim\OpensimV1.74 Source"
     Public Domain As String = "http://www.outworldz.com"
 
     Private gFailDebug = False ' set to true to fail diagnostic
@@ -150,7 +150,6 @@ Public Class Form1
 
     Private Sub Form1_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 
-
         'hide progress
         ProgressBar1.Visible = True
         ProgressBar1.Minimum = 0
@@ -166,6 +165,8 @@ Public Class Form1
             Me.Location = New Point(My.Settings.MyX, My.Settings.MyY)
         End If
 
+        Me.Show()
+
         Buttons(BusyButton)
         ' Save a random machine ID - we don't want any data to be sent that's personal or identifiable,  but it needs to be unique
         Randomize()
@@ -180,7 +181,6 @@ Public Class Form1
 
         'hide the pulldowns as there is no content yet
         MnuContent.Visible = False
-        mnuSettings.Visible = False
 
         gChatTime = My.Settings.ChatTime
 
@@ -216,7 +216,6 @@ Public Class Form1
             Log("Info:No need to upgrade RegionConfig.ini")
         End Try
 
-
         GetAllRegions()
 
         If (My.Settings.SplashPage = "") Then
@@ -224,7 +223,6 @@ Public Class Form1
             My.Settings.Save()
         End If
 
-        Me.Show()
         Application.DoEvents()
         SaySomething()
         Sleep(2000)
@@ -237,8 +235,6 @@ Public Class Form1
         End If
 
         CheckDefaultPorts()
-
-
 
         ws = NetServer.getWebServer
         Log("Info:Starting Web Server ")
@@ -266,7 +262,7 @@ Public Class Form1
 
         SetINIData()
 
-        mnuSettings.Visible = True
+
         SetIAROARContent() ' load IAR and OAR web content
 
         If My.Settings.Password = "secret" Then
@@ -361,7 +357,6 @@ Public Class Form1
 
         ProgressBar1.Value = 100
         Application.DoEvents()
-
 
         Buttons(StartButton)
 
