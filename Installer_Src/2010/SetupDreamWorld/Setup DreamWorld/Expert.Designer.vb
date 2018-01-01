@@ -100,6 +100,7 @@ Partial Class Expert
         Me.Label6 = New System.Windows.Forms.Label()
         Me.BootStart = New System.Windows.Forms.CheckBox()
         Me.AutoStartCheckbox = New System.Windows.Forms.CheckBox()
+        Me.EnableHypergrid = New System.Windows.Forms.CheckBox()
         Me.GroupBox3.SuspendLayout()
         CType(Me.PictureBox7, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox6, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -122,6 +123,7 @@ Partial Class Expert
         '
         'GroupBox3
         '
+        Me.GroupBox3.Controls.Add(Me.EnableHypergrid)
         Me.GroupBox3.Controls.Add(Me.PictureBox7)
         Me.GroupBox3.Controls.Add(Me.PictureBox6)
         Me.GroupBox3.Controls.Add(Me.PictureBox5)
@@ -146,7 +148,7 @@ Partial Class Expert
         'PictureBox7
         '
         Me.PictureBox7.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.PictureBox7.Location = New System.Drawing.Point(146, 241)
+        Me.PictureBox7.Location = New System.Drawing.Point(142, 288)
         Me.PictureBox7.Name = "PictureBox7"
         Me.PictureBox7.Size = New System.Drawing.Size(30, 34)
         Me.PictureBox7.TabIndex = 1865
@@ -156,7 +158,7 @@ Partial Class Expert
         'PictureBox6
         '
         Me.PictureBox6.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.PictureBox6.Location = New System.Drawing.Point(138, 137)
+        Me.PictureBox6.Location = New System.Drawing.Point(134, 184)
         Me.PictureBox6.Name = "PictureBox6"
         Me.PictureBox6.Size = New System.Drawing.Size(30, 34)
         Me.PictureBox6.TabIndex = 1864
@@ -166,7 +168,7 @@ Partial Class Expert
         'PictureBox5
         '
         Me.PictureBox5.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.PictureBox5.Location = New System.Drawing.Point(132, 70)
+        Me.PictureBox5.Location = New System.Drawing.Point(128, 117)
         Me.PictureBox5.Name = "PictureBox5"
         Me.PictureBox5.Size = New System.Drawing.Size(30, 34)
         Me.PictureBox5.TabIndex = 1860
@@ -177,7 +179,7 @@ Partial Class Expert
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(6, 88)
+        Me.Label1.Location = New System.Drawing.Point(4, 136)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(77, 13)
         Me.Label1.TabIndex = 1863
@@ -185,14 +187,14 @@ Partial Class Expert
         '
         'UniqueId
         '
-        Me.UniqueId.Location = New System.Drawing.Point(9, 105)
+        Me.UniqueId.Location = New System.Drawing.Point(5, 152)
         Me.UniqueId.Name = "UniqueId"
         Me.UniqueId.Size = New System.Drawing.Size(173, 20)
         Me.UniqueId.TabIndex = 1862
         '
         'DNSButton
         '
-        Me.DNSButton.Location = New System.Drawing.Point(6, 19)
+        Me.DNSButton.Location = New System.Drawing.Point(8, 59)
         Me.DNSButton.Name = "DNSButton"
         Me.DNSButton.Size = New System.Drawing.Size(170, 23)
         Me.DNSButton.TabIndex = 1861
@@ -202,16 +204,16 @@ Partial Class Expert
         'DNSHelp
         '
         Me.DNSHelp.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.DNSHelp.Location = New System.Drawing.Point(88, 48)
+        Me.DNSHelp.Location = New System.Drawing.Point(90, 88)
         Me.DNSHelp.Name = "DNSHelp"
         Me.DNSHelp.Size = New System.Drawing.Size(28, 27)
         Me.DNSHelp.TabIndex = 1859
         Me.DNSHelp.TabStop = False
-        Me.ToolTip1.SetToolTip(Me.DNSHelp, "Click For Help")
+        Me.ToolTip1.SetToolTip(Me.DNSHelp, "Click For Help on DNS")
         '
         'HypericaButton
         '
-        Me.HypericaButton.Location = New System.Drawing.Point(9, 204)
+        Me.HypericaButton.Location = New System.Drawing.Point(5, 251)
         Me.HypericaButton.Name = "HypericaButton"
         Me.HypericaButton.Size = New System.Drawing.Size(172, 23)
         Me.HypericaButton.TabIndex = 34
@@ -220,7 +222,7 @@ Partial Class Expert
         '
         'TestButton1
         '
-        Me.TestButton1.Location = New System.Drawing.Point(6, 50)
+        Me.TestButton1.Location = New System.Drawing.Point(8, 90)
         Me.TestButton1.Name = "TestButton1"
         Me.TestButton1.Size = New System.Drawing.Size(75, 23)
         Me.TestButton1.TabIndex = 33
@@ -230,7 +232,7 @@ Partial Class Expert
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(6, 160)
+        Me.Label2.Location = New System.Drawing.Point(2, 207)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(126, 13)
         Me.Label2.TabIndex = 26
@@ -246,7 +248,7 @@ Partial Class Expert
         '
         'GridName
         '
-        Me.GridName.Location = New System.Drawing.Point(9, 178)
+        Me.GridName.Location = New System.Drawing.Point(5, 225)
         Me.GridName.Name = "GridName"
         Me.GridName.Size = New System.Drawing.Size(173, 20)
         Me.GridName.TabIndex = 10
@@ -254,7 +256,7 @@ Partial Class Expert
         'Label19
         '
         Me.Label19.AutoSize = True
-        Me.Label19.Location = New System.Drawing.Point(9, 264)
+        Me.Label19.Location = New System.Drawing.Point(5, 311)
         Me.Label19.Name = "Label19"
         Me.Label19.Size = New System.Drawing.Size(139, 13)
         Me.Label19.TabIndex = 46
@@ -262,7 +264,7 @@ Partial Class Expert
         '
         'SplashPage
         '
-        Me.SplashPage.Location = New System.Drawing.Point(9, 282)
+        Me.SplashPage.Location = New System.Drawing.Point(5, 329)
         Me.SplashPage.Name = "SplashPage"
         Me.SplashPage.Size = New System.Drawing.Size(177, 20)
         Me.SplashPage.TabIndex = 45
@@ -868,6 +870,16 @@ Partial Class Expert
         Me.AutoStartCheckbox.Text = "Enable"
         Me.AutoStartCheckbox.UseVisualStyleBackColor = True
         '
+        'EnableHypergrid
+        '
+        Me.EnableHypergrid.AutoSize = True
+        Me.EnableHypergrid.Location = New System.Drawing.Point(18, 27)
+        Me.EnableHypergrid.Name = "EnableHypergrid"
+        Me.EnableHypergrid.Size = New System.Drawing.Size(107, 17)
+        Me.EnableHypergrid.TabIndex = 1866
+        Me.EnableHypergrid.Text = "Enable Hypergrid"
+        Me.EnableHypergrid.UseVisualStyleBackColor = True
+        '
         'Expert
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -993,4 +1005,5 @@ Partial Class Expert
     Friend WithEvents PictureBox1 As PictureBox
     Friend WithEvents PictureBox7 As PictureBox
     Friend WithEvents PictureBox6 As PictureBox
+    Friend WithEvents EnableHypergrid As CheckBox
 End Class

@@ -10,7 +10,6 @@ Public Class Expert
 
     Private Sub Loaded(sender As Object, e As EventArgs) Handles Me.Load
 
-
         uPnPEnabled.Checked = My.Settings.UPnPEnabled
 
         GridName.Text = My.Settings.SimName
@@ -40,17 +39,14 @@ Public Class Expert
         ManagerGod.Checked = My.Settings.region_manager_is_god
 
         'Wifi
-
         WifiEnabled.Checked = My.Settings.WifiEnabled
         AdminEmail.Text = My.Settings.AdminEmail
         AccountConfirmationRequired.Checked = My.Settings.AccountConfirmationRequired
         GmailPassword.Text = My.Settings.SmtpPassword
         GmailUsername.Text = My.Settings.SmtpUsername
 
-
         ' Unique ID
         UniqueId.Text = My.Settings.MachineID
-
 
         Select Case My.Settings.Physics
             Case 0 : PhysicsNone.Checked = True
@@ -60,7 +56,6 @@ Public Class Expert
             Case 4 : PhysicsubODE.Checked = True
             Case Else : PhysicsSeparate.Checked = True
         End Select
-
 
         'ports
         DiagnosticPort.Text = My.Settings.DiagnosticPort
@@ -84,7 +79,10 @@ Public Class Expert
         AutoStartCheckbox.Checked = My.Settings.Autostart
         BootStart.Checked = My.Settings.BootStart
 
+        EnableHypergrid.Checked = My.Settings.EnableHypergrid
+
         initted = True ' sppress the install of the startup on formload
+
     End Sub
 
 #End Region
@@ -296,12 +294,22 @@ Public Class Expert
 
 #Region "DNS"
 
+    Private Sub EnableHypergrid_CheckedChanged(sender As Object, e As EventArgs) Handles EnableHypergrid.CheckedChanged
+
+        My.Settings.EnableHypergrid = EnableHypergrid.Checked
+        My.Settings.Save()
+
+    End Sub
+
     Private Sub DNSButton_Click(sender As Object, e As EventArgs) Handles DNSButton.Click
+
         Dim F As New DNSName
         F.Show()
+
     End Sub
 
     Private Sub TestButton1_Click_1(sender As Object, e As EventArgs) Handles TestButton1.Click
+
         Dim IP = Form1.DoGetHostAddresses(My.Settings.DnsName)
         Dim address As IPAddress = Nothing
         If IPAddress.TryParse(IP, address) Then
@@ -309,12 +317,16 @@ Public Class Expert
         Else
             MsgBox("Cannot resolve " + My.Settings.DnsName)
         End If
+
     End Sub
 
     Private Sub HypericaButton_Click(sender As Object, e As EventArgs) Handles HypericaButton.Click
+
         Dim webAddress As String = "http://www.hyperica.com/directory/?GridName=" + My.Settings.DnsName
         Process.Start(webAddress)
+
     End Sub
+
 #End Region
 
 #Region "Database"
@@ -446,6 +458,8 @@ Public Class Expert
         Return isAdmin
 
     End Function
+
+
 
 
 #End Region

@@ -103,6 +103,7 @@ Public Class Form1
     Dim ws As NetServer
     Public Shared RegionClass As RegionMaker
     Dim RegionHandles(50) As Boolean
+    Dim gStopping = True = False
 
     Public Class JSON_result
         Public alert As String
@@ -378,9 +379,10 @@ Public Class Form1
 
         RegisterDNS()
 
-        GetPubIP()
+        If SetPublicIP() Then
+            OpenPorts()
+        End If
 
-        OpenPorts()
 
         If Not SetINIData() Then Return   ' set up the INI files
 
@@ -452,15 +454,18 @@ Public Class Form1
 
     Private Sub KillAll()
 
+        gStopping = True
         ProgressBar1.Value = 100
+        ProgressBar1.Visible = True
         ' close everything as gracefully as possible.
         Try
             ws.StopWebServer()
         Catch
         End Try
 
-        ProgressBar1.Value = 67
         Application.DoEvents()
+
+        Dim n = RegionClass.Count()
 
         Dim counter = 50
         While counter
@@ -471,38 +476,48 @@ Public Class Form1
         For Each o In RegionClass.AllRegionObjects
             Try
                 Dim PID = RegionClass.ProcessID()
-                ConsoleCommand(PID, "quit{ENTER}")
-                Me.Focus()
+                If PID Then
+                    ConsoleCommand(PID, "quit{ENTER}")
+                    Me.Focus()
+                End If
+
             Catch ex As Exception
             End Try
+            Application.DoEvents()
         Next
 
         ' now wait for all them to actually quit and then stop robust
         counter = 90 ' 90 seconds to quit all regions
         While (counter)
+            ' decrememnt progress bar according to the ratio of what we had / what we have now
+            Dim n2 = RegionClass.Count()
+            If n Then
+                ProgressBar1.Value = n2 / n
+            End If
             Sleep(1000)
+
             counter = counter - 1
-            Dim isRunning As Integer = 0
+            Dim isRunning As Boolean = False
             For Each o As Object In RegionClass.AllRegionObjects
-                If o Is Nothing Then
+                If o Is Nothing Or Not gStopping Then
                     ' do nothing
                 Else
-                    If o.ProcessID And (o.ready Or o.Shuttingdown) Then isRunning = isRunning + 1
-                    ConsoleCommand(o.ProcessID, "quit{ENTER}")
-                    Me.Focus()
+                    If o.ProcessID And (o.WarmingUp Or o.Ready Or o.Shuttingdown) Then isRunning = True
+                    If o.ProcessID Then
+                        ConsoleCommand(o.ProcessID, "quit{ENTER}")
+                        Me.Focus()
+                    End If
                 End If
+                    Application.DoEvents()
             Next
-            If isRunning = 0 Then counter = 0
+            If Not isRunning Then counter = 0
             Application.DoEvents()
         End While
-
 
         If gRobustProcID Then
             ConsoleCommand(gRobustProcID, "quit{ENTER}")
             Me.Focus()
         End If
-
-        ProgressBar1.Value = 33
 
         ' cannot load OAR or IAR, either
         IslandToolStripMenuItem.Visible = False
@@ -513,6 +528,8 @@ Public Class Form1
 
         ProgressBar1.Value = 0
         Application.DoEvents()
+
+        gStopping = False
 
     End Sub
 
@@ -607,6 +624,7 @@ Public Class Form1
     End Sub
 
     Private Sub StopButton_Click_1(sender As System.Object, e As System.EventArgs) Handles StopButton.Click
+
         Print("Stopping")
         ProgressBar1.Value = 100
         Buttons(BusyButton)
@@ -1184,6 +1202,12 @@ Public Class Form1
 
     Private Sub BusyButton_Click(sender As Object, e As EventArgs) Handles BusyButton.Click
 
+        If gStopping = True Then
+            gStopping = False
+            Print("Aborting")
+            Return
+        End If
+
         Print("Stopping")
         Application.DoEvents()
         KillAll()
@@ -1272,7 +1296,7 @@ Public Class Form1
             If mnuShow.Checked Then
                 RobustProcess.StartInfo.WindowStyle = ProcessWindowStyle.Normal
             Else
-                RobustProcess.StartInfo.WindowStyle = ProcessWindowStyle.Hidden
+                RobustProcess.StartInfo.WindowStyle = ProcessWindowStyle.Minimized
             End If
 
             RobustProcess.StartInfo.Arguments = "-inifile Robust.HG.ini"
@@ -1668,7 +1692,7 @@ Public Class Form1
             If mnuShow.Checked Then
                 myProcess.StartInfo.WindowStyle = ProcessWindowStyle.Normal
             Else
-                myProcess.StartInfo.WindowStyle = ProcessWindowStyle.Hidden
+                myProcess.StartInfo.WindowStyle = ProcessWindowStyle.Minimized
             End If
 
             Try
@@ -2393,28 +2417,42 @@ Public Class Form1
 
     End Function
 
-    Public Function GetPubIP() As String
+    Public Function SetPublicIP() As Boolean
+
+        If Not My.Settings.EnableHypergrid Then
+            BumpProgress10()
+            My.Settings.PublicIP = MyUPnpMap.LocalIP
+            My.Settings.Save()
+            Return False
+        End If
 
         If My.Settings.DnsName.Length Then
             BumpProgress10()
             My.Settings.PublicIP = My.Settings.DnsName
             My.Settings.Save()
-            Return My.Settings.DnsName
+            Return True
         End If
 
-        ' Set Public Port
+        ' Set Public IP
         Try
             Dim ip As String = client.DownloadString("http://api.ipify.org/?r=" + Random())
             BumpProgress10()
             Log("Info:Public IP=" + My.Settings.PublicIP)
-            Return ip
+            My.Settings.PublicIP = ip
+            My.Settings.Save()
+            Return True
+
         Catch ex As Exception
             Print("Hmm, I cannot reach the Internet? Uh. Okay, continuing." + ex.Message)
             My.Settings.DiagFailed = True
             Log("Info:Public IP=" + "127.0.0.1")
         End Try
+
+        My.Settings.PublicIP = "127.0.0.1"
+        My.Settings.Save()
+
         BumpProgress10()
-        Return "127.0.0.1"
+        Return False
 
     End Function
 
@@ -2466,7 +2504,8 @@ Public Class Form1
     Private Function ProbePublicPort() As Boolean
 
         Print("Checking Port Forwards")
-        Dim ip As String = GetPubIP()
+
+        SetPublicIP()
 
         Dim isPortOpen As String = ""
         Try
@@ -2475,7 +2514,7 @@ Public Class Form1
             ' See my privacy policy at https://www.outworldz.com/privacy.htm
 
             Dim Data As String = GetPostData()
-            Dim Url = Domain + "/cgi/probetest.plx?IP=" + ip + "&Port=" + My.Settings.DiagnosticPort + Data
+            Dim Url = Domain + "/cgi/probetest.plx?IP=" + My.Settings.PublicIP + "&Port=" + My.Settings.DiagnosticPort + Data
             Log(Url)
             isPortOpen = client.DownloadString(Url)
         Catch ex As Exception
@@ -2486,15 +2525,16 @@ Public Class Form1
         BumpProgress10()
 
         If isPortOpen = "yes" And Not gFailDebug1 Then
-            My.Settings.PublicIP = ip
-            Log("Public IP set to " + ip)
+            My.Settings.PublicIP = My.Settings.PublicIP
+            Log("Public IP set to " + My.Settings.PublicIP)
             My.Settings.Save()
             Return True
         Else
             Log("Failed:" + isPortOpen)
             My.Settings.DiagFailed = True
-            Print("Internet address " + ip + ":" + My.Settings.DiagnosticPort + " appears to not be forwarded to this machine in your router, so Hypergrid is not available. This can possibly be fixed by 'Port Forwards' in your router.  See Help->Port Forwards.")
+            Print("Internet address " + My.Settings.PublicIP + ":" + My.Settings.DiagnosticPort + " appears to not be forwarded to this machine in your router, so Hypergrid is not available. This can possibly be fixed by 'Port Forwards' in your router.  See Help->Port Forwards.")
             My.Settings.PublicIP = MyUPnpMap.LocalIP() ' failed, so try the machine address
+            My.Settings.Save()
             Log("IP set to " + My.Settings.PublicIP)
             Return False
         End If
@@ -2825,7 +2865,7 @@ Public Class Form1
         ' Mysql was not running, so lets start it up.
         Dim pi As ProcessStartInfo = New ProcessStartInfo()
         pi.Arguments = "--defaults-file=" + """" + gCurSlashDir + "/OutworldzFiles/mysql/my.ini" + """"
-        pi.WindowStyle = ProcessWindowStyle.Hidden
+        pi.WindowStyle = ProcessWindowStyle.Minimized
         pi.FileName = """" + MyFolder & "\OutworldzFiles\mysql\bin\mysqld.exe" + """"
         pMySql.StartInfo = pi
         pMySql.Start()
@@ -2902,7 +2942,7 @@ Public Class Form1
         Dim pi As ProcessStartInfo = New ProcessStartInfo()
         pi.Arguments = "-u root shutdown"
         pi.FileName = """" + MyFolder + "\OutworldzFiles\mysql\bin\mysqladmin.exe" + """"
-        pi.WindowStyle = ProcessWindowStyle.Hidden
+        pi.WindowStyle = ProcessWindowStyle.Minimized
         p.StartInfo = pi
         Try
             p.Start()

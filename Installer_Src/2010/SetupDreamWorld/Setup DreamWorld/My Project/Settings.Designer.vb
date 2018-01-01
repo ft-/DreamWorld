@@ -893,6 +893,18 @@ Namespace My
                 Me("BootStart") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public Property EnableHypergrid() As Boolean
+            Get
+                Return CType(Me("EnableHypergrid"),Boolean)
+            End Get
+            Set
+                Me("EnableHypergrid") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

@@ -344,7 +344,9 @@ Public Class RegionMaker
 
     End Function
 
-
+    Public Function Count() As Integer
+        Return RegionCount
+    End Function
 #End Region
 
 End Class
