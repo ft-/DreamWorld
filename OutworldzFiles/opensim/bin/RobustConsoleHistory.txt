@@ -30,3 +30,23 @@ reset user password Wifi Admin 123
 create user Test User 123
 show regions
 create user Test User
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+robuquit
+reset user password Wifi Admin ha9MI!
+quit
