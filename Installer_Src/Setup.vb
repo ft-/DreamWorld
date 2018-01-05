@@ -2073,13 +2073,20 @@ Public Class Form1
             ' Display message, title, and default value.
             Password = InputBox(Message, title, defaultValue)
 
-            '''''''''''''''''''''''
-            Dim o As Object = RegionClass.FindRegionByName(My.Settings.WelcomeRegion)
+            RegionClass.CurRegionNum = 0
+            Dim welcome = RegionClass.RegionName()
+
+            Dim o As Object = RegionClass.FindRegionByName(welcome)
+            If o Is Nothing Then
+                Return
+            End If
+
             ConsoleCommand(o.ProcessID, "save iar " + Name + " " + """" + itemName + """" + " " + Password + " " + """" + BackupPath() + backupName + """" + "{ENTER}")
             Me.Focus()
             Print("Saving " + backupName + " to " + BackupPath())
+
         Else
-            Print("Opensim is not running. Cannot make a backup now.")
+                Print("Opensim is not running. Cannot make a backup now.")
         End If
     End Sub
 
