@@ -454,6 +454,7 @@ Public Class Form1
 
     Private Sub KillAll()
 
+        Timer1.Stop()
         gStopping = True
         ProgressBar1.Value = 100
         ProgressBar1.Visible = True
@@ -466,6 +467,7 @@ Public Class Form1
         Application.DoEvents()
 
         Dim n = RegionClass.Count()
+        Debug.Print("N=" + n.ToString())
 
         Dim counter = 50
         While counter
@@ -489,10 +491,12 @@ Public Class Form1
         ' now wait for all them to actually quit and then stop robust
         counter = 90 ' 90 seconds to quit all regions
         While (counter)
-            ' decrememnt progress bar according to the ratio of what we had / what we have now
+            ' decrement progress bar according to the ratio of what we had / what we have now
             Dim n2 = RegionClass.Count()
+            Debug.Print("N2=" + n2.ToString())
             If n Then
-                ProgressBar1.Value = n2 / n
+                ProgressBar1.Value = n2 / n * 100
+                Debug.Print("V=" + ProgressBar1.Value.ToString)
             End If
             Sleep(1000)
 
