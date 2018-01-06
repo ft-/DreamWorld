@@ -208,6 +208,8 @@ Public Class Form1
 
     Private Sub Form1_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 
+
+
         Me.Show()
 
         SaySomething()
@@ -687,7 +689,7 @@ Public Class Form1
         parser.Parser.Configuration.SkipInvalidLines = True
         parser.Parser.Configuration.CommentString = delim ' Opensim uses semicolons
         Try
-            Data = parser.ReadFile(filepath)
+            Data = parser.ReadFile(filepath, System.Text.Encoding.ASCII)
         Catch ex As Exception
             MsgBox("Cannot read an INI file - program is missing! " + ex.Message)
         End Try
@@ -708,7 +710,7 @@ Public Class Form1
 
     Public Sub SaveINI()
         Try
-            parser.WriteFile(gINI, Data)
+            parser.WriteFile(gINI, Data, System.Text.Encoding.ASCII)
         Catch ex As Exception
             Log("Error:" + ex.Message)
         End Try
@@ -720,7 +722,7 @@ Public Class Form1
         parser.Parser.Configuration.SkipInvalidLines = True
         parser.Parser.Configuration.CommentString = delim ' Opensim uses semicolons
 
-        Dim Data = parser.ReadFile(filepath)
+        Dim Data = parser.ReadFile(filepath, System.Text.Encoding.ASCII)
         GetIni = Stripqq(Data(section)(key))
 
         parser = Nothing
@@ -2909,38 +2911,16 @@ Public Class Form1
         Return True
     End Function
 
-    Function CheckMysql()
+    Function CheckMysql() As Boolean
 
         'mysql 
+        Dim Mysql As New Mysql
+        Dim version = Mysql.isMySqlRunning()
+        Mysql = Nothing
 
-        Dim p As Process = New Process()
-        Dim pi As ProcessStartInfo = New ProcessStartInfo()
-
-        pi.UseShellExecute = False
-        pi.RedirectStandardOutput = True
-        pi.RedirectStandardError = True
-
-        pi.Arguments = " -u root -e " + """" + "use opensim; show tables;" + """"
-        pi.FileName = """" + MyFolder + "\OutworldzFiles\mysql\bin\mysql.exe" + """"
-        pi.WindowStyle = ProcessWindowStyle.Normal
-        p.StartInfo = pi
-        Dim output As String = ""
-        Try
-            p.Start()
-            '// To avoid deadlocks, always read the output stream first And then wait.
-            output = p.StandardOutput.ReadToEnd()
-            output += p.StandardError.ReadToEnd()
-            p.WaitForExit()
-            p.Close()
-        Catch ex As Exception
-            Log("Error: failed to stat mysql:" + ex.Message)
-        End Try
-
-        Log("Info: Mysql output:" + output)
-        If output.Contains("Can't connect") Then
+        If version Is Nothing Then
             Return False
         End If
-
         Return True
 
     End Function
