@@ -2342,6 +2342,7 @@ Public Class Form1
         Try
             fileName = client.DownloadString(Domain + "/Outworldz_Installer/GetUpdaterGrid.plx?r" + Random())
         Catch
+            MsgBox("Could not fetch an update. Please try again, later", vbInformation)
             Return ""
         End Try
 
@@ -2351,6 +2352,7 @@ Public Class Form1
             ' The DownloadFile() method downloads the Web resource and saves it into the current file-system folder.
             myWebClient.DownloadFile(Domain + "/Outworldz_Installer/" + fileName, fileName)
         Catch e As Exception
+            MsgBox("Could not fetch an update. Please try again, later", vbInformation)
             Log("Warn:" + e.Message)
             Return ""
         End Try
@@ -2902,7 +2904,7 @@ Public Class Form1
         'mysql 
         Dim Mysql As New Mysql
         Dim version = Mysql.isMySqlRunning()
-        Mysql = Nothing
+        Mysql.Dispose()
 
         If version Is Nothing Then
             Return False
@@ -3128,7 +3130,6 @@ Public Class Form1
 
         End If
 
-
     End Sub
 
     Public Sub LoadRegionList()
@@ -3254,15 +3255,13 @@ Public Class Form1
 
                 o.ProcessID = Boot(sender.Text)
                 Debug.Print("Region:Started Region " + o.RegionName)
-
-
             End If
         End If
-
 
     End Sub
 
     Private Sub SaveRegionOARToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles SaveRegionOARToolStripMenuItem.Click
+
         If (Running) Then
 
             Dim chosen = ChooseRegion()
@@ -3290,8 +3289,8 @@ Public Class Form1
     End Sub
 
     Private Sub LoadRegionOarToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles LoadRegionOarToolStripMenuItem.Click
-        If (Running) Then
 
+        If (Running) Then
             Dim chosen = ChooseRegion()
             Dim o As Object = RegionClass.FindRegionByName(chosen)
 
@@ -3328,7 +3327,6 @@ Public Class Form1
             Print("Opensim is not running. Cannot load the OAR file.")
         End If
     End Sub
-
 
 #End Region
 
