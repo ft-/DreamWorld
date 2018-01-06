@@ -55,6 +55,7 @@ Public Class Mysql
     Protected Overridable Sub Dispose(disposing As Boolean)
         If Not disposedValue Then
             If disposing Then
+                MysqlConn.Dispose()
                 ' TODO: dispose managed state (managed objects).
             End If
 
