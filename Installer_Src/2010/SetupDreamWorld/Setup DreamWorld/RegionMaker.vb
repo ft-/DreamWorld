@@ -191,7 +191,7 @@ Public Class RegionMaker
 
         Dim rlist As New ArrayList
         For Each obj In RegionList
-            Debug.Print("Region:" + obj.RegionName)
+            'Debug.Print("Region:" + obj.RegionName)
             rlist.Add(obj)
         Next
         Return rlist

@@ -161,7 +161,6 @@ Public Class AdvancedForm
 
     End Sub
 
-
     Private Sub VoiceButton1_Click(sender As Object, e As EventArgs) Handles VoiceButton1.Click
         Dim Voice As New FormVoice
         ' Set the new form's desktop location so it appears below and

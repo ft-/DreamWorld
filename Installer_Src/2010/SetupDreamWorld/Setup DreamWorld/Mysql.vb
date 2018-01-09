@@ -16,20 +16,14 @@ Public Class Mysql
             + ";password=" + My.Settings.RobustMySqlPassword
 
         MysqlConn = New MySqlConnection(robustconnStr)
-        Try
-            Debug.Print("Connecting to MySQL...")
-            MysqlConn.Open()
-        Catch ex As MySqlException
-            Debug.Print("Error: " & ex.ToString())
-            MysqlConn.Close()
-        End Try
+
 
     End Sub
     Public Function IsUserPresent(regionUUID As String) As Integer
 
         Dim UserCount = QueryString("SELECT count(RegionID) from presence where RegionID = '" + regionUUID + "'")
         If UserCount = Nothing Then Return 0
-        Debug.Print("MySQL version: {0}", UserCount)
+        'Debug.Print("User Count: {0}", UserCount)
         Return Convert.ToInt16(UserCount)
 
     End Function
@@ -42,6 +36,14 @@ Public Class Mysql
     End Function
 
     Private Function QueryString(SQL As String) As String
+        Try
+            'Debug.Print("Connecting to MySQL...")
+            MysqlConn.Open()
+        Catch ex As MySqlException
+            Debug.Print("Error: " & ex.ToString())
+            MysqlConn.Close()
+            Return Nothing
+        End Try
 
         Try
             Dim cmd As MySqlCommand = New MySqlCommand(SQL, MysqlConn)
@@ -50,7 +52,7 @@ Public Class Mysql
         Catch ex As Exception
             Debug.Print(ex.Message)
         Finally
-
+            MysqlConn.Close()
         End Try
         Return Nothing
 

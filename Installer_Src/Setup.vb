@@ -467,10 +467,10 @@ Public Class Form1
         While (counter)
             ' decrement progress bar according to the ratio of what we had / what we have now
             Dim n2 = RegionClass.Count()
-            Debug.Print("N2=" + n2.ToString())
+            'Debug.Print("N2=" + n2.ToString())
             If n Then
                 ProgressBar1.Value = n2 / n * 100
-                Debug.Print("V=" + ProgressBar1.Value.ToString)
+                'Debug.Print("V=" + ProgressBar1.Value.ToString)
             End If
             Sleep(1000)
 
@@ -481,10 +481,10 @@ Public Class Form1
                     ' do nothing
                 Else
                     If o.ProcessID And (o.WarmingUp Or o.Ready Or o.Shuttingdown) Then isRunning = True
-                    If o.ProcessID Then
-                        ConsoleCommand(o.ProcessID, "quit{ENTER}")
-                        Me.Focus()
-                    End If
+                    'If o.ProcessID Then
+                    'ConsoleCommand(o.ProcessID, "quit{ENTER}")
+                    'Me.Focus()
+                    'End If
                 End If
                     Application.DoEvents()
             Next
@@ -544,6 +544,7 @@ Public Class Form1
             KillAll()
             Buttons(StartButton)
             Print("Stopped")
+            ProgressBar1.Visible = False
         End If
     End Sub
 
@@ -1883,6 +1884,8 @@ Public Class Form1
         Else
             PictureBox1.Visible = False
         End If
+        Application.DoEvents()
+
 
         ScanAgents()
 

@@ -457,7 +457,7 @@ Partial Class Form1
         'LogButton
         '
         Me.LogButton.Font = New System.Drawing.Font("Tahoma", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.LogButton.Location = New System.Drawing.Point(48, 169)
+        Me.LogButton.Location = New System.Drawing.Point(62, 169)
         Me.LogButton.Name = "LogButton"
         Me.LogButton.Size = New System.Drawing.Size(115, 30)
         Me.LogButton.TabIndex = 30
@@ -471,7 +471,7 @@ Partial Class Form1
         Me.IgnoreButton.Name = "IgnoreButton"
         Me.IgnoreButton.Size = New System.Drawing.Size(85, 30)
         Me.IgnoreButton.TabIndex = 31
-        Me.IgnoreButton.Text = "Skip"
+        Me.IgnoreButton.Text = "Ignore"
         Me.IgnoreButton.UseVisualStyleBackColor = True
         '
         'PictureBox1
