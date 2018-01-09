@@ -14,8 +14,6 @@ Imports IniParser
 Imports System.Threading
 Imports Newtonsoft.Json
 
-
-
 Public Class Form1
 
     ' Command line arg  -debug forces this to use the DebugPath folder for testing
@@ -87,7 +85,9 @@ Public Class Form1
     Dim ws As NetServer
     Public Shared RegionClass As RegionMaker
     Dim RegionHandles(50) As Boolean
-    Dim gStopping = True = False
+    Dim gStopping = False
+    Dim Timertick As Integer        ' counts the seconds uintil wallpaper changes
+    Public Shared MysqlConn As Mysql    ' object lets us query Mysql database
 
     Public Class JSON_result
         Public alert As String
@@ -191,13 +191,9 @@ Public Class Form1
 
 #Region "StartStop"
 
-
     Private Sub Form1_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 
-
-
         Me.Show()
-
         SaySomething()
 
         'hide progress
@@ -253,6 +249,7 @@ Public Class Form1
                 MyFolder = DebugPath ' for testing, as the compiler buries itself in ../../../debug
             End If
         End If
+
         gCurSlashDir = MyFolder.Replace("\", "/")    ' because Mysql uses unix like slashes, that's why
         prefix = MyFolder & "\OutworldzFiles\Opensim\"
 
@@ -267,8 +264,6 @@ Public Class Form1
             My.Settings.SplashPage = Domain + "/Outworldz_installer/Welcome.htm"
             My.Settings.Save()
         End If
-
-
 
         ProgressBar1.Value = 100
         ProgressBar1.Value = 0
@@ -339,10 +334,6 @@ Public Class Form1
         ProgressBar1.Value = 100
         Application.DoEvents()
 
-        If (My.Settings.TimerInterval > 0) Then
-            Timer1.Interval = My.Settings.TimerInterval * 1000
-            Timer1.Start() 'Timer starts functioning
-        End If
 
     End Sub
 
@@ -368,7 +359,6 @@ Public Class Form1
         If SetPublicIP() Then
             OpenPorts()
         End If
-
 
         If Not SetINIData() Then Return   ' set up the INI files
 
@@ -396,10 +386,8 @@ Public Class Form1
         ' done with bootup
         ProgressBar1.Value = 100
 
-        If (My.Settings.TimerInterval > 0) Then
-            Timer1.Interval = My.Settings.TimerInterval * 1000
-            Timer1.Start() 'Timer starts functioning
-        End If
+        Timer1.Interval = 1000
+        Timer1.Start() 'Timer starts functioning
 
         Me.AllowDrop = True
 
@@ -1882,17 +1870,21 @@ Public Class Form1
 
     Public Sub PaintImage()
 
-        If (My.Settings.TimerInterval > 0) Then
+        Timertick = Timertick + 1
+
+        If (My.Settings.TimerInterval > 0 And Timertick >= My.Settings.TimerInterval) Then
             Dim randomFruit = images(Arnd.Next(0, images.Count))
             ProgressBar1.Visible = False
             TextBox1.Visible = False
             PictureBox1.Enabled = True
             PictureBox1.Image = randomFruit
             PictureBox1.Visible = True
-            Timer1.Interval = My.Settings.TimerInterval * 1000
+            Timertick = 0   ' rest for next pass
         Else
             PictureBox1.Visible = False
         End If
+
+        ScanAgents()
 
     End Sub
 
@@ -2826,6 +2818,8 @@ Public Class Form1
         ' Check for MySql operation
         Dim MysqlOk As Boolean
 
+        MysqlConn = New Mysql   ' makes a new connection for us to send SQL statements on
+
         MysqlOk = CheckMysql()
         If MysqlOk Then Return True
         ' Start MySql in background.
@@ -2894,17 +2888,15 @@ Public Class Form1
             ' check again
             Sleep(1000)
             MysqlOk = CheckMysql()
-
         End While
+
         Return True
+
     End Function
 
     Function CheckMysql() As Boolean
 
-        'mysql 
-        Dim Mysql As New Mysql
-        Dim version = Mysql.isMySqlRunning()
-        Mysql.Dispose()
+        Dim version = MysqlConn.isMySqlRunning()
 
         If version Is Nothing Then
             Return False
@@ -2912,9 +2904,13 @@ Public Class Form1
         Return True
 
     End Function
+
     Private Sub StopMysql()
 
         Log("Info:using mysqladmin to close db")
+
+        MysqlConn.Dispose()
+
         Dim p As Process = New Process()
         Dim pi As ProcessStartInfo = New ProcessStartInfo()
         pi.Arguments = "-u root shutdown"
@@ -3327,6 +3323,18 @@ Public Class Form1
             Print("Opensim is not running. Cannot load the OAR file.")
         End If
     End Sub
+
+    Private Sub ScanAgents()
+
+        ' now add all the regions
+        Dim Rlist = RegionClass.AllRegionObjects
+        For Each o In Rlist
+            o.AvatarCount = MysqlConn.IsUserPresent(o.UUID)
+            Debug.Print(o.AvatarCount.ToString + " avatars in region " + o.RegionName)
+        Next
+
+    End Sub
+
 
 #End Region
 

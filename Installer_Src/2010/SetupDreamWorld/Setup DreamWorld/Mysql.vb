@@ -19,18 +19,26 @@ Public Class Mysql
         Try
             Debug.Print("Connecting to MySQL...")
             MysqlConn.Open()
-
         Catch ex As MySqlException
             Debug.Print("Error: " & ex.ToString())
             MysqlConn.Close()
         End Try
 
-
     End Sub
+    Public Function IsUserPresent(regionUUID As String) As Integer
+
+        Dim UserCount = QueryString("SELECT count(RegionID) from presence where RegionID = '" + regionUUID + "'")
+        If UserCount = Nothing Then Return 0
+        Debug.Print("MySQL version: {0}", UserCount)
+        Return Convert.ToInt16(UserCount)
+
+    End Function
     Public Function isMySqlRunning() As String
+
         Dim version = QueryString("SELECT VERSION()")
         Debug.Print("MySQL version: {0}", version)
         Return version
+
     End Function
 
     Private Function QueryString(SQL As String) As String
@@ -42,9 +50,10 @@ Public Class Mysql
         Catch ex As Exception
             Debug.Print(ex.Message)
         Finally
-            MysqlConn.Close()
+
         End Try
         Return Nothing
+
     End Function
 
 
@@ -55,6 +64,7 @@ Public Class Mysql
     Protected Overridable Sub Dispose(disposing As Boolean)
         If Not disposedValue Then
             If disposing Then
+                MysqlConn.Close()
                 MysqlConn.Dispose()
                 ' TODO: dispose managed state (managed objects).
             End If

@@ -18,10 +18,13 @@ Public Class RegionMaker
         Public SizeX As Integer
         Public SizeY As Integer
 
+        Public AvatarCount As Integer
+
         Public RegionEnabled As Boolean ' Will run or not
         Public Ready As Boolean         ' is up
         Public WarmingUp As Boolean     ' booting up
         Public ShuttingDown As Boolean  ' shutting down
+
     End Class
 
     Public Shared RegionList As New ArrayList
@@ -57,6 +60,15 @@ Public Class RegionMaker
             RegionList(CurRegionNum()).ProcessID = Value
         End Set
     End Property
+    Public Property AvatarCount() As Integer
+        Get
+            Return RegionList(CurRegionNum()).AvatarCount
+        End Get
+        Set(ByVal Value As Integer)
+            RegionList(CurRegionNum()).AvatarCount = Value
+        End Set
+    End Property
+
     Public Property CurRegionNum() As Integer
         Get
             If gCurRegionNum > RegionList.Count - 1 Then
