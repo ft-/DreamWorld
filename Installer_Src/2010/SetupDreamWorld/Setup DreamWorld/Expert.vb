@@ -11,7 +11,7 @@ Public Class Expert
     Private Sub Loaded(sender As Object, e As EventArgs) Handles Me.Load
 
         uPnPEnabled.Checked = My.Settings.UPnPEnabled
-
+        AutoLoadCheckbox.Checked = My.Settings.AutoLoad
         GridName.Text = My.Settings.SimName
         DNSName.Text = My.Settings.DnsName
         SplashPage.Text = My.Settings.SplashPage
@@ -459,7 +459,12 @@ Public Class Expert
 
     End Function
 
+    Private Sub CheckBox1_CheckedChanged_1(sender As Object, e As EventArgs) Handles AutoLoadCheckbox.CheckedChanged
 
+        My.Settings.AutoLoad = AutoLoadCheckbox.Checked
+        My.Settings.Save()
+
+    End Sub
 
 
 #End Region
