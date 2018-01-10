@@ -88,6 +88,7 @@ Public Class Form1
     Dim gStopping = False
     Dim Timertick As Integer        ' counts the seconds uintil wallpaper changes
     Public Shared MysqlConn As Mysql    ' object lets us query Mysql database
+    Private Diagsrunning As Boolean = False
 
     Public Class JSON_result
         Public alert As String
@@ -276,6 +277,8 @@ Public Class Form1
 
         ' must start after region Class is instantiated
         ws = NetServer.getWebServer
+        Log("Info:Starting Web Server ")
+        ws.StartServer(MyFolder)
 
         ' Run diagnostics, maybe
         '     If gDebug Then My.Settings.DiagsRun2 = False
@@ -350,7 +353,7 @@ Public Class Form1
         Buttons(BusyButton)
         Running = True
         MnuContent.Visible = True
-        ws.StartServer(prefix)
+
         RegionClass.GetAllRegions()
         LoadRegionList()
 
@@ -1872,34 +1875,41 @@ Public Class Form1
     Public Sub PaintImage()
 
         Timertick = Timertick + 1
+        If My.Settings.TimerInterval > 0 Then  ' is it enabled?
 
-        If (My.Settings.TimerInterval > 0 And Timertick >= My.Settings.TimerInterval) Then
-            Dim randomFruit = images(Arnd.Next(0, images.Count))
-            ProgressBar1.Visible = False
-            TextBox1.Visible = False
-            PictureBox1.Enabled = True
-            PictureBox1.Image = randomFruit
-            PictureBox1.Visible = True
-            Timertick = 0   ' rest for next pass
+            If Timertick >= My.Settings.TimerInterval And Not Diagsrunning Then
+                Dim randomFruit = images(Arnd.Next(0, images.Count))
+                ProgressBar1.Visible = False
+                TextBox1.Visible = False
+                PictureBox1.Enabled = True
+                PictureBox1.Image = randomFruit
+                PictureBox1.Visible = True
+                Timertick = 0   ' rest for next pass
+            End If
+
         Else
             PictureBox1.Visible = False
         End If
         Application.DoEvents()
-
-
-        ScanAgents()
 
     End Sub
 
     Private Sub Timer1_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Timer1.Tick
 
         PaintImage()
+        ScanAgents()
 
     End Sub
 
     Private Sub PictureBox1_Click(sender As Object, e As EventArgs) Handles PictureBox1.Click
 
-        PaintImage()
+        Dim randomFruit = images(Arnd.Next(0, images.Count))
+        ProgressBar1.Visible = False
+        TextBox1.Visible = False
+        PictureBox1.Enabled = True
+        PictureBox1.Image = randomFruit
+        PictureBox1.Visible = True
+        Timertick = 0   ' rest for next pass
 
     End Sub
 
@@ -2537,9 +2547,8 @@ Public Class Form1
 
     Private Sub DoDiag()
         Print("Running Network Diagnostics, please wait")
+        Diagsrunning = True
 
-        Log("Info:Starting Web Server")
-        ws.StartServer(prefix)
 
         My.Settings.DiagFailed = False
         OpenPorts() ' Open router ports with UPnp
@@ -2553,6 +2562,7 @@ Public Class Form1
         End If
         Log("Diagnostics set the Hypergrid address to " + My.Settings.PublicIP)
 
+        Diagsrunning = False
     End Sub
 
     Private Shared Function IsPrivateIP(ByVal CheckIP As String) As Boolean
@@ -3329,12 +3339,34 @@ Public Class Form1
 
     Private Sub ScanAgents()
 
-        ' now add all the regions
-        Dim Rlist = RegionClass.AllRegionObjects
-        For Each o In Rlist
-            o.AvatarCount = MysqlConn.IsUserPresent(o.UUID)
-            Debug.Print(o.AvatarCount.ToString + " avatars in region " + o.RegionName)
-        Next
+        If My.Settings.AutoLoad Then
+            ' Scan all the regions
+            Dim Rlist = RegionClass.AllRegionObjects
+            For Each o In Rlist
+                o.AvatarCount = MysqlConn.IsUserPresent(o.UUID)
+                Debug.Print(o.AvatarCount.ToString + " avatars in region " + o.RegionName)
+                If o.Timer > 0 Then o.Timer = o.Timer - 1
+
+                ' if enabled and running, stopit
+                If o.AvatarCount = 0 Then
+                    If o.RegionEnabled And Running And o.Ready Then
+                        Debug.Print("AutoLoad is shutting down " + o.RegionName)
+                        Try
+                            ConsoleCommand(o.ProcessID, "quit{ENTER}")
+                            o.Ready = False
+                            o.WarmingUp = False
+                            o.ShuttingDown = True
+                        Catch ex As Exception
+                            Debug.Print("Could not stop " + o.RegionName)
+                        End Try
+                    End If
+
+                Else   ' o.Avatarcount <> 0
+                    o.Timer = 60 ' 60 seconds and we will shut it off
+                End If
+
+            Next
+        End If
 
     End Sub
 
