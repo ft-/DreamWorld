@@ -1283,3 +1283,6 @@ enabled = false
 enabled = True
 ;
 ;Include-Wifi = "Wifi.ini"
+
+[AutoLoadTeleport]
+Enabled = true
