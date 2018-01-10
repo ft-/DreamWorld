@@ -104,10 +104,31 @@ namespace OpenSim.Server.Handlers.Hypergrid
                 agentID = UUID.Parse((string)requestData["agent_id"]);
             if (requestData.ContainsKey("agent_home_uri"))
                 agentHomeURI = (string)requestData["agent_home_uri"];
+            
+#define DG
+#undefine DG
 
-            string message;
+#if DG
+            // !!! Fkb DreamGrid Auto Load Teleport (ALT) sends requested Region UUID to Dreamgrid.
+            // If region is online, returns same UUID. If Offline, returns UUID for Welcome
+            string ALTConfig = configSource.Configs["AutoLoadTeleport"];    // get data from 
+            
+            bool AltEnabled = ALTConfig.GetString("Enabled", true);
+            if (AltEnabled ) {
+                m_log.InfoFormat("[AutoLoadTeleport]: Enabled");
+                
+                // Get the http port to talk to from Const Section
+                string ConstConfig = configSource.Configs["Const"];
+                integer DiagnosticsPort = ConstConfig.GetInteger("DiagnosticsPort,8001);    // listener port for Dreamgrid
+                string PrivURL = ConstConfig.GetString("PrivURL","http://localhost");    // private IP
+                     
+                string response = libcurl(PrivURL ":" DiagnosticsPort "/UUID/" regionID_str); // http://127.0.0.1:8001/UUID/[regionID|UUID.Zero]
+                UUID.TryParse(response, out regionID);
+            }
+#endif
+
             GridRegion regInfo = m_GatekeeperService.GetHyperlinkRegion(regionID, agentID, agentHomeURI, out message);
-
+            string message;
             Hashtable hash = new Hashtable();
             if (regInfo == null)
             {
