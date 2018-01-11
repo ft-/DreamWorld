@@ -905,6 +905,18 @@ Namespace My
                 Me("EnableHypergrid") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public Property AutoLoad() As Boolean
+            Get
+                Return CType(Me("AutoLoad"),Boolean)
+            End Get
+            Set
+                Me("AutoLoad") = value
+            End Set
+        End Property
     End Class
 End Namespace
 
