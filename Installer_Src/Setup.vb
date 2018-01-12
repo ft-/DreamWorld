@@ -94,6 +94,8 @@ Public Class Form1
     Dim MyUPnPMap
     Dim ws As NetServer
     Public aRegion(0) As Object
+    Public Shared MysqlConn As Mysql    ' object lets us query Mysql database
+    Private Diagsrunning As Boolean = False
 
     Private Class Region_data
         Public RegionName As String
@@ -289,8 +291,6 @@ Public Class Form1
             Print("Installing Desktop icon clicky thingy")
             Create_ShortCut(MyFolder & "\Start.exe")
             BumpProgress10()
-
-            StartMySQL() ' do this at install as Mysql probe test does not work until tables have been built after first boot.
 
             Try
                 ' mark the system as ready
@@ -973,17 +973,22 @@ Public Class Form1
         End If
 
 
-
-
         ' Wifi
         SetIni("WifiService", "AdminPassword", My.Settings.Password)
         SetIni("WifiService", "AdminEmail", My.Settings.AdminEmail)
+
+        ' V1.74 bug reported 
+        SetIni("WifiService", "SmtpUsername", My.Settings.SmtpUsername)
+        SetIni("WifiService", "SmtpPassword", My.Settings.SmtpPassword)
 
         If My.Settings.AccountConfirmationRequired Then
             SetIni("WifiService", "AccountConfirmationRequired", "true")
         Else
             SetIni("WifiService", "AccountConfirmationRequired", "false")
         End If
+
+        ' Gmail
+        SetIni("WifiService", "AdminPassword", My.Settings.Password)
 
         ' Autobackup
         If My.Settings.AutoBackup Then
@@ -1488,7 +1493,7 @@ Public Class Form1
 
     Public Sub PaintImage()
 
-        If (My.Settings.TimerInterval > 0) Then
+        If (My.Settings.TimerInterval > 0 And Not Diagsrunning) Then
             Dim randomFruit = images(Arnd.Next(0, images.Count))
             ProgressBar1.Visible = False
             TextBox1.Visible = False
@@ -2273,6 +2278,7 @@ Public Class Form1
     End Function
     Private Sub DoDiag()
 
+        Diagsrunning = True
         My.Settings.DiagFailed = False
         OpenPorts() ' Open router ports with uPnP
         ProbePublicPort()
@@ -2284,7 +2290,7 @@ Public Class Form1
         End If
         TestLoopback()
         Log("Diagnostics set the Hypergrid address to " + My.Settings.PublicIP)
-
+        Diagsrunning = False
     End Sub
     Public Shared Function GetLocalIPv4Address() As String
 
@@ -2693,38 +2699,13 @@ Public Class Form1
         Return True
     End Function
 
-    Function CheckMysql()
+    Function CheckMysql() As Boolean
 
-        'mysql 
+        Dim version = MysqlConn.isMySqlRunning()
 
-        Dim p As Process = New Process()
-        Dim pi As ProcessStartInfo = New ProcessStartInfo()
-
-        pi.UseShellExecute = False
-        pi.RedirectStandardOutput = True
-        pi.RedirectStandardError = True
-
-        pi.Arguments = " -u root -e " + """" + "use opensim; show tables;" + """"
-        pi.FileName = """" + MyFolder + "\OutworldzFiles\mysql\bin\mysql.exe" + """"
-        pi.WindowStyle = ProcessWindowStyle.Normal
-        p.StartInfo = pi
-        Dim output As String = ""
-        Try
-            p.Start()
-            '// To avoid deadlocks, always read the output stream first And then wait.
-            output = p.StandardOutput.ReadToEnd()
-            output += p.StandardError.ReadToEnd()
-            p.WaitForExit()
-            p.Close()
-        Catch ex As Exception
-            Log("Error: failed to stat mysql:" + ex.Message)
-        End Try
-
-        Log("Info: Mysql output:" + output)
-        If output.Contains("Can't connect") Then
+        If version Is Nothing Then
             Return False
         End If
-
         Return True
 
     End Function
@@ -2732,6 +2713,9 @@ Public Class Form1
     Private Sub StopMysql()
 
         Log("Info: Using mysqladmin to close db")
+
+        MysqlConn.Dispose()
+
         Dim p As Process = New Process()
         Dim pi As ProcessStartInfo = New ProcessStartInfo()
         pi.Arguments = "-u root shutdown"

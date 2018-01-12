@@ -277,15 +277,19 @@ Public Class AdvancedForm
     End Sub
 
     Private Sub SmtpUsername_TextChanged(sender As Object, e As EventArgs) Handles SmtpUsername.TextChanged
+
         My.Settings.SmtpUsername = SmtpUsername.Text
         My.Settings.Save()
 
     End Sub
     Private Sub SmtpUsername_Click(sender As Object, e As EventArgs) Handles SmtpPassword.Click
+
         SmtpPassword.UseSystemPasswordChar = False
+        My.Settings.Save()
 
     End Sub
     Private Sub SmtpPassword_TextChanged(sender As Object, e As EventArgs) Handles SmtpPassword.TextChanged
+
         My.Settings.SmtpPassword = SmtpPassword.Text
         My.Settings.Save()
 
