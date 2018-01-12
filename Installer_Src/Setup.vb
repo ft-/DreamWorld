@@ -599,7 +599,11 @@ Public Class Form1
     Private Sub mnuAbout_Click(sender As System.Object, e As System.EventArgs) Handles mnuAbout.Click
         Print("(c) 2017 Outworldz,LLC")
         Dim webAddress As String = Domain + "/Outworldz_Installer"
-        Process.Start(webAddress)
+        Try
+            Process.Start(webAddress)
+        Catch
+        End Try
+
     End Sub
 
     Private Sub StopButton_Click_1(sender As System.Object, e As System.EventArgs) Handles StopButton.Click
@@ -1206,12 +1210,18 @@ Public Class Form1
 
     Private Sub LoopBackToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles LoopBackToolStripMenuItem.Click
         Dim webAddress As String = Domain + "/Outworldz_Installer/Loopback.htm"
-        Process.Start(webAddress)
+        Try
+            Process.Start(webAddress)
+        Catch
+        End Try
     End Sub
 
     Private Sub MoreContentToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles MoreContentToolStripMenuItem.Click
         Dim webAddress As String = Domain + "/cgi/freesculpts.plx"
-        Process.Start(webAddress)
+        Try
+            Process.Start(webAddress)
+        Catch
+        End Try
         Print("Drag and drop Backup.Oar, or any OAR or IAR files to load into your Sim")
     End Sub
 
@@ -1228,7 +1238,10 @@ Public Class Form1
 
     Private Sub ToolStripMenuItem1_Click(sender As Object, e As EventArgs) Handles ToolStripMenuItem1.Click
         Dim webAddress As String = Domain + "/Outworldz_Installer/PortForwarding.htm"
-        Process.Start(webAddress)
+        Try
+            Process.Start(webAddress)
+        Catch
+        End Try
     End Sub
 #End Region
 
