@@ -112,6 +112,7 @@ Partial Class AdvancedForm
         Me.MapPicture = New System.Windows.Forms.PictureBox()
         Me.GroupBox6 = New System.Windows.Forms.GroupBox()
         Me.GloebitsButton = New System.Windows.Forms.Button()
+        Me.uPnPEnabled = New System.Windows.Forms.CheckBox()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -132,6 +133,7 @@ Partial Class AdvancedForm
         '
         'GroupBox2
         '
+        Me.GroupBox2.Controls.Add(Me.uPnPEnabled)
         Me.GroupBox2.Controls.Add(Me.HypericaButton)
         Me.GroupBox2.Controls.Add(Me.TestButton1)
         Me.GroupBox2.Controls.Add(Me.WelcomeRegion)
@@ -151,7 +153,7 @@ Partial Class AdvancedForm
         Me.GroupBox2.Controls.Add(Me.Label5)
         Me.GroupBox2.Location = New System.Drawing.Point(662, 11)
         Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Size = New System.Drawing.Size(192, 330)
+        Me.GroupBox2.Size = New System.Drawing.Size(192, 357)
         Me.GroupBox2.TabIndex = 5
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Grid"
@@ -177,7 +179,7 @@ Partial Class AdvancedForm
         'WelcomeRegion
         '
         Me.WelcomeRegion.AutoSize = True
-        Me.WelcomeRegion.Location = New System.Drawing.Point(18, 277)
+        Me.WelcomeRegion.Location = New System.Drawing.Point(21, 307)
         Me.WelcomeRegion.Name = "WelcomeRegion"
         Me.WelcomeRegion.Size = New System.Drawing.Size(89, 13)
         Me.WelcomeRegion.TabIndex = 32
@@ -189,7 +191,7 @@ Partial Class AdvancedForm
         Me.WelcomeBox1.AutoCompleteCustomSource.AddRange(New String() {"1 Hour", "4 Hour", "12 Hour", "Daily", "Weekly"})
         Me.WelcomeBox1.FormattingEnabled = True
         Me.WelcomeBox1.Items.AddRange(New Object() {"Hourly", "12 Hour", "Daily", "Weekly"})
-        Me.WelcomeBox1.Location = New System.Drawing.Point(14, 297)
+        Me.WelcomeBox1.Location = New System.Drawing.Point(17, 327)
         Me.WelcomeBox1.Name = "WelcomeBox1"
         Me.WelcomeBox1.Size = New System.Drawing.Size(148, 21)
         Me.WelcomeBox1.TabIndex = 31
@@ -240,7 +242,7 @@ Partial Class AdvancedForm
         '
         'AddRegion
         '
-        Me.AddRegion.Location = New System.Drawing.Point(14, 215)
+        Me.AddRegion.Location = New System.Drawing.Point(17, 245)
         Me.AddRegion.Name = "AddRegion"
         Me.AddRegion.Size = New System.Drawing.Size(148, 23)
         Me.AddRegion.TabIndex = 26
@@ -249,7 +251,7 @@ Partial Class AdvancedForm
         '
         'RegionButton
         '
-        Me.RegionButton.Location = New System.Drawing.Point(14, 244)
+        Me.RegionButton.Location = New System.Drawing.Point(17, 274)
         Me.RegionButton.Name = "RegionButton"
         Me.RegionButton.Size = New System.Drawing.Size(148, 23)
         Me.RegionButton.TabIndex = 27
@@ -1018,7 +1020,7 @@ Partial Class AdvancedForm
         '
         Me.GroupBox6.Controls.Add(Me.OpensImNew)
         Me.GroupBox6.Controls.Add(Me.OpensimOld)
-        Me.GroupBox6.Location = New System.Drawing.Point(662, 356)
+        Me.GroupBox6.Location = New System.Drawing.Point(662, 373)
         Me.GroupBox6.Name = "GroupBox6"
         Me.GroupBox6.Size = New System.Drawing.Size(193, 77)
         Me.GroupBox6.TabIndex = 26
@@ -1034,11 +1036,21 @@ Partial Class AdvancedForm
         Me.GloebitsButton.Text = "Gloebits Currency Setup"
         Me.GloebitsButton.UseVisualStyleBackColor = True
         '
+        'uPnPEnabled
+        '
+        Me.uPnPEnabled.AutoSize = True
+        Me.uPnPEnabled.Location = New System.Drawing.Point(24, 210)
+        Me.uPnPEnabled.Name = "uPnPEnabled"
+        Me.uPnPEnabled.Size = New System.Drawing.Size(96, 17)
+        Me.uPnPEnabled.TabIndex = 41
+        Me.uPnPEnabled.Text = "UPnP Enabled"
+        Me.uPnPEnabled.UseVisualStyleBackColor = True
+        '
         'AdvancedForm
         '
         Me.AutoSize = True
         Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-        Me.ClientSize = New System.Drawing.Size(867, 445)
+        Me.ClientSize = New System.Drawing.Size(867, 482)
         Me.Controls.Add(Me.GloebitsButton)
         Me.Controls.Add(Me.PictureBox5)
         Me.Controls.Add(Me.GroupBox6)
@@ -1173,4 +1185,5 @@ Partial Class AdvancedForm
     Friend WithEvents TestButton1 As Button
     Friend WithEvents HypericaButton As Button
     Friend WithEvents GloebitsButton As Button
+    Friend WithEvents uPnPEnabled As CheckBox
 End Class

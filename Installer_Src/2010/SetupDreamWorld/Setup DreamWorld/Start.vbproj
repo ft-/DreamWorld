@@ -382,6 +382,8 @@
     <None Include="Resources\Better.jpg" />
     <None Include="Resources\Good.jpg" />
     <None Include="Resources\Simple.jpg" />
+    <None Include="Resources\disk_green.png" />
+    <None Include="Resources\disk_yellow.png" />
     <Content Include="Resources\wp_habitat.gif" />
     <Content Include="Resources\wp_Inside_in_shadows.gif" />
     <Content Include="Resources\wp_Mooferd.gif" />

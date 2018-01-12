@@ -1,8 +1,7 @@
 ﻿Imports System.Net
-Imports IniParser
-Imports System.IO
 
 Public Class AdvancedForm
+
 #Region "Declarations"
 
 #End Region
@@ -28,6 +27,7 @@ Public Class AdvancedForm
 
     Private Sub Loaded(sender As Object, e As EventArgs) Handles Me.Load
 
+        uPnPEnabled.Checked = My.Settings.UPnPEnabled
         PublicPort.Text = My.Settings.PublicPort
         PrivatePort.Text = My.Settings.PrivatePort
         httpPort.Text = My.Settings.HttpPort
@@ -647,6 +647,13 @@ Public Class AdvancedForm
         Gloebits.SetDesktopLocation(300, 200)
         Gloebits.Activate()
         Gloebits.Visible = True
+
+    End Sub
+
+    Private Sub uPnPEnabled_CheckedChanged(sender As Object, e As EventArgs) Handles uPnPEnabled.CheckedChanged
+
+        My.Settings.UPnPEnabled = uPnPEnabled.Checked
+        My.Settings.Save()
 
     End Sub
 
