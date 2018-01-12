@@ -35,7 +35,7 @@ Public Class Form1
     '
 #Region "Declarations"
 
-    Dim MyVersion As String = "2.04"
+    Dim MyVersion As String = "2.05"
     Dim DebugPath As String = "C:\Opensim\Outworldz Source"  ' no slash at end
     Public Domain As String = "http://www.outworldz.com"
     Public prefix As String ' Holds path to Opensim folder
@@ -422,6 +422,11 @@ Public Class Form1
         Dim p As Point
         p = Me.Location
 
+        Try
+            ws.StopWebServer()
+        Catch
+        End Try
+
         My.Settings.MyX = p.X
         My.Settings.MyY = p.Y
 
@@ -457,10 +462,7 @@ Public Class Form1
         ProgressBar1.Value = 100
         ProgressBar1.Visible = True
         ' close everything as gracefully as possible.
-        Try
-            ws.StopWebServer()
-        Catch
-        End Try
+
 
         Application.DoEvents()
 
@@ -474,13 +476,10 @@ Public Class Form1
         End While
 
         For Each o In RegionClass.AllRegionObjects
-            Try
-                Dim PID = RegionClass.ProcessID()
-                If PID Then
-                    ConsoleCommand(PID, "quit{ENTER}")
-                End If
-            Catch ex As Exception
-            End Try
+            Dim PID = o.ProcessID()
+            Print("Shutting down " + o.RegionName)
+            ConsoleCommand(PID, "quit{ENTER}")
+            Me.Focus()
             Application.DoEvents()
         Next
 
@@ -1355,14 +1354,13 @@ Public Class Form1
             o.Ready = False
             o.WarmingUp = False
             o.ShuttingDown = False
-
         Next
 
         ' Boot them up
         For Each o In RegionClass.AllRegionObjects
             If o.RegionEnabled Then '
                 Print("Starting Region " + o.RegionName)
-                o.ProcessID = Boot(o.RegionName)
+                Boot(o.RegionName)
                 If o.ProcessID = 0 Then
                     Return False
                 End If
@@ -1996,7 +1994,7 @@ Public Class Form1
 
         For Each o In RegionClass.AllRegionObjects
             If o.ready Then
-                ConsoleCommand(o.ProcessID, "save oar --perm=CT " + """" + BackupPath() + o.RegionName + "_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
+                ConsoleCommand(o.ProcessID, "save oar  " + """" + BackupPath() + o.RegionName + "_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
                 Me.Focus()
                 Application.DoEvents()
             End If
@@ -3084,7 +3082,7 @@ Public Class Form1
 
 #Region "Regions"
 
-    Public Sub ParsePost(POST As String)
+    Public Function ParsePost(POST As String) As String
         ' set Region.Ready to true if the POST from the region indicates it is online
         ' requires a section in Opensim.ini where [RegionReady] has this:
 
@@ -3135,7 +3133,7 @@ Public Class Form1
                 json = JsonConvert.DeserializeObject(Of JSON_result)(rawJSON)
             Catch ex As Exception
                 Debug.Print(ex.Message)
-                Return
+                Return ""
             End Try
 
             If json.login = "enabled" Then
@@ -3155,10 +3153,17 @@ Public Class Form1
                 o.WarmingUp = False
                 o.ShuttingDown = False
             End If
-
+        ElseIf POST.Contains("UUID") Then
+            Debug.Print("UUID:" + POST)
+            Return POST
+        Else
+            Return "Test Completed"
         End If
 
-    End Sub
+        Return ""
+
+
+    End Function
 
     Public Sub LoadRegionList()
 
@@ -3221,13 +3226,10 @@ Public Class Form1
         ' Handle robust clicking
         If sender.Text = "Robust" Then
             If gRobustProcID Then
-                Try
-                    ConsoleCommand(gRobustProcID, "quit{ENTER}")
-                    Me.Focus()
-                    Log("Region:Stopped Robust")
-                Catch ex As Exception
-                    Log("Region:Could not stop Robust")
-                End Try
+
+                ConsoleCommand(gRobustProcID, "quit{ENTER}")
+                Me.Focus()
+                Log("Region:Stopped Robust")
                 sender.Checked = True
                 Return
             Else
@@ -3281,7 +3283,7 @@ Public Class Form1
                 SetIni(sender.Text, "Enabled", "true")
                 SaveINI()
 
-                o.ProcessID = Boot(sender.Text)
+                Boot(sender.Text)
                 Debug.Print("Region:Started Region " + o.RegionName)
             End If
         End If
@@ -3343,7 +3345,7 @@ Public Class Form1
 
                     If backMeUp = vbYes Then
                         ConsoleCommand(o.ProcessID, "alert CPU Intensive Backup Started{ENTER}")
-                        ConsoleCommand(o.ProcessID, "save oar --perm=CT " + """" + BackupPath() + "Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
+                        ConsoleCommand(o.ProcessID, "save oar  " + """" + BackupPath() + "Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
                     End If
                     ConsoleCommand(o.ProcessID, "alert New content is loading..{ENTER}")
                     ConsoleCommand(o.ProcessID, "load oar --force-terrain --force-parcels " + """" + thing + """" + "{ENTER}")
@@ -3370,16 +3372,12 @@ Public Class Form1
                 If o.AvatarCount = 0 Then
                     If o.RegionEnabled And Running And o.Ready Then
                         Debug.Print("AutoLoad is shutting down " + o.RegionName)
-                        Try
-                            ConsoleCommand(o.ProcessID, "quit{ENTER}")
-                            o.Ready = False
-                            o.WarmingUp = False
-                            o.ShuttingDown = True
-                        Catch ex As Exception
-                            Debug.Print("Could not stop " + o.RegionName)
-                        End Try
+                        ConsoleCommand(o.ProcessID, "quit{ENTER}")
+                        Me.Focus()
+                        o.Ready = False
+                        o.WarmingUp = False
+                        o.ShuttingDown = True
                     End If
-
                 Else   ' o.Avatarcount <> 0
                     o.Timer = 60 ' 60 seconds and we will shut it off
                 End If

@@ -52,3 +52,13 @@ reset user password Wifi Admin ha9MI!
 quit
 quit
 quit
+create user Test User
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+reset user password Wifi Admin MLg12x
