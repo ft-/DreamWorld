@@ -94,7 +94,7 @@ Public Class Form1
     Dim MyUPnPMap
     Dim ws As NetServer
     Public aRegion(0) As Object
-    Public Shared MysqlConn As Mysql    ' object lets us query Mysql database
+    Public Shared MysqlConn As New Mysql    ' object lets us query Mysql database
     Private Diagsrunning As Boolean = False
 
     Private Class Region_data

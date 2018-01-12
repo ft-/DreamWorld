@@ -155,8 +155,6 @@ Public Class AdvancedForm
             Form1.ConsoleCommand("reset user password Wifi Admin " + My.Settings.Password + "{Enter}")
         End If
 
-        MsgBox("Any changes will take effect the next time Opensimulator is started.")
-
     End Sub
 
     Private Sub TextBox1_TextChanged_1(sender As Object, e As EventArgs) Handles DbPort.TextChanged
