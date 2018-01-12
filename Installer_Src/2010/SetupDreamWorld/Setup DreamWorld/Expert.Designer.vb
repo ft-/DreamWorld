@@ -24,6 +24,7 @@ Partial Class Expert
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Me.GroupBox3 = New System.Windows.Forms.GroupBox()
+        Me.EnableHypergrid = New System.Windows.Forms.CheckBox()
         Me.PictureBox7 = New System.Windows.Forms.PictureBox()
         Me.PictureBox6 = New System.Windows.Forms.PictureBox()
         Me.PictureBox5 = New System.Windows.Forms.PictureBox()
@@ -100,7 +101,8 @@ Partial Class Expert
         Me.Label6 = New System.Windows.Forms.Label()
         Me.BootStart = New System.Windows.Forms.CheckBox()
         Me.AutoStartCheckbox = New System.Windows.Forms.CheckBox()
-        Me.EnableHypergrid = New System.Windows.Forms.CheckBox()
+        Me.GroupBox5 = New System.Windows.Forms.GroupBox()
+        Me.AutoLoadCheckbox = New System.Windows.Forms.CheckBox()
         Me.GroupBox3.SuspendLayout()
         CType(Me.PictureBox7, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox6, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -119,6 +121,7 @@ Partial Class Expert
         CType(Me.PictureBox3, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.StandaloneGroup.SuspendLayout()
         Me.AutoStart.SuspendLayout()
+        Me.GroupBox5.SuspendLayout()
         Me.SuspendLayout()
         '
         'GroupBox3
@@ -144,6 +147,16 @@ Partial Class Expert
         Me.GroupBox3.TabIndex = 49
         Me.GroupBox3.TabStop = False
         Me.GroupBox3.Text = "Grid"
+        '
+        'EnableHypergrid
+        '
+        Me.EnableHypergrid.AutoSize = True
+        Me.EnableHypergrid.Location = New System.Drawing.Point(18, 27)
+        Me.EnableHypergrid.Name = "EnableHypergrid"
+        Me.EnableHypergrid.Size = New System.Drawing.Size(107, 17)
+        Me.EnableHypergrid.TabIndex = 1866
+        Me.EnableHypergrid.Text = "Enable Hypergrid"
+        Me.EnableHypergrid.UseVisualStyleBackColor = True
         '
         'PictureBox7
         '
@@ -870,15 +883,28 @@ Partial Class Expert
         Me.AutoStartCheckbox.Text = "Enable"
         Me.AutoStartCheckbox.UseVisualStyleBackColor = True
         '
-        'EnableHypergrid
+        'GroupBox5
         '
-        Me.EnableHypergrid.AutoSize = True
-        Me.EnableHypergrid.Location = New System.Drawing.Point(18, 27)
-        Me.EnableHypergrid.Name = "EnableHypergrid"
-        Me.EnableHypergrid.Size = New System.Drawing.Size(107, 17)
-        Me.EnableHypergrid.TabIndex = 1866
-        Me.EnableHypergrid.Text = "Enable Hypergrid"
-        Me.EnableHypergrid.UseVisualStyleBackColor = True
+        Me.GroupBox5.Controls.Add(Me.AutoLoadCheckbox)
+        Me.GroupBox5.Location = New System.Drawing.Point(225, 323)
+        Me.GroupBox5.Name = "GroupBox5"
+        Me.GroupBox5.Size = New System.Drawing.Size(189, 48)
+        Me.GroupBox5.TabIndex = 55
+        Me.GroupBox5.TabStop = False
+        Me.GroupBox5.Text = "AutoLoad on Teleport"
+        Me.GroupBox5.Visible = False
+        '
+        'AutoLoadCheckbox
+        '
+        Me.AutoLoadCheckbox.AutoSize = True
+        Me.AutoLoadCheckbox.Location = New System.Drawing.Point(12, 19)
+        Me.AutoLoadCheckbox.Name = "AutoLoadCheckbox"
+        Me.AutoLoadCheckbox.Size = New System.Drawing.Size(59, 17)
+        Me.AutoLoadCheckbox.TabIndex = 21
+        Me.AutoLoadCheckbox.Text = "Enable"
+        Me.ToolTip1.SetToolTip(Me.AutoLoadCheckbox, "Click to enable Autoloading of Sims on Teleport requests. All sims except the Wel" &
+        "come region will be shut down if no one is in world.")
+        Me.AutoLoadCheckbox.UseVisualStyleBackColor = True
         '
         'Expert
         '
@@ -887,6 +913,7 @@ Partial Class Expert
         Me.AutoSize = True
         Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.ClientSize = New System.Drawing.Size(897, 405)
+        Me.Controls.Add(Me.GroupBox5)
         Me.Controls.Add(Me.AutoStart)
         Me.Controls.Add(Me.StandaloneGroup)
         Me.Controls.Add(Me.GridGroup)
@@ -925,6 +952,8 @@ Partial Class Expert
         Me.StandaloneGroup.PerformLayout()
         Me.AutoStart.ResumeLayout(False)
         Me.AutoStart.PerformLayout()
+        Me.GroupBox5.ResumeLayout(False)
+        Me.GroupBox5.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -1006,4 +1035,6 @@ Partial Class Expert
     Friend WithEvents PictureBox7 As PictureBox
     Friend WithEvents PictureBox6 As PictureBox
     Friend WithEvents EnableHypergrid As CheckBox
+    Friend WithEvents GroupBox5 As GroupBox
+    Friend WithEvents AutoLoadCheckbox As CheckBox
 End Class

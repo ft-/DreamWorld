@@ -50,3 +50,5 @@ quit
 robuquit
 reset user password Wifi Admin ha9MI!
 quit
+quit
+quit
