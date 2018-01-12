@@ -3,6 +3,21 @@
 ' Copyright 2014 Fred Beckhusen for Outworldz.com
 ' https://opensource.org/licenses/AGPL
 
+'Permission Is hereby granted, free Of charge, to any person obtaining a copy of this software 
+' And associated documentation files (the "Software"), to deal in the Software without restriction, 
+'including without limitation the rights To use, copy, modify, merge, publish, distribute, sublicense,
+'And/Or sell copies Of the Software, And To permit persons To whom the Software Is furnished To 
+'Do so, subject To the following conditions:
+
+'The above copyright notice And this permission notice shall be included In all copies Or '
+'substantial portions Of the Software.
+
+'THE SOFTWARE Is PROVIDED "AS IS", WITHOUT WARRANTY Of ANY KIND, EXPRESS Or IMPLIED, 
+' INCLUDING BUT Not LIMITED To THE WARRANTIES Of MERCHANTABILITY, FITNESS For A PARTICULAR 
+'PURPOSE And NONINFRINGEMENT.In NO Event SHALL THE AUTHORS Or COPYRIGHT HOLDERS BE LIABLE 
+'For ANY CLAIM, DAMAGES Or OTHER LIABILITY, WHETHER In AN ACTION Of CONTRACT, TORT Or 
+'OTHERWISE, ARISING FROM, OUT Of Or In CONNECTION With THE SOFTWARE Or THE USE Or OTHER 
+'DEALINGS IN THE SOFTWARE.Imports System
 
 #End Region
 
@@ -194,8 +209,11 @@ Public Class Form1
 
     Private Sub Form1_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 
-        Me.Show()
-        SaySomething()
+        ' Save a random machine ID - we don't want any data to be sent that's personal or identifiable,  but it needs to be unique
+        Randomize()
+        ' Save a random machine ID - we don't want any data to be sent that's personal or identifiable,  but it needs to be unique\
+        If Machine = "" Then Machine = Random()  ' a random machine ID
+
 
         'hide progress
         ProgressBar1.Visible = True
@@ -209,13 +227,11 @@ Public Class Form1
             Me.Location = New Point(My.Settings.MyX, My.Settings.MyY)
         End If
 
+
         LogButton.Hide()
         IgnoreButton.Hide()
 
         Buttons(BusyButton)
-        ' Save a random machine ID - we don't want any data to be sent that's personal or identifiable,  but it needs to be unique
-        Randomize()
-        Machine = Random()  ' a random machine ID
 
         ' hide updater
         UpdaterGo.Visible = False
@@ -253,6 +269,11 @@ Public Class Form1
 
         gCurSlashDir = MyFolder.Replace("\", "/")    ' because Mysql uses unix like slashes, that's why
         prefix = MyFolder & "\OutworldzFiles\Opensim\"
+
+
+        Me.Show()
+        SaySomething()
+
 
         ClearLogFiles() ' clear log fles
 
@@ -457,16 +478,16 @@ Public Class Form1
                 Dim PID = RegionClass.ProcessID()
                 If PID Then
                     ConsoleCommand(PID, "quit{ENTER}")
-                    Me.Focus()
                 End If
-
             Catch ex As Exception
             End Try
             Application.DoEvents()
         Next
 
+        Me.Focus()
+
         ' now wait for all them to actually quit and then stop robust
-        counter = 90 ' 90 seconds to quit all regions
+        counter = 120 ' 2 minutes to quit all regions
         While (counter)
             ' decrement progress bar according to the ratio of what we had / what we have now
             Dim n2 = RegionClass.Count()
@@ -483,16 +504,13 @@ Public Class Form1
                 If o Is Nothing Or Not gStopping Then
                     ' do nothing
                 Else
-                    If o.ProcessID And (o.WarmingUp Or o.Ready Or o.Shuttingdown) Then isRunning = True
-                    'If o.ProcessID Then
-                    'ConsoleCommand(o.ProcessID, "quit{ENTER}")
-                    'Me.Focus()
-                    'End If
+                    If o.ProcessID And (o.WarmingUp Or o.Ready Or o.Shuttingdown) Then
+                        isRunning = True
+                    End If
                 End If
-                    Application.DoEvents()
+                Application.DoEvents()
             Next
             If Not isRunning Then counter = 0
-            Application.DoEvents()
         End While
 
         If gRobustProcID Then
@@ -754,7 +772,7 @@ Public Class Form1
                     Else
                         outputFile.WriteLine(line)
                     End If
-
+                    Application.DoEvents()
                 End While
             End Using
             'close your reader
@@ -1855,6 +1873,7 @@ Public Class Form1
         Dim value2 As Integer = CInt(Int((Array.Length - 1) * Rnd()))
         Dim whattosay = Prefix(value1) + vbCrLf + vbCrLf + Array(value2) + " ... and then I woke up."
         Print(whattosay)
+        Sleep(2000)
 
     End Sub
 
@@ -2221,7 +2240,7 @@ Public Class Form1
             Log("No Oars, dang, something is wrong with the Internet :-(")
             Return
         End Try
-
+        Application.DoEvents()
         Dim oarreader = New System.IO.StringReader(oars)
         Dim line As String = ""
         Dim ContentSeen As Boolean = False
@@ -2615,7 +2634,7 @@ Public Class Form1
                 MyUPnpMap.Remove(Convert.ToInt16(My.Settings.DiagnosticPort), UPnp.Protocol.TCP)
             End If
             MyUPnpMap.Add(UPnp.LocalIP, Convert.ToInt16(My.Settings.DiagnosticPort), UPnp.Protocol.TCP, "Opensim TCP Public " + My.Settings.DiagnosticPort)
-            PrintFast("UPnP: Public Port.TCP Ok:" + My.Settings.DiagnosticPort)
+            PrintFast("Diagnostic Port is open:" + My.Settings.DiagnosticPort)
             BumpProgress10()
 
             ' 8002 for TCP and UDP
@@ -2623,14 +2642,14 @@ Public Class Form1
                 MyUPnpMap.Remove(Convert.ToInt16(My.Settings.HttpPort), UPnp.Protocol.TCP)
             End If
             MyUPnpMap.Add(UPnp.LocalIP, Convert.ToInt16(My.Settings.HttpPort), UPnp.Protocol.TCP, "Opensim TCP Grid " + My.Settings.HttpPort)
-            PrintFast("UPnP: Grid Port.TCP Ok:" + My.Settings.HttpPort)
+            PrintFast("Grid Port is open:" + My.Settings.HttpPort)
             BumpProgress10()
 
             If MyUPnpMap.Exists(Convert.ToInt16(My.Settings.HttpPort), UPnp.Protocol.UDP) Then
                 MyUPnpMap.Remove(Convert.ToInt16(My.Settings.HttpPort), UPnp.Protocol.UDP)
             End If
             MyUPnpMap.Add(UPnp.LocalIP, Convert.ToInt16(My.Settings.HttpPort), UPnp.Protocol.UDP, "Opensim UDP Grid " + My.Settings.HttpPort)
-            PrintFast("UPnP: Grid Port.UDP Ok:" + My.Settings.HttpPort)
+            PrintFast("Grid Port is open:" + My.Settings.HttpPort)
             BumpProgress10()
 
             '8004-whatever
@@ -2641,14 +2660,14 @@ Public Class Form1
                     MyUPnpMap.Remove(R, UPnp.Protocol.UDP)
                 End If
                 MyUPnpMap.Add(UPnp.LocalIP, R, UPnp.Protocol.UDP, "Opensim UDP Region " & o.RegionName & " ")
-                PrintFast("UPnP: RegionPort.UDP Ok: " + Convert.ToString(R))
+                PrintFast("Region Port is open:" + Convert.ToString(R))
                 BumpProgress(1)
 
                 If MyUPnpMap.Exists(R, UPnp.Protocol.TCP) Then
                     MyUPnpMap.Remove(R, UPnp.Protocol.TCP)
                 End If
                 MyUPnpMap.Add(UPnp.LocalIP, R, UPnp.Protocol.TCP, "Opensim TCP Region " & o.RegionName & " ")
-                PrintFast("UPnP: RegionPort.TCP Ok: " + Convert.ToString(R))
+                PrintFast("Region Port is open:" + Convert.ToString(R))
                 BumpProgress(1)
             Next
 

@@ -51,7 +51,7 @@ RegionFolderName = Welcome
 
 ; Automatically changed by Dreamworld - do not change this
 ;# {BaseURL} {} {BaseURL} {"http://example.com","http://127.0.0.1"} "http://127.0.0.1"
-BaseURL = http://Zeraw.Outworldz.net
+BaseURL = http://Fred.Outworldz.net
 
 ; Automatically changed by Dreamworld - do not change this
 ;# {PublicPort} {} {PublicPort} {8002} "8002"
@@ -1281,8 +1281,8 @@ enabled = false
 ; Automatically changed by Dreamworld - do not change this
 [WebStats]
 enabled = True
+
 ;
 ;Include-Wifi = "Wifi.ini"
-
 [AutoLoadTeleport]
 Enabled = true

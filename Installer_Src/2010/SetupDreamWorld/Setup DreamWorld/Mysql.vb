@@ -75,6 +75,7 @@ Public Class Mysql
             ' TODO: set large fields to null.
         End If
         disposedValue = True
+
     End Sub
 
     ' TODO: override Finalize() only if Dispose(disposing As Boolean) above has code to free unmanaged resources.
