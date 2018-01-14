@@ -1,7 +1,8 @@
 ﻿
 #Region "Copyright"
 ' Copyright 2014 Fred Beckhusen for Outworldz.com
-' https://opensource.org/licenses/MIT 
+' https://opensource.org/licenses/AGPL
+
 'Permission Is hereby granted, free Of charge, to any person obtaining a copy of this software 
 ' And associated documentation files (the "Software"), to deal in the Software without restriction, 
 'including without limitation the rights To use, copy, modify, merge, publish, distribute, sublicense,
@@ -36,13 +37,12 @@ Public Class Form1
 
 #Region "Declarations"
 
-    Dim MyVersion As String = "1.71"
-    Dim DebugPath As String = "C:\Opensim\Outworldz-V1.70"
+    Dim MyVersion As String = "1.74"
+    Dim DebugPath As String = "C:\Opensim\OpensimV1.74 Source"
     Public Domain As String = "http://www.outworldz.com"
-    Dim RevNotesFile As String = "Update_Notes_" + MyVersion + ".rtf"
-    Private gFailDebug1 = False ' set to true to fail diagnostic
-    Private gFailDebug2 = False ' set to true to fail diagnostic
-    Private gFailDebug3 = False ' set to true to fail diagnostic
+
+    Private gFailDebug = False ' set to true to fail diagnostic
+
 
     Public MyFolder As String   ' Holds the current folder that we are running in
     Dim gCurSlashDir As String '  holds the current directory info in Unix format
@@ -93,8 +93,10 @@ Public Class Form1
     Dim gDebug = False       ' toggled by -debug flag on command line
     Dim gContentAvailable As Boolean = False ' assume there is no OAR and IAR data available
     Dim MyUPnPMap
-
+    Dim ws As NetServer
     Public aRegion(0) As Object
+    Public Shared MysqlConn As New Mysql    ' object lets us query Mysql database
+    Private Diagsrunning As Boolean = False
 
     Private Class Region_data
         Public RegionName As String
@@ -151,6 +153,9 @@ Public Class Form1
 
     Private Sub Form1_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 
+        ' Save a random machine ID - we don't want any data to be sent that's personal or identifiable,  but it needs to be unique\
+        Randomize()
+        If Machine = "" Then Machine = Random()  ' a random machine ID
 
         'hide progress
         ProgressBar1.Visible = True
@@ -168,9 +173,6 @@ Public Class Form1
         End If
 
         Buttons(BusyButton)
-        ' Save a random machine ID - we don't want any data to be sent that's personal or identifiable,  but it needs to be unique
-        Randomize()
-        Machine() = Random()
 
         ' hide updater
         UpdaterGo.Visible = False
@@ -181,7 +183,6 @@ Public Class Form1
 
         'hide the pulldowns as there is no content yet
         MnuContent.Visible = False
-        mnuSettings.Visible = False
 
         gChatTime = My.Settings.ChatTime
 
@@ -199,14 +200,22 @@ Public Class Form1
             ' for debugging when compiling
             If arguments(1) = "-debug" Then
                 gDebug = True
+                ' gFailDebug = True
                 MyFolder = DebugPath ' for testing, as the compiler buries itself in ../../../debug
+
             End If
         End If
         gCurSlashDir = MyFolder.Replace("\", "/")    ' because Mysql uses unix like slashes, that's why
 
+
+        Me.Show()
+        SaySomething()
+
         ClearLogFiles() ' clear log fles
 
         MyUPnPMap = New UPNP(MyFolder)
+
+        BumpProgress(1)
 
         Try
             My.Computer.FileSystem.RenameFile(MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\Regions\RegionConfig.ini", "Outworldz.ini")
@@ -215,10 +224,6 @@ Public Class Form1
             Log("Info:No need to upgrade RegionConfig.ini")
         End Try
 
-        If System.IO.File.Exists(MyFolder + "\" + RevNotesFile) Then
-            System.Diagnostics.Process.Start("wordpad.exe", """" + MyFolder + "\" + RevNotesFile + """")
-        End If
-
         GetAllRegions()
 
         If (My.Settings.SplashPage = "") Then
@@ -226,11 +231,7 @@ Public Class Form1
             My.Settings.Save()
         End If
 
-        SaySomething()
-
-        Me.Show()
-        ProgressBar1.Value = 100
-        ProgressBar1.Value = 0
+        Application.DoEvents()
 
         If Not My.Settings.SkipUpdateCheck Then
             CheckForUpdates()
@@ -238,21 +239,34 @@ Public Class Form1
 
         CheckDefaultPorts()
 
-        ' Run diagnostics, maybe
-        If gDebug Then My.Settings.DiagsRun2 = False
+        ws = NetServer.getWebServer
+        Log("Info:Starting Web Server ")
+        ws.StartServer(MyFolder)
 
-        If Not My.Settings.DiagsRun2 Then
-            DoDiag()
-            My.Settings.DiagsRun2 = True
+        BumpProgress10()
+
+        ' Run diagnostics, maybe
+        If gDebug Then
+            gFailDebug = True
+            'DoDiag()
+            gFailDebug = False
+            My.Settings.DiagsRun = False
         End If
+
+        RegisterDNS()
+
+        If Not My.Settings.DiagsRun Then
+            DoDiag()
+            My.Settings.DiagsRun = True
+        End If
+
+        UpdateStats()
 
         SetINIData()
 
-        mnuSettings.Visible = True
         SetIAROARContent() ' load IAR and OAR web content
 
         If My.Settings.Password = "secret" Then
-            BumpProgress10()
             Dim Password = New PassGen
             My.Settings.Password = Password.GeneratePass()
             My.Settings.Save()
@@ -260,86 +274,81 @@ Public Class Form1
 
         ' Find out if the viewer is installed
         If System.IO.File.Exists(MyFolder & "\OutworldzFiles\Init.txt") Then
-
             Buttons(StartButton)
             ProgressBar1.Value = 100
             Log("Info: Ready to start")
             Print("Ready to Launch! Click 'Start' to begin your adventure in Opensimulator.")
         Else
 
-            My.Settings.HttpPort = 8002
-            My.Settings.Save()
-
             Print("Installing Desktop icon clicky thingy")
-            Create_ShortCut(MyFolder & "\Start.exe")
-            BumpProgress10()
+                Create_ShortCut(MyFolder & "\Start.exe")
+                BumpProgress10()
 
-            Try
-                ' mark the system as ready
-                Using outputFile As New StreamWriter(MyFolder & "\OutworldzFiles\Init.txt", True)
-                    outputFile.WriteLine("This file lets Outworldz know it has been installed")
-                End Using
-            Catch ex As Exception
-                Log("Error:Could not create Init.txt - no permissions to write it:" + ex.Message)
-            End Try
+                Try
+                    ' mark the system as ready
+                    Using outputFile As New StreamWriter(MyFolder & "\OutworldzFiles\Init.txt", True)
+                        outputFile.WriteLine("This file lets Outworldz know it has been installed")
+                    End Using
+                Catch ex As Exception
+                    Log("Error:Could not create Init.txt - no permissions to write it:" + ex.Message)
+                End Try
 
-            If System.IO.File.Exists(xmlPath() + "\AppData\Roaming\Onlook\user_settings\settings_onlook.xml") Then
-                My.Settings.Onlook = True
-            Else
-                Dim yesno = MsgBox("Do you want to install the Onlook Viewer? (Newcomers to virtual worlds should choose Yes)", vbYesNo)
-                If (yesno = vbYes) Then
+                If System.IO.File.Exists(xmlPath() + "\AppData\Roaming\Onlook\user_settings\settings_onlook.xml") Then
                     My.Settings.Onlook = True
-                    Print("Installing Onlook Viewer")
-                    Dim pi As ProcessStartInfo = New ProcessStartInfo()
-                    pi.Arguments = ""
-                    pi.FileName = """" + MyFolder & "\Viewer\Onlook.exe" + """"
-                    pOnlook.StartInfo = pi
-                    Try
-                        Log("Info:Launching Onlook installer")
-                        pOnlook.Start()
-                    Catch ex As Exception
-                        Log("Error:Onlook installer failed to load:" + ex.Message)
-                    End Try
-
-                    ProgressBar1.Value = 0
-                    Print("Please Install and Start the Onlook Viewer")
-                    Dim toggle As Boolean = False
-                    While Not System.IO.File.Exists(xmlPath() + "\AppData\Roaming\Onlook\user_settings\settings_onlook.xml") And ProgressBar1.Value < 99
-                        Application.DoEvents()
-                        Sleep(2000)
-                        If (toggle) Then
-                            Print("Attention needed - please Install and Start the Onlook Viewer ")
-                            toggle = False
-                        Else
-                            Print("Start the Onlook Viewer")
-                            toggle = False
-                            toggle = True
-                        End If
-                        BumpProgress(1)
-
-                        If ProgressBar1.Value = 100 Then
-                            Print("You win. Proceeding with Outworldz Installation. You may need to add the grid manually.")
-                            toggle = True
-                        End If
-                    End While
-
-                    ' close the viewer so the grid will repopulate next time it opens
-                    Try
-                        zap("OnlookViewer")
-                    Catch ex As Exception
-                        Log("Error:Failed to zap Onlook:" + ex.Message)
-                    End Try
-
                 Else
-                    My.Settings.Onlook = False
+                    Dim yesno = MsgBox("Do you want to install the Onlook Viewer? (Newcomers to virtual worlds should choose Yes)", vbYesNo)
+                    If (yesno = vbYes) Then
+                        My.Settings.Onlook = True
+                        Print("Installing Onlook Viewer")
+                        Dim pi As ProcessStartInfo = New ProcessStartInfo()
+                        pi.Arguments = ""
+                        pi.FileName = """" + MyFolder & "\Viewer\Onlook.exe" + """"
+                        pOnlook.StartInfo = pi
+                        Try
+                            Log("Info:Launching Onlook installer")
+                            pOnlook.Start()
+                        Catch ex As Exception
+                            Log("Error:Onlook installer failed to load:" + ex.Message)
+                        End Try
+
+                        ProgressBar1.Value = 0
+                        Print("Please Install and Start the Onlook Viewer")
+                        Dim toggle As Boolean = False
+                        While Not System.IO.File.Exists(xmlPath() + "\AppData\Roaming\Onlook\user_settings\settings_onlook.xml") And ProgressBar1.Value < 99
+                            Application.DoEvents()
+                            Sleep(2000)
+                            If (toggle) Then
+                                Print("Attention needed - please Install and Start the Onlook Viewer ")
+                                toggle = False
+                            Else
+                                Print("Start the Onlook Viewer")
+                                toggle = False
+                                toggle = True
+                            End If
+                            BumpProgress(1)
+
+                            If ProgressBar1.Value = 100 Then
+                                Print("You win. Proceeding with Outworldz Installation. You may need to add the grid manually.")
+                                toggle = True
+                            End If
+                        End While
+
+                        ' close the viewer so the grid will repopulate next time it opens
+                        Try
+                            zap("OnlookViewer")
+                        Catch ex As Exception
+                            Log("Error:Failed to zap Onlook:" + ex.Message)
+                        End Try
+
+                    Else
+                        My.Settings.Onlook = False
+                    End If
                 End If
+                Print("Ready to Launch! Click 'Start' to begin your adventure in Opensimulator.")
             End If
-            Print("Ready to Launch! Click 'Start' to begin your adventure in Opensimulator.")
-        End If
 
-        ProgressBar1.Value = 100
+            ProgressBar1.Value = 100
         Application.DoEvents()
-
 
         Buttons(StartButton)
 
@@ -359,6 +368,9 @@ Public Class Form1
         MnuContent.Visible = True
 
         GetAllRegions()
+        ' set the defaults in the INI for the viewer to use. Painful to do as its a Left hand side edit 
+
+        SetDefaultSims()
 
         RegisterDNS()
 
@@ -406,21 +418,15 @@ Public Class Form1
         Dim p As Point
         p = Me.Location
 
-        If System.IO.File.Exists(MyFolder + "\" + RevNotesFile) Then
-            Try
-                My.Computer.FileSystem.RenameFile(MyFolder + "\" + RevNotesFile, "Update_Notes_for_Rev_" + MyVersion + ".rtf")
-            Catch ex As Exception
-                Log("Error: Failed to remove rev notes" + ex.Message)
-            End Try
-
-        End If
-
         My.Settings.MyX = p.X
         My.Settings.MyY = p.Y
 
         ProgressBar1.Value = 90
         Print("Hold fast to your dreams ...")
         ExitAll()
+
+        ws.StopWebServer()
+
         ProgressBar1.Value = 25
         Print("I'll tell you my next dream when I wake up.")
         StopMysql()
@@ -578,6 +584,17 @@ Public Class Form1
         TextBox1.Text = Value
         Application.DoEvents()
         Sleep(gChatTime)  ' time to read
+        Application.DoEvents()
+
+    End Sub
+
+    Private Sub PrintFast(Value As String)
+
+        Log("Info:" + Value)
+        PictureBox1.Visible = False
+        TextBox1.Visible = True
+        TextBox1.Text = Value
+        Application.DoEvents()
 
     End Sub
 
@@ -585,7 +602,11 @@ Public Class Form1
     Private Sub mnuAbout_Click(sender As System.Object, e As System.EventArgs) Handles mnuAbout.Click
         Print("(c) 2017 Outworldz,LLC")
         Dim webAddress As String = Domain + "/Outworldz_Installer"
-        Process.Start(webAddress)
+        Try
+            Process.Start(webAddress)
+        Catch
+        End Try
+
     End Sub
 
     Private Sub StopButton_Click_1(sender As System.Object, e As System.EventArgs) Handles StopButton.Click
@@ -713,7 +734,7 @@ Public Class Form1
         parser = Nothing
 
     End Function
-    Private Sub SetDefaultSims()
+    Public Sub SetDefaultSims()
 
         Dim reader As System.IO.StreamReader
         Dim line As String
@@ -756,16 +777,24 @@ Public Class Form1
             End Using
             'close your reader
             reader.Close()
+            Try
+                My.Computer.FileSystem.DeleteFile(prefix + INIname)
+                My.Computer.FileSystem.RenameFile(prefix + "File.tmp", INIname)
+            Catch ex As Exception
+                Log("Error:SetDefault sims could not rename the file:" + ex.Message)
+            End Try
+
         Catch
-            Print("Warning: Cannot set default welcome region in MyWorld.ini, continuing.")
+            Print("Warning: Cannot set default Welcome region as set in the advanced menu, continuing.")
+            My.Settings.WelcomeRegion = 1
+            My.Settings.Save()
+            Dim DefaultName = aRegion(1).RegionName
+
+
         End Try
 
-        Try
-            My.Computer.FileSystem.DeleteFile(prefix + INIname)
-            My.Computer.FileSystem.RenameFile(prefix + "File.tmp", INIname)
-        Catch ex As Exception
-            Log("Error:SetDefault sims could not rename the file:" + ex.Message)
-        End Try
+
+
 
     End Sub
 
@@ -797,9 +826,7 @@ Public Class Form1
             Log("Info:Avatar will not be visible")
         End If
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-        ' set the defaults in the INI for the viewer to use. Painful to do as its a Left hand side edit 
 
-        SetDefaultSims()
 
         ' Opensim.ini
         LoadIni(MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\Opensim.ini", ";")
@@ -897,6 +924,7 @@ Public Class Form1
                 SetIni("Startup", "UseSeparatePhysicsThread", "true")
         End Select
 
+
         ' set MySql
         Dim ConnectionString = """" _
             + "Data Source=" + My.Settings.DBSource _
@@ -952,17 +980,22 @@ Public Class Form1
         End If
 
 
-
-
         ' Wifi
         SetIni("WifiService", "AdminPassword", My.Settings.Password)
         SetIni("WifiService", "AdminEmail", My.Settings.AdminEmail)
+
+        ' V1.74 bug reported 
+        SetIni("WifiService", "SmtpUsername", My.Settings.SmtpUsername)
+        SetIni("WifiService", "SmtpPassword", My.Settings.SmtpPassword)
 
         If My.Settings.AccountConfirmationRequired Then
             SetIni("WifiService", "AccountConfirmationRequired", "true")
         Else
             SetIni("WifiService", "AccountConfirmationRequired", "false")
         End If
+
+        ' Gmail
+        SetIni("WifiService", "AdminPassword", My.Settings.Password)
 
         ' Autobackup
         If My.Settings.AutoBackup Then
@@ -977,6 +1010,10 @@ Public Class Form1
         SetIni("AutoBackupModule", "AutoBackupKeepFilesForDays", My.Settings.KeepForDays)
 
         SaveINI()
+
+        ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+        DoGloebits(MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\Gloebit.ini")
 
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
         'Regions - write all region.ini files with public IP and Public port
@@ -1007,6 +1044,46 @@ Public Class Form1
             VUI.Visible = False
             AvatarVisible.Visible = False
         End If
+
+    End Sub
+
+
+    Public Sub DoGloebits(path As String)
+
+        'Gloebit.ini
+
+        LoadIni(path, ";")
+        If My.Settings.GloebitsEnable Then
+            SetIni("Gloebit", "Enabled", "true")
+        Else
+            SetIni("Gloebit", "Enabled", "false")
+        End If
+
+        If My.Settings.GloebitsMode Then
+            SetIni("Gloebit", "GLBEnvironment", "production")
+            SetIni("Gloebit", "GLBKey", My.Settings.GLProdKey)
+            SetIni("Gloebit", "GLBSecret", My.Settings.GLProdSecret)
+        Else
+            SetIni("Gloebit", "GLBEnvironment", "sandbox")
+            SetIni("Gloebit", "GLBKey", My.Settings.GLSandKey)
+            SetIni("Gloebit", "GLBSecret", My.Settings.GLSandSecret)
+        End If
+
+        SetIni("Gloebit", "GLBOwnerName", My.Settings.GLBOwnerName)
+        SetIni("Gloebit", "GLBOwnerEmail", My.Settings.GLBOwnerEmail)
+
+
+        Dim ConnectionString = """" _
+            + "Data Source=" + "localhost" _
+            + ";Database=" + My.Settings.DBName _
+            + ";Port=" + My.Settings.MySqlPort _
+            + ";User ID=" + My.Settings.DBUserID _
+            + ";Password=" + My.Settings.DBPassword _
+            + ";Old Guids=True;Allow Zero Datetime=True;" _
+            + """"
+        SetIni("Gloebit", "GLBSpecificConnectionString", ConnectionString)
+
+        SaveINI()
 
     End Sub
 
@@ -1069,6 +1146,9 @@ Public Class Form1
                 Dim parts As String() = C.Split(New Char() {","c}) ' split at the comma
                 aRegion(index).CoordX = parts(0)
                 aRegion(index).CoordY = parts(1)
+
+                BumpProgress(1)
+
             Catch ex As Exception
                 Log("Err:Parse file " + Name + ":" + ex.Message)
             End Try
@@ -1136,12 +1216,18 @@ Public Class Form1
 
     Private Sub LoopBackToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles LoopBackToolStripMenuItem.Click
         Dim webAddress As String = Domain + "/Outworldz_Installer/Loopback.htm"
-        Process.Start(webAddress)
+        Try
+            Process.Start(webAddress)
+        Catch
+        End Try
     End Sub
 
     Private Sub MoreContentToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles MoreContentToolStripMenuItem.Click
         Dim webAddress As String = Domain + "/cgi/freesculpts.plx"
-        Process.Start(webAddress)
+        Try
+            Process.Start(webAddress)
+        Catch
+        End Try
         Print("Drag and drop Backup.Oar, or any OAR or IAR files to load into your Sim")
     End Sub
 
@@ -1158,7 +1244,10 @@ Public Class Form1
 
     Private Sub ToolStripMenuItem1_Click(sender As Object, e As EventArgs) Handles ToolStripMenuItem1.Click
         Dim webAddress As String = Domain + "/Outworldz_Installer/PortForwarding.htm"
-        Process.Start(webAddress)
+        Try
+            Process.Start(webAddress)
+        Catch
+        End Try
     End Sub
 #End Region
 
@@ -1216,7 +1305,7 @@ Public Class Form1
             Catch ex As Exception
                 Log("Info:Opensim is not yet running, waiting for it to start listening")
                 Up = ""
-                If InStr(ex.Message, "404") Then
+                If CBool(InStr(ex.Message, "404")) Then
                     Up = "Done"
                 End If
             End Try
@@ -1237,6 +1326,9 @@ Public Class Form1
             Buttons(StartButton)
             Return False
         End Try
+
+
+        My.Settings.Save()
         Return True
     End Function
 
@@ -1274,11 +1366,6 @@ Public Class Form1
         Process.Start(webAddress)
     End Sub
 
-    Private Sub UKanDoToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles UKanDoToolStripMenuItem.Click
-        Dim webAddress As String = "http://www.ukando.info/"
-        Process.Start(webAddress)
-    End Sub
-
     Private Sub FirestormToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles FirestormToolStripMenuItem.Click
         Dim webAddress As String = "http://www.firestormviewer.org/"
         Process.Start(webAddress)
@@ -1313,14 +1400,16 @@ Public Class Form1
             Catch ex As Exception
                 Log("Info:" + thing + " is empty")
             End Try
-            BumpProgress10()
+            BumpProgress(1)
         Next
     End Sub
 
     Public Sub Log(message As String)
+        Application.DoEvents()
         Try
             Using outputFile As New StreamWriter(MyFolder & "\OutworldzFiles\Outworldz.log", True)
                 outputFile.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + message)
+                Debug.Print(message)
             End Using
         Catch
         End Try
@@ -1376,8 +1465,9 @@ Public Class Form1
                                   "Mmmm, I was sleeping...",
                                   "What a dream that was!",
                                   "Do you ever dream of better worlds? I just did.",
-                                  "Huh?",
-                                  "Mumbles..."
+                                  "Do I smell Coffee? ",
+                                  "Did you make me pancakes?",
+                                  "Breakfast in bed?"
                                 }
 
         Dim Array() As String = {
@@ -1413,16 +1503,25 @@ Public Class Form1
         Dim value2 As Integer = CInt(Int((Array.Length - 1) * Rnd()))
         Dim whattosay = Prefix(value1) + vbCrLf + vbCrLf + Array(value2) + " ... and then I woke up."
         Print(whattosay)
+        Sleep(2000)
 
     End Sub
 
     Sub Sleep(value As Integer)
-        Thread.Sleep(value)
+        ' value is in milliseconds, but we do it in 10 passes so we can doevents() to free up console
+
+        Dim sleeptime = value / 10  ' now in tenths
+        Dim counter = 10
+        While counter
+            Application.DoEvents()
+            Thread.Sleep(sleeptime)
+            counter = counter - 1
+        End While
     End Sub
 
     Public Sub PaintImage()
 
-        If (My.Settings.TimerInterval > 0) Then
+        If (My.Settings.TimerInterval > 0 And Not Diagsrunning) Then
             Dim randomFruit = images(Arnd.Next(0, images.Count))
             ProgressBar1.Visible = False
             TextBox1.Visible = False
@@ -1440,43 +1539,7 @@ Public Class Form1
         PaintImage()
     End Sub
 
-    Private Sub LoadBackupToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles LoadBackupToolStripMenuItem.Click
-        If (Running) Then
-
-            ChooseRegion()
-
-            ' Create an instance of the open file dialog box.
-            Dim openFileDialog1 As OpenFileDialog = New OpenFileDialog
-
-            ' Set filter options and filter index.
-            openFileDialog1.InitialDirectory = BackupPath()
-            openFileDialog1.Filter = "Opensim OAR(*.OAR,*.GZ,*.TGZ)|*.oar;*.gz;*.tgz;*.OAR;*.GZ;*.TGZ|All Files (*.*)|*.*"
-            openFileDialog1.FilterIndex = 1
-            openFileDialog1.Multiselect = False
-
-            ' Call the ShowDialog method to show the dialogbox.
-            Dim UserClickedOK As Boolean = openFileDialog1.ShowDialog
-
-            ' Process input if the user clicked OK.
-            If UserClickedOK = True Then
-                Dim backMeUp = MsgBox("Make a backup and then load the new content?", vbYesNo)
-                Dim thing = openFileDialog1.FileName
-                If thing.Length Then
-                    thing = thing.Replace("\", "/")    ' because Opensim uses unix-like slashes, that's why
-
-                    If backMeUp = vbYes Then
-                        ConsoleCommand("alert CPU Intensive Backup Started{ENTER}")
-                        ConsoleCommand("save oar --perm=CT " + """" + BackupPath() + "Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
-                    End If
-                    ConsoleCommand("alert New content is loading..{ENTER}")
-                    ConsoleCommand("load oar --force-terrain --force-parcels " + """" + thing + """" + "{ENTER}")
-                    ConsoleCommand("alert New content just loaded." + "{ENTER}")
-                    Me.Focus()
-                End If
-            End If
-        Else
-            Print("Opensim is not running. Cannot load the OAR file.")
-        End If
+    Private Sub LoadBackupToolStripMenuItem_Click(sender As Object, e As EventArgs)
 
 
     End Sub
@@ -1498,29 +1561,8 @@ Public Class Form1
         End If
     End Sub
 
-    Private Sub SaveBackupToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles SaveBackupToolStripMenuItem.Click
-        If (Running) Then
+    Private Sub SaveBackupToolStripMenuItem_Click(sender As Object, e As EventArgs)
 
-            ChooseRegion()  '1.37
-
-            Dim Message, title, defaultValue As String
-            Dim myValue As Object
-            ' Set prompt.
-            Message = "Enter a name for your backup:"
-            title = "Backup to OAR"
-            defaultValue = "*.oar"   ' Set default value.
-
-            ' Display message, title, and default value.
-            myValue = InputBox(Message, title, defaultValue)
-            ' If user has clicked Cancel, set myValue to defaultValue 
-            If myValue.length = 0 Then Return
-            ConsoleCommand("alert CPU Intensive Backup Started{ENTER}")
-            ConsoleCommand("save oar " + """" + BackupPath() + myValue + """" + "{ENTER}")
-            Me.Focus()
-            Print("Saving " + myValue + " to " + BackupPath())
-        Else
-            Print("Opensim is not running. Cannot make a backup now.")
-        End If
     End Sub
 
     Private Sub BumpProgress(bump As Integer)
@@ -1542,115 +1584,838 @@ Public Class Form1
 
 #End Region
 
-#Region "IAROAR"
-    Private Sub LoadInventoryToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles LoadInventoryToolStripMenuItem.Click
-        If Running Then
-            ' Create an instance of the open file dialog box.
-            Dim openFileDialog1 As OpenFileDialog = New OpenFileDialog
+#Region "Updates"
 
-            ' Set filter options and filter index.
-            openFileDialog1.InitialDirectory = """" + MyFolder + "/" + """"
-            openFileDialog1.Filter = "Inventory IAR (*.iar)|*.iar|All Files (*.*)|*.*"
-            openFileDialog1.FilterIndex = 1
-            openFileDialog1.Multiselect = False
+    Private Sub CheckForUpdatesToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CHeckForUpdatesToolStripMenuItem.Click
+        CheckForUpdates()
+    End Sub
+    Private Sub UpdaterCancel_Click(sender As Object, e As EventArgs) Handles UpdaterCancel.Click
 
-            ' Call the ShowDialog method to show the dialogbox.
-            Dim UserClickedOK As Boolean = openFileDialog1.ShowDialog
+        UpdaterGo.Visible = False
+        UpdaterCancel.Visible = False
+        My.Settings.SkipUpdateCheck = True
+        Print("Update scan is off. You can still check for updates in the Help Menu.")
 
-            ' Process input if the user clicked OK.
-            If UserClickedOK = True Then
-                Dim thing = openFileDialog1.FileName
-                If thing.Length Then
-                    thing = thing.Replace("\", "/")    ' because Opensim uses unix-like slashes, that's why
-                    LoadIARContent(thing)
-                End If
+    End Sub
+
+    Private Sub UpdaterGo_Click(sender As Object, e As EventArgs) Handles UpdaterGo.Click
+
+        UpdaterGo.Enabled = False
+        UpdaterCancel.Visible = False
+        Dim fileloaded As String = Download()
+        If (fileloaded.Length) Then
+            Dim pUpdate As Process = New Process()
+            Dim pi As ProcessStartInfo = New ProcessStartInfo()
+            pi.Arguments = ""
+            pi.FileName = """" + MyFolder + "\" + fileloaded + """"
+            pUpdate.StartInfo = pi
+            Try
+                Print("I'll see you again when I wake up all fresh and new!")
+                Log("Info:Launch Updater and exiting")
+                pUpdate.Start()
+            Catch ex As Exception
+                Print("Error: Could not launch " + fileloaded + ". Perhaps you can can exit this program and launch it manually.")
+                Log("Error: installer failed to launch:" + ex.Message)
+            End Try
+            End ' quit program
+        Else
+            Print("Uh Oh!  The files I need could not be found online. The gnomes have absconded with them!   Please check later.")
+            UpdaterGo.Visible = False
+            UpdaterGo.Enabled = True
+        End If
+
+    End Sub
+    Private Function Download() As String
+
+        Dim fileName As String = "Updater.exe"
+
+        Try
+            My.Computer.FileSystem.DeleteFile(MyFolder + fileName)
+        Catch
+            Log("Warn:Could not delete " + fileName)
+        End Try
+
+        Try
+            fileName = client.DownloadString(Domain + "/Outworldz_Installer/GetUpdater.plx")
+        Catch
+            Return ""
+        End Try
+
+        Try
+            Dim myWebClient As New WebClient()
+            Print("Downloading new updater, this will take a moment")
+            ' The DownloadFile() method downloads the Web resource and saves it into the current file-system folder.
+            myWebClient.DownloadFile(Domain + "/Outworldz_Installer/" + fileName, fileName)
+        Catch e As Exception
+            Log("Warn:" + e.Message)
+            Return ""
+        End Try
+        Return fileName
+
+    End Function
+
+    Sub CheckForUpdates()
+
+        Dim Update As String = ""
+        Dim isPortOpen As String = ""
+
+        My.Settings.SkipUpdateCheck = False
+        My.Settings.Save()
+
+        Try
+            Update = client.DownloadString(Domain + "/Outworldz_Installer/Update.plx?Ver=" + Str(MyVersion))
+        Catch ex As Exception
+            Log("Dang:The Outworld web site is down")
+        End Try
+        If (Update = "") Then Update = "0"
+
+        Try
+            If Convert.ToSingle(Update) > Convert.ToSingle(MyVersion) Then
+                Print("A dreamier version " + Update + " is available.")
+                UpdaterGo.Visible = True
+                UpdaterGo.Enabled = True
+                UpdaterCancel.Visible = True
+            Else
+                Print("I am the dreamiest version available, at V " + MyVersion)
             End If
-        Else
-            Print("Opensim is not running. Cannot load an IAR at this time.")
+        Catch
+        End Try
+        BumpProgress10()
+
+    End Sub
+
+#End Region
+
+#Region "Onlook"
+
+    Private Sub Onlook()
+        If Running = False Then Return
+        If My.Settings.Onlook Then
+            Print("Starting Onlook viewer")
+            Dim pi As ProcessStartInfo = New ProcessStartInfo()
+            pi.Arguments = ""
+            pi.FileName = "C:\Program Files (x86)\Onlook\OnLookViewer.exe"
+            pi.WindowStyle = ProcessWindowStyle.Normal
+            pOnlook.StartInfo = pi
+            Try
+                pOnlook.Start()
+            Catch ex As Exception
+                Log("Error:Onlook failed to launch:" + ex.Message)
+            End Try
         End If
 
     End Sub
 
-    Private Sub SaveInventoryToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles SaveInventoryToolStripMenuItem.Click
-        If (Running) Then
-            Dim Message, title, defaultValue As String
+    Private Sub SaveOnlookXMLData()
 
-            '''''''''''''''''''''''
-            ' Object Name to back up
-            Dim itemName As String
-            ' Set prompt.
-            Message = "Enter the object name ('/' will  backup everything, and '/Objects/box' will back up box in folder Objects) :"
-            title = "Backup Name?"
-            defaultValue = "/"   ' Set default value.
-
-            ' Display message, title, and default value.
-            itemName = InputBox(Message, title, defaultValue)
-            ' If user has clicked Cancel, set myValue to defaultValue 
-            If itemName.Length = 0 Then Return
-
-            '''''''''''''''''''''''
-            ' Name of the IAR
-            Dim backupName As String
-            Message = "Backup name? :"
-            title = "Backup Name?"
-            defaultValue = "backup.iar"   ' Set default value.
-
-            ' Display message, title, and default value.
-            backupName = InputBox(Message, title, defaultValue)
-            ' If user has clicked Cancel, set myValue to defaultValue 
-            If itemName.Length = 0 Then Return
-
-            '''''''''''''''''''''''
-            ' Avatar
-            Dim Name As String
-            Message = "Avatar FirstName and Lastname:"
-            title = "FirstName LastName"
-            defaultValue = ""   ' Set default value.
-
-            ' Display message, title, and default value.
-            Name = InputBox(Message, title, defaultValue)
-            ' If user has clicked Cancel, set myValue to defaultValue 
-            If Name.Length = 0 Then Return
-
-            '''''''''''''''''''''''
-            ' Password
-            Dim Password As String
-            Message = "Avatar's Password?:"
-            title = "Password needed"
-            defaultValue = ""   ' Set default value.
-
-            ' Display message, title, and default value.
-            Password = InputBox(Message, title, defaultValue)
-
-            '''''''''''''''''''''''
-
-            ConsoleCommand("alert CPU Intensive Backup Started{ENTER}")
-            ConsoleCommand("save iar " + Name + " " + """" + itemName + """" + " " + Password + " " + """" + BackupPath() + backupName + """" + "{ENTER}")
-            Me.Focus()
-            Print("Saving " + backupName + " to " + BackupPath())
-        Else
-            Print("Opensim is not running. Cannot make a backup now.")
+        ' setup Onlook
+        If System.IO.File.Exists(xmlPath() + "\AppData\Roaming\Onlook\user_settings\settings_onlook.xml") Then
+            My.Settings.ViewerInstalled = True
         End If
+
+        If Not My.Settings.ViewerInstalled Then
+            Log("Info:Onlook viewer is not installed")
+            Return
+        End If
+        ' we have to change the viewer Grid settings if we are on localhost
+        Print("Setting Grid Info...")
+
+
+        Dim Opensim8XML As String = "<llsd>
+    <array>
+        <map>
+        <key>default_grids_version</key>
+            <integer>22</integer>
+        </map>
+        <map>
+        <key>auto_update</key>
+            <boolean>0</boolean>
+        <key>gridname</key>
+            <string>" + My.Settings.SimName + "</string>
+        <key>gridnick</key>
+            <string>" + My.Settings.SimName + "</string>
+        <key>helperuri</key>
+            <string>http://</string>
+        <key>inventory_links</key>
+            <boolean>0</boolean>
+        <key>locked</key>
+            <boolean>0</boolean>
+        <key>loginpage</key>
+            <string>" + Splashpage + "</string>
+        <key>loginuri</key>
+            <string>http://" + My.Settings.PublicIP + ":" + My.Settings.HttpPort + "/</string>
+        <key>password</key>
+            <string>http://" + My.Settings.PublicIP + My.Settings.HttpPort + "/wifi/forgotpassword</string>
+        <key>platform</key>
+            <string>OpenSim</string>
+        <key>register</key>
+        <key>render_compat</key>
+            <boolean>1</boolean>
+        <key>search</key>
+            <string>http://search.metaverseink.com/opensim/results.jsp?</string>
+        <key>support</key>
+            <string />
+        <key>website</key>
+            <string />
+        </map>
+    </array>
+</llsd>
+"
+
+        Try
+            My.Computer.FileSystem.CopyFile(xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml", xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml.bak", True)
+        Catch
+            Log("Error:Failed to back up onlook XML")
+        End Try
+
+        Try
+            My.Computer.FileSystem.DeleteFile(xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml")
+            Using outputFile As New StreamWriter(xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml", True)
+                outputFile.WriteLine(Opensim8XML)
+            End Using
+
+            'My.Computer.FileSystem.CopyFile(MyFolder & "\Viewer\Hypergrid.xml", xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml", True)
+        Catch ex As Exception
+            Log("Error:Failed to install onlook XML:" + ex.Message)
+        End Try
+
+    End Sub
+    Private Sub RemoveGrid()
+
+        ' restore backup - they may have changed it. Outworldzs is supposed to be simple. If they launch the viewer by itself, they can change grids
+        Try
+            My.Computer.FileSystem.CopyFile(xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml.bak", xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml", True)
+        Catch ex As Exception
+            Log("Error:failed to restore Onlook xml backup:" + ex.Message)
+        End Try
+    End Sub
+    Private Function xmlPath() As String
+
+        ' gets the path to the %APPDATA% folder on windows so we can seek out the Onlook folders
+        Dim appData As String = My.Computer.FileSystem.SpecialDirectories.CurrentUserApplicationData
+        Return Mid(appData, 1, InStr(appData, "AppData") - 1)
+    End Function
+#End Region
+
+#Region "Diagnostics"
+
+    Private Function CheckPort(ServerAddress As String, Port As String) As Boolean
+
+        Dim iPort As Integer = Convert.ToInt16(Port)
+        Dim ClientSocket As New TcpClient
+
+        Try
+            ClientSocket.Connect(ServerAddress, iPort)
+        Catch ex As Exception
+            Log("Info:Unable to connect to server:" + ex.Message)
+            Return False
+        End Try
+
+        If ClientSocket.Connected Then
+            Log("Info: port probe success on port " + Convert.ToString(iPort))
+            ClientSocket.Close()
+            Return True
+        End If
+        CheckPort = False
+
+    End Function
+    Public Function GetPubIP() As String
+
+        If My.Settings.DnsName.Length Then
+            BumpProgress10()
+            My.Settings.PublicIP = My.Settings.DnsName
+            My.Settings.Save()
+            Return My.Settings.DnsName
+        End If
+
+        ' Set Public Port
+        Try
+            Dim ip As String = client.DownloadString("http://api.ipify.org/?r=" + Random())
+            BumpProgress10()
+            Log("Info:Public IP=" + ip)
+            Return ip
+        Catch ex As Exception
+            Print("Hmm, I cannot reach the Internet? Uh. Okay, continuing." + ex.Message)
+            My.Settings.DiagFailed = True
+            Log("Info:Public IP=" + "127.0.0.1")
+        End Try
+        BumpProgress10()
+        Return "127.0.0.1"
+
+    End Function
+    Private Sub TestLoopback()
+
+
+        BumpProgress10()
+        Dim result As String = ""
+        Dim loopbacktest As String
+        If My.Settings.DnsName.Length Then
+            loopbacktest = "http://" + My.Settings.DnsName + ":" + My.Settings.PublicPort + "/?_TestLoopback=" + Random()
+        Else
+            loopbacktest = "http://127.0.0.1:" + My.Settings.PublicPort + "/?_TestLoopback=" + Random()
+        End If
+
+
+        Try
+            Log(loopbacktest)
+            result = client.DownloadString(loopbacktest)
+        Catch ex As Exception
+            Print("Loopback test failed")
+            Log("Err:Loopback fail:" + result + ":" + ex.Message)
+        End Try
+
+        BumpProgress10()
+
+
+        If result = "Test completed" And Not gFailDebug Then
+            Log("Passed:" + result)
+            My.Settings.LoopBackDiag = True
+            My.Settings.Save()
+        Else
+            Log("Failed:" + result)
+            Print("See Help for 'Loopback' and how to enable it in Windows. Continuing...")
+            My.Settings.LoopBackDiag = False
+            My.Settings.PublicIP = GetLocalIPv4Address()
+            My.Settings.Save()
+        End If
+
     End Sub
 
-    Private Sub AllRegionsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AllRegionsToolStripMenuItem.Click
-        If Not Running Then
-            Print("Opensim is not running. Cannot save an OAR at this time.")
+    Private Sub DiagnosticsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles DiagnosticsToolStripMenuItem.Click
+
+        If Running Then
+            Print("Cannot run dignostics while Opensimulator is running. Click 'Stop' and try again.")
+            Return
+        End If
+        ProgressBar1.Value = 0
+        DoDiag()
+        If My.Settings.DiagFailed = True Then
+            Print("Hypergrid Diagnostics failed. These can be re-run at any time. See Help->Network Diagnostics', 'Loopback', and 'Port Forwards'")
+        Else
+            Print("Tests passed, Hypergrid should be working.")
+        End If
+        ProgressBar1.Value = 100
+
+    End Sub
+    Private Function ProbePublicPort() As Boolean
+
+        Log("Info:Probe Public Port")
+        Dim ip As String = GetPubIP()
+
+
+        Dim isPortOpen As String = ""
+        Try
+            ' collect some stats with a HTTP_ GET to the webserver.
+            ' Send unique, anonymous random ID, both of the versions of Opensim and this program, and the diagnostics test results 
+            ' See my privacy policy at https://www.outworldz.com/privacy.htm
+
+            Dim Url = Domain + "/cgi/probetest.plx?IP=" + ip + "&Port=" + My.Settings.PublicPort + GetPostData()
+            Log(Url)
+            isPortOpen = client.DownloadString(Url)
+        Catch ex As Exception
+            Log("Dang:The Outworldz web site cannot find a path back")
+            My.Settings.DiagFailed = True
+        End Try
+
+
+        BumpProgress10()
+
+        If isPortOpen = "yes" And Not gFailDebug Then
+            My.Settings.PublicIP = ip
+            Log("Public IP set to " + ip)
+            My.Settings.Save()
+            Return True
+        Else
+            Log("Failed:" + isPortOpen)
+            My.Settings.DiagFailed = True
+            Print("Internet address " + ip + ":" + My.Settings.PublicPort + " appears to not be forwarded to this machine in your router, so Hypergrid is not available. This can possibly be fixed by 'Port Forwards' in your router.  See Help->Port Forwards.")
+            My.Settings.PublicIP = GetLocalIPv4Address() ' failed, so try the machines address
+
+            My.Settings.Save()
+            Print("Using local IP: http://" + My.Settings.PublicIP)
+            Log("IP set to " + My.Settings.PublicIP)
+            Return False
+        End If
+
+    End Function
+    Private Sub DoDiag()
+
+        Diagsrunning = True
+        My.Settings.DiagFailed = False
+        OpenPorts() ' Open router ports with uPnP
+        ProbePublicPort()
+
+        If My.Settings.DiagFailed Then
+            ShowLog()
+        Else
+            NewDNSName()
+        End If
+        TestLoopback()
+        Log("Diagnostics set the Hypergrid address to " + My.Settings.PublicIP)
+        Diagsrunning = False
+    End Sub
+    Public Shared Function GetLocalIPv4Address() As String
+
+        Dim sock As Socket = New Socket(AddressFamily.InterNetwork, SocketType.Dgram, 0)
+        Try
+            Using sock
+                sock.Connect("8.8.8.8", 65530)  ' try Google
+                Dim EndPoint As IPEndPoint = CType(sock.LocalEndPoint, IPEndPoint)
+                GetLocalIPv4Address = EndPoint.Address.ToString()
+            End Using
+        Catch ex As Exception
+            GetLocalIPv4Address = "127.0.0.1"
+        End Try
+
+    End Function
+
+    Private Function OldGetLocalIPv4Address() As String
+
+        Dim strHostName As String = System.Net.Dns.GetHostName()
+        Dim IPList As System.Net.IPHostEntry = System.Net.Dns.GetHostEntry(strHostName)
+
+        For Each IPaddress As System.Net.IPAddress In IPList.AddressList
+            If IPaddress.AddressFamily = System.Net.Sockets.AddressFamily.InterNetwork AndAlso IsPrivateIP(IPaddress.ToString()) Then
+                Return IPaddress.ToString()
+            End If
+        Next
+        Return "127.0.0.1"
+
+    End Function
+
+    ''' <summary>
+    ''' Checks to see if an IP address is a local IP address.
+    ''' </summary>
+    ''' <param name="CheckIP">The IP address to check.</param>
+    ''' <returns>Boolean</returns>
+    ''' <remarks></remarks>
+    Private Shared Function IsPrivateIP(ByVal CheckIP As String) As Boolean
+
+        Dim Quad1, Quad2 As Integer
+
+        Quad1 = CInt(CheckIP.Substring(0, CheckIP.IndexOf(".")))
+        Quad2 = CInt(CheckIP.Substring(CheckIP.IndexOf(".") + 1).Substring(0, CheckIP.IndexOf(".")))
+        Select Case Quad1
+            Case 10
+                Return True
+            Case 172
+                If Quad2 >= 16 And Quad2 <= 31 Then Return True
+            Case 192
+                If Quad2 = 168 Then Return True
+        End Select
+        Return False
+
+    End Function
+
+    Private Sub UpdateStats()
+
+        Try
+            ' collect some stats with a HTTP_ GET to the webserver.
+            ' Send unique, anonymous random ID, both of the versions of Opensim and this program, and the diagnostics test results 
+            ' See my privacy policy at https://www.outworldz.com/privacy.htm
+
+            Dim Url = Domain + "/cgi/updatestats.plx?Port=" + My.Settings.HttpPort + GetPostData()
+            Log(Url)
+            Dim response = client.DownloadString(Url)
+            Log("Stats sent " + response)
+
+            BumpProgress10()
+
+        Catch ex As Exception
+            Log("Dang:The Outworldz web site is down :-(")
+        End Try
+
+    End Sub
+
+
+#End Region
+
+#Region "PnP"
+
+    Function OpenRouterPorts() As Boolean
+
+        If Not MyUPnPMap.UPNPEnabled Then
+            Log("UPnP is not enabled in the router")
+            Return False
+        End If
+
+        If Not My.Settings.UPnPEnabled Then
+            Log("UPnP is not enabled in the menu")
+            Return True
+        End If
+
+        Log("Local ip seems to be " + UPNP.LocalIP)
+
+        Try
+
+            'diagnostics 8001
+            If Not MyUPnPMap.Exists(Convert.ToInt16(My.Settings.PublicPort), UPNP.Protocol.TCP) Then
+                MyUPnPMap.Add(UPNP.LocalIP, Convert.ToInt16(My.Settings.PublicPort), UPNP.Protocol.TCP, "Opensim TCP Diag " + My.Settings.PublicPort)
+            Else
+                MyUPnPMap.Remove(Convert.ToInt16(My.Settings.PublicPort), UPNP.Protocol.TCP)
+                MyUPnPMap.Add(UPNP.LocalIP, Convert.ToInt16(My.Settings.PublicPort), UPNP.Protocol.TCP, "Opensim TCP Diag " + My.Settings.PublicPort)
+            End If
+            PrintFast("Diagnostics Port is open:" + My.Settings.PublicPort)
+
+            BumpProgress10()
+
+            ' 8002 for TCP and UDP
+            If Not MyUPnPMap.Exists(Convert.ToInt16(My.Settings.HttpPort), UPNP.Protocol.TCP) Then
+                MyUPnPMap.Add(UPNP.LocalIP, Convert.ToInt16(My.Settings.HttpPort), UPNP.Protocol.TCP, "Opensim TCP Grid " + My.Settings.HttpPort)
+            Else
+                MyUPnPMap.Remove(Convert.ToInt16(My.Settings.HttpPort), UPNP.Protocol.TCP)
+                MyUPnPMap.Add(UPNP.LocalIP, Convert.ToInt16(My.Settings.HttpPort), UPNP.Protocol.TCP, "Opensim TCP Grid " + My.Settings.HttpPort)
+            End If
+            PrintFast("Grid TCP Port is open:" + My.Settings.HttpPort)
+            BumpProgress10()
+
+            If Not MyUPnPMap.Exists(Convert.ToInt16(My.Settings.HttpPort), UPNP.Protocol.UDP) Then
+                MyUPnPMap.Add(UPNP.LocalIP, Convert.ToInt16(My.Settings.HttpPort), UPNP.Protocol.UDP, "Opensim UDP Grid " + My.Settings.HttpPort)
+            Else
+                MyUPnPMap.Remove(Convert.ToInt16(My.Settings.HttpPort), UPNP.Protocol.UDP)
+                MyUPnPMap.Add(UPNP.LocalIP, Convert.ToInt16(My.Settings.HttpPort), UPNP.Protocol.UDP, "Opensim UDP Grid " + My.Settings.HttpPort)
+            End If
+            PrintFast("Grid UDP Port is open:" + My.Settings.HttpPort)
+
+            Application.DoEvents()
+            BumpProgress10()
+
+            Dim counter = 1
+            Dim size = aRegion.GetUpperBound(0)
+            While counter <= size
+
+                Dim RegionPort As Integer = aRegion(counter).RegionPort
+                Dim RegionName As String = aRegion(counter).RegionName
+
+                If Not MyUPnPMap.Exists(RegionPort, UPNP.Protocol.UDP) Then
+                    MyUPnPMap.Add(UPNP.LocalIP, Convert.ToInt16(RegionPort), UPNP.Protocol.UDP, "Opensim UDP Region " + RegionPort.ToString)
+                Else
+                    MyUPnPMap.Remove(RegionPort, UPNP.Protocol.UDP)
+                    MyUPnPMap.Add(UPNP.LocalIP, Convert.ToInt16(RegionPort), UPNP.Protocol.UDP, "Opensim UDP Region " + RegionPort.ToString)
+                End If
+                PrintFast("Region " + RegionName + " Port is open:" + Convert.ToString(RegionPort))
+                BumpProgress10()
+
+                counter += 1
+            End While
+
+        Catch e As Exception
+            Print("uPnP is not working or enabled in your router. Hypergrid access will require ports to be opened manually.")
+            Log("uPnp: UPNP Exception caught:  " + e.Message)
+            Return False
+        End Try
+        Return True 'successfully added
+    End Function
+
+
+    Private Function GetPostData() As String
+
+        Dim SimVersion As String
+        If (My.Settings.GridFolder = "Opensim") Then
+            SimVersion = "0.8.2.1"
+        Else
+            SimVersion = "0.9.1"
+        End If
+        Dim UpNp As String = "Fail"
+        If My.Settings.UPnPDiag Then
+            UpNp = "Pass"
+        End If
+        Dim Loopb As String = "Pass"
+        If My.Settings.LoopBackDiag Then
+            Loopb = "Pass"
+        Else
+            Loopb = "Fail"
+        End If
+
+
+        Dim data
+        data = "&Machine=" + Machine _
+            + "&V=" + MyVersion _
+            + "&OV=" + SimVersion _
+            + "&UpNp=" + UpNp _
+            + "&Loop=" + Loopb _
+            + "&DnsName=" + My.Settings.DnsName _
+            + "&r=" + Random()
+        Return data
+
+    End Function
+
+    Private Function OpenPorts() As Boolean
+
+        'If Running = False Then Return True
+        Print("The human is instructed to wait while I check out the router ...")
+        Try
+            If OpenRouterPorts() Then ' open uPNP port
+                Log("uPnpOk")
+                'Print("uPnP Ok")
+                My.Settings.UPnPDiag = True
+                My.Settings.Save()
+                BumpProgress10()
+                Return True
+            Else
+                Log("uPnP: fail")
+                My.Settings.UPnPDiag = False
+                My.Settings.Save()
+
+                BumpProgress10()
+                Return False
+            End If
+        Catch e As Exception
+            Log("Error: UPNP Exception: " + e.Message)
+            My.Settings.UPnPDiag = False
+            My.Settings.Save()
+            BumpProgress10()
+            Return False
+        End Try
+
+    End Function
+
+#End Region
+
+#Region "MySQl"
+
+    Private Sub RestoreDatabaseToolStripMenuItem_Click(sender As Object, e As EventArgs)
+
+    End Sub
+
+    Private Sub MysqlToolStripMenuItem_Click(sender As Object, e As EventArgs)
+
+
+    End Sub
+
+
+    Private Function StartMySQL() As Boolean
+
+        ' Check for MySql operation
+        Dim MysqlOk As Boolean
+
+        MysqlOk = CheckMysql()
+        If MysqlOk Then Return True
+
+        ' Start MySql in background.
+
+        BumpProgress10()
+        Dim StartValue = ProgressBar1.Value
+        Print("Starting Database")
+
+        ' SAVE INI file
+        LoadIni(MyFolder & "\OutworldzFiles\mysql\my.ini", "#")
+        SetIni("mysqld", "basedir", """" + gCurSlashDir + "/OutworldzFiles/Mysql" + """")
+        SetIni("mysqld", "datadir", """" + gCurSlashDir + "/OutworldzFiles/Mysql/Data" + """")
+        SetIni("mysqld", "port", My.Settings.MySqlPort)
+        SetIni("client", "port", My.Settings.MySqlPort)
+        SaveINI()
+
+        ' create test program 
+        ' slants the other way:
+        Dim testProgram As String = MyFolder & "\OutworldzFiles\Mysql\bin\StartManually.bat"
+        Try
+            My.Computer.FileSystem.DeleteFile(testProgram)
+        Catch ex As Exception
+            Log("DeleteFile: " + ex.Message)
+        End Try
+        Try
+            Using outputFile As New StreamWriter(testProgram, True)
+                outputFile.WriteLine("@REM A program to run Mysql manually for troubleshooting." + vbCrLf _
+                                     + "mysqld.exe --defaults-file=" + """" + gCurSlashDir + "/OutworldzFiles/mysql/my.ini" + """")
+            End Using
+        Catch ex As Exception
+            Log("Error:StartManually" + ex.Message)
+        End Try
+
+        BumpProgress(5)
+
+        ' Mysql was not running, so lets start it up.
+        Dim pi As ProcessStartInfo = New ProcessStartInfo()
+        pi.Arguments = "--defaults-file=" + """" + gCurSlashDir + "/OutworldzFiles/mysql/my.ini" + """"
+        pi.WindowStyle = ProcessWindowStyle.Hidden
+        pi.FileName = """" + MyFolder & "\OutworldzFiles\mysql\bin\mysqld.exe" + """"
+        pMySql.StartInfo = pi
+        pMySql.Start()
+
+
+        ProgressBar1.Value = 50
+        ' wait for MySql to come up
+        While Not MysqlOk
+
+            BumpProgress(1)
+            Application.DoEvents()
+
+            Dim MysqlLog As String = MyFolder + "\OutworldzFiles\mysql\data" ' !!!
+            If ProgressBar1.Value = 100 Then ' about 30 seconds when it fails
+
+                Dim yesno = MsgBox("The database did not start. Do you want to see the log file?", vbYesNo)
+                If (yesno = vbYes) Then
+                    Dim files() As String
+                    files = Directory.GetFiles(MysqlLog, "*.err", SearchOption.TopDirectoryOnly)
+                    For Each FileName As String In files
+                        System.Diagnostics.Process.Start("notepad.exe", FileName)
+                    Next
+                End If
+                Buttons(StartButton)
+                Return False
+            End If
+
+            ' check again
+            Sleep(1000)
+            MysqlOk = CheckMysql()
+
+        End While
+        Return True
+    End Function
+
+    Function CheckMysql() As Boolean
+
+        Dim version = MysqlConn.isMySqlRunning()
+
+        If version Is Nothing Then
+            Return False
+        End If
+        Return True
+
+    End Function
+
+    Private Sub StopMysql()
+
+        Log("Info: Using mysqladmin to close db")
+
+        MysqlConn.Dispose()
+
+        Dim p As Process = New Process()
+        Dim pi As ProcessStartInfo = New ProcessStartInfo()
+        pi.Arguments = "-u root shutdown"
+        pi.FileName = """" + MyFolder + "\OutworldzFiles\mysql\bin\mysqladmin.exe" + """"
+        pi.WindowStyle = ProcessWindowStyle.Minimized
+        p.StartInfo = pi
+        Try
+            p.Start()
+            p.WaitForExit()
+            p.Close()
+        Catch ex As Exception
+            Log("Error:mysqladmin failed to stop mysql:" + ex.Message)
+        End Try
+
+        Dim Mysql = CheckPort("127.0.0.1", My.Settings.MySqlPort)
+        If Mysql Then
+            Sleep(1000)
+            Try
+                pMySql.Close()
+            Catch ex2 As Exception
+                Log("Error:Process pMySql.Close() " + ex2.Message)
+            End Try
+        End If
+
+    End Sub
+
+#End Region
+
+#Region "DNS"
+    Public Sub RegisterDNS()
+
+        If My.Settings.DnsName = String.Empty Then
             Return
         End If
 
-        ConsoleCommand("alert CPU Intensive Backup Started{ENTER}")
+        Dim client As New System.Net.WebClient
+        Dim Checkname As String = String.Empty
 
-        Dim counter = 1
-        Dim size = aRegion.GetUpperBound(0)
-        While counter <= size
-            Dim RegionName As String = aRegion(counter).RegionName
-            ConsoleCommand("save oar --perm=CT " + """" + BackupPath() + RegionName + "_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
-            counter += 1
-            Application.DoEvents()
-        End While
+        Try
+            Print("Checking DNS name " + My.Settings.DnsName)
+            Checkname = client.DownloadString("http://outworldz.net/dns.plx/?GridName=" + My.Settings.DnsName + GetPostData())
+        Catch ex As Exception
+            Log("Warn:Cannot check the DNS Name" + ex.Message)
+        End Try
+
+        DoGetHostAddresses(My.Settings.DnsName)
+        BumpProgress10()
 
     End Sub
+
+    Public Function DoGetHostAddresses(hostName As [String]) As String
+
+        Try
+
+            Dim IPList As System.Net.IPHostEntry = System.Net.Dns.GetHostEntry(hostName)
+
+            For Each IPaddress In IPList.AddressList
+                If (IPaddress.AddressFamily = Sockets.AddressFamily.InterNetwork) Then
+                    Dim ip = IPaddress.ToString()
+                    Return ip
+                End If
+            Next
+            Return String.Empty
+
+        Catch ex As Exception
+            Log("Warn:Unable to resolve name:" + ex.Message)
+        End Try
+        Print("Unable to resolve DNS name")
+        Return String.Empty
+
+    End Function
+    Public Function GetNewDnsName() As String
+
+        Dim client As New System.Net.WebClient
+        Dim Checkname As String = String.Empty
+        Try
+            Checkname = client.DownloadString("http://outworldz.net/getnewname.plx")
+        Catch ex As Exception
+            Log("Warn:Cannot get new name:" + ex.Message)
+        End Try
+        Return Checkname
+    End Function
+
+    Public Function RegisterName(name As String) As String
+
+        Dim Checkname As String = String.Empty
+
+        Try
+            Checkname = client.DownloadString("http://outworldz.net/dns.plx/?GridName=" + name + GetPostData())
+        Catch ex As Exception
+            Log("Warn:Cannot check the DNS Name" + ex.Message)
+        End Try
+        If Checkname = "NEW" Or Checkname = "UPDATED" Then
+            Return name
+        End If
+        Return ""
+    End Function
+    Private Sub NewDNSName()
+        If My.Settings.DnsName = "" Then
+            Dim newname = GetNewDnsName()
+            If newname <> "" Then
+                If RegisterName(newname) <> "" Then
+                    BumpProgress10()
+                    My.Settings.DnsName = newname
+                    My.Settings.Save()
+                    MsgBox("Your system's name has been set to " + newname + ". You can change the name in the Advanced menu at any time")
+                End If
+            End If
+            BumpProgress10()
+        End If
+    End Sub
+
+    Private Sub CheckDatabaseToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CheckDatabaseToolStripMenuItem.Click
+        Dim pi As ProcessStartInfo = New ProcessStartInfo()
+
+        ChDir(MyFolder & "\OutworldzFiles\mysql\bin")
+        pi.WindowStyle = ProcessWindowStyle.Normal
+        pi.Arguments = My.Settings.MySqlPort
+        pi.FileName = "CheckAndRepair.bat"
+        pMySqlDiag.StartInfo = pi
+        pMySqlDiag.Start()
+        pMySqlDiag.WaitForExit()
+        ChDir(MyFolder)
+
+    End Sub
+
+
+
+
+#End Region
+
+
+#Region "IAROAR"
+
+
 
     Private Sub ChooseRegion()
         If aRegion.GetUpperBound(0) <> 1 Then
@@ -1849,556 +2614,200 @@ Public Class Form1
         sender.checked = True
         Print("Opensimulator will load " + file + ".  This may take time to load.")
     End Sub
-#End Region
 
-#Region "Updates"
-
-    Private Sub CheckForUpdatesToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CHeckForUpdatesToolStripMenuItem.Click
-        CheckForUpdates()
-    End Sub
-    Private Sub UpdaterCancel_Click(sender As Object, e As EventArgs) Handles UpdaterCancel.Click
-
-        UpdaterGo.Visible = False
-        UpdaterCancel.Visible = False
-        My.Settings.SkipUpdateCheck = True
-        Print("Update scan is off. You can still check for updates in the Help Menu.")
-
-    End Sub
-
-    Private Sub UpdaterGo_Click(sender As Object, e As EventArgs) Handles UpdaterGo.Click
-
-        UpdaterGo.Enabled = False
-        UpdaterCancel.Visible = False
-        Dim fileloaded As String = Download()
-        If (fileloaded.Length) Then
-            Dim pUpdate As Process = New Process()
-            Dim pi As ProcessStartInfo = New ProcessStartInfo()
-            pi.Arguments = ""
-            pi.FileName = """" + MyFolder + "\" + fileloaded + """"
-            pUpdate.StartInfo = pi
-            Try
-                Print("I'll see you again when I wake up all fresh and new!")
-                Log("Info:Launch Updater and exiting")
-                pUpdate.Start()
-            Catch ex As Exception
-                Print("Error: Could not launch " + fileloaded + ". Perhaps you can can exit this program and launch it manually.")
-                Log("Error: installer failed to launch:" + ex.Message)
-            End Try
-            End ' quit program
-        Else
-            Print("Uh Oh!  The files I need could not be found online. The gnomes have absconded with them!   Please check later.")
-            UpdaterGo.Visible = False
-            UpdaterGo.Enabled = True
-        End If
-
-    End Sub
-    Private Function Download() As String
-
-        Dim fileName As String = "Updater.exe"
-
-        Try
-            My.Computer.FileSystem.DeleteFile(MyFolder + fileName)
-        Catch
-            Log("Warn:Could not delete " + fileName)
-        End Try
-
-        Try
-            fileName = client.DownloadString(Domain + "/Outworldz_Installer/GetUpdater.plx?r=" + Random())
-        Catch
-            Return ""
-        End Try
-
-        Try
-            Dim myWebClient As New WebClient()
-            Print("Downloading new updater, this will take a moment")
-            ' The DownloadFile() method downloads the Web resource and saves it into the current file-system folder.
-            myWebClient.DownloadFile(Domain + "/Outworldz_Installer/" + fileName, fileName)
-        Catch e As Exception
-            Log("Warn:" + e.Message)
-            Return ""
-        End Try
-        Return fileName
-
-    End Function
-
-    Sub CheckForUpdates()
-
-        Dim Update As String = ""
-        Dim isPortOpen As String = ""
-        Dim Data As String = GetPostData()
-
-        My.Settings.SkipUpdateCheck = False
-        My.Settings.Save()
-
-        Try
-            Update = client.DownloadString(Domain + "/Outworldz_Installer/Update.plx?Ver=" + Str(MyVersion) + Data)
-        Catch ex As Exception
-            Log("Dang:The Outworld web site is down")
-        End Try
-        If (Update = "") Then Update = "0"
-
-        Try
-            If Convert.ToSingle(Update) > Convert.ToSingle(MyVersion) Then
-                Print("A dreamier version " + Update + " is available.")
-                UpdaterGo.Visible = True
-                UpdaterGo.Enabled = True
-                UpdaterCancel.Visible = True
-            Else
-                Print("I am the dreamiest version available, at V " + MyVersion)
-            End If
-        Catch
-        End Try
-        BumpProgress10()
-
-    End Sub
-
-#End Region
-
-#Region "Onlook"
-
-    Private Sub Onlook()
-        If Running = False Then Return
-        If My.Settings.Onlook Then
-            Print("Starting Onlook viewer")
-            Dim pi As ProcessStartInfo = New ProcessStartInfo()
-            pi.Arguments = ""
-            pi.FileName = "C:\Program Files (x86)\Onlook\OnLookViewer.exe"
-            pi.WindowStyle = ProcessWindowStyle.Normal
-            pOnlook.StartInfo = pi
-            Try
-                pOnlook.Start()
-            Catch ex As Exception
-                Log("Error:Onlook failed to launch:" + ex.Message)
-            End Try
-        End If
-
-    End Sub
-
-    Private Sub SaveOnlookXMLData()
-
-        ' setup Onlook
-        If System.IO.File.Exists(xmlPath() + "\AppData\Roaming\Onlook\user_settings\settings_onlook.xml") Then
-            My.Settings.ViewerInstalled = True
-        End If
-
-        If Not My.Settings.ViewerInstalled Then
-            Log("Info:Onlook viewer is not installed")
-            Return
-        End If
-        ' we have to change the viewer Grid settings if we are on localhost
-        Print("Setting Grid Info...")
-
-
-        Dim Opensim8XML As String = "<llsd>
-    <array>
-        <map>
-        <key>default_grids_version</key>
-            <integer>22</integer>
-        </map>
-        <map>
-        <key>auto_update</key>
-            <boolean>0</boolean>
-        <key>gridname</key>
-            <string>" + My.Settings.SimName + "</string>
-        <key>gridnick</key>
-            <string>" + My.Settings.SimName + "</string>
-        <key>helperuri</key>
-            <string>http://</string>
-        <key>inventory_links</key>
-            <boolean>0</boolean>
-        <key>locked</key>
-            <boolean>0</boolean>
-        <key>loginpage</key>
-            <string>" + Splashpage + "</string>
-        <key>loginuri</key>
-            <string>http://" + My.Settings.PublicIP + ":" + My.Settings.HttpPort + "/</string>
-        <key>password</key>
-            <string>http://" + My.Settings.PublicIP + My.Settings.HttpPort + "/wifi/forgotpassword</string>
-        <key>platform</key>
-            <string>OpenSim</string>
-        <key>register</key>
-        <key>render_compat</key>
-            <boolean>1</boolean>
-        <key>search</key>
-            <string>http://search.metaverseink.com/opensim/results.jsp?</string>
-        <key>support</key>
-            <string />
-        <key>website</key>
-            <string />
-        </map>
-    </array>
-</llsd>
-"
-
-        Try
-            My.Computer.FileSystem.CopyFile(xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml", xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml.bak", True)
-        Catch
-            Log("Error:Failed to back up onlook XML")
-        End Try
-
-        Try
-            My.Computer.FileSystem.DeleteFile(xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml")
-            Using outputFile As New StreamWriter(xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml", True)
-                outputFile.WriteLine(Opensim8XML)
-                ' outputFile.Close()
-            End Using
-
-            'My.Computer.FileSystem.CopyFile(MyFolder & "\Viewer\Hypergrid.xml", xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml", True)
-        Catch ex As Exception
-            Log("Error:Failed to install onlook XML:" + ex.Message)
-        End Try
-
-    End Sub
-    Private Sub RemoveGrid()
-
-        ' restore backup - they may have changed it. Outworldzs is supposed to be simple. If they launch the viewer by itself, they can change grids
-        Try
-            My.Computer.FileSystem.CopyFile(xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml.bak", xmlPath() + "\AppData\Roaming\OnLook\user_settings\grids_sg1.xml", True)
-        Catch ex As Exception
-            Log("Error:failed to restore Onlook xml backup:" + ex.Message)
-        End Try
-    End Sub
-    Private Function xmlPath() As String
-
-        ' gets the path to the %APPDATA% folder on windows so we can seek out the Onlook folders
-        Dim appData As String = My.Computer.FileSystem.SpecialDirectories.CurrentUserApplicationData
-        Return Mid(appData, 1, InStr(appData, "AppData") - 1)
-    End Function
-#End Region
-
-#Region "Diagnostics"
-
-    Private Function CheckPort(ServerAddress As String, Port As String) As Boolean
-
-        Dim iPort As Integer = Convert.ToInt16(Port)
-        Dim ClientSocket As New TcpClient
-
-        Try
-            ClientSocket.Connect(ServerAddress, iPort)
-        Catch ex As Exception
-            Log("Info:Unable to connect to server:" + ex.Message)
-            Return False
-        End Try
-
-        If ClientSocket.Connected Then
-            Log("Info: port probe success on port " + Convert.ToString(iPort))
-            ClientSocket.Close()
-            Return True
-        End If
-        CheckPort = False
-
-    End Function
-    Public Function GetPubIP() As String
-
-        If My.Settings.DnsName.Length Then
-            BumpProgress10()
-            My.Settings.PublicIP = My.Settings.DnsName
-            My.Settings.Save()
-            Return My.Settings.DnsName
-        End If
-
-        ' Set Public Port
-        Try
-            Dim ip As String = client.DownloadString("http://api.ipify.org/?r=" + Random())
-            BumpProgress10()
-            Log("Info:Public IP=" + My.Settings.PublicIP)
-            Return ip
-        Catch ex As Exception
-            Print("Hmm, I cannot reach the Internet? Uh. Okay, continuing." + ex.Message)
-            My.Settings.DiagFailed = True
-            Log("Info:Public IP=" + "127.0.0.1")
-        End Try
-        BumpProgress10()
-        Return "127.0.0.1"
-
-    End Function
-    Private Sub TestLoopback()
-
-        Dim ws As NetServer = NetServer.getWebServer
-        Log("Info:Starting Web Server")
-        ws.StartServer()
-        Sleep(1000)
-
-        BumpProgress10()
-        Dim result As String = ""
-        Dim loopbacktest As String = "http://" + My.Settings.PublicIP + ":" + My.Settings.PublicPort + "/?_TestLoopback=" + Random()
-        Try
-            Log(loopbacktest)
-            result = client.DownloadString(loopbacktest)
-        Catch ex As Exception
-            Log("Err:Loopback fail:" + result + ":" + ex.Message)
-        End Try
-
-        BumpProgress10()
-        ws.StopWebServer()
-
-        If result = "Test completed" And Not gFailDebug2 Then
-            Log("Passed:" + result)
-            My.Settings.LoopBackDiag = True
-            My.Settings.Save()
-        Else
-            Log("Failed:" + result)
-            Print("Router Loopback failed. See the Help section for 'Loopback' and how to enable it in Windows. Continuing...")
-            My.Settings.LoopBackDiag = False
-            My.Settings.PublicIP = GetLocalIPv4Address()
-            My.Settings.Save()
-        End If
-
-    End Sub
-
-    Private Sub DiagnosticsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles DiagnosticsToolStripMenuItem.Click
-
+    Private Sub LoadInventoryToolStripMenuItem1_Click(sender As Object, e As EventArgs) Handles LoadInventoryToolStripMenuItem1.Click
         If Running Then
-            Print("Cannot run dignostics while Opensimulator is running. Click 'Stop' and try again.")
+            ' Create an instance of the open file dialog box.
+            Dim openFileDialog1 As OpenFileDialog = New OpenFileDialog
+
+            ' Set filter options and filter index.
+            openFileDialog1.InitialDirectory = """" + MyFolder + "/" + """"
+            openFileDialog1.Filter = "Inventory IAR (*.iar)|*.iar|All Files (*.*)|*.*"
+            openFileDialog1.FilterIndex = 1
+            openFileDialog1.Multiselect = False
+
+            ' Call the ShowDialog method to show the dialogbox.
+            Dim UserClickedOK As Boolean = CBool(openFileDialog1.ShowDialog)
+
+            ' Process input if the user clicked OK.
+            If UserClickedOK = True Then
+                Dim thing = openFileDialog1.FileName
+                If thing.Length Then
+                    thing = thing.Replace("\", "/")    ' because Opensim uses unix-like slashes, that's why
+                    LoadIARContent(thing)
+                End If
+            End If
+        Else
+            Print("Opensim is not running. Cannot load an IAR at this time.")
+        End If
+    End Sub
+
+    Private Sub LoadOARToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles LoadOARToolStripMenuItem.Click
+        If (Running) Then
+
+            ChooseRegion()
+
+            ' Create an instance of the open file dialog box.
+            Dim openFileDialog1 As OpenFileDialog = New OpenFileDialog
+
+            ' Set filter options and filter index.
+            openFileDialog1.InitialDirectory = BackupPath()
+            openFileDialog1.Filter = "Opensim OAR(*.OAR,*.GZ,*.TGZ)|*.oar;*.gz;*.tgz;*.OAR;*.GZ;*.TGZ|All Files (*.*)|*.*"
+            openFileDialog1.FilterIndex = 1
+            openFileDialog1.Multiselect = False
+
+            ' Call the ShowDialog method to show the dialogbox.
+            Dim UserClickedOK As Boolean = CBool(openFileDialog1.ShowDialog)
+
+            ' Process input if the user clicked OK.
+            If UserClickedOK = True Then
+                Dim backMeUp = MsgBox("Make a backup and then load the new content?", vbYesNo)
+                Dim thing = openFileDialog1.FileName
+                If thing.Length Then
+                    thing = thing.Replace("\", "/")    ' because Opensim uses unix-like slashes, that's why
+
+                    If backMeUp = vbYes Then
+                        ConsoleCommand("alert CPU Intensive Backup Started{ENTER}")
+                        ConsoleCommand("save oar --perm=CT " + """" + BackupPath() + "Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
+                    End If
+                    ConsoleCommand("alert New content is loading..{ENTER}")
+                    ConsoleCommand("load oar --force-terrain --force-parcels " + """" + thing + """" + "{ENTER}")
+                    ConsoleCommand("alert New content just loaded." + "{ENTER}")
+                    Me.Focus()
+                End If
+            End If
+        Else
+            Print("Opensim is not running. Cannot load the OAR file.")
+        End If
+
+    End Sub
+
+    Private Sub SaveInventoryToolStripMenuItem1_Click(sender As Object, e As EventArgs) Handles SaveInventoryToolStripMenuItem1.Click
+        If (Running) Then
+            Dim Message, title, defaultValue As String
+
+            '''''''''''''''''''''''
+            ' Object Name to back up
+            Dim itemName As String
+            ' Set prompt.
+            Message = "Enter the object name ('/' will backup everything, and '/Objects/box' will back up box in folder Objects) :"
+            title = "Backup Name?"
+            defaultValue = "/"   ' Set default value.
+
+            ' Display message, title, and default value.
+            itemName = InputBox(Message, title, defaultValue)
+            ' If user has clicked Cancel, set myValue to defaultValue 
+            If itemName.Length = 0 Then Return
+
+            '''''''''''''''''''''''
+            ' Name of the IAR
+            Dim backupName As String
+            Message = "Backup name? :"
+            title = "Backup Name?"
+            defaultValue = "backup.iar"   ' Set default value.
+
+            ' Display message, title, and default value.
+            backupName = InputBox(Message, title, defaultValue)
+            ' If user has clicked Cancel, set myValue to defaultValue 
+            If itemName.Length = 0 Then Return
+
+            '''''''''''''''''''''''
+            ' Avatar
+            Dim Name As String
+            Message = "Avatar FirstName and Lastname:"
+            title = "FirstName LastName"
+            defaultValue = ""   ' Set default value.
+
+            ' Display message, title, and default value.
+            Name = InputBox(Message, title, defaultValue)
+            ' If user has clicked Cancel, set myValue to defaultValue 
+            If Name.Length = 0 Then Return
+
+            '''''''''''''''''''''''
+            ' Password
+            Dim Password As String
+            Message = "Avatar's Password?:"
+            title = "Password needed"
+            defaultValue = ""   ' Set default value.
+
+            ' Display message, title, and default value.
+            Password = InputBox(Message, title, defaultValue)
+
+            '''''''''''''''''''''''
+
+            ConsoleCommand("alert CPU Intensive Backup Started{ENTER}")
+            ConsoleCommand("save iar " + Name + " " + """" + itemName + """" + " " + Password + " " + """" + BackupPath() + backupName + """" + "{ENTER}")
+            Me.Focus()
+            Print("Saving " + backupName + " to " + BackupPath())
+        Else
+            Print("Opensim is not running. Cannot make a backup now.")
+        End If
+    End Sub
+
+
+    Private Sub AllRegionsOARsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AllRegionsOARsToolStripMenuItem.Click
+        If Not Running Then
+            Print("Opensim is not running. Cannot save an OAR at this time.")
             Return
         End If
-        ProgressBar1.Value = 0
-        DoDiag()
-        If My.Settings.DiagFailed = True Then
-            Print("Hypergrid Diagnostics failed. These can be re-run at any time. See Help->Network Diagnostics', 'Loopback', and 'Port Forwards'")
-        Else
-            Print("Tests passed, Hypergrid should be working.")
-        End If
-        ProgressBar1.Value = 100
+
+        ConsoleCommand("alert CPU Intensive Backup Started{ENTER}")
+
+        Dim counter = 1
+        Dim size = aRegion.GetUpperBound(0)
+        While counter <= size
+            Dim RegionName As String = aRegion(counter).RegionName
+            ConsoleCommand("change region " + RegionName + "{Enter}")
+            ConsoleCommand("save oar " + """" + BackupPath() + RegionName + "_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
+            counter += 1
+            Application.DoEvents()
+        End While
 
     End Sub
-    Private Function ProbePublicPort() As Boolean
 
-        Log("Info:Probe Public Port")
-        Dim ip As String = GetPubIP()
+    Private Sub BackupDatabaseToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles BackupDatabaseToolStripMenuItem.Click
 
-        Dim ws As NetServer = NetServer.getWebServer
-        Log("Info:Starting Web Server, public port is " + ip)
-        ws.StartServer()
-        Sleep(1000)
-        BumpProgress10()
+        StartMySQL()
 
-        Dim isPortOpen As String = ""
         Try
-            ' collect some stats and test loopback with a HTTP_ GET to the webserver.
-            ' Send unique, anonymous random ID, both of the versions of Opensim and this program, and the diagnostics test results 
-            ' See my privacy policy at https://www.outworldz.com/privacy.htm
-
-            Dim Data As String = GetPostData()
-            Dim Url = Domain + "/cgi/probetest.plx?IP=" + ip + "&Port=" + My.Settings.PublicPort + Data + "/?r=" + Random()
-            Log(Url)
-            isPortOpen = client.DownloadString(Url)
-        Catch ex As Exception
-            Log("Dang:The Outworldz web site cannot find a path back")
-            My.Settings.DiagFailed = True
+            My.Computer.FileSystem.DeleteFile(MyFolder & "\OutworldzFiles\mysql\bin\BackupMysql.bat")
+        Catch
         End Try
-
-        BumpProgress10()
-        ws.StopWebServer()
-        BumpProgress10()
-
-        If isPortOpen = "yes" And Not gFailDebug1 Then
-            My.Settings.PublicIP = ip
-            Log("Public IP set to " + ip)
-            My.Settings.Save()
-            Return True
-        Else
-            Log("Failed:" + isPortOpen)
-            My.Settings.DiagFailed = True
-            Print("Internet address " + ip + ":" + My.Settings.PublicPort + " appears to not be forwarded to this machine in your router, so Hypergrid is not available. This can possibly be fixed by 'Port Forwards' in your router.  See Help->Port Forwards.")
-            My.Settings.PublicIP = GetLocalIPv4Address() ' failed, so try the machines address
-            Log("IP set to " + My.Settings.PublicIP)
-            Return False
-        End If
-
-    End Function
-    Private Sub DoDiag()
-        Print("Running Network Diagnostics, please wait")
-        My.Settings.DiagFailed = False
-        OpenPorts() ' Open router ports with uPnP
-        If Not ProbePublicPort() Then ' see if Public loopback works
-            TestLoopback()
-        End If
-        If My.Settings.DiagFailed Then
-            ShowLog()
-        Else
-            NewDNSName()
-        End If
-        Log("Diagnostics set the Hypergrid address to " + My.Settings.PublicIP)
-
-    End Sub
-    Public Shared Function GetLocalIPv4Address() As String
-
-        Dim sock As Socket = New Socket(AddressFamily.InterNetwork, SocketType.Dgram, 0)
         Try
-            Using sock
-                sock.Connect("8.8.8.8", 65530)  ' try Google
-                Dim EndPoint As IPEndPoint = sock.LocalEndPoint
-                GetLocalIPv4Address = EndPoint.Address.ToString()
+            Dim filename As String = MyFolder & "\OutworldzFiles\mysql\bin\BackupMysql.bat"
+            Using outputFile As New StreamWriter(filename, True)
+
+                Dim PathToBackup As String = BackupPath()
+                PathToBackup = PathToBackup.Replace("\", "/")    ' because Opensim uses unix-like slashes, that's why
+                outputFile.WriteLine("@REM A program to backup Mysql manually" + vbCrLf _
+                                    + "mysqldump.exe --opt  -uroot --verbose opensim  > " _
+                                    + """" + PathToBackup + "Mysql_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".sql" + """" _
+                                    + vbCrLf + "@pause" + vbCrLf)
             End Using
         Catch ex As Exception
-            GetLocalIPv4Address = "127.0.0.1"
+            Print("Failed to create backup:" + ex.Message)
+            Return
         End Try
 
-    End Function
+        Print("Starting Backup")
+        Dim pMySqlBackup As Process = New Process()
+        Dim pi As ProcessStartInfo = New ProcessStartInfo()
+        pi.Arguments = ""
+        pi.WindowStyle = ProcessWindowStyle.Normal
+        pi.WorkingDirectory = MyFolder & "\OutworldzFiles\mysql\bin\"
+        pi.FileName = MyFolder & "\OutworldzFiles\mysql\bin\BackupMysql.bat"
+        pMySqlBackup.StartInfo = pi
 
-    Private Function OldGetLocalIPv4Address() As String
-        Dim strHostName As String = System.Net.Dns.GetHostName()
-        Dim IPList As System.Net.IPHostEntry = System.Net.Dns.GetHostEntry(strHostName)
+        pMySqlBackup.Start()
+    End Sub
 
-        For Each IPaddress As System.Net.IPAddress In IPList.AddressList
-            If IPaddress.AddressFamily = System.Net.Sockets.AddressFamily.InterNetwork AndAlso IsPrivateIP(IPaddress.ToString()) Then
-                Return IPaddress.ToString()
-            End If
-        Next
-        Return "127.0.0.1"
-    End Function
-
-    ''' <summary>
-    ''' Checks to see if an IP address is a local IP address.
-    ''' </summary>
-    ''' <param name="CheckIP">The IP address to check.</param>
-    ''' <returns>Boolean</returns>
-    ''' <remarks></remarks>
-    Private Shared Function IsPrivateIP(ByVal CheckIP As String) As Boolean
-        Dim Quad1, Quad2 As Integer
-
-        Quad1 = CInt(CheckIP.Substring(0, CheckIP.IndexOf(".")))
-        Quad2 = CInt(CheckIP.Substring(CheckIP.IndexOf(".") + 1).Substring(0, CheckIP.IndexOf(".")))
-        Select Case Quad1
-            Case 10
-                Return True
-            Case 172
-                If Quad2 >= 16 And Quad2 <= 31 Then Return True
-            Case 192
-                If Quad2 = 168 Then Return True
-        End Select
-        Return False
-    End Function
-
-#End Region
-
-#Region "PnP"
-
-    Function OpenRouterPorts() As Boolean
-
-        Log("Local ip seems to be " + UPNP.LocalIP)
-
-        Try
-            If Not MyUPnPMap.Exists(Convert.ToInt16(My.Settings.HttpPort), UPNP.Protocol.TCP) Then
-                MyUPnPMap.Add(UPNP.LocalIP, Convert.ToInt16(My.Settings.HttpPort), UPNP.Protocol.TCP, "Opensim TCP grid port")
-                Log("uPnp: Grid Port.TCP added")
-            Else
-                Log("uPnp: HttpPort.TCP " + My.Settings.HttpPort + " is already in uPnP")
-            End If
-            BumpProgress10()
-
-            If Not MyUPnPMap.Exists(Convert.ToInt16(My.Settings.PublicPort), UPNP.Protocol.UDP) Then
-                MyUPnPMap.Add(UPNP.LocalIP, Convert.ToInt16(My.Settings.PublicPort), UPNP.Protocol.UDP, "Opensim UDP Public")
-                Log("uPnp: PublicPort.UDP added:")
-            Else
-                Log("uPnp: PublicPort.UDP " + My.Settings.PublicPort + " is already in uPnP")
-            End If
-            BumpProgress10()
-
-            If Not MyUPnPMap.Exists(Convert.ToInt16(My.Settings.PublicPort), UPNP.Protocol.TCP) Then
-                MyUPnPMap.Add(UPNP.LocalIP, Convert.ToInt16(My.Settings.PublicPort), UPNP.Protocol.TCP, "Opensim TCP Public")
-                Log("uPnp: PublicPort.TCP added")
-            Else
-                Log("uPnp: PublicPort.TCP " + My.Settings.PublicPort + "    is already in uPnP")
-            End If
-            BumpProgress10()
-
-            Dim counter = 1
-            Dim size = aRegion.GetUpperBound(0)
-            While counter <= size
-
-                Dim RegionPort As Integer = aRegion(counter).RegionPort
-
-                If Not MyUPnPMap.Exists(RegionPort, UPNP.Protocol.UDP) Then
-                    MyUPnPMap.Add(UPNP.LocalIP, RegionPort, UPNP.Protocol.UDP, "Opensim UDP Region")
-                    Log("uPnp: RegionPort.UDP Added:" + Convert.ToString(RegionPort))
-                Else
-                    Log("uPnp: RegionPort.UDP " + Convert.ToString(RegionPort) + " is already in uPnP")
-                End If
-                BumpProgress10()
-
-                counter += 1
-            End While
-
-        Catch e As Exception
-            Print("uPnP is not working or enabled in your router. Hypergrid access will require ports to be opened manually.")
-            Log("uPnp: UPNP Exception caught:  " + e.Message)
-            Return False
-        End Try
-        Return True 'successfully added
-    End Function
-
-
-    Private Function GetPostData() As String
-
-        Dim SimVersion As String
-        If (My.Settings.GridFolder = "Opensim") Then
-            SimVersion = "0.8.2.1"
-        Else
-            SimVersion = "0.9.1"
-        End If
-        Dim UpNp As String = "Fail"
-        If My.Settings.UPnPDiag Then
-            UpNp = "Pass"
-        End If
-        Dim Loopb As String = "Fail"
-        If My.Settings.LoopBackDiag Then
-            Loopb = "Pass"
-        End If
-
-
-        Dim data
-        data = "&r=" + Machine _
-            + "&V=" + MyVersion _
-            + "&OV=" + SimVersion _
-            + "&UpNp=" + UpNp _
-            + "&Loop=" + Loopb _
-            + "&x=" + Random()
-        Return data
-
-    End Function
-
-    Private Function OpenPorts() As Boolean
-
-        'If Running = False Then Return True
-        Print("The human is instructed to wait while I check out the router ...")
-        Try
-            If OpenRouterPorts() Then ' open uPNP port
-                Log("uPnpOk")
-                'Print("uPnP Ok")
-                My.Settings.UPnPDiag = True
-                My.Settings.Save()
-                BumpProgress10()
-                Return True
-            Else
-                Log("uPnP: fail")
-                My.Settings.UPnPDiag = False
-                My.Settings.Save()
-
-                BumpProgress10()
-                Return False
-            End If
-        Catch e As Exception
-            Log("Error: UPNP Exception: " + e.Message)
-            My.Settings.UPnPDiag = False
-            My.Settings.Save()
-            BumpProgress10()
-            Return False
-        End Try
-
-    End Function
-
-#End Region
-
-#Region "MySQl"
-
-    Private Sub RestoreDatabaseToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles RestoreDatabaseToolStripMenuItem.Click
+    Private Sub RestoreDatabaseToolStripMenuItem1_Click(sender As Object, e As EventArgs) Handles RestoreDatabaseToolStripMenuItem1.Click
 
         If Running Then
             Print("Cannot restore when Opensim is running. Click [Stop] and try again.")
             Return
         End If
+
         StartMySQL()
 
         ' Create an instance of the open file dialog box.
@@ -2411,7 +2820,7 @@ Public Class Form1
         openFileDialog1.Multiselect = False
 
         ' Call the ShowDialog method to show the dialogbox.
-        Dim UserClickedOK As Boolean = openFileDialog1.ShowDialog
+        Dim UserClickedOK As Boolean = CBool(openFileDialog1.ShowDialog)
 
         ' Process input if the user clicked OK.
         If UserClickedOK = True Then
@@ -2455,262 +2864,6 @@ Public Class Form1
             End If
         End If
     End Sub
-
-    Private Sub MysqlToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles MysqlToolStripMenuItem.Click
-
-        StartMySQL()
-
-        Try
-            My.Computer.FileSystem.DeleteFile(MyFolder & "\OutworldzFiles\mysql\bin\BackupMysql.bat")
-        Catch
-        End Try
-        Try
-            Dim filename As String = MyFolder & "\OutworldzFiles\mysql\bin\BackupMysql.bat"
-            Using outputFile As New StreamWriter(filename, True)
-
-                Dim PathToBackup As String = BackupPath()
-                PathToBackup = PathToBackup.Replace("\", "/")    ' because Opensim uses unix-like slashes, that's why
-                outputFile.WriteLine("@REM A program to backup Mysql manually" + vbCrLf _
-                                    + "mysqldump.exe --opt  -uroot --verbose opensim  > " _
-                                    + """" + PathToBackup + "Mysql_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".sql" + """" _
-                                    + vbCrLf + "@pause" + vbCrLf)
-            End Using
-        Catch ex As Exception
-            Print("Failed to create backup:" + ex.Message)
-            Return
-        End Try
-
-        Print("Starting Backup")
-        Dim pMySqlBackup As Process = New Process()
-        Dim pi As ProcessStartInfo = New ProcessStartInfo()
-        pi.Arguments = ""
-        pi.WindowStyle = ProcessWindowStyle.Normal
-        pi.WorkingDirectory = MyFolder & "\OutworldzFiles\mysql\bin\"
-        pi.FileName = MyFolder & "\OutworldzFiles\mysql\bin\BackupMysql.bat"
-        pMySqlBackup.StartInfo = pi
-
-        pMySqlBackup.Start()
-
-    End Sub
-
-    Private Function StartMySQL() As Boolean
-        ' Start MySql in background.
-        Dim StartValue = ProgressBar1.Value
-
-        ' Check for MySql operation
-        Dim Mysql = False
-        ' wait for MySql to come up
-        Mysql = CheckPort("127.0.0.1", My.Settings.MySqlPort)
-        If Mysql Then
-            BumpProgress10()
-
-            Return True
-        End If
-
-        Print("Starting Database")
-
-        ' SAVE INI file
-        LoadIni(MyFolder & "\OutworldzFiles\mysql\my.ini", "#")
-        SetIni("mysqld", "basedir", """" + gCurSlashDir + "/OutworldzFiles/Mysql" + """")
-        SetIni("mysqld", "datadir", """" + gCurSlashDir + "/OutworldzFiles/Mysql/Data" + """")
-        SetIni("mysqld", "port", My.Settings.MySqlPort)
-        SetIni("client", "port", My.Settings.MySqlPort)
-        SaveINI()
-
-        ' create test program 
-        ' slants the other way:
-        Dim testProgram As String = MyFolder & "\OutworldzFiles\Mysql\bin\StartManually.bat"
-        Try
-            My.Computer.FileSystem.DeleteFile(testProgram)
-        Catch ex As Exception
-            Log("DeleteFile: " + ex.Message)
-        End Try
-        Try
-            Using outputFile As New StreamWriter(testProgram, True)
-                outputFile.WriteLine("@REM A program to run Mysql manually for troubleshooting." + vbCrLf _
-                                     + "mysqld.exe --defaults-file=" + """" + gCurSlashDir + "/OutworldzFiles/mysql/my.ini" + """")
-            End Using
-        Catch ex As Exception
-            Log("Error:StartManually" + ex.Message)
-        End Try
-
-        BumpProgress(1)
-
-        ' Mysql was not running, so lets start it up.
-        Dim pi As ProcessStartInfo = New ProcessStartInfo()
-        pi.Arguments = "--defaults-file=" + """" + gCurSlashDir + "/OutworldzFiles/mysql/my.ini" + """"
-        pi.WindowStyle = ProcessWindowStyle.Hidden
-        pi.FileName = """" + MyFolder & "\OutworldzFiles\mysql\bin\mysqld.exe" + """"
-        pMySql.StartInfo = pi
-        pMySql.Start()
-
-
-        ' wait for MySql to come up
-        Mysql = CheckPort("127.0.0.1", My.Settings.MySqlPort)
-        While Not Mysql
-
-            BumpProgress(1)
-            Application.DoEvents()
-
-            Dim MysqlLog As String = """" + MyFolder + "\OutworldzFiles\mysql\data" + """"
-            If ProgressBar1.Value = 100 Then ' about 30 seconds when it fails
-
-                Dim yesno = MsgBox("The database did not start. Do you want to see the log file?", vbYesNo)
-                If (yesno = vbYes) Then
-                    Dim files() As String
-                    files = Directory.GetFiles(MysqlLog, "*.err", SearchOption.TopDirectoryOnly)
-                    For Each FileName As String In files
-                        System.Diagnostics.Process.Start("wordpad.exe", FileName)
-                    Next
-                End If
-
-                Buttons(StartButton)
-                Return False
-            End If
-
-            ' check again
-            Sleep(1000)
-            Mysql = CheckPort("127.0.0.1", My.Settings.MySqlPort)
-        End While
-        Sleep(5000) ' hacky, but may work
-        Return True
-    End Function
-
-    Private Sub StopMysql()
-
-        Log("Info:using mysqladmin to close db")
-        Dim p As Process = New Process()
-        Dim pi As ProcessStartInfo = New ProcessStartInfo()
-        pi.Arguments = "-u root shutdown"
-        pi.FileName = """" + MyFolder + "\OutworldzFiles\mysql\bin\mysqladmin.exe" + """"
-        pi.WindowStyle = ProcessWindowStyle.Minimized
-        p.StartInfo = pi
-        Try
-            p.Start()
-            p.WaitForExit()
-            p.Close()
-        Catch ex As Exception
-            Log("Error:mysqladmin failed to stop mysql:" + ex.Message)
-        End Try
-
-        Dim Mysql = CheckPort("127.0.0.1", My.Settings.MySqlPort)
-        If Mysql Then
-            Sleep(4000)
-            Try
-                pMySql.Close()
-            Catch ex2 As Exception
-                Log("Error:Process pMySql.Close() " + ex2.Message)
-            End Try
-        End If
-
-        '   Mysql = CheckPort("127.0.0.1", My.Settings.MySqlPort)
-        '   If Not Mysql Then
-        '  For Each stuckP As Process In System.Diagnostics.Process.GetProcessesByName("mysqld")
-        ' 'stuckP.Kill()
-        ' Log("Warn:Forced to Zap mySQL")
-        ' Next
-        ' End If
-
-    End Sub
-
-#End Region
-
-#Region "DNS"
-    Public Sub RegisterDNS()
-
-        If My.Settings.DnsName = String.Empty Then
-            Return
-        End If
-
-        Dim client As New System.Net.WebClient
-        Dim Checkname As String = String.Empty
-
-        Try
-            Log("Checking DNS name " + My.Settings.DnsName)
-            Checkname = client.DownloadString("http://outworldz.net/dns.plx/?GridName=" + My.Settings.DnsName + "&r=" + Random())
-        Catch ex As Exception
-            Log("Warn:Cannot check the DNS Name" + ex.Message)
-        End Try
-
-        DoGetHostAddresses(My.Settings.DnsName)
-        BumpProgress10()
-    End Sub
-
-    Public Function DoGetHostAddresses(hostName As [String]) As String
-
-        Try
-
-            Dim IPList As System.Net.IPHostEntry = System.Net.Dns.GetHostEntry(hostName)
-
-            For Each IPaddress In IPList.AddressList
-                If (IPaddress.AddressFamily = Sockets.AddressFamily.InterNetwork) Then
-                    Dim ip = IPaddress.ToString()
-                    Return ip
-                End If
-            Next
-            Return String.Empty
-
-        Catch ex As Exception
-            Log("Warn:Unable to resolve name:" + ex.Message)
-        End Try
-        Return String.Empty
-
-    End Function
-    Public Function GetNewDnsName() As String
-
-        Dim client As New System.Net.WebClient
-        Dim Checkname As String = String.Empty
-        Try
-            Checkname = client.DownloadString("http://outworldz.net/getnewname.plx/?r=" + Random())
-        Catch ex As Exception
-            Log("Warn:Cannot get new name:" + ex.Message)
-        End Try
-        Return Checkname
-    End Function
-
-    Public Function RegisterName(name As String) As String
-
-        Dim Checkname As String = String.Empty
-
-        Try
-            Checkname = client.DownloadString("http://outworldz.net/dns.plx/?GridName=" + name + "&r=" + Random())
-        Catch ex As Exception
-            Log("Warn:Cannot check the DNS Name" + ex.Message)
-        End Try
-        If Checkname = "NEW" Or Checkname = "UPDATED" Then
-            Return name
-        End If
-        Return ""
-    End Function
-    Private Sub NewDNSName()
-        If My.Settings.DnsName = "" Then
-            Dim newname = GetNewDnsName()
-            If newname <> "" Then
-                If RegisterName(newname) <> "" Then
-                    BumpProgress10()
-                    My.Settings.DnsName = newname
-                    My.Settings.Save()
-                    MsgBox("Your system's name has been set to " + newname + ". You can change the name in the Advanced menu at any time")
-                End If
-            End If
-            BumpProgress10()
-        End If
-    End Sub
-
-    Private Sub CheckDatabaseToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CheckDatabaseToolStripMenuItem.Click
-        Dim pi As ProcessStartInfo = New ProcessStartInfo()
-
-        ChDir(MyFolder & "\OutworldzFiles\mysql\bin")
-        pi.WindowStyle = ProcessWindowStyle.Normal
-        pi.Arguments = My.Settings.MySqlPort
-        pi.FileName = "CheckAndRepair.bat"
-        pMySqlDiag.StartInfo = pi
-        pMySqlDiag.Start()
-        pMySqlDiag.WaitForExit()
-        ChDir(MyFolder)
-
-    End Sub
-
 
 
 

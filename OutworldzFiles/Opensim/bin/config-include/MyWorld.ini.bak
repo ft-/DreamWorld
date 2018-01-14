@@ -1,0 +1,313 @@
+[Startup]
+
+; SmartThreadPool is reported to work well on Mono/Linux, but
+; UnsafeQueueUserWorkItem has been benchmarked with better
+; performance on .NET/Windows
+async_call_method = UnsafeQueueUserWorkItem
+
+; recommended: false for mono / true for Windows
+use_async_when_possible = true
+CombineContiguousRegions = false
+HomeURI = "${Const|BaseURL}:${Const|httpPort}"
+NonPhysicalPrimMax = 1560
+
+;; physics
+meshing = Meshmerizer
+physics = BulletSim
+UseSeparatePhysicsThread = true
+
+[DatabaseService]
+ConnectionString = "Data Source=localhost;Database=opensim;Port=3309;User ID=opensimuser;Password=opensimpassword;Old Guids=True;Allow Zero Datetime=True;"
+
+[Network]
+
+;; unless you use -console = rest at startup.
+ConsoleUser = "Console"
+ConsolePass = "secret"
+ExternalHostNameForLSL = "${Const|BaseURL}"
+
+[Hypergrid]
+HomeURI = "${Const|BaseURL}:${Const|httpPort}"
+GatekeeperURI = "${Const|BaseURL}:${Const|httpPort}"
+
+[GridService]
+Region_Outworldz = "DefaultRegion, DefaultHGRegion, FallbackRegion"
+
+[HGAssetService]
+HomeURI = "${Const|BaseURL}:${Const|httpPort}"
+
+[HGInventoryAccessModule]
+
+;; If you want to protect your assets from being copied by foreign visitors
+;; uncomment the next line. You may want to do this on sims that have licensed content.
+; OutboundPermission = False
+[DataSnapshot]
+gridname = "${Const|GridName}"
+
+[UserProfiles]
+ProfileServiceURL = "${Const|BaseURL}:${Const|httpPort}"
+
+[LoginService]
+WelcomeMessage = "Welcome to ${Const|GridName}!"
+SRV_HomeURI = "${Const|BaseURL}:${Const|httpPort}"
+SRV_InventoryServerURI = "${Const|BaseURL}:${Const|httpPort}"
+SRV_AssetServerURI = "${Const|BaseURL}:${Const|httpPort}"
+SRV_FriendsServerURI = "${Const|BaseURL}:${Const|httpPort}"
+SRV_IMServerURI = "${Const|BaseURL}:${Const|httpPort}"
+SRV_GroupsServerURI = "${Const|BaseURL}:${Const|httpPort}"
+SRV_ProfileServerURI = "${Const|BaseURL}:${Const|httpPort}"
+MapTileURL = "${Const|BaseURL}:${Const|httpPort}/"
+
+; For V3 destination guide
+DestinationGuide = "http://www.hyperica.com/destination-guide"
+
+[GatekeeperService]
+
+;; HG 2.0 access control
+;; Restrictions on origin of foreign visitors.
+;; Are foreign visitors allowed?
+ForeignAgentsAllowed = true
+
+;;
+;; If ForeignAgentsAllowed is true, make exceptions using AllowExcept.
+;; Leave blank or commented for no exceptions.
+; AllowExcept = "http://griefer.com:8002, http://enemy.com:8002"
+;;
+;; If ForeignAgentsAllowed is false, make exceptions using DisallowExcept
+;; Leave blank or commented for no exceptions.
+; DisallowExcept = "http://myfriendgrid.com:8002, http://myboss.com:8002"
+[UserAgentService]
+
+;; HG 2.0 access control
+; User level required to be contacted from other grids
+;LevelOutsideContacts = 0
+;; Restrictions on destinations of local users.
+;; Are local users allowed to visit other grids?
+;; What user level? Use variables of this forrm:
+;; ForeignTripsAllowed_Level_<UserLevel> = true | false
+;; For example:
+; ForeignTripsAllowed_Level_0 = false
+; ForeignTripsAllowed_Level_10 = true ; true is default
+;;
+;; If ForeignTripsAllowed is true, make exceptions using AllowExcept.
+;; Leave blank or commented for no exceptions.
+; AllowExcept_Level_10 = "http://griefer.com:8002, http://enemy.com:8002"
+;;
+;; If ForeignTripsAllowed is false, make exceptions using DisallowExcept
+;; Leave blank or commented for no exceptions.
+; DisallowExcept_Level_0 = "http://myfriendgrid.com:8002, http://myboss.com:8002"
+[GridInfoService]
+WelcomeMessage = "Welcome to the Outworldz"
+login = ${Const|BaseURL}:${Const|httpPort}/
+gridname = "${Const|GridName}"
+gridnick = "${Const|GridName}"
+welcome = http://www.outworldz.com/Outworldz_installer/Welcome.htm
+register = "${Const|BaseURL}:${Const|httpPort}/wifi/user/account"
+password = "${Const|BaseURL}:${Const|httpPort}/wifi/forgotpassword"
+gatekeeper = "${Const|BaseURL}:${Const|httpPort}"
+uas = "${Const|BaseURL}:${Const|httpPort}"
+
+[WifiService]
+GridName = "${Const|GridName}"
+LoginURL = "${Const|BaseURL}:${Const|httpPort}"
+WebAddress = "${Const|BaseURL}:${Const|httpPort}"
+
+;; The Wifi Administrator account
+AdminFirst = "Wifi"
+AdminLast = "Admin"
+AdminEmail = email@somewhere.com
+AdminPassword = BNbgBv
+
+;; Do you want to be able to control grid registrations?
+AccountConfirmationRequired = true
+
+;; Variables for your mail server
+;; Users will get email notifications from this account.
+SmtpHost = "smtp.gmail.com"
+SmtpPort = "587"
+SmtpUsername = "your_email@gmail.com"
+SmtpPassword = "secret"
+HomeLocation = "${Const|GridName}/128/128/30"
+
+; Password = dream
+;; Who can upload IARs? Set the UserLevel of accounts in order to restrict
+;; this feature. Default is 0 (everyone can do it)
+; IARUserLevel = 0
+[TOSModule]
+
+;; Disabled by default. Disable it if you like by setting this to false
+Enabled = false
+
+;; Tell the users what this is about
+Message = "Please read and agree to the Terms of Service"
+
+;; Should local users be shown the TOS on first login?
+ShowToLocalUsers = false
+
+;; Should foreign users be shown the TOS on first HG login?
+ShowToForeignUsers = true
+
+;; Change the text on that page for your own TOS.
+;; You'll find it under <your diva dir>/WifiPages/tos.html
+TOS_URL = "http://127.0.0.1:9000/wifi/tos.html"
+
+[Groups]
+GroupsExternalURI = "${Const|BaseURL}:${Const|httpPort}"
+
+[Permissions]
+allow_grid_gods = false
+region_owner_is_god = false
+region_manager_is_god = false
+parcel_owner_is_god = false
+
+[AutoBackupModule]
+
+;
+;AutoBackupModuleEnabled: True/False. Default: False. If False, every
+;function in the module is as no-op as possible: just return as soon as
+;realizing that we're not enabled. Otherwise it will try to get as far as it
+;can with auto backup for each region.
+; Global (in OpenSim.ini) or Per-Region (in Regions/Regions.ini under theregion's name's section)
+; IMPORTANT: Settings declared per-region in Regions/Regions.ini override
+;settings in OpenSim.ini. Settings in OpenSim.ini, in turn, override
+;hard-coded defaults.  AutoBackup: True/False. Default: False. If True,
+;activate auto backup functionality. This is the only required option for
+;enabling auto-backup; the other options have sane defaults. If False, the
+;auto-backup module becomes a no-op for the region, and all other
+;AutoBackup* settings are ignored.
+; AutoBackupModuleEnabled: True/False. Default: False. If False, every
+;function in the module is as no-op as possible: just return as soon as
+;realizing that we're not enabled. Otherwise it will try to get as far as it
+;can with auto backup for each region.
+; AutoBackupInterval: Integer, non-negative value. Default: 720 (12
+;hours). The number of minutes between each backup attempt. If a negative or
+;zero value is given, it is equivalent to setting AutoBackup = False.
+; AutoBackupBusyCheck: True/False. Default: True. If True, we will only
+;take an auto-backup if a set of conditions are met. These conditions are
+;heuristics to try and avoid taking a backup when the sim is busy.
+; AutoBackupScript: String. Default: not specified (disabled). File path
+;to an executable script or binary to run when an automatic backup is taken.
+;argv[1] of the executed file/script will be the file name of the generated
+;OAR. If the process can't be spawned for some reason (file not found, no
+;execute permission, etc), write a warning to the console.
+; AutoBackupNaming: string. Default: Time.  One of three strings (case
+;insensitive):
+;  "Time": Current timestamp is appended to file name. An existing file
+;will never be overwritten.
+;  "Sequential": A number is appended to the file name. So if
+;RegionName_x.oar exists, we'll save to RegionName_{x+1}.oar next. An
+;existing file will never be overwritten.
+;  "Overwrite": Always save to file named "RegionName.oar", even if we
+;have to overwrite an existing file.
+; AutoBackupDir: String. Default: "." (the current directory). A directory
+;(absolute or relative) where backups should be saved. If the path is not a
+;directory, or insufficient permissions are available, a warning will be
+;printed to the console and no backups will be taken.
+; AutoBackupDilationThreshold: float. Default: 0.5. Lower bound on time
+;dilation required for BusyCheck heuristics to pass.  If the time dilation
+;is below this value, don't take a backup right now.
+; AutoBackupAgentThreshold: int. Default: 10. Upper bound on # of agents
+;in region required for BusyCheck heuristics to pass.  If the number of
+;agents is greater than this value, don't take a backup right now.
+; AutoBackupKeepFilesForDays: int. Default: 0.
+;   1) number of days to keep backups (0 the default value will disable
+;this option).
+;   2) After each backup, remove all oars in the backup directory that are
+;older than the specified number of days.
+;    note: if the user set the bin directory as the backup location, only
+;oar files are removed. There is no way to know if an oar was created by
+;auto-backup, or manually created or uploaded. It is not recommended to use
+;the bin directory for your auto backups for this reason.
+;
+;
+AutoBackupModuleEnabled = true
+
+;
+; Automatically changed by Dreamworld - do not change this
+AutoBackup = true
+
+; Automatically changed by Dreamworld - do not change this
+AutoBackupInterval = 720
+
+;
+AutoBackupBusyCheck = false
+AutoBackupThreshold = 1
+AutoBackupSkipAssets = false
+
+;
+; Automatically changed by Dreamworld - do not change this
+AutoBackupKeepFilesForDays = 30
+AutoBackupNaming = Time
+AutoBackupDir = "../../AutoBackup"
+
+;
+[CameraOnlyModeModule]
+enabled = false
+UserLevel = 0
+
+[SpecialUIModule]
+enabled = false
+UserLevel = 0
+
+[WebStats]
+enabled = True
+
+[VivoxVoice]
+
+; See https://support.vivox.com/opensim/ for a free voice account
+; The VivoxVoice module will allow you to provide voice on your
+; region(s). It uses the same voice technology as the LL grid and
+; works with recent LL clients (we have tested 1.22.9.110075, so
+; anything later ought to be fine as well).
+;
+; For this to work you need to obtain an admin account from Vivox
+; that allows you to create voice accounts and region channels.
+enabled = false
+
+; vivox voice server
+vivox_server = www.osp.vivox.com
+
+; vivox SIP URI
+vivox_sip_uri = osp.vivox.com
+
+;
+; vivox admin user name
+vivox_admin_user = someusername
+
+; vivox admin password
+vivox_admin_password = somepassword
+
+;
+; channel type: "channel" or "positional"
+; - positional: spatial sound (default)
+; - channel: normal "conference call", no spatial sound
+vivox_channel_type = positional
+
+; channel characteristics (unless you know what you are doing, i'd
+; leave them as they are --- now you WILL muck around with them,
+; huh? sigh)
+; channel distance model:
+; 0 - no attenuation
+; 1 - inverse distance attenuation
+; 2 - linear attenuation (default)
+; 3 - exponential attenuation
+vivox_channel_distance_model = 2
+
+; channel mode:
+; - "open" (default)
+; - "lecture"
+; - "presentation"
+; - "auditorium"
+vivox_channel_mode = "open"
+
+; channel roll off: rate of attenuation
+; - a value between 1.0 and 4.0, default is 2.0
+vivox_channel_roll_off = 2.0
+
+; channel max range: distance at which channel is silent
+; - a value between 0 and 160, default is 80
+vivox_channel_max_range = 80
+
+; channel clamping distance: distance before attenuation applies
+; - a value between 0 and 160, default is 10
+vivox_channel_clamping_distance = 10

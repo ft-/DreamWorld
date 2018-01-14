@@ -476,6 +476,7 @@ Public Class FormRegion
         If msg = vbYes Then
             Try
                 My.Computer.FileSystem.RenameFile(Form1.MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\Regions\" + RegionName.Text + ".ini", RegionName.Text + ".ini.bak")
+                Form1.SetDefaultSims()
                 Me.Close()
             Catch ex As Exception
                 MsgBox("Cannot Backup region file:" + ex.Message, vbInformation)

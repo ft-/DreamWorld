@@ -173,11 +173,38 @@
     <Setting Name="BackupFolder" Type="System.String" Scope="User">
       <Value Profile="(Default)">AutoBackup</Value>
     </Setting>
-    <Setting Name="DiagsRun2" Type="System.Boolean" Scope="User">
+    <Setting Name="DiagsRun" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="WelcomeRegion" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="GloebitsEnable" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="GloebitsMode" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="GLSandKey" Type="System.String" Scope="User">
+      <Value Profile="(Default)">OAuth Sandbox key</Value>
+    </Setting>
+    <Setting Name="GLSandSecret" Type="System.String" Scope="User">
+      <Value Profile="(Default)">OAuth sandbox secret</Value>
+    </Setting>
+    <Setting Name="GLBOwnerEmail" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Your Email</Value>
+    </Setting>
+    <Setting Name="GLBOwnerName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Your Avatar Name</Value>
+    </Setting>
+    <Setting Name="GLProdKey" Type="System.String" Scope="User">
+      <Value Profile="(Default)">OAuth Production key</Value>
+    </Setting>
+    <Setting Name="GLProdSecret" Type="System.String" Scope="User">
+      <Value Profile="(Default)">OAuth Production key</Value>
+    </Setting>
+    <Setting Name="UPnPEnabled" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
     </Setting>
   </Settings>
 </SettingsFile>

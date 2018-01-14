@@ -150,3 +150,7 @@ C:\Opensim\Outworldz-1.0\Updater_Src\Updater\obj\Release\Updater.application
 C:\Opensim\Outworldz-1.0\Updater_Src\Updater\obj\Release\Updater.exe
 C:\Opensim\Outworldz-1.0\Updater_Src\Updater\obj\Release\Updater.xml
 C:\Opensim\Outworldz-1.0\Updater_Src\Updater\obj\Release\Updater.pdb
+C:\Opensim\OpensimV1.72-Source\Updater_Src\Updater\bin\Release\Updater.exe.config
+C:\Opensim\OpensimV1.72-Source\Updater_Src\Updater\obj\Release\Updater.exe
+C:\Opensim\OpensimV1.72-Source\Updater_Src\Updater\obj\Release\Updater.xml
+C:\Opensim\OpensimV1.72-Source\Updater_Src\Updater\obj\Release\Updater.pdb

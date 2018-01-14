@@ -1,8 +1,7 @@
 ﻿Imports System.Net
-Imports IniParser
-Imports System.IO
 
 Public Class AdvancedForm
+
 #Region "Declarations"
 
 #End Region
@@ -28,6 +27,7 @@ Public Class AdvancedForm
 
     Private Sub Loaded(sender As Object, e As EventArgs) Handles Me.Load
 
+        uPnPEnabled.Checked = My.Settings.UPnPEnabled
         PublicPort.Text = My.Settings.PublicPort
         PrivatePort.Text = My.Settings.PrivatePort
         httpPort.Text = My.Settings.HttpPort
@@ -155,8 +155,6 @@ Public Class AdvancedForm
             Form1.ConsoleCommand("reset user password Wifi Admin " + My.Settings.Password + "{Enter}")
         End If
 
-        MsgBox("Any changes will take effect the next time Opensimulator is started.")
-
     End Sub
 
     Private Sub TextBox1_TextChanged_1(sender As Object, e As EventArgs) Handles DbPort.TextChanged
@@ -277,21 +275,31 @@ Public Class AdvancedForm
     End Sub
 
     Private Sub SmtpUsername_TextChanged(sender As Object, e As EventArgs) Handles SmtpUsername.TextChanged
+
         My.Settings.SmtpUsername = SmtpUsername.Text
         My.Settings.Save()
 
     End Sub
     Private Sub SmtpUsername_Click(sender As Object, e As EventArgs) Handles SmtpPassword.Click
+
         SmtpPassword.UseSystemPasswordChar = False
+        My.Settings.Save()
 
     End Sub
     Private Sub SmtpPassword_TextChanged(sender As Object, e As EventArgs) Handles SmtpPassword.TextChanged
+
         My.Settings.SmtpPassword = SmtpPassword.Text
         My.Settings.Save()
 
     End Sub
 
-    Private Sub DnsName_TextChanged(sender As Object, e As EventArgs) Handles DnsName.Click
+    Private Sub DnsName_TextChanged(sender As Object, e As EventArgs) Handles DnsName.TextChanged
+        My.Settings.DnsName = DnsName.Text
+        My.Settings.Save()
+
+    End Sub
+
+    Private Sub DnsName_TextClicked(sender As Object, e As EventArgs) Handles DnsName.Click
         Dim F As New DNSName
         F.Show()
     End Sub
@@ -629,6 +637,24 @@ Public Class AdvancedForm
     Private Sub HypericaButton_Click(sender As Object, e As EventArgs) Handles HypericaButton.Click
         Dim webAddress As String = "http://www.hyperica.com/directory/"
         Process.Start(webAddress)
+    End Sub
+
+    Private Sub GloebitsButton_Click(sender As Object, e As EventArgs) Handles GloebitsButton.Click
+
+        Dim Gloebits As New Gloebits
+        ' Set the new form's desktop location so it appears below and
+        ' to the right of the current form.
+        Gloebits.SetDesktopLocation(300, 200)
+        Gloebits.Activate()
+        Gloebits.Visible = True
+
+    End Sub
+
+    Private Sub uPnPEnabled_CheckedChanged(sender As Object, e As EventArgs) Handles uPnPEnabled.CheckedChanged
+
+        My.Settings.UPnPEnabled = uPnPEnabled.Checked
+        My.Settings.Save()
+
     End Sub
 
 

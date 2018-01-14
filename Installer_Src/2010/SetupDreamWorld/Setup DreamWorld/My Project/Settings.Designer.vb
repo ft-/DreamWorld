@@ -741,12 +741,12 @@ Namespace My
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
-        Public Property DiagsRun2() As Boolean
+        Public Property DiagsRun() As Boolean
             Get
-                Return CType(Me("DiagsRun2"),Boolean)
+                Return CType(Me("DiagsRun"),Boolean)
             End Get
             Set
-                Me("DiagsRun2") = value
+                Me("DiagsRun") = value
             End Set
         End Property
         
@@ -759,6 +759,114 @@ Namespace My
             End Get
             Set
                 Me("WelcomeRegion") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public Property GloebitsEnable() As Boolean
+            Get
+                Return CType(Me("GloebitsEnable"),Boolean)
+            End Get
+            Set
+                Me("GloebitsEnable") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public Property GloebitsMode() As Boolean
+            Get
+                Return CType(Me("GloebitsMode"),Boolean)
+            End Get
+            Set
+                Me("GloebitsMode") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("OAuth Sandbox key")>  _
+        Public Property GLSandKey() As String
+            Get
+                Return CType(Me("GLSandKey"),String)
+            End Get
+            Set
+                Me("GLSandKey") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("OAuth sandbox secret")>  _
+        Public Property GLSandSecret() As String
+            Get
+                Return CType(Me("GLSandSecret"),String)
+            End Get
+            Set
+                Me("GLSandSecret") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("Your Email")>  _
+        Public Property GLBOwnerEmail() As String
+            Get
+                Return CType(Me("GLBOwnerEmail"),String)
+            End Get
+            Set
+                Me("GLBOwnerEmail") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("Your Avatar Name")>  _
+        Public Property GLBOwnerName() As String
+            Get
+                Return CType(Me("GLBOwnerName"),String)
+            End Get
+            Set
+                Me("GLBOwnerName") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("OAuth Production key")>  _
+        Public Property GLProdKey() As String
+            Get
+                Return CType(Me("GLProdKey"),String)
+            End Get
+            Set
+                Me("GLProdKey") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("OAuth Production key")>  _
+        Public Property GLProdSecret() As String
+            Get
+                Return CType(Me("GLProdSecret"),String)
+            End Get
+            Set
+                Me("GLProdSecret") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("True")>  _
+        Public Property UPnPEnabled() As Boolean
+            Get
+                Return CType(Me("UPnPEnabled"),Boolean)
+            End Get
+            Set
+                Me("UPnPEnabled") = value
             End Set
         End Property
     End Class

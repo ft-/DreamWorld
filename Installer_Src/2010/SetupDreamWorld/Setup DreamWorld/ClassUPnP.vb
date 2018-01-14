@@ -53,7 +53,7 @@ Public Class UPNP
     ''' <remarks></remarks>
     Public Sub New(Folder As String)
 
-        myfolder = Folder
+       myfolder = Folder
 
         'Create the new NAT Class
         upnpnat = New NATUPNPLib.UPnPNAT
@@ -125,7 +125,7 @@ Public Class UPNP
         If Not IsPrivateIP(localIP) Then Throw New ArgumentException("This is not a local IP address!", "localIP")
 
         ' Final check!
-        If Not staticEnabled Then Throw New ApplicationException("UPnP is not enabled, or there was an error with UPnP Initialization.")
+        If Not staticEnabled Then Return
 
         ' Okay, continue on
         staticMapping.Add(port, prot.ToString(), port, localIP, True, desc)
@@ -166,7 +166,7 @@ Public Class UPNP
     Public Function Exists(ByVal port As Integer, ByVal prot As Protocol) As Boolean
 
         ' Final check!
-        If Not staticEnabled Then Throw New ApplicationException("UPnP is not enabled, or there was an error with UPnP Initialization.")
+        If Not staticEnabled Then Return False
 
         ' Begin checking
         For Each mapping As NATUPNPLib.IStaticPortMapping In staticMapping
