@@ -37,8 +37,8 @@ Public Class Form1
 
 #Region "Declarations"
 
-    Dim MyVersion As String = "1.74"
-    Dim DebugPath As String = "C:\Opensim\OpensimV1.74 Source"
+    Dim MyVersion As String = "1.75"
+    Dim DebugPath As String = "C:\Opensim\OpensimV1.75 Source"
     Public Domain As String = "http://www.outworldz.com"
 
     Private gFailDebug = False ' set to true to fail diagnostic
@@ -200,7 +200,7 @@ Public Class Form1
             ' for debugging when compiling
             If arguments(1) = "-debug" Then
                 gDebug = True
-                ' gFailDebug = True
+                gFailDebug = True
                 MyFolder = DebugPath ' for testing, as the compiler buries itself in ../../../debug
 
             End If
@@ -248,11 +248,11 @@ Public Class Form1
         ' Run diagnostics, maybe
         If gDebug Then
             gFailDebug = True
-            'DoDiag()
+            DoDiag()
             gFailDebug = False
             My.Settings.DiagsRun = False
         End If
-
+        Application.DoEvents()
         RegisterDNS()
 
         If Not My.Settings.DiagsRun Then
@@ -1899,7 +1899,7 @@ Public Class Form1
     End Sub
     Private Function ProbePublicPort() As Boolean
 
-        Log("Info:Probe Public Port")
+        Print("Checing Hypergrid Port")
         Dim ip As String = GetPubIP()
 
 
@@ -2043,7 +2043,7 @@ Public Class Form1
             Log("UPnP is not enabled in the menu")
             Return True
         End If
-
+        Print("Puny human is instructed to wait while I check out the router ...")
         Log("Local ip seems to be " + UPNP.LocalIP)
 
         Try
@@ -2143,7 +2143,7 @@ Public Class Form1
     Private Function OpenPorts() As Boolean
 
         'If Running = False Then Return True
-        Print("The human is instructed to wait while I check out the router ...")
+
         Try
             If OpenRouterPorts() Then ' open uPNP port
                 Log("uPnpOk")

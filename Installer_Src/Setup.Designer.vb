@@ -35,21 +35,6 @@ Partial Class Form1
         Me.FileToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuExit = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuSettings = New System.Windows.Forms.ToolStripMenuItem()
-        Me.HelpToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
-        Me.MnuContent = New System.Windows.Forms.ToolStripMenuItem()
-        Me.WebBrowser3 = New System.Windows.Forms.WebBrowser()
-        Me.ProgressBar1 = New System.Windows.Forms.ProgressBar()
-        Me.BusyButton = New System.Windows.Forms.Button()
-        Me.UpdaterGo = New System.Windows.Forms.Button()
-        Me.UpdaterCancel = New System.Windows.Forms.Button()
-        Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
-        Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
-        Me.OpenFileDialog2 = New System.Windows.Forms.OpenFileDialog()
-        Me.TextBox1 = New System.Windows.Forms.RichTextBox()
-        Me.LogButton = New System.Windows.Forms.Button()
-        Me.IgnoreButton = New System.Windows.Forms.Button()
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.ConsoleToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuHide = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuShow = New System.Windows.Forms.ToolStripMenuItem()
@@ -68,17 +53,7 @@ Partial Class Form1
         Me.mnuNoAvatar = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuYesAvatar = New System.Windows.Forms.ToolStripMenuItem()
         Me.AdvancedSettingsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.IslandToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ClothingInventoryToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.MoreContentToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.BackupRestoreToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.SaveInventoryToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
-        Me.LoadInventoryToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
-        Me.SaveOARToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.LoadOARToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.AllRegionsOARsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.BackupDatabaseToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.RestoreDatabaseToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.HelpToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ShowHyperGridAddressToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ConsoleCOmmandsToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
         Me.WebStatsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -90,6 +65,33 @@ Partial Class Form1
         Me.DiagnosticsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.CheckDatabaseToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuAbout = New System.Windows.Forms.ToolStripMenuItem()
+        Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
+        Me.MnuContent = New System.Windows.Forms.ToolStripMenuItem()
+        Me.IslandToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ClothingInventoryToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.MoreContentToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.BackupRestoreToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.SaveInventoryToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.LoadInventoryToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.SaveOARToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.LoadOARToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.AllRegionsOARsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.BackupDatabaseToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.RestoreDatabaseToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.WebBrowser3 = New System.Windows.Forms.WebBrowser()
+        Me.ProgressBar1 = New System.Windows.Forms.ProgressBar()
+        Me.BusyButton = New System.Windows.Forms.Button()
+        Me.UpdaterGo = New System.Windows.Forms.Button()
+        Me.UpdaterCancel = New System.Windows.Forms.Button()
+        Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
+        Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
+        Me.OpenFileDialog2 = New System.Windows.Forms.OpenFileDialog()
+        Me.TextBox1 = New System.Windows.Forms.RichTextBox()
+        Me.LogButton = New System.Windows.Forms.Button()
+        Me.IgnoreButton = New System.Windows.Forms.Button()
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
+        Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator()
         Me.MenuStrip1.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -157,127 +159,6 @@ Partial Class Form1
         Me.mnuSettings.Size = New System.Drawing.Size(61, 20)
         Me.mnuSettings.Text = "Settings"
         '
-        'HelpToolStripMenuItem
-        '
-        Me.HelpToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ShowHyperGridAddressToolStripMenuItem, Me.ConsoleCOmmandsToolStripMenuItem1, Me.WebStatsToolStripMenuItem, Me.ViewWebUI, Me.ToolStripMenuItem1, Me.LoopBackToolStripMenuItem, Me.CHeckForUpdatesToolStripMenuItem, Me.ToolStripMenuItem2, Me.DiagnosticsToolStripMenuItem, Me.CheckDatabaseToolStripMenuItem, Me.mnuAbout})
-        Me.HelpToolStripMenuItem.Name = "HelpToolStripMenuItem"
-        Me.HelpToolStripMenuItem.Size = New System.Drawing.Size(44, 20)
-        Me.HelpToolStripMenuItem.Text = "Help"
-        '
-        'MenuStrip1
-        '
-        Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FileToolStripMenuItem, Me.mnuSettings, Me.MnuContent, Me.HelpToolStripMenuItem})
-        Me.MenuStrip1.Location = New System.Drawing.Point(0, 0)
-        Me.MenuStrip1.Name = "MenuStrip1"
-        Me.MenuStrip1.Size = New System.Drawing.Size(320, 24)
-        Me.MenuStrip1.TabIndex = 21
-        Me.MenuStrip1.Text = "MenuStrip1"
-        '
-        'MnuContent
-        '
-        Me.MnuContent.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.IslandToolStripMenuItem, Me.ClothingInventoryToolStripMenuItem, Me.MoreContentToolStripMenuItem, Me.BackupRestoreToolStripMenuItem})
-        Me.MnuContent.Name = "MnuContent"
-        Me.MnuContent.Size = New System.Drawing.Size(62, 20)
-        Me.MnuContent.Text = "Content"
-        '
-        'WebBrowser3
-        '
-        Me.WebBrowser3.Location = New System.Drawing.Point(339, 341)
-        Me.WebBrowser3.MinimumSize = New System.Drawing.Size(20, 20)
-        Me.WebBrowser3.Name = "WebBrowser3"
-        Me.WebBrowser3.Size = New System.Drawing.Size(105, 53)
-        Me.WebBrowser3.TabIndex = 23
-        '
-        'ProgressBar1
-        '
-        Me.ProgressBar1.Location = New System.Drawing.Point(15, 30)
-        Me.ProgressBar1.Name = "ProgressBar1"
-        Me.ProgressBar1.Size = New System.Drawing.Size(280, 13)
-        Me.ProgressBar1.TabIndex = 24
-        '
-        'BusyButton
-        '
-        Me.BusyButton.Location = New System.Drawing.Point(232, 1)
-        Me.BusyButton.Name = "BusyButton"
-        Me.BusyButton.Size = New System.Drawing.Size(63, 23)
-        Me.BusyButton.TabIndex = 18
-        Me.BusyButton.Text = "Busy"
-        Me.BusyButton.UseVisualStyleBackColor = True
-        '
-        'UpdaterGo
-        '
-        Me.UpdaterGo.Font = New System.Drawing.Font("Tahoma", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.UpdaterGo.Location = New System.Drawing.Point(62, 169)
-        Me.UpdaterGo.Name = "UpdaterGo"
-        Me.UpdaterGo.Size = New System.Drawing.Size(115, 30)
-        Me.UpdaterGo.TabIndex = 25
-        Me.UpdaterGo.Text = "Update Available"
-        Me.UpdaterGo.UseVisualStyleBackColor = True
-        '
-        'UpdaterCancel
-        '
-        Me.UpdaterCancel.Font = New System.Drawing.Font("Tahoma", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.UpdaterCancel.Location = New System.Drawing.Point(200, 169)
-        Me.UpdaterCancel.Name = "UpdaterCancel"
-        Me.UpdaterCancel.Size = New System.Drawing.Size(51, 30)
-        Me.UpdaterCancel.TabIndex = 26
-        Me.UpdaterCancel.Text = "Skip"
-        Me.UpdaterCancel.UseVisualStyleBackColor = True
-        '
-        'Timer1
-        '
-        '
-        'OpenFileDialog1
-        '
-        Me.OpenFileDialog1.FileName = "OpenFileDialog1"
-        '
-        'OpenFileDialog2
-        '
-        Me.OpenFileDialog2.FileName = "OpenFileDialog2"
-        '
-        'TextBox1
-        '
-        Me.TextBox1.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.TextBox1.Font = New System.Drawing.Font("Verdana", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TextBox1.Location = New System.Drawing.Point(12, 49)
-        Me.TextBox1.Name = "TextBox1"
-        Me.TextBox1.Size = New System.Drawing.Size(296, 150)
-        Me.TextBox1.TabIndex = 29
-        Me.TextBox1.Text = ""
-        '
-        'LogButton
-        '
-        Me.LogButton.Font = New System.Drawing.Font("Tahoma", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.LogButton.Location = New System.Drawing.Point(48, 169)
-        Me.LogButton.Name = "LogButton"
-        Me.LogButton.Size = New System.Drawing.Size(115, 30)
-        Me.LogButton.TabIndex = 30
-        Me.LogButton.Text = "Show Log"
-        Me.LogButton.UseVisualStyleBackColor = True
-        '
-        'IgnoreButton
-        '
-        Me.IgnoreButton.Font = New System.Drawing.Font("Tahoma", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.IgnoreButton.Location = New System.Drawing.Point(183, 169)
-        Me.IgnoreButton.Name = "IgnoreButton"
-        Me.IgnoreButton.Size = New System.Drawing.Size(85, 30)
-        Me.IgnoreButton.TabIndex = 31
-        Me.IgnoreButton.Text = "Skip"
-        Me.IgnoreButton.UseVisualStyleBackColor = True
-        '
-        'PictureBox1
-        '
-        Me.PictureBox1.BackColor = System.Drawing.Color.White
-        Me.PictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.PictureBox1.ErrorImage = Global.Outworldz.My.Resources.Resources.wp_51
-        Me.PictureBox1.InitialImage = Nothing
-        Me.PictureBox1.Location = New System.Drawing.Point(0, 27)
-        Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(320, 180)
-        Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize
-        Me.PictureBox1.TabIndex = 27
-        Me.PictureBox1.TabStop = False
-        '
         'ConsoleToolStripMenuItem1
         '
         Me.ConsoleToolStripMenuItem1.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuHide, Me.mnuShow})
@@ -292,13 +173,13 @@ Partial Class Form1
         Me.mnuHide.Checked = True
         Me.mnuHide.CheckState = System.Windows.Forms.CheckState.Checked
         Me.mnuHide.Name = "mnuHide"
-        Me.mnuHide.Size = New System.Drawing.Size(103, 22)
+        Me.mnuHide.Size = New System.Drawing.Size(152, 22)
         Me.mnuHide.Text = "Hide"
         '
         'mnuShow
         '
         Me.mnuShow.Name = "mnuShow"
-        Me.mnuShow.Size = New System.Drawing.Size(103, 22)
+        Me.mnuShow.Size = New System.Drawing.Size(152, 22)
         Me.mnuShow.Text = "Show"
         '
         'ViewerToolStripMenuItem
@@ -414,6 +295,113 @@ Partial Class Form1
         Me.AdvancedSettingsToolStripMenuItem.Text = "Advanced Settings"
         Me.AdvancedSettingsToolStripMenuItem.ToolTipText = "Deep stuff."
         '
+        'HelpToolStripMenuItem
+        '
+        Me.HelpToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ShowHyperGridAddressToolStripMenuItem, Me.ToolStripSeparator1, Me.ConsoleCOmmandsToolStripMenuItem1, Me.WebStatsToolStripMenuItem, Me.ViewWebUI, Me.ToolStripMenuItem1, Me.LoopBackToolStripMenuItem, Me.ToolStripSeparator2, Me.CHeckForUpdatesToolStripMenuItem, Me.ToolStripMenuItem2, Me.DiagnosticsToolStripMenuItem, Me.CheckDatabaseToolStripMenuItem, Me.mnuAbout})
+        Me.HelpToolStripMenuItem.Name = "HelpToolStripMenuItem"
+        Me.HelpToolStripMenuItem.Size = New System.Drawing.Size(44, 20)
+        Me.HelpToolStripMenuItem.Text = "Help"
+        '
+        'ShowHyperGridAddressToolStripMenuItem
+        '
+        Me.ShowHyperGridAddressToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.window_environment1
+        Me.ShowHyperGridAddressToolStripMenuItem.Name = "ShowHyperGridAddressToolStripMenuItem"
+        Me.ShowHyperGridAddressToolStripMenuItem.Size = New System.Drawing.Size(205, 22)
+        Me.ShowHyperGridAddressToolStripMenuItem.Text = "Show HyperGrid Address"
+        Me.ShowHyperGridAddressToolStripMenuItem.ToolTipText = "You can give this address out to oepple and they can visit your grid"
+        '
+        'ConsoleCOmmandsToolStripMenuItem1
+        '
+        Me.ConsoleCOmmandsToolStripMenuItem1.Image = Global.Outworldz.My.Resources.Resources.document_view
+        Me.ConsoleCOmmandsToolStripMenuItem1.Name = "ConsoleCOmmandsToolStripMenuItem1"
+        Me.ConsoleCOmmandsToolStripMenuItem1.Size = New System.Drawing.Size(205, 22)
+        Me.ConsoleCOmmandsToolStripMenuItem1.Text = "Console Commands"
+        '
+        'WebStatsToolStripMenuItem
+        '
+        Me.WebStatsToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.document_chart
+        Me.WebStatsToolStripMenuItem.Name = "WebStatsToolStripMenuItem"
+        Me.WebStatsToolStripMenuItem.Size = New System.Drawing.Size(205, 22)
+        Me.WebStatsToolStripMenuItem.Text = "View Web Stats"
+        '
+        'ViewWebUI
+        '
+        Me.ViewWebUI.Image = Global.Outworldz.My.Resources.Resources.document_view
+        Me.ViewWebUI.Name = "ViewWebUI"
+        Me.ViewWebUI.Size = New System.Drawing.Size(205, 22)
+        Me.ViewWebUI.Text = "View Web Interface"
+        Me.ViewWebUI.ToolTipText = "The WIfi Interface can be used to add new users"
+        '
+        'ToolStripMenuItem1
+        '
+        Me.ToolStripMenuItem1.Image = Global.Outworldz.My.Resources.Resources.document_view
+        Me.ToolStripMenuItem1.Name = "ToolStripMenuItem1"
+        Me.ToolStripMenuItem1.Size = New System.Drawing.Size(205, 22)
+        Me.ToolStripMenuItem1.Text = "Help on Port Forwarding"
+        Me.ToolStripMenuItem1.ToolTipText = "Web Help for Port Forwarding"
+        '
+        'LoopBackToolStripMenuItem
+        '
+        Me.LoopBackToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.document_view
+        Me.LoopBackToolStripMenuItem.Name = "LoopBackToolStripMenuItem"
+        Me.LoopBackToolStripMenuItem.Size = New System.Drawing.Size(205, 22)
+        Me.LoopBackToolStripMenuItem.Text = "Help on LoopBack "
+        Me.LoopBackToolStripMenuItem.ToolTipText = "How to fix Loopback on Windows"
+        '
+        'CHeckForUpdatesToolStripMenuItem
+        '
+        Me.CHeckForUpdatesToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.download1
+        Me.CHeckForUpdatesToolStripMenuItem.Name = "CHeckForUpdatesToolStripMenuItem"
+        Me.CHeckForUpdatesToolStripMenuItem.Size = New System.Drawing.Size(205, 22)
+        Me.CHeckForUpdatesToolStripMenuItem.Text = "Check for Updates"
+        '
+        'ToolStripMenuItem2
+        '
+        Me.ToolStripMenuItem2.Image = Global.Outworldz.My.Resources.Resources.earth_network
+        Me.ToolStripMenuItem2.Name = "ToolStripMenuItem2"
+        Me.ToolStripMenuItem2.Size = New System.Drawing.Size(205, 22)
+        Me.ToolStripMenuItem2.Text = "UPnP Setup"
+        '
+        'DiagnosticsToolStripMenuItem
+        '
+        Me.DiagnosticsToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.flash
+        Me.DiagnosticsToolStripMenuItem.Name = "DiagnosticsToolStripMenuItem"
+        Me.DiagnosticsToolStripMenuItem.Size = New System.Drawing.Size(205, 22)
+        Me.DiagnosticsToolStripMenuItem.Text = "Network Diagnostics"
+        Me.DiagnosticsToolStripMenuItem.ToolTipText = "Re-Run the installation diagnostics"
+        '
+        'CheckDatabaseToolStripMenuItem
+        '
+        Me.CheckDatabaseToolStripMenuItem.Image = CType(resources.GetObject("CheckDatabaseToolStripMenuItem.Image"), System.Drawing.Image)
+        Me.CheckDatabaseToolStripMenuItem.Name = "CheckDatabaseToolStripMenuItem"
+        Me.CheckDatabaseToolStripMenuItem.Size = New System.Drawing.Size(205, 22)
+        Me.CheckDatabaseToolStripMenuItem.Text = "Check Database"
+        Me.CheckDatabaseToolStripMenuItem.ToolTipText = "Repairs corrupt MySQL table"
+        '
+        'mnuAbout
+        '
+        Me.mnuAbout.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None
+        Me.mnuAbout.Image = Global.Outworldz.My.Resources.Resources.question_and_answer
+        Me.mnuAbout.Name = "mnuAbout"
+        Me.mnuAbout.Size = New System.Drawing.Size(205, 22)
+        Me.mnuAbout.Text = "About"
+        '
+        'MenuStrip1
+        '
+        Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FileToolStripMenuItem, Me.mnuSettings, Me.MnuContent, Me.HelpToolStripMenuItem})
+        Me.MenuStrip1.Location = New System.Drawing.Point(0, 0)
+        Me.MenuStrip1.Name = "MenuStrip1"
+        Me.MenuStrip1.Size = New System.Drawing.Size(320, 24)
+        Me.MenuStrip1.TabIndex = 21
+        Me.MenuStrip1.Text = "MenuStrip1"
+        '
+        'MnuContent
+        '
+        Me.MnuContent.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.IslandToolStripMenuItem, Me.ClothingInventoryToolStripMenuItem, Me.MoreContentToolStripMenuItem, Me.BackupRestoreToolStripMenuItem})
+        Me.MnuContent.Name = "MnuContent"
+        Me.MnuContent.Size = New System.Drawing.Size(62, 20)
+        Me.MnuContent.Text = "Content"
+        '
         'IslandToolStripMenuItem
         '
         Me.IslandToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.box_tall
@@ -495,89 +483,113 @@ Partial Class Form1
         Me.RestoreDatabaseToolStripMenuItem1.Size = New System.Drawing.Size(184, 22)
         Me.RestoreDatabaseToolStripMenuItem1.Text = "Restore Database"
         '
-        'ShowHyperGridAddressToolStripMenuItem
+        'WebBrowser3
         '
-        Me.ShowHyperGridAddressToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.window_environment1
-        Me.ShowHyperGridAddressToolStripMenuItem.Name = "ShowHyperGridAddressToolStripMenuItem"
-        Me.ShowHyperGridAddressToolStripMenuItem.Size = New System.Drawing.Size(205, 22)
-        Me.ShowHyperGridAddressToolStripMenuItem.Text = "Show HyperGrid Address"
-        Me.ShowHyperGridAddressToolStripMenuItem.ToolTipText = "You can give this address out to oepple and they can visit your grid"
+        Me.WebBrowser3.Location = New System.Drawing.Point(339, 341)
+        Me.WebBrowser3.MinimumSize = New System.Drawing.Size(20, 20)
+        Me.WebBrowser3.Name = "WebBrowser3"
+        Me.WebBrowser3.Size = New System.Drawing.Size(105, 53)
+        Me.WebBrowser3.TabIndex = 23
         '
-        'ConsoleCOmmandsToolStripMenuItem1
+        'ProgressBar1
         '
-        Me.ConsoleCOmmandsToolStripMenuItem1.Image = Global.Outworldz.My.Resources.Resources.document_view
-        Me.ConsoleCOmmandsToolStripMenuItem1.Name = "ConsoleCOmmandsToolStripMenuItem1"
-        Me.ConsoleCOmmandsToolStripMenuItem1.Size = New System.Drawing.Size(205, 22)
-        Me.ConsoleCOmmandsToolStripMenuItem1.Text = "Console Commands"
+        Me.ProgressBar1.Location = New System.Drawing.Point(15, 30)
+        Me.ProgressBar1.Name = "ProgressBar1"
+        Me.ProgressBar1.Size = New System.Drawing.Size(280, 13)
+        Me.ProgressBar1.TabIndex = 24
         '
-        'WebStatsToolStripMenuItem
+        'BusyButton
         '
-        Me.WebStatsToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.document_chart
-        Me.WebStatsToolStripMenuItem.Name = "WebStatsToolStripMenuItem"
-        Me.WebStatsToolStripMenuItem.Size = New System.Drawing.Size(205, 22)
-        Me.WebStatsToolStripMenuItem.Text = "View Web Stats"
+        Me.BusyButton.Location = New System.Drawing.Point(232, 1)
+        Me.BusyButton.Name = "BusyButton"
+        Me.BusyButton.Size = New System.Drawing.Size(63, 23)
+        Me.BusyButton.TabIndex = 18
+        Me.BusyButton.Text = "Busy"
+        Me.BusyButton.UseVisualStyleBackColor = True
         '
-        'ViewWebUI
+        'UpdaterGo
         '
-        Me.ViewWebUI.Image = Global.Outworldz.My.Resources.Resources.document_view
-        Me.ViewWebUI.Name = "ViewWebUI"
-        Me.ViewWebUI.Size = New System.Drawing.Size(205, 22)
-        Me.ViewWebUI.Text = "View Web Interface"
-        Me.ViewWebUI.ToolTipText = "The WIfi Interface can be used to add new users"
+        Me.UpdaterGo.Font = New System.Drawing.Font("Tahoma", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.UpdaterGo.Location = New System.Drawing.Point(62, 169)
+        Me.UpdaterGo.Name = "UpdaterGo"
+        Me.UpdaterGo.Size = New System.Drawing.Size(115, 30)
+        Me.UpdaterGo.TabIndex = 25
+        Me.UpdaterGo.Text = "Update Available"
+        Me.UpdaterGo.UseVisualStyleBackColor = True
         '
-        'ToolStripMenuItem1
+        'UpdaterCancel
         '
-        Me.ToolStripMenuItem1.Image = Global.Outworldz.My.Resources.Resources.replace2
-        Me.ToolStripMenuItem1.Name = "ToolStripMenuItem1"
-        Me.ToolStripMenuItem1.Size = New System.Drawing.Size(205, 22)
-        Me.ToolStripMenuItem1.Text = "Help on Port Forwarding"
-        Me.ToolStripMenuItem1.ToolTipText = "Web Help for Port Forwarding"
+        Me.UpdaterCancel.Font = New System.Drawing.Font("Tahoma", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.UpdaterCancel.Location = New System.Drawing.Point(200, 169)
+        Me.UpdaterCancel.Name = "UpdaterCancel"
+        Me.UpdaterCancel.Size = New System.Drawing.Size(51, 30)
+        Me.UpdaterCancel.TabIndex = 26
+        Me.UpdaterCancel.Text = "Skip"
+        Me.UpdaterCancel.UseVisualStyleBackColor = True
         '
-        'LoopBackToolStripMenuItem
+        'Timer1
         '
-        Me.LoopBackToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.refresh
-        Me.LoopBackToolStripMenuItem.Name = "LoopBackToolStripMenuItem"
-        Me.LoopBackToolStripMenuItem.Size = New System.Drawing.Size(205, 22)
-        Me.LoopBackToolStripMenuItem.Text = "Help on LoopBack "
-        Me.LoopBackToolStripMenuItem.ToolTipText = "How to fix Loopback on Windows"
         '
-        'CHeckForUpdatesToolStripMenuItem
+        'OpenFileDialog1
         '
-        Me.CHeckForUpdatesToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.download1
-        Me.CHeckForUpdatesToolStripMenuItem.Name = "CHeckForUpdatesToolStripMenuItem"
-        Me.CHeckForUpdatesToolStripMenuItem.Size = New System.Drawing.Size(205, 22)
-        Me.CHeckForUpdatesToolStripMenuItem.Text = "Check for Updates"
+        Me.OpenFileDialog1.FileName = "OpenFileDialog1"
         '
-        'ToolStripMenuItem2
+        'OpenFileDialog2
         '
-        Me.ToolStripMenuItem2.Image = Global.Outworldz.My.Resources.Resources.earth_network
-        Me.ToolStripMenuItem2.Name = "ToolStripMenuItem2"
-        Me.ToolStripMenuItem2.Size = New System.Drawing.Size(205, 22)
-        Me.ToolStripMenuItem2.Text = "UPnP Setup"
+        Me.OpenFileDialog2.FileName = "OpenFileDialog2"
         '
-        'DiagnosticsToolStripMenuItem
+        'TextBox1
         '
-        Me.DiagnosticsToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.flash
-        Me.DiagnosticsToolStripMenuItem.Name = "DiagnosticsToolStripMenuItem"
-        Me.DiagnosticsToolStripMenuItem.Size = New System.Drawing.Size(205, 22)
-        Me.DiagnosticsToolStripMenuItem.Text = "Network Diagnostics"
-        Me.DiagnosticsToolStripMenuItem.ToolTipText = "Re-Run the installation diagnostics"
+        Me.TextBox1.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.TextBox1.Font = New System.Drawing.Font("Verdana", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TextBox1.Location = New System.Drawing.Point(12, 49)
+        Me.TextBox1.Name = "TextBox1"
+        Me.TextBox1.Size = New System.Drawing.Size(296, 150)
+        Me.TextBox1.TabIndex = 29
+        Me.TextBox1.Text = ""
         '
-        'CheckDatabaseToolStripMenuItem
+        'LogButton
         '
-        Me.CheckDatabaseToolStripMenuItem.Image = CType(resources.GetObject("CheckDatabaseToolStripMenuItem.Image"), System.Drawing.Image)
-        Me.CheckDatabaseToolStripMenuItem.Name = "CheckDatabaseToolStripMenuItem"
-        Me.CheckDatabaseToolStripMenuItem.Size = New System.Drawing.Size(205, 22)
-        Me.CheckDatabaseToolStripMenuItem.Text = "Check Database"
-        Me.CheckDatabaseToolStripMenuItem.ToolTipText = "Repairs corrupt MySQL table"
+        Me.LogButton.Font = New System.Drawing.Font("Tahoma", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LogButton.Location = New System.Drawing.Point(48, 169)
+        Me.LogButton.Name = "LogButton"
+        Me.LogButton.Size = New System.Drawing.Size(115, 30)
+        Me.LogButton.TabIndex = 30
+        Me.LogButton.Text = "Show Log"
+        Me.LogButton.UseVisualStyleBackColor = True
         '
-        'mnuAbout
+        'IgnoreButton
         '
-        Me.mnuAbout.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None
-        Me.mnuAbout.Image = Global.Outworldz.My.Resources.Resources.question_and_answer
-        Me.mnuAbout.Name = "mnuAbout"
-        Me.mnuAbout.Size = New System.Drawing.Size(205, 22)
-        Me.mnuAbout.Text = "About"
+        Me.IgnoreButton.Font = New System.Drawing.Font("Tahoma", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.IgnoreButton.Location = New System.Drawing.Point(183, 169)
+        Me.IgnoreButton.Name = "IgnoreButton"
+        Me.IgnoreButton.Size = New System.Drawing.Size(85, 30)
+        Me.IgnoreButton.TabIndex = 31
+        Me.IgnoreButton.Text = "Skip"
+        Me.IgnoreButton.UseVisualStyleBackColor = True
+        '
+        'PictureBox1
+        '
+        Me.PictureBox1.BackColor = System.Drawing.Color.White
+        Me.PictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.PictureBox1.ErrorImage = Global.Outworldz.My.Resources.Resources.wp_51
+        Me.PictureBox1.InitialImage = Nothing
+        Me.PictureBox1.Location = New System.Drawing.Point(0, 27)
+        Me.PictureBox1.Name = "PictureBox1"
+        Me.PictureBox1.Size = New System.Drawing.Size(320, 180)
+        Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize
+        Me.PictureBox1.TabIndex = 27
+        Me.PictureBox1.TabStop = False
+        '
+        'ToolStripSeparator1
+        '
+        Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
+        Me.ToolStripSeparator1.Size = New System.Drawing.Size(202, 6)
+        '
+        'ToolStripSeparator2
+        '
+        Me.ToolStripSeparator2.Name = "ToolStripSeparator2"
+        Me.ToolStripSeparator2.Size = New System.Drawing.Size(202, 6)
         '
         'Form1
         '
@@ -691,4 +703,6 @@ Partial Class Form1
     Friend WithEvents AllRegionsOARsToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents BackupDatabaseToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents RestoreDatabaseToolStripMenuItem1 As ToolStripMenuItem
+    Friend WithEvents ToolStripSeparator1 As ToolStripSeparator
+    Friend WithEvents ToolStripSeparator2 As ToolStripSeparator
 End Class

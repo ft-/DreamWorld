@@ -32,7 +32,7 @@ Public Class Mysql
         Try
             'Debug.Print("Connecting to MySQL...")
             MysqlConn.Open()
-        Catch ex As MySqlException
+        Catch ex As Exception
             Debug.Print("Error: " & ex.ToString())
             MysqlConn.Close()
             Return Nothing

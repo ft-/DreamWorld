@@ -1,7 +1,7 @@
 
-my $type  = '-V1.73';# '-Beta-V1.5';
+my $type  = '-V1.75';# '-Beta-V1.5';
 
-my $dir = "C:\\Opensim\\OpensimV1.73 Source";
+my $dir = "C:\\Opensim\\OpensimV1.75 Source";
 
 
 chdir ($dir);
