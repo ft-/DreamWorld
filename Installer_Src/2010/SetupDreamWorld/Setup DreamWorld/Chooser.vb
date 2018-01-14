@@ -6,7 +6,11 @@
         Button1.DialogResult = DialogResult.OK
         ListBox1.Items.Clear()
 
-        For Each o In Form1.RegionClass.AllRegionObjects()
+        Dim regions = New List(Of Object)
+        regions = Form1.RegionClass.AllRegionObjects()
+        regions = regions.OrderBy(Function(x) x.RegionName).ToList()
+
+        For Each o In regions
             If o.RegionEnabled And o.Ready Then
                 ListBox1.Items.Add(o.RegionName)
             End If

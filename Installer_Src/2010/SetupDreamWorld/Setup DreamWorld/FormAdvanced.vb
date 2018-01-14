@@ -129,7 +129,11 @@ Public Class AdvancedForm
 
         Form1.RegionClass.GetAllRegions()
 
-        For Each o As Object In Form1.RegionClass.AllRegionObjects()
+        Dim regions = New List(Of Object)
+        regions = Form1.RegionClass.AllRegionObjects()
+        regions = regions.OrderBy(Function(A) A.RegionName).ToList()
+
+        For Each o In regions
             Try
                 fname = o.RegionName
                 Dim ActualForm As New FormRegion
@@ -237,7 +241,12 @@ Public Class AdvancedForm
         ' Default welcome region load
         WelcomeBox1.Items.Clear()
 
-        For Each o In Form1.RegionClass.AllRegionObjects
+
+        Dim regions = New List(Of Object)
+        regions = Form1.RegionClass.AllRegionObjects()
+        regions = regions.OrderBy(Function(x) x.RegionName).ToList()
+
+        For Each o In regions
             If o.RegionEnabled Then
                 WelcomeBox1.Items.Add(o.RegionName())
             End If

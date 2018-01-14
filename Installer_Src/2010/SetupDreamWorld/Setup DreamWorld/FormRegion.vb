@@ -146,7 +146,7 @@ Public Class FormRegion
             Form1.Log(Message)
             Return Message
         End If
-        If Convert.ToInt16(MyRegion.CoordX) > 10000 Then
+        If Convert.ToInt16(MyRegion.CoordX) > 65536 Then
             Message = "Region CoordX is too large"
             Form1.Log(Message)
             Return Message
@@ -156,7 +156,7 @@ Public Class FormRegion
             Form1.Log(Message)
             Return Message
         End If
-        If Convert.ToInt16(MyRegion.CoordY) > 10000 Then
+        If Convert.ToInt16(MyRegion.CoordY) > 65536 Then
             Message = "Region CoordY is too large"
             Form1.Log(Message)
             Return Message
