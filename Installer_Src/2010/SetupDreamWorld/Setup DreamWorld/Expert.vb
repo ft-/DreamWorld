@@ -240,7 +240,7 @@ Public Class Expert
 
         My.Settings.WebStats = WebStats.Checked
         My.Settings.Save()
-        Form1.WebStatsToolStripMenuItem.Visible = WebStats.Checked
+        'Form1.WebStatsToolStripMenuItem.Visible = WebStats.Checked
 
     End Sub
 #End Region

@@ -260,8 +260,11 @@ Public Class AdvancedForm
                 WelcomeBox1.SelectedIndex = 0
             End If
         Catch ex As Exception
-            WelcomeBox1.SelectedIndex = 0
-            MsgBox("Welcome region reset to " + WelcomeBox1.SelectedItem.ToString, vbInformation)
+            Try
+                WelcomeBox1.SelectedIndex = 0
+                MsgBox("Welcome region reset to " + WelcomeBox1.SelectedItem.ToString, vbInformation)
+            Catch
+            End Try
         End Try
     End Sub
 

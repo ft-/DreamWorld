@@ -1071,7 +1071,7 @@ Public Class Form1
 
                     Try
                         LoadIni(prefix + "bin\Opensim.proto", ";")
-                        SetIni("Const", "BaseURL", "http: //" + My.Settings.PublicIP)
+                        SetIni("Const", "BaseURL", "http://" + My.Settings.PublicIP)
                         SetIni("Const", "PublicPort", My.Settings.HttpPort)
                         SetIni("Const", "http_listener_port", o.RegionPort)
                         SetIni("Const", "PrivatePort", My.Settings.PrivatePort) '8003
@@ -1836,7 +1836,6 @@ Public Class Form1
             End Using
         Catch
         End Try
-        Debug.Print(message)
 
     End Sub
 
@@ -2552,7 +2551,7 @@ Public Class Form1
 
         BumpProgress10()
 
-        If result = "Test completed" And Not gFailDebug2 Then
+        If result = "Test Completed" And Not gFailDebug2 Then
             Log("Passed:" + result)
             My.Settings.LoopBackDiag = True
             My.Settings.Save()
@@ -2560,6 +2559,7 @@ Public Class Form1
             Log("Failed:" + result)
             Print("Router Loopback failed. See the Help section for 'Loopback' and how to enable it in Windows. Continuing...")
             My.Settings.LoopBackDiag = False
+            My.Settings.DiagFailed = True
             My.Settings.PublicIP = MyUPnpMap.LocalIP()
             My.Settings.Save()
         End If
@@ -2624,15 +2624,13 @@ Public Class Form1
     End Function
 
     Private Sub DoDiag()
+
         Print("Running Network Diagnostics, please wait")
         Diagsrunning = True
-
-
         My.Settings.DiagFailed = False
         OpenPorts() ' Open router ports with UPnp
-        If Not ProbePublicPort() Then ' see if Public loopback works
-            TestLoopback()
-        End If
+        ProbePublicPort()
+        TestLoopback()
         If My.Settings.DiagFailed Then
             ShowLog()
         Else
@@ -2641,6 +2639,7 @@ Public Class Form1
         Log("Diagnostics set the Hypergrid address to " + My.Settings.PublicIP)
 
         Diagsrunning = False
+
     End Sub
 
     Private Shared Function IsPrivateIP(ByVal CheckIP As String) As Boolean
@@ -2829,7 +2828,7 @@ Public Class Form1
             Dim thing = openFileDialog1.FileName
             If thing.Length Then
 
-                Dim yesno = MsgBox("Are you sure?  Your database will re-loaded from the backup and all existing content lost.  Avatars, sims, inventory, all of it.", vbYesNo)
+                Dim yesno = MsgBox("Are you sure? Your database will re-loaded from the backup and all existing content replaced. Avatars, sims, inventory, all of it.", vbYesNo)
                 If yesno = vbYes Then
                     thing = thing.Replace("\", "/")    ' because Opensim uses unix-like slashes, that's why
 
@@ -3252,40 +3251,46 @@ Public Class Form1
         RegionsToolStripMenuItem.Visible = True
         RegionsToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {RobustMenu})
 
+
         ' now add all the regions
-        Dim Rlist = RegionClass.AllRegionObjects
-        For Each o In Rlist
-            Dim RegionMenu As New ToolStripMenuItem
-            RegionMenu.Text = o.RegionName
-            RegionMenu.DisplayStyle = ToolStripItemDisplayStyle.ImageAndText
-            AddHandler RegionMenu.Click, New EventHandler(AddressOf RegionClick)
+        Try
+            Dim Rlist As List(Of Object) = RegionClass.AllRegionObjects
+            If Rlist.Count Then
+                For Each o In Rlist
+                    Dim RegionMenu As New ToolStripMenuItem
+                    RegionMenu.Text = o.RegionName
+                    RegionMenu.DisplayStyle = ToolStripItemDisplayStyle.ImageAndText
+                    AddHandler RegionMenu.Click, New EventHandler(AddressOf RegionClick)
 
 
-            If o.WarmingUp Then
-                RegionMenu.Image = My.Resources.ResourceManager.GetObject("refresh")
-                RegionMenu.ToolTipText = o.RegionName + " is starting up."
-                Debug.Print("Region " + o.RegionName + " is starting up.")
-            ElseIf o.ShuttingDown Then
-                RegionMenu.Image = My.Resources.ResourceManager.GetObject("flash")
-                RegionMenu.ToolTipText = o.RegionName + " is shutting down."
-                Debug.Print("Region " + o.RegionName + " is shutting down.")
-            ElseIf o.Ready Then
-                RegionMenu.Image = My.Resources.ResourceManager.GetObject("media_play_green")
-                RegionMenu.ToolTipText = o.RegionName + " is Running. Click to Stop."
-                Debug.Print("Region " + o.RegionName + "  is Running")
-            ElseIf o.RegionEnabled And Not Running Then
-                RegionMenu.Image = My.Resources.ResourceManager.GetObject("media_pause")
-                RegionMenu.ToolTipText = "Region is enabled And will be run. Click to disable."
-                Debug.Print("Region " + o.RegionName + "  is enabled and will be run.")
-            Else
-                RegionMenu.Image = My.Resources.ResourceManager.GetObject("media_stop_red")
-                RegionMenu.ToolTipText = o.RegionName + " is disabled And will not be run."
-                Debug.Print("Region  " + o.RegionName + " is disabled and will not be run. ")
+                    If o.WarmingUp Then
+                        RegionMenu.Image = My.Resources.ResourceManager.GetObject("refresh")
+                        RegionMenu.ToolTipText = o.RegionName + " is starting up."
+                        Debug.Print("Region " + o.RegionName + " is starting up.")
+                    ElseIf o.ShuttingDown Then
+                        RegionMenu.Image = My.Resources.ResourceManager.GetObject("flash")
+                        RegionMenu.ToolTipText = o.RegionName + " is shutting down."
+                        Debug.Print("Region " + o.RegionName + " is shutting down.")
+                    ElseIf o.Ready Then
+                        RegionMenu.Image = My.Resources.ResourceManager.GetObject("media_play_green")
+                        RegionMenu.ToolTipText = o.RegionName + " is Running. Click to Stop."
+                        Debug.Print("Region " + o.RegionName + "  is Running")
+                    ElseIf o.RegionEnabled And Not Running Then
+                        RegionMenu.Image = My.Resources.ResourceManager.GetObject("media_pause")
+                        RegionMenu.ToolTipText = "Region is enabled And will be run. Click to disable."
+                        Debug.Print("Region " + o.RegionName + "  is enabled and will be run.")
+                    Else
+                        RegionMenu.Image = My.Resources.ResourceManager.GetObject("media_stop_red")
+                        RegionMenu.ToolTipText = o.RegionName + " is disabled And will not be run."
+                        Debug.Print("Region  " + o.RegionName + " is disabled and will not be run. ")
+                    End If
+
+                    RegionsToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {RegionMenu})
+                    Application.DoEvents()
+                Next
             End If
-
-            RegionsToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {RegionMenu})
-            Application.DoEvents()
-        Next
+        Catch
+        End Try
 
     End Sub
 
@@ -3453,6 +3458,10 @@ Public Class Form1
 
             Next
         End If
+
+    End Sub
+
+    Private Sub IslandToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles IslandToolStripMenuItem.Click
 
     End Sub
 

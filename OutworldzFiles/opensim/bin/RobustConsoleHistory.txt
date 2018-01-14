@@ -72,3 +72,6 @@ quit
 quit
 quit
 quit
+Test
+User
+create user

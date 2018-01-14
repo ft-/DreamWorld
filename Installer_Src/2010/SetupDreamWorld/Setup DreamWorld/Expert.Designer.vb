@@ -89,6 +89,7 @@ Partial Class Expert
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.PictureBox3 = New System.Windows.Forms.PictureBox()
+        Me.AutoLoadCheckbox = New System.Windows.Forms.CheckBox()
         Me.RegionMySqlPassword = New System.Windows.Forms.TextBox()
         Me.Label21 = New System.Windows.Forms.Label()
         Me.RegionDBUsername = New System.Windows.Forms.TextBox()
@@ -102,7 +103,6 @@ Partial Class Expert
         Me.BootStart = New System.Windows.Forms.CheckBox()
         Me.AutoStartCheckbox = New System.Windows.Forms.CheckBox()
         Me.GroupBox5 = New System.Windows.Forms.GroupBox()
-        Me.AutoLoadCheckbox = New System.Windows.Forms.CheckBox()
         Me.GroupBox3.SuspendLayout()
         CType(Me.PictureBox7, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox6, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -303,7 +303,7 @@ Partial Class Expert
         Me.GodHelp.Size = New System.Drawing.Size(30, 34)
         Me.GodHelp.TabIndex = 1857
         Me.GodHelp.TabStop = False
-        Me.ToolTip1.SetToolTip(Me.GodHelp, "Click for Helpon God Mode")
+        Me.ToolTip1.SetToolTip(Me.GodHelp, "Click for Help on God Mode")
         '
         'ManagerGod
         '
@@ -759,12 +759,24 @@ Partial Class Expert
         'PictureBox3
         '
         Me.PictureBox3.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.PictureBox3.Location = New System.Drawing.Point(195, -9)
+        Me.PictureBox3.Location = New System.Drawing.Point(729, 144)
         Me.PictureBox3.Name = "PictureBox3"
         Me.PictureBox3.Size = New System.Drawing.Size(30, 34)
         Me.PictureBox3.TabIndex = 1860
         Me.PictureBox3.TabStop = False
         Me.ToolTip1.SetToolTip(Me.PictureBox3, "A local Database for Region storage")
+        '
+        'AutoLoadCheckbox
+        '
+        Me.AutoLoadCheckbox.AutoSize = True
+        Me.AutoLoadCheckbox.Location = New System.Drawing.Point(12, 19)
+        Me.AutoLoadCheckbox.Name = "AutoLoadCheckbox"
+        Me.AutoLoadCheckbox.Size = New System.Drawing.Size(59, 17)
+        Me.AutoLoadCheckbox.TabIndex = 21
+        Me.AutoLoadCheckbox.Text = "Enable"
+        Me.ToolTip1.SetToolTip(Me.AutoLoadCheckbox, "Click to enable Autoloading of Sims on Teleport requests. All sims except the Wel" &
+        "come region will be shut down if no one is in world.")
+        Me.AutoLoadCheckbox.UseVisualStyleBackColor = True
         '
         'RegionMySqlPassword
         '
@@ -817,7 +829,6 @@ Partial Class Expert
         '
         'StandaloneGroup
         '
-        Me.StandaloneGroup.Controls.Add(Me.PictureBox3)
         Me.StandaloneGroup.Controls.Add(Me.Label22)
         Me.StandaloneGroup.Controls.Add(Me.Label20)
         Me.StandaloneGroup.Controls.Add(Me.RegionDbName)
@@ -829,7 +840,7 @@ Partial Class Expert
         Me.StandaloneGroup.Size = New System.Drawing.Size(243, 123)
         Me.StandaloneGroup.TabIndex = 54
         Me.StandaloneGroup.TabStop = False
-        Me.StandaloneGroup.Text = "Region Databases"
+        Me.StandaloneGroup.Text = "Local Region Database"
         '
         'AutoStart
         '
@@ -894,18 +905,6 @@ Partial Class Expert
         Me.GroupBox5.Text = "AutoLoad on Teleport"
         Me.GroupBox5.Visible = False
         '
-        'AutoLoadCheckbox
-        '
-        Me.AutoLoadCheckbox.AutoSize = True
-        Me.AutoLoadCheckbox.Location = New System.Drawing.Point(12, 19)
-        Me.AutoLoadCheckbox.Name = "AutoLoadCheckbox"
-        Me.AutoLoadCheckbox.Size = New System.Drawing.Size(59, 17)
-        Me.AutoLoadCheckbox.TabIndex = 21
-        Me.AutoLoadCheckbox.Text = "Enable"
-        Me.ToolTip1.SetToolTip(Me.AutoLoadCheckbox, "Click to enable Autoloading of Sims on Teleport requests. All sims except the Wel" &
-        "come region will be shut down if no one is in world.")
-        Me.AutoLoadCheckbox.UseVisualStyleBackColor = True
-        '
         'Expert
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -913,6 +912,7 @@ Partial Class Expert
         Me.AutoSize = True
         Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.ClientSize = New System.Drawing.Size(897, 405)
+        Me.Controls.Add(Me.PictureBox3)
         Me.Controls.Add(Me.GroupBox5)
         Me.Controls.Add(Me.AutoStart)
         Me.Controls.Add(Me.StandaloneGroup)
