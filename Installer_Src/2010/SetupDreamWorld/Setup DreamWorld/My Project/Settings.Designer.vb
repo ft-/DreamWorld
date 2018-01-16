@@ -548,13 +548,13 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
-        Public Property MyIP() As String
+         Global.System.Configuration.DefaultSettingValueAttribute("localhost")>  _
+        Public Property RobustServer() As String
             Get
-                Return CType(Me("MyIP"),String)
+                Return CType(Me("RobustServer"),String)
             End Get
             Set
-                Me("MyIP") = value
+                Me("RobustServer") = value
             End Set
         End Property
         

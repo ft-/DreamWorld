@@ -11,7 +11,7 @@
         regions = regions.OrderBy(Function(x) x.RegionName).ToList()
 
         For Each o In regions
-            If o.RegionEnabled And o.Ready Then
+            If o.RegionEnabled Then
                 ListBox1.Items.Add(o.RegionName)
             End If
         Next

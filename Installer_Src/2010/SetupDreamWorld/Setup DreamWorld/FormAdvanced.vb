@@ -256,12 +256,18 @@ Public Class AdvancedForm
             If s > -1 Then
                 WelcomeBox1.SelectedIndex = s
             Else
+                MsgBox("Choose your Welcome region ", vbInformation)
+                Dim chosen = Form1.ChooseRegion()
+                Dim Index = WelcomeBox1.FindString(chosen)
+                WelcomeBox1.SelectedIndex = Index
                 MsgBox("Welcome region reset to " + WelcomeBox1.SelectedItem.ToString, vbInformation)
-                WelcomeBox1.SelectedIndex = 0
             End If
         Catch ex As Exception
             Try
-                WelcomeBox1.SelectedIndex = 0
+                MsgBox("Choose your Welcome region ", vbInformation)
+                Dim chosen = Form1.ChooseRegion()
+                Dim Index = WelcomeBox1.FindString(chosen)
+                WelcomeBox1.SelectedIndex = Index
                 MsgBox("Welcome region reset to " + WelcomeBox1.SelectedItem.ToString, vbInformation)
             Catch
             End Try

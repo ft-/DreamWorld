@@ -10,12 +10,12 @@ Public Class Expert
 
     Private Sub Loaded(sender As Object, e As EventArgs) Handles Me.Load
 
+        RobustServer.Text = My.Settings.RobustServer
         uPnPEnabled.Checked = My.Settings.UPnPEnabled
         AutoLoadCheckbox.Checked = My.Settings.AutoLoad
         GridName.Text = My.Settings.SimName
         DNSName.Text = My.Settings.DnsName
         SplashPage.Text = My.Settings.SplashPage
-
         WebStats.Checked = My.Settings.WebStats
 
         If Form1.isRunning Then
@@ -332,6 +332,11 @@ Public Class Expert
 #Region "Database"
 
 
+    Private Sub RobustServer_TextChanged(sender As Object, e As EventArgs) Handles RobustServer.TextChanged
+        My.Settings.RobustServer = RobustServer.Text
+        My.Settings.Save()
+    End Sub
+
     Private Sub DatabaseNameUser_TextChanged(sender As Object, e As EventArgs) Handles RegionDbName.TextChanged
         My.Settings.RegionDBName = RegionDbName.Text
         My.Settings.Save()
@@ -465,6 +470,7 @@ Public Class Expert
         My.Settings.Save()
 
     End Sub
+
 
 
 #End Region

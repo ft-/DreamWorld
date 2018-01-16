@@ -341,8 +341,6 @@ Public Class Form1
             Create_ShortCut(MyFolder & "\Start.exe")
             BumpProgress10()
 
-            StartMySQL()    ' do this at install as Mysql probe test does not work until tables have been built after first boot.
-
             Try
                 ' mark the system as ready
                 Using outputFile As New StreamWriter(MyFolder & "\OutworldzFiles\Init.txt", True)
@@ -387,7 +385,7 @@ Public Class Form1
 
         If Not SetINIData() Then Return   ' set up the INI files
 
-        StartMySQL() ' boot up MySql, and wait for it to start listening
+        If Not StartMySQL() Then Return
 
         If Not Start_Robust() Then
             Return
@@ -485,7 +483,7 @@ Public Class Form1
             End If
             Application.DoEvents()
         Next
-        Print("Wait for all to Exit")
+        Print("Wait for all regions to exit")
 
         ' now wait for all them to actually quit and then stop robust
         counter = 300 ' 5 minutes to quit all regions
@@ -842,7 +840,7 @@ Public Class Form1
         LoadIni(prefix + "bin\Robust.HG.ini", ";")
 
         ConnectionString = """" _
-            + "Data Source=" + "localhost" _
+            + "Data Source=" + My.Settings.RobustServer _
             + ";Database=" + My.Settings.RobustMySqlName _
             + ";Port=" + My.Settings.MySqlPort _
             + ";User ID=" + My.Settings.RobustMySqlUsername _
@@ -1257,7 +1255,7 @@ Public Class Form1
         KillAll()
         Buttons(StartButton)
         Print("Opensim Is Stopped")
-        Log("Info:Stopped")
+        ProgressBar1.Value = 10
 
     End Sub
 
@@ -2158,7 +2156,7 @@ Public Class Form1
         End If
     End Sub
 
-    Private Function ChooseRegion() As String
+    Public Function ChooseRegion() As String
 
         Dim Chooseform As New Chooser ' form for choosing a set of regions
         ' Show testDialog as a modal dialog and determine if DialogResult = OK.
@@ -2809,7 +2807,7 @@ Public Class Form1
             Return
         End If
 
-        StartMySQL()
+        If Not StartMySQL() Then Return
 
         ' Create an instance of the open file dialog box.
         Dim openFileDialog1 As OpenFileDialog = New OpenFileDialog
@@ -2873,7 +2871,7 @@ Public Class Form1
             Return
         End If
 
-        StartMySQL()
+        If Not StartMySQL() Then Return
 
         Try
             My.Computer.FileSystem.DeleteFile(MyFolder & "\OutworldzFiles\mysql\bin\BackupMysql.bat")
@@ -3001,7 +2999,7 @@ Public Class Form1
 
     Private Sub StopMysql()
 
-        Log("Info:using mysqladmin to close db")
+        Print("Stopping MySql")
 
         Try
             MysqlConn.Dispose()
@@ -3023,7 +3021,7 @@ Public Class Form1
             Log("Error:mysqladmin failed to stop mysql:" + ex.Message)
         End Try
 
-        Dim Mysql = CheckPort("127.0.0.1", My.Settings.MySqlPort)
+        Dim Mysql = CheckPort("localhost", My.Settings.MySqlPort)
         If Mysql Then
             Sleep(4000)
             Try
@@ -3031,6 +3029,11 @@ Public Class Form1
             Catch ex2 As Exception
                 Log("Error:Process pMySql.Close() " + ex2.Message)
             End Try
+        End If
+
+        Mysql = CheckPort("localhost", My.Settings.MySqlPort)
+        If Mysql Then
+            zap("mysqld")
         End If
 
     End Sub
@@ -3131,7 +3134,7 @@ Public Class Form1
 
     Private Sub CheckDatabaseToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CheckDatabaseToolStripMenuItem.Click
 
-        StartMySQL()
+        If Not StartMySQL() Then Return
 
         Dim pi As ProcessStartInfo = New ProcessStartInfo()
 
@@ -3308,7 +3311,7 @@ Public Class Form1
                 Return
             Else
                 Print("Starting Robust")
-                StartMySQL()
+                If Not StartMySQL() Then Return
                 Start_Robust()
                 sender.Checked = False
             End If
