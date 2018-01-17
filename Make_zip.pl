@@ -114,8 +114,7 @@ say("Remove Outworldz.ini");
 # and Outworldz.ini so we do not end up with both Outworldz and RegionConfig.ini
 Process ("../7z.exe -tzip d ..\\Zips\\Outworldz-Update$type.zip OutworldzFiles\\Opensim\\bin\\Regions\\Outworldz.ini");		
 Process ("../7z.exe -tzip d ..\\Zips\\Outworldz-Update$type.zip OutworldzFiles\\Opensim-0.9\\bin\\Regions\\Outworldz.ini");	
-Process ("../7z.exe -tzip d ..\\Zips\\Outworldz-Update$type.zip OutworldzFiles\\Opensim\\bin\\Regions\\OutworldzHome.ini");		
-Process ("../7z.exe -tzip d ..\\Zips\\Outworldz-Update$type.zip OutworldzFiles\\Opensim-0.9\\bin\\Regions\\OutworldzHome.ini");	
+
 
 #####################
 print "Server Copy\n";
