@@ -50,3 +50,28 @@ quit
 robuquit
 reset user password Wifi Admin ha9MI!
 quit
+quit
+quit
+create user Test User
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+reset user password Wifi Admin MLg12x
+create User 
+Test 
+Test
+User
+create user
+quit
+quit
+quit
+quit
+quit
+Test
+User
+create user

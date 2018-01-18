@@ -3,6 +3,21 @@
 ' Copyright 2014 Fred Beckhusen for Outworldz.com
 ' https://opensource.org/licenses/AGPL
 
+'Permission Is hereby granted, free Of charge, to any person obtaining a copy of this software 
+' And associated documentation files (the "Software"), to deal in the Software without restriction, 
+'including without limitation the rights To use, copy, modify, merge, publish, distribute, sublicense,
+'And/Or sell copies Of the Software, And To permit persons To whom the Software Is furnished To 
+'Do so, subject To the following conditions:
+
+'The above copyright notice And this permission notice shall be included In all copies Or '
+'substantial portions Of the Software.
+
+'THE SOFTWARE Is PROVIDED "AS IS", WITHOUT WARRANTY Of ANY KIND, EXPRESS Or IMPLIED, 
+' INCLUDING BUT Not LIMITED To THE WARRANTIES Of MERCHANTABILITY, FITNESS For A PARTICULAR 
+'PURPOSE And NONINFRINGEMENT.In NO Event SHALL THE AUTHORS Or COPYRIGHT HOLDERS BE LIABLE 
+'For ANY CLAIM, DAMAGES Or OTHER LIABILITY, WHETHER In AN ACTION Of CONTRACT, TORT Or 
+'OTHERWISE, ARISING FROM, OUT Of Or In CONNECTION With THE SOFTWARE Or THE USE Or OTHER 
+'DEALINGS IN THE SOFTWARE.Imports System
 
 #End Region
 
@@ -14,15 +29,13 @@ Imports IniParser
 Imports System.Threading
 Imports Newtonsoft.Json
 
-
-
 Public Class Form1
 
     ' Command line arg  -debug forces this to use the DebugPath folder for testing
     '
 #Region "Declarations"
 
-    Dim MyVersion As String = "2.04"
+    Dim MyVersion As String = "2.05"
     Dim DebugPath As String = "C:\Opensim\Outworldz Source"  ' no slash at end
     Public Domain As String = "http://www.outworldz.com"
     Public prefix As String ' Holds path to Opensim folder
@@ -87,7 +100,10 @@ Public Class Form1
     Dim ws As NetServer
     Public Shared RegionClass As RegionMaker
     Dim RegionHandles(50) As Boolean
-    Dim gStopping = True = False
+    Dim gStopping = False
+    Dim Timertick As Integer        ' counts the seconds uintil wallpaper changes
+    Public Shared MysqlConn As Mysql    ' object lets us query Mysql database
+    Private Diagsrunning As Boolean = False
 
     Public Class JSON_result
         Public alert As String
@@ -191,12 +207,13 @@ Public Class Form1
 
 #Region "StartStop"
 
-
     Private Sub Form1_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 
-        Me.Show()
+        ' Save a random machine ID - we don't want any data to be sent that's personal or identifiable,  but it needs to be unique
+        Randomize()
+        ' Save a random machine ID - we don't want any data to be sent that's personal or identifiable,  but it needs to be unique\
+        If Machine = "" Then Machine = Random()  ' a random machine ID
 
-        SaySomething()
 
         'hide progress
         ProgressBar1.Visible = True
@@ -210,13 +227,11 @@ Public Class Form1
             Me.Location = New Point(My.Settings.MyX, My.Settings.MyY)
         End If
 
+
         LogButton.Hide()
         IgnoreButton.Hide()
 
         Buttons(BusyButton)
-        ' Save a random machine ID - we don't want any data to be sent that's personal or identifiable,  but it needs to be unique
-        Randomize()
-        Machine = Random()  ' a random machine ID
 
         ' hide updater
         UpdaterGo.Visible = False
@@ -251,22 +266,27 @@ Public Class Form1
                 MyFolder = DebugPath ' for testing, as the compiler buries itself in ../../../debug
             End If
         End If
+
         gCurSlashDir = MyFolder.Replace("\", "/")    ' because Mysql uses unix like slashes, that's why
         prefix = MyFolder & "\OutworldzFiles\Opensim\"
+
+
+        Me.Show()
+        SaySomething()
+
 
         ClearLogFiles() ' clear log fles
 
         MyUPnpMap = New UPnp(MyFolder)
 
         RegionClass = New RegionMaker
+
         LoadRegionList()
 
         If (My.Settings.SplashPage = "") Then
             My.Settings.SplashPage = Domain + "/Outworldz_installer/Welcome.htm"
             My.Settings.Save()
         End If
-
-
 
         ProgressBar1.Value = 100
         ProgressBar1.Value = 0
@@ -279,6 +299,8 @@ Public Class Form1
 
         ' must start after region Class is instantiated
         ws = NetServer.getWebServer
+        Log("Info:Starting Web Server ")
+        ws.StartServer(MyFolder)
 
         ' Run diagnostics, maybe
         '     If gDebug Then My.Settings.DiagsRun2 = False
@@ -319,8 +341,6 @@ Public Class Form1
             Create_ShortCut(MyFolder & "\Start.exe")
             BumpProgress10()
 
-            StartMySQL()    ' do this at install as Mysql probe test does not work until tables have been built after first boot.
-
             Try
                 ' mark the system as ready
                 Using outputFile As New StreamWriter(MyFolder & "\OutworldzFiles\Init.txt", True)
@@ -337,10 +357,6 @@ Public Class Form1
         ProgressBar1.Value = 100
         Application.DoEvents()
 
-        If (My.Settings.TimerInterval > 0) Then
-            Timer1.Interval = My.Settings.TimerInterval * 1000
-            Timer1.Start() 'Timer starts functioning
-        End If
 
     End Sub
 
@@ -357,7 +373,7 @@ Public Class Form1
         Buttons(BusyButton)
         Running = True
         MnuContent.Visible = True
-        ws.StartServer(prefix)
+
         RegionClass.GetAllRegions()
         LoadRegionList()
 
@@ -367,10 +383,9 @@ Public Class Form1
             OpenPorts()
         End If
 
-
         If Not SetINIData() Then Return   ' set up the INI files
 
-        StartMySQL() ' boot up MySql, and wait for it to start listening
+        If Not StartMySQL() Then Return
 
         If Not Start_Robust() Then
             Return
@@ -394,10 +409,8 @@ Public Class Form1
         ' done with bootup
         ProgressBar1.Value = 100
 
-        If (My.Settings.TimerInterval > 0) Then
-            Timer1.Interval = My.Settings.TimerInterval * 1000
-            Timer1.Start() 'Timer starts functioning
-        End If
+        Timer1.Interval = 1000
+        Timer1.Start() 'Timer starts functioning
 
         Me.AllowDrop = True
 
@@ -408,6 +421,11 @@ Public Class Form1
         Dim p As Point
         p = Me.Location
 
+        Try
+            ws.StopWebServer()
+        Catch
+        End Try
+
         My.Settings.MyX = p.X
         My.Settings.MyY = p.Y
 
@@ -415,9 +433,10 @@ Public Class Form1
 
         Print("Hold fast to your dreams ...")
         KillAll()
-        ProgressBar1.Value = 25
+        ProgressBar1.Value = 10
         Print("I'll tell you my next dream when I wake up.")
         StopMysql()
+        ProgressBar1.Value = 5
         Print("Zzzz...")
         ProgressBar1.Value = 0
 
@@ -443,10 +462,6 @@ Public Class Form1
         ProgressBar1.Value = 100
         ProgressBar1.Visible = True
         ' close everything as gracefully as possible.
-        Try
-            ws.StopWebServer()
-        Catch
-        End Try
 
         Application.DoEvents()
 
@@ -460,27 +475,25 @@ Public Class Form1
         End While
 
         For Each o In RegionClass.AllRegionObjects
-            Try
-                Dim PID = RegionClass.ProcessID()
-                If PID Then
-                    ConsoleCommand(PID, "quit{ENTER}")
-                    Me.Focus()
-                End If
-
-            Catch ex As Exception
-            End Try
+            Dim PID = o.ProcessID()
+            If o.Ready Or o.ShuttingDown Or o.WarmingUp Then
+                Print("Shutting down " + o.RegionName)
+                ConsoleCommand(PID, "quit{ENTER}")
+                Me.Focus()
+            End If
             Application.DoEvents()
         Next
+        Print("Wait for all regions to exit")
 
         ' now wait for all them to actually quit and then stop robust
-        counter = 90 ' 90 seconds to quit all regions
+        counter = 300 ' 5 minutes to quit all regions
         While (counter)
             ' decrement progress bar according to the ratio of what we had / what we have now
             Dim n2 = RegionClass.Count()
-            Debug.Print("N2=" + n2.ToString())
+            'Debug.Print("N2=" + n2.ToString())
             If n Then
                 ProgressBar1.Value = n2 / n * 100
-                Debug.Print("V=" + ProgressBar1.Value.ToString)
+                'Debug.Print("V=" + ProgressBar1.Value.ToString)
             End If
             Sleep(1000)
 
@@ -490,16 +503,13 @@ Public Class Form1
                 If o Is Nothing Or Not gStopping Then
                     ' do nothing
                 Else
-                    If o.ProcessID And (o.WarmingUp Or o.Ready Or o.Shuttingdown) Then isRunning = True
-                    If o.ProcessID Then
-                        ConsoleCommand(o.ProcessID, "quit{ENTER}")
-                        Me.Focus()
+                    If o.ProcessID And (o.WarmingUp Or o.Ready Or o.Shuttingdown) Then
+                        isRunning = True
                     End If
                 End If
-                    Application.DoEvents()
+                Application.DoEvents()
             Next
             If Not isRunning Then counter = 0
-            Application.DoEvents()
         End While
 
         If gRobustProcID Then
@@ -554,6 +564,7 @@ Public Class Form1
             KillAll()
             Buttons(StartButton)
             Print("Stopped")
+            ProgressBar1.Visible = False
         End If
     End Sub
 
@@ -668,20 +679,23 @@ Public Class Form1
 #Region "INI"
 
     Public Sub LoadIni(filepath As String, delim As String)
+
         parser = New FileIniDataParser()
 
         parser.Parser.Configuration.SkipInvalidLines = True
         parser.Parser.Configuration.CommentString = delim ' Opensim uses semicolons
         Try
-            Data = parser.ReadFile(filepath)
+            Data = parser.ReadFile(filepath, System.Text.Encoding.ASCII)
         Catch ex As Exception
-            MsgBox("Cannot read an INI file - program is missing! " + ex.Message)
+            MsgBox("Cannot read an INI file: " + ex.Message)
         End Try
 
         gINI = filepath
+
     End Sub
 
     Public Sub SetIni(section As String, key As String, value As String)
+
         ' sets values into any INI file
         Try
             Log("Info:Writing '" + gINI + " section [" + section + "] " + key + "=" + value)
@@ -690,14 +704,17 @@ Public Class Form1
             Log("Info:Cannot locate '" + key + "' in section '" + section + "' in file " + gINI + ". This is not good")
             MsgBox("Cannot locate '" + key + "' in section '" + section + "' in file " + gINI + ". This is not good", vbOK)
         End Try
+
     End Sub
 
     Public Sub SaveINI()
+
         Try
-            parser.WriteFile(gINI, Data)
+            parser.WriteFile(gINI, Data, System.Text.Encoding.ASCII)
         Catch ex As Exception
             Log("Error:" + ex.Message)
         End Try
+
     End Sub
 
     Public Function GetIni(filepath As String, section As String, key As String, delim As String) As String
@@ -706,7 +723,7 @@ Public Class Form1
         parser.Parser.Configuration.SkipInvalidLines = True
         parser.Parser.Configuration.CommentString = delim ' Opensim uses semicolons
 
-        Dim Data = parser.ReadFile(filepath)
+        Dim Data = parser.ReadFile(filepath, System.Text.Encoding.ASCII)
         GetIni = Stripqq(Data(section)(key))
 
         parser = Nothing
@@ -760,7 +777,7 @@ Public Class Form1
                     Else
                         outputFile.WriteLine(line)
                     End If
-
+                    Application.DoEvents()
                 End While
             End Using
             'close your reader
@@ -797,6 +814,8 @@ Public Class Form1
             Log("Info:Console will not be shown")
         End If
 
+        Print("Saving all settings")
+
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
         ' set the defaults in the INI for the viewer to use. Painful to do as it's a Left hand side edit 
 
@@ -821,7 +840,7 @@ Public Class Form1
         LoadIni(prefix + "bin\Robust.HG.ini", ";")
 
         ConnectionString = """" _
-            + "Data Source=" + "localhost" _
+            + "Data Source=" + My.Settings.RobustServer _
             + ";Database=" + My.Settings.RobustMySqlName _
             + ";Port=" + My.Settings.MySqlPort _
             + ";User ID=" + My.Settings.RobustMySqlUsername _
@@ -1001,7 +1020,7 @@ Public Class Form1
         For Each o In RegionClass.AllRegionObjects
 
             Dim simName = o.RegionName
-            LoadIni(prefix + "bin\Regions\" + simName + "\Region\" + simName + ".ini", ";")
+            LoadIni(o.RegionPath + "\" + o.RegionName + ".ini", ";")
             SetIni(simName, "InternalPort", Convert.ToString(o.RegionPort))
             SetIni(simName, "ExternalHostName", Convert.ToString(My.Settings.PublicIP))
 
@@ -1015,51 +1034,57 @@ Public Class Form1
             SaveINI()
         Next
 
-        '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-        Dim Success = CopyOpensimProto()
-
-        Return Success
+        Return CopyOpensimProto()
 
     End Function
 
-    Public Function CopyOpensimProto()
+    Function CopyOpensimProto() As Boolean
 
         ' COPY OPENSIM.INI prototype to all region folders and set the Sim Name
-        For Each o In RegionClass.AllRegionObjects
-            Try
-                Dim fname = o.RegionName
 
-                ' remove the PID that is left behind to suppress a red error in opensim.log
-                Try
-                    My.Computer.FileSystem.DeleteFile(prefix + "bin\Regions\" + fname + "\PID.pid")
-                Catch
-                End Try
+        Dim folders() As String
+        Dim regionfolders() As String
 
-                Try
-                    My.Computer.FileSystem.DeleteFile(prefix + "bin\Regions\" + fname + "/Opensim.ini")
-                Catch ex As Exception
-                End Try
-                Try
-                    LoadIni(prefix + "bin\Opensim.proto", ";")
-                    SetIni("Const", "BaseURL", "http://" + My.Settings.PublicIP)
-                    SetIni("Const", "PublicPort", My.Settings.HttpPort)
-                    SetIni("Const", "http_listener_port", o.RegionPort)
-                    SetIni("Const", "PrivatePort", My.Settings.PrivatePort) '8003
-                    SetIni("Const", "RegionFolderName", fname)
+        folders = Directory.GetDirectories(prefix + "bin\Regions")
+        For Each FolderName As String In folders
+            Log("Info:Region Path:" + FolderName)
+            regionfolders = Directory.GetDirectories(FolderName)
+            For Each FileName As String In regionfolders
+                Log("Info:Loading region from " + FolderName)
+                Dim inis = Directory.GetFiles(FileName, "*.ini", SearchOption.TopDirectoryOnly)
+                For Each ini As String In inis
+                    ' remove the ini
 
-                    SaveINI()
-                    My.Computer.FileSystem.CopyFile(prefix + "bin\Opensim.proto", prefix + "bin\Regions/" + fname + "/Opensim.ini", True)
-                Catch
-                    Print("Error:Failed to Set the Opensim.ini for sim " + fname)
-                    Return False
-                End Try
+                    Dim regionName = Path.GetFileNameWithoutExtension(ini)
+                    Dim pathname = Path.GetDirectoryName(ini) + "\"
+                    pathname = pathname.Substring(0, pathname.IndexOf("Region\"))
 
-            Catch ex As Exception
-                Print("Error:" + ex.Message)
-                Return False
-            End Try
+                    Debug.Print(regionName)
+                    Dim o = RegionClass.FindRegionByName(regionName)
 
+                    Try
+                        My.Computer.FileSystem.DeleteFile(pathname + "Opensim.ini")
+                    Catch ex As Exception
+                    End Try
+
+                    Try
+                        LoadIni(prefix + "bin\Opensim.proto", ";")
+                        SetIni("Const", "BaseURL", "http://" + My.Settings.PublicIP)
+                        SetIni("Const", "PublicPort", My.Settings.HttpPort)
+                        SetIni("Const", "http_listener_port", o.RegionPort)
+                        SetIni("Const", "PrivatePort", My.Settings.PrivatePort) '8003
+                        SetIni("Const", "RegionFolderName", regionName)
+                        SaveINI()
+                        My.Computer.FileSystem.CopyFile(prefix + "bin\Opensim.proto", pathname + "Opensim.ini", True)
+                    Catch
+                        Print("Error:Failed to set the Opensim.ini for sim " + regionName)
+                        Return False
+                    End Try
+
+                Next
+            Next
         Next
+
         Return True
 
     End Function
@@ -1151,6 +1176,35 @@ Public Class Form1
 
 #Region "Ports"
 
+    Function PortTests() As Boolean
+
+        Dim Passfail As Boolean = True
+        ' Do some tests
+        Dim ports(1) As Object
+        ports(0) = Nothing
+
+        For Each o In RegionClass.AllRegionObjects
+
+            If ports.Length < o.RegionPort Then
+                ReDim ports(o.RegionPort)
+            End If
+            Try
+                If ports(o.RegionPort) Is Nothing Then
+                    ports(o.RegionPort) = o
+                Else
+                    MsgBox(o.RegionName + " has a duplicated port with " + o.RegionName + ". Skipping boot of " + o.RegionName)
+                    o.RegionEnabled = False
+                    Passfail = False
+                End If
+            Catch
+                ports(o.RegionPort) = o
+            End Try
+        Next
+
+        Return Passfail
+
+    End Function
+
     Private Sub CheckDefaultPorts()
 
         If My.Settings.DiagnosticPort = My.Settings.HttpPort _
@@ -1201,7 +1255,7 @@ Public Class Form1
         KillAll()
         Buttons(StartButton)
         Print("Opensim Is Stopped")
-        Log("Info:Stopped")
+        ProgressBar1.Value = 10
 
     End Sub
 
@@ -1337,26 +1391,35 @@ Public Class Form1
         If Running = False Then Return True
 
 
-        For Each o In RegionClass.AllRegionObjects '
+        Dim regions = New List(Of Object)
+        regions = RegionClass.AllRegionObjects()
+        regions = regions.OrderBy(Function(x) x.RegionName).ToList()
+
+        For Each o As Object In regions
             o.ProcessID = 0 ' clear the PID and UUI
             o.UUID = ""
             o.Ready = False
             o.WarmingUp = False
             o.ShuttingDown = False
-
         Next
+
+        PortTests()
 
         ' Boot them up
         For Each o In RegionClass.AllRegionObjects
             If o.RegionEnabled Then '
-                Print("Starting Region " + o.RegionName)
-                o.ProcessID = Boot(o.RegionName)
+
+                Boot(o.RegionName)
                 If o.ProcessID = 0 Then
+                    Dim yesno = MsgBox(o.RegionName + " failed to start. Do you want to see the log file?", vbYesNo)
+                    If (yesno = vbYes) Then
+                        System.Diagnostics.Process.Start("notepad.exe", prefix + "bin\Regions\" + o.RegionName + "/Opensim.log")
+                    End If
+
+                    Print("Startup aborted at " + o.RegionName)
                     Return False
                 End If
-
                 Sleep(5000) ' no rush, give it time to boot and read environment
-
             End If
         Next
 
@@ -1656,7 +1719,7 @@ Public Class Form1
 
     End Function
 
-    Private Function Boot(InstanceName As String) As Integer
+    Private Sub Boot(InstanceName As String)
 
         Environment.SetEnvironmentVariable("OSIM_LOGPATH", prefix + "bin\Regions\" & InstanceName)
 
@@ -1664,11 +1727,12 @@ Public Class Form1
 
         If myProcess Is Nothing Then
             Print("Exceeded max number of processes: could not start " + InstanceName)
-            Return True
+            Return
         End If
 
-
         Dim o = RegionClass.FindRegionByName(InstanceName)
+        Print("Starting Region " + o.RegionName)
+
         Dim Pid As Integer
         Try
             myProcess.EnableRaisingEvents = True
@@ -1684,7 +1748,7 @@ Public Class Form1
             End If
 
             Try
-                My.Computer.FileSystem.DeleteFile(prefix + "bin\Regions\" & InstanceName & "\opensim.log")
+                My.Computer.FileSystem.DeleteFile(prefix + "bin\Regions\" & InstanceName & "\Opensim.log")
             Catch
             End Try
             Try
@@ -1693,7 +1757,12 @@ Public Class Form1
             End Try
 
             Try
-                My.Computer.FileSystem.DeleteFile(prefix + "bin\regions/" & InstanceName & "\opensimconsole.log")
+                My.Computer.FileSystem.DeleteFile(prefix + "bin\regions\" & InstanceName & "\OpensimConsole.log")
+            Catch ex As Exception
+            End Try
+
+            Try
+                My.Computer.FileSystem.DeleteFile(prefix + "bin\regions\" & InstanceName & "\OpenSimStats.log")
             Catch ex As Exception
             End Try
 
@@ -1709,11 +1778,10 @@ Public Class Form1
             Print("Error: Opensim did not start: " + ex.Message)
             KillAll()
             Buttons(StartButton)
-            Return 0
-        End Try
-        Return Pid
 
-    End Function
+        End Try
+
+    End Sub
 
     Private Function IsRobustRunning() As Boolean
 
@@ -1762,10 +1830,10 @@ Public Class Form1
         Try
             Using outputFile As New StreamWriter(MyFolder & "\OutworldzFiles\Outworldz.log", True)
                 outputFile.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + message)
+                Debug.Print(message)
             End Using
         Catch
         End Try
-        Debug.Print(message)
 
     End Sub
 
@@ -1861,6 +1929,7 @@ Public Class Form1
         Dim value2 As Integer = CInt(Int((Array.Length - 1) * Rnd()))
         Dim whattosay = Prefix(value1) + vbCrLf + vbCrLf + Array(value2) + " ... and then I woke up."
         Print(whattosay)
+        Sleep(2000)
 
     End Sub
 
@@ -1880,29 +1949,42 @@ Public Class Form1
 
     Public Sub PaintImage()
 
-        If (My.Settings.TimerInterval > 0) Then
-            Dim randomFruit = images(Arnd.Next(0, images.Count))
-            ProgressBar1.Visible = False
-            TextBox1.Visible = False
-            PictureBox1.Enabled = True
-            PictureBox1.Image = randomFruit
-            PictureBox1.Visible = True
-            Timer1.Interval = My.Settings.TimerInterval * 1000
+        Timertick = Timertick + 1
+        If My.Settings.TimerInterval > 0 Then  ' is it enabled?
+
+            If Timertick >= My.Settings.TimerInterval And Not Diagsrunning Then
+                Dim randomFruit = images(Arnd.Next(0, images.Count))
+                ProgressBar1.Visible = False
+                TextBox1.Visible = False
+                PictureBox1.Enabled = True
+                PictureBox1.Image = randomFruit
+                PictureBox1.Visible = True
+                Timertick = 0   ' rest for next pass
+            End If
+
         Else
             PictureBox1.Visible = False
         End If
+        Application.DoEvents()
 
     End Sub
 
     Private Sub Timer1_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Timer1.Tick
 
         PaintImage()
+        ScanAgents()
 
     End Sub
 
     Private Sub PictureBox1_Click(sender As Object, e As EventArgs) Handles PictureBox1.Click
 
-        PaintImage()
+        Dim randomFruit = images(Arnd.Next(0, images.Count))
+        ProgressBar1.Visible = False
+        TextBox1.Visible = False
+        PictureBox1.Enabled = True
+        PictureBox1.Image = randomFruit
+        PictureBox1.Visible = True
+        Timertick = 0   ' rest for next pass
 
     End Sub
 
@@ -1970,7 +2052,7 @@ Public Class Form1
 
         For Each o In RegionClass.AllRegionObjects
             If o.ready Then
-                ConsoleCommand(o.ProcessID, "save oar --perm=CT " + """" + BackupPath() + o.RegionName + "_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
+                ConsoleCommand(o.ProcessID, "save oar  " + """" + BackupPath() + o.RegionName + "_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
                 Me.Focus()
                 Application.DoEvents()
             End If
@@ -2074,7 +2156,7 @@ Public Class Form1
         End If
     End Sub
 
-    Private Function ChooseRegion() As String
+    Public Function ChooseRegion() As String
 
         Dim Chooseform As New Chooser ' form for choosing a set of regions
         ' Show testDialog as a modal dialog and determine if DialogResult = OK.
@@ -2214,7 +2296,7 @@ Public Class Form1
             Log("No Oars, dang, something is wrong with the Internet :-(")
             Return
         End Try
-
+        Application.DoEvents()
         Dim oarreader = New System.IO.StringReader(oars)
         Dim line As String = ""
         Dim ContentSeen As Boolean = False
@@ -2340,6 +2422,7 @@ Public Class Form1
         Try
             fileName = client.DownloadString(Domain + "/Outworldz_Installer/GetUpdaterGrid.plx?r" + Random())
         Catch
+            MsgBox("Could not fetch an update. Please try again, later", vbInformation)
             Return ""
         End Try
 
@@ -2349,6 +2432,7 @@ Public Class Form1
             ' The DownloadFile() method downloads the Web resource and saves it into the current file-system folder.
             myWebClient.DownloadFile(Domain + "/Outworldz_Installer/" + fileName, fileName)
         Catch e As Exception
+            MsgBox("Could not fetch an update. Please try again, later", vbInformation)
             Log("Warn:" + e.Message)
             Return ""
         End Try
@@ -2465,7 +2549,7 @@ Public Class Form1
 
         BumpProgress10()
 
-        If result = "Test completed" And Not gFailDebug2 Then
+        If result = "Test Completed" And Not gFailDebug2 Then
             Log("Passed:" + result)
             My.Settings.LoopBackDiag = True
             My.Settings.Save()
@@ -2473,6 +2557,7 @@ Public Class Form1
             Log("Failed:" + result)
             Print("Router Loopback failed. See the Help section for 'Loopback' and how to enable it in Windows. Continuing...")
             My.Settings.LoopBackDiag = False
+            My.Settings.DiagFailed = True
             My.Settings.PublicIP = MyUPnpMap.LocalIP()
             My.Settings.Save()
         End If
@@ -2537,22 +2622,21 @@ Public Class Form1
     End Function
 
     Private Sub DoDiag()
+
         Print("Running Network Diagnostics, please wait")
-
-        Log("Info:Starting Web Server")
-        ws.StartServer(prefix)
-
+        Diagsrunning = True
         My.Settings.DiagFailed = False
         OpenPorts() ' Open router ports with UPnp
-        If Not ProbePublicPort() Then ' see if Public loopback works
-            TestLoopback()
-        End If
+        ProbePublicPort()
+        TestLoopback()
         If My.Settings.DiagFailed Then
             ShowLog()
         Else
             NewDNSName()
         End If
         Log("Diagnostics set the Hypergrid address to " + My.Settings.PublicIP)
+
+        Diagsrunning = False
 
     End Sub
 
@@ -2599,14 +2683,14 @@ Public Class Form1
         End If
 
         Log("Local ip seems to be " + UPnp.LocalIP)
-
+        Print("Puny human is instructed to wait while I check out the router ...")
         Try
             'diagnostics 8001
             If MyUPnpMap.Exists(Convert.ToInt16(My.Settings.DiagnosticPort), UPnp.Protocol.TCP) Then
                 MyUPnpMap.Remove(Convert.ToInt16(My.Settings.DiagnosticPort), UPnp.Protocol.TCP)
             End If
             MyUPnpMap.Add(UPnp.LocalIP, Convert.ToInt16(My.Settings.DiagnosticPort), UPnp.Protocol.TCP, "Opensim TCP Public " + My.Settings.DiagnosticPort)
-            PrintFast("UPnP: Public Port.TCP Ok:" + My.Settings.DiagnosticPort)
+            PrintFast("Diagnostic Port is open:" + My.Settings.DiagnosticPort)
             BumpProgress10()
 
             ' 8002 for TCP and UDP
@@ -2614,32 +2698,37 @@ Public Class Form1
                 MyUPnpMap.Remove(Convert.ToInt16(My.Settings.HttpPort), UPnp.Protocol.TCP)
             End If
             MyUPnpMap.Add(UPnp.LocalIP, Convert.ToInt16(My.Settings.HttpPort), UPnp.Protocol.TCP, "Opensim TCP Grid " + My.Settings.HttpPort)
-            PrintFast("UPnP: Grid Port.TCP Ok:" + My.Settings.HttpPort)
+            PrintFast("Grid Port is open:" + My.Settings.HttpPort)
             BumpProgress10()
 
             If MyUPnpMap.Exists(Convert.ToInt16(My.Settings.HttpPort), UPnp.Protocol.UDP) Then
                 MyUPnpMap.Remove(Convert.ToInt16(My.Settings.HttpPort), UPnp.Protocol.UDP)
             End If
             MyUPnpMap.Add(UPnp.LocalIP, Convert.ToInt16(My.Settings.HttpPort), UPnp.Protocol.UDP, "Opensim UDP Grid " + My.Settings.HttpPort)
-            PrintFast("UPnP: Grid Port.UDP Ok:" + My.Settings.HttpPort)
+            PrintFast("Grid Port is open:" + My.Settings.HttpPort)
             BumpProgress10()
 
             '8004-whatever
-            For Each o As Object In RegionClass.AllRegionObjects()
+
+            Dim regions = New List(Of Object)
+            regions = RegionClass.AllRegionObjects()
+            regions = regions.OrderBy(Function(x) x.RegionPort).ToList()
+
+            For Each o As Object In regions
                 Dim R As Int16 = o.RegionPort
 
                 If MyUPnpMap.Exists(R, UPnp.Protocol.UDP) Then
                     MyUPnpMap.Remove(R, UPnp.Protocol.UDP)
                 End If
                 MyUPnpMap.Add(UPnp.LocalIP, R, UPnp.Protocol.UDP, "Opensim UDP Region " & o.RegionName & " ")
-                PrintFast("UPnP: RegionPort.UDP Ok: " + Convert.ToString(R))
+                PrintFast("Region " + o.RegionName + " is open:" + Convert.ToString(R))
                 BumpProgress(1)
 
                 If MyUPnpMap.Exists(R, UPnp.Protocol.TCP) Then
                     MyUPnpMap.Remove(R, UPnp.Protocol.TCP)
                 End If
                 MyUPnpMap.Add(UPnp.LocalIP, R, UPnp.Protocol.TCP, "Opensim TCP Region " & o.RegionName & " ")
-                PrintFast("UPnP: RegionPort.TCP Ok: " + Convert.ToString(R))
+                PrintFast("Region " + o.RegionName + " is open:" + Convert.ToString(R))
                 BumpProgress(1)
             Next
 
@@ -2681,7 +2770,7 @@ Public Class Form1
     Private Function OpenPorts() As Boolean
 
         'If Running = False Then Return True
-        Print("Puny human is instructed to wait while I check out the router ...")
+
         Try
             If OpenRouterPorts() Then ' open UPnp port
                 Log("UPnpOk")
@@ -2718,7 +2807,7 @@ Public Class Form1
             Return
         End If
 
-        StartMySQL()
+        If Not StartMySQL() Then Return
 
         ' Create an instance of the open file dialog box.
         Dim openFileDialog1 As OpenFileDialog = New OpenFileDialog
@@ -2737,7 +2826,7 @@ Public Class Form1
             Dim thing = openFileDialog1.FileName
             If thing.Length Then
 
-                Dim yesno = MsgBox("Are you sure?  Your database will re-loaded from the backup and all existing content lost.  Avatars, sims, inventory, all of it.", vbYesNo)
+                Dim yesno = MsgBox("Are you sure? Your database will re-loaded from the backup and all existing content replaced. Avatars, sims, inventory, all of it.", vbYesNo)
                 If yesno = vbYes Then
                     thing = thing.Replace("\", "/")    ' because Opensim uses unix-like slashes, that's why
 
@@ -2782,7 +2871,7 @@ Public Class Form1
             Return
         End If
 
-        StartMySQL()
+        If Not StartMySQL() Then Return
 
         Try
             My.Computer.FileSystem.DeleteFile(MyFolder & "\OutworldzFiles\mysql\bin\BackupMysql.bat")
@@ -2821,6 +2910,8 @@ Public Class Form1
 
         ' Check for MySql operation
         Dim MysqlOk As Boolean
+
+        MysqlConn = New Mysql   ' makes a new connection for us to send SQL statements on
 
         MysqlOk = CheckMysql()
         If MysqlOk Then Return True
@@ -2865,7 +2956,6 @@ Public Class Form1
         pMySql.StartInfo = pi
         pMySql.Start()
 
-        ProgressBar1.Value = 50
         ' wait for MySql to come up
         While Not MysqlOk
 
@@ -2890,49 +2980,33 @@ Public Class Form1
             ' check again
             Sleep(1000)
             MysqlOk = CheckMysql()
-
         End While
+
         Return True
+
     End Function
 
-    Function CheckMysql()
+    Function CheckMysql() As Boolean
 
-        'mysql 
+        Dim version = MysqlConn.isMySqlRunning()
 
-        Dim p As Process = New Process()
-        Dim pi As ProcessStartInfo = New ProcessStartInfo()
-
-        pi.UseShellExecute = False
-        pi.RedirectStandardOutput = True
-        pi.RedirectStandardError = True
-
-        pi.Arguments = " -u root -e " + """" + "use opensim; show tables;" + """"
-        pi.FileName = """" + MyFolder + "\OutworldzFiles\mysql\bin\mysql.exe" + """"
-        pi.WindowStyle = ProcessWindowStyle.Normal
-        p.StartInfo = pi
-        Dim output As String = ""
-        Try
-            p.Start()
-            '// To avoid deadlocks, always read the output stream first And then wait.
-            output = p.StandardOutput.ReadToEnd()
-            output += p.StandardError.ReadToEnd()
-            p.WaitForExit()
-            p.Close()
-        Catch ex As Exception
-            Log("Error: failed to stat mysql:" + ex.Message)
-        End Try
-
-        Log("Info: Mysql output:" + output)
-        If output.Contains("Can't connect") Then
+        If version Is Nothing Then
             Return False
         End If
-
         Return True
 
     End Function
+
     Private Sub StopMysql()
 
-        Log("Info:using mysqladmin to close db")
+        Print("Stopping MySql")
+
+        Try
+            MysqlConn.Dispose()
+        Catch
+        End Try
+
+
         Dim p As Process = New Process()
         Dim pi As ProcessStartInfo = New ProcessStartInfo()
         pi.Arguments = "-u root shutdown"
@@ -2947,7 +3021,7 @@ Public Class Form1
             Log("Error:mysqladmin failed to stop mysql:" + ex.Message)
         End Try
 
-        Dim Mysql = CheckPort("127.0.0.1", My.Settings.MySqlPort)
+        Dim Mysql = CheckPort("localhost", My.Settings.MySqlPort)
         If Mysql Then
             Sleep(4000)
             Try
@@ -2955,6 +3029,11 @@ Public Class Form1
             Catch ex2 As Exception
                 Log("Error:Process pMySql.Close() " + ex2.Message)
             End Try
+        End If
+
+        Mysql = CheckPort("localhost", My.Settings.MySqlPort)
+        If Mysql Then
+            zap("mysqld")
         End If
 
     End Sub
@@ -3055,7 +3134,7 @@ Public Class Form1
 
     Private Sub CheckDatabaseToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CheckDatabaseToolStripMenuItem.Click
 
-        StartMySQL()
+        If Not StartMySQL() Then Return
 
         Dim pi As ProcessStartInfo = New ProcessStartInfo()
 
@@ -3074,7 +3153,7 @@ Public Class Form1
 
 #Region "Regions"
 
-    Public Sub ParsePost(POST As String)
+    Public Function ParsePost(POST As String) As String
         ' set Region.Ready to true if the POST from the region indicates it is online
         ' requires a section in Opensim.ini where [RegionReady] has this:
 
@@ -3125,7 +3204,7 @@ Public Class Form1
                 json = JsonConvert.DeserializeObject(Of JSON_result)(rawJSON)
             Catch ex As Exception
                 Debug.Print(ex.Message)
-                Return
+                Return ""
             End Try
 
             If json.login = "enabled" Then
@@ -3145,11 +3224,17 @@ Public Class Form1
                 o.WarmingUp = False
                 o.ShuttingDown = False
             End If
-
+        ElseIf POST.Contains("UUID") Then
+            Debug.Print("UUID:" + POST)
+            Return POST
+        Else
+            Return "Test Completed"
         End If
 
+        Return ""
 
-    End Sub
+
+    End Function
 
     Public Sub LoadRegionList()
 
@@ -3169,40 +3254,46 @@ Public Class Form1
         RegionsToolStripMenuItem.Visible = True
         RegionsToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {RobustMenu})
 
+
         ' now add all the regions
-        Dim Rlist = RegionClass.AllRegionObjects
-        For Each o In Rlist
-            Dim RegionMenu As New ToolStripMenuItem
-            RegionMenu.Text = o.RegionName
-            RegionMenu.DisplayStyle = ToolStripItemDisplayStyle.ImageAndText
-            AddHandler RegionMenu.Click, New EventHandler(AddressOf RegionClick)
+        Try
+            Dim Rlist As List(Of Object) = RegionClass.AllRegionObjects
+            If Rlist.Count Then
+                For Each o In Rlist
+                    Dim RegionMenu As New ToolStripMenuItem
+                    RegionMenu.Text = o.RegionName
+                    RegionMenu.DisplayStyle = ToolStripItemDisplayStyle.ImageAndText
+                    AddHandler RegionMenu.Click, New EventHandler(AddressOf RegionClick)
 
 
-            If o.WarmingUp Then
-                RegionMenu.Image = My.Resources.ResourceManager.GetObject("refresh")
-                RegionMenu.ToolTipText = o.RegionName + " is starting up."
-                Debug.Print("Region " + o.RegionName + " is starting up.")
-            ElseIf o.ShuttingDown Then
-                RegionMenu.Image = My.Resources.ResourceManager.GetObject("flash")
-                RegionMenu.ToolTipText = o.RegionName + " is shutting down."
-                Debug.Print("Region " + o.RegionName + " is shutting down.")
-            ElseIf o.Ready Then
-                RegionMenu.Image = My.Resources.ResourceManager.GetObject("media_play_green")
-                RegionMenu.ToolTipText = o.RegionName + " is Running. Click to Stop."
-                Debug.Print("Region " + o.RegionName + "  is Running")
-            ElseIf o.RegionEnabled And Not Running Then
-                RegionMenu.Image = My.Resources.ResourceManager.GetObject("media_pause")
-                RegionMenu.ToolTipText = "Region is enabled And will be run. Click to disable."
-                Debug.Print("Region " + o.RegionName + "  is enabled and will be run.")
-            Else
-                RegionMenu.Image = My.Resources.ResourceManager.GetObject("media_stop_red")
-                RegionMenu.ToolTipText = o.RegionName + " is disabled And will not be run."
-                Debug.Print("Region  " + o.RegionName + " is disabled and will not be run. ")
+                    If o.WarmingUp Then
+                        RegionMenu.Image = My.Resources.ResourceManager.GetObject("refresh")
+                        RegionMenu.ToolTipText = o.RegionName + " is starting up."
+                        Debug.Print("Region " + o.RegionName + " is starting up.")
+                    ElseIf o.ShuttingDown Then
+                        RegionMenu.Image = My.Resources.ResourceManager.GetObject("flash")
+                        RegionMenu.ToolTipText = o.RegionName + " is shutting down."
+                        Debug.Print("Region " + o.RegionName + " is shutting down.")
+                    ElseIf o.Ready Then
+                        RegionMenu.Image = My.Resources.ResourceManager.GetObject("media_play_green")
+                        RegionMenu.ToolTipText = o.RegionName + " is Running. Click to Stop."
+                        Debug.Print("Region " + o.RegionName + "  is Running")
+                    ElseIf o.RegionEnabled And Not Running Then
+                        RegionMenu.Image = My.Resources.ResourceManager.GetObject("media_pause")
+                        RegionMenu.ToolTipText = "Region is enabled And will be run. Click to disable."
+                        Debug.Print("Region " + o.RegionName + "  is enabled and will be run.")
+                    Else
+                        RegionMenu.Image = My.Resources.ResourceManager.GetObject("media_stop_red")
+                        RegionMenu.ToolTipText = o.RegionName + " is disabled And will not be run."
+                        Debug.Print("Region  " + o.RegionName + " is disabled and will not be run. ")
+                    End If
+
+                    RegionsToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {RegionMenu})
+                    Application.DoEvents()
+                Next
             End If
-
-            RegionsToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {RegionMenu})
-            Application.DoEvents()
-        Next
+        Catch
+        End Try
 
     End Sub
 
@@ -3212,18 +3303,15 @@ Public Class Form1
         ' Handle robust clicking
         If sender.Text = "Robust" Then
             If gRobustProcID Then
-                Try
-                    ConsoleCommand(gRobustProcID, "quit{ENTER}")
-                    Me.Focus()
-                    Log("Region:Stopped Robust")
-                Catch ex As Exception
-                    Log("Region:Could not stop Robust")
-                End Try
+
+                ConsoleCommand(gRobustProcID, "quit{ENTER}")
+                Me.Focus()
+                Log("Region:Stopped Robust")
                 sender.Checked = True
                 Return
             Else
                 Print("Starting Robust")
-                StartMySQL()
+                If Not StartMySQL() Then Return
                 Start_Robust()
                 sender.Checked = False
             End If
@@ -3272,17 +3360,15 @@ Public Class Form1
                 SetIni(sender.Text, "Enabled", "true")
                 SaveINI()
 
-                o.ProcessID = Boot(sender.Text)
+                Boot(sender.Text)
                 Debug.Print("Region:Started Region " + o.RegionName)
-
-
             End If
         End If
-
 
     End Sub
 
     Private Sub SaveRegionOARToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles SaveRegionOARToolStripMenuItem.Click
+
         If (Running) Then
 
             Dim chosen = ChooseRegion()
@@ -3310,8 +3396,8 @@ Public Class Form1
     End Sub
 
     Private Sub LoadRegionOarToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles LoadRegionOarToolStripMenuItem.Click
-        If (Running) Then
 
+        If (Running) Then
             Dim chosen = ChooseRegion()
             Dim o As Object = RegionClass.FindRegionByName(chosen)
 
@@ -3336,7 +3422,7 @@ Public Class Form1
 
                     If backMeUp = vbYes Then
                         ConsoleCommand(o.ProcessID, "alert CPU Intensive Backup Started{ENTER}")
-                        ConsoleCommand(o.ProcessID, "save oar --perm=CT " + """" + BackupPath() + "Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
+                        ConsoleCommand(o.ProcessID, "save oar  " + """" + BackupPath() + "Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
                     End If
                     ConsoleCommand(o.ProcessID, "alert New content is loading..{ENTER}")
                     ConsoleCommand(o.ProcessID, "load oar --force-terrain --force-parcels " + """" + thing + """" + "{ENTER}")
@@ -3347,6 +3433,39 @@ Public Class Form1
         Else
             Print("Opensim is not running. Cannot load the OAR file.")
         End If
+    End Sub
+
+    Private Sub ScanAgents()
+
+        If My.Settings.AutoLoad Then
+            ' Scan all the regions
+            Dim Rlist = RegionClass.AllRegionObjects
+            For Each o In Rlist
+                o.AvatarCount = MysqlConn.IsUserPresent(o.UUID)
+                Debug.Print(o.AvatarCount.ToString + " avatars in region " + o.RegionName)
+                If o.Timer > 0 Then o.Timer = o.Timer - 1
+
+                ' if enabled and running, stopit
+                If o.AvatarCount = 0 Then
+                    If o.RegionEnabled And Running And o.Ready Then
+                        Debug.Print("AutoLoad is shutting down " + o.RegionName)
+                        ConsoleCommand(o.ProcessID, "quit{ENTER}")
+                        Me.Focus()
+                        o.Ready = False
+                        o.WarmingUp = False
+                        o.ShuttingDown = True
+                    End If
+                Else   ' o.Avatarcount <> 0
+                    o.Timer = 60 ' 60 seconds and we will shut it off
+                End If
+
+            Next
+        End If
+
+    End Sub
+
+    Private Sub IslandToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles IslandToolStripMenuItem.Click
+
     End Sub
 
 

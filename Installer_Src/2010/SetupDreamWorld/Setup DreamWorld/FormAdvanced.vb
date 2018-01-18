@@ -129,7 +129,11 @@ Public Class AdvancedForm
 
         Form1.RegionClass.GetAllRegions()
 
-        For Each o As Object In Form1.RegionClass.AllRegionObjects()
+        Dim regions = New List(Of Object)
+        regions = Form1.RegionClass.AllRegionObjects()
+        regions = regions.OrderBy(Function(A) A.RegionName).ToList()
+
+        For Each o In regions
             Try
                 fname = o.RegionName
                 Dim ActualForm As New FormRegion
@@ -160,7 +164,6 @@ Public Class AdvancedForm
         ActualForm.Visible = True
 
     End Sub
-
 
     Private Sub VoiceButton1_Click(sender As Object, e As EventArgs) Handles VoiceButton1.Click
         Dim Voice As New FormVoice
@@ -238,7 +241,12 @@ Public Class AdvancedForm
         ' Default welcome region load
         WelcomeBox1.Items.Clear()
 
-        For Each o In Form1.RegionClass.AllRegionObjects
+
+        Dim regions = New List(Of Object)
+        regions = Form1.RegionClass.AllRegionObjects()
+        regions = regions.OrderBy(Function(x) x.RegionName).ToList()
+
+        For Each o In regions
             If o.RegionEnabled Then
                 WelcomeBox1.Items.Add(o.RegionName())
             End If
@@ -248,12 +256,21 @@ Public Class AdvancedForm
             If s > -1 Then
                 WelcomeBox1.SelectedIndex = s
             Else
+                MsgBox("Choose your Welcome region ", vbInformation)
+                Dim chosen = Form1.ChooseRegion()
+                Dim Index = WelcomeBox1.FindString(chosen)
+                WelcomeBox1.SelectedIndex = Index
                 MsgBox("Welcome region reset to " + WelcomeBox1.SelectedItem.ToString, vbInformation)
-                WelcomeBox1.SelectedIndex = 0
             End If
         Catch ex As Exception
-            WelcomeBox1.SelectedIndex = 0
-            MsgBox("Welcome region reset to " + WelcomeBox1.SelectedItem.ToString, vbInformation)
+            Try
+                MsgBox("Choose your Welcome region ", vbInformation)
+                Dim chosen = Form1.ChooseRegion()
+                Dim Index = WelcomeBox1.FindString(chosen)
+                WelcomeBox1.SelectedIndex = Index
+                MsgBox("Welcome region reset to " + WelcomeBox1.SelectedItem.ToString, vbInformation)
+            Catch
+            End Try
         End Try
     End Sub
 

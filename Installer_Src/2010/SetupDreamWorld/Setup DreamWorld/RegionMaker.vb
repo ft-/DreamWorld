@@ -9,6 +9,7 @@ Public Class RegionMaker
 #Region "Declarations"
     ' hold a copy of the Main region data on a per-form basis
     Private Class Region_data
+        Public RegionPath As String
         Public ProcessID As Integer
         Public RegionName As String
         Public UUID As String
@@ -17,11 +18,12 @@ Public Class RegionMaker
         Public RegionPort As Integer
         Public SizeX As Integer
         Public SizeY As Integer
-
+        Public AvatarCount As Integer
         Public RegionEnabled As Boolean ' Will run or not
         Public Ready As Boolean         ' is up
         Public WarmingUp As Boolean     ' booting up
         Public ShuttingDown As Boolean  ' shutting down
+
     End Class
 
     Public Shared RegionList As New ArrayList
@@ -41,6 +43,16 @@ Public Class RegionMaker
         Set(value As Integer)
         End Set
     End Property
+
+    Public Property RegionPath() As String
+        Get
+            Return RegionList(CurRegionNum()).RegionPath
+        End Get
+        Set(ByVal Value As String)
+            RegionList(CurRegionNum()).RegionPath = Value
+        End Set
+    End Property
+
     Public Property isRegionEnabled() As Boolean
         Get
             Return RegionList(CurRegionNum()).RegionEnabled
@@ -57,6 +69,15 @@ Public Class RegionMaker
             RegionList(CurRegionNum()).ProcessID = Value
         End Set
     End Property
+    Public Property AvatarCount() As Integer
+        Get
+            Return RegionList(CurRegionNum()).AvatarCount
+        End Get
+        Set(ByVal Value As Integer)
+            RegionList(CurRegionNum()).AvatarCount = Value
+        End Set
+    End Property
+
     Public Property CurRegionNum() As Integer
         Get
             If gCurRegionNum > RegionList.Count - 1 Then
@@ -177,9 +198,9 @@ Public Class RegionMaker
 
     Public Function AllRegionObjects()
 
-        Dim rlist As New ArrayList
+        Dim rlist As New List(Of Object)
         For Each obj In RegionList
-            Debug.Print("Region:" + obj.RegionName)
+            'Debug.Print("Region:" + obj.RegionName)
             rlist.Add(obj)
         Next
         Return rlist
@@ -236,12 +257,17 @@ Public Class RegionMaker
             Form1.Log("Info:Region Path:" + FolderName)
             regionfolders = Directory.GetDirectories(FolderName)
             For Each FileName As String In regionfolders
+
+                Dim fName = ""
                 Try
+
                     Form1.Log("Info:Loading region from " + FolderName)
                     Dim inis = Directory.GetFiles(FileName, "*.ini", SearchOption.TopDirectoryOnly)
                     For Each ini As String In inis
                         ' remove the ini
-                        Dim fName = Path.GetFileName(ini)
+                        Debug.Print(FileName)
+
+                        fName = Path.GetFileName(ini)
                         fName = Mid(fName, 1, Len(fName) - 4)
 
                         ' make a slot to hold the region data 
@@ -257,6 +283,7 @@ Public Class RegionMaker
                             isRegionEnabled() = True
                         End Try
 
+                        RegionPath() = FileName
                         UUID() = Form1.GetIni(ini, fName, "RegionUUID", ";")
                         SizeX() = Convert.ToInt16(Form1.GetIni(ini, fName, "SizeX", ";"))
                         SizeY() = Convert.ToInt16(Form1.GetIni(ini, fName, "SizeY", ";"))
@@ -269,8 +296,8 @@ Public Class RegionMaker
                     Next
 
                 Catch ex As Exception
-                    MsgBox("Error: Cannot parse a Region file:" + FileName + ":" + ex.Message)
-                    Form1.Log("Err:Parse file " + FileName + ":" + ex.Message)
+                    MsgBox("Error: Cannot parse a Region file:" + fName + ":" + ex.Message)
+                    Form1.Log("Err:Parse file " + fName + ":" + ex.Message)
                 End Try
             Next
         Next

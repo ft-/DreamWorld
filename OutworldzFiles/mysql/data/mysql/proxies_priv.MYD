@@ -9442,12 +9442,7 @@ InnoDB: Your database may be corrupt or you ma' had database in mixed case that 
 161004 21:28:57 [warning] 'host' entry '71.
 innodb: your database may be corrupt or you may have copied the innodb
 innodb: tablespace but not the innodb l og files. See
-InnoDB: http://dev.mysql.com/doc@nnodb: is in the future! current system log sequ' had database i ÿÿÿÿÿÿ case that has been forced to lowercase because lower_case_table_names is set. It will not be possible to rem' had database in mixed case that has been forced to lowercase because lower_case_table_names is set. It will not be possible to remove this privilege using REVOKE.
-171216 20:37:26 [Warning] 'db' entry 'umber 8506599' had database in mixed case that has been forced to lowercase because lower_case_table_names is set. it will not be possible to remove this privilege using revoke.
-161004 21:28: 57 [Warning] 'host' entry 'atabase may be corrup@ing-recovery.html
-innodb: for more information.
-160917 13:01:50  innodb: error: page 487 log sequence number 954947207
-innodb: is in the future! current system log sequence n' had database in mixed case that has been forced to lowercase because lower_case_table_names is set. It will not be possible to remove this privilege using REVOKE.
+InnoDB: http://dev.mysql.com/doc@nnodb: is in the future! current system log sequ' had database inodb: is in the future! current system log sequence n' had database in mixed case that has been forced to lowercase because lower_case_table_names is set. It will not be possible to remove this privilege using REVOKE.
 171216 20:37:26 [Warning] 'db' entry 'b log files. see
 innodb: http://dev.mysql.com/doc/refman/5.1/en/forcing-recovery.html
 innodb: for more|information.

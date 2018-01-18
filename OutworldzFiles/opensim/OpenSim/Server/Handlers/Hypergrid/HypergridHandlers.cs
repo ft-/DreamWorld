@@ -36,12 +36,19 @@ using GridRegion = OpenSim.Services.Interfaces.GridRegion;
 using log4net;
 using Nwc.XmlRpc;
 using OpenMetaverse;
+using Nini.Config;
+using OpenSim.Framework;
+using OpenSim.Server.Base;
 
 namespace OpenSim.Server.Handlers.Hypergrid
 {
     public class HypergridHandlers
     {
         private static readonly ILog m_log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private string DiagnosticsPort;       // holds the private port
+        private string m_ServerURI;
+        bool AltEnabled = false;            // disabled by default;
+        private object m_Lock = new object();
 
         private IGatekeeperService m_GatekeeperService;
 
@@ -49,7 +56,23 @@ namespace OpenSim.Server.Handlers.Hypergrid
         {
             m_GatekeeperService = gatekeeper;
             m_log.DebugFormat("[HYPERGRID HANDLERS]: Active");
+
+            // Add the arguments supplied when running the application to the configuration
+            IniConfigSource configSource = new IniConfigSource("Opensim.ini");
+
+            IConfig ConstConfig = configSource.Configs["Const"];
+            DiagnosticsPort = ConstConfig.GetString("DiagnosticsPort", "8001"); // listener port for Dreamgrid
+            m_ServerURI = ConstConfig.GetString("PrivURL", "http://localhost");    // private IP
+
+            if (!m_ServerURI.EndsWith("/"))
+                m_ServerURI += "/";
+
+            m_ServerURI += DiagnosticsPort;
+
+            ConstConfig = configSource.Configs["AutoLoadTeleport"];
+            AltEnabled = ConstConfig.GetBoolean("Enabled", false);    
         }
+
 
         /// <summary>
         /// Someone wants to link to us
@@ -105,9 +128,33 @@ namespace OpenSim.Server.Handlers.Hypergrid
             if (requestData.ContainsKey("agent_home_uri"))
                 agentHomeURI = (string)requestData["agent_home_uri"];
 
+
+            // !!! Fkb DreamGrid Auto Load Teleport (ALT) sends requested Region UUID to Dreamgrid.
+            // If region is online, returns same UUID. If Offline, returns UUID for Welcome
+            
+            if (AltEnabled ) {
+                m_log.InfoFormat("[AutoLoadTeleport]: Enabled");
+
+                if (regionID != UUID.Zero)
+                {
+                    Dictionary<string, object> sendData = new Dictionary<string, object>();
+
+                    sendData["requestUrl"] = m_ServerURI;
+                    sendData["verb"] = "GET";
+                    sendData["pTimeout"] = 5000; // in ms
+                    sendData["UUID"] = regionID_str;
+
+                    // I do not know how to find the MakeRequest object from WebUtil.c
+                    Dictionary<string, object> ret = MakeRequest("POST", sendData);
+
+                    if (ret != null && ret.ContainsKey("UUID") && ret["UUID"].ToString() != "NULL")
+                        UUID.TryParse(ret["UUID"].ToString(), out regionID);
+                }
+            }
+
             string message;
             GridRegion regInfo = m_GatekeeperService.GetHyperlinkRegion(regionID, agentID, agentHomeURI, out message);
-
+            
             Hashtable hash = new Hashtable();
             if (regInfo == null)
             {
@@ -136,6 +183,31 @@ namespace OpenSim.Server.Handlers.Hypergrid
             return response;
 
         }
+
+        #region Make Request
+
+        private Dictionary<string, object> MakeRequest(string method, Dictionary<string, object> sendData)
+        {
+            sendData["METHOD"] = method;
+
+            string reply = string.Empty;
+            lock (m_Lock)
+                reply = SynchronousRestFormsRequester.MakeRequest("POST",
+                         m_ServerURI + "REGION",
+                         ServerUtils.BuildQueryString(sendData));
+
+            //m_log.DebugFormat("[XXX]: reply was {0}", reply);
+
+            if (string.IsNullOrEmpty(reply))
+                return null;
+
+            Dictionary<string, object> replyData = ServerUtils.ParseXmlResponse(
+                    reply);
+
+            return replyData;
+        }
+        #endregion
+
 
     }
 }

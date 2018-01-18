@@ -24,6 +24,7 @@ Partial Class Expert
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Me.GroupBox3 = New System.Windows.Forms.GroupBox()
+        Me.EnableHypergrid = New System.Windows.Forms.CheckBox()
         Me.PictureBox7 = New System.Windows.Forms.PictureBox()
         Me.PictureBox6 = New System.Windows.Forms.PictureBox()
         Me.PictureBox5 = New System.Windows.Forms.PictureBox()
@@ -88,6 +89,7 @@ Partial Class Expert
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.PictureBox3 = New System.Windows.Forms.PictureBox()
+        Me.AutoLoadCheckbox = New System.Windows.Forms.CheckBox()
         Me.RegionMySqlPassword = New System.Windows.Forms.TextBox()
         Me.Label21 = New System.Windows.Forms.Label()
         Me.RegionDBUsername = New System.Windows.Forms.TextBox()
@@ -100,7 +102,9 @@ Partial Class Expert
         Me.Label6 = New System.Windows.Forms.Label()
         Me.BootStart = New System.Windows.Forms.CheckBox()
         Me.AutoStartCheckbox = New System.Windows.Forms.CheckBox()
-        Me.EnableHypergrid = New System.Windows.Forms.CheckBox()
+        Me.GroupBox5 = New System.Windows.Forms.GroupBox()
+        Me.Label16 = New System.Windows.Forms.Label()
+        Me.RobustServer = New System.Windows.Forms.TextBox()
         Me.GroupBox3.SuspendLayout()
         CType(Me.PictureBox7, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox6, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -119,6 +123,7 @@ Partial Class Expert
         CType(Me.PictureBox3, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.StandaloneGroup.SuspendLayout()
         Me.AutoStart.SuspendLayout()
+        Me.GroupBox5.SuspendLayout()
         Me.SuspendLayout()
         '
         'GroupBox3
@@ -144,6 +149,16 @@ Partial Class Expert
         Me.GroupBox3.TabIndex = 49
         Me.GroupBox3.TabStop = False
         Me.GroupBox3.Text = "Grid"
+        '
+        'EnableHypergrid
+        '
+        Me.EnableHypergrid.AutoSize = True
+        Me.EnableHypergrid.Location = New System.Drawing.Point(18, 27)
+        Me.EnableHypergrid.Name = "EnableHypergrid"
+        Me.EnableHypergrid.Size = New System.Drawing.Size(107, 17)
+        Me.EnableHypergrid.TabIndex = 1866
+        Me.EnableHypergrid.Text = "Enable Hypergrid"
+        Me.EnableHypergrid.UseVisualStyleBackColor = True
         '
         'PictureBox7
         '
@@ -290,7 +305,7 @@ Partial Class Expert
         Me.GodHelp.Size = New System.Drawing.Size(30, 34)
         Me.GodHelp.TabIndex = 1857
         Me.GodHelp.TabStop = False
-        Me.ToolTip1.SetToolTip(Me.GodHelp, "Click for Helpon God Mode")
+        Me.ToolTip1.SetToolTip(Me.GodHelp, "Click for Help on God Mode")
         '
         'ManagerGod
         '
@@ -653,6 +668,8 @@ Partial Class Expert
         '
         'GridGroup
         '
+        Me.GridGroup.Controls.Add(Me.RobustServer)
+        Me.GridGroup.Controls.Add(Me.Label16)
         Me.GridGroup.Controls.Add(Me.Dbnameindex)
         Me.GridGroup.Controls.Add(Me.Label9)
         Me.GridGroup.Controls.Add(Me.RobustDbPort)
@@ -663,7 +680,7 @@ Partial Class Expert
         Me.GridGroup.Controls.Add(Me.RobustDBUsername)
         Me.GridGroup.Location = New System.Drawing.Point(629, 12)
         Me.GridGroup.Name = "GridGroup"
-        Me.GridGroup.Size = New System.Drawing.Size(243, 137)
+        Me.GridGroup.Size = New System.Drawing.Size(243, 162)
         Me.GridGroup.TabIndex = 53
         Me.GridGroup.TabStop = False
         Me.GridGroup.Text = "Robust Database"
@@ -671,7 +688,7 @@ Partial Class Expert
         'Dbnameindex
         '
         Me.Dbnameindex.AutoSize = True
-        Me.Dbnameindex.Location = New System.Drawing.Point(16, 27)
+        Me.Dbnameindex.Location = New System.Drawing.Point(17, 51)
         Me.Dbnameindex.Name = "Dbnameindex"
         Me.Dbnameindex.Size = New System.Drawing.Size(72, 13)
         Me.Dbnameindex.TabIndex = 35
@@ -680,7 +697,7 @@ Partial Class Expert
         'Label9
         '
         Me.Label9.AutoSize = True
-        Me.Label9.Location = New System.Drawing.Point(14, 79)
+        Me.Label9.Location = New System.Drawing.Point(15, 103)
         Me.Label9.Name = "Label9"
         Me.Label9.Size = New System.Drawing.Size(53, 13)
         Me.Label9.TabIndex = 35
@@ -688,14 +705,14 @@ Partial Class Expert
         '
         'RobustDbPort
         '
-        Me.RobustDbPort.Location = New System.Drawing.Point(122, 105)
+        Me.RobustDbPort.Location = New System.Drawing.Point(123, 129)
         Me.RobustDbPort.Name = "RobustDbPort"
         Me.RobustDbPort.Size = New System.Drawing.Size(47, 20)
         Me.RobustDbPort.TabIndex = 33
         '
         'RobustDbName
         '
-        Me.RobustDbName.Location = New System.Drawing.Point(118, 27)
+        Me.RobustDbName.Location = New System.Drawing.Point(119, 51)
         Me.RobustDbName.Name = "RobustDbName"
         Me.RobustDbName.Size = New System.Drawing.Size(107, 20)
         Me.RobustDbName.TabIndex = 36
@@ -703,7 +720,7 @@ Partial Class Expert
         'Label15
         '
         Me.Label15.AutoSize = True
-        Me.Label15.Location = New System.Drawing.Point(14, 53)
+        Me.Label15.Location = New System.Drawing.Point(15, 77)
         Me.Label15.Name = "Label15"
         Me.Label15.Size = New System.Drawing.Size(55, 13)
         Me.Label15.TabIndex = 34
@@ -712,7 +729,7 @@ Partial Class Expert
         'Label8
         '
         Me.Label8.AutoSize = True
-        Me.Label8.Location = New System.Drawing.Point(16, 105)
+        Me.Label8.Location = New System.Drawing.Point(17, 129)
         Me.Label8.Name = "Label8"
         Me.Label8.Size = New System.Drawing.Size(58, 13)
         Me.Label8.TabIndex = 32
@@ -720,7 +737,7 @@ Partial Class Expert
         '
         'RobustDBPassword
         '
-        Me.RobustDBPassword.Location = New System.Drawing.Point(120, 79)
+        Me.RobustDBPassword.Location = New System.Drawing.Point(121, 103)
         Me.RobustDBPassword.Name = "RobustDBPassword"
         Me.RobustDBPassword.Size = New System.Drawing.Size(107, 20)
         Me.RobustDBPassword.TabIndex = 37
@@ -728,7 +745,7 @@ Partial Class Expert
         '
         'RobustDBUsername
         '
-        Me.RobustDBUsername.Location = New System.Drawing.Point(120, 53)
+        Me.RobustDBUsername.Location = New System.Drawing.Point(121, 77)
         Me.RobustDBUsername.Name = "RobustDBUsername"
         Me.RobustDBUsername.Size = New System.Drawing.Size(107, 20)
         Me.RobustDBUsername.TabIndex = 36
@@ -746,12 +763,24 @@ Partial Class Expert
         'PictureBox3
         '
         Me.PictureBox3.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.PictureBox3.Location = New System.Drawing.Point(195, -9)
+        Me.PictureBox3.Location = New System.Drawing.Point(731, 167)
         Me.PictureBox3.Name = "PictureBox3"
         Me.PictureBox3.Size = New System.Drawing.Size(30, 34)
         Me.PictureBox3.TabIndex = 1860
         Me.PictureBox3.TabStop = False
         Me.ToolTip1.SetToolTip(Me.PictureBox3, "A local Database for Region storage")
+        '
+        'AutoLoadCheckbox
+        '
+        Me.AutoLoadCheckbox.AutoSize = True
+        Me.AutoLoadCheckbox.Location = New System.Drawing.Point(12, 19)
+        Me.AutoLoadCheckbox.Name = "AutoLoadCheckbox"
+        Me.AutoLoadCheckbox.Size = New System.Drawing.Size(59, 17)
+        Me.AutoLoadCheckbox.TabIndex = 21
+        Me.AutoLoadCheckbox.Text = "Enable"
+        Me.ToolTip1.SetToolTip(Me.AutoLoadCheckbox, "Click to enable Autoloading of Sims on Teleport requests. All sims except the Wel" &
+        "come region will be shut down if no one is in world.")
+        Me.AutoLoadCheckbox.UseVisualStyleBackColor = True
         '
         'RegionMySqlPassword
         '
@@ -804,19 +833,18 @@ Partial Class Expert
         '
         'StandaloneGroup
         '
-        Me.StandaloneGroup.Controls.Add(Me.PictureBox3)
         Me.StandaloneGroup.Controls.Add(Me.Label22)
         Me.StandaloneGroup.Controls.Add(Me.Label20)
         Me.StandaloneGroup.Controls.Add(Me.RegionDbName)
         Me.StandaloneGroup.Controls.Add(Me.RegionDBUsername)
         Me.StandaloneGroup.Controls.Add(Me.Label21)
         Me.StandaloneGroup.Controls.Add(Me.RegionMySqlPassword)
-        Me.StandaloneGroup.Location = New System.Drawing.Point(629, 162)
+        Me.StandaloneGroup.Location = New System.Drawing.Point(629, 180)
         Me.StandaloneGroup.Name = "StandaloneGroup"
         Me.StandaloneGroup.Size = New System.Drawing.Size(243, 123)
         Me.StandaloneGroup.TabIndex = 54
         Me.StandaloneGroup.TabStop = False
-        Me.StandaloneGroup.Text = "Region Databases"
+        Me.StandaloneGroup.Text = "Local Region Database"
         '
         'AutoStart
         '
@@ -870,15 +898,32 @@ Partial Class Expert
         Me.AutoStartCheckbox.Text = "Enable"
         Me.AutoStartCheckbox.UseVisualStyleBackColor = True
         '
-        'EnableHypergrid
+        'GroupBox5
         '
-        Me.EnableHypergrid.AutoSize = True
-        Me.EnableHypergrid.Location = New System.Drawing.Point(18, 27)
-        Me.EnableHypergrid.Name = "EnableHypergrid"
-        Me.EnableHypergrid.Size = New System.Drawing.Size(107, 17)
-        Me.EnableHypergrid.TabIndex = 1866
-        Me.EnableHypergrid.Text = "Enable Hypergrid"
-        Me.EnableHypergrid.UseVisualStyleBackColor = True
+        Me.GroupBox5.Controls.Add(Me.AutoLoadCheckbox)
+        Me.GroupBox5.Location = New System.Drawing.Point(225, 323)
+        Me.GroupBox5.Name = "GroupBox5"
+        Me.GroupBox5.Size = New System.Drawing.Size(189, 48)
+        Me.GroupBox5.TabIndex = 55
+        Me.GroupBox5.TabStop = False
+        Me.GroupBox5.Text = "AutoLoad on Teleport"
+        Me.GroupBox5.Visible = False
+        '
+        'Label16
+        '
+        Me.Label16.AutoSize = True
+        Me.Label16.Location = New System.Drawing.Point(17, 27)
+        Me.Label16.Name = "Label16"
+        Me.Label16.Size = New System.Drawing.Size(75, 13)
+        Me.Label16.TabIndex = 38
+        Me.Label16.Text = "Robust Server"
+        '
+        'RobustServer
+        '
+        Me.RobustServer.Location = New System.Drawing.Point(119, 25)
+        Me.RobustServer.Name = "RobustServer"
+        Me.RobustServer.Size = New System.Drawing.Size(107, 20)
+        Me.RobustServer.TabIndex = 39
         '
         'Expert
         '
@@ -887,6 +932,8 @@ Partial Class Expert
         Me.AutoSize = True
         Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.ClientSize = New System.Drawing.Size(897, 405)
+        Me.Controls.Add(Me.PictureBox3)
+        Me.Controls.Add(Me.GroupBox5)
         Me.Controls.Add(Me.AutoStart)
         Me.Controls.Add(Me.StandaloneGroup)
         Me.Controls.Add(Me.GridGroup)
@@ -925,6 +972,8 @@ Partial Class Expert
         Me.StandaloneGroup.PerformLayout()
         Me.AutoStart.ResumeLayout(False)
         Me.AutoStart.PerformLayout()
+        Me.GroupBox5.ResumeLayout(False)
+        Me.GroupBox5.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -1006,4 +1055,8 @@ Partial Class Expert
     Friend WithEvents PictureBox7 As PictureBox
     Friend WithEvents PictureBox6 As PictureBox
     Friend WithEvents EnableHypergrid As CheckBox
+    Friend WithEvents GroupBox5 As GroupBox
+    Friend WithEvents AutoLoadCheckbox As CheckBox
+    Friend WithEvents RobustServer As TextBox
+    Friend WithEvents Label16 As Label
 End Class

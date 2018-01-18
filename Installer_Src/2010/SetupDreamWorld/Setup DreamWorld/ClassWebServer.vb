@@ -52,8 +52,7 @@ Public Class NetServer
 
         LocalTCPListener.Start()
         Log("Info:Listener Started")
-        Dim data As String = "HTTP/1.0 200 OK" + vbCrLf + vbCrLf + "Test completed"
-        Dim msg As Byte() = System.Text.Encoding.ASCII.GetBytes(data)
+
         listen = True
         While listen
             If Not LocalTCPListener.Pending() Then
@@ -65,7 +64,7 @@ Public Class NetServer
             Log("Info:Accepted client")
 
             Dim stream As NetworkStream = client.GetStream() ' Get a stream object for reading and writing
-
+            Dim Response As String = ""
             If stream.CanRead Then
                 Dim myReadBuffer(1024) As Byte
                 Dim myCompleteMessage As StringBuilder = New StringBuilder()
@@ -79,14 +78,16 @@ Public Class NetServer
 
                 ' Print out the received message to the console.
                 Log("Received:" + myCompleteMessage.ToString())
-                Form1.ParsePost(myCompleteMessage.ToString())
+                Response = Form1.ParsePost(myCompleteMessage.ToString())
             Else
                 Log("Error:Cannot read from this NetworkStream.")
             End If
 
             Try
+                Dim data As String = "HTTP/1.0 200 OK" + vbCrLf + vbCrLf + Response
+                Dim msg As Byte() = System.Text.Encoding.ASCII.GetBytes(data)
                 stream.Write(msg, 0, msg.Length) ' Send back a response.
-                Log([String].Format("Response:{0}", data))
+                Log([String].Format("Response:{0}", Data))
             Catch
             End Try
 
