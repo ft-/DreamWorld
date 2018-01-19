@@ -548,7 +548,7 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("localhost")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("127.0.0.1")>  _
         Public Property RobustServer() As String
             Get
                 Return CType(Me("RobustServer"),String)
@@ -896,7 +896,7 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("True")>  _
         Public Property EnableHypergrid() As Boolean
             Get
                 Return CType(Me("EnableHypergrid"),Boolean)

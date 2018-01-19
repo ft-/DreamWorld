@@ -243,7 +243,12 @@ Public Class AdvancedForm
 
 
         Dim regions = New List(Of Object)
-        regions = Form1.RegionClass.AllRegionObjects()
+        Try
+            regions = Form1.RegionClass.AllRegionObjects()
+        Catch
+            Return
+        End Try
+
         regions = regions.OrderBy(Function(x) x.RegionName).ToList()
 
         For Each o In regions

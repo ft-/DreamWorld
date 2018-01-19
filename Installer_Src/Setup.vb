@@ -36,7 +36,7 @@ Public Class Form1
 #Region "Declarations"
 
     Dim MyVersion As String = "2.05"
-    Dim DebugPath As String = "C:\Opensim\Outworldz Source"  ' no slash at end
+    Dim DebugPath As String = "C:\Opensim\Outworldz 2.05 Source"  ' no slash at end
     Public Domain As String = "http://www.outworldz.com"
     Public prefix As String ' Holds path to Opensim folder
 
@@ -104,6 +104,7 @@ Public Class Form1
     Dim Timertick As Integer        ' counts the seconds uintil wallpaper changes
     Public Shared MysqlConn As Mysql    ' object lets us query Mysql database
     Private Diagsrunning As Boolean = False
+    Dim gDNSSTimer As Integer = 0
 
     Public Class JSON_result
         Public alert As String
@@ -274,7 +275,6 @@ Public Class Form1
         Me.Show()
         SaySomething()
 
-
         ClearLogFiles() ' clear log fles
 
         MyUPnpMap = New UPnp(MyFolder)
@@ -312,6 +312,7 @@ Public Class Form1
 
         If Not SetINIData() Then Return
 
+
         mnuSettings.Visible = True
         SetIAROARContent() ' load IAR and OAR web content
 
@@ -340,6 +341,10 @@ Public Class Form1
             Print("Installing Desktop icon clicky thingy")
             Create_ShortCut(MyFolder & "\Start.exe")
             BumpProgress10()
+
+            If SetPublicIP() Then
+                OpenPorts()
+            End If
 
             Try
                 ' mark the system as ready
@@ -377,7 +382,6 @@ Public Class Form1
         RegionClass.GetAllRegions()
         LoadRegionList()
 
-        RegisterDNS()
 
         If SetPublicIP() Then
             OpenPorts()
@@ -483,9 +487,8 @@ Public Class Form1
             End If
             Application.DoEvents()
         Next
-        Print("Wait for all regions to exit")
+        Print("Waiting for all regions to exit")
 
-        ' now wait for all them to actually quit and then stop robust
         counter = 300 ' 5 minutes to quit all regions
         While (counter)
             ' decrement progress bar according to the ratio of what we had / what we have now
@@ -631,6 +634,7 @@ Public Class Form1
         Buttons(StartButton)
         Print("Stopped")
         ProgressBar1.Value = 0
+        ProgressBar1.Visible = 0
     End Sub
 
     Private Sub ShowToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles mnuShow.Click
@@ -825,7 +829,7 @@ Public Class Form1
         ' Grid regions need GridDBName
         LoadIni(prefix + "bin\config-include\Gridcommon.ini", ";")
         Dim ConnectionString = """" _
-            + "Data Source=" + "localhost" _
+            + "Data Source=" + "127.0.0.1" _
             + ";Database=" + My.Settings.RegionDBName _
             + ";Port=" + My.Settings.MySqlPort _
             + ";User ID=" + My.Settings.RegionDBUsername _
@@ -1115,7 +1119,7 @@ Public Class Form1
 
 
         Dim ConnectionString = """" _
-            + "Data Source=" + "localhost" _
+            + "Data Source=" + "127.0.0.1" _
             + ";Database=" + My.Settings.RegionDBName _
             + ";Port=" + My.Settings.MySqlPort _
             + ";User ID=" + My.Settings.RegionDBUsername _
@@ -1134,7 +1138,7 @@ Public Class Form1
         LoadIni(prefix + param, ";")
 
         Dim ConnectionString = """" _
-                + "Data Source=" + "localhost" _
+                + "Data Source=" + "127.0.0.1" _
                 + ";Database=" + My.Settings.RobustMySqlName _
                 + ";Port=" + My.Settings.MySqlPort _
                 + ";User ID=" + My.Settings.RobustMySqlUsername _
@@ -1974,6 +1978,12 @@ Public Class Form1
         PaintImage()
         ScanAgents()
 
+        If gDNSSTimer Mod 1200 = 0 Then
+            RegisterDNS()
+        End If
+
+        gDNSSTimer = gDNSSTimer + 1
+
     End Sub
 
     Private Sub PictureBox1_Click(sender As Object, e As EventArgs) Handles PictureBox1.Click
@@ -2509,11 +2519,15 @@ Public Class Form1
             BumpProgress10()
             My.Settings.PublicIP = My.Settings.DnsName
             My.Settings.Save()
+            If RegisterDNS() Then
+                ProbePublicPort()
+            End If
             Return True
-        End If
+            End If
 
-        ' Set Public IP
-        Try
+
+            ' Set Public IP
+            Try
             Dim ip As String = client.DownloadString("http://api.ipify.org/?r=" + Random())
             BumpProgress10()
             Log("Info:Public IP=" + My.Settings.PublicIP)
@@ -2584,8 +2598,6 @@ Public Class Form1
     Private Function ProbePublicPort() As Boolean
 
         Print("Checking Port Forwards")
-
-        SetPublicIP()
 
         Dim isPortOpen As String = ""
         Try
@@ -2957,7 +2969,7 @@ Public Class Form1
         pMySql.Start()
 
         ' wait for MySql to come up
-        While Not MysqlOk
+        While Not MysqlOk And Running
 
             BumpProgress(1)
             Application.DoEvents()
@@ -3021,7 +3033,7 @@ Public Class Form1
             Log("Error:mysqladmin failed to stop mysql:" + ex.Message)
         End Try
 
-        Dim Mysql = CheckPort("localhost", My.Settings.MySqlPort)
+        Dim Mysql = CheckPort("127.0.0.1", My.Settings.MySqlPort)
         If Mysql Then
             Sleep(4000)
             Try
@@ -3031,7 +3043,7 @@ Public Class Form1
             End Try
         End If
 
-        Mysql = CheckPort("localhost", My.Settings.MySqlPort)
+        Mysql = CheckPort("127.0.0.1", My.Settings.MySqlPort)
         If Mysql Then
             zap("mysqld")
         End If
@@ -3042,26 +3054,24 @@ Public Class Form1
 
 #Region "DNS"
 
-    Public Sub RegisterDNS()
+    Public Function RegisterDNS() As Boolean
 
         If My.Settings.DnsName = String.Empty Then
-            Return
+            Return True
         End If
 
         Dim client As New System.Net.WebClient
         Dim Checkname As String = String.Empty
 
         Try
-            Print("Checking DNS name http://" + My.Settings.DnsName)
             Checkname = client.DownloadString("http://outworldz.net/dns.plx/?GridName=" + My.Settings.DnsName + "&r=" + Random())
         Catch ex As Exception
             Log("Warn:Cannot check the DNS Name" + ex.Message)
+            Return False
         End Try
+        Return True
 
-        DoGetHostAddresses(My.Settings.DnsName)
-        BumpProgress10()
-
-    End Sub
+    End Function
 
     Public Function DoGetHostAddresses(hostName As [String]) As String
 
@@ -3464,9 +3474,6 @@ Public Class Form1
 
     End Sub
 
-    Private Sub IslandToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles IslandToolStripMenuItem.Click
-
-    End Sub
 
 
 #End Region
