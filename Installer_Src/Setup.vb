@@ -36,7 +36,7 @@ Public Class Form1
 #Region "Declarations"
 
     Dim MyVersion As String = "2.05"
-    Dim DebugPath As String = "C:\Opensim\Outworldz 2.05 Source"  ' no slash at end
+    Dim DebugPath As String = "C:\Opensim\Outworldz Source"  ' no slash at end
     Public Domain As String = "http://www.outworldz.com"
     Public prefix As String ' Holds path to Opensim folder
 
@@ -1411,7 +1411,7 @@ Public Class Form1
 
         ' Boot them up
         For Each o In RegionClass.AllRegionObjects
-            If o.RegionEnabled Then '
+            If o.RegionEnabled And Running Then '
 
                 Boot(o.RegionName)
                 If o.ProcessID = 0 Then
