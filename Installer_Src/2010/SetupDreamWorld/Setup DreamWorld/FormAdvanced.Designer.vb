@@ -368,7 +368,7 @@ Partial Class AdvancedForm
         'PictureBox2
         '
         Me.PictureBox2.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.PictureBox2.Location = New System.Drawing.Point(123, -2)
+        Me.PictureBox2.Location = New System.Drawing.Point(127, 6)
         Me.PictureBox2.Name = "PictureBox2"
         Me.PictureBox2.Size = New System.Drawing.Size(28, 32)
         Me.PictureBox2.TabIndex = 1857

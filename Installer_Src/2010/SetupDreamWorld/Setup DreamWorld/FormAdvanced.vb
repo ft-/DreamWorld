@@ -444,7 +444,6 @@ Public Class AdvancedForm
         If PhysicsubODE.Checked Then
             My.Settings.Physics = 4
             My.Settings.Save()
-
         End If
     End Sub
 
