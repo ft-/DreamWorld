@@ -47,7 +47,6 @@ unlink "$dir/OutworldzFiles/Outworldz.log" ;
 unlink "$dir/OutworldzFiles/Init.txt" ;
 unlink "$dir/OutworldzFiles/upnp.log" ;
 
-
 unlink "../Zips/DreamGrid$type.zip" ;
 unlink "../Zips/Outworldz-Update$type.zip" ;
 
