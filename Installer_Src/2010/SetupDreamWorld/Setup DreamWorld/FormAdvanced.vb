@@ -613,7 +613,7 @@ Public Class AdvancedForm
         Process.Start(webAddress)
     End Sub
 
-    Private Sub PictureBox5_Click(sender As Object, e As EventArgs) Handles PictureBox5.Click
+    Private Sub PictureBox5_Click(sender As Object, e As EventArgs) Handles GridNameHelp.Click
         Dim webAddress As String = Form1.Domain + "/Outworldz_installer/technical.htm#Grid"
         Process.Start(webAddress)
     End Sub
@@ -649,6 +649,56 @@ Public Class AdvancedForm
 
         My.Settings.UPnPEnabled = uPnPEnabled.Checked
         My.Settings.Save()
+
+    End Sub
+
+    Private Sub PictureBox7_Click(sender As Object, e As EventArgs) Handles PhysicsHelp.Click
+
+        Dim webAddress As String = Form1.Domain + "/Outworldz_installer/technical.htm#Physics"
+        Process.Start(webAddress)
+
+    End Sub
+
+    Private Sub VoiceHelp_Click(sender As Object, e As EventArgs) Handles VoiceHelp.Click
+
+        Dim webAddress As String = Form1.Domain + "/Outworldz_installer/technical.htm#Voice"
+        Process.Start(webAddress)
+
+    End Sub
+
+    Private Sub Gloebits_Click(sender As Object, e As EventArgs) Handles Gloebits.Click
+
+        Dim webAddress As String = Form1.Domain + "/Outworldz_installer/technical.htm#Gloebits"
+        Process.Start(webAddress)
+
+    End Sub
+
+    Private Sub Webstat_Click(sender As Object, e As EventArgs) Handles Webstat.Click
+
+        Dim webAddress As String = Form1.Domain + "/Outworldz_installer/technical.htm#WebStats"
+        Process.Start(webAddress)
+
+    End Sub
+
+    Private Sub PictureBox7_Click_1(sender As Object, e As EventArgs) Handles PictureBox7.Click
+
+        Dim webAddress As String = Form1.Domain + "/Outworldz_installer/technical.htm#RegionDatabase"
+        Process.Start(webAddress)
+
+
+    End Sub
+
+    Private Sub RegionHelp_Click(sender As Object, e As EventArgs) Handles RegionHelp.Click
+
+        Dim webAddress As String = Form1.Domain + "/Outworldz_installer/technical.htm#Regions"
+        Process.Start(webAddress)
+
+    End Sub
+
+    Private Sub PortHelp_Click(sender As Object, e As EventArgs) Handles PortHelp.Click
+
+        Dim webAddress As String = Form1.Domain + "/Outworldz_installer/technical.htm#Ports"
+        Process.Start(webAddress)
 
     End Sub
 
