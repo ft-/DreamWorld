@@ -88,7 +88,7 @@ Public Class Expert
 #End Region
 
 #Region "Ports"
-    Private Sub http_Port_TextChanged(sender As Object, e As EventArgs)
+    Private Sub Http_Port_TextChanged(sender As Object, e As EventArgs)
         My.Settings.DiagnosticPort = DiagnosticPort.Text
         My.Settings.Save()
     End Sub
@@ -210,7 +210,7 @@ Public Class Expert
 
     End Sub
 
-    Private Sub uPnPEnabled_CheckedChanged(sender As Object, e As EventArgs) Handles uPnPEnabled.CheckedChanged
+    Private Sub UPnPEnabled_CheckedChanged(sender As Object, e As EventArgs) Handles uPnPEnabled.CheckedChanged
 
         My.Settings.UPnPEnabled = uPnPEnabled.Checked
         My.Settings.Save()

@@ -53,7 +53,7 @@ Public Class RegionMaker
         End Set
     End Property
 
-    Public Property isRegionEnabled() As Boolean
+    Public Property IsRegionEnabled() As Boolean
         Get
             Return RegionList(CurRegionNum()).RegionEnabled
         End Get

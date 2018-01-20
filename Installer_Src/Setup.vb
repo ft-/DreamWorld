@@ -3052,13 +3052,12 @@ Public Class Form1
         Dim Checkname As String = String.Empty
 
         Try
-            Print("Checking DNS name http://" + My.Settings.DnsName)
+            Print("Check DNS name http://" + My.Settings.DnsName)
             Checkname = client.DownloadString("http://outworldz.net/dns.plx/?GridName=" + My.Settings.DnsName + "&r=" + Random())
         Catch ex As Exception
             Log("Warn:Cannot check the DNS Name" + ex.Message)
         End Try
 
-        DoGetHostAddresses(My.Settings.DnsName)
         BumpProgress10()
 
     End Sub
