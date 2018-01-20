@@ -8,7 +8,7 @@ Public Class Mysql
 
     Public Sub New()
 
-        Dim robustconnStr = "server=" + "localhost" _
+        Dim robustconnStr = "server=" + "127.0.0.1" _
             + ";database=" + My.Settings.DBName _
             + ";port=" + My.Settings.MySqlPort _
             + ";user=" + My.Settings.DBUserID _

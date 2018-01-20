@@ -37,7 +37,7 @@ Public Class Form1
 
 #Region "Declarations"
 
-    Dim MyVersion As String = "1.75"
+    Dim MyVersion As String = "1.76"
     Dim DebugPath As String = "C:\Opensim\OpensimV1.75 Source"
     Public Domain As String = "http://www.outworldz.com"
 
@@ -961,21 +961,21 @@ Public Class Form1
             SetIni("CameraOnlyModeModule", "enabled", "true")
         End If
 
-        If (My.Settings.allow_grid_gods) Then
+        If My.Settings.region_owner_is_god Then
             SetIni("Permissions", "allow_grid_gods", "true")
-        Else
-            SetIni("Permissions", "allow_grid_gods", "false")
-        End If
-
-        If (My.Settings.region_owner_is_god) Then
             SetIni("Permissions", "region_owner_is_god", "true")
         Else
             SetIni("Permissions", "region_owner_is_god", "false")
         End If
 
-        If (My.Settings.region_manager_is_god) Then
+        If My.Settings.region_manager_is_god Then
+            SetIni("Permissions", "allow_grid_gods", "true")
             SetIni("Permissions", "region_manager_is_god", "true")
         Else
+            SetIni("Permissions", "region_manager_is_god", "false")
+        End If
+
+        If My.Settings.region_owner_is_god Or My.Settings.region_manager_is_god Then
             SetIni("Permissions", "region_manager_is_god", "false")
         End If
 
@@ -1074,7 +1074,7 @@ Public Class Form1
 
 
         Dim ConnectionString = """" _
-            + "Data Source=" + "localhost" _
+            + "Data Source=" + "127.0.0.1" _
             + ";Database=" + My.Settings.DBName _
             + ";Port=" + My.Settings.MySqlPort _
             + ";User ID=" + My.Settings.DBUserID _
@@ -1717,7 +1717,7 @@ Public Class Form1
             Log("Info:Onlook viewer is not installed")
             Return
         End If
-        ' we have to change the viewer Grid settings if we are on localhost
+        ' we have to change the viewer Grid settings if we are on 127.0.0.1
         Print("Setting Grid Info...")
 
 

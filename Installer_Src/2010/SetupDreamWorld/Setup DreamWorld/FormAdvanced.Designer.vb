@@ -25,6 +25,7 @@ Partial Class AdvancedForm
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(AdvancedForm))
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
+        Me.uPnPEnabled = New System.Windows.Forms.CheckBox()
         Me.HypericaButton = New System.Windows.Forms.Button()
         Me.TestButton1 = New System.Windows.Forms.Button()
         Me.WelcomeRegion = New System.Windows.Forms.Label()
@@ -112,7 +113,6 @@ Partial Class AdvancedForm
         Me.MapPicture = New System.Windows.Forms.PictureBox()
         Me.GroupBox6 = New System.Windows.Forms.GroupBox()
         Me.GloebitsButton = New System.Windows.Forms.Button()
-        Me.uPnPEnabled = New System.Windows.Forms.CheckBox()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -157,6 +157,16 @@ Partial Class AdvancedForm
         Me.GroupBox2.TabIndex = 5
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Grid"
+        '
+        'uPnPEnabled
+        '
+        Me.uPnPEnabled.AutoSize = True
+        Me.uPnPEnabled.Location = New System.Drawing.Point(24, 210)
+        Me.uPnPEnabled.Name = "uPnPEnabled"
+        Me.uPnPEnabled.Size = New System.Drawing.Size(96, 17)
+        Me.uPnPEnabled.TabIndex = 41
+        Me.uPnPEnabled.Text = "UPnP Enabled"
+        Me.uPnPEnabled.UseVisualStyleBackColor = True
         '
         'HypericaButton
         '
@@ -725,7 +735,7 @@ Partial Class AdvancedForm
         Me.DbConnection.Name = "DbConnection"
         Me.DbConnection.Size = New System.Drawing.Size(105, 20)
         Me.DbConnection.TabIndex = 28
-        Me.ToolTip1.SetToolTip(Me.DbConnection, "The name or IP of the Machine with the database. Default: localhost")
+        Me.ToolTip1.SetToolTip(Me.DbConnection, "The name or IP of the Machine with the database. Default: 127.0.0.1")
         '
         'PhysicsODE
         '
@@ -867,7 +877,7 @@ Partial Class AdvancedForm
         Me.PictureBox3.Size = New System.Drawing.Size(28, 27)
         Me.PictureBox3.TabIndex = 1857
         Me.PictureBox3.TabStop = False
-        Me.ToolTip1.SetToolTip(Me.PictureBox3, "Click for Help on Grid Gods")
+        Me.ToolTip1.SetToolTip(Me.PictureBox3, "Click for Help on Maps")
         '
         'PictureBox5
         '
@@ -1035,16 +1045,6 @@ Partial Class AdvancedForm
         Me.GloebitsButton.TabIndex = 1859
         Me.GloebitsButton.Text = "Gloebits Currency Setup"
         Me.GloebitsButton.UseVisualStyleBackColor = True
-        '
-        'uPnPEnabled
-        '
-        Me.uPnPEnabled.AutoSize = True
-        Me.uPnPEnabled.Location = New System.Drawing.Point(24, 210)
-        Me.uPnPEnabled.Name = "uPnPEnabled"
-        Me.uPnPEnabled.Size = New System.Drawing.Size(96, 17)
-        Me.uPnPEnabled.TabIndex = 41
-        Me.uPnPEnabled.Text = "UPnP Enabled"
-        Me.uPnPEnabled.UseVisualStyleBackColor = True
         '
         'AdvancedForm
         '

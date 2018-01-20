@@ -75,7 +75,6 @@ Public Class AdvancedForm
         AdminLast.Text = My.Settings.AdminLast
         AdminFirst.Text = My.Settings.AdminFirst
 
-        AllowGod.Checked = My.Settings.allow_grid_gods
         RegionGod.Checked = My.Settings.region_owner_is_god
         ManagerGod.Checked = My.Settings.region_manager_is_god
 
@@ -228,11 +227,7 @@ Public Class AdvancedForm
         Form1.gChatTime = ChatTime
     End Sub
 
-    Private Sub AllowGod_CheckedChanged(sender As Object, e As EventArgs) Handles AllowGod.CheckedChanged
-        My.Settings.allow_grid_gods = AllowGod.Checked
-        My.Settings.Save()
 
-    End Sub
 
     Private Sub RegionGod_CheckedChanged(sender As Object, e As EventArgs) Handles RegionGod.CheckedChanged
         My.Settings.region_owner_is_god = RegionGod.Checked
