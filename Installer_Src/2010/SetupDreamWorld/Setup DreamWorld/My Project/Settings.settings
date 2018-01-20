@@ -126,7 +126,7 @@
       <Value Profile="(Default)">0</Value>
     </Setting>
     <Setting Name="RobustServer" Type="System.String" Scope="User">
-      <Value Profile="(Default)">localhost</Value>
+      <Value Profile="(Default)">127.0.0.1</Value>
     </Setting>
     <Setting Name="VivoxEnabled" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
@@ -213,7 +213,7 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="EnableHypergrid" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
+      <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="AutoLoad" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
