@@ -1411,7 +1411,7 @@ Public Class Form1
 
         ' Boot them up
         For Each o In RegionClass.AllRegionObjects
-            If o.RegionEnabled Then '
+            If o.RegionEnabled And Running Then '
 
                 Boot(o.RegionName)
                 If o.ProcessID = 0 Then
