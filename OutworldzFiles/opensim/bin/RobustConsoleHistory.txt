@@ -75,3 +75,14 @@ quit
 Test
 User
 create user
+create user
+create user Test User
+quit
+Test
+create user
+quit
+reset user password Wifi Admin #pzkKc
+quit
+quit
+show users
+quit
