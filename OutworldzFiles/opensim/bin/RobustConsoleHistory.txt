@@ -86,3 +86,16 @@ quit
 quit
 show users
 quit
+create user Test User
+quit
+create user test User Test User
+quit
+quit
+reset user password Wifi Admin #pzkKc
+quit
+Tequit
+quit
+create user Test User
+quit
+quit
+quit
