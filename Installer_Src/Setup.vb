@@ -244,9 +244,6 @@ Public Class Form1
         Me.Text = "Dreamgrid V" + MyVersion
         PictureBox1.Enabled = True
 
-        'hide the pulldowns as there is no content yet
-        MnuContent.Visible = False
-        mnuSettings.Visible = True
 
         gChatTime = My.Settings.ChatTime
 
@@ -377,7 +374,7 @@ Public Class Form1
         ProgressBar1.Visible = True
         Buttons(BusyButton)
         Running = True
-        MnuContent.Visible = True
+
 
         RegionClass.GetAllRegions()
         LoadRegionList()
@@ -523,7 +520,7 @@ Public Class Form1
         ' cannot load OAR or IAR, either
         IslandToolStripMenuItem.Visible = False
         ClothingInventoryToolStripMenuItem.Visible = False
-        MnuContent.Visible = False
+
         Running = False
         Me.AllowDrop = False
 
@@ -2355,7 +2352,7 @@ Public Class Form1
                 ContentSeen = True
             End If
         End While
-        MnuContent.Visible = True
+
         BumpProgress10()
     End Sub
 
@@ -2840,7 +2837,7 @@ Public Class Form1
 
                 Dim yesno = MsgBox("Are you sure? Your database will re-loaded from the backup and all existing content replaced. Avatars, sims, inventory, all of it.", vbYesNo)
                 If yesno = vbYes Then
-                    thing = thing.Replace("\", "/")    ' because Opensim uses unix-like slashes, that's why
+                    ' thing = thing.Replace("\", "/")    ' because Opensim uses unix-like slashes, that's why
 
                     Try
                         My.Computer.FileSystem.DeleteFile(MyFolder & "\OutworldzFiles\mysql\bin\RestoreMysql.bat")
@@ -2850,7 +2847,7 @@ Public Class Form1
                         Dim filename As String = MyFolder & "\OutworldzFiles\mysql\bin\RestoreMysql.bat"
                         Using outputFile As New StreamWriter(filename, True)
                             outputFile.WriteLine("@REM A program to restore Mysql from a backup" + vbCrLf _
-                                    + "mysql -u root opensim < %1 " _
+                                    + "mysql -u root opensim <  " + """" + thing + """" _
                                     + vbCrLf + "@pause" + vbCrLf)
                         End Using
                     Catch ex As Exception
@@ -2862,7 +2859,7 @@ Public Class Form1
                     Dim pMySqlRestore As Process = New Process()
                     Dim pi As ProcessStartInfo = New ProcessStartInfo()
 
-                    pi.Arguments = thing
+                    ' pi.Arguments = thing
                     pi.WindowStyle = ProcessWindowStyle.Normal
                     pi.WorkingDirectory = MyFolder & "\OutworldzFiles\mysql\bin\"
 
