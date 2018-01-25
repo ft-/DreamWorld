@@ -122,17 +122,18 @@ Public Class Expert
         My.Settings.Save()
     End Sub
 
-    Private Sub Password_click(sender As Object, e As EventArgs) Handles AdminPassword.Click
+    Private Sub Password_click(sender As Object, e As EventArgs) Handles AdminPassword.GotFocus
         AdminPassword.UseSystemPasswordChar = False
     End Sub
 
-    Private Sub Password_TextChanged(sender As Object, e As EventArgs) Handles AdminPassword.TextChanged
+    Private Sub Password_TextChanged(sender As Object, e As EventArgs) Handles AdminPassword.LostFocus
         My.Settings.Password = AdminPassword.Text
         My.Settings.Save()
 
         If Form1.Running Then
             Form1.ConsoleCommand(Form1.gRobustProcID, "reset user password Wifi Admin " + My.Settings.Password + "{Enter}")
         End If
+        'Me.Focus()
     End Sub
 
     Private Sub TextBox1_TextChanged_3(sender As Object, e As EventArgs) Handles AdminEmail.TextChanged

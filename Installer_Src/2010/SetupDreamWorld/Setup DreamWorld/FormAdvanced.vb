@@ -106,18 +106,24 @@ Public Class AdvancedForm
     End Sub
 
     Private Sub TimerInterval_TextChanged(sender As Object, e As EventArgs) Handles TimerInterval.TextChanged
-        If Len(TimerInterval.Text) > 0 Then
-            My.Settings.TimerInterval = CInt(TimerInterval.Text)
-            If (My.Settings.TimerInterval > 0) Then
-                Form1.PaintImage()
+
+        Try
+            If Len(TimerInterval.Text) > 0 Then
+
+                My.Settings.TimerInterval = CInt(TimerInterval.Text)
+                If (My.Settings.TimerInterval > 0) Then
+                    Form1.PaintImage()
+                Else
+                    Form1.PictureBox1.Visible = False
+                End If
             Else
                 Form1.PictureBox1.Visible = False
+                My.Settings.TimerInterval = 0
+                My.Settings.Save()
             End If
-        Else
-            Form1.PictureBox1.Visible = False
-            My.Settings.TimerInterval = 0
-            My.Settings.Save()
-        End If
+        Catch
+        End Try
+
     End Sub
 
     Private Sub RegionButton1_Click(sender As Object, e As EventArgs) Handles RegionButton.Click

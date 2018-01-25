@@ -1,6 +1,6 @@
 ﻿
 Imports Mysql.Data.MySqlClient
-
+Imports System.Net.Sockets
 
 Public Class Mysql
     Implements IDisposable
@@ -29,9 +29,13 @@ Public Class Mysql
     End Function
     Public Function isMySqlRunning() As String
 
-        Dim version = QueryString("SELECT VERSION()")
-        Debug.Print("MySQL version: {0}", version)
-        Return version
+        Dim Mysql = CheckPort("127.0.0.1", My.Settings.MySqlPort)
+        If Mysql Then
+            Dim version = QueryString("SELECT VERSION()")
+            Debug.Print("MySQL version: {0}", version)
+            Return version
+        End If
+        Return Nothing
 
     End Function
 
@@ -59,6 +63,24 @@ Public Class Mysql
     End Function
 
 
+    Private Function CheckPort(ServerAddress As String, Port As String) As Boolean
+
+        Dim iPort As Integer = Convert.ToInt16(Port)
+        Dim ClientSocket As New TcpClient
+
+        Try
+            ClientSocket.Connect(ServerAddress, iPort)
+        Catch ex As Exception
+            Return False
+        End Try
+
+        If ClientSocket.Connected Then
+            ClientSocket.Close()
+            Return True
+        End If
+        CheckPort = False
+
+    End Function
 #Region "IDisposable Support"
     Private disposedValue As Boolean ' To detect redundant calls
 

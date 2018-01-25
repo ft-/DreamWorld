@@ -78,6 +78,8 @@ Partial Class Expert
         Me.PhysicsBullet = New System.Windows.Forms.RadioButton()
         Me.PhysicsODE = New System.Windows.Forms.RadioButton()
         Me.GridGroup = New System.Windows.Forms.GroupBox()
+        Me.RobustServer = New System.Windows.Forms.TextBox()
+        Me.Label16 = New System.Windows.Forms.Label()
         Me.Dbnameindex = New System.Windows.Forms.Label()
         Me.Label9 = New System.Windows.Forms.Label()
         Me.RobustDbPort = New System.Windows.Forms.TextBox()
@@ -103,8 +105,6 @@ Partial Class Expert
         Me.BootStart = New System.Windows.Forms.CheckBox()
         Me.AutoStartCheckbox = New System.Windows.Forms.CheckBox()
         Me.GroupBox5 = New System.Windows.Forms.GroupBox()
-        Me.Label16 = New System.Windows.Forms.Label()
-        Me.RobustServer = New System.Windows.Forms.TextBox()
         Me.GroupBox3.SuspendLayout()
         CType(Me.PictureBox7, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox6, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -685,6 +685,22 @@ Partial Class Expert
         Me.GridGroup.TabStop = False
         Me.GridGroup.Text = "Robust Database"
         '
+        'RobustServer
+        '
+        Me.RobustServer.Location = New System.Drawing.Point(119, 25)
+        Me.RobustServer.Name = "RobustServer"
+        Me.RobustServer.Size = New System.Drawing.Size(107, 20)
+        Me.RobustServer.TabIndex = 39
+        '
+        'Label16
+        '
+        Me.Label16.AutoSize = True
+        Me.Label16.Location = New System.Drawing.Point(17, 27)
+        Me.Label16.Name = "Label16"
+        Me.Label16.Size = New System.Drawing.Size(75, 13)
+        Me.Label16.TabIndex = 38
+        Me.Label16.Text = "Robust Server"
+        '
         'Dbnameindex
         '
         Me.Dbnameindex.AutoSize = True
@@ -908,22 +924,6 @@ Partial Class Expert
         Me.GroupBox5.TabStop = False
         Me.GroupBox5.Text = "AutoLoad on Teleport"
         Me.GroupBox5.Visible = False
-        '
-        'Label16
-        '
-        Me.Label16.AutoSize = True
-        Me.Label16.Location = New System.Drawing.Point(17, 27)
-        Me.Label16.Name = "Label16"
-        Me.Label16.Size = New System.Drawing.Size(75, 13)
-        Me.Label16.TabIndex = 38
-        Me.Label16.Text = "Robust Server"
-        '
-        'RobustServer
-        '
-        Me.RobustServer.Location = New System.Drawing.Point(119, 25)
-        Me.RobustServer.Name = "RobustServer"
-        Me.RobustServer.Size = New System.Drawing.Size(107, 20)
-        Me.RobustServer.TabIndex = 39
         '
         'Expert
         '

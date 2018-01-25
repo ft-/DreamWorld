@@ -36,7 +36,7 @@ Public Class Form1
 #Region "Declarations"
 
     Dim MyVersion As String = "2.05"
-    Dim DebugPath As String = "C:\Opensim\Outworldz Source"  ' no slash at end
+    Dim DebugPath As String = "C:\Opensim\Outworldz 2.05 Source"  ' no slash at end
     Public Domain As String = "http://www.outworldz.com"
     Public prefix As String ' Holds path to Opensim folder
 
@@ -406,12 +406,12 @@ Public Class Form1
         End If
 
         Buttons(StopButton)
-
+        ProgressBar1.Value = 100
         Print("Outworldz is almost ready for you to log in.  Wait for INITIALIZATION COMPLETE - LOGINS ENABLED to appear in the console, and you can log in." + vbCrLf _
               + " Hypergrid address is http://" + My.Settings.PublicIP + ":" + My.Settings.HttpPort)
-
+        Print("")
         ' done with bootup
-        ProgressBar1.Value = 100
+        ProgressBar1.Visible = False
 
         Timer1.Interval = 1000
         Timer1.Start() 'Timer starts functioning
@@ -598,7 +598,6 @@ Public Class Form1
 
     Private Sub Print(Value As String)
 
-        Me.Focus()
         Log("Info:" + Value)
         PictureBox1.Visible = False
         TextBox1.Text = Value
@@ -1159,13 +1158,16 @@ Public Class Form1
         SetIni("WifiService", "LoginURL", "http://" + My.Settings.PublicIP + ":" + My.Settings.HttpPort)
         SetIni("WifiService", "WebAddress", "http://" + My.Settings.PublicIP + ":" + My.Settings.HttpPort)
 
-        'email
-        SetIni("WifiService", "SmtpUsername", My.Settings.SmtpUsername)
-        SetIni("WifiService", "SmtpPassword", My.Settings.SmtpPassword)
+        ' Wifi Admin'
+        SetIni("WifiService", "AdminFirst", My.Settings.AdminFirst)
+        SetIni("WifiService", "AdminPassword", My.Settings.AdminLast)
+        SetIni("WifiService", "AdminLast", My.Settings.AdminEmail)
 
         'Gmail
         SetIni("WifiService", "AdminPassword", My.Settings.Password)
-        SetIni("WifiService", "AdminEmail", My.Settings.AdminEmail)
+        SetIni("WifiService", "SmtpUsername", My.Settings.SmtpUsername)
+        SetIni("WifiService", "SmtpPassword", My.Settings.SmtpPassword)
+
 
         If My.Settings.AccountConfirmationRequired Then
             SetIni("WifiService", "AccountConfirmationRequired", "true")
@@ -1189,8 +1191,8 @@ Public Class Form1
 
         For Each o In RegionClass.AllRegionObjects
 
-            If ports.Length < o.RegionPort Then
-                ReDim ports(o.RegionPort)
+            If ports.Length <= o.RegionPort Then
+                ReDim ports(o.RegionPort + 1)
             End If
             Try
                 If ports(o.RegionPort) Is Nothing Then
@@ -1200,8 +1202,9 @@ Public Class Form1
                     o.RegionEnabled = False
                     Passfail = False
                 End If
-            Catch
-                ports(o.RegionPort) = o
+            Catch ex As Exception
+                Log("Error:" + ex.Message)
+                ports(o.RegionPort) = 0
             End Try
         Next
 
@@ -1423,7 +1426,7 @@ Public Class Form1
                     Print("Startup aborted at " + o.RegionName)
                     Return False
                 End If
-                Sleep(5000) ' no rush, give it time to boot and read environment
+                Sleep(3000) ' no rush, give it time to boot and read environment
             End If
         Next
 
@@ -2519,6 +2522,11 @@ Public Class Form1
             BumpProgress10()
             My.Settings.PublicIP = My.Settings.DnsName
             My.Settings.Save()
+
+            If My.Settings.DnsName.ToLower.Contains("outworldz.net") Then
+                Print("Registering Dyn DNS")
+            End If
+
             If RegisterDNS() Then
                 ProbePublicPort()
             End If
@@ -2597,7 +2605,7 @@ Public Class Form1
 
     Private Function ProbePublicPort() As Boolean
 
-        Print("Checking Port Forwards")
+        Print("Checking Router")
 
         Dim isPortOpen As String = ""
         Try
@@ -3063,8 +3071,8 @@ Public Class Form1
         Dim client As New System.Net.WebClient
         Dim Checkname As String = String.Empty
 
-        Try
 
+        Try
             Checkname = client.DownloadString("http://outworldz.net/dns.plx/?GridName=" + My.Settings.DnsName + "&r=" + Random())
         Catch ex As Exception
             Log("Warn:Cannot check the DNS Name" + ex.Message)
