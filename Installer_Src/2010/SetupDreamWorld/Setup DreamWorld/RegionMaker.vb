@@ -196,7 +196,7 @@ Public Class RegionMaker
 
     End Sub
 
-    Public Function AllRegionObjects()
+    Public Function AllRegionObjects() As List(Of Object)
 
         Dim rlist As New List(Of Object)
         For Each obj In RegionList

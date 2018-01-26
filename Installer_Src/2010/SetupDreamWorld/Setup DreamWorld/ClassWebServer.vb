@@ -15,6 +15,17 @@ Public Class NetServer
     Private Shared blnFlag As Boolean
     Private Shared singleWebserver As NetServer
     Private Myfolder As String
+    Private IP As String = Nothing
+
+    Public Property MyIP() As String
+        Get
+            Return IP
+        End Get
+        Set(ByVal Value As String)
+            IP = Value
+        End Set
+    End Property
+
 
     Private Sub New()
 
@@ -40,21 +51,24 @@ Public Class NetServer
 
     Private Function looper()
 
-        'Dim counter As Integer = 60 ' wait up to 30 seconds, then abort
-        Try
-            Dim oaddress = GetIPv4Address()
-            Log("Info:IP:" + oaddress.ToString)
-            LocalTCPListener = New TcpListener(oaddress, My.Settings.DiagnosticPort)
-        Catch ex As Exception
-            Log(ex.Message)
-            Return True
-        End Try
-
-        LocalTCPListener.Start()
-        Log("Info:Listener Started")
-
+        Dim oaddress = GetIPv4Address()
+        Log("Info:IP:" + oaddress.ToString)
         listen = True
+
+
+        Try
+
+                LocalTCPListener = New TcpListener(oaddress, My.Settings.DiagnosticPort)
+            Catch ex As Exception
+                Log(ex.Message)
+                Return True
+            End Try
+
+            LocalTCPListener.Start()
+            Log("Info:Listener Started")
+
         While listen
+
             If Not LocalTCPListener.Pending() Then
                 Thread.Sleep(100) ' choose a number (In milliseconds) that makes sense
                 Continue While  ' skip To Next iteration Of Loop
@@ -94,10 +108,9 @@ Public Class NetServer
             'Shutdown And end connection
             client.Close()
             Log("Info:Connection Closed")
-            ' listen = False
+
         End While
 
-        listen = False
         LocalTCPListener.Stop()
         Log("Info:Webthread ending")
         running = False
@@ -107,15 +120,20 @@ Public Class NetServer
 
     Private Function GetIPv4Address() As IPAddress
 
-        GetIPv4Address = Nothing
-        Dim strHostName As String = System.Net.Dns.GetHostName()
-        Log("Info:Hostname is " & strHostName)
-        Dim iphe As System.Net.IPHostEntry = System.Net.Dns.GetHostEntry(strHostName)
-        For Each ipheal As System.Net.IPAddress In iphe.AddressList
-            If ipheal.AddressFamily = System.Net.Sockets.AddressFamily.InterNetwork Then
-                GetIPv4Address = ipheal
-            End If
-        Next
+        If MyIP = Nothing Then
+            GetIPv4Address = Nothing
+            Dim strHostName As String = System.Net.Dns.GetHostName()
+            Log("Info:Hostname is " & strHostName)
+            Dim iphe As System.Net.IPHostEntry = System.Net.Dns.GetHostEntry(strHostName)
+            For Each ipheal As System.Net.IPAddress In iphe.AddressList
+                If ipheal.AddressFamily = System.Net.Sockets.AddressFamily.InterNetwork Then
+                    GetIPv4Address = ipheal
+                    MyIP = ipheal.ToString
+                End If
+            Next
+        Else
+            Return IPAddress.Parse(MyIP) ' return cached string IP
+        End If
 
     End Function
 
@@ -145,9 +163,8 @@ Public Class NetServer
     Public Sub Log(message As String)
         Debug.Print(message)
         Try
-            Using outputFile As New StreamWriter(Myfolder & "\Http.log", True)
+            Using outputFile As New StreamWriter(Myfolder & "\Outworldzfiles\Http.log", True)
                 outputFile.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + message)
-                Debug.Print(message)
             End Using
         Catch ex As Exception
             Debug.Print(ex.Message)

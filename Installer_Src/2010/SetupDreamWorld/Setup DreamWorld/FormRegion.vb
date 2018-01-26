@@ -121,7 +121,7 @@ Public Class FormRegion
                 directory.Intersect(Path.GetInvalidPathChars()).Any())
     End Function
 
-    Private Function RegionValidate()
+    Private Function RegionValidate() As String
 
         MyRegion.CurRegionNum = gNum
         Dim Message As String
@@ -438,7 +438,7 @@ Public Class FormRegion
     End Sub
 
 
-    Private Function IsPowerOf256(x As Integer)
+    Private Function IsPowerOf256(x As Integer) As Boolean
         Dim y As Single = Convert.ToSingle(x)
         While y > 0
             y = y - 256

@@ -1,9 +1,10 @@
 
-my $type  = '-V2.05';# '-Beta-V1.5';
+my $type  = '-V2.06';# '-Beta-V1.5';
 my $dir = "C:\\Opensim\\Outworldz Source";
 
-
 chdir ($dir);
+
+
 use File::Copy;
 use File::Path;
 use 5.010;
@@ -16,7 +17,6 @@ my @deletions = (
 				 "$dir/OutworldzFiles/Opensim/bin/ScriptEngines",
 				 "$dir/OutworldzFiles/Opensim/bin/maptiles",
 				 "$dir/OutworldzFiles/Opensim/bin/bakes",
-				 
 				 "$dir/OutworldzFiles/mysql/data/opensim",
 				 "$dir/OutworldzFiles/mysql/data/robust",
 				 );
@@ -52,7 +52,7 @@ unlink "../Zips/Outworldz-Update$type.zip" ;
 
 
 print "Making binaries, please be sure they are signed\n";
-<STDIN>;
+
 
 # SIGN FIRST
 
@@ -61,12 +61,14 @@ if (!copy ("$dir/Signed_Binaries/Start.exe", $dir))  {die $!;}
 
 print "Processing Main Zip\n";
 
-my @files =   glob("'$dir\\*'");
+my @files =   `cmd /c dir /b `;
 
-foreach (@files) {
-	next if -d $_;
-	next if $_ eq 'Make_zip_v2.pl';
-	Process ("../7z.exe -tzip a ..\\Zips\\DreamGrid$type.zip \"$_\" ");
+foreach my $file (@files) {
+	chomp $file;
+	next if -d $file;
+	next if $file eq 'Make_zip_v2.pl';
+	next if $file =~ /^\./;
+	Process ("../7z.exe -tzip a ..\\Zips\\DreamGrid$type.zip \"$dir\\$file\" ");
 }
 
 say("Adding folders");
@@ -76,8 +78,18 @@ Process ("../7z.exe -tzip a ..\\Zips\\DreamGrid-Update$type.zip OutworldzFiles")
 
 Process ("../7z.exe -tzip a ..\\Zips\\DreamGrid$type.zip Licenses_to_Content");
 Process ("../7z.exe -tzip a ..\\Zips\\DreamGrid$type.zip OutworldzFiles");
-#Process ("../7z.exe -tzip a ..\\Zips\\DreamGrid$type.zip Viewer");
 
+say("Remove all regions");
+@files = `cmd /c dir /b OutworldzFiles\\opensim\\bin\\Regions\\*`;
+
+foreach my $file (@files) {
+	chomp $file;
+	# leave Welcome.ini
+	next if $file =~ /Welcome/;
+	next if $file =~ /^\./;
+	Process ("../7z.exe -tzip d ..\\Zips\\DreamGrid-Update$type.zip OutworldzFiles\\opensim\\bin\\Regions\\$file");
+
+}
 		
 say("Updater Build");
 if (!copy ("../Zips/DreamGrid$type.zip", "../Zips/DreamGrid-Update$type.zip"))  {die $!;}
@@ -91,10 +103,17 @@ Process ("../7z.exe -tzip d ..\\Zips\\DreamGrid-Update$type.zip Outworldzfiles\\
 # del Dot net because we cannot overwrite an open file
 Process ("../7z.exe -tzip d ..\\Zips\\DreamGrid-Update$type.zip DotNetZip.dll ");
 
-say("Remove welcome region");
-# and WelcomeRegion.ini so we do not end up adding it
-Process ("../7z.exe -tzip d ..\\Zips\\DreamGrid-Update$type.zip Outworldzfiles\\Opensim\\bin\\Regions\\WelcomeRegion");		
+say("Remove all regions from backup");
 
+
+foreach my $file (@files) {
+	# delete all regions
+	chomp $file;
+	next if $file =~ /^\./;
+	if ($file =~ /Regions/) {
+		Process ("../7z.exe -tzip d ..\\Zips\\DreamGrid-Update$type.zip OutworldzFiles\\opensim\\bin\\Regions\\$file");
+	}
+}
 
 #####################
 print "Server Copy\n";
@@ -125,9 +144,10 @@ sub Write
 sub Process
 {
 	my $file = shift;
+	
 	my $x = `$file`;
 	if ($x =~ /Everything is Ok/) {
-		print "Okay $file\n";
+		print "Ok\n";
 	} else {
 		print "Fail: $x\n";
 		exit;

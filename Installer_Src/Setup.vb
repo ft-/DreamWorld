@@ -35,19 +35,19 @@ Public Class Form1
     '
 #Region "Declarations"
 
-    Dim MyVersion As String = "2.05"
+    Dim MyVersion As String = "2.06"
     Dim DebugPath As String = "C:\Opensim\Outworldz 2.05 Source"  ' no slash at end
     Public Domain As String = "http://www.outworldz.com"
     Public prefix As String ' Holds path to Opensim folder
 
-    Private gFailDebug1 = False ' set to true to fail diagnostic
-    Private gFailDebug2 = False ' set to true to fail diagnostic
-    Private gFailDebug3 = False ' set to true to fail diagnostic
+    Private gFailDebug1 As Boolean = False ' set to true to fail diagnostic
+    Private gFailDebug2 As Boolean = False ' set to true to fail diagnostic
+    Private gFailDebug3 As Boolean = False ' set to true to fail diagnostic
 
     Public MyFolder As String   ' Holds the current folder that we are running in
     Dim gCurSlashDir As String '  holds the current directory info in Unix format
     Public isRunning As Boolean = False
-    Dim Arnd = New Random()
+    Dim Arnd As Object = New Random()
     Public gChatTime As Integer
     Dim client As New System.Net.WebClient
 
@@ -94,17 +94,18 @@ Public Class Form1
                              My.Resources.wp_54, My.Resources.wp_55, My.Resources.wp_56,
                              My.Resources.wp_57
                             }
-    Dim gDebug = False       ' toggled by -debug flag on command line
+    Dim gDebug As Boolean = False       ' toggled by -debug flag on command line
     Dim gContentAvailable As Boolean = False ' assume there is no OAR and IAR data available
-    Dim MyUPnpMap
+    Dim MyUPnpMap As UPnp
     Dim ws As NetServer
     Public Shared RegionClass As RegionMaker
     Dim RegionHandles(50) As Boolean
-    Dim gStopping = False
+    Dim gStopping As Boolean = False
     Dim Timertick As Integer        ' counts the seconds uintil wallpaper changes
     Public Shared MysqlConn As Mysql    ' object lets us query Mysql database
     Private Diagsrunning As Boolean = False
     Dim gDNSSTimer As Integer = 0
+    Dim gUseIcons As Boolean = True
 
     Public Class JSON_result
         Public alert As String
@@ -299,6 +300,23 @@ Public Class Form1
         Log("Info:Starting Web Server ")
         ws.StartServer(MyFolder)
 
+        Dim ctr = 10 ' wait ten seconds for webserver to start
+        While ws.MyIP() = Nothing And ctr
+            ctr = ctr - 1
+            Sleep(1000)
+        End While
+
+        If ws.MyIP() = Nothing Then
+            gUseIcons = False
+        Else
+            gUseIcons = True
+            Dim wsstarted = CheckPort(ws.MyIP(), My.Settings.DiagnosticPort)
+            If wsstarted = False Then
+                MsgBox("Diagnostics port " + My.Settings.DiagnosticPort + " is blocked by firewall or antivirus.")
+                gUseIcons = False
+            End If
+        End If
+
         ' Run diagnostics, maybe
         '     If gDebug Then My.Settings.DiagsRun2 = False
 
@@ -484,33 +502,38 @@ Public Class Form1
             End If
             Application.DoEvents()
         Next
-        Print("Waiting for all regions to exit")
 
-        counter = 300 ' 5 minutes to quit all regions
-        While (counter)
-            ' decrement progress bar according to the ratio of what we had / what we have now
-            Dim n2 = RegionClass.Count()
-            'Debug.Print("N2=" + n2.ToString())
-            If n Then
-                ProgressBar1.Value = n2 / n * 100
-                'Debug.Print("V=" + ProgressBar1.Value.ToString)
-            End If
-            Sleep(1000)
+        ' only wait if the port 8001 is working
+        If gUseIcons Then
+            Print("Waiting for all regions to exit")
 
-            counter = counter - 1
-            Dim isRunning As Boolean = False
-            For Each o As Object In RegionClass.AllRegionObjects
-                If o Is Nothing Or Not gStopping Then
-                    ' do nothing
-                Else
-                    If o.ProcessID And (o.WarmingUp Or o.Ready Or o.Shuttingdown) Then
-                        isRunning = True
-                    End If
+            counter = 300 ' 5 minutes to quit all regions
+            While (counter)
+                ' decrement progress bar according to the ratio of what we had / what we have now
+                Dim n2 = RegionClass.Count()
+                'Debug.Print("N2=" + n2.ToString())
+                If n Then
+                    ProgressBar1.Value = n2 / n * 100
+                    'Debug.Print("V=" + ProgressBar1.Value.ToString)
                 End If
-                Application.DoEvents()
-            Next
-            If Not isRunning Then counter = 0
-        End While
+                Sleep(1000)
+
+                counter = counter - 1
+                Dim isRunning As Boolean = False
+                For Each o As Object In RegionClass.AllRegionObjects
+                    If o Is Nothing Or Not gStopping Then
+                        ' do nothing
+                    Else
+                        If o.ProcessID And (o.WarmingUp Or o.Ready Or o.Shuttingdown) Then
+                            isRunning = True
+                        End If
+                    End If
+                    Application.DoEvents()
+                Next
+                If Not isRunning Then counter = 0
+            End While
+        End If
+
 
         If gRobustProcID Then
             ConsoleCommand(gRobustProcID, "quit{ENTER}")
@@ -1259,7 +1282,8 @@ Public Class Form1
         KillAll()
         Buttons(StartButton)
         Print("Opensim Is Stopped")
-        ProgressBar1.Value = 10
+        ProgressBar1.Value = 0
+        ProgressBar1.Visible = False
 
     End Sub
 
@@ -1816,7 +1840,8 @@ Public Class Form1
             MyFolder + "\OutworldzFiles\Diagnostics.log",
             MyFolder + "\OutworldzFiles\UPnp.log",
             MyFolder + "\OutworldzFiles\Opensim\bin\Robust.log",
-            MyFolder + "\OutworldzFiles\Opensim\http.log"
+            MyFolder + "\OutworldzFiles\http.log",
+            MyFolder + "\http.log"      ' an old mistake
         }
 
         For Each thing In Logfiles
@@ -2162,7 +2187,7 @@ Public Class Form1
             Print("Saving " + backupName + " to " + BackupPath())
 
         Else
-                Print("Opensim is not running. Cannot make a backup now.")
+            Print("Opensim is not running. Cannot make a backup now.")
         End If
     End Sub
 
@@ -2510,7 +2535,10 @@ Public Class Form1
 
         If Not My.Settings.EnableHypergrid Then
             BumpProgress10()
+#Disable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
             My.Settings.PublicIP = MyUPnpMap.LocalIP
+#Enable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
+
             My.Settings.Save()
             Return False
         End If
@@ -2528,11 +2556,11 @@ Public Class Form1
                 ProbePublicPort()
             End If
             Return True
-            End If
+        End If
 
 
-            ' Set Public IP
-            Try
+        ' Set Public IP
+        Try
             Dim ip As String = client.DownloadString("http://api.ipify.org/?r=" + Random())
             BumpProgress10()
             Log("Info:Public IP=" + My.Settings.PublicIP)
@@ -2577,7 +2605,9 @@ Public Class Form1
             Print("Router Loopback failed. See the Help section for 'Loopback' and how to enable it in Windows. Continuing...")
             My.Settings.LoopBackDiag = False
             My.Settings.DiagFailed = True
+#Disable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
             My.Settings.PublicIP = MyUPnpMap.LocalIP()
+#Enable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
             My.Settings.Save()
         End If
 
@@ -2630,7 +2660,9 @@ Public Class Form1
             Log("Failed:" + isPortOpen)
             My.Settings.DiagFailed = True
             Print("Internet address " + My.Settings.PublicIP + ":" + My.Settings.DiagnosticPort + " appears to not be forwarded to this machine in your router, so Hypergrid is not available. This can possibly be fixed by 'Port Forwards' in your router.  See Help->Port Forwards.")
+#Disable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
             My.Settings.PublicIP = MyUPnpMap.LocalIP() ' failed, so try the machine address
+#Enable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
             My.Settings.Save()
             Log("IP set to " + My.Settings.PublicIP)
             Return False
@@ -2643,6 +2675,7 @@ Public Class Form1
         Print("Running Network Diagnostics, please wait")
         Diagsrunning = True
         My.Settings.DiagFailed = False
+        CheckDiagPort()
         OpenPorts() ' Open router ports with UPnp
         ProbePublicPort()
         TestLoopback()
@@ -2656,6 +2689,18 @@ Public Class Form1
         Diagsrunning = False
 
     End Sub
+
+    Private Function CheckDiagPort() As Boolean
+        gUseIcons = True
+        Dim wsstarted = CheckPort(ws.MyIP, My.Settings.DiagnosticPort)
+        If wsstarted = False Then
+            MsgBox("Diagnostics port " + My.Settings.DiagnosticPort + " is not working or blocked by firewall or anti virus, icons disabled.")
+            gUseIcons = False
+            My.Settings.DiagFailed = True
+            My.Settings.Save()
+        End If
+        Return gUseIcons
+    End Function
 
     Private Shared Function IsPrivateIP(ByVal CheckIP As String) As Boolean
 
@@ -2689,7 +2734,7 @@ Public Class Form1
     Function OpenRouterPorts() As Boolean
 
 
-        If Not MyUPnpMap.UPNPEnabled Then
+        If Not MyUPnpMap.UPnpEnabled Then
             Log("UPnP is not enabled in the router")
             Return False
         End If
@@ -2707,7 +2752,7 @@ Public Class Form1
                 MyUPnpMap.Remove(Convert.ToInt16(My.Settings.DiagnosticPort), UPnp.Protocol.TCP)
             End If
             MyUPnpMap.Add(UPnp.LocalIP, Convert.ToInt16(My.Settings.DiagnosticPort), UPnp.Protocol.TCP, "Opensim TCP Public " + My.Settings.DiagnosticPort)
-            PrintFast("Diagnostic Port is open:" + My.Settings.DiagnosticPort)
+            PrintFast("Diagnostic Port is set to " + My.Settings.DiagnosticPort)
             BumpProgress10()
 
             ' 8002 for TCP and UDP
@@ -2715,14 +2760,14 @@ Public Class Form1
                 MyUPnpMap.Remove(Convert.ToInt16(My.Settings.HttpPort), UPnp.Protocol.TCP)
             End If
             MyUPnpMap.Add(UPnp.LocalIP, Convert.ToInt16(My.Settings.HttpPort), UPnp.Protocol.TCP, "Opensim TCP Grid " + My.Settings.HttpPort)
-            PrintFast("Grid Port is open:" + My.Settings.HttpPort)
+            PrintFast("Grid Port is set to " + My.Settings.HttpPort)
             BumpProgress10()
 
             If MyUPnpMap.Exists(Convert.ToInt16(My.Settings.HttpPort), UPnp.Protocol.UDP) Then
                 MyUPnpMap.Remove(Convert.ToInt16(My.Settings.HttpPort), UPnp.Protocol.UDP)
             End If
             MyUPnpMap.Add(UPnp.LocalIP, Convert.ToInt16(My.Settings.HttpPort), UPnp.Protocol.UDP, "Opensim UDP Grid " + My.Settings.HttpPort)
-            PrintFast("Grid Port is open:" + My.Settings.HttpPort)
+            PrintFast("Grid Port is set to " + My.Settings.HttpPort)
             BumpProgress10()
 
             '8004-whatever
@@ -2738,14 +2783,14 @@ Public Class Form1
                     MyUPnpMap.Remove(R, UPnp.Protocol.UDP)
                 End If
                 MyUPnpMap.Add(UPnp.LocalIP, R, UPnp.Protocol.UDP, "Opensim UDP Region " & o.RegionName & " ")
-                PrintFast("Region " + o.RegionName + " is open:" + Convert.ToString(R))
+                PrintFast("Region " + o.RegionName + " is set to " + Convert.ToString(R))
                 BumpProgress(1)
 
                 If MyUPnpMap.Exists(R, UPnp.Protocol.TCP) Then
                     MyUPnpMap.Remove(R, UPnp.Protocol.TCP)
                 End If
                 MyUPnpMap.Add(UPnp.LocalIP, R, UPnp.Protocol.TCP, "Opensim TCP Region " & o.RegionName & " ")
-                PrintFast("Region " + o.RegionName + " is open:" + Convert.ToString(R))
+                PrintFast("Region " + o.RegionName + " is set to " + Convert.ToString(R))
                 BumpProgress(1)
             Next
 
@@ -2772,8 +2817,7 @@ Public Class Form1
         End If
 
 
-        Dim data
-        data = "&Machine=" + Machine _
+        Dim data As String = "&Machine=" + Machine _
             + "&V=" + MyVersion _
             + "&OV=" + SimVersion _
             + "&uPnp=" + UPnp _
@@ -3215,7 +3259,7 @@ Public Class Form1
             Dim first As Integer = POST.IndexOf("{")
             Dim last As Integer = POST.LastIndexOf("}")
             Dim rawJSON = POST.Substring(first, last - first + 1)
-            Dim json
+            Dim json As JSON_result
             Try
                 json = JsonConvert.DeserializeObject(Of JSON_result)(rawJSON)
             Catch ex As Exception
@@ -3224,7 +3268,7 @@ Public Class Form1
             End Try
 
             If json.login = "enabled" Then
-                Debug.Print("Region " & json.Region_name & " is ready for logins")
+                Debug.Print("Region " & json.region_name & " is ready for logins")
 
                 Dim o = RegionClass.FindRegionByName(json.region_name)
                 o.Ready = True
@@ -3233,7 +3277,7 @@ Public Class Form1
                 o.UUID = json.region_id
 
             ElseIf json.login = "shutdown" Then
-                Debug.Print("Region " & json.Region_name & " shut down")
+                Debug.Print("Region " & json.region_name & " shut down")
 
                 Dim o = RegionClass.FindRegionByName(json.region_name)
                 o.Ready = False

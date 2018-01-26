@@ -42,13 +42,15 @@ Partial Class Form1
         Me.AdvancedSettingsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.HelpToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ShowHyperGridAddressToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
         Me.ConsoleCOmmandsToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
-        Me.WebStatsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ViewWebUI = New System.Windows.Forms.ToolStripMenuItem()
+        Me.WebStatsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.LoopBackToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator()
         Me.DiagnosticsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripMenuItem2 = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
-        Me.LoopBackToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.CheckDatabaseToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.CHeckForUpdatesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuAbout = New System.Windows.Forms.ToolStripMenuItem()
@@ -57,6 +59,7 @@ Partial Class Form1
         Me.IslandToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ClothingInventoryToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MoreContentToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripSeparator3 = New System.Windows.Forms.ToolStripSeparator()
         Me.BackupRestoreToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.AllRegionsOARsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.BackupDatabaseToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -79,9 +82,6 @@ Partial Class Form1
         Me.LogButton = New System.Windows.Forms.Button()
         Me.IgnoreButton = New System.Windows.Forms.Button()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
-        Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
-        Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator()
-        Me.ToolStripSeparator3 = New System.Windows.Forms.ToolStripSeparator()
         Me.MenuStrip1.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -202,12 +202,25 @@ Partial Class Form1
         Me.ShowHyperGridAddressToolStripMenuItem.Text = "Show HyperGrid Address"
         Me.ShowHyperGridAddressToolStripMenuItem.ToolTipText = "You can give this address out to oepple and they can visit your grid"
         '
+        'ToolStripSeparator1
+        '
+        Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
+        Me.ToolStripSeparator1.Size = New System.Drawing.Size(207, 6)
+        '
         'ConsoleCOmmandsToolStripMenuItem1
         '
         Me.ConsoleCOmmandsToolStripMenuItem1.Image = Global.Outworldz.My.Resources.Resources.document_view
         Me.ConsoleCOmmandsToolStripMenuItem1.Name = "ConsoleCOmmandsToolStripMenuItem1"
         Me.ConsoleCOmmandsToolStripMenuItem1.Size = New System.Drawing.Size(210, 22)
         Me.ConsoleCOmmandsToolStripMenuItem1.Text = "View Console Commands"
+        '
+        'ViewWebUI
+        '
+        Me.ViewWebUI.Image = Global.Outworldz.My.Resources.Resources.document_view
+        Me.ViewWebUI.Name = "ViewWebUI"
+        Me.ViewWebUI.Size = New System.Drawing.Size(210, 22)
+        Me.ViewWebUI.Text = "View Web Interface"
+        Me.ViewWebUI.ToolTipText = "The WIfi Interface can be used to add new users"
         '
         'WebStatsToolStripMenuItem
         '
@@ -217,13 +230,26 @@ Partial Class Form1
         Me.WebStatsToolStripMenuItem.Text = "View Web Stats"
         Me.WebStatsToolStripMenuItem.Visible = False
         '
-        'ViewWebUI
+        'LoopBackToolStripMenuItem
         '
-        Me.ViewWebUI.Image = Global.Outworldz.My.Resources.Resources.document_view
-        Me.ViewWebUI.Name = "ViewWebUI"
-        Me.ViewWebUI.Size = New System.Drawing.Size(210, 22)
-        Me.ViewWebUI.Text = "View Web Interface"
-        Me.ViewWebUI.ToolTipText = "The WIfi Interface can be used to add new users"
+        Me.LoopBackToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.refresh
+        Me.LoopBackToolStripMenuItem.Name = "LoopBackToolStripMenuItem"
+        Me.LoopBackToolStripMenuItem.Size = New System.Drawing.Size(210, 22)
+        Me.LoopBackToolStripMenuItem.Text = "Help on LoopBack "
+        Me.LoopBackToolStripMenuItem.ToolTipText = "How to fix Loopback on Windows"
+        '
+        'ToolStripMenuItem1
+        '
+        Me.ToolStripMenuItem1.Image = Global.Outworldz.My.Resources.Resources.document_connection
+        Me.ToolStripMenuItem1.Name = "ToolStripMenuItem1"
+        Me.ToolStripMenuItem1.Size = New System.Drawing.Size(210, 22)
+        Me.ToolStripMenuItem1.Text = "Help on Port Forwarding"
+        Me.ToolStripMenuItem1.ToolTipText = "Web Help for Port Forwarding"
+        '
+        'ToolStripSeparator2
+        '
+        Me.ToolStripSeparator2.Name = "ToolStripSeparator2"
+        Me.ToolStripSeparator2.Size = New System.Drawing.Size(207, 6)
         '
         'DiagnosticsToolStripMenuItem
         '
@@ -239,22 +265,6 @@ Partial Class Form1
         Me.ToolStripMenuItem2.Name = "ToolStripMenuItem2"
         Me.ToolStripMenuItem2.Size = New System.Drawing.Size(210, 22)
         Me.ToolStripMenuItem2.Text = "Port/UPnp Setup"
-        '
-        'ToolStripMenuItem1
-        '
-        Me.ToolStripMenuItem1.Image = Global.Outworldz.My.Resources.Resources.document_connection
-        Me.ToolStripMenuItem1.Name = "ToolStripMenuItem1"
-        Me.ToolStripMenuItem1.Size = New System.Drawing.Size(210, 22)
-        Me.ToolStripMenuItem1.Text = "Help on Port Forwarding"
-        Me.ToolStripMenuItem1.ToolTipText = "Web Help for Port Forwarding"
-        '
-        'LoopBackToolStripMenuItem
-        '
-        Me.LoopBackToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.refresh
-        Me.LoopBackToolStripMenuItem.Name = "LoopBackToolStripMenuItem"
-        Me.LoopBackToolStripMenuItem.Size = New System.Drawing.Size(210, 22)
-        Me.LoopBackToolStripMenuItem.Text = "Help on LoopBack "
-        Me.LoopBackToolStripMenuItem.ToolTipText = "How to fix Loopback on Windows"
         '
         'CheckDatabaseToolStripMenuItem
         '
@@ -319,12 +329,17 @@ Partial Class Form1
         Me.MoreContentToolStripMenuItem.Text = "More Free Islands and Parts"
         Me.MoreContentToolStripMenuItem.ToolTipText = "Outworldz has a entirely free content."
         '
+        'ToolStripSeparator3
+        '
+        Me.ToolStripSeparator3.Name = "ToolStripSeparator3"
+        Me.ToolStripSeparator3.Size = New System.Drawing.Size(217, 6)
+        '
         'BackupRestoreToolStripMenuItem
         '
         Me.BackupRestoreToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AllRegionsOARsToolStripMenuItem, Me.BackupDatabaseToolStripMenuItem, Me.RestoreDatabaseToolStripMenuItem1})
         Me.BackupRestoreToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.disk_blue
         Me.BackupRestoreToolStripMenuItem.Name = "BackupRestoreToolStripMenuItem"
-        Me.BackupRestoreToolStripMenuItem.Size = New System.Drawing.Size(187, 22)
+        Me.BackupRestoreToolStripMenuItem.Size = New System.Drawing.Size(220, 22)
         Me.BackupRestoreToolStripMenuItem.Text = "Backup and Restore"
         '
         'AllRegionsOARsToolStripMenuItem
@@ -353,7 +368,7 @@ Partial Class Form1
         Me.OARToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.LoadRegionOarToolStripMenuItem, Me.SaveRegionOARToolStripMenuItem})
         Me.OARToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.disk_green
         Me.OARToolStripMenuItem.Name = "OARToolStripMenuItem"
-        Me.OARToolStripMenuItem.Size = New System.Drawing.Size(187, 22)
+        Me.OARToolStripMenuItem.Size = New System.Drawing.Size(220, 22)
         Me.OARToolStripMenuItem.Text = "OAR"
         '
         'LoadRegionOarToolStripMenuItem
@@ -375,7 +390,7 @@ Partial Class Form1
         Me.IARToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.LoadInventoryIARToolStripMenuItem, Me.SaveInventoryIARToolStripMenuItem})
         Me.IARToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.disk_yellow
         Me.IARToolStripMenuItem.Name = "IARToolStripMenuItem"
-        Me.IARToolStripMenuItem.Size = New System.Drawing.Size(187, 22)
+        Me.IARToolStripMenuItem.Size = New System.Drawing.Size(220, 22)
         Me.IARToolStripMenuItem.Text = "IAR"
         '
         'LoadInventoryIARToolStripMenuItem
@@ -480,7 +495,7 @@ Partial Class Form1
         'PictureBox1
         '
         Me.PictureBox1.BackColor = System.Drawing.Color.White
-        Me.PictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.PictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom
         Me.PictureBox1.ErrorImage = Global.Outworldz.My.Resources.Resources.wp_51
         Me.PictureBox1.InitialImage = Nothing
         Me.PictureBox1.Location = New System.Drawing.Point(0, 27)
@@ -489,21 +504,6 @@ Partial Class Form1
         Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize
         Me.PictureBox1.TabIndex = 27
         Me.PictureBox1.TabStop = False
-        '
-        'ToolStripSeparator1
-        '
-        Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
-        Me.ToolStripSeparator1.Size = New System.Drawing.Size(207, 6)
-        '
-        'ToolStripSeparator2
-        '
-        Me.ToolStripSeparator2.Name = "ToolStripSeparator2"
-        Me.ToolStripSeparator2.Size = New System.Drawing.Size(207, 6)
-        '
-        'ToolStripSeparator3
-        '
-        Me.ToolStripSeparator3.Name = "ToolStripSeparator3"
-        Me.ToolStripSeparator3.Size = New System.Drawing.Size(184, 6)
         '
         'Form1
         '
