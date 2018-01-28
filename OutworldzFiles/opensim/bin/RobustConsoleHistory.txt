@@ -1,32 +1,3 @@
-Test
-User
-create user
-reset user password Wifi Admin !!X1J)
-quit
-debug http all 5
-debug http all 5
-reset user password Wifi Admin secret
-reset user password Wifi Admin secret
-reset user password Wifi Admin secret
-reset user password Wifi Admin secret
-show version
-reset user password Wifi Admin secret
-reset user password Wifi Admin secret
-reset user password Wifi Admin secret
-reset user password Wifi Admin secret
-create user Test User 123
-reset user password Wifi Admin secret
-reset user password Wifi Admin secret
-reset user password Wifi Admin secret
-reset user password Wifi Admin IQv9Ju
-reset user password Wifi Admin IQv9Ju
-reset user password Wifi Admin q&BQ3n
-reset user password Wifi Admin 24C0RB
-reset user password Wifi Admin 1
-2reset user password Wifi Admin 13
-reset user password Wifi Admin 1
-2reset user password Wifi Admin 12
-reset user password Wifi Admin 123
 create user Test User 123
 show regions
 create user Test User
@@ -99,3 +70,31 @@ create user Test User
 quit
 quit
 quit
+Test
+User
+create user
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+create user Test User
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+show regions
+deregister region id ab8d7770-3782-21e4-8c41-1813211c9b44
+show regions
+deregister region id 9e20a886-233c-3333-8755-3b6e5a437654
+deregister region id 11126111-1640-11e7-93ae-92361f001111

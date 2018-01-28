@@ -39,11 +39,12 @@ Public Class Mysql
 
     End Function
 
+    <CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2100:Review SQL queries for security vulnerabilities")>
     Private Function QueryString(SQL As String) As String
         Try
             'Debug.Print("Connecting to MySQL...")
             MysqlConn.Open()
-        Catch ex As exception
+        Catch ex As Exception
             Debug.Print("Error: " & ex.ToString())
             MysqlConn.Close()
             Return Nothing

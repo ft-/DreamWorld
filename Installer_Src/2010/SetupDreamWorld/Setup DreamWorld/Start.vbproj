@@ -225,6 +225,12 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="Mysql.vb" />
+    <Compile Include="RegionList.Designer.vb">
+      <DependentUpon>RegionList.vb</DependentUpon>
+    </Compile>
+    <Compile Include="RegionList.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="RegionMaker.vb" />
     <Compile Include="Settings.vb" />
     <Compile Include="FormVoice.Designer.vb">
@@ -267,6 +273,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormVoice.resx">
       <DependentUpon>FormVoice.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RegionList.resx">
+      <DependentUpon>RegionList.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

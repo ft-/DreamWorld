@@ -36,13 +36,9 @@ Public Class Form1
 #Region "Declarations"
 
     Dim MyVersion As String = "2.06"
-    Dim DebugPath As String = "C:\Opensim\Outworldz 2.05 Source"  ' no slash at end
+    Dim DebugPath As String = "C:\Opensim\Outworldz Source"  ' no slash at end
     Public Domain As String = "http://www.outworldz.com"
     Public prefix As String ' Holds path to Opensim folder
-
-    Private gFailDebug1 As Boolean = False ' set to true to fail diagnostic
-    Private gFailDebug2 As Boolean = False ' set to true to fail diagnostic
-    Private gFailDebug3 As Boolean = False ' set to true to fail diagnostic
 
     Public MyFolder As String   ' Holds the current folder that we are running in
     Dim gCurSlashDir As String '  holds the current directory info in Unix format
@@ -216,7 +212,6 @@ Public Class Form1
         ' Save a random machine ID - we don't want any data to be sent that's personal or identifiable,  but it needs to be unique\
         If Machine = "" Then Machine = Random()  ' a random machine ID
 
-
         'hide progress
         ProgressBar1.Visible = True
         ProgressBar1.Minimum = 0
@@ -232,7 +227,6 @@ Public Class Form1
 
         LogButton.Hide()
         IgnoreButton.Hide()
-
         Buttons(BusyButton)
 
         ' hide updater
@@ -242,9 +236,8 @@ Public Class Form1
         ' WebUI
         ViewWebUI.Visible = My.Settings.WifiEnabled
 
-        Me.Text = "Dreamgrid V" + MyVersion
+        Me.Text = "Outworldz Dreamgrid V" + MyVersion
         PictureBox1.Enabled = True
-
 
         gChatTime = My.Settings.ChatTime
 
@@ -255,15 +248,10 @@ Public Class Form1
 
         MyFolder = My.Application.Info.DirectoryPath
 
-        ' I would like to buy an argument
-        Dim arguments As String() = Environment.GetCommandLineArgs()
-
-        If arguments.Length > 1 Then
+        If MyFolder.Contains("Setup DreamWorld\bin") Then
             ' for debugging when compiling
-            If arguments(1) = "-debug" Then
-                gDebug = True
-                MyFolder = DebugPath ' for testing, as the compiler buries itself in ../../../debug
-            End If
+            gDebug = True
+            MyFolder = DebugPath ' for testing, as the compiler buries itself in ../../../debug
         End If
 
         gCurSlashDir = MyFolder.Replace("\", "/")    ' because Mysql uses unix like slashes, that's why
@@ -278,8 +266,6 @@ Public Class Form1
         MyUPnpMap = New UPnp(MyFolder)
 
         RegionClass = New RegionMaker
-
-        LoadRegionList()
 
         If (My.Settings.SplashPage = "") Then
             My.Settings.SplashPage = Domain + "/Outworldz_installer/Welcome.htm"
@@ -318,15 +304,14 @@ Public Class Form1
         End If
 
         ' Run diagnostics, maybe
-        '     If gDebug Then My.Settings.DiagsRun2 = False
 
-        If Not My.Settings.DiagsRun2 Then
+        If Not My.Settings.RanAllDiags Or gDebug Then
             DoDiag()
-            My.Settings.DiagsRun2 = True
+            My.Settings.RanAllDiags = True
+            My.Settings.Save()
         End If
 
         If Not SetINIData() Then Return
-
 
         mnuSettings.Visible = True
         SetIAROARContent() ' load IAR and OAR web content
@@ -370,7 +355,7 @@ Public Class Form1
                 Log("Error:Could not create Init.txt - no permissions to write it:" + ex.Message)
             End Try
 
-            Print("Ready to Launch! Please type 'create user<ret>' in the ROBUST console, and then answer any questions in the REGION console. ")
+            Print("Ready to Launch!")
             Buttons(StartButton)
         End If
 
@@ -393,10 +378,7 @@ Public Class Form1
         Buttons(BusyButton)
         Running = True
 
-
         RegionClass.GetAllRegions()
-        LoadRegionList()
-
 
         If SetPublicIP() Then
             OpenPorts()
@@ -408,6 +390,13 @@ Public Class Form1
 
         If Not Start_Robust() Then
             Return
+        End If
+
+        If Not My.Settings.RunOnce Then
+            MsgBox("Please type 'create user<ret>' to make the system owner's account in the ROBUST console, and then answer any questions.", vbInformation)
+            Sleep(10000)
+            My.Settings.RunOnce = True
+            My.Settings.Save()
         End If
 
         If Not Start_Opensimulator() Then ' Launch the rockets
@@ -776,7 +765,7 @@ Public Class Form1
             Dim onceflag As Boolean = False ' only do the DefaultName
             Dim counter As Integer = 0
 
-            RegionClass.DebugRegions()
+            ' RegionClass.DebugRegions()
 
             Try
                 My.Computer.FileSystem.DeleteFile(prefix + "bin\Robust.tmp")
@@ -1043,7 +1032,8 @@ Public Class Form1
         For Each o In RegionClass.AllRegionObjects
 
             Dim simName = o.RegionName
-            LoadIni(o.RegionPath + "\" + o.RegionName + ".ini", ";")
+
+            LoadIni(o.RegionPath, ";")
             SetIni(simName, "InternalPort", Convert.ToString(o.RegionPort))
             SetIni(simName, "ExternalHostName", Convert.ToString(My.Settings.PublicIP))
 
@@ -1083,12 +1073,8 @@ Public Class Form1
                     pathname = pathname.Substring(0, pathname.IndexOf("Region\"))
 
                     Debug.Print(regionName)
-                    Dim o = RegionClass.FindRegionByName(regionName)
 
-                    Try
-                        My.Computer.FileSystem.DeleteFile(pathname + "Opensim.ini")
-                    Catch ex As Exception
-                    End Try
+                    Dim o = RegionClass.FindRegionByName(regionName)
 
                     Try
                         LoadIni(prefix + "bin\Opensim.proto", ";")
@@ -1096,7 +1082,7 @@ Public Class Form1
                         SetIni("Const", "PublicPort", My.Settings.HttpPort)
                         SetIni("Const", "http_listener_port", o.RegionPort)
                         SetIni("Const", "PrivatePort", My.Settings.PrivatePort) '8003
-                        SetIni("Const", "RegionFolderName", regionName)
+                        SetIni("Const", "RegionFolderName", o.Folder)
                         SaveINI()
                         My.Computer.FileSystem.CopyFile(prefix + "bin\Opensim.proto", pathname + "Opensim.ini", True)
                     Catch
@@ -1153,7 +1139,7 @@ Public Class Form1
 
     Private Sub DoWifi(param As String)
 
-        'LoadIni(prefix + "addins-registry\addins\Diva.Wifi.0.9.0.0.13\Wifi.ini", ";")
+
         LoadIni(prefix + param, ";")
 
         Dim ConnectionString = """" _
@@ -1218,7 +1204,7 @@ Public Class Form1
                 If ports(o.RegionPort) Is Nothing Then
                     ports(o.RegionPort) = o
                 Else
-                    MsgBox(o.RegionName + " has a duplicated port with " + o.RegionName + ". Skipping boot of " + o.RegionName)
+                    MsgBox(o.RegionName + " has a duplicated port with " + ports(o.RegionPort).RegionName + ". Skipping boot of " + o.RegionName)
                     o.RegionEnabled = False
                     Passfail = False
                 End If
@@ -1250,10 +1236,6 @@ Public Class Form1
 #End Region
 
 #Region "ToolBars"
-
-    Private Sub mnuSettings_Click(sender As Object, e As EventArgs) Handles mnuSettings.Click
-        LoadRegionList()
-    End Sub
 
     Private Sub ToolStripMenuItem2_Click(sender As Object, e As EventArgs) Handles ToolStripMenuItem2.Click
         Print("Starting UPnp Control Panel")
@@ -1345,10 +1327,10 @@ Public Class Form1
 
     End Sub
 
-    Private Function Start_Robust() As Boolean
+    Public Function Start_Robust() As Boolean
 
         If IsRobustRunning() Then
-            Print("Robust is already running")
+            'Print("Robust is already running")
             Return True
         End If
 
@@ -1418,7 +1400,6 @@ Public Class Form1
 
         If Running = False Then Return True
 
-
         Dim regions = New List(Of Object)
         regions = RegionClass.AllRegionObjects()
         regions = regions.OrderBy(Function(x) x.RegionName).ToList()
@@ -1437,7 +1418,7 @@ Public Class Form1
         For Each o In RegionClass.AllRegionObjects
             If o.RegionEnabled And Running Then '
 
-                Boot(o.RegionName)
+                Boot(o)
                 If o.ProcessID = 0 Then
                     Dim yesno = MsgBox(o.RegionName + " failed to start. Do you want to see the log file?", vbYesNo)
                     If (yesno = vbYes) Then
@@ -1747,18 +1728,20 @@ Public Class Form1
 
     End Function
 
-    Private Sub Boot(InstanceName As String)
+    Public Sub Boot(o As Object)
 
-        Environment.SetEnvironmentVariable("OSIM_LOGPATH", prefix + "bin\Regions\" & InstanceName)
+        If o Is Nothing Then Return
+        If (o.Ready Or o.WarmingUp Or o.Shuttingdown) Then Return
+
+        Environment.SetEnvironmentVariable("OSIM_LOGPATH", prefix + "bin\Regions\" & o.Folder())
 
         Dim myProcess = GetNewProcess()
 
         If myProcess Is Nothing Then
-            Print("Exceeded max number of processes: could not start " + InstanceName)
+            Print("Exceeded max number of processes: could not start " + o.RegionName)
             Return
         End If
 
-        Dim o = RegionClass.FindRegionByName(InstanceName)
         Print("Starting Region " + o.RegionName)
 
         Dim Pid As Integer
@@ -1768,29 +1751,30 @@ Public Class Form1
             myProcess.StartInfo.WorkingDirectory = prefix + "bin"
             myProcess.StartInfo.FileName = prefix + "bin\OpenSim.exe"
             myProcess.StartInfo.CreateNoWindow = False
-            myProcess.StartInfo.Arguments = """" & "-inidirectory=./Regions/" & InstanceName & """"
+            myProcess.StartInfo.Arguments = """" & "-inidirectory=./Regions/" & o.Folder() & """"
             If mnuShow.Checked Then
                 myProcess.StartInfo.WindowStyle = ProcessWindowStyle.Normal
             Else
                 myProcess.StartInfo.WindowStyle = ProcessWindowStyle.Minimized
             End If
 
+
             Try
-                My.Computer.FileSystem.DeleteFile(prefix + "bin\Regions\" & InstanceName & "\Opensim.log")
+                My.Computer.FileSystem.DeleteFile(prefix + "bin\Regions\" & o.Folder & "\Opensim.log")
             Catch
             End Try
             Try
-                My.Computer.FileSystem.DeleteFile(prefix + "bin\Regions\" & InstanceName & "\PID.pid")
+                My.Computer.FileSystem.DeleteFile(prefix + "bin\Regions\" & o.Folder & "\PID.pid")
             Catch
             End Try
 
             Try
-                My.Computer.FileSystem.DeleteFile(prefix + "bin\regions\" & InstanceName & "\OpensimConsole.log")
+                My.Computer.FileSystem.DeleteFile(prefix + "bin\regions\" & o.Folder & "\OpensimConsole.log")
             Catch ex As Exception
             End Try
 
             Try
-                My.Computer.FileSystem.DeleteFile(prefix + "bin\regions\" & InstanceName & "\OpenSimStats.log")
+                My.Computer.FileSystem.DeleteFile(prefix + "bin\regions\" & o.Folder & "\OpenSimStats.log")
             Catch ex As Exception
             End Try
 
@@ -2596,7 +2580,7 @@ Public Class Form1
 
         BumpProgress10()
 
-        If result = "Test Completed" And Not gFailDebug2 Then
+        If result = "Test Completed" And Not gDebug Then
             Log("Passed:" + result)
             My.Settings.LoopBackDiag = True
             My.Settings.Save()
@@ -2651,7 +2635,7 @@ Public Class Form1
 
         BumpProgress10()
 
-        If isPortOpen = "yes" And Not gFailDebug1 Then
+        If isPortOpen = "yes" And Not gDebug Then
             My.Settings.PublicIP = My.Settings.PublicIP
             Log("Public IP set to " + My.Settings.PublicIP)
             My.Settings.Save()
@@ -2967,7 +2951,7 @@ Public Class Form1
 
     End Sub
 
-    Private Function StartMySQL() As Boolean
+    Public Function StartMySQL() As Boolean
 
         ' Check for MySql operation
         Dim MysqlOk As Boolean
@@ -3296,66 +3280,6 @@ Public Class Form1
 
     End Function
 
-    Public Sub LoadRegionList()
-
-        RegionsToolStripMenuItem.DropDownItems.Clear()
-        ' add robust first
-        Dim RobustMenu As New ToolStripMenuItem
-        RobustMenu.Text = "Robust"
-        RobustMenu.DisplayStyle = ToolStripItemDisplayStyle.ImageAndText
-        If gRobustProcID Then
-            RobustMenu.Image = My.Resources.ResourceManager.GetObject("media_play_green")
-        Else
-            RobustMenu.Image = My.Resources.ResourceManager.GetObject("media_pause")
-        End If
-
-        RobustMenu.Checked = True
-        AddHandler RobustMenu.Click, New EventHandler(AddressOf RegionClick)
-        RegionsToolStripMenuItem.Visible = True
-        RegionsToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {RobustMenu})
-
-
-        ' now add all the regions
-        Try
-            Dim Rlist As List(Of Object) = RegionClass.AllRegionObjects
-            If Rlist.Count Then
-                For Each o In Rlist
-                    Dim RegionMenu As New ToolStripMenuItem
-                    RegionMenu.Text = o.RegionName
-                    RegionMenu.DisplayStyle = ToolStripItemDisplayStyle.ImageAndText
-                    AddHandler RegionMenu.Click, New EventHandler(AddressOf RegionClick)
-
-
-                    If o.WarmingUp Then
-                        RegionMenu.Image = My.Resources.ResourceManager.GetObject("refresh")
-                        RegionMenu.ToolTipText = o.RegionName + " is starting up."
-                        Debug.Print("Region " + o.RegionName + " is starting up.")
-                    ElseIf o.ShuttingDown Then
-                        RegionMenu.Image = My.Resources.ResourceManager.GetObject("flash")
-                        RegionMenu.ToolTipText = o.RegionName + " is shutting down."
-                        Debug.Print("Region " + o.RegionName + " is shutting down.")
-                    ElseIf o.Ready Then
-                        RegionMenu.Image = My.Resources.ResourceManager.GetObject("media_play_green")
-                        RegionMenu.ToolTipText = o.RegionName + " is Running. Click to Stop."
-                        Debug.Print("Region " + o.RegionName + "  is Running")
-                    ElseIf o.RegionEnabled And Not Running Then
-                        RegionMenu.Image = My.Resources.ResourceManager.GetObject("media_pause")
-                        RegionMenu.ToolTipText = "Region is enabled And will be run. Click to disable."
-                        Debug.Print("Region " + o.RegionName + "  is enabled and will be run.")
-                    Else
-                        RegionMenu.Image = My.Resources.ResourceManager.GetObject("media_stop_red")
-                        RegionMenu.ToolTipText = o.RegionName + " is disabled And will not be run."
-                        Debug.Print("Region  " + o.RegionName + " is disabled and will not be run. ")
-                    End If
-
-                    RegionsToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {RegionMenu})
-                    Application.DoEvents()
-                Next
-            End If
-        Catch
-        End Try
-
-    End Sub
 
     Private Sub RegionClick(sender As ToolStripMenuItem, e As EventArgs)
         Dim o As Object = RegionClass.FindRegionByName(sender.Text)
@@ -3363,7 +3287,6 @@ Public Class Form1
         ' Handle robust clicking
         If sender.Text = "Robust" Then
             If gRobustProcID Then
-
                 ConsoleCommand(gRobustProcID, "quit{ENTER}")
                 Me.Focus()
                 Log("Region:Stopped Robust")
@@ -3397,7 +3320,7 @@ Public Class Form1
                         o.WarmingUp = False
                         o.ShuttingDown = True
 
-                        LoadIni(prefix & "bin\Regions\" & sender.Text & "\Region\" & sender.Text & ".ini", ";")
+                        LoadIni(o.RegionPath, ";")
                         SetIni(sender.Text, "Enabled", "false")
                         SaveINI()
 
@@ -3416,11 +3339,12 @@ Public Class Form1
                 o.ShuttingDown = False
 
                 ' and region file on disk
-                LoadIni(prefix & "bin\Regions\" & sender.Text & "\Region\" & sender.Text & ".ini", ";")
+
+                LoadIni(o.RegionPath, ";")
                 SetIni(sender.Text, "Enabled", "true")
                 SaveINI()
 
-                Boot(sender.Text)
+                Boot(o)
                 Debug.Print("Region:Started Region " + o.RegionName)
             End If
         End If
@@ -3521,6 +3445,14 @@ Public Class Form1
 
             Next
         End If
+
+    End Sub
+
+    Private Sub RegionsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles RegionsToolStripMenuItem.Click
+
+        Dim RegionForm As New RegionList
+        RegionForm.Show()
+        Application.DoEvents()
 
     End Sub
 

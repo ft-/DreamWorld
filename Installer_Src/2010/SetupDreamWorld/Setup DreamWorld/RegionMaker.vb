@@ -10,6 +10,7 @@ Public Class RegionMaker
     ' hold a copy of the Main region data on a per-form basis
     Private Class Region_data
         Public RegionPath As String
+        Public Folder As String
         Public ProcessID As Integer
         Public RegionName As String
         Public UUID As String
@@ -43,7 +44,6 @@ Public Class RegionMaker
         Set(value As Integer)
         End Set
     End Property
-
     Public Property RegionPath() As String
         Get
             Return RegionList(CurRegionNum()).RegionPath
@@ -52,7 +52,19 @@ Public Class RegionMaker
             RegionList(CurRegionNum()).RegionPath = Value
         End Set
     End Property
-
+    Public ReadOnly Property FolderPath() As String
+        Get
+            Return Path.GetDirectoryName(RegionPath())
+        End Get
+    End Property
+    Public Property Folder() As String
+        Get
+            Return RegionList(CurRegionNum()).Folder
+        End Get
+        Set(ByVal Value As String)
+            RegionList(CurRegionNum()).Folder = Value
+        End Set
+    End Property
     Public Property IsRegionEnabled() As Boolean
         Get
             Return RegionList(CurRegionNum()).RegionEnabled
@@ -94,17 +106,7 @@ Public Class RegionMaker
     End Property
     Public Property RegionName() As String
         Get
-
-            If gCurRegionNum > RegionList.Count - 1 Then
-                gCurRegionNum = RegionList.Count - 1
-            End If
-            If gCurRegionNum < 0 Then
-                gCurRegionNum = 0
-            End If
-            If RegionList.Count > 0 Then
-                Return RegionList(CurRegionNum()).RegionName
-            End If
-            Return ""
+            Return RegionList(CurRegionNum()).RegionName
         End Get
         Set(ByVal Value As String)
             RegionList(CurRegionNum()).RegionName = Value
@@ -181,8 +183,9 @@ Public Class RegionMaker
         GetAllRegions()
         If RegionCount() = 0 Then
             CreateRegion("Welcome")
-            My.Settings.WelcomeRegion = ""
-            WriteRegion()
+            My.Settings.WelcomeRegion = "Welcome"
+            WriteRegionObject()
+
             GetAllRegions()
         End If
 
@@ -229,7 +232,7 @@ Public Class RegionMaker
 
     End Function
 
-    Public Sub CreateRegion(name As String)
+    Public Function CreateRegion(name As String) As Object
 
         Dim r As New Region_data
         r.RegionName = name
@@ -243,8 +246,9 @@ Public Class RegionMaker
 
         RegionList.Add(r)
         CurRegionNum = RegionCount() - 1
+        Return FindRegionByName(name)
 
-    End Sub
+    End Function
 
     Public Sub GetAllRegions()
 
@@ -260,9 +264,9 @@ Public Class RegionMaker
 
                 Dim fName = ""
                 Try
-
                     Form1.Log("Info:Loading region from " + FolderName)
                     Dim inis = Directory.GetFiles(FileName, "*.ini", SearchOption.TopDirectoryOnly)
+
                     For Each ini As String In inis
                         ' remove the ini
                         Debug.Print(FileName)
@@ -271,19 +275,27 @@ Public Class RegionMaker
                         fName = Mid(fName, 1, Len(fName) - 4)
 
                         ' make a slot to hold the region data 
-                        CreateRegion(fName)
+                        Dim o = CreateRegion(fName)
 
                         Form1.Log("Info:Reading Region " + ini)
 
                         ' populate from disk
-                        RegionName() = fName
+                        o.RegionName() = fName
+
+                        ' !!! needs to be o.IsRegionEnabled
                         Try
-                            isRegionEnabled() = Form1.GetIni(ini, fName, "Enabled", ";")
-                        Catch
-                            isRegionEnabled() = True
+                            IsRegionEnabled() = Form1.GetIni(ini, fName, "Enabled", ";")
+                        Catch ex As exception
+                            IsRegionEnabled() = True
                         End Try
 
-                        RegionPath() = FileName
+                        RegionPath() = ini ' save the path
+
+                        ' need folder name in case there are more than 1 ini
+                        Dim theStart = FolderPath().IndexOf("Regions\") + 8
+                        Dim theEnd = FolderPath().LastIndexOf("\")
+                        Folder() = FolderPath().Substring(theStart, theEnd - theStart)
+
                         UUID() = Form1.GetIni(ini, fName, "RegionUUID", ";")
                         SizeX() = Convert.ToInt16(Form1.GetIni(ini, fName, "SizeX", ";"))
                         SizeY() = Convert.ToInt16(Form1.GetIni(ini, fName, "SizeY", ";"))
@@ -293,6 +305,7 @@ Public Class RegionMaker
                         Dim parts As String() = C.Split(New Char() {","c}) ' split at the comma
                         CoordX() = parts(0)
                         CoordY() = parts(1)
+
                     Next
 
                 Catch ex As Exception
@@ -304,22 +317,19 @@ Public Class RegionMaker
         DebugRegions()
     End Sub
 
-    Public Sub WriteRegion()
+    Public Sub WriteRegionObject()
 
         Dim path As String = Form1.prefix & "bin\Regions"
         Dim index = CurRegionNum()
         Dim name = RegionList(index).RegionName
 
-        If Not Directory.Exists(path & "\" & name) Then
-            Directory.CreateDirectory(path & "\" & name)
-        End If
-        If Not Directory.Exists(path & "\" & name & "\Region") Then
-            Directory.CreateDirectory(path & "\" & name & "\Region")
+        If Not Directory.Exists(FolderPath()) Then
+            Directory.CreateDirectory(FolderPath)
         End If
 
-        File.Copy(Form1.prefix & "bin\Regions.proto", path & "\" & name & "\Region\" & name & ".ini")
+        File.Copy(Form1.prefix & "bin\Regions.proto", RegionPath(), True)
 
-        Form1.LoadIni(path & "\" & name & "\Region\" & name & ".ini", ";")
+        Form1.LoadIni(RegionPath, ";")
         Form1.SetIni(name, "RegionUUID", RegionList(index).UUID)
         Form1.SetIni(name, "Location", RegionList(index).CoordX & "," & RegionList(index).CoordY)
         Form1.SetIni(name, "InternalPort", RegionList(index).RegionPort)

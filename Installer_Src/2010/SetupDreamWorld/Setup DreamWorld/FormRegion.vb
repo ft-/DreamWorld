@@ -190,7 +190,7 @@ Public Class FormRegion
         Return ""
     End Function
 
-    Private Sub WriteRegion()
+    Private Sub WriteRegion(o As Object)
 
         Dim dir = Form1.prefix
         MyRegion.CurRegionNum = gNum
@@ -205,36 +205,41 @@ Public Class FormRegion
             End Try
         End If
 
+        Dim Filepath = o.RegionPath
+        Dim path = o.FolderPath()
 
-        If Not Directory.Exists(dir & "bin\Regions\" + MyRegion.RegionName) Then
-            Directory.CreateDirectory(dir & "bin\Regions\" + MyRegion.RegionName)
-        End If
+        If path.length = 0 Then
 
-        If Not Directory.Exists(dir & "bin\Regions\" + MyRegion.RegionName + "\Region") Then
-            Directory.CreateDirectory(dir & "bin\Regions\" + MyRegion.RegionName + "\Region")
+
+            If Not Directory.Exists(dir & "bin\Regions\" + o.RegionName) Then
+                Directory.CreateDirectory(dir & "bin\Regions\" + o.RegionName)
+            End If
+
+            If Not Directory.Exists(dir & "bin\Regions\" + o.RegionName + "\Region") Then
+                Directory.CreateDirectory(dir & "bin\Regions\" + o.RegionName + "\Region")
+            End If
+
         End If
 
         Dim Region = "; * Regions configuration file" &
                         "; * This Is Your World. Change This And It Will BREAK. See Common Settings->[Region Settings] instead." & vbCrLf &
                         "; Automatically changed by Dreamworld - do Not change this file!" & vbCrLf &
-                        "[" & MyRegion.RegionName & "]" & vbCrLf &
-                        "RegionUUID = " & MyRegion.UUID & vbCrLf &
-                        "Location = " & MyRegion.CoordX & "," & MyRegion.CoordY & vbCrLf &
+                        "[" & o.RegionName & "]" & vbCrLf &
+                        "RegionUUID = " & o.UUID & vbCrLf &
+                        "Location = " & o.CoordX & "," & o.CoordY & vbCrLf &
                         "InternalAddress = 0.0.0.0" & vbCrLf &
-                        "InternalPort = " & MyRegion.RegionPort & vbCrLf &
+                        "InternalPort = " & o.RegionPort & vbCrLf &
                         "AllowAlternatePorts = False" & vbCrLf &
                         "ExternalHostName = " & My.Settings.PublicIP & vbCrLf &
-                        "SizeX = " & MyRegion.SizeX & vbCrLf &
-                        "SizeY = " & MyRegion.SizeY & vbCrLf &
-                        "Enabled = " & MyRegion.isRegionEnabled & vbCrLf
+                        "SizeX = " & o.SizeX & vbCrLf &
+                        "SizeY = " & o.SizeY & vbCrLf &
+                        "Enabled = " & o.IsRegionEnabled & vbCrLf
 
         Using outputFile As New StreamWriter(dir & "bin\Regions\" & MyRegion.RegionName & "\Region\" & MyRegion.RegionName & ".ini")
             outputFile.Write(Region)
         End Using
 
         oldname = MyRegion.RegionName
-
-        Form1.LoadRegionList()
 
     End Sub
 
@@ -383,6 +388,7 @@ Public Class FormRegion
     End Sub
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+
         MyRegion.CurRegionNum = gNum
         Form1.RegionClass.RegionName = MyRegion.RegionName
         Form1.RegionClass.UUID = MyRegion.UUID
@@ -399,7 +405,7 @@ Public Class FormRegion
                 Me.Close()
             End If
         Else
-            WriteRegion()
+            WriteRegion(MyRegion)
             Form1.CopyOpensimProto()
 
             changed = False
@@ -419,7 +425,7 @@ Public Class FormRegion
                         Me.Close()
                     End If
                 Else
-                    WriteRegion()
+                    WriteRegion(MyRegion)
                 End If
             End If
         End If
@@ -457,7 +463,6 @@ Public Class FormRegion
             Try
                 My.Computer.FileSystem.DeleteDirectory(Form1.prefix & "bin\Regions\" + RegionName.Text, FileIO.UIOption.AllDialogs, FileIO.RecycleOption.SendToRecycleBin, FileIO.UICancelOption.ThrowException)
                 Form1.RegionClass.GetAllRegions()
-                Form1.LoadRegionList()
                 Form1.CopyOpensimProto()
                 Me.Close()
             Catch ex As Exception
