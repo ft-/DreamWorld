@@ -86,12 +86,16 @@ Public Class NetServer
 
                 ' Incoming message may be larger than the buffer size.
                 Do
-                    numberOfBytesRead = stream.Read(myReadBuffer, 0, myReadBuffer.Length)
+                    Try
+                        numberOfBytesRead = stream.Read(myReadBuffer, 0, myReadBuffer.Length)
+                    Catch
+                    End Try
+
                     myCompleteMessage.AppendFormat("{0}", Encoding.ASCII.GetString(myReadBuffer, 0, numberOfBytesRead))
                 Loop While stream.DataAvailable
 
                 ' Print out the received message to the console.
-                Log("Received:" + myCompleteMessage.ToString())
+                'Log("Received:" + myCompleteMessage.ToString())
                 Response = Form1.ParsePost(myCompleteMessage.ToString())
             Else
                 Log("Error:Cannot read from this NetworkStream.")
@@ -101,13 +105,13 @@ Public Class NetServer
                 Dim data As String = "HTTP/1.0 200 OK" + vbCrLf + vbCrLf + Response
                 Dim msg As Byte() = System.Text.Encoding.ASCII.GetBytes(data)
                 stream.Write(msg, 0, msg.Length) ' Send back a response.
-                Log([String].Format("Response:{0}", Data))
+                'Log([String].Format("Response:{0}", Data))
             Catch
             End Try
 
             'Shutdown And end connection
             client.Close()
-            Log("Info:Connection Closed")
+            ' Log("Info:Connection Closed")
 
         End While
 

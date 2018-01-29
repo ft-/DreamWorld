@@ -10,6 +10,7 @@ Public Class RegionMaker
     ' hold a copy of the Main region data on a per-form basis
     Private Class Region_data
         Public RegionPath As String
+        Public FolderPath As String
         Public Folder As String
         Public ProcessID As Integer
         Public RegionName As String
@@ -52,10 +53,13 @@ Public Class RegionMaker
             RegionList(CurRegionNum()).RegionPath = Value
         End Set
     End Property
-    Public ReadOnly Property FolderPath() As String
+    Public Property FolderPath() As String
         Get
-            Return Path.GetDirectoryName(RegionPath())
+            Return RegionList(CurRegionNum()).FolderPath
         End Get
+        Set(ByVal Value As String)
+            RegionList(CurRegionNum()).FolderPath = Value
+        End Set
     End Property
     Public Property Folder() As String
         Get
@@ -65,7 +69,7 @@ Public Class RegionMaker
             RegionList(CurRegionNum()).Folder = Value
         End Set
     End Property
-    Public Property IsRegionEnabled() As Boolean
+    Public Property RegionEnabled() As Boolean
         Get
             Return RegionList(CurRegionNum()).RegionEnabled
         End Get
@@ -185,7 +189,6 @@ Public Class RegionMaker
             CreateRegion("Welcome")
             My.Settings.WelcomeRegion = "Welcome"
             WriteRegionObject()
-
             GetAllRegions()
         End If
 
@@ -193,18 +196,18 @@ Public Class RegionMaker
 
     Public Sub DebugRegions()
 
-        For Each obj In RegionList
-            Debug.Print("Region:" + obj.RegionName)
-        Next
+        '      For Each r As Region_data In RegionList
+        '      Debug.Print("Region:" + r.RegionName)
+        '     Next
 
     End Sub
 
     Public Function AllRegionObjects() As List(Of Object)
-
+        GetAllRegions()
         Dim rlist As New List(Of Object)
-        For Each obj In RegionList
-            'Debug.Print("Region:" + obj.RegionName)
-            rlist.Add(obj)
+        For Each r As Region_data In RegionList
+            'Debug.Print("Region:" + r.RegionName)
+            rlist.Add(r)
         Next
         Return rlist
 
@@ -234,6 +237,7 @@ Public Class RegionMaker
 
     Public Function CreateRegion(name As String) As Object
 
+        Debug.Print("Create Region " + name)
         Dim r As New Region_data
         r.RegionName = name
         r.RegionEnabled = True
@@ -282,19 +286,22 @@ Public Class RegionMaker
                         ' populate from disk
                         o.RegionName() = fName
 
-                        ' !!! needs to be o.IsRegionEnabled
+
                         Try
-                            IsRegionEnabled() = Form1.GetIni(ini, fName, "Enabled", ";")
-                        Catch ex As exception
-                            IsRegionEnabled() = True
+                            RegionEnabled() = Form1.GetIni(ini, fName, "Enabled", ";")
+                        Catch ex As Exception
+                            RegionEnabled() = True
                         End Try
 
                         RegionPath() = ini ' save the path
+
+                        FolderPath() = Path.GetDirectoryName(ini)
 
                         ' need folder name in case there are more than 1 ini
                         Dim theStart = FolderPath().IndexOf("Regions\") + 8
                         Dim theEnd = FolderPath().LastIndexOf("\")
                         Folder() = FolderPath().Substring(theStart, theEnd - theStart)
+
 
                         UUID() = Form1.GetIni(ini, fName, "RegionUUID", ";")
                         SizeX() = Convert.ToInt16(Form1.GetIni(ini, fName, "SizeX", ";"))
@@ -382,6 +389,7 @@ Public Class RegionMaker
     Public Function Count() As Integer
         Return RegionCount
     End Function
+
 #End Region
 
 End Class

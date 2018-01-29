@@ -130,7 +130,6 @@ Public Class AdvancedForm
 
         Dim X As Integer = 300
         Dim Y As Integer = 200
-        Dim fname As String
         Dim counter As Integer = 0
 
         Form1.RegionClass.GetAllRegions()
@@ -141,10 +140,9 @@ Public Class AdvancedForm
 
         For Each o In regions
             Try
-                fname = o.RegionName
                 Dim ActualForm As New FormRegion
                 ActualForm.SetDesktopLocation(X, Y)
-                ActualForm.Init(counter)
+                ActualForm.Init(o)
                 ActualForm.Activate()
                 ActualForm.Visible = True
                 Application.DoEvents()
@@ -155,6 +153,7 @@ Public Class AdvancedForm
             Y += 100
             X += 100
         Next
+
     End Sub
 
     Private Sub AddRegion_Click(sender As Object, e As EventArgs) Handles AddRegion.Click

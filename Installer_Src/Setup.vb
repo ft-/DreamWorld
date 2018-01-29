@@ -1422,7 +1422,7 @@ Public Class Form1
                 If o.ProcessID = 0 Then
                     Dim yesno = MsgBox(o.RegionName + " failed to start. Do you want to see the log file?", vbYesNo)
                     If (yesno = vbYes) Then
-                        System.Diagnostics.Process.Start("notepad.exe", prefix + "bin\Regions\" + o.RegionName + "/Opensim.log")
+                        System.Diagnostics.Process.Start("notepad.exe", o.FolderPath + "/Opensim.log")
                     End If
 
                     Print("Startup aborted at " + o.RegionName)
@@ -1646,16 +1646,16 @@ Public Class Form1
 
     Private Sub DoExit(ByVal sender As Object)
         ' Handle Opensim Exited
-        If Running Then
-            Dim o = RegionClass.FindRegionByProcessID(sender.Id)
 
-            If o Is Nothing Then Return
-            Log(o.RegionName + " stopped")
-            o.Ready = False
-            o.WarmingUp = False
-            o.ShuttingDown = False
-            o.ProcessID = 0
-        End If
+        Dim o = RegionClass.FindRegionByProcessID(sender.Id)
+
+        If o Is Nothing Then Return
+        Log(o.RegionName + " stopped")
+        o.Ready = False
+        o.WarmingUp = False
+        o.ShuttingDown = False
+        o.ProcessID = 0
+
     End Sub
 
     Private Function GetNewProcess() As Process
@@ -1728,7 +1728,7 @@ Public Class Form1
 
     End Function
 
-    Public Sub Boot(o As Object)
+    Public Sub Boot(ByVal o As Object)
 
         If o Is Nothing Then Return
         If (o.Ready Or o.WarmingUp Or o.Shuttingdown) Then Return
@@ -1758,7 +1758,6 @@ Public Class Form1
                 myProcess.StartInfo.WindowStyle = ProcessWindowStyle.Minimized
             End If
 
-
             Try
                 My.Computer.FileSystem.DeleteFile(prefix + "bin\Regions\" & o.Folder & "\Opensim.log")
             Catch
@@ -1783,6 +1782,8 @@ Public Class Form1
 
             If Pid Then
                 o.WarmingUp = True
+                o.Ready = False
+                o.ShuttingDown = False
                 o.ProcessID = Pid
             End If
 
@@ -1876,8 +1877,6 @@ Public Class Form1
 #End Region
 
 #Region "Subs"
-
-
     Public Sub ConsoleCommand(ProcessID As Integer, command As String)
 
         Try
@@ -2158,15 +2157,20 @@ Public Class Form1
             ' Display message, title, and default value.
             Password = InputBox(Message, title, defaultValue)
 
-            RegionClass.CurRegionNum = 0
-            Dim welcome = RegionClass.RegionName()
+            Dim r = Nothing
+            Dim o As Object
+            For Each o In RegionClass.AllRegionObjects
+                If o.Running Then
+                    r = o
+                End If
+            Next
 
-            Dim o As Object = RegionClass.FindRegionByName(welcome)
-            If o Is Nothing Then
+            If r Is Nothing Then
+                Print("No regions are running")
                 Return
             End If
 
-            ConsoleCommand(o.ProcessID, "save iar " + Name + " " + """" + itemName + """" + " " + Password + " " + """" + BackupPath() + backupName + """" + "{ENTER}")
+            ConsoleCommand(r.ProcessID, "save iar " + Name + " " + """" + itemName + """" + " " + Password + " " + """" + BackupPath() + backupName + """" + "{ENTER}")
             Me.Focus()
             Print("Saving " + backupName + " to " + BackupPath())
 
@@ -2686,7 +2690,7 @@ Public Class Form1
         Return gUseIcons
     End Function
 
-    Private Shared Function IsPrivateIP(ByVal CheckIP As String) As Boolean
+    Private Shared Function IsPrivateIP(CheckIP As String) As Boolean
 
         ''' <summary>
         ''' Checks to see if an IP address is a local IP address.
@@ -3255,6 +3259,7 @@ Public Class Form1
                 Debug.Print("Region " & json.region_name & " is ready for logins")
 
                 Dim o = RegionClass.FindRegionByName(json.region_name)
+                If o Is Nothing Then Return "NAK"
                 o.Ready = True
                 o.WarmingUp = False
                 o.ShuttingDown = False

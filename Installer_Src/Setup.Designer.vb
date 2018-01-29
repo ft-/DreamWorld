@@ -276,7 +276,7 @@ Partial Class Form1
         '
         'CHeckForUpdatesToolStripMenuItem
         '
-        Me.CHeckForUpdatesToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.download1
+        Me.CHeckForUpdatesToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.download
         Me.CHeckForUpdatesToolStripMenuItem.Name = "CHeckForUpdatesToolStripMenuItem"
         Me.CHeckForUpdatesToolStripMenuItem.Size = New System.Drawing.Size(210, 22)
         Me.CHeckForUpdatesToolStripMenuItem.Text = "Check for Updates"
