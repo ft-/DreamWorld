@@ -415,6 +415,15 @@
     <None Include="Resources\disk_yellow.png" />
     <None Include="Resources\warning.png" />
     <None Include="Resources\media_stop_red.png" />
+    <None Include="Resources\export1.png" />
+    <None Include="Resources\import2.png" />
+    <None Include="Resources\navigate_check.png" />
+    <None Include="Resources\navigate_cross.png" />
+    <None Include="Resources\navigate_down2.png" />
+    <None Include="Resources\navigate_minus.png" />
+    <None Include="Resources\navigate_plus.png" />
+    <None Include="Resources\navigate_up2.png" />
+    <None Include="Resources\check2.png" />
     <Content Include="Resources\wp_habitat.gif" />
     <Content Include="Resources\wp_Inside_in_shadows.gif" />
     <Content Include="Resources\wp_Mooferd.gif" />

@@ -28,12 +28,12 @@ Public Class RegionMaker
 
     End Class
 
-    Public Shared RegionList As New ArrayList
+    Public RegionList As New ArrayList
     Private gCurRegionNum As Integer
 #End Region
 
 #Region "Properties"
-    Public Shared Property RegionCount() As Integer
+    Public Property RegionCount() As Integer
         Get
             Try
                 Return RegionList.Count
@@ -194,24 +194,15 @@ Public Class RegionMaker
 
     End Sub
 
-    Public Sub DebugRegions()
+    Public Sub DebugRegions(o As Object)
 
-        '      For Each r As Region_data In RegionList
-        '      Debug.Print("Region:" + r.RegionName)
-        '     Next
+        Debug.Print("Region:" + o.RegionName +
+            " WarmingUp=" + o.WarmingUp.ToString +
+           " ShuttingDown=" + o.ShuttingDown.ToString +
+            " Ready=" + o.Ready.ToString +
+           " RegionEnabled=" + o.RegionEnabled.ToString)
 
     End Sub
-
-    Public Function AllRegionObjects() As List(Of Object)
-        GetAllRegions()
-        Dim rlist As New List(Of Object)
-        For Each r As Region_data In RegionList
-            'Debug.Print("Region:" + r.RegionName)
-            rlist.Add(r)
-        Next
-        Return rlist
-
-    End Function
 
     Public Function FindRegionByName(Name As String) As Object
 
@@ -321,7 +312,7 @@ Public Class RegionMaker
                 End Try
             Next
         Next
-        DebugRegions()
+
     End Sub
 
     Public Sub WriteRegionObject()

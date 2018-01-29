@@ -121,9 +121,6 @@
   <data name="wp_45" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\wp_45.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="TPV_Catznip_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\TPV-Catznip-2-Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="wp_49" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\wp_49.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -135,12 +132,6 @@
   </data>
   <data name="wp_37" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\wp_37.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="TPV_Black_Dragon_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\TPV-Black_Dragon-Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="TPV_UKanDo_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\TPV-UKanDo-Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="wp_zebra" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\wp_zebra.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -195,9 +186,6 @@
   </data>
   <data name="wp_20" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\wp_20.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="TPV_Singularity_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\TPV-Singularity-Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="wp_48" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\wp_48.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -289,9 +277,6 @@
   <data name="earth_network" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\earth_network.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="TPV_Firestorm_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\TPV-Firestorm-Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="data" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\data.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -376,12 +361,6 @@
   <data name="wp_44" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\wp_44.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="about1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\about1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="window_environment1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\window_environment1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="wp_6" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\wp_6.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -393,12 +372,6 @@
   </data>
   <data name="wp_25" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\wp_25.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="TPV_Alchemy_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\TPV-Alchemy-2-Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="TPV_Kokua_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\TPV-Kokua-Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="wp_15" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\wp_15.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -430,20 +403,11 @@
   <data name="wp_31" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\wp_31.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="gear_pause" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\gear_pause.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="wp_40" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\wp_40.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="transform" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\transform.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="media_play_green" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\media_play_green.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="media_pause" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\media_pause.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="disk_green" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\disk_green.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -454,7 +418,25 @@
   <data name="warning" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\warning.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="media_stop_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\media_stop_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="navigate_check" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\navigate_check.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="navigate_cross" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\navigate_cross.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="navigate_down2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\navigate_down2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="navigate_minus" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\navigate_minus.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="navigate_plus" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\navigate_plus.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="navigate_up2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\navigate_up2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="check2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\check2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

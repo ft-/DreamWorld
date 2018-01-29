@@ -2,8 +2,20 @@
 
     Dim writetodisk As Boolean
     Dim TheView As Boolean = True
+    Private Shared FormExists As Boolean = False
+
+    ' property exposing FormExists
+    Public Shared ReadOnly Property InstanceExists() As Boolean
+        Get
+            ' Access shared members through the Class name, not an instance.
+            Return RegionList.FormExists
+        End Get
+    End Property
+
 
     Private Sub Form1_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+
+        RegionList.FormExists = True
 
         ' Set the view to show details.
         ListView1.View = View.Details
@@ -24,17 +36,18 @@
         ' Connect the ListView.ColumnClick event to the ColumnClick event handler.
         AddHandler Me.ListView1.ColumnClick, AddressOf ColumnClick
 
-        Me.Controls.Add(ListView1)
+        ' Me.Controls.Add(ListView1)
         Me.Name = "Region List"
         Me.Text = "Region List"
 
-
         LoadMyListView()
-
 
         Timer1.Interval = 60000
         Timer1.Start() 'Timer starts functioning
 
+    End Sub
+    Private Sub SingletonForm_FormClosed(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles Me.FormClosed
+        RegionList.FormExists = False
     End Sub
 
     Private Sub Timer1_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Timer1.Tick
@@ -48,67 +61,95 @@
         writetodisk = False
 
         ListView1.Clear()
+        ListView1.Items.Clear()
+
         Dim imageListSmall As New ImageList()
+        Dim imageListLarge As New ImageList()
+
         ' Create columns for the items and subitems.
         ' Width of -2 indicates auto-size.
         ListView1.Columns.Add("Enabled", 120, HorizontalAlignment.Center)
-        ListView1.Columns.Add("Status", 60, HorizontalAlignment.Center)
         ListView1.Columns.Add("Agents", 60, HorizontalAlignment.Center)
+        ListView1.Columns.Add("Status", 60, HorizontalAlignment.Center)
 
-
-        Dim Rlist = Form1.RegionClass.AllRegionObjects
         Dim o As Object
         Dim i As Integer = 0
 
         Me.SuspendLayout()
 
-        For Each o In Rlist
+        ' index of 0-4 to display icons
+        imageListSmall.Images.Add(My.Resources.ResourceManager.GetObject("navigate_up2"))   ' 0 booting up
+        imageListSmall.Images.Add(My.Resources.ResourceManager.GetObject("navigate_down2")) ' 1 shutting down
+        imageListSmall.Images.Add(My.Resources.ResourceManager.GetObject("check2")) ' 2 okay, up
+        imageListSmall.Images.Add(My.Resources.ResourceManager.GetObject("navigate_cross")) ' 3 disabled
+        imageListSmall.Images.Add(My.Resources.ResourceManager.GetObject("navigate_plus"))  ' 4 enabled
+
+        ' index of 0-4 to display icons
+        imageListLarge.Images.Add(My.Resources.ResourceManager.GetObject("navigate_up2"))   ' 0 booting up
+        imageListLarge.Images.Add(My.Resources.ResourceManager.GetObject("navigate_down2")) ' 1 shutting down
+        imageListLarge.Images.Add(My.Resources.ResourceManager.GetObject("check2")) ' 2 okay, up
+        imageListLarge.Images.Add(My.Resources.ResourceManager.GetObject("navigate_cross")) ' 3 disabled
+        imageListLarge.Images.Add(My.Resources.ResourceManager.GetObject("navigate_plus"))  ' 4 enabled
+
+        Dim imageList1 As New ImageList
+        Dim Num As Integer = 1
+        For Each o In Form1.RegionClass.RegionList
+
+            Form1.RegionClass.DebugRegions(o)
+
             ' Create  items and subitems for each item.
             Dim item1 As New ListViewItem(o.RegionName.ToString, 0)
-
-            'Debug.Print(o.RegionName)
-            'Debug.Print(" WarmingUp=" + o.WarmingUp.ToString)
-            'Debug.Print(" ShuttingDown=" + o.ShuttingDown.ToString)
-            'Debug.Print(" Ready=" + o.Ready.ToString)
-            'Debug.Print(" RegionEnabled=" + o.RegionEnabled.ToString)
-
             ' Place a check mark next to the item.
             item1.Checked = o.RegionEnabled
 
-
-            Dim Letter As String = "X"
-            If (o.RegionName = "Isis") Then
-                Debug.Print("Isis")
-            End If
-            Dim SImage As String = "question_and_answer"
-            If o.WarmingUp Then
-                SImage = "refresh"
-                Letter = "Booting"
-            ElseIf o.ShuttingDown Then
-                SImage = "flash"
-                Letter = "Shutting Down"
-            ElseIf o.Ready Then
-                SImage = "media_play_green"
-                Letter = "Running"
-            ElseIf Not o.RegionEnabled And Not o.Ready Then
-                SImage = "media_stop_red"
-                Letter = "Disabled"
-            ElseIf o.RegionEnabled And Not o.Ready Then
-                Letter = "Stopped"
-                SImage = "media_pause"
-            End If
-
-            item1.SubItems.Add(Letter)
-
-            ListView1.Items.AddRange(New ListViewItem() {item1})
             item1.SubItems.Add(o.AvatarCount.ToString)
 
-            ' imageListSmall.Images.Add(My.Resources.ResourceManager.GetObject(SImage))
-            'ListView1.Items(i).ImageIndex = i
+            ListView1.Items.AddRange(New ListViewItem() {item1})
+
+            ' Num = 1
+            ' ListView1.Items(i).ImageIndex = Num
+
             i = i + 1
 
         Next
+
+
+
+        i = 0
+        For Each sep2 In ListView1.Items
+            Dim r As Object = Form1.RegionClass.FindRegionByName(ListView1.Items(i).Text)
+            Dim Letter As String = "X"
+
+            ' breakpoint
+            If (r.RegionName = "Isis") Then
+                Debug.Print("Isis")
+            End If
+
+
+            If r.WarmingUp Then
+                Num = 0
+                Letter = "Booting"
+            ElseIf r.ShuttingDown Then
+                Num = 1
+                Letter = "Shutting Down"
+            ElseIf r.Ready Then
+                Num = 2
+                Letter = "Running"
+            ElseIf Not r.RegionEnabled Then
+                Num = 3
+                Letter = "Disabled"
+            ElseIf r.RegionEnabled Then
+                Num = 4
+                Letter = "Stopped"
+            End If
+            ListView1.Items(i).ImageIndex = Num
+            i = i + 1
+        Next
+        'item1.SubItems.Add(Letter)
+        'Assign the ImageList objects to the ListView.
+        ListView1.LargeImageList = imageListLarge
         ListView1.SmallImageList = imageListSmall
+
         Me.ListView1.TabIndex = 0
         Me.ListView1.LabelEdit = False
         Me.ResumeLayout(True)
@@ -154,6 +195,7 @@
                 Form1.SaveINI()
 
                 Form1.Log("Region:Stopped Region " + o.RegionName)
+
             Catch ex As Exception
                 Form1.Log("Region:Could not stop " + o.RegionName)
             End Try

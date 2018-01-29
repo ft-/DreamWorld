@@ -23,6 +23,7 @@ Partial Class RegionList
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
+        Dim ListViewItem1 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem("Robust", 0)
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         Me.ListView1 = New System.Windows.Forms.ListView()
         Me.Button1 = New System.Windows.Forms.Button()
@@ -39,6 +40,8 @@ Partial Class RegionList
         '
         Me.ListView1.GridLines = True
         Me.ListView1.HideSelection = False
+        ListViewItem1.ToolTipText = "Click to Start or Stop Robust"
+        Me.ListView1.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem1})
         Me.ListView1.Location = New System.Drawing.Point(12, 42)
         Me.ListView1.Name = "ListView1"
         Me.ListView1.Size = New System.Drawing.Size(261, 316)

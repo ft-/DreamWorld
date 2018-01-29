@@ -134,11 +134,11 @@ Public Class AdvancedForm
 
         Form1.RegionClass.GetAllRegions()
 
-        Dim regions = New List(Of Object)
-        regions = Form1.RegionClass.AllRegionObjects()
-        regions = regions.OrderBy(Function(A) A.RegionName).ToList()
+        'Dim regions = New List(Of Object)
+        'regions = Form1.RegionClass.AllRegionObjects()
+        ' !!!regions = regions.OrderBy(Function(A) A.RegionName).ToList()
 
-        For Each o In regions
+        For Each o In Form1.RegionClass.RegionList
             Try
                 Dim ActualForm As New FormRegion
                 ActualForm.SetDesktopLocation(X, Y)
@@ -247,16 +247,10 @@ Public Class AdvancedForm
         WelcomeBox1.Items.Clear()
 
 
-        Dim regions = New List(Of Object)
-        Try
-            regions = Form1.RegionClass.AllRegionObjects()
-        Catch
-            Return
-        End Try
 
-        regions = regions.OrderBy(Function(x) x.RegionName).ToList()
+        ' !!!regions = regions.OrderBy(Function(x) x.RegionName).ToList()
 
-        For Each o In regions
+        For Each o In Form1.RegionClass.RegionList
             If o.RegionEnabled Then
                 WelcomeBox1.Items.Add(o.RegionName())
             End If

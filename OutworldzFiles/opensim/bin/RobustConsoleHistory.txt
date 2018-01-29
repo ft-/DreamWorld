@@ -11,10 +11,6 @@ quit
 quit
 quit
 quit
-quit
-quit
-quit
-quit
 robuquit
 reset user password Wifi Admin ha9MI!
 quit
@@ -100,3 +96,5 @@ quit
 quit
 show regions
 deregister region id ae823f8a-edcc-4351-b797-0e1072b32222
+create user Test User
+quit

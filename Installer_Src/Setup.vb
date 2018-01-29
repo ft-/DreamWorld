@@ -36,7 +36,7 @@ Public Class Form1
 #Region "Declarations"
 
     Dim MyVersion As String = "2.06"
-    Dim DebugPath As String = "C:\Opensim\Outworldz Source"  ' no slash at end
+    Dim DebugPath As String = "C:\Opensim\Outworldz 2.05 Source"  ' no slash at end
     Public Domain As String = "http://www.outworldz.com"
     Public prefix As String ' Holds path to Opensim folder
 
@@ -482,7 +482,7 @@ Public Class Form1
             counter = counter - 1
         End While
 
-        For Each o In RegionClass.AllRegionObjects
+        For Each o In Form1.RegionClass.RegionList
             Dim PID = o.ProcessID()
             If o.Ready Or o.ShuttingDown Or o.WarmingUp Then
                 Print("Shutting down " + o.RegionName)
@@ -509,7 +509,7 @@ Public Class Form1
 
                 counter = counter - 1
                 Dim isRunning As Boolean = False
-                For Each o As Object In RegionClass.AllRegionObjects
+                For Each o As Object In Form1.RegionClass.RegionList
                     If o Is Nothing Or Not gStopping Then
                         ' do nothing
                     Else
@@ -764,8 +764,6 @@ Public Class Form1
 
             Dim onceflag As Boolean = False ' only do the DefaultName
             Dim counter As Integer = 0
-
-            ' RegionClass.DebugRegions()
 
             Try
                 My.Computer.FileSystem.DeleteFile(prefix + "bin\Robust.tmp")
@@ -1029,7 +1027,7 @@ Public Class Form1
 
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
         'Regions - write all region.ini files with public IP and Public port
-        For Each o In RegionClass.AllRegionObjects
+        For Each o In Form1.RegionClass.RegionList
 
             Dim simName = o.RegionName
 
@@ -1195,7 +1193,7 @@ Public Class Form1
         Dim ports(1) As Object
         ports(0) = Nothing
 
-        For Each o In RegionClass.AllRegionObjects
+        For Each o In Form1.RegionClass.RegionList
 
             If ports.Length <= o.RegionPort Then
                 ReDim ports(o.RegionPort + 1)
@@ -1400,11 +1398,9 @@ Public Class Form1
 
         If Running = False Then Return True
 
-        Dim regions = New List(Of Object)
-        regions = RegionClass.AllRegionObjects()
-        regions = regions.OrderBy(Function(x) x.RegionName).ToList()
+        '!!! Form1.RegionClass.RegionList = Form1.RegionClass.RegionList.OrderBy(Function(x) x.RegionName).ToList()
 
-        For Each o As Object In regions
+        For Each o As Object In Form1.RegionClass.RegionList
             o.ProcessID = 0 ' clear the PID and UUI
             o.UUID = ""
             o.Ready = False
@@ -1415,7 +1411,7 @@ Public Class Form1
         PortTests()
 
         ' Boot them up
-        For Each o In RegionClass.AllRegionObjects
+        For Each o In Form1.RegionClass.RegionList
             If o.RegionEnabled And Running Then '
 
                 Boot(o)
@@ -2068,7 +2064,7 @@ Public Class Form1
             Return
         End If
 
-        For Each o In RegionClass.AllRegionObjects
+        For Each o In Form1.RegionClass.RegionList
             If o.ready Then
                 ConsoleCommand(o.ProcessID, "save oar  " + """" + BackupPath() + o.RegionName + "_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
                 Me.Focus()
@@ -2159,7 +2155,7 @@ Public Class Form1
 
             Dim r = Nothing
             Dim o As Object
-            For Each o In RegionClass.AllRegionObjects
+            For Each o In Form1.RegionClass.RegionList
                 If o.Running Then
                     r = o
                 End If
@@ -2760,11 +2756,9 @@ Public Class Form1
 
             '8004-whatever
 
-            Dim regions = New List(Of Object)
-            regions = RegionClass.AllRegionObjects()
-            regions = regions.OrderBy(Function(x) x.RegionPort).ToList()
+            ' !!!regions = regions.OrderBy(Function(x) x.RegionPort).ToList()
 
-            For Each o As Object In regions
+            For Each o As Object In Form1.RegionClass.RegionList
                 Dim R As Int16 = o.RegionPort
 
                 If MyUPnpMap.Exists(R, UPnp.Protocol.UDP) Then
@@ -3269,6 +3263,7 @@ Public Class Form1
                 Debug.Print("Region " & json.region_name & " shut down")
 
                 Dim o = RegionClass.FindRegionByName(json.region_name)
+                If o Is Nothing Then Return "NAK"
                 o.Ready = False
                 o.WarmingUp = False
                 o.ShuttingDown = False
@@ -3428,7 +3423,7 @@ Public Class Form1
 
         If My.Settings.AutoLoad Then
             ' Scan all the regions
-            Dim Rlist = RegionClass.AllRegionObjects
+            Dim Rlist = Form1.RegionClass.RegionList
             For Each o In Rlist
                 o.AvatarCount = MysqlConn.IsUserPresent(o.UUID)
                 Debug.Print(o.AvatarCount.ToString + " avatars in region " + o.RegionName)
@@ -3455,9 +3450,12 @@ Public Class Form1
 
     Private Sub RegionsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles RegionsToolStripMenuItem.Click
 
-        Dim RegionForm As New RegionList
-        RegionForm.Show()
-        Application.DoEvents()
+        If RegionList.InstanceExists = False Then
+
+            Dim RegionForm As New RegionList
+            RegionForm.Show()
+
+        End If
 
     End Sub
 

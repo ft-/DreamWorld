@@ -196,7 +196,7 @@ Partial Class Form1
         '
         'ShowHyperGridAddressToolStripMenuItem
         '
-        Me.ShowHyperGridAddressToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.window_environment1
+        Me.ShowHyperGridAddressToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.window_environment
         Me.ShowHyperGridAddressToolStripMenuItem.Name = "ShowHyperGridAddressToolStripMenuItem"
         Me.ShowHyperGridAddressToolStripMenuItem.Size = New System.Drawing.Size(210, 22)
         Me.ShowHyperGridAddressToolStripMenuItem.Text = "Show HyperGrid Address"
