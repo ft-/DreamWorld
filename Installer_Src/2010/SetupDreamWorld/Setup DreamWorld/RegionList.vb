@@ -101,18 +101,10 @@
             Dim item1 As New ListViewItem(o.RegionName.ToString, 0)
             ' Place a check mark next to the item.
             item1.Checked = o.RegionEnabled
-
             item1.SubItems.Add(o.AvatarCount.ToString)
-
             ListView1.Items.AddRange(New ListViewItem() {item1})
-
-            ' Num = 1
-            ' ListView1.Items(i).ImageIndex = Num
-
             i = i + 1
-
         Next
-
 
 
         i = 0

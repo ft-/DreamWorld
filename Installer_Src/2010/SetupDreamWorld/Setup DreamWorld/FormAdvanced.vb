@@ -134,8 +134,6 @@ Public Class AdvancedForm
 
         Form1.RegionClass.GetAllRegions()
 
-        'Dim regions = New List(Of Object)
-        'regions = Form1.RegionClass.AllRegionObjects()
         ' !!!regions = regions.OrderBy(Function(A) A.RegionName).ToList()
 
         For Each o In Form1.RegionClass.RegionList
