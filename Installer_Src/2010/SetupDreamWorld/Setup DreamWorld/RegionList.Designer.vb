@@ -27,7 +27,7 @@ Partial Class RegionList
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         Me.ListView1 = New System.Windows.Forms.ListView()
         Me.Button1 = New System.Windows.Forms.Button()
-        Me.Button2 = New System.Windows.Forms.Button()
+        Me.ViewButton = New System.Windows.Forms.Button()
         Me.RegionHelp = New System.Windows.Forms.PictureBox()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.Addregion = New System.Windows.Forms.Button()
@@ -44,10 +44,15 @@ Partial Class RegionList
         ListViewItem1.ToolTipText = "Click to Start or Stop Robust"
         Me.ListView1.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem1})
         Me.ListView1.Location = New System.Drawing.Point(12, 42)
+        Me.ListView1.MultiSelect = False
         Me.ListView1.Name = "ListView1"
+        Me.ListView1.ShowItemToolTips = True
         Me.ListView1.Size = New System.Drawing.Size(261, 316)
         Me.ListView1.TabIndex = 0
+        Me.ToolTip1.SetToolTip(Me.ListView1, "Regions may start/stop in groups, depending upon how your bin\Regions folder is o" &
+        "rganized.")
         Me.ListView1.UseCompatibleStateImageBehavior = False
+        Me.ListView1.View = System.Windows.Forms.View.Details
         '
         'Button1
         '
@@ -58,14 +63,14 @@ Partial Class RegionList
         Me.Button1.Text = "Refresh"
         Me.Button1.UseVisualStyleBackColor = True
         '
-        'Button2
+        'ViewButton
         '
-        Me.Button2.Location = New System.Drawing.Point(81, 13)
-        Me.Button2.Name = "Button2"
-        Me.Button2.Size = New System.Drawing.Size(57, 23)
-        Me.Button2.TabIndex = 2
-        Me.Button2.Text = "View"
-        Me.Button2.UseVisualStyleBackColor = True
+        Me.ViewButton.Location = New System.Drawing.Point(81, 13)
+        Me.ViewButton.Name = "ViewButton"
+        Me.ViewButton.Size = New System.Drawing.Size(57, 23)
+        Me.ViewButton.TabIndex = 2
+        Me.ViewButton.Text = "View"
+        Me.ViewButton.UseVisualStyleBackColor = True
         '
         'RegionHelp
         '
@@ -101,7 +106,7 @@ Partial Class RegionList
         Me.ClientSize = New System.Drawing.Size(285, 370)
         Me.Controls.Add(Me.Addregion)
         Me.Controls.Add(Me.RegionHelp)
-        Me.Controls.Add(Me.Button2)
+        Me.Controls.Add(Me.ViewButton)
         Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.ListView1)
         Me.MaximizeBox = False
@@ -115,7 +120,7 @@ Partial Class RegionList
     Friend WithEvents Timer1 As Timer
     Friend WithEvents ListView1 As ListView
     Friend WithEvents Button1 As Button
-    Friend WithEvents Button2 As Button
+    Friend WithEvents ViewButton As Button
     Friend WithEvents RegionHelp As PictureBox
     Friend WithEvents ToolTip1 As ToolTip
     Friend WithEvents Addregion As Button

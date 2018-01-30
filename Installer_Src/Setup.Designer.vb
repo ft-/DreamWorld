@@ -327,7 +327,7 @@ Partial Class Form1
         Me.MoreContentToolStripMenuItem.Name = "MoreContentToolStripMenuItem"
         Me.MoreContentToolStripMenuItem.Size = New System.Drawing.Size(220, 22)
         Me.MoreContentToolStripMenuItem.Text = "More Free Islands and Parts"
-        Me.MoreContentToolStripMenuItem.ToolTipText = "Outworldz has a entirely free content."
+        Me.MoreContentToolStripMenuItem.ToolTipText = "Outworldz has free DLC"
         '
         'ToolStripSeparator3
         '

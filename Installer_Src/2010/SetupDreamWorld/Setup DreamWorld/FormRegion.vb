@@ -220,6 +220,7 @@ Public Class FormRegion
                 Directory.CreateDirectory(dir & "bin\Regions\" + o.RegionName + "\Region")
             End If
 
+            Filepath = dir & "bin\Regions\" + o.RegionName + "\Region\" + o.RegionName + ".ini"
         End If
 
         Dim Region = "; * Regions configuration file" &

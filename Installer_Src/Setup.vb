@@ -487,7 +487,7 @@ Public Class Form1
 
         For Each o In Form1.RegionClass.RegionList
             Dim PID = o.ProcessID()
-            If o.Ready Or o.ShuttingDown Or o.WarmingUp Then
+            If PID Then
                 Print("Shutting down " + o.RegionName)
                 ConsoleCommand(PID, "quit{ENTER}")
                 Me.Focus()
@@ -516,7 +516,7 @@ Public Class Form1
                     If o Is Nothing Or Not gStopping Then
                         ' do nothing
                     Else
-                        If o.ProcessID And (o.WarmingUp Or o.Ready Or o.Shuttingdown) Then
+                        If o.ProcessID Then
                             isRunning = True
                         End If
                     End If

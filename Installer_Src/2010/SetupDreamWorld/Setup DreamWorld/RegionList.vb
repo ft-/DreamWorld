@@ -262,7 +262,7 @@
         Me.ListView1.ListViewItemSorter = New ListViewItemComparer(e.Column)
     End Sub
 
-    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
+    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles ViewButton.Click
 
         If TheView = 0 Then
             ListView1.CheckBoxes = False
