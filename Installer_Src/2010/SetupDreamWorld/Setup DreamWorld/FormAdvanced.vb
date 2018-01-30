@@ -270,7 +270,7 @@ Public Class AdvancedForm
                 Dim chosen = Form1.ChooseRegion()
                 Dim Index = WelcomeBox1.FindString(chosen)
                 WelcomeBox1.SelectedIndex = Index
-                MsgBox("Welcome region reset to " + WelcomeBox1.SelectedItem.ToString, vbInformation)
+                Print("Welcome region reset to " + WelcomeBox1.SelectedItem.ToString)
             Catch
             End Try
         End Try

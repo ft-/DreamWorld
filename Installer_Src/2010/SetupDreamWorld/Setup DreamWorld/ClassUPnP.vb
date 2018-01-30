@@ -12,7 +12,6 @@ Public Class UPnp
 
     Private staticEnabled As Boolean = True
     Private dynamicEnabled As Boolean = True
-
     Private myfolder As String = ""
 
     ''' <summary>
@@ -197,7 +196,6 @@ Public Class UPnp
             If LocalIP = String.Empty Then
                 LocalIP = "127.0.0.1"
             End If
-
         End Try
 
     End Function

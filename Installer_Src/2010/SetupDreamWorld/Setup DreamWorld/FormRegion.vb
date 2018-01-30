@@ -17,7 +17,9 @@ Public Class FormRegion
     Public Sub Init(Name As String)
 
         o = Form1.RegionClass.FindRegionByName(Name)
-
+        If o Is Nothing Then
+            o = Form1.RegionClass.CreateRegion("")
+        End If
         oldname = o.RegionName ' backup in case of rename
         EnabledCheckBox.Checked = o.RegionEnabled()
         '''''''''''''''''''''''''''''''
@@ -36,9 +38,9 @@ Public Class FormRegion
 
             ' locate largest X and Y global coords, and Region Port
             ' Add something to make sure we do not intersect
-            o.RegionPort = o.LargestPort + 1
-            o.CoordX = o.LargestX + 5
-            o.CoordY = o.LargestY
+            o.RegionPort = Form1.RegionClass.LargestPort + 1
+            o.CoordX = Form1.RegionClass.LargestX + 5
+            o.CoordY = Form1.RegionClass.LargestY
 
         End If
 
@@ -209,7 +211,7 @@ Public Class FormRegion
         End If
 
         ' might be a new region, so no path exists
-        If Filepath.length = 0 Then
+        If Filepath Is Nothing Then
 
             Filepath = dir & "bin\Regions\" + o.RegionName + "\Region\" + o.RegionName
             o.RegionPath = Filepath

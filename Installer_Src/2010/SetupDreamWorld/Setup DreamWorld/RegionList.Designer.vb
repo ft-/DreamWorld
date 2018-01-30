@@ -30,6 +30,7 @@ Partial Class RegionList
         Me.Button2 = New System.Windows.Forms.Button()
         Me.RegionHelp = New System.Windows.Forms.PictureBox()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
+        Me.Addregion = New System.Windows.Forms.Button()
         CType(Me.RegionHelp, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -52,16 +53,16 @@ Partial Class RegionList
         '
         Me.Button1.Location = New System.Drawing.Point(13, 13)
         Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(75, 23)
+        Me.Button1.Size = New System.Drawing.Size(53, 23)
         Me.Button1.TabIndex = 1
         Me.Button1.Text = "Refresh"
         Me.Button1.UseVisualStyleBackColor = True
         '
         'Button2
         '
-        Me.Button2.Location = New System.Drawing.Point(105, 13)
+        Me.Button2.Location = New System.Drawing.Point(81, 13)
         Me.Button2.Name = "Button2"
-        Me.Button2.Size = New System.Drawing.Size(75, 23)
+        Me.Button2.Size = New System.Drawing.Size(57, 23)
         Me.Button2.TabIndex = 2
         Me.Button2.Text = "View"
         Me.Button2.UseVisualStyleBackColor = True
@@ -69,7 +70,7 @@ Partial Class RegionList
         'RegionHelp
         '
         Me.RegionHelp.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.RegionHelp.Location = New System.Drawing.Point(215, 9)
+        Me.RegionHelp.Location = New System.Drawing.Point(234, 9)
         Me.RegionHelp.Name = "RegionHelp"
         Me.RegionHelp.Size = New System.Drawing.Size(28, 27)
         Me.RegionHelp.TabIndex = 1858
@@ -83,11 +84,22 @@ Partial Class RegionList
         Me.ToolTip1.ToolTipTitle = "Click an enabled row to start or stop the region.  Click a disabled row to edit t" &
     "he region"
         '
+        'Addregion
+        '
+        Me.Addregion.Location = New System.Drawing.Point(156, 13)
+        Me.Addregion.Name = "Addregion"
+        Me.Addregion.Size = New System.Drawing.Size(57, 23)
+        Me.Addregion.TabIndex = 1859
+        Me.Addregion.Text = "Add "
+        Me.Addregion.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.Addregion.UseVisualStyleBackColor = True
+        '
         'RegionList
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(285, 370)
+        Me.Controls.Add(Me.Addregion)
         Me.Controls.Add(Me.RegionHelp)
         Me.Controls.Add(Me.Button2)
         Me.Controls.Add(Me.Button1)
@@ -106,4 +118,5 @@ Partial Class RegionList
     Friend WithEvents Button2 As Button
     Friend WithEvents RegionHelp As PictureBox
     Friend WithEvents ToolTip1 As ToolTip
+    Friend WithEvents Addregion As Button
 End Class

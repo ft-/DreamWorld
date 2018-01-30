@@ -92,7 +92,7 @@ Public Class Form1
                             }
     Dim gDebug As Boolean = False       ' toggled by -debug flag on command line
     Dim gContentAvailable As Boolean = False ' assume there is no OAR and IAR data available
-    Dim MyUPnpMap As UPnp
+    Public MyUPnpMap As UPnp
     Dim ws As NetServer
     Public Shared RegionClass As RegionMaker
     Dim RegionHandles(50) As Boolean
@@ -102,6 +102,7 @@ Public Class Form1
     Private Diagsrunning As Boolean = False
     Dim gDNSSTimer As Integer = 0
     Dim gUseIcons As Boolean = True
+    Dim gIPv4Address As String
 
     Public Class JSON_result
         Public alert As String
@@ -169,6 +170,14 @@ Public Class Form1
 
 #Region "Properties"
 
+    Public Property IPv4Address() As String
+        Get
+            Return gIPv4Address
+        End Get
+        Set(ByVal Value As String)
+            gIPv4Address = Value
+        End Set
+    End Property
     Public Property Splashpage() As String
         Get
             Return My.Settings.SplashPage
@@ -265,6 +274,11 @@ Public Class Form1
 
         MyUPnpMap = New UPnp(MyFolder)
 
+#Disable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
+        My.Settings.PublicIP = MyUPnpMap.LocalIP
+#Enable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
+
+        My.Settings.Save()
         RegionClass = New RegionMaker
 
         If (My.Settings.SplashPage = "") Then
@@ -286,25 +300,14 @@ Public Class Form1
         Log("Info:Starting Web Server ")
         ws.StartServer(MyFolder)
 
-        Dim ctr = 10 ' wait ten seconds for webserver to start
-        While ws.MyIP() = Nothing And ctr
-            ctr = ctr - 1
-            Sleep(1000)
-        End While
-
-        If ws.MyIP() = Nothing Then
+        gUseIcons = True
+        Dim wsstarted = CheckPort(My.Settings.PublicIP, My.Settings.DiagnosticPort)
+        If wsstarted = False Then
+            MsgBox("Diagnostics port " + My.Settings.DiagnosticPort + " is blocked by firewall or antivirus.")
             gUseIcons = False
-        Else
-            gUseIcons = True
-            Dim wsstarted = CheckPort(ws.MyIP(), My.Settings.DiagnosticPort)
-            If wsstarted = False Then
-                MsgBox("Diagnostics port " + My.Settings.DiagnosticPort + " is blocked by firewall or antivirus.")
-                gUseIcons = False
-            End If
         End If
 
         ' Run diagnostics, maybe
-
         If Not My.Settings.RanAllDiags Or gDebug Then
             DoDiag()
             My.Settings.RanAllDiags = True
@@ -2676,7 +2679,7 @@ Public Class Form1
 
     Private Function CheckDiagPort() As Boolean
         gUseIcons = True
-        Dim wsstarted = CheckPort(ws.MyIP, My.Settings.DiagnosticPort)
+        Dim wsstarted = CheckPort(My.Settings.PublicIP, My.Settings.DiagnosticPort)
         If wsstarted = False Then
             MsgBox("Diagnostics port " + My.Settings.DiagnosticPort + " is not working or blocked by firewall or anti virus, icons disabled.")
             gUseIcons = False
@@ -2928,15 +2931,20 @@ Public Class Form1
                 PathToBackup = PathToBackup.Replace("\", "/")    ' because Opensim uses unix-like slashes, that's why
                 outputFile.WriteLine("@REM A program to backup Mysql manually" + vbCrLf _
                                     + "mysqldump.exe --opt  -uroot --verbose opensim  > " _
-                                    + """" + PathToBackup + "Mysql_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".sql" + """" _
-                                    + vbCrLf + "@pause" + vbCrLf)
+                                    + """" + PathToBackup + "Opensim_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".sql" + """" _
+                                    + vbCrLf _
+                                    + "mysqldump.exe --opt  -uroot --verbose robust  > " _
+                                    + """" + PathToBackup + "Robust_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".sql" + """" _
+                                    + vbCrLf _
+                                    + "@REM Finished!" + vbCrLf _
+                                    + "@pause" + vbCrLf)
             End Using
         Catch ex As Exception
             Print("Failed to create backup:" + ex.Message)
             Return
         End Try
 
-        Print("Starting a Large, Slow, Extensive Database Backup")
+        Print("Starting a possibly large slow ande xtensive Database Backup to the Autobackup folder")
         Dim pMySqlBackup As Process = New Process()
         Dim pi As ProcessStartInfo = New ProcessStartInfo()
         pi.Arguments = ""
@@ -2947,6 +2955,7 @@ Public Class Form1
 
         pMySqlBackup.Start()
 
+        Print("")
     End Sub
 
     Public Function StartMySQL() As Boolean

@@ -276,6 +276,18 @@
 
     End Sub
 
+    Private Sub Addregion_Click(sender As Object, e As EventArgs) Handles Addregion.Click
+        Dim X As Integer = 300
+        Dim Y As Integer = 200
+
+        Form1.RegionClass.CreateRegion("")
+        Dim ActualForm As New FormRegion
+        ActualForm.SetDesktopLocation(X, Y)
+        ActualForm.Init(Form1.RegionClass.CurRegionNum())
+        ActualForm.Activate()
+        ActualForm.Visible = True
+
+    End Sub
 End Class
 
 ' Implements the manual sorting of items by columns.

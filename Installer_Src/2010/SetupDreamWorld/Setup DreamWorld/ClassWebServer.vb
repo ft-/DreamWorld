@@ -17,16 +17,6 @@ Public Class NetServer
     Private Myfolder As String
     Private IP As String = Nothing
 
-    Public Property MyIP() As String
-        Get
-            Return IP
-        End Get
-        Set(ByVal Value As String)
-            IP = Value
-        End Set
-    End Property
-
-
     Private Sub New()
 
         'create a singleton
@@ -54,13 +44,10 @@ Public Class NetServer
         Dim oaddress = GetIPv4Address()
         Log("Info:IP:" + oaddress.ToString)
         listen = True
-
-
         Try
-
-                LocalTCPListener = New TcpListener(oaddress, My.Settings.DiagnosticPort)
-            Catch ex As Exception
-                Log(ex.Message)
+            LocalTCPListener = New TcpListener(oaddress, My.Settings.DiagnosticPort)
+        Catch ex As Exception
+            Log(ex.Message)
                 Return True
             End Try
 
@@ -124,20 +111,7 @@ Public Class NetServer
 
     Private Function GetIPv4Address() As IPAddress
 
-        If MyIP = Nothing Then
-            GetIPv4Address = Nothing
-            Dim strHostName As String = System.Net.Dns.GetHostName()
-            Log("Info:Hostname is " & strHostName)
-            Dim iphe As System.Net.IPHostEntry = System.Net.Dns.GetHostEntry(strHostName)
-            For Each ipheal As System.Net.IPAddress In iphe.AddressList
-                If ipheal.AddressFamily = System.Net.Sockets.AddressFamily.InterNetwork Then
-                    GetIPv4Address = ipheal
-                    MyIP = ipheal.ToString
-                End If
-            Next
-        Else
-            Return IPAddress.Parse(MyIP) ' return cached string IP
-        End If
+        Return IPAddress.Parse(My.Settings.PublicIP)
 
     End Function
 
