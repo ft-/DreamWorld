@@ -188,7 +188,7 @@ Public Class RegionMaker
         If RegionCount() = 0 Then
             CreateRegion("Welcome")
             My.Settings.WelcomeRegion = "Welcome"
-            WriteRegionObject()
+            WriteRegionObject("Welcome")
             GetAllRegions()
         End If
 
@@ -315,25 +315,28 @@ Public Class RegionMaker
 
     End Sub
 
-    Public Sub WriteRegionObject()
+    Public Sub WriteRegionObject(name As String)
 
-        Dim path As String = Form1.prefix & "bin\Regions"
-        Dim index = CurRegionNum()
-        Dim name = RegionList(index).RegionName
+        Dim pathtoWelcome As String = Form1.prefix + "bin\Regions\" + name + "\Region\"
+        Dim fname = pathtoWelcome + name + ".ini"
+        If Not Directory.Exists(pathtoWelcome) Then
+            Try
+                Directory.CreateDirectory(pathtoWelcome)
+            Catch ex As Exception
 
-        If Not Directory.Exists(FolderPath()) Then
-            Directory.CreateDirectory(FolderPath)
+            End Try
+
         End If
 
-        File.Copy(Form1.prefix & "bin\Regions.proto", RegionPath(), True)
+        File.Copy(Form1.prefix & "bin\Regions.proto", fname, True)
 
-        Form1.LoadIni(RegionPath, ";")
-        Form1.SetIni(name, "RegionUUID", RegionList(index).UUID)
-        Form1.SetIni(name, "Location", RegionList(index).CoordX & "," & RegionList(index).CoordY)
-        Form1.SetIni(name, "InternalPort", RegionList(index).RegionPort)
+        Form1.LoadIni(fname, ";")
+        Form1.SetIni(name, "RegionUUID", UUID)
+        Form1.SetIni(name, "Location", CoordX & "," & CoordY)
+        Form1.SetIni(name, "InternalPort", RegionPort)
         Form1.SetIni(name, "ExternalHostName", My.Settings.PublicIP)
-        Form1.SetIni(name, "SizeX", RegionList(index).SizeX)
-        Form1.SetIni(name, "SizeY", RegionList(index).SizeY)
+        Form1.SetIni(name, "SizeX", SizeX)
+        Form1.SetIni(name, "SizeY", SizeY)
         Form1.SaveINI()
 
     End Sub

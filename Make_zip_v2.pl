@@ -85,7 +85,7 @@ say("Remove all regions");
 foreach my $file (@files) {
 	chomp $file;
 	# leave Welcome.ini
-	next if $file =~ /Welcome/;
+	
 	next if $file =~ /^\./;
 	Process ("../7z.exe -tzip d ..\\Zips\\DreamGrid-Update$type.zip OutworldzFiles\\opensim\\bin\\Regions\\$file");
 
@@ -147,7 +147,7 @@ sub Process
 	
 	my $x = `$file`;
 	if ($x =~ /Everything is Ok/) {
-		print "Ok\n";
+		print "Ok $file\n";
 	} else {
 		print "Fail: $x\n";
 		exit;
