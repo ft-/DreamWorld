@@ -1,7 +1,7 @@
 ﻿Public Class RegionList
 
     Dim writetodisk As Boolean
-    Dim TheView As Boolean = True
+    Dim TheView As Integer = 1
     Private Shared FormExists As Boolean = False
 
     ' property exposing FormExists
@@ -58,6 +58,8 @@
 
     Private Sub LoadMyListView()
 
+        Form1.RegionClass.GetAllRegions()
+
         writetodisk = False
 
         ListView1.Clear()
@@ -81,15 +83,16 @@
         imageListSmall.Images.Add(My.Resources.ResourceManager.GetObject("navigate_up2"))   ' 0 booting up
         imageListSmall.Images.Add(My.Resources.ResourceManager.GetObject("navigate_down2")) ' 1 shutting down
         imageListSmall.Images.Add(My.Resources.ResourceManager.GetObject("check2")) ' 2 okay, up
-        imageListSmall.Images.Add(My.Resources.ResourceManager.GetObject("navigate_cross")) ' 3 disabled
-        imageListSmall.Images.Add(My.Resources.ResourceManager.GetObject("navigate_plus"))  ' 4 enabled
+        imageListSmall.Images.Add(My.Resources.ResourceManager.GetObject("media_stop_red")) ' 3 disabled
+        imageListSmall.Images.Add(My.Resources.ResourceManager.GetObject("media_stop"))  ' 4 enabled
+
 
         ' index of 0-4 to display icons
         imageListLarge.Images.Add(My.Resources.ResourceManager.GetObject("navigate_up2"))   ' 0 booting up
         imageListLarge.Images.Add(My.Resources.ResourceManager.GetObject("navigate_down2")) ' 1 shutting down
         imageListLarge.Images.Add(My.Resources.ResourceManager.GetObject("check2")) ' 2 okay, up
-        imageListLarge.Images.Add(My.Resources.ResourceManager.GetObject("navigate_cross")) ' 3 disabled
-        imageListLarge.Images.Add(My.Resources.ResourceManager.GetObject("navigate_plus"))  ' 4 enabled
+        imageListLarge.Images.Add(My.Resources.ResourceManager.GetObject("media_stop_red")) ' 3 disabled
+        imageListLarge.Images.Add(My.Resources.ResourceManager.GetObject("media_stop"))  ' 4 enabled
 
         Dim imageList1 As New ImageList
         Dim Num As Integer = 1
@@ -102,42 +105,44 @@
             ' Place a check mark next to the item.
             item1.Checked = o.RegionEnabled
             item1.SubItems.Add(o.AvatarCount.ToString)
+
+            Dim Letter As String = ""
+            If o.WarmingUp Then
+                Letter = "Booting"
+            ElseIf o.ShuttingDown Then
+                Letter = "Shutting Down"
+            ElseIf o.Ready Then
+                Letter = "Running"
+            ElseIf Not o.RegionEnabled Then
+                Letter = "Disabled"
+            ElseIf o.RegionEnabled Then
+                Letter = "Stopped"
+            End If
+
+            item1.SubItems.Add(Letter)
             ListView1.Items.AddRange(New ListViewItem() {item1})
             i = i + 1
         Next
 
-
         i = 0
         For Each sep2 In ListView1.Items
             Dim r As Object = Form1.RegionClass.FindRegionByName(ListView1.Items(i).Text)
-            Dim Letter As String = "X"
-
-            ' breakpoint
-            If (r.RegionName = "Isis") Then
-                Debug.Print("Isis")
-            End If
-
 
             If r.WarmingUp Then
                 Num = 0
-                Letter = "Booting"
             ElseIf r.ShuttingDown Then
                 Num = 1
-                Letter = "Shutting Down"
             ElseIf r.Ready Then
                 Num = 2
-                Letter = "Running"
             ElseIf Not r.RegionEnabled Then
                 Num = 3
-                Letter = "Disabled"
             ElseIf r.RegionEnabled Then
                 Num = 4
-                Letter = "Stopped"
             End If
             ListView1.Items(i).ImageIndex = Num
             i = i + 1
         Next
-        'item1.SubItems.Add(Letter)
+
         'Assign the ImageList objects to the ListView.
         ListView1.LargeImageList = imageListLarge
         ListView1.SmallImageList = imageListSmall
@@ -156,6 +161,9 @@
     End Sub
 
     Private Sub ListView1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ListView1.SelectedIndexChanged
+
+
+        'Debug.Print(sender.ToString)
 
         Dim regions As ListView.SelectedListViewItemCollection = Me.ListView1.SelectedItems
         Dim item As ListViewItem
@@ -202,7 +210,7 @@
         Else
             Try
                 Dim ActualForm As New FormRegion
-                ActualForm.Init(o)
+                ActualForm.Init(o.RegionName)
                 ActualForm.Activate()
                 ActualForm.Visible = True
             Catch ex As Exception
@@ -227,14 +235,18 @@
                 Form1.LoadIni(o.RegionPath, ";")
                 Form1.SetIni(o.RegionName, "Enabled", "true")
                 Form1.SaveINI()
-                LoadMyListView()
+                Application.DoEvents()
+                'Form1.Sleep(200)
+                'LoadMyListView()
             ElseIf (e.CurrentValue = CheckState.Checked) Then
                 o.RegionEnabled = False
                 ' and region file on disk
                 Form1.LoadIni(o.RegionPath, ";")
                 Form1.SetIni(o.RegionName, "Enabled", "false")
                 Form1.SaveINI()
-                LoadMyListView()
+                Application.DoEvents()
+                'Form1.Sleep(200)
+                'LoadMyListView()
             End If
         End If
 
@@ -253,14 +265,14 @@
 
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
 
-        If TheView Then
+        If TheView = 0 Then
             ListView1.CheckBoxes = False
             ListView1.View = View.List
-            TheView = False
-        Else
+            TheView = 1
+        ElseIf TheView = 1 Then
             ListView1.View = View.Details
             ListView1.CheckBoxes = True
-            TheView = True
+            TheView = 0
         End If
 
     End Sub

@@ -3254,6 +3254,16 @@ Public Class Form1
 
                 Dim o = RegionClass.FindRegionByName(json.region_name)
                 If o Is Nothing Then Return "NAK"
+
+                If o.RegionEnabled = False Then
+                    o.RegionEnabled = True
+
+                    LoadIni(o.RegionPath, ";")
+                    SetIni(json.region_name, "Enabled", "true")
+                    SaveINI()
+
+                End If
+
                 o.Ready = True
                 o.WarmingUp = False
                 o.ShuttingDown = False

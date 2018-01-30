@@ -5,9 +5,8 @@ Imports System.ComponentModel
 Public Class FormRegion
 
 #Region "Declarations"
-    Dim o As Object
+    Dim o As New Object
     Dim oldname As String = ""
-
     Dim initted As Boolean = False ' needed a flag to see if we are initted as the dialogs change on start.
     Dim changed As Boolean    ' true if we need to save a form
 
@@ -15,8 +14,9 @@ Public Class FormRegion
 
 #Region "Functions"
 
-    Public Sub Init(ByVal i As Object)
-        o = i
+    Public Sub Init(Name As String)
+
+        o = Form1.RegionClass.FindRegionByName(Name)
 
         oldname = o.RegionName ' backup in case of rename
         EnabledCheckBox.Checked = o.RegionEnabled()
@@ -89,7 +89,6 @@ Public Class FormRegion
             SizeY.Text = Convert.ToString(o.SizeY)
         End If
 
-
         ' global coords
         If o.CoordX <> 0 Then
             CoordX.Text = o.CoordX
@@ -157,13 +156,11 @@ Public Class FormRegion
             Form1.Log(Message)
             Return Message
         End If
-
         If Convert.ToInt16(o.RegionPort) = 0 Then
             Message = "Region Port cannot be zero or undefined"
             Form1.Log(Message)
             Return Message
         End If
-
         ' Size
         If Convert.ToInt16(o.SizeX) = 0 Then
             Message = ("Region Size X cannot be zero")
@@ -175,7 +172,6 @@ Public Class FormRegion
             Form1.Log(Message)
             Return Message
         End If
-
         Dim aresult As Guid
         If Not Guid.TryParse(UUID.Text, aresult) Then
             Message = "Not a valid UUID"
@@ -244,7 +240,6 @@ Public Class FormRegion
             End Using
         Catch
         End Try
-
 
         oldname = o.RegionName
 

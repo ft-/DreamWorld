@@ -140,7 +140,7 @@ Public Class AdvancedForm
             Try
                 Dim ActualForm As New FormRegion
                 ActualForm.SetDesktopLocation(X, Y)
-                ActualForm.Init(o)
+                ActualForm.Init(o.RegionName)
                 ActualForm.Activate()
                 ActualForm.Visible = True
                 Application.DoEvents()
