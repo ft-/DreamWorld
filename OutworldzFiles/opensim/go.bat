@@ -1,9 +1,10 @@
 
-echo Loading %1
-@echo off
-cls
+@echo Loading %1
 cd bin
 set SimName=%1
-OpenSim.exe -inidirectory="./Regions/%SimName%" 
-cd ..
+set OSIM_LOGPATH = %~dp0\bin\Regions\%SimName%"
+@echo OpenSim.exe -inidirectory="./Regions/%SimName%"
+
+OpenSim.exe -inidirectory="Regions/%SimName%"
+@rem cd ..
 echo %SimName% has exited.

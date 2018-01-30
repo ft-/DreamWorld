@@ -490,7 +490,7 @@ Public Class Form1
             If PID Then
                 Print("Shutting down " + o.RegionName)
                 ConsoleCommand(PID, "quit{ENTER}")
-                Me.Focus()
+                Sleep(100)
             End If
             Application.DoEvents()
         Next
@@ -1080,10 +1080,10 @@ Public Class Form1
                     Try
                         LoadIni(prefix + "bin\Opensim.proto", ";")
                         SetIni("Const", "BaseURL", "http://" + My.Settings.PublicIP)
-                        SetIni("Const", "PublicPort", My.Settings.HttpPort)
-                        SetIni("Const", "http_listener_port", o.RegionPort)
+                        SetIni("Const", "PublicPort", My.Settings.HttpPort) ' 8002
+                        SetIni("Const", "http_listener_port", o.RegionPort) ' varies with region
                         SetIni("Const", "PrivatePort", My.Settings.PrivatePort) '8003
-                        SetIni("Const", "RegionFolderName", o.Folder)
+                        SetIni("Const", "RegionFolderName", o.RegionName)
                         SaveINI()
                         My.Computer.FileSystem.CopyFile(prefix + "bin\Opensim.proto", pathname + "Opensim.ini", True)
                     Catch
@@ -1413,23 +1413,23 @@ Public Class Form1
 
         PortTests()
 
-        ' Boot them up
-        For Each o In Form1.RegionClass.RegionList
-            If o.RegionEnabled And Running Then '
+        Try
+            ' Boot them up
+            For Each o In Form1.RegionClass.RegionList
+                If o.RegionEnabled And Running Then '
 
-                Boot(o)
-                If o.ProcessID = 0 Then
-                    Dim yesno = MsgBox(o.RegionName + " failed to start. Do you want to see the log file?", vbYesNo)
-                    If (yesno = vbYes) Then
-                        System.Diagnostics.Process.Start("notepad.exe", o.FolderPath + "/Opensim.log")
+                    Boot(o)
+                    If o.ProcessID = 0 Then
+                        MsgBox(o.RegionName + " failed to start.", vbInformation)
+                        Print("Startup aborted at " + o.RegionName)
                     End If
-
-                    Print("Startup aborted at " + o.RegionName)
-                    Return False
+                    Sleep(3000) ' no rush, give it time to boot and read environment
                 End If
-                Sleep(3000) ' no rush, give it time to boot and read environment
-            End If
-        Next
+            Next
+        Catch
+            Print("Unable to boot some regions")
+        End Try
+
 
         Return True
 
@@ -2522,6 +2522,12 @@ Public Class Form1
 
         If Not My.Settings.EnableHypergrid Then
             BumpProgress10()
+            If My.Settings.DnsName.Length Then
+                BumpProgress10()
+                My.Settings.PublicIP = My.Settings.DnsName
+                My.Settings.Save()
+            End If
+
 #Disable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
             My.Settings.PublicIP = MyUPnpMap.LocalIP
 #Enable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
@@ -2571,6 +2577,10 @@ Public Class Form1
 
     Private Sub TestLoopback()
 
+        If My.Settings.DnsName = "localhost" Or My.Settings.DnsName = "127.0.0.1" Then
+            Return
+        End If
+
         Print("Running Loopback Test")
         Dim result As String = ""
         Dim loopbacktest As String = "http://" + My.Settings.PublicIP + ":" + My.Settings.DiagnosticPort + "/?_TestLoopback=" + Random()
@@ -2619,6 +2629,9 @@ Public Class Form1
 
     Private Function ProbePublicPort() As Boolean
 
+        If My.Settings.DnsName = "localhost" Or My.Settings.DnsName = "127.0.0.1" Then
+            Return True
+        End If
         Print("Checking Router")
 
         Dim isPortOpen As String = ""

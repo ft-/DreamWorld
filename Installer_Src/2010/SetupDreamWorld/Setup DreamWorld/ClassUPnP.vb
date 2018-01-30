@@ -183,6 +183,10 @@ Public Class UPnp
     End Function
     Public Shared Function LocalIP() As String
 
+        If My.Settings.DnsName = "localhost" Or My.Settings.DnsName = "127.0.0.1" Then
+            Return My.Settings.DnsName
+        End If
+
         Dim sock As Socket = New Socket(AddressFamily.InterNetwork, SocketType.Dgram, 0)
         Try
             Using sock

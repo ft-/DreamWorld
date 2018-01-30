@@ -28,7 +28,7 @@ Public Class RegionMaker
 
     End Class
 
-    Public RegionList As New ArrayList
+    Public Shared RegionList As New ArrayList
     Private gCurRegionNum As Integer
 #End Region
 
