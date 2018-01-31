@@ -11,7 +11,7 @@ Public Class PassGen
     Private GetRandomInt32Value As New RandomInt32Value
     Private GetPasswordGenProfiler As New PasswordGenProfiler
 
-    Public Function GeneratePass()
+    Public Function GeneratePass() As String
         possibleChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()"
         len = 6
 

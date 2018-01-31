@@ -66,7 +66,7 @@ Public Class Form1
     Private WithEvents RobustProcess As New Process()
 
     Public Event RobustExited As EventHandler
-    Private images = New List(Of Image) From {My.Resources.tangled, My.Resources.wp_habitat, My.Resources.wp_Mooferd,
+    Private images As List(Of Image) = New List(Of Image) From {My.Resources.tangled, My.Resources.wp_habitat, My.Resources.wp_Mooferd,
                              My.Resources.wp_To_Piers_Anthony,
                              My.Resources.wp_wavy_love_of_animals, My.Resources.wp_zebra,
                              My.Resources.wp_Que, My.Resources.wp_1, My.Resources.wp_2,
@@ -104,6 +104,7 @@ Public Class Form1
     Dim gUseIcons As Boolean = True
     Dim gIPv4Address As String
 
+
     Public Class JSON_result
         Public alert As String
         Public login As String
@@ -114,56 +115,56 @@ Public Class Form1
 #End Region
 
 #Region "Events"
-    Private WithEvents myProcess1 As New Process()
-    Private WithEvents myProcess2 As New Process()
-    Private WithEvents myProcess3 As New Process()
-    Private WithEvents myProcess4 As New Process()
-    Private WithEvents myProcess5 As New Process()
-    Private WithEvents myProcess6 As New Process()
-    Private WithEvents myProcess7 As New Process()
-    Private WithEvents myProcess8 As New Process()
-    Private WithEvents myProcess9 As New Process()
-    Private WithEvents myProcess10 As New Process()
-    Private WithEvents myProcess11 As New Process()
-    Private WithEvents myProcess12 As New Process()
-    Private WithEvents myProcess13 As New Process()
-    Private WithEvents myProcess14 As New Process()
-    Private WithEvents myProcess15 As New Process()
-    Private WithEvents myProcess16 As New Process()
-    Private WithEvents myProcess17 As New Process()
-    Private WithEvents myProcess18 As New Process()
-    Private WithEvents myProcess19 As New Process()
-    Private WithEvents myProcess20 As New Process()
-    Private WithEvents myProcess21 As New Process()
-    Private WithEvents myProcess22 As New Process()
-    Private WithEvents myProcess23 As New Process()
-    Private WithEvents myProcess24 As New Process()
-    Private WithEvents myProcess25 As New Process()
-    Private WithEvents myProcess26 As New Process()
-    Private WithEvents myProcess27 As New Process()
-    Private WithEvents myProcess28 As New Process()
-    Private WithEvents myProcess29 As New Process()
-    Private WithEvents myProcess30 As New Process()
-    Private WithEvents myProcess31 As New Process()
-    Private WithEvents myProcess32 As New Process()
-    Private WithEvents myProcess33 As New Process()
-    Private WithEvents myProcess34 As New Process()
-    Private WithEvents myProcess35 As New Process()
-    Private WithEvents myProcess36 As New Process()
-    Private WithEvents myProcess37 As New Process()
-    Private WithEvents myProcess38 As New Process()
-    Private WithEvents myProcess39 As New Process()
-    Private WithEvents myProcess40 As New Process()
-    Private WithEvents myProcess41 As New Process()
-    Private WithEvents myProcess42 As New Process()
-    Private WithEvents myProcess43 As New Process()
-    Private WithEvents myProcess44 As New Process()
-    Private WithEvents myProcess45 As New Process()
-    Private WithEvents myProcess46 As New Process()
-    Private WithEvents myProcess47 As New Process()
-    Private WithEvents myProcess48 As New Process()
-    Private WithEvents myProcess49 As New Process()
-    Private WithEvents myProcess50 As New Process()
+    Private WithEvents MyProcess1 As New Process()
+    Private WithEvents MyProcess2 As New Process()
+    Private WithEvents MyProcess3 As New Process()
+    Private WithEvents MyProcess4 As New Process()
+    Private WithEvents MyProcess5 As New Process()
+    Private WithEvents MyProcess6 As New Process()
+    Private WithEvents MyProcess7 As New Process()
+    Private WithEvents MyProcess8 As New Process()
+    Private WithEvents MyProcess9 As New Process()
+    Private WithEvents MyProcess10 As New Process()
+    Private WithEvents MyProcess11 As New Process()
+    Private WithEvents MyProcess12 As New Process()
+    Private WithEvents MyProcess13 As New Process()
+    Private WithEvents MyProcess14 As New Process()
+    Private WithEvents MyProcess15 As New Process()
+    Private WithEvents MyProcess16 As New Process()
+    Private WithEvents MyProcess17 As New Process()
+    Private WithEvents MyProcess18 As New Process()
+    Private WithEvents MyProcess19 As New Process()
+    Private WithEvents MyProcess20 As New Process()
+    Private WithEvents MyProcess21 As New Process()
+    Private WithEvents MyProcess22 As New Process()
+    Private WithEvents MyProcess23 As New Process()
+    Private WithEvents MyProcess24 As New Process()
+    Private WithEvents MyProcess25 As New Process()
+    Private WithEvents MyProcess26 As New Process()
+    Private WithEvents MyProcess27 As New Process()
+    Private WithEvents MyProcess28 As New Process()
+    Private WithEvents MyProcess29 As New Process()
+    Private WithEvents MyProcess30 As New Process()
+    Private WithEvents MyProcess31 As New Process()
+    Private WithEvents MyProcess32 As New Process()
+    Private WithEvents MyProcess33 As New Process()
+    Private WithEvents MyProcess34 As New Process()
+    Private WithEvents MyProcess35 As New Process()
+    Private WithEvents MyProcess36 As New Process()
+    Private WithEvents MyProcess37 As New Process()
+    Private WithEvents MyProcess38 As New Process()
+    Private WithEvents MyProcess39 As New Process()
+    Private WithEvents MyProcess40 As New Process()
+    Private WithEvents MyProcess41 As New Process()
+    Private WithEvents MyProcess42 As New Process()
+    Private WithEvents MyProcess43 As New Process()
+    Private WithEvents MyProcess44 As New Process()
+    Private WithEvents MyProcess45 As New Process()
+    Private WithEvents MyProcess46 As New Process()
+    Private WithEvents MyProcess47 As New Process()
+    Private WithEvents MyProcess48 As New Process()
+    Private WithEvents MyProcess49 As New Process()
+    Private WithEvents MyProcess50 As New Process()
 
 
 #End Region
@@ -453,7 +454,7 @@ Public Class Form1
 
     End Sub
 
-    Private Sub mnuExit_Click(sender As System.Object, e As System.EventArgs) Handles mnuExit.Click
+    Private Sub MnuExit_Click(sender As System.Object, e As System.EventArgs) Handles mnuExit.Click
         Log("Info:Exiting")
         End
     End Sub
@@ -476,7 +477,7 @@ Public Class Form1
 
         Application.DoEvents()
 
-        Dim n = RegionClass.Count()
+        Dim n As Integer = RegionClass.RegionCount()
         Debug.Print("N=" + n.ToString())
 
         Dim counter = 50
@@ -485,12 +486,13 @@ Public Class Form1
             counter = counter - 1
         End While
 
-        For Each o In Form1.RegionClass.RegionList
-            Dim PID = o.ProcessID()
+        For Each o As RegionMaker.Region_data In RegionClass.RegionList
+            Dim PID As Integer = RegionClass.ProcessID()
             If PID Then
-                Print("Shutting down " + o.RegionName)
+                Print("Shutting down " + RegionClass.RegionName)
                 ConsoleCommand(PID, "quit{ENTER}")
-                Sleep(100)
+                ConsoleCommand(PID, "quit{ENTER}")
+                Sleep(1000)
             End If
             Application.DoEvents()
         Next
@@ -502,7 +504,7 @@ Public Class Form1
             counter = 300 ' 5 minutes to quit all regions
             While (counter)
                 ' decrement progress bar according to the ratio of what we had / what we have now
-                Dim n2 = RegionClass.Count()
+                Dim n2 As Integer = RegionClass.RegionCount()
                 'Debug.Print("N2=" + n2.ToString())
                 If n Then
                     ProgressBar1.Value = n2 / n * 100
@@ -512,11 +514,11 @@ Public Class Form1
 
                 counter = counter - 1
                 Dim isRunning As Boolean = False
-                For Each o As Object In Form1.RegionClass.RegionList
+                For Each o As RegionMaker.Region_data In RegionClass.RegionList
                     If o Is Nothing Or Not gStopping Then
                         ' do nothing
                     Else
-                        If o.ProcessID Then
+                        If RegionClass.ProcessID Then
                             isRunning = True
                         End If
                     End If
@@ -546,7 +548,7 @@ Public Class Form1
 
     End Sub
 
-    Private Function zap(processName As String) As Boolean
+    Private Function Zap(processName As String) As Boolean
         ' Kill process by name
         For Each P As Process In System.Diagnostics.Process.GetProcessesByName(processName)
             Try
@@ -558,7 +560,7 @@ Public Class Form1
                 Return False
             End Try
         Next
-        zap = False
+        Zap = False
     End Function
 
 #End Region
@@ -629,7 +631,7 @@ Public Class Form1
 
     End Sub
 
-    Private Sub mnuAbout_Click(sender As System.Object, e As System.EventArgs) Handles mnuAbout.Click
+    Private Sub MnuAbout_Click(sender As System.Object, e As System.EventArgs) Handles mnuAbout.Click
         Print("(c) 2017 Outworldz,LLC")
         Dim webAddress As String = Domain + "/Outworldz_Installer"
         Process.Start(webAddress)
@@ -663,7 +665,7 @@ Public Class Form1
 
     End Sub
 
-    Private Sub mnuHide_Click(sender As System.Object, e As System.EventArgs) Handles mnuHide.Click
+    Private Sub MnuHide_Click(sender As System.Object, e As System.EventArgs) Handles mnuHide.Click
         Print("The Opensimulator Console will not be shown. You can still interact with it with Help->Opensim Console")
         mnuShow.Checked = False
         mnuHide.Checked = True
@@ -749,18 +751,17 @@ Public Class Form1
 
         Dim reader As System.IO.StreamReader
         Dim line As String
+        Dim DefaultName As String = ""
 
         Try
             ' add this sim name as a default to the file as HG regions, and add the other regions as fallback
-            Dim o As Object = RegionClass.FindRegionByName(My.Settings.WelcomeRegion)
-            If o Is Nothing Then
-                RegionClass.CurRegionNum = 0
-                Dim name = RegionClass.RegionName
-                o = RegionClass.FindRegionByName(name)
-                Return
-            End If
 
-            Dim DefaultName = o.RegionName
+            ' it may have been deleted
+            Dim o As RegionMaker.Region_data = RegionClass.FindRegionByName(My.Settings.WelcomeRegion)
+
+            If o Is Nothing Then
+                o = RegionClass.FindRegionByName(ChooseRegion())
+            End If
 
             '(replace spaces with underscore)
             DefaultName = DefaultName.Replace(" ", "_")    ' because this is a screwy thing they did in the INI file
@@ -1030,16 +1031,16 @@ Public Class Form1
 
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
         'Regions - write all region.ini files with public IP and Public port
-        For Each o In Form1.RegionClass.RegionList
+        For Each o As RegionMaker.Region_data In RegionClass.RegionList
 
-            Dim simName = o.RegionName
+            Dim simName = RegionClass.RegionName
 
-            LoadIni(o.RegionPath, ";")
-            SetIni(simName, "InternalPort", Convert.ToString(o.RegionPort))
+            LoadIni(RegionClass.RegionPath, ";")
+            SetIni(simName, "InternalPort", Convert.ToString(RegionClass.RegionPort))
             SetIni(simName, "ExternalHostName", Convert.ToString(My.Settings.PublicIP))
 
             ' not a standard INI, only use by the Dreamers
-            If o.RegionEnabled Then
+            If RegionClass.RegionEnabled Then
                 SetIni(simName, "Enabled", "true")
             Else
                 SetIni(simName, "Enabled", "false")
@@ -1075,15 +1076,15 @@ Public Class Form1
 
                     Debug.Print(regionName)
 
-                    Dim o = RegionClass.FindRegionByName(regionName)
+                    RegionClass.FindRegionByName(regionName)
 
                     Try
                         LoadIni(prefix + "bin\Opensim.proto", ";")
                         SetIni("Const", "BaseURL", "http://" + My.Settings.PublicIP)
                         SetIni("Const", "PublicPort", My.Settings.HttpPort) ' 8002
-                        SetIni("Const", "http_listener_port", o.RegionPort) ' varies with region
+                        SetIni("Const", "http_listener_port", RegionClass.RegionPort) ' varies with region
                         SetIni("Const", "PrivatePort", My.Settings.PrivatePort) '8003
-                        SetIni("Const", "RegionFolderName", o.RegionName)
+                        SetIni("Const", "RegionFolderName", RegionClass.Folder)
                         SaveINI()
                         My.Computer.FileSystem.CopyFile(prefix + "bin\Opensim.proto", pathname + "Opensim.ini", True)
                     Catch
@@ -1196,22 +1197,22 @@ Public Class Form1
         Dim ports(1) As Object
         ports(0) = Nothing
 
-        For Each o In Form1.RegionClass.RegionList
+        For Each o In RegionClass.RegionList
 
-            If ports.Length <= o.RegionPort Then
-                ReDim ports(o.RegionPort + 1)
+            If ports.Length <= RegionClass.RegionPort Then
+                ReDim ports(RegionClass.RegionPort + 1)
             End If
             Try
-                If ports(o.RegionPort) Is Nothing Then
-                    ports(o.RegionPort) = o
+                If ports(RegionClass.RegionPort) Is Nothing Then
+                    ports(RegionClass.RegionPort) = o
                 Else
-                    MsgBox(o.RegionName + " has a duplicated port with " + ports(o.RegionPort).RegionName + ". Skipping boot of " + o.RegionName)
-                    o.RegionEnabled = False
+                    MsgBox(RegionClass.RegionName + " has a duplicated port with " + ports(RegionClass.RegionPort).RegionName + ". Skipping boot of " + RegionClass.RegionName)
+                    RegionClass.RegionEnabled = False
                     Passfail = False
                 End If
             Catch ex As Exception
                 Log("Error:" + ex.Message)
-                ports(o.RegionPort) = 0
+                ports(RegionClass.RegionPort) = 0
             End Try
         Next
 
@@ -1401,32 +1402,24 @@ Public Class Form1
 
         If Running = False Then Return True
 
-        '!!! Form1.RegionClass.RegionList = Form1.RegionClass.RegionList.OrderBy(Function(x) x.RegionName).ToList()
-
-        For Each o As Object In Form1.RegionClass.RegionList
-            o.ProcessID = 0 ' clear the PID and UUI
-            o.UUID = ""
-            o.Ready = False
-            o.WarmingUp = False
-            o.ShuttingDown = False
-        Next
+        '!!! RegionClass.RegionList = RegionClass.RegionList.OrderBy(Function(x) x.RegionName).ToList()
 
         PortTests()
 
         Try
             ' Boot them up
-            For Each o In Form1.RegionClass.RegionList
-                If o.RegionEnabled And Running Then '
-
-                    Boot(o)
-                    If o.ProcessID = 0 Then
-                        MsgBox(o.RegionName + " failed to start.", vbInformation)
-                        Print("Startup aborted at " + o.RegionName)
+            For Each o As RegionMaker.Region_data In RegionClass.RegionList
+                If RegionClass.RegionEnabled And Running Then '
+                    If Not Boot(RegionClass.RegionName) Then
+                        MsgBox(RegionClass.RegionName + " failed to start.", vbInformation)
+                        Print("Boot skipped for " + RegionClass.RegionName)
+                        Return False
                     End If
                     Sleep(3000) ' no rush, give it time to boot and read environment
                 End If
             Next
-        Catch
+        Catch ex As Exception
+            Debug.Print(ex.Message)
             Print("Unable to boot some regions")
         End Try
 
@@ -1646,14 +1639,14 @@ Public Class Form1
     Private Sub DoExit(ByVal sender As Object)
         ' Handle Opensim Exited
 
-        Dim o = RegionClass.FindRegionByProcessID(sender.Id)
-
+        Dim o As RegionMaker.Region_data = RegionClass.FindRegionByProcessID(sender.Id)
         If o Is Nothing Then Return
-        Log(o.RegionName + " stopped")
-        o.Ready = False
-        o.WarmingUp = False
-        o.ShuttingDown = False
-        o.ProcessID = 0
+
+        Log(RegionClass.RegionName + " stopped")
+        RegionClass.Ready = False
+        RegionClass.WarmingUp = False
+        RegionClass.ShuttingDown = False
+        RegionClass.ProcessID = 0
 
     End Sub
 
@@ -1727,21 +1720,23 @@ Public Class Form1
 
     End Function
 
-    Public Sub Boot(ByVal o As Object)
+    Public Function Boot(Name As String) As Boolean
 
-        If o Is Nothing Then Return
-        If (o.Ready Or o.WarmingUp Or o.Shuttingdown) Then Return
 
-        Environment.SetEnvironmentVariable("OSIM_LOGPATH", prefix + "bin\Regions\" & o.Folder())
+        If RegionClass.ProcessID Or RegionClass.Ready Or RegionClass.WarmingUp Or RegionClass.ShuttingDown Then
+            Return True
+        End If
+
+        Environment.SetEnvironmentVariable("OSIM_LOGPATH", prefix + "bin\Regions\" + RegionClass.Folder)
 
         Dim myProcess = GetNewProcess()
 
         If myProcess Is Nothing Then
-            Print("Exceeded max number of processes: could not start " + o.RegionName)
-            Return
+            Print("Exceeded max number of processes: could not start " + RegionClass.RegionName)
+            Return False
         End If
 
-        Print("Starting Region " + o.RegionName)
+        Print("Starting Region " + RegionClass.RegionName)
 
         Dim Pid As Integer
         Try
@@ -1750,7 +1745,8 @@ Public Class Form1
             myProcess.StartInfo.WorkingDirectory = prefix + "bin"
             myProcess.StartInfo.FileName = prefix + "bin\OpenSim.exe"
             myProcess.StartInfo.CreateNoWindow = False
-            myProcess.StartInfo.Arguments = """" & "-inidirectory=./Regions/" & o.Folder() & """"
+            myProcess.StartInfo.Arguments = """" & "-inidirectory=./Regions/" & RegionClass.Folder & """"
+
             If mnuShow.Checked Then
                 myProcess.StartInfo.WindowStyle = ProcessWindowStyle.Normal
             Else
@@ -1758,42 +1754,44 @@ Public Class Form1
             End If
 
             Try
-                My.Computer.FileSystem.DeleteFile(prefix + "bin\Regions\" & o.Folder & "\Opensim.log")
-            Catch
-            End Try
-            Try
-                My.Computer.FileSystem.DeleteFile(prefix + "bin\Regions\" & o.Folder & "\PID.pid")
+                My.Computer.FileSystem.DeleteFile(prefix + "bin\Regions\" & RegionClass.Folder & "\Opensim.log")
             Catch
             End Try
 
             Try
-                My.Computer.FileSystem.DeleteFile(prefix + "bin\regions\" & o.Folder & "\OpensimConsole.log")
+                My.Computer.FileSystem.DeleteFile(prefix + "bin\Regions\" & RegionClass.Folder & "\PID.pid")
+            Catch
+            End Try
+
+            Try
+                My.Computer.FileSystem.DeleteFile(prefix + "bin\regions\" & RegionClass.Folder & "\OpensimConsole.log")
             Catch ex As Exception
             End Try
 
             Try
-                My.Computer.FileSystem.DeleteFile(prefix + "bin\regions\" & o.Folder & "\OpenSimStats.log")
+                My.Computer.FileSystem.DeleteFile(prefix + "bin\regions\" & RegionClass.Folder & "\OpenSimStats.log")
             Catch ex As Exception
             End Try
 
+            RegionClass.ProcessID = 0
             myProcess.Start()
-            Pid = myProcess.Id
+            RegionClass.ProcessID = myProcess.Id
 
             If Pid Then
-                o.WarmingUp = True
-                o.Ready = False
-                o.ShuttingDown = False
-                o.ProcessID = Pid
+                RegionClass.WarmingUp = True
+                RegionClass.Ready = False
+                RegionClass.ShuttingDown = False
             End If
 
         Catch ex As Exception
             Print("Error: Opensim did not start: " + ex.Message)
             KillAll()
             Buttons(StartButton)
-
+            Return False
         End Try
+        Return True
 
-    End Sub
+    End Function
 
     Private Function IsRobustRunning() As Boolean
 
@@ -1828,7 +1826,7 @@ Public Class Form1
             MyFolder + "\http.log"      ' an old mistake
         }
 
-        For Each thing In Logfiles
+        For Each thing As String In Logfiles
             ' clear out the log files
             Try
                 My.Computer.FileSystem.DeleteFile(thing)
@@ -2067,9 +2065,9 @@ Public Class Form1
             Return
         End If
 
-        For Each o In Form1.RegionClass.RegionList
-            If o.ready Then
-                ConsoleCommand(o.ProcessID, "save oar  " + """" + BackupPath() + o.RegionName + "_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
+        For Each o As RegionMaker.Region_data In RegionClass.RegionList
+            If RegionClass.Ready Then
+                ConsoleCommand(RegionClass.ProcessID, "save oar  " + """" + BackupPath() + RegionClass.RegionName + "_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
                 Me.Focus()
                 Application.DoEvents()
             End If
@@ -2157,13 +2155,12 @@ Public Class Form1
             Password = InputBox(Message, title, defaultValue)
 
             Dim r = Nothing
-            Dim o As Object
-            For Each o In Form1.RegionClass.RegionList
-                If o.Running Then
-                    r = o
+            For Each d As RegionMaker.Region_data In RegionClass.RegionList
+                If d._Ready Then
+                    r = d
                 End If
             Next
-
+            '!!! test this
             If r Is Nothing Then
                 Print("No regions are running")
                 Return
@@ -2188,12 +2185,9 @@ Public Class Form1
             ' Read the chosen sim name
             chosen = Chooseform.ListBox1.SelectedItem.ToString()
             If chosen.Length Then
-                Dim o = RegionClass.FindRegionByName(chosen)
-                If o Is Nothing Then
-                Else
-                    ConsoleCommand(o.ProcessID, "change region " + """" + chosen + """" + "{ENTER}")
-                    Me.Focus()
-                End If
+                RegionClass.FindRegionByName(chosen)
+                ConsoleCommand(RegionClass.ProcessID, "change region " + """" + chosen + """" + "{ENTER}")
+                Me.Focus()
                 Chooseform.Dispose()
             End If
         Catch ex As Exception
@@ -2215,19 +2209,19 @@ Public Class Form1
 
         If region.Length Then
 
-            Dim o = RegionClass.FindRegionByName(region)
+            RegionClass.FindRegionByName(region)
 
             Dim backMeUp = MsgBox("Make a backup first?", vbYesNo)
             Try
                 Print("Opensimulator will load  " + thing + ".  This may take some time.")
                 thing = thing.Replace("\", "/")    ' because Opensim uses unix-like slashes, that's why
                 If backMeUp = vbYes Then
-                    ConsoleCommand(o.ProcessID, "alert CPU Intensive Backup Started {ENTER}")
-                    ConsoleCommand(o.ProcessID, "save oar " + """" + BackupPath() + "Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
+                    ConsoleCommand(RegionClass.ProcessID, "alert CPU Intensive Backup Started {ENTER}")
+                    ConsoleCommand(RegionClass.ProcessID, "save oar " + """" + BackupPath() + "Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
                 End If
-                ConsoleCommand(o.ProcessID, "alert New content Is loading..{ENTER}")
-                ConsoleCommand(o.ProcessID, "load oar --force-terrain --force-parcels " + """" + thing + """" + "{ENTER}")
-                ConsoleCommand(o.ProcessID, "alert New content just loaded. {ENTER}")
+                ConsoleCommand(RegionClass.ProcessID, "alert New content Is loading..{ENTER}")
+                ConsoleCommand(RegionClass.ProcessID, "load oar --force-terrain --force-parcels " + """" + thing + """" + "{ENTER}")
+                ConsoleCommand(RegionClass.ProcessID, "alert New content just loaded. {ENTER}")
                 Me.Focus()
             Catch ex As Exception
                 Log("Error: " + ex.Message)
@@ -2242,14 +2236,14 @@ Public Class Form1
             Print("Opensim is not running. Cannot save an OAR at this time.")
             Return
         End If
-        Dim o = RegionClass.FindRegionByName(My.Settings.WelcomeRegion
-                                             )
+
+        RegionClass.FindRegionByName(My.Settings.WelcomeRegion)
         Dim user = InputBox("User name that will get this IAR?")
         Dim password = InputBox("Password for user " + user + "?")
         If user.Length And password.Length Then
 
-            ConsoleCommand(o.ProcessID, "load iar --merge " + user + " / " + password + " " + """" + thing + """" + "{ENTER}")
-            ConsoleCommand(o.ProcessID, "alert IAR content Is loaded{ENTER}")
+            ConsoleCommand(RegionClass.ProcessID, "load iar --merge " + user + " / " + password + " " + """" + thing + """" + "{ENTER}")
+            ConsoleCommand(RegionClass.ProcessID, "alert IAR content Is loaded{ENTER}")
             Me.Focus()
             Print("Opensim is loading your item. You will find it in your inventory in / soon.")
         Else
@@ -2261,7 +2255,7 @@ Public Class Form1
     Private Sub TextBox1_DragDrop(sender As System.Object, e As System.Windows.Forms.DragEventArgs) Handles TextBox1.DragDrop
 
         Dim files() As String = e.Data.GetData(DataFormats.FileDrop)
-        For Each pathname In files
+        For Each pathname As String In files
             pathname.Replace("\", "/")
             Dim extension = Path.GetExtension(pathname)
             extension = Mid(extension, 2, 5)
@@ -2285,7 +2279,7 @@ Public Class Form1
     Private Sub PictureBox1_DragDrop(sender As System.Object, e As System.Windows.Forms.DragEventArgs) Handles PictureBox1.DragDrop
 
         Dim files() As String = e.Data.GetData(DataFormats.FileDrop)
-        For Each pathname In files
+        For Each pathname As String In files
             pathname.Replace("\", "/")
             Dim extension = Path.GetExtension(pathname)
             extension = Mid(extension, 2, 5)
@@ -2672,6 +2666,8 @@ Public Class Form1
 
     Private Sub DoDiag()
 
+        If My.Settings.DnsName = "127.0.0.1" Or My.Settings.DnsName = "localhost" Then Return
+
         Print("Running Network Diagnostics, please wait")
         Diagsrunning = True
         My.Settings.DiagFailed = False
@@ -2774,21 +2770,21 @@ Public Class Form1
 
             ' !!!regions = regions.OrderBy(Function(x) x.RegionPort).ToList()
 
-            For Each o As Object In Form1.RegionClass.RegionList
-                Dim R As Int16 = o.RegionPort
+            For Each o As RegionMaker.Region_data In RegionClass.RegionList
+                Dim R As Int16 = RegionClass.RegionPort
 
                 If MyUPnpMap.Exists(R, UPnp.Protocol.UDP) Then
                     MyUPnpMap.Remove(R, UPnp.Protocol.UDP)
                 End If
-                MyUPnpMap.Add(UPnp.LocalIP, R, UPnp.Protocol.UDP, "Opensim UDP Region " & o.RegionName & " ")
-                PrintFast("Region " + o.RegionName + " is set to " + Convert.ToString(R))
+                MyUPnpMap.Add(UPnp.LocalIP, R, UPnp.Protocol.UDP, "Opensim UDP Region " & RegionClass.RegionName & " ")
+                PrintFast("Region " + RegionClass.RegionName + " is set to " + Convert.ToString(R))
                 BumpProgress(1)
 
                 If MyUPnpMap.Exists(R, UPnp.Protocol.TCP) Then
                     MyUPnpMap.Remove(R, UPnp.Protocol.TCP)
                 End If
-                MyUPnpMap.Add(UPnp.LocalIP, R, UPnp.Protocol.TCP, "Opensim TCP Region " & o.RegionName & " ")
-                PrintFast("Region " + o.RegionName + " is set to " + Convert.ToString(R))
+                MyUPnpMap.Add(UPnp.LocalIP, R, UPnp.Protocol.TCP, "Opensim TCP Region " & RegionClass.RegionName & " ")
+                PrintFast("Region " + RegionClass.RegionName + " is set to " + Convert.ToString(R))
                 BumpProgress(1)
             Next
 
@@ -2917,7 +2913,7 @@ Public Class Form1
                     pMySqlRestore.StartInfo = pi
                     pMySqlRestore.Start()
                 End If
-            Else
+        Else
                 Print("Restore cancelled")
             End If
         End If
@@ -3277,28 +3273,28 @@ Public Class Form1
                 Dim o = RegionClass.FindRegionByName(json.region_name)
                 If o Is Nothing Then Return "NAK"
 
-                If o.RegionEnabled = False Then
-                    o.RegionEnabled = True
-
-                    LoadIni(o.RegionPath, ";")
+                If RegionClass.RegionEnabled = False Then
+                    RegionClass.RegionEnabled = True
+                    LoadIni(RegionClass.RegionPath, ";")
                     SetIni(json.region_name, "Enabled", "true")
                     SaveINI()
-
                 End If
 
-                o.Ready = True
-                o.WarmingUp = False
-                o.ShuttingDown = False
-                o.UUID = json.region_id
+                RegionClass.Ready = True
+                RegionClass.WarmingUp = False
+                RegionClass.ShuttingDown = False
+                RegionClass.UUID = json.region_id
 
             ElseIf json.login = "shutdown" Then
                 Debug.Print("Region " & json.region_name & " shut down")
 
                 Dim o = RegionClass.FindRegionByName(json.region_name)
                 If o Is Nothing Then Return "NAK"
-                o.Ready = False
-                o.WarmingUp = False
-                o.ShuttingDown = False
+
+                RegionClass.Ready = False
+                RegionClass.WarmingUp = False
+                RegionClass.ShuttingDown = False
+
             End If
         ElseIf POST.Contains("UUID") Then
             Debug.Print("UUID:" + POST)
@@ -3314,7 +3310,8 @@ Public Class Form1
 
 
     Private Sub RegionClick(sender As ToolStripMenuItem, e As EventArgs)
-        Dim o As Object = RegionClass.FindRegionByName(sender.Text)
+
+        RegionClass.FindRegionByName(sender.Text)
 
         ' Handle robust clicking
         If sender.Text = "Robust" Then
@@ -3338,46 +3335,45 @@ Public Class Form1
             Debug.Print("Region:Clicked region " & sender.Text)
 
             ' Running, stop it
-            If o.RegionEnabled And (o.Ready Or o.WarmingUp) Then
+            If RegionClass.RegionEnabled And (RegionClass.Ready Or RegionClass.WarmingUp) Then
 
                 ' if enabled and running, even partly up, stop it.
                 sender.Checked = False
                 If Running Then
                     Try
-                        ConsoleCommand(o.ProcessID, "quit{ENTER}")
+                        ConsoleCommand(RegionClass.ProcessID, "quit{ENTER}")
                         Me.Focus()
 
-                        o.RegionEnabled = False
-                        o.Ready = False
-                        o.WarmingUp = False
-                        o.ShuttingDown = True
+                        RegionClass.RegionEnabled = False
+                        RegionClass.Ready = False
+                        RegionClass.WarmingUp = False
+                        RegionClass.ShuttingDown = True
 
-                        LoadIni(o.RegionPath, ";")
+                        LoadIni(RegionClass.RegionPath, ";")
                         SetIni(sender.Text, "Enabled", "false")
                         SaveINI()
 
-                        Debug.Print("Region:Stopped Region " + o.RegionName)
+                        Debug.Print("Region:Stopped Region " + RegionClass.RegionName)
                     Catch ex As Exception
                         Debug.Print("Region:Could not stop Opensim")
                     End Try
                 End If
 
-            ElseIf Not (o.Ready Or o.WarmingUp Or o.ShuttingDown) Then
+            ElseIf Not (RegionClass.Ready Or RegionClass.WarmingUp Or RegionClass.ShuttingDown) Then
                 ' it was stopped, and disabled, so we toggle the enable, and start up
                 sender.Checked = True
 
-                o.RegionEnabled = True
-                o.Ready = False
-                o.ShuttingDown = False
+                RegionClass.RegionEnabled = True
+                RegionClass.Ready = False
+                RegionClass.ShuttingDown = False
 
                 ' and region file on disk
-
-                LoadIni(o.RegionPath, ";")
+                LoadIni(RegionClass.RegionPath, ";")
                 SetIni(sender.Text, "Enabled", "true")
                 SaveINI()
 
-                Boot(o)
-                Debug.Print("Region:Started Region " + o.RegionName)
+                Boot(RegionClass.RegionName)
+                Debug.Print("Region:Started Region " + RegionClass.RegionName)
             End If
         End If
 
@@ -3388,7 +3384,8 @@ Public Class Form1
         If (Running) Then
 
             Dim chosen = ChooseRegion()
-            Dim o As Object = RegionClass.FindRegionByName(chosen)
+            Dim o As RegionMaker.Region_data = RegionClass.FindRegionByName(chosen)
+            If o Is Nothing Then Return
 
             Dim Message, title, defaultValue As String
             Dim myValue As Object
@@ -3401,8 +3398,8 @@ Public Class Form1
             myValue = InputBox(Message, title, defaultValue)
             ' If user has clicked Cancel, set myValue to defaultValue 
             If myValue.length = 0 Then Return
-            ConsoleCommand(o.ProcessID, "alert CPU Intensive Backup Started{ENTER}")
-            ConsoleCommand(o.ProcessID, "save oar " + """" + BackupPath() + myValue + """" + "{ENTER}")
+            ConsoleCommand(RegionClass.ProcessID, "alert CPU Intensive Backup Started{ENTER}")
+            ConsoleCommand(RegionClass.ProcessID, "save oar " + """" + BackupPath() + myValue + """" + "{ENTER}")
             Me.Focus()
             Print("Saving " + myValue + " to " + BackupPath())
         Else
@@ -3415,7 +3412,8 @@ Public Class Form1
 
         If (Running) Then
             Dim chosen = ChooseRegion()
-            Dim o As Object = RegionClass.FindRegionByName(chosen)
+            Dim o As RegionMaker.Region_data = RegionClass.FindRegionByName(chosen)
+            If o Is Nothing Then Return
 
             ' Create an instance of the open file dialog box.
             Dim openFileDialog1 As OpenFileDialog = New OpenFileDialog
@@ -3437,12 +3435,12 @@ Public Class Form1
                     thing = thing.Replace("\", "/")    ' because Opensim uses unix-like slashes, that's why
 
                     If backMeUp = vbYes Then
-                        ConsoleCommand(o.ProcessID, "alert CPU Intensive Backup Started{ENTER}")
-                        ConsoleCommand(o.ProcessID, "save oar  " + """" + BackupPath() + "Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
+                        ConsoleCommand(RegionClass.ProcessID, "alert CPU Intensive Backup Started{ENTER}")
+                        ConsoleCommand(RegionClass.ProcessID, "save oar  " + """" + BackupPath() + "Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
                     End If
-                    ConsoleCommand(o.ProcessID, "alert New content is loading..{ENTER}")
-                    ConsoleCommand(o.ProcessID, "load oar --force-terrain --force-parcels " + """" + thing + """" + "{ENTER}")
-                    ConsoleCommand(o.ProcessID, "alert New content just loaded." + "{ENTER}")
+                    ConsoleCommand(RegionClass.ProcessID, "alert New content is loading..{ENTER}")
+                    ConsoleCommand(RegionClass.ProcessID, "load oar --force-terrain --force-parcels " + """" + thing + """" + "{ENTER}")
+                    ConsoleCommand(RegionClass.ProcessID, "alert New content just loaded." + "{ENTER}")
                     Me.Focus()
                 End If
             End If
@@ -3455,26 +3453,25 @@ Public Class Form1
 
         If My.Settings.AutoLoad Then
             ' Scan all the regions
-            Dim Rlist = Form1.RegionClass.RegionList
-            For Each o In Rlist
-                o.AvatarCount = MysqlConn.IsUserPresent(o.UUID)
-                Debug.Print(o.AvatarCount.ToString + " avatars in region " + o.RegionName)
-                If o.Timer > 0 Then o.Timer = o.Timer - 1
+            Dim Rlist = RegionClass.RegionList
+            For Each o As RegionMaker.Region_data In Rlist
+                RegionClass.AvatarCount = MysqlConn.IsUserPresent(RegionClass.UUID)
+                Debug.Print(RegionClass.AvatarCount.ToString + " avatars in region " + RegionClass.RegionName)
+                If RegionClass.Timer > 0 Then RegionClass.Timer = RegionClass.Timer - 1
 
                 ' if enabled and running, stopit
-                If o.AvatarCount = 0 Then
-                    If o.RegionEnabled And Running And o.Ready Then
-                        Debug.Print("AutoLoad is shutting down " + o.RegionName)
-                        ConsoleCommand(o.ProcessID, "quit{ENTER}")
+                If RegionClass.AvatarCount = 0 Then
+                    If Running And RegionClass.RegionEnabled And RegionClass.Ready Then
+                        Debug.Print("AutoLoad is shutting down " + RegionClass.RegionName)
+                        ConsoleCommand(RegionClass.ProcessID, "quit{ENTER}")
                         Me.Focus()
-                        o.Ready = False
-                        o.WarmingUp = False
-                        o.ShuttingDown = True
+                        RegionClass.Ready = False
+                        RegionClass.WarmingUp = False
+                        RegionClass.ShuttingDown = True
                     End If
-                Else   ' o.Avatarcount <> 0
-                    o.Timer = 60 ' 60 seconds and we will shut it off
+                Else
+                    RegionClass.Timer = 60 ' 60 seconds and we will shut it off
                 End If
-
             Next
         End If
 

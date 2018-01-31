@@ -10,9 +10,9 @@
         'regions = Form1.RegionClass.RegionList
         'regions = Form1.RegionClass.RegionList.OrderBy(Function(x) x.RegionName).ToList()
 
-        For Each o In Form1.RegionClass.RegionList
-            If o.RegionEnabled Then
-                ListBox1.Items.Add(o.RegionName)
+        For Each o As RegionMaker.Region_data In Form1.RegionClass.RegionList
+            If Form1.RegionClass.RegionEnabled Then
+                ListBox1.Items.Add(Form1.RegionClass.RegionName)
             End If
         Next
 
@@ -22,7 +22,6 @@
     End Sub
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
-
         Form1.RegionClass.CurRegionNum() = ListBox1.SelectedIndex
     End Sub
 

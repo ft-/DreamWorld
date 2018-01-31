@@ -5,7 +5,7 @@ Imports System.ComponentModel
 Public Class FormRegion
 
 #Region "Declarations"
-    Dim o As New Object
+    Dim o As Object
     Dim oldname As String = ""
     Dim initted As Boolean = False ' needed a flag to see if we are initted as the dialogs change on start.
     Dim changed As Boolean    ' true if we need to save a form
@@ -38,9 +38,9 @@ Public Class FormRegion
 
             ' locate largest X and Y global coords, and Region Port
             ' Add something to make sure we do not intersect
-            o.RegionPort = Form1.RegionClass.LargestPort + 1
-            o.CoordX = Form1.RegionClass.LargestX + 5
-            o.CoordY = Form1.RegionClass.LargestY
+            o.RegionPort = o.LargestPort + 1
+            o.CoordX = o.LargestX + 5
+            o.CoordY = o.LargestY
 
         End If
 
@@ -388,13 +388,13 @@ Public Class FormRegion
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
 
-        Form1.RegionClass.RegionName = o.RegionName
-        Form1.RegionClass.UUID = o.UUID
-        Form1.RegionClass.CoordX = o.CoordX
-        Form1.RegionClass.CoordY = o.CoordY
-        Form1.RegionClass.RegionPort = o.RegionPort
-        Form1.RegionClass.SizeY = o.SizeY
-        Form1.RegionClass.SizeX = o.SizeX
+        o.RegionName = o.RegionName
+        o.UUID = o.UUID
+        o.CoordX = o.CoordX
+        o.CoordY = o.CoordY
+        o.RegionPort = o.RegionPort
+        o.SizeY = o.SizeY
+        o.SizeX = o.SizeX
 
         Dim message = RegionValidate()
         If Len(message) Then
@@ -433,7 +433,7 @@ Public Class FormRegion
 
         If initted And SizeX.Text <> "" Then
             If Not IsPowerOf256(Convert.ToSingle(SizeX.Text)) Then
-                MsgBox("Must be a multiple of 256: 256,512,768,1024,1280,1536,1792,2048,2304,2560, ...", vbInformation)
+                MsgBox("Must be a multiple of 256: 256,512,768,1024,1280,1536,1792,2048,2304,2560, ..", vbInformation)
             Else
                 SizeY.Text = SizeX.Text
                 changed = True
@@ -459,7 +459,7 @@ Public Class FormRegion
         If msg = vbYes Then
             Try
                 My.Computer.FileSystem.DeleteDirectory(Form1.prefix & "bin\Regions\" + RegionName.Text, FileIO.UIOption.AllDialogs, FileIO.RecycleOption.SendToRecycleBin, FileIO.UICancelOption.ThrowException)
-                Form1.RegionClass.GetAllRegions()
+                o.GetAllRegions()
                 Form1.CopyOpensimProto()
                 Me.Close()
             Catch ex As Exception

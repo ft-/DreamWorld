@@ -162,7 +162,7 @@ Public Class AdvancedForm
         Form1.RegionClass.CreateRegion("")
         Dim ActualForm As New FormRegion
         ActualForm.SetDesktopLocation(X, Y)
-        ActualForm.Init(Form1.RegionClass.CurRegionNum())
+        ActualForm.Init("Enter a name here")
         ActualForm.Activate()
         ActualForm.Visible = True
 

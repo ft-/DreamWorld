@@ -8,100 +8,121 @@ Public Class RegionMaker
 
 #Region "Declarations"
     ' hold a copy of the Main region data on a per-form basis
-    Private Class Region_data
-        Public RegionPath As String
-        Public FolderPath As String
-        Public Folder As String
-        Public ProcessID As Integer
-        Public RegionName As String
-        Public UUID As String
-        Public CoordX As Integer
-        Public CoordY As Integer
-        Public RegionPort As Integer
-        Public SizeX As Integer
-        Public SizeY As Integer
-        Public AvatarCount As Integer
-        Public RegionEnabled As Boolean ' Will run or not
-        Public Ready As Boolean         ' is up
-        Public WarmingUp As Boolean     ' booting up
-        Public ShuttingDown As Boolean  ' shutting down
-
+    Public Class Region_data
+        Public _RegionPath As String = ""
+        Public _FolderPath As String = ""
+        Public _Folder As String = ""
+        Public _ProcessID As Integer = 0
+        Public _RegionName As String = ""
+        Public _UUID As String = ""
+        Public _CoordX As Integer = 0
+        Public _CoordY As Integer = 0
+        Public _RegionPort As Integer = 0
+        Public _SizeX As Integer = 0
+        Public _SizeY As Integer = 0
+        Public _AvatarCount As Integer = 0
+        Public _RegionEnabled As Boolean = False ' Will run or not
+        Public _Ready As Boolean = False       ' is up
+        Public _WarmingUp As Boolean = False    ' booting up
+        Public _ShuttingDown As Boolean = False ' shutting down
+        Public _Timer As Integer
     End Class
 
-    Public Shared RegionList As New ArrayList
+    Public RegionList As New ArrayList()
     Private gCurRegionNum As Integer
+
 #End Region
 
 #Region "Properties"
-    Public Property RegionCount() As Integer
-        Get
-            Try
-                Return RegionList.Count
-            Catch
-                Return 0
-            End Try
 
+    Public Property ShuttingDown() As Boolean
+        Get
+            Return RegionList(CurRegionNum())._ShuttingDown
         End Get
-        Set(value As Integer)
+        Set(ByVal Value As Boolean)
+            RegionList(CurRegionNum())._ShuttingDown = Value
         End Set
+    End Property
+    Public Property Ready() As Boolean
+        Get
+            Return RegionList(CurRegionNum())._Ready
+        End Get
+        Set(ByVal Value As Boolean)
+            RegionList(CurRegionNum())._Ready = Value
+        End Set
+    End Property
+    Public Property Timer() As Integer
+        Get
+            Return RegionList(CurRegionNum())._Timer
+        End Get
+        Set(ByVal Value As Integer)
+            RegionList(CurRegionNum())._Timer = Value
+        End Set
+    End Property
+    Public Property WarmingUp() As Boolean
+        Get
+            Return RegionList(CurRegionNum())._WarmingUp
+        End Get
+        Set(ByVal Value As Boolean)
+            RegionList(CurRegionNum())._WarmingUp = Value
+        End Set
+    End Property
+    Public ReadOnly Property RegionCount() As Integer
+        Get
+            Return RegionList.Count
+        End Get
+
     End Property
     Public Property RegionPath() As String
         Get
-            Return RegionList(CurRegionNum()).RegionPath
+            Return RegionList(CurRegionNum())._RegionPath
         End Get
         Set(ByVal Value As String)
-            RegionList(CurRegionNum()).RegionPath = Value
+            RegionList(CurRegionNum())._RegionPath = Value
         End Set
     End Property
     Public Property FolderPath() As String
         Get
-            Return RegionList(CurRegionNum()).FolderPath
+            Return RegionList(CurRegionNum())._FolderPath
         End Get
         Set(ByVal Value As String)
-            RegionList(CurRegionNum()).FolderPath = Value
+            RegionList(CurRegionNum())._FolderPath = Value
         End Set
     End Property
     Public Property Folder() As String
         Get
-            Return RegionList(CurRegionNum()).Folder
+            Return RegionList(CurRegionNum())._Folder.ToString
         End Get
         Set(ByVal Value As String)
-            RegionList(CurRegionNum()).Folder = Value
+            RegionList(CurRegionNum())._Folder = Value
         End Set
     End Property
     Public Property RegionEnabled() As Boolean
         Get
-            Return RegionList(CurRegionNum()).RegionEnabled
+            Return RegionList(CurRegionNum())._RegionEnabled
         End Get
         Set(ByVal Value As Boolean)
-            RegionList(CurRegionNum()).RegionEnabled = Value
+            RegionList(CurRegionNum())._RegionEnabled = Value
         End Set
     End Property
     Public Property ProcessID() As Integer
         Get
-            Return RegionList(CurRegionNum()).ProcessID
+            Return RegionList(CurRegionNum())._ProcessID
         End Get
         Set(ByVal Value As Integer)
-            RegionList(CurRegionNum()).ProcessID = Value
+            RegionList(CurRegionNum())._ProcessID = Value
         End Set
     End Property
     Public Property AvatarCount() As Integer
         Get
-            Return RegionList(CurRegionNum()).AvatarCount
+            Return RegionList(CurRegionNum())._AvatarCount
         End Get
         Set(ByVal Value As Integer)
-            RegionList(CurRegionNum()).AvatarCount = Value
+            RegionList(CurRegionNum())._AvatarCount = Value
         End Set
     End Property
-
     Public Property CurRegionNum() As Integer
         Get
-            If gCurRegionNum > RegionList.Count - 1 Then
-                gCurRegionNum = RegionList.Count - 1
-            End If
-            If gCurRegionNum = -1 Then
-                Return 0
-            End If
             Return gCurRegionNum
         End Get
         Set(ByVal Value As Integer)
@@ -110,73 +131,63 @@ Public Class RegionMaker
     End Property
     Public Property RegionName() As String
         Get
-            Return RegionList(CurRegionNum()).RegionName
+            Return RegionList(CurRegionNum())._RegionName
         End Get
         Set(ByVal Value As String)
-            RegionList(CurRegionNum()).RegionName = Value
+            RegionList(CurRegionNum())._RegionName = Value
         End Set
     End Property
     Public Property UUID() As String
         Get
-            Return RegionList(CurRegionNum()).UUID
+            Return RegionList(CurRegionNum())._UUID
         End Get
         Set(ByVal Value As String)
-            RegionList(CurRegionNum()).UUID = Value
+            RegionList(CurRegionNum())._UUID = Value
         End Set
     End Property
     Public Property SizeX() As Integer
         Get
-            Return RegionList(CurRegionNum()).SizeX
+            Return RegionList(CurRegionNum())._SizeX
         End Get
         Set(ByVal Value As Integer)
-            RegionList(CurRegionNum()).SizeX = Value
+            RegionList(CurRegionNum())._SizeX = Value
         End Set
     End Property
     Public Property SizeY() As Integer
         Get
-            Return RegionList(CurRegionNum()).SizeY
+            Return RegionList(CurRegionNum())._SizeY
         End Get
         Set(ByVal Value As Integer)
-            RegionList(CurRegionNum()).SizeY = Value
+            RegionList(CurRegionNum())._SizeY = Value
         End Set
     End Property
     Public Property RegionPort() As Integer
         Get
-            If RegionList(CurRegionNum()).RegionPort <= My.Settings.PrivatePort Then
-                RegionList(CurRegionNum()).RegionPort = My.Settings.PrivatePort + 1 ' 8004, by default
+            If RegionList(CurRegionNum())._RegionPort <= My.Settings.PrivatePort Then
+                RegionList(CurRegionNum())._RegionPort = My.Settings.PrivatePort + 1 ' 8004, by default
             End If
-            Return RegionList(CurRegionNum()).RegionPort
+            Return RegionList(CurRegionNum())._RegionPort
         End Get
         Set(ByVal Value As Integer)
-            RegionList(CurRegionNum()).RegionPort = Value
+            RegionList(CurRegionNum())._RegionPort = Value
         End Set
     End Property
     Public Property CoordX() As Integer
         Get
-            Return RegionList(CurRegionNum()).CoordX
+            Return RegionList(CurRegionNum())._CoordX
         End Get
         Set(ByVal Value As Integer)
-            RegionList(CurRegionNum()).CoordX = Value
+            RegionList(CurRegionNum())._CoordX = Value
         End Set
     End Property
     Public Property CoordY() As Integer
         Get
-            Return RegionList(CurRegionNum()).CoordY
+            Return RegionList(CurRegionNum())._CoordY
         End Get
         Set(ByVal Value As Integer)
-            RegionList(CurRegionNum()).CoordY = Value
+            RegionList(CurRegionNum())._CoordY = Value
         End Set
     End Property
-    Public Property Ready() As Boolean
-        Get
-            Return RegionList(CurRegionNum()).Ready
-        End Get
-        Set(ByVal Value As Boolean)
-            RegionList(CurRegionNum()).Ready = Value
-        End Set
-    End Property
-
-
 
 #End Region
 
@@ -189,55 +200,67 @@ Public Class RegionMaker
             CreateRegion("Welcome")
             My.Settings.WelcomeRegion = "Welcome"
             WriteRegionObject("Welcome")
-            GetAllRegions()
         End If
 
-    End Sub
-
-    Public Sub DebugRegions(o As Object)
-
-        Debug.Print("Region:" + o.RegionName +
-            " WarmingUp=" + o.WarmingUp.ToString +
-           " ShuttingDown=" + o.ShuttingDown.ToString +
-            " Ready=" + o.Ready.ToString +
-           " RegionEnabled=" + o.RegionEnabled.ToString)
+        CreateRegion("Robust")
+        WriteRegionObject("Robust")
+        GetAllRegions()
 
     End Sub
 
-    Public Function FindRegionByName(Name As String) As Object
 
-        For Each obj In RegionList
-            If Name = obj.RegionName Then
+    Public Sub DebugRegions(o As Region_data)
+
+        Debug.Print("Region:" + o._RegionName +
+            " WarmingUp=" + o._WarmingUp.ToString +
+           " ShuttingDown=" + o._ShuttingDown.ToString +
+            " Ready=" + o._Ready.ToString +
+           " RegionEnabled=" + o._RegionEnabled.ToString)
+
+    End Sub
+
+    Public Function FindRegionByName(Name As String) As Region_data
+
+        Dim i As Integer = 0
+        For Each obj As Region_data In RegionList
+            If Name = obj._RegionName Then
+                CurRegionNum = i
+                Debug.Print("Current Region #: " + CurRegionNum.ToString + " is " + obj._RegionName)
                 Return obj
             End If
+            i = i + 1
         Next
         Return Nothing
 
     End Function
 
-    Public Function FindRegionByProcessID(PID As Integer) As Object
+    Public Function FindRegionByProcessID(PID As Integer) As Region_data
 
-        For Each obj In RegionList
-            If PID = obj.ProcessID Then
+        Dim i As Integer = 0
+        For Each obj As Region_data In RegionList
+            If PID = obj._ProcessID Then
+                CurRegionNum = i
+                Debug.Print("Current Region #: " + CurRegionNum.ToString + " is " + obj._RegionName)
                 Return obj
             End If
+            i = i + 1
         Next
         Return Nothing
 
     End Function
 
-    Public Function CreateRegion(name As String) As Object
+    Public Function CreateRegion(name As String) As Region_data
 
         Debug.Print("Create Region " + name)
         Dim r As New Region_data
-        r.RegionName = name
-        r.RegionEnabled = True
-        r.UUID = Guid.NewGuid().ToString
-        r.SizeX = 256
-        r.SizeY = 256
-        r.CoordX = LargestX() + 4
-        r.CoordY = LargestY() + 0
-        r.RegionPort = LargestPort() + 1 '8004 + 1
+        r._RegionName = name
+        r._RegionEnabled = True
+        r._UUID = Guid.NewGuid().ToString
+        r._SizeX = 256
+        r._SizeY = 256
+        r._CoordX = LargestX() + 4
+        r._CoordY = LargestY() + 0
+        r._RegionPort = LargestPort() + 1 '8004 + 1
 
         RegionList.Add(r)
         CurRegionNum = RegionCount() - 1
@@ -253,30 +276,24 @@ Public Class RegionMaker
 
         folders = Directory.GetDirectories(Form1.prefix + "bin\Regions")
         For Each FolderName As String In folders
-            Form1.Log("Info:Region Path:" + FolderName)
+            'Form1.Log("Info:Region Path:" + FolderName)
             regionfolders = Directory.GetDirectories(FolderName)
             For Each FileName As String In regionfolders
 
                 Dim fName = ""
                 Try
-                    Form1.Log("Info:Loading region from " + FolderName)
+                    'Form1.Log("Info:Loading region from " + FolderName)
                     Dim inis = Directory.GetFiles(FileName, "*.ini", SearchOption.TopDirectoryOnly)
 
                     For Each ini As String In inis
                         ' remove the ini
-                        Debug.Print(FileName)
+                        'Debug.Print(FileName)
 
                         fName = Path.GetFileName(ini)
                         fName = Mid(fName, 1, Len(fName) - 4)
 
                         ' make a slot to hold the region data 
-                        Dim o = CreateRegion(fName)
-
-                        Form1.Log("Info:Reading Region " + ini)
-
-                        ' populate from disk
-                        o.RegionName() = fName
-
+                        CreateRegion(fName)
 
                         Try
                             RegionEnabled() = Form1.GetIni(ini, fName, "Enabled", ";")
@@ -285,14 +302,12 @@ Public Class RegionMaker
                         End Try
 
                         RegionPath() = ini ' save the path
-
                         FolderPath() = Path.GetDirectoryName(ini)
 
                         ' need folder name in case there are more than 1 ini
                         Dim theStart = FolderPath().IndexOf("Regions\") + 8
                         Dim theEnd = FolderPath().LastIndexOf("\")
                         Folder() = FolderPath().Substring(theStart, theEnd - theStart)
-
 
                         UUID() = Form1.GetIni(ini, fName, "RegionUUID", ";")
                         SizeX() = Convert.ToInt16(Form1.GetIni(ini, fName, "SizeX", ";"))
@@ -303,7 +318,6 @@ Public Class RegionMaker
                         Dim parts As String() = C.Split(New Char() {","c}) ' split at the comma
                         CoordX() = parts(0)
                         CoordY() = parts(1)
-
                     Next
 
                 Catch ex As Exception
@@ -345,8 +359,8 @@ Public Class RegionMaker
 
         ' locate largest global coords
         Dim Max As Integer
-        For Each obj In RegionList
-            If obj.CoordX > Max Then Max = obj.CoordX
+        For Each obj As Region_data In RegionList
+            If obj._CoordX > Max Then Max = obj._CoordX
         Next
         If Max = 0 Then Max = 996 ' (1000 - 4 so 1st region ends up at 1000)
         Return Max
@@ -357,8 +371,8 @@ Public Class RegionMaker
 
         ' locate largest global coords
         Dim Max As Integer
-        For Each obj In RegionList
-            Dim val = obj.CoordY
+        For Each obj As Region_data In RegionList
+            Dim val = obj._CoordY
             If val > Max Then Max = val
         Next
         If Max = 0 Then Max = 1000
@@ -371,8 +385,8 @@ Public Class RegionMaker
         ' locate largest global coords
         Dim Max As Integer
         Dim counter As Integer = 0
-        For Each obj In RegionList
-            Dim val = obj.RegionPort
+        For Each obj As Region_data In RegionList
+            Dim val = obj._RegionPort
             If val > Max Then Max = val
         Next
         If Max = 0 Then Max = My.Settings.PrivatePort
@@ -380,9 +394,6 @@ Public Class RegionMaker
 
     End Function
 
-    Public Function Count() As Integer
-        Return RegionCount
-    End Function
 
 #End Region
 

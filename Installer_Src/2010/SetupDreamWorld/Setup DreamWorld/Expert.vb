@@ -447,7 +447,7 @@ Public Class Expert
         End If
     End Sub
 
-    Private Function IsUserAdministrator()
+    Private Function IsUserAdministrator() As Boolean
 
         Dim isAdmin As Boolean
         Try

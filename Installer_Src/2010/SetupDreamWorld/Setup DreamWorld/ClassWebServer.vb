@@ -7,7 +7,7 @@ Imports System.Xml
 
 
 Public Class NetServer
-    Private Shared running = False
+    Private running As Integer = False
     Private LocalTCPListener As TcpListener
     Dim listen As Boolean = True
     Private LocalAddress As IPAddress
@@ -29,7 +29,7 @@ Public Class NetServer
         Myfolder = folder
         Try
             Log("Info:Starting Diagnostic Webserver")
-            WebThread = New Thread(AddressOf looper)
+            WebThread = New Thread(AddressOf Looper)
             WebThread.SetApartmentState(ApartmentState.STA)
             WebThread.Start()
             running = True
@@ -39,7 +39,7 @@ Public Class NetServer
 
     End Sub
 
-    Private Function looper()
+    Private Sub Looper()
 
         Dim oaddress = GetIPv4Address()
         Log("Info:IP:" + oaddress.ToString)
@@ -48,11 +48,11 @@ Public Class NetServer
             LocalTCPListener = New TcpListener(oaddress, My.Settings.DiagnosticPort)
         Catch ex As Exception
             Log(ex.Message)
-                Return True
-            End Try
+            Return
+        End Try
 
-            LocalTCPListener.Start()
-            Log("Info:Listener Started")
+        LocalTCPListener.Start()
+        Log("Info:Listener Started")
 
         While listen
 
@@ -105,9 +105,8 @@ Public Class NetServer
         LocalTCPListener.Stop()
         Log("Info:Webthread ending")
         running = False
-        Return False
 
-    End Function
+    End Sub
 
     Private Function GetIPv4Address() As IPAddress
 
@@ -126,7 +125,7 @@ Public Class NetServer
 
     End Sub
 
-    Friend Shared Function getWebServer() As NetServer
+    Friend Shared Function GetWebServer() As NetServer
 
         If Not blnFlag Then
             singleWebserver = New NetServer
