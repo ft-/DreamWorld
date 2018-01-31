@@ -1,7 +1,7 @@
 ﻿Public Class RegionList
 
     Dim writetodisk As Boolean
-    Dim TheView As Integer = 1
+    Dim TheView As Integer = 0
     Private Shared FormExists As Boolean = False
 
     ' property exposing FormExists
@@ -74,9 +74,6 @@
         ListView1.Columns.Add("Agents", 60, HorizontalAlignment.Center)
         ListView1.Columns.Add("Status", 60, HorizontalAlignment.Center)
 
-
-        Dim i As Integer = 0
-
         Me.SuspendLayout()
 
         ' index of 0-4 to display icons
@@ -95,53 +92,53 @@
         imageListLarge.Images.Add(My.Resources.ResourceManager.GetObject("media_stop"))  ' 4 enabled
 
         Dim imageList1 As New ImageList
-        Dim Num As Integer = 1
-        For Each o As RegionMaker.Region_data In Form1.RegionClass.RegionList
+
+        For Each n As Integer In Form1.RegionClass.RegionNumbers
 
             '  Form1.RegionClass.DebugRegions(o)
 
             ' Create  items and subitems for each item.
-            Dim item1 As New ListViewItem(Form1.RegionClass.RegionName, 0)
+            Dim item1 As New ListViewItem(Form1.RegionClass.RegionName(n), 0)
             ' Place a check mark next to the item.
-            item1.Checked = Form1.RegionClass.RegionEnabled
-            item1.SubItems.Add(Form1.RegionClass.AvatarCount.ToString)
+            item1.Checked = Form1.RegionClass.RegionEnabled(n)
+            item1.SubItems.Add(Form1.RegionClass.AvatarCount(n).ToString)
 
             Dim Letter As String = ""
-            If Form1.RegionClass.WarmingUp Then
+            If Form1.RegionClass.WarmingUp(n) Then
                 Letter = "Booting"
-            ElseIf Form1.RegionClass.ShuttingDown Then
+            ElseIf Form1.RegionClass.ShuttingDown(n) Then
                 Letter = "Shutting Down"
-            ElseIf Form1.RegionClass.Ready Then
+            ElseIf Form1.RegionClass.Ready(n) Then
                 Letter = "Running"
-            ElseIf Not Form1.RegionClass.RegionEnabled Then
+            ElseIf Not Form1.RegionClass.RegionEnabled(n) Then
                 Letter = "Disabled"
-            ElseIf Form1.RegionClass.RegionEnabled Then
+            ElseIf Form1.RegionClass.RegionEnabled(n) Then
                 Letter = "Stopped"
             End If
 
             item1.SubItems.Add(Letter)
             ListView1.Items.AddRange(New ListViewItem() {item1})
-            i = i + 1
+            n = n + 1
         Next
 
-        i = 0
-        For Each sep2 In ListView1.Items
+        Dim Num As Integer
+        Dim ctr As Integer = 0
+        For Each Item In ListView1.Items
+            Dim i As Integer = Form1.RegionClass.FindRegionByName(ListView1.Items(ctr).Text)
 
-            Form1.RegionClass.FindRegionByName(ListView1.Items(i).Text)
-
-            If Form1.RegionClass.WarmingUp Then
+            If Form1.RegionClass.WarmingUp(ctr) Then
                 Num = 0
-            ElseIf Form1.RegionClass.ShuttingDown Then
+            ElseIf Form1.RegionClass.ShuttingDown(ctr) Then
                 Num = 1
-            ElseIf Form1.RegionClass.Ready Then
+            ElseIf Form1.RegionClass.Ready(ctr) Then
                 Num = 2
-            ElseIf Not Form1.RegionClass.RegionEnabled Then
+            ElseIf Not Form1.RegionClass.RegionEnabled(ctr) Then
                 Num = 3
-            ElseIf Form1.RegionClass.RegionEnabled Then
+            ElseIf Form1.RegionClass.RegionEnabled(ctr) Then
                 Num = 4
             End If
-            ListView1.Items(i).ImageIndex = Num
-            i = i + 1
+            ListView1.Items(ctr).ImageIndex = Num
+            ctr = ctr + 1
         Next
 
         'Assign the ImageList objects to the ListView.
@@ -171,47 +168,47 @@
 
         For Each item In regions
             Dim RegionName = item.SubItems(0).Text
-            Debug.Print("Clicked row" + RegionName)
-            Dim o As RegionMaker.Region_data = Form1.RegionClass.FindRegionByName(RegionName)
-            If o Is Nothing Then Return
-            StartStop()
+            Debug.Print("Clicked row " + RegionName)
+            Dim n As Integer = Form1.RegionClass.FindRegionByName(RegionName)
+            'If n = Nothing Then Return
+            StartStop(n)
         Next
 
     End Sub
-    Private Sub StartStop()
+    Private Sub StartStop(n As Integer)
 
         ' Running, stop it
-        If Form1.RegionClass.RegionEnabled And (Form1.RegionClass.Ready Or Form1.RegionClass.WarmingUp) Then
+        If Form1.RegionClass.RegionEnabled(n) And (Form1.RegionClass.Ready(n) Or Form1.RegionClass.WarmingUp(n)) Then
             ' if enabled and running, even partly up, stop it.
             Try
-                Form1.ConsoleCommand(Form1.RegionClass.ProcessID, "quit{ENTER}")
+                Form1.ConsoleCommand(Form1.RegionClass.ProcessID(n), "quit{ENTER}")
                 Me.Focus()
 
-                Form1.RegionClass.Ready = False
-                Form1.RegionClass.WarmingUp = False
-                Form1.RegionClass.ShuttingDown = True
+                Form1.RegionClass.Ready(n) = False
+                Form1.RegionClass.WarmingUp(n) = False
+                Form1.RegionClass.ShuttingDown(n) = True
 
-                Form1.LoadIni(Form1.RegionClass.RegionPath, ";")
-                Form1.SetIni(Form1.RegionClass.RegionName, "Enabled", "false")
+                Form1.LoadIni(Form1.RegionClass.RegionPath(n), ";")
+                Form1.SetIni(Form1.RegionClass.RegionName(n), "Enabled", "false")
                 Form1.SaveINI()
 
-                Form1.Log("Region:Stopped Region " + Form1.RegionClass.RegionName)
+                Form1.Log("Region:Stopped Region " + Form1.RegionClass.RegionName(n))
 
             Catch ex As Exception
-                Form1.Log("Region:Could not stop " + Form1.RegionClass.RegionName)
+                Form1.Log("Region:Could not stop " + Form1.RegionClass.RegionName(n))
             End Try
 
-        ElseIf Form1.RegionClass.RegionEnabled And Not (Form1.RegionClass.Ready Or Form1.RegionClass.WarmingUp Or Form1.RegionClass.ShuttingDown) Then
+        ElseIf Form1.RegionClass.RegionEnabled(n) And Not (Form1.RegionClass.Ready(n) Or Form1.RegionClass.WarmingUp(n) Or Form1.RegionClass.ShuttingDown(n)) Then
             ' it was stopped, and disabled, so we start up
             If Not Form1.StartMySQL() Then Return
             Form1.Start_Robust()
 
-            Form1.Boot(Form1.RegionClass.RegionName)
-            Debug.Print("Region:Started Region " + Form1.RegionClass.RegionName)
+            Form1.Boot(Form1.RegionClass.RegionName(n))
+            Debug.Print("Region:Started Region " + Form1.RegionClass.RegionName(n))
         Else
             Try
                 Dim ActualForm As New FormRegion
-                ActualForm.Init(Form1.RegionClass.RegionName)
+                ActualForm.Init(Form1.RegionClass.RegionName(n))
                 ActualForm.Activate()
                 ActualForm.Visible = True
             Catch ex As Exception
@@ -227,22 +224,22 @@
     Private Sub ListView1_ItemCheck1(ByVal sender As Object, ByVal e As System.Windows.Forms.ItemCheckEventArgs) Handles ListView1.ItemCheck
 
         Dim Item As ListViewItem = ListView1.Items.Item(e.Index)
-        Dim o = Form1.RegionClass.FindRegionByName(Item.Text)
-        If o Is Nothing Then Return
+        Dim n As Integer = Form1.RegionClass.FindRegionByName(Item.Text)
+        'If n = Nothing Then Return
         If writetodisk Then
             If (e.CurrentValue = CheckState.Unchecked) Then
-                Form1.RegionClass.RegionEnabled() = True
+                Form1.RegionClass.RegionEnabled(n) = True
                 ' and region file on disk
-                Form1.LoadIni(Form1.RegionClass.RegionPath, ";")
-                Form1.SetIni(Form1.RegionClass.RegionName, "Enabled", "true")
+                Form1.LoadIni(Form1.RegionClass.RegionPath(n), ";")
+                Form1.SetIni(Form1.RegionClass.RegionName(n), "Enabled", "true")
                 Form1.SaveINI()
                 Application.DoEvents()
 
             ElseIf (e.CurrentValue = CheckState.Checked) Then
-                Form1.RegionClass.RegionEnabled = False
+                Form1.RegionClass.RegionEnabled(n) = False
                 ' and region file on disk
-                Form1.LoadIni(Form1.RegionClass.RegionPath, ";")
-                Form1.SetIni(Form1.RegionClass.RegionName, "Enabled", "false")
+                Form1.LoadIni(Form1.RegionClass.RegionPath(n), ";")
+                Form1.SetIni(Form1.RegionClass.RegionName(n), "Enabled", "false")
                 Form1.SaveINI()
                 Application.DoEvents()
 

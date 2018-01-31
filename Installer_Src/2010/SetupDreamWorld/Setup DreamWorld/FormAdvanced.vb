@@ -244,36 +244,25 @@ Public Class AdvancedForm
         ' Default welcome region load
         WelcomeBox1.Items.Clear()
 
-
-
         ' !!!regions = regions.OrderBy(Function(x) x.RegionName).ToList()
 
-        For Each o In Form1.RegionClass.RegionList
-            If o.RegionEnabled Then
-                WelcomeBox1.Items.Add(o.RegionName())
+        For Each n As Integer In Form1.RegionClass.RegionNumbers
+            If Form1.RegionClass.RegionEnabled(n) Then
+                WelcomeBox1.Items.Add(Form1.RegionClass.RegionName(n))
             End If
         Next
-        Try
-            Dim s = WelcomeBox1.FindString(My.Settings.WelcomeRegion)
-            If s > -1 Then
-                WelcomeBox1.SelectedIndex = s
-            Else
-                MsgBox("Choose your Welcome region ", vbInformation)
-                Dim chosen = Form1.ChooseRegion()
-                Dim Index = WelcomeBox1.FindString(chosen)
-                WelcomeBox1.SelectedIndex = Index
-                MsgBox("Welcome region reset to " + WelcomeBox1.SelectedItem.ToString, vbInformation)
-            End If
-        Catch ex As Exception
-            Try
-                MsgBox("Choose your Welcome region ", vbInformation)
-                Dim chosen = Form1.ChooseRegion()
-                Dim Index = WelcomeBox1.FindString(chosen)
-                WelcomeBox1.SelectedIndex = Index
-                Print("Welcome region reset to " + WelcomeBox1.SelectedItem.ToString)
-            Catch
-            End Try
-        End Try
+
+        Dim s = WelcomeBox1.FindString(My.Settings.WelcomeRegion)
+        If s > -1 Then
+            WelcomeBox1.SelectedIndex = s
+        Else
+            MsgBox("Choose your Welcome region ", vbInformation)
+            Dim chosen = Form1.ChooseRegion()
+            Dim Index = WelcomeBox1.FindString(chosen)
+            WelcomeBox1.SelectedIndex = Index
+            'MsgBox("Welcome region reset to " + WelcomeBox1.SelectedItem.ToString, vbInformation)
+        End If
+
     End Sub
 
 
