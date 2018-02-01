@@ -240,7 +240,7 @@ Public Class FormRegion
             Try
                 CoordY.Text = Convert.ToInt16(CoordY.Text)
             Catch
-                CoordY.Text = "?"
+
             End Try
 
             changed = True
@@ -252,7 +252,7 @@ Public Class FormRegion
             Try
                 CoordX.Text = Convert.ToInt16(CoordX.Text)
             Catch
-                CoordX.Text = "?"
+
             End Try
             changed = True
         End If
@@ -263,7 +263,7 @@ Public Class FormRegion
             Try
                 RegionPort.Text = Convert.ToInt16(RegionPort.Text)
             Catch
-                RegionPort.Text = "?"
+
             End Try
             changed = True
         End If
@@ -353,7 +353,7 @@ Public Class FormRegion
                 Try
                     SizeX.Text = Convert.ToInt16(SizeX.Text)
                 Catch
-                    SizeX.Text = "?"
+                    SizeX.Text = ""
                 End Try
             End If
         End If
@@ -370,7 +370,7 @@ Public Class FormRegion
                 Try
                     SizeY.Text = Convert.ToInt16(SizeY.Text)
                 Catch
-                    SizeY.Text = "?"
+                    SizeY.Text = ""
                 End Try
 
             End If

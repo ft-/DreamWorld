@@ -556,7 +556,6 @@ Public Class RegionMaker
                 Debug.Print("Region " & json.region_name & " is ready for logins")
 
                 Dim n = FindRegionByName(json.region_name)
-                If n = Nothing Then Return "NAK"
 
                 If RegionEnabled(n) = False Then
                     RegionEnabled(n) = True
@@ -574,7 +573,6 @@ Public Class RegionMaker
                 Debug.Print("Region " & json.region_name & " shut down")
 
                 Dim n = FindRegionByName(json.region_name)
-                If n = Nothing Then Return "NAK"
 
                 Ready(n) = False
                 WarmingUp(n) = False
