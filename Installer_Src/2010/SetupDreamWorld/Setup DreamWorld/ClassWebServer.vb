@@ -16,6 +16,7 @@ Public Class NetServer
     Private Shared singleWebserver As NetServer
     Private Myfolder As String
     Private IP As String = Nothing
+    Dim RegionClass As RegionMaker = RegionMaker.Instance
 
     Private Sub New()
 
@@ -83,7 +84,7 @@ Public Class NetServer
 
                 ' Print out the received message to the console.
                 'Log("Received:" + myCompleteMessage.ToString())
-                Response = Form1.ParsePost(myCompleteMessage.ToString())
+                Response = RegionClass.ParsePost(myCompleteMessage.ToString())
             Else
                 Log("Error:Cannot read from this NetworkStream.")
             End If

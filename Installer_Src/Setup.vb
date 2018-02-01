@@ -27,7 +27,7 @@ Imports System.Net.Sockets
 Imports IWshRuntimeLibrary
 Imports IniParser
 Imports System.Threading
-Imports Newtonsoft.Json
+
 
 Public Class Form1
 
@@ -105,12 +105,6 @@ Public Class Form1
     Dim gIPv4Address As String
 
 
-    Public Class JSON_result
-        Public alert As String
-        Public login As String
-        Public region_name As String
-        Public region_id As String
-    End Class
 
 #End Region
 
@@ -272,8 +266,6 @@ Public Class Form1
 
         RegionClass = RegionMaker.Instance
 
-        RegionClass.ShuttingDown(0) = True
-        RegionClass.Ready(1) = True
 
 
         Me.Show()
@@ -495,9 +487,14 @@ Public Class Form1
             counter = counter - 1
         End While
 
+        RegionClass.RegionDump
+
         For Each ctr As Integer In RegionClass.RegionNumbers
             Dim PID As Integer = RegionClass.ProcessID(ctr)
             If PID Then
+                RegionClass.ShuttingDown(ctr) = True
+                RegionClass.Ready(ctr) = False
+                RegionClass.WarmingUp(ctr) = False
                 Print("Shutting down " + RegionClass.RegionName(ctr))
                 ConsoleCommand(PID, "quit{ENTER}")
                 ConsoleCommand(PID, "quit{ENTER}")
@@ -524,12 +521,8 @@ Public Class Form1
                 counter = counter - 1
                 Dim isRunning As Boolean = False
                 For Each ctr As Integer In RegionClass.RegionNumbers
-                    If ctr = Nothing Or Not gStopping Then
-                        ' do nothing
-                    Else
-                        If RegionClass.ProcessID(ctr) Then
-                            isRunning = True
-                        End If
+                    If RegionClass.ProcessID(ctr) Then
+                        isRunning = True
                     End If
                     Application.DoEvents()
                 Next
@@ -537,6 +530,11 @@ Public Class Form1
             End While
         End If
 
+        For Each ctr As Integer In RegionClass.RegionNumbers
+            RegionClass.ShuttingDown(ctr) = False
+            RegionClass.Ready(ctr) = False
+            RegionClass.WarmingUp(ctr) = False
+        Next
 
         If gRobustProcID Then
             ConsoleCommand(gRobustProcID, "quit{ENTER}")
@@ -1639,7 +1637,7 @@ Public Class Form1
         ' Handle Opensim Exited
 
         Dim n As Integer = RegionClass.FindRegionByProcessID(sender.Id)
-        If n = Nothing Then Return
+
 
         Log(RegionClass.RegionName(n) + " stopped")
         RegionClass.Ready(n) = False
@@ -1738,7 +1736,6 @@ Public Class Form1
 
         Print("Starting Region " + Name)
 
-        Dim Pid As Integer
         Try
             myProcess.EnableRaisingEvents = True
             myProcess.StartInfo.UseShellExecute = True ' so we can redirect streams
@@ -1777,7 +1774,7 @@ Public Class Form1
             myProcess.Start()
             RegionClass.ProcessID(n) = myProcess.Id
 
-            If Pid Then
+            If myProcess.Id Then
                 RegionClass.WarmingUp(n) = True
                 RegionClass.Ready(n) = False
                 RegionClass.ShuttingDown(n) = False
@@ -1983,7 +1980,7 @@ Public Class Form1
         PaintImage()
         ScanAgents()
 
-        If gDNSSTimer Mod 1200 = 0 Then
+        If gDNSSTimer Mod 3600 = 0 Then
             RegisterDNS()
         End If
 
@@ -3291,104 +3288,6 @@ Public Class Form1
     End Sub
 
 
-    Public Function ParsePost(POST As String) As String
-        ' set Region.Ready to true if the POST from the region indicates it is online
-        ' requires a section in Opensim.ini where [RegionReady] has this:
-
-        Dim RegionClass = RegionMaker.Instance
-
-        '[RegionReady]
-
-        '; Enable this module to get notified once all items And scripts in the region have been completely loaded And compiled
-        'Enabled = True
-
-        '; Channel on which to signal region readiness through a message
-        '; formatted as follows: "{server_startup|oar_file_load},{0|1},n,[oar error]"
-        '; - the first field indicating whether this Is an initial server startup
-        '; - the second field Is a number indicating whether the OAR file loaded ok (1 == ok, 0 == error)
-        '; - the third field Is a number indicating how many scripts failed to compile
-        '; - "oar error" if supplied, provides the error message from the OAR load
-        'channel_notify = -800
-
-        '; - disallow logins while scripts are loading
-        '; Instability can occur on regions with 100+ scripts if users enter before they have finished loading
-        'login_disable = True
-
-        '; - send an alert as json to a service
-        'alert_uri = ${Const|BaseURL}:${Const|DiagnosticsPort}/${Const|RegionFolderName}
-
-
-        ' POST = "GET Region name HTTP...{server_startup|oar_file_load},{0|1},n,[oar error]"
-        '{"alert":"region_ready","login":"enabled","region_name":"Region 2","region_id":"19f6adf0-5f35-4106-bcb8-dc3f2e846b89"}}
-        'POST / Region%202 HTTP/1.1
-        'Content-Type: Application/ json
-        'Host:   tea.outworldz.net : 8001
-        'Content-Length:  118
-        'Connection: Keep-Alive
-        '
-        '{"alert":"region_ready","login":"enabled","region_name":"Welcome","region_id":"19f6adf0-5f35-4106-bcb8-dc3f2e846b89"}
-
-        ' we want region name, UUID and server_startup
-        ' could also be a probe from the outworldz to check if ports are open.
-
-        If (POST.Contains("alert")) Then
-            Debug.Print(POST)
-            ' This search returns the substring between two strings, so 
-            ' the first index Is moved to the character just after the first string.
-            POST = Uri.UnescapeDataString(POST)
-            Dim first As Integer = POST.IndexOf("{")
-            Dim last As Integer = POST.LastIndexOf("}")
-            Dim rawJSON = POST.Substring(first, last - first + 1)
-            Dim json As JSON_result
-            Try
-                json = JsonConvert.DeserializeObject(Of JSON_result)(rawJSON)
-            Catch ex As Exception
-                Debug.Print(ex.Message)
-                Return ""
-            End Try
-
-            If json.login = "enabled" Then
-                Debug.Print("Region " & json.region_name & " is ready for logins")
-
-                Dim n = RegionClass.FindRegionByName(json.region_name)
-                If n = Nothing Then Return "NAK"
-
-                If RegionClass.RegionEnabled(n) = False Then
-                    RegionClass.RegionEnabled(n) = True
-                    LoadIni(RegionClass.RegionPath(n), ";")
-                    SetIni(json.region_name, "Enabled", "true")
-                    SaveINI()
-                End If
-
-                RegionClass.Ready(n) = True
-                RegionClass.WarmingUp(n) = False
-                RegionClass.ShuttingDown(n) = False
-                RegionClass.UUID(n) = json.region_id
-
-            ElseIf json.login = "shutdown" Then
-                Debug.Print("Region " & json.region_name & " shut down")
-
-                Dim n = RegionClass.FindRegionByName(json.region_name)
-                If n = Nothing Then Return "NAK"
-
-                RegionClass.Ready(n) = False
-                RegionClass.WarmingUp(n) = False
-                RegionClass.ShuttingDown(n) = False
-
-            End If
-        ElseIf POST.Contains("UUID") Then
-            Debug.Print("UUID:" + POST)
-            Return POST
-        Else
-            Return "Test Completed"
-        End If
-
-        Return ""
-
-
-    End Function
-
-
     Private Sub RegionClick(sender As ToolStripMenuItem, e As EventArgs)
 
         Dim n As Integer = RegionClass.FindRegionByName(sender.Text)
@@ -3442,10 +3341,6 @@ Public Class Form1
             ElseIf Not (RegionClass.Ready(n) Or RegionClass.WarmingUp(n) Or RegionClass.ShuttingDown(n)) Then
                 ' it was stopped, and disabled, so we toggle the enable, and start up
                 sender.Checked = True
-
-                RegionClass.RegionEnabled(n) = True
-                RegionClass.Ready(n) = False
-                RegionClass.ShuttingDown(n) = False
 
                 ' and region file on disk
                 LoadIni(RegionClass.RegionPath(n), ";")

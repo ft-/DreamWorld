@@ -345,7 +345,7 @@ Public Class FormRegion
     Private Sub SizeX_TextChanged_1(sender As Object, e As EventArgs) Handles SizeX.TextChanged
 
         If initted Then
-            If SizeX.Text <> "" Then
+            If SizeX.Text.Length Then
                 changed = True
                 RadioButton1.Checked = False
                 RadioButton2.Checked = False
@@ -362,7 +362,7 @@ Public Class FormRegion
     Private Sub SizeY_TextChanged(sender As Object, e As EventArgs) Handles SizeY.TextChanged
 
         If initted Then
-            If SizeY.Text <> "" Then
+            If SizeY.Text.Length Then
                 changed = True
                 RadioButton1.Checked = False
                 RadioButton2.Checked = False
@@ -445,7 +445,7 @@ Public Class FormRegion
         If msg = vbYes Then
             Try
                 My.Computer.FileSystem.DeleteDirectory(Form1.prefix & "bin\Regions\" + RegionName.Text, FileIO.UIOption.AllDialogs, FileIO.RecycleOption.SendToRecycleBin, FileIO.UICancelOption.ThrowException)
-                RegionClass.GetAllRegions()
+                RegionClass.DeleteRegion(RegionName.Text)
                 Form1.CopyOpensimProto()
                 Me.Close()
             Catch ex As Exception

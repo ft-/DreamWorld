@@ -2,6 +2,8 @@
 
 Imports System
 Imports System.IO
+Imports System.Xml
+Imports Newtonsoft.Json
 
 
 Public Class RegionMaker
@@ -30,6 +32,7 @@ Public Class RegionMaker
     End Class
 
     Public RegionList As New ArrayList()
+    Private Backup As New ArrayList()
     Private gCurRegionNum As Integer
 
     Private Shared FInstance As RegionMaker = Nothing
@@ -61,32 +64,7 @@ Public Class RegionMaker
 #End Region
 
 #Region "Properties"
-    Public Property IniPath(n As Integer) As String
-        Get
-            Return RegionList(n)._IniPath
-        End Get
-        Set(ByVal Value As String)
-            RegionList(n)._IniPath = Value
-        End Set
-    End Property
-    Public Property ShuttingDown(n As Integer) As Boolean
-        Get
-            Return RegionList(n)._ShuttingDown
-        End Get
-        Set(ByVal Value As Boolean)
-            RegionList(n)._ShuttingDown = Value
-        End Set
-    End Property
-    Public Property Ready(n As Integer) As Boolean
-        Get
-            Debug.Print(RegionList(n)._RegionName + "<" + RegionList(n)._Ready.ToString)
-            Return RegionList(n)._Ready
-        End Get
-        Set(ByVal Value As Boolean)
-            Debug.Print(RegionList(n)._RegionName + ">" + Value.ToString)
-            RegionList(n)._Ready = Value
-        End Set
-    End Property
+
     Public Property Timer(n As Integer) As Integer
         Get
             Return RegionList(n)._Timer
@@ -95,11 +73,31 @@ Public Class RegionMaker
             RegionList(n)._Timer = Value
         End Set
     End Property
+    Public Property ShuttingDown(n As Integer) As Boolean
+        Get
+            Return RegionList(n)._ShuttingDown
+        End Get
+        Set(ByVal Value As Boolean)
+            Debug.Print(RegionList(n)._RegionName + " ShuttingDown set to " + Value.ToString)
+            RegionList(n)._ShuttingDown = Value
+        End Set
+    End Property
+    Public Property Ready(n As Integer) As Boolean
+        Get
+            'Debug.Print(RegionList(n)._RegionName + "<" + RegionList(n)._Ready.ToString)
+            Return RegionList(n)._Ready
+        End Get
+        Set(ByVal Value As Boolean)
+            Debug.Print(RegionList(n)._RegionName + " Ready set to " + Value.ToString)
+            RegionList(n)._Ready = Value
+        End Set
+    End Property
     Public Property WarmingUp(n As Integer) As Boolean
         Get
             Return RegionList(n)._WarmingUp
         End Get
         Set(ByVal Value As Boolean)
+            Debug.Print(RegionList(n)._RegionName + " WarmingUp set to " + Value.ToString)
             RegionList(n)._WarmingUp = Value
         End Set
     End Property
@@ -109,6 +107,17 @@ Public Class RegionMaker
         End Get
 
     End Property
+    ''' ''''''''''''''''''' PATHS ''''''''''''''''''''
+    Public Property IniPath(n As Integer) As String
+        Get
+            Return RegionList(n)._IniPath
+        End Get
+        Set(ByVal Value As String)
+
+            RegionList(n)._IniPath = Value
+        End Set
+    End Property
+
     Public Property RegionPath(n As Integer) As String
         Get
             Return RegionList(n)._RegionPath
@@ -227,8 +236,25 @@ Public Class RegionMaker
 
 #End Region
 
+#Region "Classes"
+    Public Class JSON_result
+        Public alert As String
+        Public login As String
+        Public region_name As String
+        Public region_id As String
+    End Class
+
+#End Region
+
 #Region "Functions"
 
+    Public Sub RegionDump()
+        Dim ctr = 0
+        For Each r As Region_data In RegionList
+            DebugRegions(ctr)
+            ctr = ctr + 1
+        Next
+    End Sub
 
     Public Function RegionNumbers() As List(Of Integer)
         Dim L As New List(Of Integer)
@@ -283,7 +309,7 @@ Public Class RegionMaker
 
     Public Function CreateRegion(name As String) As Integer
 
-        Debug.Print("Create Region " + name)
+        ' Debug.Print("Create Region " + name)
         Dim r As New Region_data
         r._RegionName = name
         r._RegionEnabled = True
@@ -299,10 +325,31 @@ Public Class RegionMaker
         Return CurRegionNum
 
     End Function
+    Public Sub DeleteRegion(RegionName As String)
+
+        '!!! TBD
+
+    End Sub
+
+    Public Sub SortByName()
+        '!!! Broken
+        'RegionList = RegionList.OrderBy(Function(A) A._RegionName).ToList()
+    End Sub
+    Public Sub SortByAgents()
+        '!!!
+        'RegionList = RegionList.OrderBy(Function(A) A._AvatarCount).ToList()
+    End Sub
+    Public Sub SortBySttaus()
+        '!!!
+        'RegionList = RegionList.OrderBy(Function(A) A._Ready).ToList()
+    End Sub
 
     Public Sub GetAllRegions()
 
+        '!  Refactor to update, not clear and reload.
+        Backup = RegionList
         RegionList.Clear()
+
         Dim folders() As String
         Dim regionfolders() As String
         Dim n As Integer = 0
@@ -339,7 +386,6 @@ Public Class RegionMaker
                         Dim theEnd as integer  = FolderPath(n).LastIndexOf("\")
                         IniPath(n) = FolderPath(n).Substring(0, theEnd + 1)
 
-
                         ' need folder name in case there are more than 1 ini
                         Dim theStart = FolderPath(n).IndexOf("Regions\") + 8
                         theEnd = FolderPath(n).LastIndexOf("\")
@@ -349,12 +395,23 @@ Public Class RegionMaker
                         SizeX(n) = Convert.ToInt16(Form1.GetIni(ini, fName, "SizeX", ";"))
                         SizeY(n) = Convert.ToInt16(Form1.GetIni(ini, fName, "SizeY", ";"))
                         RegionPort(n) = Convert.ToInt16(Form1.GetIni(ini, fName, "InternalPort", ";"))
+
                         ' Location is int,int format.
                         Dim C = Form1.GetIni(ini, fName, "Location", ";")
                         Dim parts As String() = C.Split(New Char() {","c}) ' split at the comma
                         CoordX(n) = parts(0)
                         CoordY(n) = parts(1)
+
+                        ' Backups of transient data 
+                        ProcessID(n) = Backup(n)._ProcessID
+                        AvatarCount(n) = Backup(n)._AvatarCount
+                        Ready(n) = Backup(n)._Ready
+                        WarmingUp(n) = Backup(n)._WarmingUp
+                        ShuttingDown(n) = Backup(n)._ShuttingDown
+                        Timer(n) = Backup(n)._Timer
+
                         n = n + 1
+
                     Next
 
                 Catch ex As Exception
@@ -432,6 +489,108 @@ Public Class RegionMaker
 
     End Function
 
+
+#End Region
+
+#Region "POST"
+    Public Function ParsePost(POST As String) As String
+        ' set Region.Ready to true if the POST from the region indicates it is online
+        ' requires a section in Opensim.ini where [RegionReady] has this:
+
+
+        '[RegionReady]
+
+        '; Enable this module to get notified once all items And scripts in the region have been completely loaded And compiled
+        'Enabled = True
+
+        '; Channel on which to signal region readiness through a message
+        '; formatted as follows: "{server_startup|oar_file_load},{0|1},n,[oar error]"
+        '; - the first field indicating whether this Is an initial server startup
+        '; - the second field Is a number indicating whether the OAR file loaded ok (1 == ok, 0 == error)
+        '; - the third field Is a number indicating how many scripts failed to compile
+        '; - "oar error" if supplied, provides the error message from the OAR load
+        'channel_notify = -800
+
+        '; - disallow logins while scripts are loading
+        '; Instability can occur on regions with 100+ scripts if users enter before they have finished loading
+        'login_disable = True
+
+        '; - send an alert as json to a service
+        'alert_uri = ${Const|BaseURL}:${Const|DiagnosticsPort}/${Const|RegionFolderName}
+
+
+        ' POST = "GET Region name HTTP...{server_startup|oar_file_load},{0|1},n,[oar error]"
+        '{"alert":"region_ready","login":"enabled","region_name":"Region 2","region_id":"19f6adf0-5f35-4106-bcb8-dc3f2e846b89"}}
+        'POST / Region%202 HTTP/1.1
+        'Content-Type: Application/ json
+        'Host:   tea.outworldz.net : 8001
+        'Content-Length:  118
+        'Connection: Keep-Alive
+        '
+        '{"alert":"region_ready","login":"enabled","region_name":"Welcome","region_id":"19f6adf0-5f35-4106-bcb8-dc3f2e846b89"}
+
+        ' we want region name, UUID and server_startup
+        ' could also be a probe from the outworldz to check if ports are open.
+
+        ' WarmingUp(0) = True
+        ' ShuttingDown(1) = True
+
+
+        If (POST.Contains("alert")) Then
+            Debug.Print(POST)
+            ' This search returns the substring between two strings, so 
+            ' the first index Is moved to the character just after the first string.
+            POST = Uri.UnescapeDataString(POST)
+            Dim first As Integer = POST.IndexOf("{")
+            Dim last As Integer = POST.LastIndexOf("}")
+            Dim rawJSON = POST.Substring(first, last - first + 1)
+            Dim json As JSON_result
+            Try
+                json = JsonConvert.DeserializeObject(Of JSON_result)(rawJSON)
+            Catch ex As Exception
+                Debug.Print(ex.Message)
+                Return ""
+            End Try
+
+            If json.login = "enabled" Then
+                Debug.Print("Region " & json.region_name & " is ready for logins")
+
+                Dim n = FindRegionByName(json.region_name)
+                If n = Nothing Then Return "NAK"
+
+                If RegionEnabled(n) = False Then
+                    RegionEnabled(n) = True
+                    Form1.LoadIni(RegionPath(n), ";")
+                    Form1.SetIni(json.region_name, "Enabled", "true")
+                    Form1.SaveINI()
+                End If
+
+                Ready(n) = True
+                WarmingUp(n) = False
+                ShuttingDown(n) = False
+                UUID(n) = json.region_id
+
+            ElseIf json.login = "shutdown" Then
+                Debug.Print("Region " & json.region_name & " shut down")
+
+                Dim n = FindRegionByName(json.region_name)
+                If n = Nothing Then Return "NAK"
+
+                Ready(n) = False
+                WarmingUp(n) = False
+                ShuttingDown(n) = False
+
+            End If
+        ElseIf POST.Contains("UUID") Then
+            Debug.Print("UUID:" + POST)
+            Return POST
+        Else
+            Return "Test Completed"
+        End If
+
+        Return ""
+
+    End Function
 
 #End Region
 

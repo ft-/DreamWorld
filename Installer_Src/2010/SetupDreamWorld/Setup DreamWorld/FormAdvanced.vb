@@ -133,9 +133,6 @@ Public Class AdvancedForm
         Dim counter As Integer = 0
 
         Dim RegionClass As RegionMaker = RegionMaker.Instance
-        RegionClass.GetAllRegions()
-
-        ' !!!regions = regions.OrderBy(Function(A) A.RegionName).ToList()
 
         For Each o In RegionClass.RegionList
             Try

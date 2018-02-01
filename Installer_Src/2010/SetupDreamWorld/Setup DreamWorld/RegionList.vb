@@ -4,7 +4,8 @@
     Dim TheView As Integer = 0
     Private Shared FormExists As Boolean = False
 
-
+    Dim imageListSmall As New ImageList()
+    Dim imageListLarge As New ImageList()
 
     ' property exposing FormExists
     Public Shared ReadOnly Property InstanceExists() As Boolean
@@ -13,7 +14,6 @@
             Return RegionList.FormExists
         End Get
     End Property
-
 
     Private Sub _Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 
@@ -42,6 +42,30 @@
         Me.Name = "Region List"
         Me.Text = "Region List"
 
+
+        ' Me.SuspendLayout()
+
+        ' index of 0-4 to display icons
+        imageListSmall.Images.Add(My.Resources.ResourceManager.GetObject("navigate_up2"))   ' 0 booting up
+        imageListSmall.Images.Add(My.Resources.ResourceManager.GetObject("navigate_down2")) ' 1 shutting down
+        imageListSmall.Images.Add(My.Resources.ResourceManager.GetObject("check2")) ' 2 okay, up
+        imageListSmall.Images.Add(My.Resources.ResourceManager.GetObject("navigate_plus")) ' 4 disabled
+        imageListSmall.Images.Add(My.Resources.ResourceManager.GetObject("media_stop_red")) ' 3 disabled
+        imageListSmall.Images.Add(My.Resources.ResourceManager.GetObject("media_stop"))  ' 5 enabled
+
+        ' index of 0-4 to display icons
+        imageListLarge.Images.Add(My.Resources.ResourceManager.GetObject("navigate_up2"))   ' 0 booting up
+        imageListLarge.Images.Add(My.Resources.ResourceManager.GetObject("navigate_down2")) ' 1 shutting down
+        imageListLarge.Images.Add(My.Resources.ResourceManager.GetObject("check2")) ' 2 okay, up
+        imageListLarge.Images.Add(My.Resources.ResourceManager.GetObject("navigate_plus"))  ' 4 enabled
+        imageListLarge.Images.Add(My.Resources.ResourceManager.GetObject("media_stop_red")) ' 3 disabled
+        imageListLarge.Images.Add(My.Resources.ResourceManager.GetObject("media_stop"))  ' 5 enabled
+
+
+        'Assign the ImageList objects to the ListView.
+        ListView1.LargeImageList = imageListLarge
+        ListView1.SmallImageList = imageListSmall
+
         LoadMyListView()
 
         Timer1.Interval = 10000
@@ -49,7 +73,9 @@
 
     End Sub
     Private Sub SingletonForm_FormClosed(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles Me.FormClosed
+
         RegionList.FormExists = False
+
     End Sub
 
     Private Sub Timer1_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Timer1.Tick
@@ -62,38 +88,16 @@
 
         Dim RegionClass As RegionMaker = RegionMaker.Instance
 
-        RegionClass.GetAllRegions()
-
         writetodisk = False
 
         ListView1.Clear()
         ListView1.Items.Clear()
-
-        Dim imageListSmall As New ImageList()
-        Dim imageListLarge As New ImageList()
-
         ' Create columns for the items and subitems.
         ' Width of -2 indicates auto-size.
         ListView1.Columns.Add("Enabled", 120, HorizontalAlignment.Center)
         ListView1.Columns.Add("Agents", 60, HorizontalAlignment.Center)
         ListView1.Columns.Add("Status", 60, HorizontalAlignment.Center)
 
-        ' Me.SuspendLayout()
-
-        ' index of 0-4 to display icons
-        imageListSmall.Images.Add(My.Resources.ResourceManager.GetObject("navigate_up2"))   ' 0 booting up
-        imageListSmall.Images.Add(My.Resources.ResourceManager.GetObject("navigate_down2")) ' 1 shutting down
-        imageListSmall.Images.Add(My.Resources.ResourceManager.GetObject("check2")) ' 2 okay, up
-        imageListSmall.Images.Add(My.Resources.ResourceManager.GetObject("media_stop_red")) ' 3 disabled
-        imageListSmall.Images.Add(My.Resources.ResourceManager.GetObject("media_stop"))  ' 4 enabled
-
-
-        ' index of 0-4 to display icons
-        imageListLarge.Images.Add(My.Resources.ResourceManager.GetObject("navigate_up2"))   ' 0 booting up
-        imageListLarge.Images.Add(My.Resources.ResourceManager.GetObject("navigate_down2")) ' 1 shutting down
-        imageListLarge.Images.Add(My.Resources.ResourceManager.GetObject("check2")) ' 2 okay, up
-        imageListLarge.Images.Add(My.Resources.ResourceManager.GetObject("media_stop_red")) ' 3 disabled
-        imageListLarge.Images.Add(My.Resources.ResourceManager.GetObject("media_stop"))  ' 4 enabled
 
         Dim imageList1 As New ImageList
         Dim Num As Integer
@@ -128,10 +132,12 @@
                 Num = 1
             ElseIf RegionClass.Ready(n) Then
                 Num = 2
-            ElseIf Not RegionClass.RegionEnabled(n) Then
+            ElseIf Not RegionClass.processID(n) And RegionClass.ShuttingDown(n) Then
                 Num = 3
-            ElseIf RegionClass.RegionEnabled(n) Then
+            ElseIf Not RegionClass.RegionEnabled(n) Then
                 Num = 4
+            ElseIf RegionClass.RegionEnabled(n) Then
+                Num = 5
             End If
 
             '-----------------
@@ -143,33 +149,10 @@
         Next
 
 
-        Dim ctr As Integer = 0
-        For Each Item In ListView1.Items
-            Dim i As Integer = RegionClass.FindRegionByName(ListView1.Items(ctr).Text)
-
-            If RegionClass.WarmingUp(ctr) Then
-                Num = 0
-            ElseIf RegionClass.ShuttingDown(ctr) Then
-                Num = 1
-            ElseIf RegionClass.Ready(ctr) Then
-                Num = 2
-            ElseIf Not RegionClass.RegionEnabled(ctr) Then
-                Num = 3
-            ElseIf RegionClass.RegionEnabled(ctr) Then
-                Num = 4
-            End If
-            ListView1.Items(ctr).ImageIndex = Num
-            ctr = ctr + 1
-            Form1.Sleep(100)
-        Next
-        '
-        'Assign the ImageList objects to the ListView.
-        ListView1.LargeImageList = imageListLarge
-        ListView1.SmallImageList = imageListSmall
 
         Me.ListView1.TabIndex = 0
         Me.ListView1.LabelEdit = False
-        ' Me.ResumeLayout(True)
+        Me.ResumeLayout(True)
         writetodisk = True
 
     End Sub 'listView1
@@ -256,9 +239,10 @@
                 Form1.LoadIni(RegionClass.RegionPath(n), ";")
                 Form1.SetIni(RegionClass.RegionName(n), "Enabled", "true")
                 Form1.SaveINI()
+                RegionClass.ProcessID(n) = 0
                 Application.DoEvents()
 
-            ElseIf (e.CurrentValue = CheckState.Checked) Then
+            ElseIf (e.CurrentValue = CheckState.checked) Then
                 RegionClass.RegionEnabled(n) = False
                 ' and region file on disk
                 Form1.LoadIni(RegionClass.RegionPath(n), ";")
