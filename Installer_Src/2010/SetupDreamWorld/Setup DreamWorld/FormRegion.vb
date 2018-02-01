@@ -18,52 +18,52 @@ Public Class FormRegion
 
     Public Sub Init(Name As String)
 
-
+        Dim RegionClass As RegionMaker = RegionMaker.Instance
         If Name = "" Then
             RegionName.Text = Name
             UUID.Text = Guid.NewGuid().ToString
             SizeX.Text = 256
             SizeY.Text = 256
-            CoordX.Text = Form1.RegionClass.LargestX() + 4
-            CoordY.Text = Form1.RegionClass.LargestY() + 0
-            RegionPort.Text = Form1.RegionClass.LargestPort() + 1 '8004 + 1
+            CoordX.Text = RegionClass.LargestX() + 4
+            CoordY.Text = RegionClass.LargestY() + 0
+            RegionPort.Text = RegionClass.LargestPort() + 1 '8004 + 1
             EnabledCheckBox.Checked = True
         Else
-            n = Form1.RegionClass.FindRegionByName(Name)
-            oldname = Form1.RegionClass.RegionName(n) ' backup in case of rename
-            EnabledCheckBox.Checked = Form1.RegionClass.RegionEnabled(n)
+            n = RegionClass.FindRegionByName(Name)
+            oldname = RegionClass.RegionName(n) ' backup in case of rename
+            EnabledCheckBox.Checked = RegionClass.RegionEnabled(n)
             RegionName.Text = Name
             Me.Text = Name ' on screen
-            RegionName.Text = Form1.RegionClass.RegionName(n) ' on form
-            UUID.Text = Form1.RegionClass.UUID(n)   ' on screen
+            RegionName.Text = RegionClass.RegionName(n) ' on form
+            UUID.Text = RegionClass.UUID(n)   ' on screen
 
             Me.Show() ' time to show the results
             Me.Focus()
             Application.DoEvents()
 
             ' Size buttons
-            If Form1.RegionClass.SizeY(n) = 256 And Form1.RegionClass.SizeX(n) = 256 Then
+            If RegionClass.SizeY(n) = 256 And RegionClass.SizeX(n) = 256 Then
                 RadioButton1.Checked = True
                 RadioButton2.Checked = False
                 RadioButton3.Checked = False
                 RadioButton4.Checked = False
                 SizeX.Text = ""
                 SizeY.Text = ""
-            ElseIf Form1.RegionClass.SizeY(n) = 512 And Form1.RegionClass.SizeX(n) = 512 Then
+            ElseIf RegionClass.SizeY(n) = 512 And RegionClass.SizeX(n) = 512 Then
                 RadioButton1.Checked = False
                 RadioButton2.Checked = True
                 RadioButton3.Checked = False
                 RadioButton4.Checked = False
                 SizeX.Text = ""
                 SizeY.Text = ""
-            ElseIf Form1.RegionClass.SizeY(n) = 768 And Form1.RegionClass.SizeX(n) = 768 Then
+            ElseIf RegionClass.SizeY(n) = 768 And RegionClass.SizeX(n) = 768 Then
                 RadioButton1.Checked = False
                 RadioButton2.Checked = False
                 RadioButton3.Checked = True
                 RadioButton4.Checked = False
                 SizeX.Text = ""
                 SizeY.Text = ""
-            ElseIf Form1.RegionClass.SizeY(n) = 1024 And Form1.RegionClass.SizeX(n) = 1024 Then
+            ElseIf RegionClass.SizeY(n) = 1024 And RegionClass.SizeX(n) = 1024 Then
                 RadioButton1.Checked = False
                 RadioButton2.Checked = False
                 RadioButton3.Checked = False
@@ -75,22 +75,22 @@ Public Class FormRegion
                 RadioButton2.Checked = False
                 RadioButton3.Checked = False
                 RadioButton4.Checked = False
-                SizeX.Text = Convert.ToString(Form1.RegionClass.SizeX(n))
-                SizeY.Text = Convert.ToString(Form1.RegionClass.SizeY(n))
+                SizeX.Text = Convert.ToString(RegionClass.SizeX(n))
+                SizeY.Text = Convert.ToString(RegionClass.SizeY(n))
             End If
 
             ' global coords
-            If Form1.RegionClass.CoordX(n) <> 0 Then
-                CoordX.Text = Form1.RegionClass.CoordX(n)
+            If RegionClass.CoordX(n) <> 0 Then
+                CoordX.Text = RegionClass.CoordX(n)
             End If
 
-            If Form1.RegionClass.CoordY(n) <> 0 Then
-                CoordY.Text = Form1.RegionClass.CoordY(n)
+            If RegionClass.CoordY(n) <> 0 Then
+                CoordY.Text = RegionClass.CoordY(n)
             End If
 
             ' and port
-            If Form1.RegionClass.RegionPort(n) <> 0 Then
-                RegionPort.Text = Form1.RegionClass.RegionPort(n)
+            If RegionClass.RegionPort(n) <> 0 Then
+                RegionPort.Text = RegionClass.RegionPort(n)
             End If
         End If
         Me.Focus()
@@ -170,9 +170,11 @@ Public Class FormRegion
         Dim dir = Form1.prefix
         ' save the Region File
 
-        Dim Filepath = Form1.RegionClass.RegionPath(n)
+        Dim RegionClass As RegionMaker = RegionMaker.Instance
 
-        Dim path = Form1.RegionClass.FolderPath(n)
+        Dim Filepath = RegionClass.RegionPath(n)
+
+        Dim path = RegionClass.FolderPath(n)
         'Directory.CreateDirectory(o.FolderPath)
         ' rename is possible
         If oldname <> RegionName.Text Then
@@ -195,20 +197,13 @@ Public Class FormRegion
         If Filepath Is Nothing Then
 
             Filepath = dir & "bin\Regions\" + RegionName.Text + "\Region\" + Name
-            Form1.RegionClass.RegionPath(n) = Filepath
+            RegionClass.RegionPath(n) = Filepath
 
             If Not Directory.Exists(Filepath) Then
                 Directory.CreateDirectory(dir & "bin\Regions\" + Name + "\Region")
             End If
 
             Filepath = dir & "bin\Regions\" + RegionName.Text + "\Region\" + RegionName.Text + ".ini"
-        End If
-
-        Dim en As String = ""
-        If EnabledCheckBox.Checked Then
-            en = "true"
-        Else
-            en = "false"
         End If
 
         Dim Region = "; * Regions configuration file" &
@@ -223,7 +218,7 @@ Public Class FormRegion
                         "ExternalHostName = " & My.Settings.PublicIP & vbCrLf &
                         "SizeX = " & SizeX.Text & vbCrLf &
                         "SizeY = " & SizeY.Text & vbCrLf &
-                        "Enabled = " & en & vbCrLf
+                        "Enabled = " & EnabledCheckBox.Checked.ToString & vbCrLf
         'C:\Opensim\Outworldz Source\OutworldzFiles\Opensim\bin\Regions\Frankis\Region\
         Try
             Using outputFile As New StreamWriter(Filepath, False)
@@ -445,11 +440,12 @@ Public Class FormRegion
 
     Private Sub DeleteButton_Click(sender As Object, e As EventArgs) Handles DeleteButton.Click
 
+        Dim RegionClass As RegionMaker = RegionMaker.Instance
         Dim msg = MsgBox("Are you sure you want to delete this region? ", vbYesNo)
         If msg = vbYes Then
             Try
                 My.Computer.FileSystem.DeleteDirectory(Form1.prefix & "bin\Regions\" + RegionName.Text, FileIO.UIOption.AllDialogs, FileIO.RecycleOption.SendToRecycleBin, FileIO.UICancelOption.ThrowException)
-                Form1.RegionClass.GetAllRegions()
+                RegionClass.GetAllRegions()
                 Form1.CopyOpensimProto()
                 Me.Close()
             Catch ex As Exception

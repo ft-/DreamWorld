@@ -12,7 +12,7 @@
     
     Example:
     
-    ... adForm1.RegionClass.net/XML headers & schema ...
+    ... adRegionClass.net/XML headers & schema ...
     <resheader name="resmimetype">text/microsoft-resx</resheader>
     <resheader name="version">2.0</resheader>
     <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>

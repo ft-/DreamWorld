@@ -4,6 +4,8 @@
     Dim TheView As Integer = 0
     Private Shared FormExists As Boolean = False
 
+
+
     ' property exposing FormExists
     Public Shared ReadOnly Property InstanceExists() As Boolean
         Get
@@ -13,24 +15,24 @@
     End Property
 
 
-    Private Sub Form1_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Private Sub _Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 
         RegionList.FormExists = True
 
         ' Set the view to show details.
         ListView1.View = View.Details
         ' Allow the user to edit item text.
-        listView1.LabelEdit = True
+        ListView1.LabelEdit = True
         ' Allow the user to rearrange columns.
-        listView1.AllowColumnReorder = True
+        ListView1.AllowColumnReorder = True
         ' Display check boxes.
-        listView1.CheckBoxes = True
+        ListView1.CheckBoxes = True
         ' Select the item and subitems when selection is made.
-        listView1.FullRowSelect = True
+        ListView1.FullRowSelect = True
         ' Display grid lines.
-        listView1.GridLines = True
+        ListView1.GridLines = True
         ' Sort the items in the list in ascending order.
-        listView1.Sorting = SortOrder.Ascending
+        ListView1.Sorting = SortOrder.Ascending
 
         'Add the items to the ListView.
         ' Connect the ListView.ColumnClick event to the ColumnClick event handler.
@@ -42,7 +44,7 @@
 
         LoadMyListView()
 
-        Timer1.Interval = 60000
+        Timer1.Interval = 10000
         Timer1.Start() 'Timer starts functioning
 
     End Sub
@@ -58,7 +60,9 @@
 
     Private Sub LoadMyListView()
 
-        Form1.RegionClass.GetAllRegions()
+        Dim RegionClass As RegionMaker = RegionMaker.Instance
+
+        RegionClass.GetAllRegions()
 
         writetodisk = False
 
@@ -74,7 +78,7 @@
         ListView1.Columns.Add("Agents", 60, HorizontalAlignment.Center)
         ListView1.Columns.Add("Status", 60, HorizontalAlignment.Center)
 
-        Me.SuspendLayout()
+        ' Me.SuspendLayout()
 
         ' index of 0-4 to display icons
         imageListSmall.Images.Add(My.Resources.ResourceManager.GetObject("navigate_up2"))   ' 0 booting up
@@ -92,62 +96,80 @@
         imageListLarge.Images.Add(My.Resources.ResourceManager.GetObject("media_stop"))  ' 4 enabled
 
         Dim imageList1 As New ImageList
-
-        For Each n As Integer In Form1.RegionClass.RegionNumbers
-
-            '  Form1.RegionClass.DebugRegions(o)
+        Dim Num As Integer
+        For Each n As Integer In RegionClass.RegionNumbers
+            Application.DoEvents()
+            RegionClass.DebugRegions(n)
 
             ' Create  items and subitems for each item.
-            Dim item1 As New ListViewItem(Form1.RegionClass.RegionName(n), 0)
+            Dim item1 As New ListViewItem(RegionClass.RegionName(n), n)
             ' Place a check mark next to the item.
-            item1.Checked = Form1.RegionClass.RegionEnabled(n)
-            item1.SubItems.Add(Form1.RegionClass.AvatarCount(n).ToString)
+            item1.Checked = RegionClass.RegionEnabled(n)
+            item1.SubItems.Add(RegionClass.AvatarCount(n).ToString)
 
             Dim Letter As String = ""
-            If Form1.RegionClass.WarmingUp(n) Then
+            If RegionClass.WarmingUp(n) Then
                 Letter = "Booting"
-            ElseIf Form1.RegionClass.ShuttingDown(n) Then
+            ElseIf RegionClass.ShuttingDown(n) Then
                 Letter = "Shutting Down"
-            ElseIf Form1.RegionClass.Ready(n) Then
+            ElseIf RegionClass.Ready(n) Then
                 Letter = "Running"
-            ElseIf Not Form1.RegionClass.RegionEnabled(n) Then
+            ElseIf Not RegionClass.RegionEnabled(n) Then
                 Letter = "Disabled"
-            ElseIf Form1.RegionClass.RegionEnabled(n) Then
+            ElseIf RegionClass.RegionEnabled(n) Then
                 Letter = "Stopped"
             End If
 
+            '=================
+
+            If RegionClass.WarmingUp(n) Then
+                Num = 0
+            ElseIf RegionClass.ShuttingDown(n) Then
+                Num = 1
+            ElseIf RegionClass.Ready(n) Then
+                Num = 2
+            ElseIf Not RegionClass.RegionEnabled(n) Then
+                Num = 3
+            ElseIf RegionClass.RegionEnabled(n) Then
+                Num = 4
+            End If
+
+            '-----------------
             item1.SubItems.Add(Letter)
             ListView1.Items.AddRange(New ListViewItem() {item1})
+            ListView1.Items(n).ImageIndex = Num
+
             n = n + 1
         Next
 
-        Dim Num As Integer
+
         Dim ctr As Integer = 0
         For Each Item In ListView1.Items
-            Dim i As Integer = Form1.RegionClass.FindRegionByName(ListView1.Items(ctr).Text)
+            Dim i As Integer = RegionClass.FindRegionByName(ListView1.Items(ctr).Text)
 
-            If Form1.RegionClass.WarmingUp(ctr) Then
+            If RegionClass.WarmingUp(ctr) Then
                 Num = 0
-            ElseIf Form1.RegionClass.ShuttingDown(ctr) Then
+            ElseIf RegionClass.ShuttingDown(ctr) Then
                 Num = 1
-            ElseIf Form1.RegionClass.Ready(ctr) Then
+            ElseIf RegionClass.Ready(ctr) Then
                 Num = 2
-            ElseIf Not Form1.RegionClass.RegionEnabled(ctr) Then
+            ElseIf Not RegionClass.RegionEnabled(ctr) Then
                 Num = 3
-            ElseIf Form1.RegionClass.RegionEnabled(ctr) Then
+            ElseIf RegionClass.RegionEnabled(ctr) Then
                 Num = 4
             End If
             ListView1.Items(ctr).ImageIndex = Num
             ctr = ctr + 1
+            Form1.Sleep(100)
         Next
-
+        '
         'Assign the ImageList objects to the ListView.
         ListView1.LargeImageList = imageListLarge
         ListView1.SmallImageList = imageListSmall
 
         Me.ListView1.TabIndex = 0
         Me.ListView1.LabelEdit = False
-        Me.ResumeLayout(True)
+        ' Me.ResumeLayout(True)
         writetodisk = True
 
     End Sub 'listView1
@@ -160,16 +182,14 @@
 
     Private Sub ListView1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ListView1.SelectedIndexChanged
 
-
-        'Debug.Print(sender.ToString)
-
+        Dim RegionClass As RegionMaker = RegionMaker.Instance
         Dim regions As ListView.SelectedListViewItemCollection = Me.ListView1.SelectedItems
         Dim item As ListViewItem
 
         For Each item In regions
             Dim RegionName = item.SubItems(0).Text
             Debug.Print("Clicked row " + RegionName)
-            Dim n As Integer = Form1.RegionClass.FindRegionByName(RegionName)
+            Dim n As Integer = RegionClass.FindRegionByName(RegionName)
             'If n = Nothing Then Return
             StartStop(n)
         Next
@@ -178,42 +198,44 @@
     Private Sub StartStop(n As Integer)
 
         ' Running, stop it
-        If Form1.RegionClass.RegionEnabled(n) And (Form1.RegionClass.Ready(n) Or Form1.RegionClass.WarmingUp(n)) Then
+        Dim RegionClass As RegionMaker = RegionMaker.Instance
+        If RegionClass.RegionEnabled(n) And (RegionClass.Ready(n) Or RegionClass.WarmingUp(n)) Then
             ' if enabled and running, even partly up, stop it.
             Try
-                Form1.ConsoleCommand(Form1.RegionClass.ProcessID(n), "quit{ENTER}")
+                Form1.ConsoleCommand(RegionClass.ProcessID(n), "quit{ENTER}")
                 Me.Focus()
 
-                Form1.RegionClass.Ready(n) = False
-                Form1.RegionClass.WarmingUp(n) = False
-                Form1.RegionClass.ShuttingDown(n) = True
+                RegionClass.Ready(n) = False
+                RegionClass.WarmingUp(n) = False
+                RegionClass.ShuttingDown(n) = True
 
-                Form1.LoadIni(Form1.RegionClass.RegionPath(n), ";")
-                Form1.SetIni(Form1.RegionClass.RegionName(n), "Enabled", "false")
+                Form1.LoadIni(RegionClass.RegionPath(n), ";")
+                Form1.SetIni(RegionClass.RegionName(n), "Enabled", "false")
                 Form1.SaveINI()
 
-                Form1.Log("Region:Stopped Region " + Form1.RegionClass.RegionName(n))
+                Form1.Log("Region:Stopped Region " + RegionClass.RegionName(n))
 
             Catch ex As Exception
-                Form1.Log("Region:Could not stop " + Form1.RegionClass.RegionName(n))
+                Form1.Log("Region:Could not stop " + RegionClass.RegionName(n))
             End Try
 
-        ElseIf Form1.RegionClass.RegionEnabled(n) And Not (Form1.RegionClass.Ready(n) Or Form1.RegionClass.WarmingUp(n) Or Form1.RegionClass.ShuttingDown(n)) Then
+        ElseIf RegionClass.RegionEnabled(n) And Not (RegionClass.Ready(n) Or RegionClass.WarmingUp(n) Or RegionClass.ShuttingDown(n)) Then
             ' it was stopped, and disabled, so we start up
             If Not Form1.StartMySQL() Then Return
             Form1.Start_Robust()
 
-            Form1.Boot(Form1.RegionClass.RegionName(n))
-            Debug.Print("Region:Started Region " + Form1.RegionClass.RegionName(n))
+            Form1.Boot(RegionClass.RegionName(n))
+            Debug.Print("Region:Started Region " + RegionClass.RegionName(n))
         Else
             Try
                 Dim ActualForm As New FormRegion
-                ActualForm.Init(Form1.RegionClass.RegionName(n))
+                ActualForm.Init(RegionClass.RegionName(n))
                 ActualForm.Activate()
                 ActualForm.Visible = True
             Catch ex As Exception
                 Form1.Log("Info:" + ex.Message)
             End Try
+
         End If
 
     End Sub
@@ -223,23 +245,24 @@
     ' items selected.  
     Private Sub ListView1_ItemCheck1(ByVal sender As Object, ByVal e As System.Windows.Forms.ItemCheckEventArgs) Handles ListView1.ItemCheck
 
+        Dim RegionClass As RegionMaker = RegionMaker.Instance
         Dim Item As ListViewItem = ListView1.Items.Item(e.Index)
-        Dim n As Integer = Form1.RegionClass.FindRegionByName(Item.Text)
+        Dim n As Integer = RegionClass.FindRegionByName(Item.Text)
         'If n = Nothing Then Return
         If writetodisk Then
             If (e.CurrentValue = CheckState.Unchecked) Then
-                Form1.RegionClass.RegionEnabled(n) = True
+                RegionClass.RegionEnabled(n) = True
                 ' and region file on disk
-                Form1.LoadIni(Form1.RegionClass.RegionPath(n), ";")
-                Form1.SetIni(Form1.RegionClass.RegionName(n), "Enabled", "true")
+                Form1.LoadIni(RegionClass.RegionPath(n), ";")
+                Form1.SetIni(RegionClass.RegionName(n), "Enabled", "true")
                 Form1.SaveINI()
                 Application.DoEvents()
 
             ElseIf (e.CurrentValue = CheckState.Checked) Then
-                Form1.RegionClass.RegionEnabled(n) = False
+                RegionClass.RegionEnabled(n) = False
                 ' and region file on disk
-                Form1.LoadIni(Form1.RegionClass.RegionPath(n), ";")
-                Form1.SetIni(Form1.RegionClass.RegionName(n), "Enabled", "false")
+                Form1.LoadIni(RegionClass.RegionPath(n), ";")
+                Form1.SetIni(RegionClass.RegionName(n), "Enabled", "false")
                 Form1.SaveINI()
                 Application.DoEvents()
 
@@ -276,7 +299,8 @@
         Dim X As Integer = 300
         Dim Y As Integer = 200
 
-        Form1.RegionClass.CreateRegion("")
+        Dim RegionClass As RegionMaker = RegionMaker.Instance
+        RegionClass.CreateRegion("")
         Dim ActualForm As New FormRegion
         ActualForm.SetDesktopLocation(X, Y)
         ActualForm.Init("Enter a name here")

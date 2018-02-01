@@ -132,11 +132,12 @@ Public Class AdvancedForm
         Dim Y As Integer = 200
         Dim counter As Integer = 0
 
-        Form1.RegionClass.GetAllRegions()
+        Dim RegionClass As RegionMaker = RegionMaker.Instance
+        RegionClass.GetAllRegions()
 
         ' !!!regions = regions.OrderBy(Function(A) A.RegionName).ToList()
 
-        For Each o In Form1.RegionClass.RegionList
+        For Each o In RegionClass.RegionList
             Try
                 Dim ActualForm As New FormRegion
                 ActualForm.SetDesktopLocation(X, Y)
@@ -158,8 +159,8 @@ Public Class AdvancedForm
 
         Dim X As Integer = 300
         Dim Y As Integer = 200
-
-        Form1.RegionClass.CreateRegion("")
+        Dim RegionClass As RegionMaker = RegionMaker.Instance
+        RegionClass.CreateRegion("")
         Dim ActualForm As New FormRegion
         ActualForm.SetDesktopLocation(X, Y)
         ActualForm.Init("Enter a name here")
@@ -245,10 +246,10 @@ Public Class AdvancedForm
         WelcomeBox1.Items.Clear()
 
         ' !!!regions = regions.OrderBy(Function(x) x.RegionName).ToList()
-
-        For Each n As Integer In Form1.RegionClass.RegionNumbers
-            If Form1.RegionClass.RegionEnabled(n) Then
-                WelcomeBox1.Items.Add(Form1.RegionClass.RegionName(n))
+        Dim RegionClass As RegionMaker = RegionMaker.Instance
+        For Each n As Integer In RegionClass.RegionNumbers
+            If RegionClass.RegionEnabled(n) Then
+                WelcomeBox1.Items.Add(RegionClass.RegionName(n))
             End If
         Next
 

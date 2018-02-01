@@ -3,13 +3,13 @@
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
+        Dim RegionClass As RegionMaker = RegionMaker.Instance
         Button1.DialogResult = DialogResult.OK
         ListBox1.Items.Clear()
 
-
-        For Each n As Integer In Form1.RegionClass.RegionNumbers
-            If Form1.RegionClass.RegionEnabled(n) Then
-                ListBox1.Items.Add(Form1.RegionClass.RegionName(n))
+        For Each n As Integer In RegionClass.RegionNumbers
+            If RegionClass.RegionEnabled(n) Then
+                ListBox1.Items.Add(RegionClass.RegionName(n))
             End If
         Next
 
@@ -19,7 +19,8 @@
     End Sub
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
-        Form1.RegionClass.CurRegionNum() = ListBox1.SelectedIndex
+        Dim RegionClass As RegionMaker = RegionMaker.Instance
+        RegionClass.CurRegionNum() = ListBox1.SelectedIndex
     End Sub
 
 End Class

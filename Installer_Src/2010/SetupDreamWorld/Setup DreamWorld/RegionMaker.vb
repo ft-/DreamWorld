@@ -8,7 +8,7 @@ Public Class RegionMaker
 
 #Region "Declarations"
     ' hold a copy of the Main region data on a per-form basis
-    Public Class Region_data
+    Private Class Region_data
         Public _RegionPath As String = ""  ' The full path to the region ini file
         Public _FolderPath As String = ""   ' the path to the folde r that holds the region ini
         Public _Folder As String = ""       ' the folder name that holds the region(s), can be different named
@@ -32,6 +32,32 @@ Public Class RegionMaker
     Public RegionList As New ArrayList()
     Private gCurRegionNum As Integer
 
+    Private Shared FInstance As RegionMaker = Nothing
+
+    Public Shared ReadOnly Property Instance() As RegionMaker
+        Get
+            If (FInstance Is Nothing) Then
+                FInstance = New RegionMaker()
+            End If
+
+            Return FInstance
+        End Get
+    End Property
+
+    Private Sub New()
+
+        GetAllRegions()
+        If RegionCount() = 0 Then
+            CreateRegion("Welcome")
+            My.Settings.WelcomeRegion = "Welcome"
+            WriteRegionObject("Welcome")
+        End If
+
+        Debug.Print("Loaded " + RegionCount.ToString + " Regions")
+
+    End Sub
+
+
 #End Region
 
 #Region "Properties"
@@ -53,9 +79,11 @@ Public Class RegionMaker
     End Property
     Public Property Ready(n As Integer) As Boolean
         Get
+            Debug.Print(RegionList(n)._RegionName + "<" + RegionList(n)._Ready.ToString)
             Return RegionList(n)._Ready
         End Get
         Set(ByVal Value As Boolean)
+            Debug.Print(RegionList(n)._RegionName + ">" + Value.ToString)
             RegionList(n)._Ready = Value
         End Set
     End Property
@@ -201,16 +229,6 @@ Public Class RegionMaker
 
 #Region "Functions"
 
-    Public Sub New()
-
-        GetAllRegions()
-        If RegionCount() = 0 Then
-            CreateRegion("Welcome")
-            My.Settings.WelcomeRegion = "Welcome"
-            WriteRegionObject("Welcome")
-        End If
-
-    End Sub
 
     Public Function RegionNumbers() As List(Of Integer)
         Dim L As New List(Of Integer)
@@ -223,13 +241,13 @@ Public Class RegionMaker
         Return L
     End Function
 
-    Public Sub DebugRegions(o As Region_data)
+    Public Sub DebugRegions(n As Integer)
 
-        Debug.Print("Region:" + o._RegionName +
-            " WarmingUp=" + o._WarmingUp.ToString +
-           " ShuttingDown=" + o._ShuttingDown.ToString +
-            " Ready=" + o._Ready.ToString +
-           " RegionEnabled=" + o._RegionEnabled.ToString)
+        Debug.Print("Region:" + RegionList(n)._RegionName +
+            " WarmingUp=" + RegionList(n)._WarmingUp.ToString +
+           " ShuttingDown=" + RegionList(n)._ShuttingDown.ToString +
+            " Ready=" + RegionList(n)._Ready.ToString +
+           " RegionEnabled=" + RegionList(n)._RegionEnabled.ToString)
 
     End Sub
 
