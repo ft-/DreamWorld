@@ -32,7 +32,7 @@ Public Class RegionMaker
     End Class
 
     Public RegionList As New ArrayList()
-    Private Backup As New ArrayList()
+    Private initted As Boolean = False
     Private gCurRegionNum As Integer
 
     Private Shared FInstance As RegionMaker = Nothing
@@ -325,29 +325,17 @@ Public Class RegionMaker
         Return CurRegionNum
 
     End Function
-    Public Sub DeleteRegion(RegionName As String)
 
-        '!!! TBD
-
-    End Sub
-
-    Public Sub SortByName()
-        '!!! Broken
-        'RegionList = RegionList.OrderBy(Function(A) A._RegionName).ToList()
-    End Sub
-    Public Sub SortByAgents()
-        '!!!
-        'RegionList = RegionList.OrderBy(Function(A) A._AvatarCount).ToList()
-    End Sub
-    Public Sub SortBySttaus()
-        '!!!
-        'RegionList = RegionList.OrderBy(Function(A) A._Ready).ToList()
-    End Sub
 
     Public Sub GetAllRegions()
 
-        '!  Refactor to update, not clear and reload.
-        Backup = RegionList
+        Dim Backup As New ArrayList()
+
+
+        For Each thing As Region_data In RegionList
+            Backup.Add(thing)
+        Next
+
         RegionList.Clear()
 
         Dim folders() As String
@@ -365,6 +353,7 @@ Public Class RegionMaker
                     Dim inis = Directory.GetFiles(FileName, "*.ini", SearchOption.TopDirectoryOnly)
 
                     For Each ini As String In inis
+
                         ' remove the ini
                         'Debug.Print(FileName)
 
@@ -383,7 +372,7 @@ Public Class RegionMaker
                         RegionPath(n) = ini ' save the path
                         FolderPath(n) = Path.GetDirectoryName(ini)
 
-                        Dim theEnd as integer  = FolderPath(n).LastIndexOf("\")
+                        Dim theEnd As Integer = FolderPath(n).LastIndexOf("\")
                         IniPath(n) = FolderPath(n).Substring(0, theEnd + 1)
 
                         ' need folder name in case there are more than 1 ini
@@ -402,13 +391,15 @@ Public Class RegionMaker
                         CoordX(n) = parts(0)
                         CoordY(n) = parts(1)
 
-                        ' Backups of transient data 
-                        ProcessID(n) = Backup(n)._ProcessID
-                        AvatarCount(n) = Backup(n)._AvatarCount
-                        Ready(n) = Backup(n)._Ready
-                        WarmingUp(n) = Backup(n)._WarmingUp
-                        ShuttingDown(n) = Backup(n)._ShuttingDown
-                        Timer(n) = Backup(n)._Timer
+                        If initted Then
+                            ' Backups of transient data 
+                            ProcessID(n) = Backup(n)._ProcessID
+                            AvatarCount(n) = Backup(n)._AvatarCount
+                            Ready(n) = Backup(n)._Ready
+                            WarmingUp(n) = Backup(n)._WarmingUp
+                            ShuttingDown(n) = Backup(n)._ShuttingDown
+                            Timer(n) = Backup(n)._Timer
+                        End If
 
                         n = n + 1
 
@@ -420,7 +411,7 @@ Public Class RegionMaker
                 End Try
             Next
         Next
-
+        initted = True
     End Sub
 
     Public Sub WriteRegionObject(name As String)

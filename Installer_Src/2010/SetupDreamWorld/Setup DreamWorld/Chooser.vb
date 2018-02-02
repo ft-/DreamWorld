@@ -7,10 +7,13 @@
         Button1.DialogResult = DialogResult.OK
         ListBox1.Items.Clear()
 
-        For Each n As Integer In RegionClass.RegionNumbers
+
+        Dim n As Integer = 0
+        For Each X As Integer In RegionClass.RegionNumbers
             If RegionClass.RegionEnabled(n) Then
                 ListBox1.Items.Add(RegionClass.RegionName(n))
             End If
+            n = n + 1
         Next
 
         ListBox1.Sorted = True

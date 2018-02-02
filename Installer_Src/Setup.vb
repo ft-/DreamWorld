@@ -27,13 +27,13 @@ Imports System.Net.Sockets
 Imports IWshRuntimeLibrary
 Imports IniParser
 Imports System.Threading
+Imports System.Runtime.InteropServices
 
 
 Public Class Form1
 
-    ' Command line arg  -debug forces this to use the DebugPath folder for testing
-    '
 #Region "Declarations"
+
 
     Dim MyVersion As String = "2.06"
     Dim DebugPath As String = "C:\Opensim\Outworldz Source"  ' no slash at end
@@ -104,7 +104,12 @@ Public Class Form1
     Dim gUseIcons As Boolean = True
     Dim gIPv4Address As String
 
-
+    <CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA2101:SpecifyMarshalingForPInvokeStringArguments", MessageId:="1")>
+    <CodeAnalysis.SuppressMessage("Microsoft.Interoperability", "CA1401:PInvokesShouldNotBeVisible")>
+    <CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1060:MovePInvokesToNativeMethodsClass")>
+    <DllImport("user32.dll")>
+    Shared Function SetWindowText(ByVal hwnd As IntPtr, ByVal windowName As String) As Boolean
+    End Function
 
 #End Region
 
@@ -263,10 +268,7 @@ Public Class Form1
         gCurSlashDir = MyFolder.Replace("\", "/")    ' because Mysql uses unix like slashes, that's why
         prefix = MyFolder & "\OutworldzFiles\Opensim\"
 
-
         RegionClass = RegionMaker.Instance
-
-
 
         Me.Show()
         SaySomething()
@@ -297,7 +299,7 @@ Public Class Form1
         CheckDefaultPorts()
 
         ' must start after region Class is instantiated
-        ws = NetServer.getWebServer
+        ws = NetServer.GetWebServer
         Log("Info:Starting Web Server ")
         ws.StartServer(MyFolder)
 
@@ -487,9 +489,10 @@ Public Class Form1
             counter = counter - 1
         End While
 
-        RegionClass.RegionDump
+        RegionClass.RegionDump()
 
-        For Each ctr As Integer In RegionClass.RegionNumbers
+        Dim ctr = 0
+        For Each X As Integer In RegionClass.RegionNumbers
             Dim PID As Integer = RegionClass.ProcessID(ctr)
             If PID Then
                 RegionClass.ShuttingDown(ctr) = True
@@ -497,10 +500,9 @@ Public Class Form1
                 RegionClass.WarmingUp(ctr) = False
                 Print("Shutting down " + RegionClass.RegionName(ctr))
                 ConsoleCommand(PID, "quit{ENTER}")
-                ConsoleCommand(PID, "quit{ENTER}")
-                Sleep(1000)
             End If
             Application.DoEvents()
+            ctr = ctr + 1
         Next
 
         ' only wait if the port 8001 is working
@@ -520,20 +522,24 @@ Public Class Form1
 
                 counter = counter - 1
                 Dim isRunning As Boolean = False
-                For Each ctr As Integer In RegionClass.RegionNumbers
-                    If RegionClass.ProcessID(ctr) Then
+                Dim i As Integer = 0
+                For Each X In RegionClass.RegionNumbers
+                    If RegionClass.ProcessID(i) Then
                         isRunning = True
                     End If
                     Application.DoEvents()
+                    i = i + 1
                 Next
                 If Not isRunning Then counter = 0
             End While
         End If
 
-        For Each ctr As Integer In RegionClass.RegionNumbers
-            RegionClass.ShuttingDown(ctr) = False
-            RegionClass.Ready(ctr) = False
-            RegionClass.WarmingUp(ctr) = False
+        Dim j = 0
+        For Each X As Integer In RegionClass.RegionNumbers
+            RegionClass.ShuttingDown(j) = False
+            RegionClass.Ready(j) = False
+            RegionClass.WarmingUp(j) = False
+            j = j + 1
         Next
 
         If gRobustProcID Then
@@ -1044,7 +1050,8 @@ Public Class Form1
 
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
         'Regions - write all region.ini files with public IP and Public port
-        For Each n In RegionClass.RegionNumbers
+        Dim n = 0
+        For Each X In RegionClass.RegionNumbers
             If RegionClass.RegionName(n) <> "Robust" Then
                 Dim simName = RegionClass.RegionName(n)
 
@@ -1061,7 +1068,7 @@ Public Class Form1
 
                 SaveINI()
             End If
-
+            n = n + 1
         Next
 
         Return CopyOpensimProto()
@@ -1072,7 +1079,8 @@ Public Class Form1
 
         ' COPY OPENSIM.INI prototype to all region folders and set the Sim Name
 
-        For Each n As Integer In RegionClass.RegionNumbers
+        Dim n = 0
+        For Each X As Integer In RegionClass.RegionNumbers
             Debug.Print("Count:" + n.ToString)
             Dim regionName = RegionClass.RegionName(n)
             Dim pathname = RegionClass.IniPath(n)
@@ -1091,7 +1099,7 @@ Public Class Form1
                 Print("Error:Failed to set the Opensim.ini for sim " + regionName + ":" + ex.Message)
                 Return False
             End Try
-
+            n = n + 1
         Next
 
         Return True
@@ -1195,7 +1203,8 @@ Public Class Form1
         Dim ports(1) As Object
         ports(0) = Nothing
 
-        For Each n As Integer In RegionClass.RegionNumbers
+        Dim n = 0
+        For Each X As Integer In RegionClass.RegionNumbers
             If ports.Length <= RegionClass.RegionPort(n) Then
                 ReDim ports(RegionClass.RegionPort(n) + 1)
             End If
@@ -1211,6 +1220,7 @@ Public Class Form1
                 Log("Error:" + ex.Message)
                 ports(RegionClass.RegionPort(n)) = 0
             End Try
+            n = n + 1
         Next
 
         Return Passfail
@@ -1354,6 +1364,9 @@ Public Class Form1
             RobustProcess.Start()
             gRobustProcID = RobustProcess.Id
 
+            Thread.Sleep(1000)
+            SetWindowText(RobustProcess.MainWindowHandle, "Robust")
+
         Catch ex As Exception
             Print("Error: Robust did not start: " + ex.Message)
             KillAll()
@@ -1405,15 +1418,16 @@ Public Class Form1
 
         Try
             ' Boot them up
-            For Each n As Integer In RegionClass.RegionNumbers
+            Dim n = 0
+            For Each x In RegionClass.RegionNumbers
                 If RegionClass.RegionEnabled(n) And Running Then '
                     If Not Boot(RegionClass.RegionName(n)) Then
-                        MsgBox(RegionClass.RegionName(n) + " failed to start.", vbInformation)
                         Print("Boot skipped for " + RegionClass.RegionName(n))
-                        Return False
+                    Else
+                        Sleep(2000) ' no rush, give it time to boot and read environment
                     End If
-                    Sleep(3000) ' no rush, give it time to boot and read environment
                 End If
+                n = n + 1
             Next
         Catch ex As Exception
             Debug.Print(ex.Message)
@@ -1428,203 +1442,203 @@ Public Class Form1
 #End Region
 
 #Region "Exited"
-    Private Sub OpensimProcess01_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess1.Exited
+    Private Sub OpensimProcess01_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess1.Exited
         RegionHandles(1) = False
         DoExit(sender)
     End Sub
-    Private Sub OpensimProcess02_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess2.Exited
+    Private Sub OpensimProcess02_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess2.Exited
         RegionHandles(2) = False
         DoExit(sender)
     End Sub
-    Private Sub OpensimProcess03_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess3.Exited
+    Private Sub OpensimProcess03_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess3.Exited
         RegionHandles(3) = False
         DoExit(sender)
     End Sub
-    Private Sub OpensimProcess04_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess4.Exited
+    Private Sub OpensimProcess04_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess4.Exited
         RegionHandles(4) = False
         DoExit(sender)
     End Sub
-    Private Sub OpensimProcess05_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess5.Exited
+    Private Sub OpensimProcess05_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess5.Exited
         RegionHandles(5) = False
         DoExit(sender)
     End Sub
-    Private Sub OpensimProcess06_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess6.Exited
+    Private Sub OpensimProcess06_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess6.Exited
         RegionHandles(6) = False
         DoExit(sender)
     End Sub
-    Private Sub OpensimProcess07_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess7.Exited
+    Private Sub OpensimProcess07_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess7.Exited
         RegionHandles(7) = False
         DoExit(sender)
     End Sub
-    Private Sub OpensimProcess08_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess8.Exited
+    Private Sub OpensimProcess08_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess8.Exited
         RegionHandles(8) = False
         DoExit(sender)
     End Sub
-    Private Sub OpensimProcess09_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess9.Exited
+    Private Sub OpensimProcess09_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess9.Exited
         RegionHandles(9) = False
         DoExit(sender)
     End Sub
-    Private Sub OpensimProcess10_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess10.Exited
+    Private Sub OpensimProcess10_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess10.Exited
         RegionHandles(10) = False
         DoExit(sender)
     End Sub
-    Private Sub OpensimProcess11_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess11.Exited
+    Private Sub OpensimProcess11_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess11.Exited
         RegionHandles(11) = False
         DoExit(sender)
     End Sub
-    Private Sub OpensimProcess12_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess12.Exited
+    Private Sub OpensimProcess12_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess12.Exited
         RegionHandles(12) = False
         DoExit(sender)
     End Sub
-    Private Sub OpensimProcess13_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess13.Exited
+    Private Sub OpensimProcess13_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess13.Exited
         RegionHandles(13) = False
         DoExit(sender)
     End Sub
-    Private Sub OpensimProcess14_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess14.Exited
+    Private Sub OpensimProcess14_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess14.Exited
         RegionHandles(14) = False
         DoExit(sender)
     End Sub
-    Private Sub OpensimProcess15_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess15.Exited
+    Private Sub OpensimProcess15_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess15.Exited
         RegionHandles(15) = False
         DoExit(sender)
     End Sub
-    Private Sub OpensimProcess16_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess16.Exited
+    Private Sub OpensimProcess16_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess16.Exited
         RegionHandles(16) = False
         DoExit(sender)
     End Sub
-    Private Sub OpensimProcess17_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess17.Exited
+    Private Sub OpensimProcess17_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess17.Exited
         RegionHandles(17) = False
         DoExit(sender)
     End Sub
-    Private Sub OpensimProcess18_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess18.Exited
+    Private Sub OpensimProcess18_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess18.Exited
         RegionHandles(18) = False
         DoExit(sender)
     End Sub
-    Private Sub OpensimProcess19_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess19.Exited
+    Private Sub OpensimProcess19_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess19.Exited
         RegionHandles(19) = False
         DoExit(sender)
     End Sub
-    Private Sub OpensimProcess20_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess20.Exited
+    Private Sub OpensimProcess20_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess20.Exited
         RegionHandles(20) = False
         DoExit(sender)
     End Sub
-    Private Sub OpensimProcess21_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess21.Exited
+    Private Sub OpensimProcess21_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess21.Exited
         RegionHandles(21) = False
         DoExit(sender)
     End Sub
-    Private Sub OpensimProcess22_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess22.Exited
+    Private Sub OpensimProcess22_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess22.Exited
         RegionHandles(22) = False
         DoExit(sender)
     End Sub
-    Private Sub OpensimProcess23_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess23.Exited
+    Private Sub OpensimProcess23_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess23.Exited
         RegionHandles(23) = False
         DoExit(sender)
     End Sub
-    Private Sub OpensimProcess24_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess24.Exited
+    Private Sub OpensimProcess24_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess24.Exited
         RegionHandles(24) = False
         DoExit(sender)
     End Sub
-    Private Sub OpensimProcess25_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess25.Exited
+    Private Sub OpensimProcess25_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess25.Exited
         RegionHandles(25) = False
         DoExit(sender)
     End Sub
-    Private Sub OpensimProcess26_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess26.Exited
+    Private Sub OpensimProcess26_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess26.Exited
         RegionHandles(26) = False
         DoExit(sender)
     End Sub
-    Private Sub OpensimProcess27_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess27.Exited
+    Private Sub OpensimProcess27_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess27.Exited
         RegionHandles(27) = False
         DoExit(sender)
     End Sub
-    Private Sub OpensimProcess28_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess28.Exited
+    Private Sub OpensimProcess28_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess28.Exited
         RegionHandles(28) = False
         DoExit(sender)
     End Sub
-    Private Sub OpensimProcess29_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess29.Exited
+    Private Sub OpensimProcess29_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess29.Exited
         RegionHandles(29) = False
         DoExit(sender)
     End Sub
-    Private Sub OpensimProcess30_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess30.Exited
+    Private Sub OpensimProcess30_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess30.Exited
         RegionHandles(30) = False
         DoExit(sender)
     End Sub
-    Private Sub OpensimProcess31_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess31.Exited
+    Private Sub OpensimProcess31_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess31.Exited
         RegionHandles(31) = False
         DoExit(sender)
     End Sub
-    Private Sub OpensimProcess32_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess32.Exited
+    Private Sub OpensimProcess32_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess32.Exited
         RegionHandles(32) = False
         DoExit(sender)
     End Sub
-    Private Sub OpensimProcess33_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess33.Exited
+    Private Sub OpensimProcess33_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess33.Exited
         RegionHandles(33) = False
         DoExit(sender)
     End Sub
-    Private Sub OpensimProcess34_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess34.Exited
+    Private Sub OpensimProcess34_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess34.Exited
         RegionHandles(34) = False
         DoExit(sender)
     End Sub
-    Private Sub OpensimProcess35_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess35.Exited
+    Private Sub OpensimProcess35_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess35.Exited
         RegionHandles(35) = False
         DoExit(sender)
     End Sub
-    Private Sub OpensimProcess36_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess36.Exited
+    Private Sub OpensimProcess36_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess36.Exited
         RegionHandles(36) = False
         DoExit(sender)
     End Sub
-    Private Sub OpensimProcess37_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess37.Exited
+    Private Sub OpensimProcess37_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess37.Exited
         RegionHandles(37) = False
         DoExit(sender)
     End Sub
-    Private Sub OpensimProcess38_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess38.Exited
+    Private Sub OpensimProcess38_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess38.Exited
         RegionHandles(38) = False
         DoExit(sender)
     End Sub
-    Private Sub OpensimProcess39_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess39.Exited
+    Private Sub OpensimProcess39_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess39.Exited
         RegionHandles(39) = False
         DoExit(sender)
     End Sub
-    Private Sub OpensimProcess40_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess40.Exited
+    Private Sub OpensimProcess40_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess40.Exited
         RegionHandles(40) = False
         DoExit(sender)
     End Sub
-    Private Sub OpensimProcess41_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess41.Exited
+    Private Sub OpensimProcess41_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess41.Exited
         RegionHandles(41) = False
         DoExit(sender)
     End Sub
-    Private Sub OpensimProcess42_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess42.Exited
+    Private Sub OpensimProcess42_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess42.Exited
         RegionHandles(42) = False
         DoExit(sender)
     End Sub
-    Private Sub OpensimProcess43_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess43.Exited
+    Private Sub OpensimProcess43_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess43.Exited
         RegionHandles(43) = False
         DoExit(sender)
     End Sub
-    Private Sub OpensimProcess44_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess44.Exited
+    Private Sub OpensimProcess44_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess44.Exited
         RegionHandles(44) = False
         DoExit(sender)
     End Sub
-    Private Sub OpensimProcess45_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess45.Exited
+    Private Sub OpensimProcess45_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess45.Exited
         RegionHandles(45) = False
         DoExit(sender)
     End Sub
-    Private Sub OpensimProcess46_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess46.Exited
+    Private Sub OpensimProcess46_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess46.Exited
         RegionHandles(46) = False
         DoExit(sender)
     End Sub
-    Private Sub OpensimProcess47_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess47.Exited
+    Private Sub OpensimProcess47_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess47.Exited
         RegionHandles(47) = False
         DoExit(sender)
     End Sub
-    Private Sub OpensimProcess48_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess48.Exited
+    Private Sub OpensimProcess48_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess48.Exited
         RegionHandles(48) = False
         DoExit(sender)
     End Sub
-    Private Sub OpensimProcess49_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess49.Exited
+    Private Sub OpensimProcess49_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess49.Exited
         RegionHandles(49) = False
         DoExit(sender)
     End Sub
-    Private Sub OpensimProcess50_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles myProcess50.Exited
+    Private Sub OpensimProcess50_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess50.Exited
         RegionHandles(50) = False
         DoExit(sender)
     End Sub
@@ -1637,8 +1651,6 @@ Public Class Form1
         ' Handle Opensim Exited
 
         Dim n As Integer = RegionClass.FindRegionByProcessID(sender.Id)
-
-
         Log(RegionClass.RegionName(n) + " stopped")
         RegionClass.Ready(n) = False
         RegionClass.WarmingUp(n) = False
@@ -1662,56 +1674,56 @@ Public Class Form1
             Return Nothing
         End If
 
-        If ProcessCount = 0 Then Return myProcess1
-        If ProcessCount = 1 Then Return myProcess2
-        If ProcessCount = 2 Then Return myProcess3
-        If ProcessCount = 3 Then Return myProcess4
-        If ProcessCount = 4 Then Return myProcess5
-        If ProcessCount = 5 Then Return myProcess6
-        If ProcessCount = 6 Then Return myProcess7
-        If ProcessCount = 7 Then Return myProcess8
-        If ProcessCount = 8 Then Return myProcess9
-        If ProcessCount = 9 Then Return myProcess10
-        If ProcessCount = 10 Then Return myProcess11
-        If ProcessCount = 11 Then Return myProcess12
-        If ProcessCount = 12 Then Return myProcess13
-        If ProcessCount = 13 Then Return myProcess14
-        If ProcessCount = 14 Then Return myProcess15
-        If ProcessCount = 15 Then Return myProcess16
-        If ProcessCount = 16 Then Return myProcess17
-        If ProcessCount = 17 Then Return myProcess18
-        If ProcessCount = 18 Then Return myProcess19
-        If ProcessCount = 19 Then Return myProcess20
-        If ProcessCount = 20 Then Return myProcess21
-        If ProcessCount = 21 Then Return myProcess22
-        If ProcessCount = 22 Then Return myProcess23
-        If ProcessCount = 23 Then Return myProcess24
-        If ProcessCount = 24 Then Return myProcess25
-        If ProcessCount = 25 Then Return myProcess26
-        If ProcessCount = 26 Then Return myProcess27
-        If ProcessCount = 27 Then Return myProcess28
-        If ProcessCount = 28 Then Return myProcess29
-        If ProcessCount = 29 Then Return myProcess30
-        If ProcessCount = 30 Then Return myProcess31
-        If ProcessCount = 31 Then Return myProcess32
-        If ProcessCount = 32 Then Return myProcess33
-        If ProcessCount = 33 Then Return myProcess34
-        If ProcessCount = 34 Then Return myProcess35
-        If ProcessCount = 35 Then Return myProcess36
-        If ProcessCount = 36 Then Return myProcess37
-        If ProcessCount = 37 Then Return myProcess38
-        If ProcessCount = 38 Then Return myProcess39
-        If ProcessCount = 39 Then Return myProcess40
-        If ProcessCount = 40 Then Return myProcess41
-        If ProcessCount = 41 Then Return myProcess42
-        If ProcessCount = 42 Then Return myProcess43
-        If ProcessCount = 43 Then Return myProcess44
-        If ProcessCount = 44 Then Return myProcess45
-        If ProcessCount = 45 Then Return myProcess46
-        If ProcessCount = 46 Then Return myProcess47
-        If ProcessCount = 47 Then Return myProcess48
-        If ProcessCount = 48 Then Return myProcess49
-        If ProcessCount = 49 Then Return myProcess50
+        If ProcessCount = 0 Then Return MyProcess1
+        If ProcessCount = 1 Then Return MyProcess2
+        If ProcessCount = 2 Then Return MyProcess3
+        If ProcessCount = 3 Then Return MyProcess4
+        If ProcessCount = 4 Then Return MyProcess5
+        If ProcessCount = 5 Then Return MyProcess6
+        If ProcessCount = 6 Then Return MyProcess7
+        If ProcessCount = 7 Then Return MyProcess8
+        If ProcessCount = 8 Then Return MyProcess9
+        If ProcessCount = 9 Then Return MyProcess10
+        If ProcessCount = 10 Then Return MyProcess11
+        If ProcessCount = 11 Then Return MyProcess12
+        If ProcessCount = 12 Then Return MyProcess13
+        If ProcessCount = 13 Then Return MyProcess14
+        If ProcessCount = 14 Then Return MyProcess15
+        If ProcessCount = 15 Then Return MyProcess16
+        If ProcessCount = 16 Then Return MyProcess17
+        If ProcessCount = 17 Then Return MyProcess18
+        If ProcessCount = 18 Then Return MyProcess19
+        If ProcessCount = 19 Then Return MyProcess20
+        If ProcessCount = 20 Then Return MyProcess21
+        If ProcessCount = 21 Then Return MyProcess22
+        If ProcessCount = 22 Then Return MyProcess23
+        If ProcessCount = 23 Then Return MyProcess24
+        If ProcessCount = 24 Then Return MyProcess25
+        If ProcessCount = 25 Then Return MyProcess26
+        If ProcessCount = 26 Then Return MyProcess27
+        If ProcessCount = 27 Then Return MyProcess28
+        If ProcessCount = 28 Then Return MyProcess29
+        If ProcessCount = 29 Then Return MyProcess30
+        If ProcessCount = 30 Then Return MyProcess31
+        If ProcessCount = 31 Then Return MyProcess32
+        If ProcessCount = 32 Then Return MyProcess33
+        If ProcessCount = 33 Then Return MyProcess34
+        If ProcessCount = 34 Then Return MyProcess35
+        If ProcessCount = 35 Then Return MyProcess36
+        If ProcessCount = 36 Then Return MyProcess37
+        If ProcessCount = 37 Then Return MyProcess38
+        If ProcessCount = 38 Then Return MyProcess39
+        If ProcessCount = 39 Then Return MyProcess40
+        If ProcessCount = 40 Then Return MyProcess41
+        If ProcessCount = 41 Then Return MyProcess42
+        If ProcessCount = 42 Then Return MyProcess43
+        If ProcessCount = 43 Then Return MyProcess44
+        If ProcessCount = 44 Then Return MyProcess45
+        If ProcessCount = 45 Then Return MyProcess46
+        If ProcessCount = 46 Then Return MyProcess47
+        If ProcessCount = 47 Then Return MyProcess48
+        If ProcessCount = 48 Then Return MyProcess49
+        If ProcessCount = 49 Then Return MyProcess50
 
         Return Nothing
 
@@ -1720,14 +1732,13 @@ Public Class Form1
     Public Function Boot(Name As String) As Boolean
 
         Dim n = RegionClass.FindRegionByName(Name)
-
         If RegionClass.ProcessID(n) Or RegionClass.Ready(n) Or RegionClass.WarmingUp(n) Or RegionClass.ShuttingDown(n) Then
             Return True
         End If
 
         Environment.SetEnvironmentVariable("OSIM_LOGPATH", prefix + "bin\Regions\" + RegionClass.Folder(n))
 
-        Dim myProcess = GetNewProcess()
+        Dim myProcess As Process = GetNewProcess()
 
         If myProcess Is Nothing Then
             Print("Exceeded max number of processes: could not start " + RegionClass.RegionName(n))
@@ -1740,9 +1751,11 @@ Public Class Form1
             myProcess.EnableRaisingEvents = True
             myProcess.StartInfo.UseShellExecute = True ' so we can redirect streams
             myProcess.StartInfo.WorkingDirectory = prefix + "bin"
-            myProcess.StartInfo.FileName = prefix + "bin\OpenSim.exe"
+
+            Dim permanent = True
+            myProcess.StartInfo.FileName = "opensim.exe"
             myProcess.StartInfo.CreateNoWindow = False
-            myProcess.StartInfo.Arguments = """" & "-inidirectory=./Regions/" & RegionClass.Folder(n) & """"
+            myProcess.StartInfo.Arguments = " -inidirectory=./Regions/" & RegionClass.Folder(n)
 
             If mnuShow.Checked Then
                 myProcess.StartInfo.WindowStyle = ProcessWindowStyle.Normal
@@ -1778,15 +1791,25 @@ Public Class Form1
                 RegionClass.WarmingUp(n) = True
                 RegionClass.Ready(n) = False
                 RegionClass.ShuttingDown(n) = False
+
+                Thread.Sleep(500)
+                SetWindowText(myProcess.MainWindowHandle, Name)
+
+                Return True
             End If
 
         Catch ex As Exception
-            Print("Error: Opensim did not start: " + ex.Message)
-            KillAll()
-            Buttons(StartButton)
+            Print("Error: " + Name + " did not start")
+
+            Dim yesno = MsgBox("The region did not start. Do you want to see the log file?", vbYesNo)
+            If (yesno = vbYes) Then
+                System.Diagnostics.Process.Start("notepad.exe", RegionClass.IniPath(n) + "Opensim.log")
+            End If
+
             Return False
         End Try
-        Return True
+
+        Return False
 
     End Function
 
@@ -2130,12 +2153,14 @@ Public Class Form1
             Return
         End If
 
-        For Each n As Integer In RegionClass.RegionNumbers
+        Dim n = 0
+        For Each X In RegionClass.RegionNumbers
             If RegionClass.Ready(n) Then
                 ConsoleCommand(RegionClass.ProcessID(n), "save oar  " + """" + BackupPath() + RegionClass.RegionName(n) + "_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
                 Me.Focus()
                 Application.DoEvents()
             End If
+            n = n + 1
         Next
     End Sub
 
@@ -2834,8 +2859,8 @@ Public Class Form1
             '8004-whatever
 
             ' !!!regions = regions.OrderBy(Function(x) x.RegionPort).ToList()
-
-            For Each n As Integer In RegionClass.RegionNumbers
+            Dim n = 0
+            For Each X In RegionClass.RegionNumbers
                 Dim R As Int16 = RegionClass.RegionPort(n)
 
                 If MyUPnpMap.Exists(R, UPnp.Protocol.UDP) Then
@@ -2851,6 +2876,7 @@ Public Class Form1
                 MyUPnpMap.Add(UPnp.LocalIP, R, UPnp.Protocol.TCP, "Opensim TCP Region " & RegionClass.RegionName(n) & " ")
                 PrintFast("Region " + RegionClass.RegionName(n) + " is set to " + Convert.ToString(R))
                 BumpProgress(1)
+                n = n + 1
             Next
 
         Catch e As Exception
@@ -2978,7 +3004,7 @@ Public Class Form1
                     pMySqlRestore.StartInfo = pi
                     pMySqlRestore.Start()
                 End If
-        Else
+            Else
                 Print("Restore cancelled")
             End If
         End If
@@ -3159,7 +3185,7 @@ Public Class Form1
 
         Mysql = CheckPort("127.0.0.1", My.Settings.MySqlPort)
         If Mysql Then
-            zap("mysqld")
+            Zap("mysqld")
         End If
 
     End Sub
@@ -3360,8 +3386,8 @@ Public Class Form1
 
         If My.Settings.AutoLoad Then
             ' Scan all the regions
-            Dim Rlist = RegionClass.RegionNumbers
-            For Each n As Integer In Rlist
+            Dim n = 0
+            For Each X As Integer In RegionClass.RegionNumbers
                 RegionClass.AvatarCount(n) = MysqlConn.IsUserPresent(RegionClass.UUID(n))
                 Debug.Print(RegionClass.AvatarCount(n).ToString + " avatars in region " + RegionClass.RegionName(n))
                 If RegionClass.Timer(n) > 0 Then RegionClass.Timer(n) = RegionClass.Timer(n) - 1
@@ -3379,6 +3405,7 @@ Public Class Form1
                 Else
                     RegionClass.Timer(n) = 60 ' 60 seconds and we will shut it off
                 End If
+                n = n + 1
             Next
         End If
 

@@ -10,6 +10,7 @@ Public Class AdvancedForm
     Dim MyRegion As RegionMaker
 
 
+
 #End Region
 
 #Region "Functions"
@@ -133,12 +134,13 @@ Public Class AdvancedForm
         Dim counter As Integer = 0
 
         Dim RegionClass As RegionMaker = RegionMaker.Instance
-
-        For Each o In RegionClass.RegionList
+        Dim n = 0
+        For Each Z As Integer In RegionClass.RegionNumbers
             Try
+                Dim RegionName = RegionClass.RegionName(n)
                 Dim ActualForm As New FormRegion
                 ActualForm.SetDesktopLocation(X, Y)
-                ActualForm.Init(o.RegionName)
+                ActualForm.Init(RegionName)
                 ActualForm.Activate()
                 ActualForm.Visible = True
                 Application.DoEvents()
@@ -148,6 +150,7 @@ Public Class AdvancedForm
             counter = counter + 1
             Y += 100
             X += 100
+            n = n + 1
         Next
 
     End Sub
@@ -244,10 +247,12 @@ Public Class AdvancedForm
 
         ' !!!regions = regions.OrderBy(Function(x) x.RegionName).ToList()
         Dim RegionClass As RegionMaker = RegionMaker.Instance
-        For Each n As Integer In RegionClass.RegionNumbers
+        Dim n = 0
+        For Each X As Integer In RegionClass.RegionNumbers
             If RegionClass.RegionEnabled(n) Then
                 WelcomeBox1.Items.Add(RegionClass.RegionName(n))
             End If
+            n = n + 1
         Next
 
         Dim s = WelcomeBox1.FindString(My.Settings.WelcomeRegion)

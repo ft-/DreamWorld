@@ -6,7 +6,6 @@ Public Class FormRegion
 
 #Region "Declarations"
     Dim n As Integer
-
     Dim oldname As String = ""
     Dim initted As Boolean = False ' needed a flag to see if we are initted as the dialogs change on start.
     Dim changed As Boolean    ' true if we need to save a form
@@ -240,14 +239,14 @@ Public Class FormRegion
             Try
                 CoordY.Text = Convert.ToInt16(CoordY.Text)
             Catch
-
             End Try
-
             changed = True
         End If
+
     End Sub
 
     Private Sub CoordX_TextChanged(sender As Object, e As EventArgs) Handles CoordX.TextChanged
+
         If initted And CoordX.Text <> "" Then
             Try
                 CoordX.Text = Convert.ToInt16(CoordX.Text)
@@ -256,9 +255,11 @@ Public Class FormRegion
             End Try
             changed = True
         End If
+
     End Sub
 
     Private Sub RegionPort_TextChanged(sender As Object, e As EventArgs) Handles RegionPort.TextChanged
+
         If initted Then
             Try
                 RegionPort.Text = Convert.ToInt16(RegionPort.Text)
@@ -267,6 +268,7 @@ Public Class FormRegion
             End Try
             changed = True
         End If
+
     End Sub
 
     Private Sub RLostFocus(sender As Object, e As EventArgs) Handles RegionName.TextChanged
@@ -284,43 +286,43 @@ Public Class FormRegion
     End Sub
 
     Private Sub RadioButton1_CheckedChanged(sender As Object, e As EventArgs) Handles RadioButton1.CheckedChanged
-        If initted Then
+
+        If initted And RadioButton1.Checked Then
             SizeX.Text = 256
             SizeY.Text = 256
-            SizeX.Text = ""
-            SizeY.Text = ""
             changed = True
         End If
+
     End Sub
 
     Private Sub RadioButton2_CheckedChanged(sender As Object, e As EventArgs) Handles RadioButton2.CheckedChanged
-        If initted Then
+
+        If initted And RadioButton2.Checked Then
             SizeX.Text = 512
             SizeY.Text = 512
-            SizeX.Text = ""
-            SizeY.Text = ""
             changed = True
         End If
+
     End Sub
 
     Private Sub RadioButton3_CheckedChanged(sender As Object, e As EventArgs) Handles RadioButton3.CheckedChanged
-        If initted Then
+
+        If initted And RadioButton3.Checked Then
             SizeX.Text = 768
             SizeY.Text = 768
-            SizeX.Text = ""
-            SizeY.Text = ""
             changed = True
         End If
+
     End Sub
 
     Private Sub RadioButton4_CheckedChanged(sender As Object, e As EventArgs) Handles RadioButton4.CheckedChanged
-        If initted Then
+
+        If initted And RadioButton4.Checked Then
             SizeX.Text = 1024
             SizeY.Text = 1024
-            SizeX.Text = ""
-            SizeY.Text = ""
             changed = True
         End If
+
     End Sub
 
     Private Sub UUID_LostFocus(sender As Object, e As EventArgs) Handles UUID.LostFocus
@@ -340,46 +342,12 @@ Public Class FormRegion
                 End If
             End If
         End If
-    End Sub
-
-    Private Sub SizeX_TextChanged_1(sender As Object, e As EventArgs) Handles SizeX.TextChanged
-
-        If initted Then
-            If SizeX.Text.Length Then
-                changed = True
-                RadioButton1.Checked = False
-                RadioButton2.Checked = False
-                RadioButton3.Checked = False
-                Try
-                    SizeX.Text = Convert.ToInt16(SizeX.Text)
-                Catch
-                    SizeX.Text = ""
-                End Try
-            End If
-        End If
-
-    End Sub
-    Private Sub SizeY_TextChanged(sender As Object, e As EventArgs) Handles SizeY.TextChanged
-
-        If initted Then
-            If SizeY.Text.Length Then
-                changed = True
-                RadioButton1.Checked = False
-                RadioButton2.Checked = False
-                RadioButton3.Checked = False
-                Try
-                    SizeY.Text = Convert.ToInt16(SizeY.Text)
-                Catch
-                    SizeY.Text = ""
-                End Try
-
-            End If
-        End If
 
     End Sub
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
 
+        Dim RegionClass As RegionMaker = RegionMaker.Instance
         Dim message = RegionValidate()
         If Len(message) Then
             Dim v = MsgBox(message + vbCrLf + "Discard all changes and exit anyway?", vbYesNo)
@@ -390,14 +358,15 @@ Public Class FormRegion
 
             WriteRegion()
             Form1.CopyOpensimProto()
-
+            RegionClass.GetAllRegions()
             changed = False
             Me.Close()
         End If
+
     End Sub
 
     Private Sub FormRegion_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
-
+        Dim RegionClass As RegionMaker = RegionMaker.Instance
         If changed Then
             Dim v = MsgBox("Save changes?", vbYesNo)
             If v = vbYes Then
@@ -409,9 +378,12 @@ Public Class FormRegion
                     End If
                 Else
                     WriteRegion()
+                    Form1.CopyOpensimProto()
+                    RegionClass.GetAllRegions()
                 End If
             End If
         End If
+
     End Sub
 
     Private Sub SizeX_Changed(sender As Object, e As EventArgs) Handles SizeX.LostFocus
@@ -420,10 +392,20 @@ Public Class FormRegion
             If Not IsPowerOf256(Convert.ToSingle(SizeX.Text)) Then
                 MsgBox("Must be a multiple of 256: 256,512,768,1024,1280,1536,1792,2048,2304,2560, ..", vbInformation)
             Else
+                If SizeX.Text > 1024 Then
+                    RadioButton1.Checked = False
+                    RadioButton2.Checked = False
+                    RadioButton3.Checked = False
+                    RadioButton4.Checked = False
+                End If
+
                 SizeY.Text = SizeX.Text
                 changed = True
+
             End If
         End If
+
+
     End Sub
 
     Private Function IsPowerOf256(x As Integer) As Boolean
@@ -445,16 +427,15 @@ Public Class FormRegion
         If msg = vbYes Then
             Try
                 My.Computer.FileSystem.DeleteDirectory(Form1.prefix & "bin\Regions\" + RegionName.Text, FileIO.UIOption.AllDialogs, FileIO.RecycleOption.SendToRecycleBin, FileIO.UICancelOption.ThrowException)
-                RegionClass.DeleteRegion(RegionName.Text)
                 Form1.CopyOpensimProto()
+                RegionClass.GetAllRegions()
                 Me.Close()
             Catch ex As Exception
                 MsgBox("Cannot delete region file:" + ex.Message, vbInformation)
             End Try
         End If
+
     End Sub
-
-
 
 #End Region
 

@@ -5,7 +5,6 @@
     Private Shared FormExists As Boolean = False
 
     Dim imageListSmall As New ImageList()
-    Dim imageListLarge As New ImageList()
 
     ' property exposing FormExists
     Public Shared ReadOnly Property InstanceExists() As Boolean
@@ -49,26 +48,15 @@
         imageListSmall.Images.Add(My.Resources.ResourceManager.GetObject("navigate_up2"))   ' 0 booting up
         imageListSmall.Images.Add(My.Resources.ResourceManager.GetObject("navigate_down2")) ' 1 shutting down
         imageListSmall.Images.Add(My.Resources.ResourceManager.GetObject("check2")) ' 2 okay, up
-        imageListSmall.Images.Add(My.Resources.ResourceManager.GetObject("navigate_plus")) ' 4 disabled
-        imageListSmall.Images.Add(My.Resources.ResourceManager.GetObject("media_stop_red")) ' 3 disabled
+        imageListSmall.Images.Add(My.Resources.ResourceManager.GetObject("navigate_plus")) ' 3 disabled
+        imageListSmall.Images.Add(My.Resources.ResourceManager.GetObject("media_stop_red")) ' 4 disabled
         imageListSmall.Images.Add(My.Resources.ResourceManager.GetObject("media_stop"))  ' 5 enabled
 
-        ' index of 0-4 to display icons
-        imageListLarge.Images.Add(My.Resources.ResourceManager.GetObject("navigate_up2"))   ' 0 booting up
-        imageListLarge.Images.Add(My.Resources.ResourceManager.GetObject("navigate_down2")) ' 1 shutting down
-        imageListLarge.Images.Add(My.Resources.ResourceManager.GetObject("check2")) ' 2 okay, up
-        imageListLarge.Images.Add(My.Resources.ResourceManager.GetObject("navigate_plus"))  ' 4 enabled
-        imageListLarge.Images.Add(My.Resources.ResourceManager.GetObject("media_stop_red")) ' 3 disabled
-        imageListLarge.Images.Add(My.Resources.ResourceManager.GetObject("media_stop"))  ' 5 enabled
 
-
-        'Assign the ImageList objects to the ListView.
-        ListView1.LargeImageList = imageListLarge
-        ListView1.SmallImageList = imageListSmall
 
         LoadMyListView()
 
-        Timer1.Interval = 10000
+        Timer1.Interval = 30000
         Timer1.Start() 'Timer starts functioning
 
     End Sub
@@ -86,6 +74,11 @@
 
     Private Sub LoadMyListView()
 
+        Dim imageListLarge As New ImageList()
+
+        imageListLarge.ImageSize = New Size(70, 70)
+
+
         Dim RegionClass As RegionMaker = RegionMaker.Instance
 
         writetodisk = False
@@ -98,12 +91,16 @@
         ListView1.Columns.Add("Agents", 60, HorizontalAlignment.Center)
         ListView1.Columns.Add("Status", 60, HorizontalAlignment.Center)
 
-
         Dim imageList1 As New ImageList
         Dim Num As Integer
-        For Each n As Integer In RegionClass.RegionNumbers
+        Dim n As Integer = 0
+        For Each X In RegionClass.RegionNumbers
             Application.DoEvents()
             RegionClass.DebugRegions(n)
+
+            If RegionClass.RegionName(n) = "Isis" Then
+                Debug.Print("Egypt")
+            End If
 
             ' Create  items and subitems for each item.
             Dim item1 As New ListViewItem(RegionClass.RegionName(n), n)
@@ -114,41 +111,53 @@
             Dim Letter As String = ""
             If RegionClass.WarmingUp(n) Then
                 Letter = "Booting"
-            ElseIf RegionClass.ShuttingDown(n) Then
-                Letter = "Shutting Down"
-            ElseIf RegionClass.Ready(n) Then
-                Letter = "Running"
-            ElseIf Not RegionClass.RegionEnabled(n) Then
-                Letter = "Disabled"
-            ElseIf RegionClass.RegionEnabled(n) Then
-                Letter = "Stopped"
-            End If
-
-            '=================
-
-            If RegionClass.WarmingUp(n) Then
                 Num = 0
             ElseIf RegionClass.ShuttingDown(n) Then
+                Letter = "Shutting Down"
                 Num = 1
             ElseIf RegionClass.Ready(n) Then
+                Letter = "Running"
                 Num = 2
-            ElseIf Not RegionClass.processID(n) And RegionClass.ShuttingDown(n) Then
+            ElseIf Not RegionClass.ProcessID(n) And RegionClass.ShuttingDown(n) Then
+                Letter = "Exiting"
                 Num = 3
             ElseIf Not RegionClass.RegionEnabled(n) Then
+                Letter = "Disabled"
                 Num = 4
             ElseIf RegionClass.RegionEnabled(n) Then
+                Letter = "Stopped"
+                Num = 5
+            Else
                 Num = 5
             End If
 
-            '-----------------
             item1.SubItems.Add(Letter)
             ListView1.Items.AddRange(New ListViewItem() {item1})
-            ListView1.Items(n).ImageIndex = Num
 
+            If TheView = 2 Then
+                If RegionClass.Ready(n) Then
+                    Dim img As String = "http://127.0.0.1:" + RegionClass.RegionPort(n).ToString + "/" + "index.php?method=regionImage" + RegionClass.UUID(n).Replace("-", "")
+                    Debug.Print(img)
+                    Dim bmp As Image = LoadImage(img)
+                    If bmp Is Nothing Then
+                        imageListLarge.Images.Add(My.Resources.ResourceManager.GetObject("water"))
+                    Else
+                        imageListLarge.Images.Add(bmp)
+                    End If
+                    Num = n
+                Else
+                    imageListLarge.Images.Add(My.Resources.ResourceManager.GetObject("water"))
+                    Num = n
+                End If
+            End If
+
+            ListView1.Items(n).ImageIndex = Num
             n = n + 1
         Next
 
-
+        'Assign the ImageList objects to the ListView.
+        ListView1.LargeImageList = imageListLarge
+        ListView1.SmallImageList = imageListSmall
 
         Me.ListView1.TabIndex = 0
         Me.ListView1.LabelEdit = False
@@ -156,6 +165,21 @@
         writetodisk = True
 
     End Sub 'listView1
+
+    Private Function LoadImage(url As String) As Image
+        Dim bmp As Bitmap = Nothing
+        Dim request As System.Net.WebRequest = System.Net.WebRequest.Create(url)
+        Try
+            Dim response As System.Net.WebResponse = request.GetResponse()
+            Dim responseStream As System.IO.Stream = response.GetResponseStream()
+            bmp = New Bitmap(responseStream)
+            responseStream.Dispose()
+        Catch
+        End Try
+
+        Return bmp
+
+    End Function
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
 
@@ -206,15 +230,16 @@
             ' it was stopped, and disabled, so we start up
             If Not Form1.StartMySQL() Then Return
             Form1.Start_Robust()
-
             Form1.Boot(RegionClass.RegionName(n))
             Debug.Print("Region:Started Region " + RegionClass.RegionName(n))
         Else
             Try
                 Dim ActualForm As New FormRegion
                 ActualForm.Init(RegionClass.RegionName(n))
+                'ActualForm.SetDesktopLocation(X, Y)
                 ActualForm.Activate()
                 ActualForm.Visible = True
+
             Catch ex As Exception
                 Form1.Log("Info:" + ex.Message)
             End Try
@@ -241,7 +266,6 @@
                 Form1.SaveINI()
                 RegionClass.ProcessID(n) = 0
                 Application.DoEvents()
-
             ElseIf (e.CurrentValue = CheckState.checked) Then
                 RegionClass.RegionEnabled(n) = False
                 ' and region file on disk
@@ -249,7 +273,6 @@
                 Form1.SetIni(RegionClass.RegionName(n), "Enabled", "false")
                 Form1.SaveINI()
                 Application.DoEvents()
-
             End If
         End If
 
@@ -270,23 +293,25 @@
         If TheView = 0 Then
             ListView1.CheckBoxes = False
             ListView1.View = View.List
-            TheView = 1
         ElseIf TheView = 1 Then
-            ListView1.View = View.Details
+            ListView1.CheckBoxes = False
+            ListView1.View = View.LargeIcon
+        ElseIf TheView = 2 Then
             ListView1.CheckBoxes = True
-            TheView = 0
+            ListView1.View = View.Details
         End If
+        TheView = TheView + 1
+        If TheView > 2 Then TheView = 0
+
+        LoadMyListView()
 
     End Sub
 
     Private Sub Addregion_Click(sender As Object, e As EventArgs) Handles Addregion.Click
-        Dim X As Integer = 300
-        Dim Y As Integer = 200
-
         Dim RegionClass As RegionMaker = RegionMaker.Instance
         RegionClass.CreateRegion("")
         Dim ActualForm As New FormRegion
-        ActualForm.SetDesktopLocation(X, Y)
+        'ActualForm.SetDesktopLocation(300, 200)
         ActualForm.Init("Enter a name here")
         ActualForm.Activate()
         ActualForm.Visible = True
