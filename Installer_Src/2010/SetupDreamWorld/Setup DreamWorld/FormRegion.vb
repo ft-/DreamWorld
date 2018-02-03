@@ -46,29 +46,29 @@ Public Class FormRegion
                 RadioButton2.Checked = False
                 RadioButton3.Checked = False
                 RadioButton4.Checked = False
-                SizeX.Text = ""
-                SizeY.Text = ""
+                SizeX.Text = "256"
+                SizeY.Text = "256"
             ElseIf RegionClass.SizeY(n) = 512 And RegionClass.SizeX(n) = 512 Then
                 RadioButton1.Checked = False
                 RadioButton2.Checked = True
                 RadioButton3.Checked = False
                 RadioButton4.Checked = False
-                SizeX.Text = ""
-                SizeY.Text = ""
+                SizeX.Text = "512"
+                SizeY.Text = "512"
             ElseIf RegionClass.SizeY(n) = 768 And RegionClass.SizeX(n) = 768 Then
                 RadioButton1.Checked = False
                 RadioButton2.Checked = False
                 RadioButton3.Checked = True
                 RadioButton4.Checked = False
-                SizeX.Text = ""
-                SizeY.Text = ""
+                SizeX.Text = "768"
+                SizeY.Text = "768"
             ElseIf RegionClass.SizeY(n) = 1024 And RegionClass.SizeX(n) = 1024 Then
                 RadioButton1.Checked = False
                 RadioButton2.Checked = False
                 RadioButton3.Checked = False
                 RadioButton4.Checked = True
-                SizeX.Text = ""
-                SizeY.Text = ""
+                SizeX.Text = "1024"
+                SizeY.Text = "1024"
             Else
                 RadioButton1.Checked = False
                 RadioButton2.Checked = False

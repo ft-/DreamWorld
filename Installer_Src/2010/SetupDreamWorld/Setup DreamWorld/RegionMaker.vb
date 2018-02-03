@@ -48,7 +48,6 @@ Public Class RegionMaker
     End Property
 
     Private Sub New()
-
         GetAllRegions()
         If RegionCount() = 0 Then
             CreateRegion("Welcome")
@@ -249,6 +248,8 @@ Public Class RegionMaker
 #Region "Functions"
 
     Public Sub RegionDump()
+
+        Return
         Dim ctr = 0
         For Each r As Region_data In RegionList
             DebugRegions(ctr)
@@ -263,11 +264,13 @@ Public Class RegionMaker
             L.Add(ctr)
             ctr = ctr + 1
         Next
-        Debug.Print("List Len = " + L.Count.ToString)
+        'Debug.Print("List Len = " + L.Count.ToString)
         Return L
     End Function
 
     Public Sub DebugRegions(n As Integer)
+
+        Return
 
         Debug.Print("Region:" + RegionList(n)._RegionName +
             " WarmingUp=" + RegionList(n)._WarmingUp.ToString +

@@ -1174,8 +1174,8 @@ Public Class Form1
 
         ' Wifi Admin'
         SetIni("WifiService", "AdminFirst", My.Settings.AdminFirst)
-        SetIni("WifiService", "AdminPassword", My.Settings.AdminLast)
-        SetIni("WifiService", "AdminLast", My.Settings.AdminEmail)
+        SetIni("WifiService", "AdminPassword", My.Settings.Password)
+        SetIni("WifiService", "AdminLast", My.Settings.AdminLast)
 
         'Gmail
         SetIni("WifiService", "AdminPassword", My.Settings.Password)
@@ -1651,6 +1651,14 @@ Public Class Form1
         ' Handle Opensim Exited
 
         Dim n As Integer = RegionClass.FindRegionByProcessID(sender.Id)
+
+        If RegionClass.WarmingUp(n) = True Then
+            Dim yesno = MsgBox("The region did not start. Do you want to see the log file?", vbYesNo)
+            If (yesno = vbYes) Then
+                System.Diagnostics.Process.Start("notepad.exe", RegionClass.IniPath(n) + "Opensim.log")
+            End If
+        End If
+
         Log(RegionClass.RegionName(n) + " stopped")
         RegionClass.Ready(n) = False
         RegionClass.WarmingUp(n) = False
@@ -1958,7 +1966,6 @@ Public Class Form1
         Dim value2 As Integer = CInt(Int((Array.Length - 1) * Rnd()))
         Dim whattosay = Prefix(value1) + vbCrLf + vbCrLf + Array(value2) + " ... and then I woke up."
         Print(whattosay)
-        Sleep(2000)
 
     End Sub
 
@@ -2001,6 +2008,7 @@ Public Class Form1
     Private Sub Timer1_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Timer1.Tick
 
         PaintImage()
+
         ScanAgents()
 
         If gDNSSTimer Mod 3600 = 0 Then
@@ -2067,6 +2075,7 @@ Public Class Form1
 #End Region
 
 #Region "IAROAR"
+
     Private Sub SaveRegionOARToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles SaveRegionOARToolStripMenuItem.Click
 
         If (Running) Then
@@ -2135,6 +2144,7 @@ Public Class Form1
         Else
             Print("Opensim is not running. Cannot load the OAR file.")
         End If
+
     End Sub
     Private Function BackupPath() As String
 
@@ -2148,6 +2158,7 @@ Public Class Form1
     End Function
 
     Private Sub AllRegionsOARsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AllRegionsOARsToolStripMenuItem.Click
+
         If Not Running Then
             Print("Opensim is not running. Cannot save an OAR at this time.")
             Return
@@ -2162,6 +2173,7 @@ Public Class Form1
             End If
             n = n + 1
         Next
+
     End Sub
 
     Private Sub LoadInventoryIARToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles LoadInventoryIARToolStripMenuItem.Click
@@ -2194,6 +2206,7 @@ Public Class Form1
     End Sub
 
     Private Sub SaveInventoryIARToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles SaveInventoryIARToolStripMenuItem.Click
+
         If (Running) Then
             Dim Message, title, defaultValue As String
 
@@ -2264,6 +2277,7 @@ Public Class Form1
         Else
             Print("Opensim is not running. Cannot make a backup now.")
         End If
+
     End Sub
 
     Public Function ChooseRegion() As String
@@ -2361,9 +2375,11 @@ Public Class Form1
     End Sub
 
     Private Sub TextBox1_DragEnter(sender As System.Object, e As System.Windows.Forms.DragEventArgs) Handles TextBox1.DragEnter
+
         If e.Data.GetDataPresent(DataFormats.FileDrop) Then
             e.Effect = DragDropEffects.Copy
         End If
+
     End Sub
 
     Private Sub PictureBox1_DragDrop(sender As System.Object, e As System.Windows.Forms.DragEventArgs) Handles PictureBox1.DragDrop
@@ -2385,12 +2401,15 @@ Public Class Form1
     End Sub
 
     Private Sub PictureBox1_DragEnter(sender As System.Object, e As System.Windows.Forms.DragEventArgs) Handles PictureBox1.DragEnter
+
         If e.Data.GetDataPresent(DataFormats.FileDrop) Then
             e.Effect = DragDropEffects.Copy
         End If
+
     End Sub
 
     Private Sub SetIAROARContent()
+
         IslandToolStripMenuItem.Visible = False
         ClothingInventoryToolStripMenuItem.Visible = False
 
@@ -2451,23 +2470,27 @@ Public Class Form1
                 ContentSeen = True
             End If
         End While
-
         BumpProgress10()
+
     End Sub
 
     Private Sub OarClick(sender As Object, e As EventArgs)
+
         Dim File = Mid(sender.text, 1, InStr(sender.text, "|") - 2)
         File = Domain + "/Outworldz_Installer/OAR/" + File 'make a real URL
         LoadOARContent(File)
         sender.checked = True
+
     End Sub
 
     Private Sub IarClick(sender As Object, e As EventArgs)
+
         Dim file = Mid(sender.text, 1, InStr(sender.text, "|") - 2)
         file = Domain + "/Outworldz_Installer/IAR/" + file 'make a real URL
         LoadIARContent(file)
         sender.checked = True
         Print("Opensimulator will load " + file + ".  This may take time to load.")
+
     End Sub
 
 #End Region
@@ -3384,12 +3407,17 @@ Public Class Form1
 
     Private Sub ScanAgents()
 
+
+        ' Scan all the regions
+        Dim n = 0
+        For Each X As Integer In RegionClass.RegionNumbers
+            RegionClass.AvatarCount(X) = MysqlConn.IsUserPresent(RegionClass.UUID(n))
+            'Debug.Print(RegionClass.AvatarCount(n).ToString + " avatars in region " + RegionClass.RegionName(n))
+            n = n + 1
+        Next
+
         If My.Settings.AutoLoad Then
-            ' Scan all the regions
-            Dim n = 0
             For Each X As Integer In RegionClass.RegionNumbers
-                RegionClass.AvatarCount(n) = MysqlConn.IsUserPresent(RegionClass.UUID(n))
-                Debug.Print(RegionClass.AvatarCount(n).ToString + " avatars in region " + RegionClass.RegionName(n))
                 If RegionClass.Timer(n) > 0 Then RegionClass.Timer(n) = RegionClass.Timer(n) - 1
 
                 ' if enabled and running, stopit

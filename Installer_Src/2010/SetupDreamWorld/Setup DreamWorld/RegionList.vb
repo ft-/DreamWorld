@@ -3,8 +3,10 @@
     Dim writetodisk As Boolean
     Dim TheView As Integer = 0
     Private Shared FormExists As Boolean = False
-
+    Dim pixels As Integer = 70
     Dim imageListSmall As New ImageList()
+    Dim imageListLarge As New ImageList()
+
 
     ' property exposing FormExists
     Public Shared ReadOnly Property InstanceExists() As Boolean
@@ -14,8 +16,37 @@
         End Get
     End Property
 
+#Region "Layout"
+
+    Private Sub panel1_MouseWheel(sender As Object, e As System.Windows.Forms.MouseEventArgs) Handles ListView1.MouseWheel
+        ' Update the drawing based upon the mouse wheel scrolling.
+        Dim numberOfTextLinesToMove As Integer = CInt(e.Delta * SystemInformation.MouseWheelScrollLines / 120)
+
+        pixels = pixels + numberOfTextLinesToMove
+        'Debug.Print(pixels.ToString)
+        If pixels > 256 Then pixels = 256
+        If pixels < 0 Then pixels = 0
+
+        LoadMyListView()
+
+    End Sub
+
+
+    Private Sub RegionList_Layout(sender As Object, e As LayoutEventArgs) Handles Me.Layout
+
+        Dim X = Me.Width - 45
+        Dim Y = Me.Height - 95
+        ListView1.Size = New System.Drawing.Size(X, Y)
+
+    End Sub
+#End Region
+
     Private Sub _Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 
+        Me.Size = New System.Drawing.Size(300, 410)
+        imageListLarge.ImageSize = New Size(70, 70)
+        pixels = 70
+        imageListLarge = New ImageList()
         RegionList.FormExists = True
 
         ' Set the view to show details.
@@ -41,9 +72,6 @@
         Me.Name = "Region List"
         Me.Text = "Region List"
 
-
-        ' Me.SuspendLayout()
-
         ' index of 0-4 to display icons
         imageListSmall.Images.Add(My.Resources.ResourceManager.GetObject("navigate_up2"))   ' 0 booting up
         imageListSmall.Images.Add(My.Resources.ResourceManager.GetObject("navigate_down2")) ' 1 shutting down
@@ -51,8 +79,6 @@
         imageListSmall.Images.Add(My.Resources.ResourceManager.GetObject("navigate_plus")) ' 3 disabled
         imageListSmall.Images.Add(My.Resources.ResourceManager.GetObject("media_stop_red")) ' 4 disabled
         imageListSmall.Images.Add(My.Resources.ResourceManager.GetObject("media_stop"))  ' 5 enabled
-
-
 
         LoadMyListView()
 
@@ -69,20 +95,20 @@
     Private Sub Timer1_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Timer1.Tick
 
         LoadMyListView()
+        Timer1.Interval = 30000
 
     End Sub
 
     Private Sub LoadMyListView()
 
-        Dim imageListLarge As New ImageList()
-
-        imageListLarge.ImageSize = New Size(70, 70)
-
+        writetodisk = False
 
         Dim RegionClass As RegionMaker = RegionMaker.Instance
 
-        writetodisk = False
+        Me.SuspendLayout()
 
+        imageListLarge = New ImageList()
+        imageListLarge.ImageSize = New Size(pixels, pixels)
         ListView1.Clear()
         ListView1.Items.Clear()
         ' Create columns for the items and subitems.
@@ -245,6 +271,7 @@
             End Try
 
         End If
+        Timer1.Interval = 1000
 
     End Sub
 
@@ -275,20 +302,26 @@
                 Application.DoEvents()
             End If
         End If
-
+        Timer1.Interval = 100
 
     End Sub
 
     ' ColumnClick event handler.
     Private Sub ColumnClick(ByVal o As Object, ByVal e As ColumnClickEventArgs)
+
         Me.ListView1.Sorting = SortOrder.None
         ' Set the ListViewItemSorter property to a new ListViewItemComparer 
         ' object. Setting this property immediately sorts the 
         ' ListView using the ListViewItemComparer object.
         Me.ListView1.ListViewItemSorter = New ListViewItemComparer(e.Column)
+
     End Sub
 
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles ViewButton.Click
+
+        While Not writetodisk
+            Form1.Sleep(500)
+        End While
 
         If TheView = 0 Then
             ListView1.CheckBoxes = False
@@ -308,6 +341,7 @@
     End Sub
 
     Private Sub Addregion_Click(sender As Object, e As EventArgs) Handles Addregion.Click
+
         Dim RegionClass As RegionMaker = RegionMaker.Instance
         RegionClass.CreateRegion("")
         Dim ActualForm As New FormRegion
@@ -317,6 +351,8 @@
         ActualForm.Visible = True
 
     End Sub
+
+
 End Class
 
 ' Implements the manual sorting of items by columns.
