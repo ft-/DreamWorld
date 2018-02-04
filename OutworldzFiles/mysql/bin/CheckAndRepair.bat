@@ -3,6 +3,8 @@ echo Upgrading MySql Database
 mysql_upgrade.exe
 pause
 echo Checking MySql Database
+set port = 3306
+IF not %1 == 3306 set port = %1
 mysqlcheck.exe --port %1 -u root mysql 
 set /p fixmysql=Repair Mysql[y/n]?:
 IF "%fixmysql%" == "y" mysqlcheck.exe --port %1 -u root -r Mysql
@@ -14,8 +16,6 @@ IF "%fixmysql%" == "y" mysqlcheck.exe --port %1 -u root -r Opensim
 mysqlcheck.exe --port %1 -u root Robust
 set /p fixmysql=Repair Robust[y/n]?:
 IF "%fixmysql%" == "y" mysqlcheck.exe --port %1 -u root -r Robust
-
-
 
 set /p temp="Press enter to exit"
 

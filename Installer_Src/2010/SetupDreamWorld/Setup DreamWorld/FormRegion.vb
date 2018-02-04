@@ -27,6 +27,7 @@ Public Class FormRegion
             CoordY.Text = RegionClass.LargestY() + 0
             RegionPort.Text = RegionClass.LargestPort() + 1 '8004 + 1
             EnabledCheckBox.Checked = True
+            RadioButton1.Checked = True
         Else
             n = RegionClass.FindRegionByName(Name)
             oldname = RegionClass.RegionName(n) ' backup in case of rename

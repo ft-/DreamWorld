@@ -1,6 +1,6 @@
 
-my $type  = '-V2.06';# '-Beta-V1.5';
-my $dir = "C:\\Opensim\\Outworldz Source";
+my $type  = '-V2.07';# '-Beta-V1.5';
+my $dir = "C:\\Opensim\\OutworldzSource";
 
 chdir ($dir);
 
@@ -16,9 +16,11 @@ my @deletions = (
 				 "$dir/OutworldzFiles/Opensim/bin/autobackup",
 				 "$dir/OutworldzFiles/Opensim/bin/ScriptEngines",
 				 "$dir/OutworldzFiles/Opensim/bin/maptiles",
+				 "$dir/OutworldzFiles/Opensim/bin/Regions",
 				 "$dir/OutworldzFiles/Opensim/bin/bakes",
 				 "$dir/OutworldzFiles/mysql/data/opensim",
 				 "$dir/OutworldzFiles/mysql/data/robust",
+				 
 				 );
 
 foreach my $path ( @deletions) {
@@ -35,8 +37,8 @@ unlink "$dir/OutworldzFiles/Opensim-0.9/bin/OpensimConsoleHistory.txt" ;
 unlink "$dir/OutworldzFiles/Opensim/bin/LocalUserStatistics.db" ;
 
 #mysql
-unlink "$dir/OutworldzFiles/mysql/data/*.err" ;
-unlink "$dir/OutworldzFiles/mysql/data/*.pid" ;
+unlink "$dir/OutworldzFiles/mysql/data/Alienware.err" ;
+unlink "$dir/OutworldzFiles/mysql/data/Alienware.pid" ;
 unlink	"$dir/OutworldzFiles/mysql/data/ib_logfile0";
 unlink	"$dir/OutworldzFiles/mysql/data/ib_logfile1";
 unlink	"$dir/OutworldzFiles/mysql/data/ibdata1";
@@ -51,9 +53,16 @@ unlink "../Zips/DreamGrid$type.zip" ;
 unlink "../Zips/Outworldz-Update$type.zip" ;
 
 
-print "Making binaries, please be sure they are signed\n";
+#chdir(qq!"$dir/OutworldzFiles/mysql/bin/!);
+#`"$dir\\OutworldzFiles\\mysql\\bin\\mysqlcheck.exe --port 3306 -u root -r mysql"`;
+#`"$dir\\OutworldzFiles\\mysql\\bin\\mysqlcheck.exe --port 3306 -u root -r opensim"`;
+#`"$dir\\OutworldzFiles\\mysql\\bin\\mysqlcheck.exe --port 3306 -u root -r robust"`;
+#`"$dir\\OutworldzFiles\\mysql\\bin\\mysqladmin.exe --port 3306 -u root shutdown"`;
 
+unlink "$dir/OutworldzFiles/mysql/data/Alienware.err" ;
+unlink "$dir/OutworldzFiles/mysql/data/Alienware.pid" ;
 
+chdir ($dir);
 # SIGN FIRST
 
 if (!copy ("$dir/Signed_Binaries/Start.exe", $dir))  {die $!;}
@@ -66,8 +75,9 @@ my @files =   `cmd /c dir /b `;
 foreach my $file (@files) {
 	chomp $file;
 	next if -d $file;
-	next if $file eq 'Make_zip_v2.pl';
+	#next if $file eq 'Make_zip_v2.pl';
 	next if $file =~ /^\./;
+	print  "$file ";
 	Process ("../7z.exe -tzip a ..\\Zips\\DreamGrid$type.zip \"$dir\\$file\" ");
 }
 
@@ -79,17 +89,7 @@ Process ("../7z.exe -tzip a ..\\Zips\\DreamGrid-Update$type.zip OutworldzFiles")
 Process ("../7z.exe -tzip a ..\\Zips\\DreamGrid$type.zip Licenses_to_Content");
 Process ("../7z.exe -tzip a ..\\Zips\\DreamGrid$type.zip OutworldzFiles");
 
-say("Remove all regions");
-@files = `cmd /c dir /b OutworldzFiles\\opensim\\bin\\Regions\\*`;
 
-foreach my $file (@files) {
-	chomp $file;
-	# leave Welcome.ini
-	
-	next if $file =~ /^\./;
-	Process ("../7z.exe -tzip d ..\\Zips\\DreamGrid-Update$type.zip OutworldzFiles\\opensim\\bin\\Regions\\$file");
-
-}
 		
 say("Updater Build");
 if (!copy ("../Zips/DreamGrid$type.zip", "../Zips/DreamGrid-Update$type.zip"))  {die $!;}
@@ -147,7 +147,7 @@ sub Process
 	
 	my $x = `$file`;
 	if ($x =~ /Everything is Ok/) {
-		print "Ok $file\n";
+		print "Ok\n";
 	} else {
 		print "Fail: $x\n";
 		exit;

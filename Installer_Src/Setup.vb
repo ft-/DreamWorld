@@ -35,7 +35,7 @@ Public Class Form1
 #Region "Declarations"
 
 
-    Dim MyVersion As String = "2.06"
+    Dim MyVersion As String = "2.07"
     Dim DebugPath As String = "C:\Opensim\Outworldz Source"  ' no slash at end
     Public Domain As String = "http://www.outworldz.com"
     Public prefix As String ' Holds path to Opensim folder
@@ -88,7 +88,7 @@ Public Class Form1
                              My.Resources.wp_48, My.Resources.wp_49, My.Resources.wp_50,
                              My.Resources.wp_51, My.Resources.wp_52, My.Resources.wp_53,
                              My.Resources.wp_54, My.Resources.wp_55, My.Resources.wp_56,
-                             My.Resources.wp_57
+                             My.Resources.wp_57, My.Resources.fairy
                             }
     Dim gDebug As Boolean = False       ' toggled by -debug flag on command line
     Dim gContentAvailable As Boolean = False ' assume there is no OAR and IAR data available
@@ -221,9 +221,11 @@ Public Class Form1
 
         If MyFolder.Contains("Setup DreamWorld\bin") Then
             ' for debugging when compiling
-            gDebug = True
+            gDebug = False ' set to tru to faill all kinds of tests :-)
             MyFolder = DebugPath ' for testing, as the compiler buries itself in ../../../debug
         End If
+        gCurSlashDir = MyFolder.Replace("\", "/")    ' because Mysql uses unix like slashes, that's why
+        prefix = MyFolder & "\OutworldzFiles\Opensim\"
 
         ' Save a random machine ID - we don't want any data to be sent that's personal or identifiable,  but it needs to be unique
         Randomize()
@@ -242,6 +244,12 @@ Public Class Form1
             Me.Location = New Point(My.Settings.MyX, My.Settings.MyY)
         End If
 
+        TextBox1.BackColor = Me.BackColor
+        TextBox1.AllowDrop = True
+
+        PictureBox1.Image = My.Resources.ResourceManager.GetObject("fairy")
+        PictureBox1.Enabled = True
+        PictureBox1.AllowDrop = True
 
         LogButton.Hide()
         IgnoreButton.Hide()
@@ -255,24 +263,17 @@ Public Class Form1
         ViewWebUI.Visible = My.Settings.WifiEnabled
 
         Me.Text = "Outworldz Dreamgrid V" + MyVersion
-        PictureBox1.Enabled = True
 
         gChatTime = My.Settings.ChatTime
 
-        TextBox1.AllowDrop = True
-        PictureBox1.AllowDrop = True
-
         Running = False ' true when opensim is running
-
-
-        gCurSlashDir = MyFolder.Replace("\", "/")    ' because Mysql uses unix like slashes, that's why
-        prefix = MyFolder & "\OutworldzFiles\Opensim\"
+        Me.Show()
 
         RegionClass = RegionMaker.Instance
 
-        Me.Show()
         SaySomething()
 
+        RegionClass = RegionMaker.Instance
         ClearLogFiles() ' clear log fles
 
         MyUPnpMap = New UPnp(MyFolder)
@@ -282,7 +283,6 @@ Public Class Form1
 #Enable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
 
         My.Settings.Save()
-
 
         If (My.Settings.SplashPage = "") Then
             My.Settings.SplashPage = Domain + "/Outworldz_installer/Welcome.htm"
@@ -379,11 +379,13 @@ Public Class Form1
 
     Private Sub Startup()
 
+
+
         ProgressBar1.Value = 0
         ProgressBar1.Visible = True
         Buttons(BusyButton)
         Running = True
-
+        MapDelete()
         RegionClass.GetAllRegions()
 
         If SetPublicIP() Then
@@ -419,7 +421,7 @@ Public Class Form1
         ProgressBar1.Value = 100
         Print("Outworldz is almost ready for you to log in.  Wait for INITIALIZATION COMPLETE - LOGINS ENABLED to appear in the console, and you can log in." + vbCrLf _
               + " Hypergrid address is http://" + My.Settings.PublicIP + ":" + My.Settings.HttpPort)
-        Print("")
+
         ' done with bootup
         ProgressBar1.Visible = False
 
@@ -1093,8 +1095,13 @@ Public Class Form1
                 SetIni("Const", "http_listener_port", RegionClass.RegionPort(n)) ' varies with region
                 SetIni("Const", "PrivatePort", My.Settings.PrivatePort) '8003
                 SetIni("Const", "RegionFolderName", RegionClass.Folder(n))
+
+                SetIni("Const", "RegionFolderName", RegionClass.Folder(n))
+
                 SaveINI()
                 My.Computer.FileSystem.CopyFile(prefix + "bin\Opensim.proto", pathname + "Opensim.ini", True)
+
+
             Catch ex As Exception
                 Print("Error:Failed to set the Opensim.ini for sim " + regionName + ":" + ex.Message)
                 Return False
@@ -1227,7 +1234,7 @@ Public Class Form1
 
     End Function
 
-    Private Sub CheckDefaultPorts()
+    Public Sub CheckDefaultPorts()
 
         If My.Settings.DiagnosticPort = My.Settings.HttpPort _
             Or My.Settings.DiagnosticPort = My.Settings.PrivatePort _
@@ -1653,7 +1660,7 @@ Public Class Form1
         Dim n As Integer = RegionClass.FindRegionByProcessID(sender.Id)
 
         If RegionClass.WarmingUp(n) = True Then
-            Dim yesno = MsgBox("The region did not start. Do you want to see the log file?", vbYesNo)
+            Dim yesno = MsgBox(RegionClass.RegionName(n) + " did not start. Do you want to see the log file?", vbYesNo)
             If (yesno = vbYes) Then
                 System.Diagnostics.Process.Start("notepad.exe", RegionClass.IniPath(n) + "Opensim.log")
             End If
@@ -1763,7 +1770,7 @@ Public Class Form1
             Dim permanent = True
             myProcess.StartInfo.FileName = "opensim.exe"
             myProcess.StartInfo.CreateNoWindow = False
-            myProcess.StartInfo.Arguments = " -inidirectory=./Regions/" & RegionClass.Folder(n)
+            myProcess.StartInfo.Arguments = " -inidirectory=+ """"+ ./Regions/" & RegionClass.Folder(n) + """"
 
             If mnuShow.Checked Then
                 myProcess.StartInfo.WindowStyle = ProcessWindowStyle.Normal
@@ -1792,6 +1799,8 @@ Public Class Form1
             End Try
 
             RegionClass.ProcessID(n) = 0
+            Dim pathinfo = """" + prefix + "bin\Opensim.exe" '+ """" + " -inidirectory=" + """" + "./Regions/" & RegionClass.Folder(n) + """"
+            Debug.Print(pathinfo)
             myProcess.Start()
             RegionClass.ProcessID(n) = myProcess.Id
 
@@ -1807,9 +1816,10 @@ Public Class Form1
             End If
 
         Catch ex As Exception
-            Print("Error: " + Name + " did not start")
-
-            Dim yesno = MsgBox("The region did not start. Do you want to see the log file?", vbYesNo)
+            If ex.Message.Contains("Process has exited") Then Return False
+            Print("Oops! " + Name + " did Not start")
+            Log(ex.Message)
+            Dim yesno = MsgBox("Oops! " + Name + " did Not start. Do you want to see the log file?", vbYesNo)
             If (yesno = vbYes) Then
                 System.Diagnostics.Process.Start("notepad.exe", RegionClass.IniPath(n) + "Opensim.log")
             End If
@@ -1905,7 +1915,15 @@ Public Class Form1
     Public Sub ConsoleCommand(ProcessID As Integer, command As String)
 
         Try
+            'plus sign(+), caret(^), percent sign (%), tilde (~), And parentheses ()
+            command.Replace("+", "{+}")
+            command.Replace("^", "{^}")
+            command.Replace("%", "{%}")
+            command.Replace("(", "{(}")
+            command.Replace(")", "{)}")
+
             AppActivate(ProcessID)
+
             SendKeys.SendWait(command)
         Catch ex As Exception
             Log("Warn:" + ex.Message)
@@ -2082,7 +2100,7 @@ Public Class Form1
 
             Dim chosen = ChooseRegion()
             Dim n As Integer = RegionClass.FindRegionByName(chosen)
-            If n = Nothing Then Return
+
 
             Dim Message, title, defaultValue As String
             Dim myValue As Object
@@ -2110,7 +2128,7 @@ Public Class Form1
         If (Running) Then
             Dim chosen = ChooseRegion()
             Dim n As Integer = RegionClass.FindRegionByName(chosen)
-            If n = Nothing Then Return
+
 
             ' Create an instance of the open file dialog box.
             Dim openFileDialog1 As OpenFileDialog = New OpenFileDialog
@@ -2784,8 +2802,9 @@ Public Class Form1
         Print("Running Network Diagnostics, please wait")
         Diagsrunning = True
         My.Settings.DiagFailed = False
-        CheckDiagPort()
+
         OpenPorts() ' Open router ports with UPnp
+        CheckDiagPort()
         ProbePublicPort()
         TestLoopback()
         If My.Settings.DiagFailed Then
@@ -2799,7 +2818,8 @@ Public Class Form1
 
     End Sub
 
-    Private Function CheckDiagPort() As Boolean
+
+    Private Sub CheckDiagPort()
         gUseIcons = True
         Dim wsstarted = CheckPort(My.Settings.PublicIP, My.Settings.DiagnosticPort)
         If wsstarted = False Then
@@ -2808,8 +2828,8 @@ Public Class Form1
             My.Settings.DiagFailed = True
             My.Settings.Save()
         End If
-        Return gUseIcons
-    End Function
+
+    End Sub
 
     Private Shared Function IsPrivateIP(CheckIP As String) As Boolean
 
@@ -3325,6 +3345,7 @@ Public Class Form1
 
 #End Region
 
+
 #Region "Regions"
 
     Private Sub RegionsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles RegionsToolStripMenuItem.Click
@@ -3403,8 +3424,6 @@ Public Class Form1
 
     End Sub
 
-
-
     Private Sub ScanAgents()
 
 
@@ -3439,6 +3458,23 @@ Public Class Form1
 
     End Sub
 
+#End Region
+
+
+
+#Region "Maps"
+
+    Private Sub MapDelete()
+
+        If Running And My.Settings.MapType <> "None" Then
+            Try
+                My.Computer.FileSystem.DeleteDirectory(prefix & "bin\maptiles\", FileIO.DeleteDirectoryOption.DeleteAllContents)
+            Catch
+            End Try
+        End If
+
+
+    End Sub
 
 
 #End Region

@@ -351,7 +351,7 @@
         RegionClass.CreateRegion("")
         Dim ActualForm As New FormRegion
         'ActualForm.SetDesktopLocation(300, 200)
-        ActualForm.Init("Enter a name here")
+        ActualForm.Init("")
         ActualForm.Activate()
         ActualForm.Visible = True
 
