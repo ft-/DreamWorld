@@ -18,7 +18,7 @@
 
 #Region "Layout"
 
-    Private Sub panel1_MouseWheel(sender As Object, e As System.Windows.Forms.MouseEventArgs) Handles ListView1.MouseWheel
+    Private Sub Panel1_MouseWheel(sender As Object, e As System.Windows.Forms.MouseEventArgs) Handles ListView1.MouseWheel
         ' Update the drawing based upon the mouse wheel scrolling.
         Dim numberOfTextLinesToMove As Integer = CInt(e.Delta * SystemInformation.MouseWheelScrollLines / 120)
 
@@ -223,7 +223,7 @@
             Dim RegionName = item.SubItems(0).Text
             Debug.Print("Clicked row " + RegionName)
             Dim n As Integer = RegionClass.FindRegionByName(RegionName)
-            'If n = Nothing Then Return
+
             StartStop(n)
         Next
 
@@ -232,6 +232,10 @@
 
         ' Running, stop it
         Dim RegionClass As RegionMaker = RegionMaker.Instance
+        If RegionClass.ShuttingDown(n) Then
+            RegionClass.ShuttingDown(n) = False
+        End If
+
         If RegionClass.RegionEnabled(n) And (RegionClass.Ready(n) Or RegionClass.WarmingUp(n)) Then
             ' if enabled and running, even partly up, stop it.
             Try
@@ -256,6 +260,7 @@
             ' it was stopped, and disabled, so we start up
             If Not Form1.StartMySQL() Then Return
             Form1.Start_Robust()
+            Form1.CopyOpensimProto()
             Form1.Boot(RegionClass.RegionName(n))
             Debug.Print("Region:Started Region " + RegionClass.RegionName(n))
         Else
@@ -283,7 +288,7 @@
         Dim RegionClass As RegionMaker = RegionMaker.Instance
         Dim Item As ListViewItem = ListView1.Items.Item(e.Index)
         Dim n As Integer = RegionClass.FindRegionByName(Item.Text)
-        'If n = Nothing Then Return
+
         If writetodisk Then
             If (e.CurrentValue = CheckState.Unchecked) Then
                 RegionClass.RegionEnabled(n) = True

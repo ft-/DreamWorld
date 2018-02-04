@@ -239,9 +239,11 @@ Public Class AdvancedForm
 
         Debug.Print("Selected " + value)
         My.Settings.Save()
+
     End Sub
 
     Private Sub LoadWelcomeBox()
+
         ' Default welcome region load
         WelcomeBox1.Items.Clear()
 

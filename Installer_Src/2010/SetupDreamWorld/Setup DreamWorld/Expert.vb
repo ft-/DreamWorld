@@ -91,21 +91,28 @@ Public Class Expert
     Private Sub Http_Port_TextChanged(sender As Object, e As EventArgs)
         My.Settings.DiagnosticPort = DiagnosticPort.Text
         My.Settings.Save()
+        Form1.CheckDefaultPorts()
+
     End Sub
 
     Private Sub PrivatePort_TextChanged(sender As Object, e As EventArgs) Handles PrivatePort.TextChanged
         My.Settings.PrivatePort = PrivatePort.Text
         My.Settings.Save()
+        Form1.CheckDefaultPorts()
+
     End Sub
 
     Private Sub PublicPort_TextChanged(sender As Object, e As EventArgs) Handles DiagnosticPort.TextChanged
         My.Settings.DiagnosticPort = DiagnosticPort.Text
         My.Settings.Save()
+        Form1.CheckDefaultPorts()
+
     End Sub
 
     Private Sub HTTP_Port_TextChanged_1(sender As Object, e As EventArgs) Handles HTTPPort.TextChanged
         My.Settings.HttpPort = HTTPPort.Text
         My.Settings.Save()
+        Form1.CheckDefaultPorts()
     End Sub
 
 

@@ -169,6 +169,8 @@ Public Class FormRegion
         Dim dir = Form1.prefix
         ' save the Region File
 
+        RegionName.Text.Replace(" ", "")
+
         Dim RegionClass As RegionMaker = RegionMaker.Instance
 
         Dim Filepath = RegionClass.RegionPath(n)
@@ -183,6 +185,7 @@ Public Class FormRegion
                     Filepath = dir & "bin\Regions\" + RegionName.Text + "\Region\"
                     Directory.CreateDirectory(Filepath)
                     Filepath = Filepath + RegionName.Text + ".ini"
+                    Form1.CopyOpensimProto()
                 Catch
                     MsgBox("Cannot create new region. It seems to already exist")
                 End Try
@@ -426,12 +429,16 @@ Public Class FormRegion
         Dim msg = MsgBox("Are you sure you want to delete this region? ", vbYesNo)
         If msg = vbYes Then
             Try
-                My.Computer.FileSystem.DeleteDirectory(Form1.prefix & "bin\Regions\" + RegionName.Text, FileIO.UIOption.AllDialogs, FileIO.RecycleOption.SendToRecycleBin, FileIO.UICancelOption.ThrowException)
-                Form1.CopyOpensimProto()
+                My.Computer.FileSystem.DeleteFile(Form1.prefix & "bin\Regions\" + RegionName.Text + "\Region\" + RegionName.Text + ".bak")
+            Catch
+            End Try
+
+            Try
+                My.Computer.FileSystem.RenameFile(Form1.prefix & "bin\Regions\" + RegionName.Text + "\Region\" + RegionName.Text + ".ini", RegionName.Text + ".bak")
                 RegionClass.GetAllRegions()
                 Me.Close()
             Catch ex As Exception
-                MsgBox("Cannot delete region file:" + ex.Message, vbInformation)
+                MsgBox("Cannot rename region file:" + ex.Message, vbInformation)
             End Try
         End If
 

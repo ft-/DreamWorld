@@ -427,6 +427,7 @@
     <None Include="Resources\media_stop_red.png" />
     <None Include="Resources\orange-planets-background.jpg" />
     <None Include="Resources\water.jpg" />
+    <None Include="Resources\fairy.jpg" />
     <Content Include="Resources\wp_habitat.gif" />
     <Content Include="Resources\wp_Inside_in_shadows.gif" />
     <Content Include="Resources\wp_Mooferd.gif" />

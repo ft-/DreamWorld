@@ -33,8 +33,6 @@ Public Class RegionMaker
 
     Public RegionList As New ArrayList()
     Private initted As Boolean = False
-    Private gCurRegionNum As Integer
-
     Private Shared FInstance As RegionMaker = Nothing
 
     Public Shared ReadOnly Property Instance() As RegionMaker
@@ -165,14 +163,7 @@ Public Class RegionMaker
             RegionList(n)._AvatarCount = Value
         End Set
     End Property
-    Public Property CurRegionNum() As Integer
-        Get
-            Return gCurRegionNum
-        End Get
-        Set(ByVal Value As Integer)
-            gCurRegionNum = Value
-        End Set
-    End Property
+
     Public Property RegionName(n As Integer) As String
         Get
             Return RegionList(n)._RegionName
@@ -285,8 +276,7 @@ Public Class RegionMaker
         Dim i As Integer = 0
         For Each obj As Region_data In RegionList
             If Name = obj._RegionName Then
-                CurRegionNum = i
-                Debug.Print("Current Region #: " + CurRegionNum.ToString + " is " + obj._RegionName)
+                Debug.Print("Current Region is " + obj._RegionName)
                 Return i
             End If
             i = i + 1
@@ -300,8 +290,7 @@ Public Class RegionMaker
         Dim i As Integer = 0
         For Each obj As Region_data In RegionList
             If PID = obj._ProcessID Then
-                CurRegionNum = i
-                Debug.Print("Current Region #: " + CurRegionNum.ToString + " is " + obj._RegionName)
+                Debug.Print("Current Region is " + obj._RegionName)
                 Return i
             End If
             i = i + 1
@@ -310,7 +299,7 @@ Public Class RegionMaker
 
     End Function
 
-    Public Function CreateRegion(name As String) As Integer
+    Public Sub CreateRegion(name As String)
 
         ' Debug.Print("Create Region " + name)
         Dim r As New Region_data
@@ -324,10 +313,8 @@ Public Class RegionMaker
         r._RegionPort = LargestPort() + 1 '8004 + 1
 
         RegionList.Add(r)
-        CurRegionNum = RegionCount() - 1
-        Return CurRegionNum
 
-    End Function
+    End Sub
 
 
     Public Sub GetAllRegions()
