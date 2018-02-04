@@ -35,7 +35,7 @@ Public Class Form1
 #Region "Declarations"
 
 
-    Dim MyVersion As String = "2.08"
+    Dim MyVersion As String = "2.09"
     Dim DebugPath As String = "C:\Opensim\OutworldzSource"  ' no slash at end
     Public Domain As String = "http://www.outworldz.com"
     Public prefix As String ' Holds path to Opensim folder
@@ -1765,9 +1765,9 @@ Public Class Form1
             myProcess.StartInfo.WorkingDirectory = prefix + "bin"
 
             Dim permanent = True
-            myProcess.StartInfo.FileName = "opensim.exe"
+            myProcess.StartInfo.FileName = """" + prefix + "bin\OpenSim.exe" + """"
             myProcess.StartInfo.CreateNoWindow = False
-            myProcess.StartInfo.Arguments = " -inidirectory=+ """"+ ./Regions/" & RegionClass.Folder(n) + """"
+            myProcess.StartInfo.Arguments = " -inidirectory=" & """" & "./Regions/" & RegionClass.Folder(n) + """"
 
             If mnuShow.Checked Then
                 myProcess.StartInfo.WindowStyle = ProcessWindowStyle.Normal
@@ -1795,9 +1795,15 @@ Public Class Form1
             Catch ex As Exception
             End Try
 
+			' V2.06
+            'myProcess.EnableRaisingEvents = True
+            'myProcess.StartInfo.UseShellExecute = True ' so we can redirect streams
+            'myProcess.StartInfo.WorkingDirectory = prefix + "bin"
+            'myProcess.StartInfo.FileName = prefix + "bin\OpenSim.exe"
+            'myProcess.StartInfo.CreateNoWindow = False
+            'myProcess.StartInfo.Arguments = """" & "-inidirectory=./Regions/" & o.Folder() & """"
+
             RegionClass.ProcessID(n) = 0
-            Dim pathinfo = """" + prefix + "bin\Opensim.exe" '+ """" + " -inidirectory=" + """" + "./Regions/" & RegionClass.Folder(n) + """"
-            Debug.Print(pathinfo)
             myProcess.Start()
             RegionClass.ProcessID(n) = myProcess.Id
 
@@ -1806,7 +1812,7 @@ Public Class Form1
                 RegionClass.Ready(n) = False
                 RegionClass.ShuttingDown(n) = False
 
-                Thread.Sleep(500)
+                Thread.Sleep(1500)
                 SetWindowText(myProcess.MainWindowHandle, Name)
 
                 Return True
@@ -3143,7 +3149,7 @@ Public Class Form1
         ' Mysql was not running, so lets start it up.
         Dim pi As ProcessStartInfo = New ProcessStartInfo()
         pi.Arguments = "--defaults-file=" + """" + gCurSlashDir + "/OutworldzFiles/mysql/my.ini" + """"
-        pi.WindowStyle = ProcessWindowStyle.Minimized
+        pi.WindowStyle = ProcessWindowStyle.Hidden
         pi.FileName = """" + MyFolder & "\OutworldzFiles\mysql\bin\mysqld.exe" + """"
         pMySql.StartInfo = pi
         pMySql.Start()

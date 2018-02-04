@@ -98,3 +98,13 @@ quit
 quit
 \
 create user Test User 123
+create user Test User
+delete region welcome
+region delete welcom
+region delete welcome
+help region
+delete-region welcome
+delete region welcome
+show regions
+deregister region id 27366c63-f3bb-40b1-86a1-0a2cc11efa12
+deregister region id 98e7f021-2c31-42e9-9fe1-73cff9133dc5

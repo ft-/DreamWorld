@@ -1,5 +1,5 @@
 
-my $type  = '-V2.08';# '-Beta-V1.5';
+my $type  = '-V2.09';# '-Beta-V1.5';
 my $dir = "C:\\Opensim\\OutworldzSource";
 
 chdir ($dir);
@@ -33,7 +33,6 @@ unlink "$dir/OutworldzFiles/Opensim/bin/Opensimstats.log" ;
 
 unlink "$dir/OutworldzFiles/Opensim/bin/OpensimConsoleHistory.txt" ;
 unlink "$dir/OutworldzFiles/Opensim-0.9/bin/OpensimConsoleHistory.txt" ;
-
 unlink "$dir/OutworldzFiles/Opensim/bin/LocalUserStatistics.db" ;
 
 #mysql
@@ -48,6 +47,7 @@ unlink "$dir/OutworldzFiles/Diagnostics.log" ;
 unlink "$dir/OutworldzFiles/Outworldz.log" ;
 unlink "$dir/OutworldzFiles/Init.txt" ;
 unlink "$dir/OutworldzFiles/upnp.log" ;
+unlink "$dir/OutworldzFiles/http.log" ;
 
 unlink "../Zips/DreamGrid$type.zip" ;
 unlink "../Zips/Outworldz-Update$type.zip" ;
@@ -56,10 +56,11 @@ say ("Start Mysql and wait for it to come up:");
 <STDIN>;
 
 chdir(qq!"$dir/OutworldzFiles/mysql/bin/!);
-#`"$dir\\OutworldzFiles\\mysql\\bin\\mysqlcheck.exe --port 3306 -u root -r mysql"`;
-#`"$dir\\OutworldzFiles\\mysql\\bin\\mysqlcheck.exe --port 3306 -u root -r opensim"`;
-#`"$dir\\OutworldzFiles\\mysql\\bin\\mysqlcheck.exe --port 3306 -u root -r robust"`;
-#`"$dir\\OutworldzFiles\\mysql\\bin\\mysqladmin.exe --port 3306 -u root shutdown"`;
+
+`"$dir\\OutworldzFiles\\mysql\\bin\\mysqlcheck.exe --port 3306 -u root -r mysql"`;
+`"$dir\\OutworldzFiles\\mysql\\bin\\mysqlcheck.exe --port 3306 -u root -r opensim"`;
+`"$dir\\OutworldzFiles\\mysql\\bin\\mysqlcheck.exe --port 3306 -u root -r robust"`;
+`"$dir\\OutworldzFiles\\mysql\\bin\\mysqladmin.exe --port 3306 -u root shutdown"`;
 
 unlink "$dir/OutworldzFiles/mysql/data/Alienware.err" ;
 unlink "$dir/OutworldzFiles/mysql/data/Alienware.pid" ;
@@ -67,7 +68,7 @@ unlink "$dir/OutworldzFiles/mysql/data/Alienware.pid" ;
 chdir ($dir);
 # SIGN FIRST
 
-if (!copy ("$dir/Signed_Binaries/Start.exe", $dir))  {die $!;}
+#if (!copy ("$dir/Signed_Binaries/Start.exe", $dir))  {die $!;}
 
 
 print "Processing Main Zip\n";

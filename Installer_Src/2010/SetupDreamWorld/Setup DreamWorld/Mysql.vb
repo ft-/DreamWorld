@@ -27,7 +27,7 @@ Public Class Mysql
         Return Convert.ToInt16(UserCount)
 
     End Function
-    Public Function isMySqlRunning() As String
+    Public Function IsMySqlRunning() As String
 
         Dim Mysql = CheckPort("127.0.0.1", My.Settings.MySqlPort)
         If Mysql Then

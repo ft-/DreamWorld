@@ -279,7 +279,7 @@
             End Try
 
         End If
-        Timer1.Interval = 1000
+        Timer1.Interval = 2000
 
     End Sub
 
@@ -310,7 +310,7 @@
                 Application.DoEvents()
             End If
         End If
-        Timer1.Interval = 100
+        Timer1.Interval = 2000
 
     End Sub
 
