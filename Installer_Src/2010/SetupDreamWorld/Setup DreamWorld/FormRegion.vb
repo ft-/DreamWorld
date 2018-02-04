@@ -9,7 +9,7 @@ Public Class FormRegion
     Dim oldname As String = ""
     Dim initted As Boolean = False ' needed a flag to see if we are initted as the dialogs change on start.
     Dim changed As Boolean    ' true if we need to save a form
-
+    Dim isNew As Integer = False
 
 #End Region
 
@@ -19,6 +19,7 @@ Public Class FormRegion
 
         Dim RegionClass As RegionMaker = RegionMaker.Instance
         If Name = "" Then
+            isNew = True
             RegionName.Text = Name
             UUID.Text = Guid.NewGuid().ToString
             SizeX.Text = 256
@@ -28,7 +29,11 @@ Public Class FormRegion
             RegionPort.Text = RegionClass.LargestPort() + 1 '8004 + 1
             EnabledCheckBox.Checked = True
             RadioButton1.Checked = True
+
+            n = RegionClass.CreateRegion("")
+
         Else
+            isNew = False
             n = RegionClass.FindRegionByName(Name)
             oldname = RegionClass.RegionName(n) ' backup in case of rename
             EnabledCheckBox.Checked = RegionClass.RegionEnabled(n)
@@ -179,9 +184,10 @@ Public Class FormRegion
         Dim path = RegionClass.FolderPath(n)
         'Directory.CreateDirectory(o.FolderPath)
         ' rename is possible
-        If oldname <> RegionName.Text Then
+        If oldname <> RegionName.Text And Not isNew Then
             Try
-                File.Delete(Filepath)
+
+                Directory.Delete(Form1.prefix & "bin\Regions\" + oldname, True)
                 Try
                     Filepath = dir & "bin\Regions\" + RegionName.Text + "\Region\"
                     Directory.CreateDirectory(Filepath)
@@ -197,13 +203,13 @@ Public Class FormRegion
         End If
 
         ' might be a new region, so no path exists
-        If Filepath Is Nothing Then
+        If Filepath = "" Then
 
-            Filepath = dir & "bin\Regions\" + RegionName.Text + "\Region\" + Name
+            Filepath = dir & "bin\Regions\" + RegionName.Text + "\Region\" + RegionName.Text
             RegionClass.RegionPath(n) = Filepath
 
             If Not Directory.Exists(Filepath) Then
-                Directory.CreateDirectory(dir & "bin\Regions\" + Name + "\Region")
+                Directory.CreateDirectory(dir & "bin\Regions\" + RegionName.Text + "\Region")
             End If
 
             Filepath = dir & "bin\Regions\" + RegionName.Text + "\Region\" + RegionName.Text + ".ini"

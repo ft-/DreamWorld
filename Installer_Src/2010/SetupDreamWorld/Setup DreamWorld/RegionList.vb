@@ -19,15 +19,18 @@
 #Region "Layout"
 
     Private Sub Panel1_MouseWheel(sender As Object, e As System.Windows.Forms.MouseEventArgs) Handles ListView1.MouseWheel
-        ' Update the drawing based upon the mouse wheel scrolling.
-        Dim numberOfTextLinesToMove As Integer = CInt(e.Delta * SystemInformation.MouseWheelScrollLines / 120)
 
-        pixels = pixels + numberOfTextLinesToMove
-        'Debug.Print(pixels.ToString)
-        If pixels > 256 Then pixels = 256
-        If pixels < 0 Then pixels = 0
+        If TheView = 2 Then
+            ' Update the drawing based upon the mouse wheel scrolling.
+            Dim numberOfTextLinesToMove As Integer = CInt(e.Delta * SystemInformation.MouseWheelScrollLines / 120)
 
-        LoadMyListView()
+            pixels = pixels + numberOfTextLinesToMove
+            'Debug.Print(pixels.ToString)
+            If pixels > 256 Then pixels = 256
+            If pixels < 0 Then pixels = 0
+
+            LoadMyListView()
+        End If
 
     End Sub
 
@@ -348,7 +351,7 @@
     Private Sub Addregion_Click(sender As Object, e As EventArgs) Handles Addregion.Click
 
         Dim RegionClass As RegionMaker = RegionMaker.Instance
-        RegionClass.CreateRegion("")
+
         Dim ActualForm As New FormRegion
         'ActualForm.SetDesktopLocation(300, 200)
         ActualForm.Init("")

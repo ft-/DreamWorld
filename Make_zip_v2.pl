@@ -1,5 +1,5 @@
 
-my $type  = '-V2.07';# '-Beta-V1.5';
+my $type  = '-V2.08';# '-Beta-V1.5';
 my $dir = "C:\\Opensim\\OutworldzSource";
 
 chdir ($dir);
@@ -52,12 +52,14 @@ unlink "$dir/OutworldzFiles/upnp.log" ;
 unlink "../Zips/DreamGrid$type.zip" ;
 unlink "../Zips/Outworldz-Update$type.zip" ;
 
+say ("Start Mysql and wait for it to come up:");
+<STDIN>;
 
-#chdir(qq!"$dir/OutworldzFiles/mysql/bin/!);
-#`"$dir\\OutworldzFiles\\mysql\\bin\\mysqlcheck.exe --port 3306 -u root -r mysql"`;
-#`"$dir\\OutworldzFiles\\mysql\\bin\\mysqlcheck.exe --port 3306 -u root -r opensim"`;
-#`"$dir\\OutworldzFiles\\mysql\\bin\\mysqlcheck.exe --port 3306 -u root -r robust"`;
-#`"$dir\\OutworldzFiles\\mysql\\bin\\mysqladmin.exe --port 3306 -u root shutdown"`;
+chdir(qq!"$dir/OutworldzFiles/mysql/bin/!);
+`"$dir\\OutworldzFiles\\mysql\\bin\\mysqlcheck.exe --port 3306 -u root -r mysql"`;
+`"$dir\\OutworldzFiles\\mysql\\bin\\mysqlcheck.exe --port 3306 -u root -r opensim"`;
+`"$dir\\OutworldzFiles\\mysql\\bin\\mysqlcheck.exe --port 3306 -u root -r robust"`;
+`"$dir\\OutworldzFiles\\mysql\\bin\\mysqladmin.exe --port 3306 -u root shutdown"`;
 
 unlink "$dir/OutworldzFiles/mysql/data/Alienware.err" ;
 unlink "$dir/OutworldzFiles/mysql/data/Alienware.pid" ;

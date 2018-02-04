@@ -1,8 +1,5 @@
 quit
 quit
-quit
-quit
-quit
 reset user password Wifi Admin MLg12x
 create User 
 Test 
@@ -99,3 +96,5 @@ quit
 quit
 quit
 quit
+\
+create user Test User 123

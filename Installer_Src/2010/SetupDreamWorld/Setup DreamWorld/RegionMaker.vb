@@ -51,6 +51,9 @@ Public Class RegionMaker
             CreateRegion("Welcome")
             My.Settings.WelcomeRegion = "Welcome"
             WriteRegionObject("Welcome")
+            GetAllRegions()
+            My.Settings.WelcomeRegion = "Welcome"
+            My.Settings.Save()
         End If
 
         Debug.Print("Loaded " + RegionCount.ToString + " Regions")
@@ -299,7 +302,7 @@ Public Class RegionMaker
 
     End Function
 
-    Public Sub CreateRegion(name As String)
+    Public Function CreateRegion(name As String)
 
         ' Debug.Print("Create Region " + name)
         Dim r As New Region_data
@@ -314,7 +317,9 @@ Public Class RegionMaker
 
         RegionList.Add(r)
 
-    End Sub
+        Return RegionList.Count - 1
+
+    End Function
 
 
     Public Sub GetAllRegions()

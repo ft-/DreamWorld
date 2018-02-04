@@ -35,8 +35,8 @@ Public Class Form1
 #Region "Declarations"
 
 
-    Dim MyVersion As String = "2.07"
-    Dim DebugPath As String = "C:\Opensim\Outworldz Source"  ' no slash at end
+    Dim MyVersion As String = "2.08"
+    Dim DebugPath As String = "C:\Opensim\OutworldzSource"  ' no slash at end
     Public Domain As String = "http://www.outworldz.com"
     Public prefix As String ' Holds path to Opensim folder
 
@@ -273,7 +273,7 @@ Public Class Form1
 
         SaySomething()
 
-        RegionClass = RegionMaker.Instance
+
         ClearLogFiles() ' clear log fles
 
         MyUPnpMap = New UPnp(MyFolder)
@@ -774,9 +774,6 @@ Public Class Form1
             ' it may have been deleted
             Dim o As Integer = RegionClass.FindRegionByName(My.Settings.WelcomeRegion)
 
-            If o = Nothing Then
-                o = RegionClass.FindRegionByName(ChooseRegion())
-            End If
 
             ' save to disk
             DefaultName = RegionClass.RegionName(o)
@@ -1764,7 +1761,7 @@ Public Class Form1
 
         Try
             myProcess.EnableRaisingEvents = True
-            myProcess.StartInfo.UseShellExecute = True ' so we can redirect streams
+            myProcess.StartInfo.UseShellExecute = False ' so we can redirect streams
             myProcess.StartInfo.WorkingDirectory = prefix + "bin"
 
             Dim permanent = True
@@ -3173,7 +3170,7 @@ Public Class Form1
             End If
 
             ' check again
-            Sleep(1000)
+            Sleep(2000)
             MysqlOk = CheckMysql()
         End While
 
