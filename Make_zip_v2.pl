@@ -103,18 +103,6 @@ Process ("../7z.exe -tzip d ..\\Zips\\DreamGrid-Update$type.zip Outworldzfiles\\
 # del Dot net because we cannot overwrite an open file
 Process ("../7z.exe -tzip d ..\\Zips\\DreamGrid-Update$type.zip DotNetZip.dll ");
 
-say("Remove all regions from backup");
-
-
-foreach my $file (@files) {
-	# delete all regions
-	chomp $file;
-	next if $file =~ /^\./;
-	if ($file =~ /Regions/) {
-		Process ("../7z.exe -tzip d ..\\Zips\\DreamGrid-Update$type.zip OutworldzFiles\\opensim\\bin\\Regions\\$file");
-	}
-}
-
 #####################
 print "Server Copy\n";
 
