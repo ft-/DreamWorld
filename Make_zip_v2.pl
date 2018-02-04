@@ -56,10 +56,10 @@ say ("Start Mysql and wait for it to come up:");
 <STDIN>;
 
 chdir(qq!"$dir/OutworldzFiles/mysql/bin/!);
-`"$dir\\OutworldzFiles\\mysql\\bin\\mysqlcheck.exe --port 3306 -u root -r mysql"`;
-`"$dir\\OutworldzFiles\\mysql\\bin\\mysqlcheck.exe --port 3306 -u root -r opensim"`;
-`"$dir\\OutworldzFiles\\mysql\\bin\\mysqlcheck.exe --port 3306 -u root -r robust"`;
-`"$dir\\OutworldzFiles\\mysql\\bin\\mysqladmin.exe --port 3306 -u root shutdown"`;
+#`"$dir\\OutworldzFiles\\mysql\\bin\\mysqlcheck.exe --port 3306 -u root -r mysql"`;
+#`"$dir\\OutworldzFiles\\mysql\\bin\\mysqlcheck.exe --port 3306 -u root -r opensim"`;
+#`"$dir\\OutworldzFiles\\mysql\\bin\\mysqlcheck.exe --port 3306 -u root -r robust"`;
+#`"$dir\\OutworldzFiles\\mysql\\bin\\mysqladmin.exe --port 3306 -u root shutdown"`;
 
 unlink "$dir/OutworldzFiles/mysql/data/Alienware.err" ;
 unlink "$dir/OutworldzFiles/mysql/data/Alienware.pid" ;
