@@ -238,7 +238,11 @@ Public Class Form1
         ProgressBar1.Maximum = 100
         ProgressBar1.Value = 0
 
-        If My.Settings.MyX = 0 And My.Settings.MyY = 0 Then
+        If My.Settings.MyX <> 2000 Or My.Settings.MyY < 2000 Then
+            Me.CenterToScreen()
+        ElseIf My.Settings.MyX < 0 Or My.Settings.MyY < 0 Then
+            Me.CenterToScreen()
+        ElseIf My.Settings.MyX = 0 And My.Settings.MyY = 0 Then
             Me.CenterToScreen()
         Else
             Me.Location = New Point(My.Settings.MyX, My.Settings.MyY)
@@ -498,7 +502,7 @@ Public Class Form1
             Dim PID As Integer = RegionClass.ProcessID(ctr)
             If PID Then
                 RegionClass.ShuttingDown(ctr) = True
-                RegionClass.Ready(ctr) = False
+                RegionClass.Booted(ctr) = False
                 RegionClass.WarmingUp(ctr) = False
                 Print("Shutting down " + RegionClass.RegionName(ctr))
                 ConsoleCommand(PID, "quit{ENTER}")
@@ -539,7 +543,7 @@ Public Class Form1
         Dim j = 0
         For Each X As Integer In RegionClass.RegionNumbers
             RegionClass.ShuttingDown(j) = False
-            RegionClass.Ready(j) = False
+            RegionClass.Booted(j) = False
             RegionClass.WarmingUp(j) = False
             j = j + 1
         Next
@@ -1416,7 +1420,7 @@ Public Class Form1
 
         If Running = False Then Return True
 
-        '!!! RegionClass.RegionList = RegionClass.RegionList.OrderBy(Function(x) x.RegionName).ToList()
+
 
         PortTests()
 
@@ -1655,6 +1659,7 @@ Public Class Form1
         ' Handle Opensim Exited
 
         Dim n As Integer = RegionClass.FindRegionByProcessID(sender.Id)
+        If n < 0 Then Return
 
         If RegionClass.WarmingUp(n) = True Then
             Dim yesno = MsgBox(RegionClass.RegionName(n) + " did not start. Do you want to see the log file?", vbYesNo)
@@ -1664,7 +1669,7 @@ Public Class Form1
         End If
 
         Log(RegionClass.RegionName(n) + " stopped")
-        RegionClass.Ready(n) = False
+        RegionClass.Booted(n) = False
         RegionClass.WarmingUp(n) = False
         RegionClass.ShuttingDown(n) = False
         RegionClass.ProcessID(n) = 0
@@ -1744,7 +1749,7 @@ Public Class Form1
     Public Function Boot(Name As String) As Boolean
 
         Dim n = RegionClass.FindRegionByName(Name)
-        If RegionClass.ProcessID(n) Or RegionClass.Ready(n) Or RegionClass.WarmingUp(n) Or RegionClass.ShuttingDown(n) Then
+        If RegionClass.ProcessID(n) Or RegionClass.Booted(n) Or RegionClass.WarmingUp(n) Or RegionClass.ShuttingDown(n) Then
             Return True
         End If
 
@@ -1795,7 +1800,7 @@ Public Class Form1
             Catch ex As Exception
             End Try
 
-			' V2.06
+            ' V2.06
             'myProcess.EnableRaisingEvents = True
             'myProcess.StartInfo.UseShellExecute = True ' so we can redirect streams
             'myProcess.StartInfo.WorkingDirectory = prefix + "bin"
@@ -1809,7 +1814,7 @@ Public Class Form1
 
             If myProcess.Id Then
                 RegionClass.WarmingUp(n) = True
-                RegionClass.Ready(n) = False
+                RegionClass.Booted(n) = False
                 RegionClass.ShuttingDown(n) = False
 
                 Thread.Sleep(1500)
@@ -2187,7 +2192,7 @@ Public Class Form1
 
         Dim n = 0
         For Each X In RegionClass.RegionNumbers
-            If RegionClass.Ready(n) Then
+            If RegionClass.Booted(n) Then
                 ConsoleCommand(RegionClass.ProcessID(n), "save oar  " + """" + BackupPath() + RegionClass.RegionName(n) + "_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
                 Me.Focus()
                 Application.DoEvents()
@@ -2278,20 +2283,19 @@ Public Class Form1
             ' Display message, title, and default value.
             Password = InputBox(Message, title, defaultValue)
 
-            Dim r = Nothing
+            Dim r As Integer = -1
             For Each d As Integer In RegionClass.RegionList
-
-                If RegionClass.Ready(d) Then
+                If RegionClass.Booted(d) Then
                     r = d
                 End If
             Next
-            '!!! test this
-            If r Is Nothing Then
+
+            If r < 0 Then
                 Print("No regions are running")
                 Return
             End If
 
-            ConsoleCommand(r.ProcessID, "save iar " + Name + " " + """" + itemName + """" + " " + Password + " " + """" + BackupPath() + backupName + """" + "{ENTER}")
+            ConsoleCommand(RegionClass.ProcessID(r), "save iar " + Name + " " + """" + itemName + """" + " " + Password + " " + """" + BackupPath() + backupName + """" + "{ENTER}")
             Me.Focus()
             Print("Saving " + backupName + " to " + BackupPath())
 
@@ -3186,7 +3190,7 @@ Public Class Form1
 
     Function CheckMysql() As Boolean
 
-        Dim version = MysqlConn.isMySqlRunning()
+        Dim version = MysqlConn.IsMySqlRunning()
 
         If version Is Nothing Then
             Return False
@@ -3387,7 +3391,7 @@ Public Class Form1
             Debug.Print("Region:Clicked region " & sender.Text)
 
             ' Running, stop it
-            If RegionClass.RegionEnabled(n) And (RegionClass.Ready(n) Or RegionClass.WarmingUp(n)) Then
+            If RegionClass.RegionEnabled(n) And (RegionClass.Booted(n) Or RegionClass.WarmingUp(n)) Then
 
                 ' if enabled and running, even partly up, stop it.
                 sender.Checked = False
@@ -3397,7 +3401,7 @@ Public Class Form1
                         Me.Focus()
 
                         RegionClass.RegionEnabled(n) = False
-                        RegionClass.Ready(n) = False
+                        RegionClass.Booted(n) = False
                         RegionClass.WarmingUp(n) = False
                         RegionClass.ShuttingDown(n) = True
 
@@ -3411,7 +3415,7 @@ Public Class Form1
                     End Try
                 End If
 
-            ElseIf Not (RegionClass.Ready(n) Or RegionClass.WarmingUp(n) Or RegionClass.ShuttingDown(n)) Then
+            ElseIf Not (RegionClass.Booted(n) Or RegionClass.WarmingUp(n) Or RegionClass.ShuttingDown(n)) Then
                 ' it was stopped, and disabled, so we toggle the enable, and start up
                 sender.Checked = True
 
@@ -3433,9 +3437,13 @@ Public Class Form1
         ' Scan all the regions
         Dim n = 0
         For Each X As Integer In RegionClass.RegionNumbers
-            RegionClass.AvatarCount(X) = MysqlConn.IsUserPresent(RegionClass.UUID(n))
-            'Debug.Print(RegionClass.AvatarCount(n).ToString + " avatars in region " + RegionClass.RegionName(n))
-            n = n + 1
+            If RegionClass.Booted(n) Then
+                RegionClass.AvatarCount(n) = MysqlConn.IsUserPresent(RegionClass.UUID(n))
+                'Debug.Print(RegionClass.AvatarCount(n).ToString + " avatars in region " + RegionClass.RegionName(n))
+            Else
+                RegionClass.AvatarCount(n) = 0
+                n = n + 1
+            End If
         Next
 
         If My.Settings.AutoLoad Then
@@ -3444,11 +3452,11 @@ Public Class Form1
 
                 ' if enabled and running, stopit
                 If RegionClass.AvatarCount(n) = 0 Then
-                    If Running And RegionClass.RegionEnabled(n) And RegionClass.Ready(n) Then
+                    If Running And RegionClass.RegionEnabled(n) And RegionClass.Booted(n) Then
                         Debug.Print("AutoLoad is shutting down " + RegionClass.RegionName(n))
                         ConsoleCommand(RegionClass.ProcessID(n), "quit{ENTER}")
                         Me.Focus()
-                        RegionClass.Ready(n) = False
+                        RegionClass.Booted(n) = False
                         RegionClass.WarmingUp(n) = False
                         RegionClass.ShuttingDown(n) = True
                     End If

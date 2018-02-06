@@ -82,7 +82,7 @@ Public Class RegionMaker
             RegionList(n)._ShuttingDown = Value
         End Set
     End Property
-    Public Property Ready(n As Integer) As Boolean
+    Public Property Booted(n As Integer) As Boolean
         Get
             'Debug.Print(RegionList(n)._RegionName + "<" + RegionList(n)._Ready.ToString)
             Return RegionList(n)._Ready
@@ -284,7 +284,7 @@ Public Class RegionMaker
             End If
             i = i + 1
         Next
-        Return Nothing
+        Return -1
 
     End Function
 
@@ -298,11 +298,11 @@ Public Class RegionMaker
             End If
             i = i + 1
         Next
-        Return Nothing
+        Return -1
 
     End Function
 
-    Public Function CreateRegion(name As String)
+    Public Function CreateRegion(name As String) As Integer
 
         ' Debug.Print("Create Region " + name)
         Dim r As New Region_data
@@ -390,7 +390,7 @@ Public Class RegionMaker
                             ' Backups of transient data 
                             ProcessID(n) = Backup(n)._ProcessID
                             AvatarCount(n) = Backup(n)._AvatarCount
-                            Ready(n) = Backup(n)._Ready
+                            Booted(n) = Backup(n)._Ready
                             WarmingUp(n) = Backup(n)._WarmingUp
                             ShuttingDown(n) = Backup(n)._ShuttingDown
                             Timer(n) = Backup(n)._Timer
@@ -412,6 +412,11 @@ Public Class RegionMaker
     Public Sub WriteRegionObject(name As String)
 
         Dim n As Integer = FindRegionByName(name)
+        If n < 0 Then
+            MsgBox("Cannot find region " + name, vbInformation)
+            Return
+        End If
+
         Dim pathtoWelcome As String = Form1.prefix + "bin\Regions\" + name + "\Region\"
         Dim fname = pathtoWelcome + name + ".ini"
         If Not Directory.Exists(pathtoWelcome) Then
@@ -480,7 +485,7 @@ Public Class RegionMaker
 
 #Region "POST"
     Public Function ParsePost(POST As String) As String
-        ' set Region.Ready to true if the POST from the region indicates it is online
+        ' set Region.Booted to true if the POST from the region indicates it is online
         ' requires a section in Opensim.ini where [RegionReady] has this:
 
 
@@ -542,6 +547,10 @@ Public Class RegionMaker
                 Debug.Print("Region " & json.region_name & " is ready for logins")
 
                 Dim n = FindRegionByName(json.region_name)
+                If n < 0 Then
+                    MsgBox("Cannot find region " + json.region_name, vbInformation)
+                    Return ""
+                End If
 
                 If RegionEnabled(n) = False Then
                     RegionEnabled(n) = True
@@ -550,7 +559,7 @@ Public Class RegionMaker
                     Form1.SaveINI()
                 End If
 
-                Ready(n) = True
+                Booted(n) = True
                 WarmingUp(n) = False
                 ShuttingDown(n) = False
                 UUID(n) = json.region_id
@@ -559,8 +568,12 @@ Public Class RegionMaker
                 Debug.Print("Region " & json.region_name & " shut down")
 
                 Dim n = FindRegionByName(json.region_name)
+                If n < 0 Then
+                    MsgBox("Cannot find region " + json.region_name, vbInformation)
+                    Return ""
+                End If
 
-                Ready(n) = False
+                Booted(n) = False
                 WarmingUp(n) = False
                 ShuttingDown(n) = False
 

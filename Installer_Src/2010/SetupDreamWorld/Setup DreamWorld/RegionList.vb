@@ -7,6 +7,8 @@
     Dim imageListSmall As New ImageList()
     Dim imageListLarge As New ImageList()
 
+    Dim RegionClass As RegionMaker = RegionMaker.Instance
+
 
     ' property exposing FormExists
     Public Shared ReadOnly Property InstanceExists() As Boolean
@@ -106,8 +108,6 @@
 
         writetodisk = False
 
-        Dim RegionClass As RegionMaker = RegionMaker.Instance
-
         Me.SuspendLayout()
 
         imageListLarge = New ImageList()
@@ -144,7 +144,7 @@
             ElseIf RegionClass.ShuttingDown(n) Then
                 Letter = "Shutting Down"
                 Num = 1
-            ElseIf RegionClass.Ready(n) Then
+            ElseIf RegionClass.Booted(n) Then
                 Letter = "Running"
                 Num = 2
             ElseIf Not RegionClass.ProcessID(n) And RegionClass.ShuttingDown(n) Then
@@ -164,7 +164,7 @@
             ListView1.Items.AddRange(New ListViewItem() {item1})
 
             If TheView = 2 Then
-                If RegionClass.Ready(n) Then
+                If RegionClass.Booted(n) Then
                     Dim img As String = "http://127.0.0.1:" + RegionClass.RegionPort(n).ToString + "/" + "index.php?method=regionImage" + RegionClass.UUID(n).Replace("-", "")
                     Debug.Print(img)
                     Dim bmp As Image = LoadImage(img)
@@ -218,7 +218,7 @@
 
     Private Sub ListView1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ListView1.SelectedIndexChanged
 
-        Dim RegionClass As RegionMaker = RegionMaker.Instance
+
         Dim regions As ListView.SelectedListViewItemCollection = Me.ListView1.SelectedItems
         Dim item As ListViewItem
 
@@ -226,7 +226,6 @@
             Dim RegionName = item.SubItems(0).Text
             Debug.Print("Clicked row " + RegionName)
             Dim n As Integer = RegionClass.FindRegionByName(RegionName)
-
             StartStop(n)
         Next
 
@@ -234,18 +233,18 @@
     Private Sub StartStop(n As Integer)
 
         ' Running, stop it
-        Dim RegionClass As RegionMaker = RegionMaker.Instance
+
         If RegionClass.ShuttingDown(n) Then
             RegionClass.ShuttingDown(n) = False
         End If
 
-        If RegionClass.RegionEnabled(n) And (RegionClass.Ready(n) Or RegionClass.WarmingUp(n)) Then
+        If RegionClass.RegionEnabled(n) And (RegionClass.Booted(n) Or RegionClass.WarmingUp(n)) Then
             ' if enabled and running, even partly up, stop it.
             Try
                 Form1.ConsoleCommand(RegionClass.ProcessID(n), "quit{ENTER}")
                 Me.Focus()
 
-                RegionClass.Ready(n) = False
+                RegionClass.Booted(n) = False
                 RegionClass.WarmingUp(n) = False
                 RegionClass.ShuttingDown(n) = True
 
@@ -259,7 +258,7 @@
                 Form1.Log("Region:Could not stop " + RegionClass.RegionName(n))
             End Try
 
-        ElseIf RegionClass.RegionEnabled(n) And Not (RegionClass.Ready(n) Or RegionClass.WarmingUp(n) Or RegionClass.ShuttingDown(n)) Then
+        ElseIf RegionClass.RegionEnabled(n) And Not (RegionClass.Booted(n) Or RegionClass.WarmingUp(n) Or RegionClass.ShuttingDown(n)) Then
             ' it was stopped, and disabled, so we start up
             If Not Form1.StartMySQL() Then Return
             Form1.Start_Robust()
@@ -288,7 +287,7 @@
     ' items selected.  
     Private Sub ListView1_ItemCheck1(ByVal sender As Object, ByVal e As System.Windows.Forms.ItemCheckEventArgs) Handles ListView1.ItemCheck
 
-        Dim RegionClass As RegionMaker = RegionMaker.Instance
+
         Dim Item As ListViewItem = ListView1.Items.Item(e.Index)
         Dim n As Integer = RegionClass.FindRegionByName(Item.Text)
 
@@ -350,8 +349,6 @@
 
     Private Sub Addregion_Click(sender As Object, e As EventArgs) Handles Addregion.Click
 
-        Dim RegionClass As RegionMaker = RegionMaker.Instance
-
         Dim ActualForm As New FormRegion
         'ActualForm.SetDesktopLocation(300, 200)
         ActualForm.Init("")
@@ -381,4 +378,8 @@ Class ListViewItemComparer
         Return [String].Compare(CType(x, ListViewItem).SubItems(col).Text, CType(y, ListViewItem).SubItems(col).Text)
 
     End Function
+
+
+    ''!!!  RegionClass.RegionList = RegionClass.RegionList.OrderBy(Function(x) x.RegionName).ToList()
+
 End Class
