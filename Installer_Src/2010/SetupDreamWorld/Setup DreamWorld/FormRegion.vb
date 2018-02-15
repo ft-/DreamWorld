@@ -180,16 +180,17 @@ Public Class FormRegion
 
         Dim Filepath = RegionClass.RegionPath(n)
 
-        Dim path = RegionClass.FolderPath(n)
+        Dim Folderpath = RegionClass.FolderPath(n)
 
         ' rename is possible
         If oldname <> RegionName.Text And Not isNew Then
             Try
-                Directory.Delete(Form1.prefix & "bin\Regions\" + oldname, True)
+                My.Computer.FileSystem.RenameFile(Form1.prefix & "bin\Regions\" + oldname + "\Region\" + oldname + ".ini", RegionName.Text + ".bak")
                 Try
-                    Filepath = dir & "bin\Regions\" + RegionName.Text + "\Region\"
-                    Directory.CreateDirectory(Filepath)
+                    Dim NewFilepath = dir & "bin\Regions\" + RegionName.Text + "\Region\"
+                    Directory.CreateDirectory(NewFilepath)
                     Filepath = Filepath + RegionName.Text + ".ini"
+                    RegionClass.RegionPath(n) = Filepath
                     Form1.CopyOpensimProto()
                 Catch
                     MsgBox("Cannot create new region. It seems to already exist")
@@ -199,30 +200,30 @@ Public Class FormRegion
 
             Catch ex As Exception
                 Debug.Print(ex.Message)
+                Return
             End Try
         End If
 
         ' might be a new region, so give them a choice
 
         If isNew Then
-            Dim pathname As String = RegionName.Text
-            Dim yesNo As MsgBoxResult = MsgBox("New regions can run in a new DOS box (Yes) or can be combined with other regions in an existing DOS box (NO)", vbYesNo)
-            If yesNo = vbNo Then
-                pathname = RegionChosen()
-                If pathname = "" Then
+            Dim Newname As String = RegionName.Text
+            Dim yesNo As MsgBoxResult = MsgBox("New regions can can be combined with other regions in an existing DOS box (Yes), or run in their own Dos Box (No)", vbYesNo)
+            If yesNo = vbYes Then
+                Newname = RegionChosen()
+                If Newname = "" Then
                     Form1.PrintFast("Aborted")
                     Return
                 End If
             End If
 
-            Filepath = dir & "bin\Regions\" + RegionName.Text + "\Region\" + RegionName.Text
-            RegionClass.RegionPath(n) = Filepath
-
             If Not Directory.Exists(Filepath) Then
-                Directory.CreateDirectory(dir & "bin\Regions\" + RegionName.Text + "\Region")
+                Directory.CreateDirectory(dir & "bin\Regions\" + Newname + "\Region")
             End If
 
-            Filepath = dir & "bin\Regions\" + RegionName.Text + "\Region\" + RegionName.Text + ".ini"
+            RegionClass.RegionPath(n) = dir & "bin\Regions\" + Newname + "\Region\ " + Newname + ".ini"
+
+
         End If
 
         Dim Region = "; * Regions configuration file" &
@@ -240,7 +241,7 @@ Public Class FormRegion
                         "Enabled = " & EnabledCheckBox.Checked.ToString & vbCrLf
         'C:\Opensim\Outworldz Source\OutworldzFiles\Opensim\bin\Regions\Frankis\Region\
         Try
-            Using outputFile As New StreamWriter(Filepath, False)
+            Using outputFile As New StreamWriter(RegionClass.RegionPath(n), False)
                 outputFile.Write(Region)
             End Using
         Catch

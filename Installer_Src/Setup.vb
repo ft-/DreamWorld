@@ -35,8 +35,8 @@ Public Class Form1
 #Region "Declarations"
 
 
-    Dim MyVersion As String = "2.09"
-    Dim DebugPath As String = "C:\Opensim\OutworldzSource"  ' no slash at end
+    Dim MyVersion As String = "2.10"
+    Dim DebugPath As String = "C:\Opensim\Outworldz Source"  ' no slash at end
     Public Domain As String = "http://www.outworldz.com"
     Public prefix As String ' Holds path to Opensim folder
 
