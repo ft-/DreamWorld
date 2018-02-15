@@ -15,6 +15,7 @@ Public Class FormRegion
 
 #Region "Functions"
 
+
     Public Sub Init(Name As String)
 
         Dim RegionClass As RegionMaker = RegionMaker.Instance
@@ -172,21 +173,18 @@ Public Class FormRegion
 
     Private Sub WriteRegion()
 
+        ' save the Region File, choose an existing DOS box to put it in, or make a new one
+
         Dim dir = Form1.prefix
-        ' save the Region File
-
-        RegionName.Text.Replace(" ", "")
-
         Dim RegionClass As RegionMaker = RegionMaker.Instance
 
         Dim Filepath = RegionClass.RegionPath(n)
 
         Dim path = RegionClass.FolderPath(n)
-        'Directory.CreateDirectory(o.FolderPath)
+
         ' rename is possible
         If oldname <> RegionName.Text And Not isNew Then
             Try
-
                 Directory.Delete(Form1.prefix & "bin\Regions\" + oldname, True)
                 Try
                     Filepath = dir & "bin\Regions\" + RegionName.Text + "\Region\"
@@ -195,6 +193,8 @@ Public Class FormRegion
                     Form1.CopyOpensimProto()
                 Catch
                     MsgBox("Cannot create new region. It seems to already exist")
+                    Form1.PrintFast("Aborted")
+                    Return
                 End Try
 
             Catch ex As Exception
@@ -202,8 +202,18 @@ Public Class FormRegion
             End Try
         End If
 
-        ' might be a new region, so no path exists
-        If Filepath = "" Then
+        ' might be a new region, so give them a choice
+
+        If isNew Then
+            Dim pathname As String = RegionName.Text
+            Dim yesNo As MsgBoxResult = MsgBox("New regions can run in a new DOS box (Yes) or can be combined with other regions in an existing DOS box (NO)", vbYesNo)
+            If yesNo = vbNo Then
+                pathname = RegionChosen()
+                If pathname = "" Then
+                    Form1.PrintFast("Aborted")
+                    Return
+                End If
+            End If
 
             Filepath = dir & "bin\Regions\" + RegionName.Text + "\Region\" + RegionName.Text
             RegionClass.RegionPath(n) = Filepath
@@ -240,6 +250,24 @@ Public Class FormRegion
 
     End Sub
 
+    Private Function RegionChosen() As String
+
+        Dim Chooseform As New Chooser ' form for choosing a set of regions
+        ' Show testDialog as a modal dialog and determine if DialogResult = OK.
+        Dim chosen As String
+        Chooseform.ShowDialog()
+        Try
+            ' Read the chosen sim name
+            chosen = Chooseform.ListBox1.SelectedItem.ToString()
+            If chosen.Length Then
+                Chooseform.Dispose()
+            End If
+        Catch ex As Exception
+            chosen = ""
+        End Try
+        Return chosen
+
+    End Function
 #End Region
 
 #Region "Checkboxes"

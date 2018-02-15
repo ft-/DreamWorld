@@ -629,7 +629,7 @@ Public Class Form1
 
     End Sub
 
-    Private Sub Print(Value As String)
+    Public Sub Print(Value As String)
 
         Log("Info:" + Value)
         PictureBox1.Visible = False
@@ -640,7 +640,7 @@ Public Class Form1
         Application.DoEvents()
 
     End Sub
-    Private Sub PrintFast(Value As String)
+    Public Sub PrintFast(Value As String)
 
         Log("Info:" + Value)
         PictureBox1.Visible = False
