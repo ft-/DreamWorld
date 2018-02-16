@@ -10,7 +10,7 @@ Public Class FormRegion
     Dim initted As Boolean = False ' needed a flag to see if we are initted as the dialogs change on start.
     Dim changed As Boolean    ' true if we need to save a form
     Dim isNew As Integer = False
-
+    Dim RegionClass As RegionMaker
 #End Region
 
 #Region "Functions"
@@ -18,7 +18,7 @@ Public Class FormRegion
 
     Public Sub Init(Name As String)
 
-        Dim RegionClass As RegionMaker = RegionMaker.Instance
+        RegionClass = RegionMaker.Instance
         If Name = "" Then
             isNew = True
             RegionName.Text = Name
@@ -176,7 +176,6 @@ Public Class FormRegion
         ' save the Region File, choose an existing DOS box to put it in, or make a new one
 
         Dim dir = Form1.prefix
-        Dim RegionClass As RegionMaker = RegionMaker.Instance
 
         Dim Filepath = RegionClass.RegionPath(n)
 
@@ -185,23 +184,24 @@ Public Class FormRegion
         ' rename is possible
         If oldname <> RegionName.Text And Not isNew Then
             Try
-                My.Computer.FileSystem.RenameFile(Form1.prefix & "bin\Regions\" + oldname + "\Region\" + oldname + ".ini", RegionName.Text + ".bak")
-                Try
-                    Dim NewFilepath = dir & "bin\Regions\" + RegionName.Text + "\Region\"
-                    Directory.CreateDirectory(NewFilepath)
-                    Filepath = Filepath + RegionName.Text + ".ini"
-                    RegionClass.RegionPath(n) = Filepath
-                    Form1.CopyOpensimProto()
-                Catch
-                    MsgBox("Cannot create new region. It seems to already exist")
-                    Form1.PrintFast("Aborted")
-                    Return
-                End Try
-
+                My.Computer.FileSystem.RenameFile(Filepath, RegionName.Text + ".bak")
             Catch ex As Exception
                 Debug.Print(ex.Message)
+            End Try
+
+            Try
+                Dim NewFilepath = dir & "bin\Regions\" + RegionName.Text + "\Region\"
+                Directory.CreateDirectory(NewFilepath)
+                Filepath = NewFilepath + RegionName.Text + ".ini"
+                RegionClass.RegionPath(n) = Filepath
+                Form1.CopyOpensimProto()
+            Catch
+                MsgBox("Cannot create new region. It seems to already exist")
+                Form1.PrintFast("Aborted")
                 Return
             End Try
+
+
         End If
 
         ' might be a new region, so give them a choice
@@ -217,11 +217,11 @@ Public Class FormRegion
                 End If
             End If
 
-            If Not Directory.Exists(Filepath) Then
+            If Not Directory.Exists(Filepath) Or Filepath = "" Then
                 Directory.CreateDirectory(dir & "bin\Regions\" + Newname + "\Region")
             End If
 
-            RegionClass.RegionPath(n) = dir & "bin\Regions\" + Newname + "\Region\ " + Newname + ".ini"
+            RegionClass.RegionPath(n) = dir & "bin\Regions\" + Newname + "\Region\" + RegionName.Text + ".ini"
 
 
         End If
@@ -386,7 +386,7 @@ Public Class FormRegion
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
 
-        Dim RegionClass As RegionMaker = RegionMaker.Instance
+
         Dim message = RegionValidate()
         If Len(message) Then
             Dim v = MsgBox(message + vbCrLf + "Discard all changes and exit anyway?", vbYesNo)
@@ -405,7 +405,7 @@ Public Class FormRegion
     End Sub
 
     Private Sub FormRegion_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
-        Dim RegionClass As RegionMaker = RegionMaker.Instance
+
         If changed Then
             Dim v = MsgBox("Save changes?", vbYesNo)
             If v = vbYes Then
@@ -448,6 +448,7 @@ Public Class FormRegion
     End Sub
 
     Private Function IsPowerOf256(x As Integer) As Boolean
+
         Dim y As Single = Convert.ToSingle(x)
         While y > 0
             y = y - 256
@@ -461,7 +462,7 @@ Public Class FormRegion
 
     Private Sub DeleteButton_Click(sender As Object, e As EventArgs) Handles DeleteButton.Click
 
-        Dim RegionClass As RegionMaker = RegionMaker.Instance
+
         Dim msg = MsgBox("Are you sure you want to delete this region? ", vbYesNo)
         If msg = vbYes Then
             Try
@@ -470,7 +471,7 @@ Public Class FormRegion
             End Try
 
             Try
-                My.Computer.FileSystem.RenameFile(Form1.prefix & "bin\Regions\" + RegionName.Text + "\Region\" + RegionName.Text + ".ini", RegionName.Text + ".bak")
+                My.Computer.FileSystem.RenameFile(RegionClass.RegionPath(n), RegionName.Text + ".bak")
                 RegionClass.GetAllRegions()
                 Me.Close()
             Catch ex As Exception
