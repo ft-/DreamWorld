@@ -778,7 +778,9 @@ Public Class Form1
             ' it may have been deleted
             Dim o As Integer = RegionClass.FindRegionByName(My.Settings.WelcomeRegion)
 
-
+            If o < 0 Then
+                o = 0
+            End If
             ' save to disk
             DefaultName = RegionClass.RegionName(o)
             My.Settings.WelcomeRegion = DefaultName
