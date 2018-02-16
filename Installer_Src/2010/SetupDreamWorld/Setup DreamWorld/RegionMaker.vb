@@ -328,7 +328,7 @@ Public Class RegionMaker
         Dim i As Integer = 0
         For Each obj As Region_data In RegionList
             If Name = obj._RegionName Then
-                Debug.Print("Current Region is " + obj._RegionName)
+                ' Debug.Print("Current Region is " + obj._RegionName)
                 Return i
             End If
             i = i + 1

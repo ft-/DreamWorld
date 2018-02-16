@@ -3077,32 +3077,7 @@ Public Class Form1
 
         If Not StartMySQL() Then Return
 
-        Try
-            My.Computer.FileSystem.DeleteFile(MyFolder & "\OutworldzFiles\mysql\bin\BackupMysql.bat")
-        Catch
-        End Try
-        Try
-            Dim filename As String = MyFolder & "\OutworldzFiles\mysql\bin\BackupMysql.bat"
-            Using outputFile As New StreamWriter(filename, True)
-
-                Dim PathToBackup As String = BackupPath()
-                PathToBackup = PathToBackup.Replace("\", "/")    ' because Opensim uses unix-like slashes, that's why
-                outputFile.WriteLine("@REM A program to backup Mysql manually" + vbCrLf _
-                                    + "mysqldump.exe --opt  -uroot --verbose opensim  > " _
-                                    + """" + PathToBackup + "Opensim_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".sql" + """" _
-                                    + vbCrLf _
-                                    + "mysqldump.exe --opt  -uroot --verbose robust  > " _
-                                    + """" + PathToBackup + "Robust_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".sql" + """" _
-                                    + vbCrLf _
-                                    + "@REM Finished!" + vbCrLf _
-                                    + "@pause" + vbCrLf)
-            End Using
-        Catch ex As Exception
-            Print("Failed to create backup:" + ex.Message)
-            Return
-        End Try
-
-        Print("Starting a possibly large slow ande xtensive Database Backup to the Autobackup folder")
+        Print("Starting a slow but extensive Database Backup => Autobackup folder")
         Dim pMySqlBackup As Process = New Process()
         Dim pi As ProcessStartInfo = New ProcessStartInfo()
         pi.Arguments = ""

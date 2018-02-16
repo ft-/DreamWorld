@@ -8,8 +8,8 @@ Public Class RegionList
     Dim TheView As Integer = 0
     Private Shared FormExists As Boolean = False
     Dim pixels As Integer = 70
-    Dim imageListSmall As New ImageList()
-    Dim imageListLarge As New ImageList()
+    Dim imageListSmall As New ImageList
+    Dim imageListLarge As ImageList
 
     Dim RegionClass As RegionMaker = RegionMaker.Instance
 
@@ -33,7 +33,7 @@ Public Class RegionList
             pixels = pixels + numberOfTextLinesToMove
             'Debug.Print(pixels.ToString)
             If pixels > 256 Then pixels = 256
-            If pixels < 0 Then pixels = 0
+            If pixels < 10 Then pixels = 10
 
             LoadMyListView()
         End If
@@ -53,12 +53,11 @@ Public Class RegionList
     Private Sub _Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 
         Me.Size = New System.Drawing.Size(300, 410)
-        imageListLarge.ImageSize = New Size(70, 70)
+
         pixels = 70
 
         RegionList.FormExists = True
 
-        imageListLarge = New ImageList()
         ' ListView Setup
         ListView1.AllowDrop = True
         ' Set the view to show details.
@@ -90,7 +89,8 @@ Public Class RegionList
         imageListSmall.Images.Add(My.Resources.ResourceManager.GetObject("check2")) ' 2 okay, up
         imageListSmall.Images.Add(My.Resources.ResourceManager.GetObject("navigate_plus")) ' 3 disabled
         imageListSmall.Images.Add(My.Resources.ResourceManager.GetObject("media_stop_red")) ' 4 disabled
-        imageListSmall.Images.Add(My.Resources.ResourceManager.GetObject("media_stop"))  ' 5 enabled
+        imageListSmall.Images.Add(My.Resources.ResourceManager.GetObject("media_stop"))  ' 5 enabled, stopped
+        imageListSmall.Images.Add(My.Resources.ResourceManager.GetObject("media_stop"))  ' 6 
 
         LoadMyListView()
 
@@ -118,9 +118,11 @@ Public Class RegionList
         Me.SuspendLayout()
 
         imageListLarge = New ImageList()
+        If pixels = 0 Then pixels = 20
         imageListLarge.ImageSize = New Size(pixels, pixels)
         ListView1.Clear()
         ListView1.Items.Clear()
+
         ' Create columns for the items and subitems.
         ' Width of -2 indicates auto-size.
         ListView1.Columns.Add("Enabled", 120, HorizontalAlignment.Center)
@@ -128,21 +130,16 @@ Public Class RegionList
         ListView1.Columns.Add("Status", 60, HorizontalAlignment.Center)
 
         Dim imageList1 As New ImageList
-        Dim Num As Integer
+        Dim Num As Integer = 0
         Dim n As Integer = 0
         For Each X In RegionClass.RegionNumbers
+
             Application.DoEvents()
             RegionClass.DebugRegions(n)
 
-            If RegionClass.RegionName(n) = "Isis" Then
-                Debug.Print("Egypt")
-            End If
-
-            ' Create  items and subitems for each item.
-            Dim item1 As New ListViewItem(RegionClass.RegionName(n), n)
-            ' Place a check mark next to the item.
-            item1.Checked = RegionClass.RegionEnabled(n)
-            item1.SubItems.Add(RegionClass.AvatarCount(n).ToString)
+            ' If RegionClass.RegionName(n) = "Deliverance" Then
+            ' Debug.Print("Deliverance")
+            ' End If
 
             Dim Letter As String = ""
             If RegionClass.WarmingUp(n) Then
@@ -167,7 +164,14 @@ Public Class RegionList
                 Num = 5
             End If
 
+            ' Create  items and subitems for each item.
+            Dim item1 As New ListViewItem(RegionClass.RegionName(n), Num)
+            ' Place a check mark next to the item.
+            item1.Checked = RegionClass.RegionEnabled(n)
+            item1.SubItems.Add(RegionClass.AvatarCount(n).ToString)
+
             item1.SubItems.Add(Letter)
+
             ListView1.Items.AddRange(New ListViewItem() {item1})
 
             If TheView = 2 Then
@@ -186,8 +190,7 @@ Public Class RegionList
                     Num = n
                 End If
             End If
-
-            ListView1.Items(n).ImageIndex = Num
+            'ListView1.Items(n).ImageIndex = 1
             n = n + 1
         Next
 
@@ -317,7 +320,7 @@ Public Class RegionList
                 Application.DoEvents()
             End If
         End If
-        Timer1.Interval = 2000
+        Timer1.Interval = 1000
 
     End Sub
 
@@ -439,6 +442,12 @@ Public Class RegionList
         Return chosen
 
     End Function
+
+    Private Sub RegionHelp_Click(sender As Object, e As EventArgs) Handles RegionHelp.Click
+
+        Process.Start(Form1.Domain + "/Outworldz_Installer/RegionHelp.htm")
+
+    End Sub
 
 #End Region
 

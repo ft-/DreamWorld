@@ -75,13 +75,11 @@ Partial Class RegionList
         'RegionHelp
         '
         Me.RegionHelp.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.RegionHelp.Location = New System.Drawing.Point(234, 9)
+        Me.RegionHelp.Location = New System.Drawing.Point(245, 9)
         Me.RegionHelp.Name = "RegionHelp"
         Me.RegionHelp.Size = New System.Drawing.Size(28, 27)
         Me.RegionHelp.TabIndex = 1858
         Me.RegionHelp.TabStop = False
-        Me.ToolTip1.SetToolTip(Me.RegionHelp, "Click a disabled region to edit it. Click an enabled region to Start or Stop it. " &
-        "  ")
         '
         'ToolTip1
         '
