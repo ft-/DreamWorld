@@ -35,7 +35,7 @@ Public Class Form1
 #Region "Declarations"
 
 
-    Dim MyVersion As String = "2.10"
+    Dim MyVersion As String = "2.1"
     Dim DebugPath As String = "C:\Opensim\Outworldz Source"  ' no slash at end
     Public Domain As String = "http://www.outworldz.com"
     Public prefix As String ' Holds path to Opensim folder
@@ -3444,8 +3444,8 @@ Public Class Form1
                 'Debug.Print(RegionClass.AvatarCount(n).ToString + " avatars in region " + RegionClass.RegionName(n))
             Else
                 RegionClass.AvatarCount(n) = 0
-                n = n + 1
             End If
+            n = n + 1
         Next
 
         If My.Settings.AutoLoad Then

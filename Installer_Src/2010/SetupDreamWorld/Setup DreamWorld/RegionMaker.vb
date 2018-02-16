@@ -9,27 +9,7 @@ Imports Newtonsoft.Json
 Public Class RegionMaker
 
 #Region "Declarations"
-    ' hold a copy of the Main region data on a per-form basis
-    Private Class Region_data
-        Public _RegionPath As String = ""  ' The full path to the region ini file
-        Public _FolderPath As String = ""   ' the path to the folde r that holds the region ini
-        Public _Folder As String = ""       ' the folder name that holds the region(s), can be different named
-        Public _IniPath As String = ""      ' the folder that hold the Opensim.ini, above 'Region'
-        Public _ProcessID As Integer = 0
-        Public _RegionName As String = ""
-        Public _UUID As String = ""
-        Public _CoordX As Integer = 0
-        Public _CoordY As Integer = 0
-        Public _RegionPort As Integer = 0
-        Public _SizeX As Integer = 0
-        Public _SizeY As Integer = 0
-        Public _AvatarCount As Integer = 0
-        Public _RegionEnabled As Boolean = False ' Will run or not
-        Public _Ready As Boolean = False       ' is up
-        Public _WarmingUp As Boolean = False    ' booting up
-        Public _ShuttingDown As Boolean = False ' shutting down
-        Public _Timer As Integer
-    End Class
+
 
     Public RegionList As New ArrayList()
     Private initted As Boolean = False
@@ -238,6 +218,28 @@ Public Class RegionMaker
     End Class
 
 #End Region
+
+    ' hold a copy of the Main region data on a per-form basis
+    Private Class Region_data
+        Public _RegionPath As String = ""  ' The full path to the region ini file
+        Public _FolderPath As String = ""   ' the path to the folde r that holds the region ini
+        Public _Folder As String = ""       ' the folder name that holds the region(s), can be different named
+        Public _IniPath As String = ""      ' the folder that hold the Opensim.ini, above 'Region'
+        Public _ProcessID As Integer = 0
+        Public _RegionName As String = ""
+        Public _UUID As String = ""
+        Public _CoordX As Integer = 0
+        Public _CoordY As Integer = 0
+        Public _RegionPort As Integer = 0
+        Public _SizeX As Integer = 0
+        Public _SizeY As Integer = 0
+        Public _AvatarCount As Integer = 0
+        Public _RegionEnabled As Boolean = False ' Will run or not
+        Public _Ready As Boolean = False       ' is up
+        Public _WarmingUp As Boolean = False    ' booting up
+        Public _ShuttingDown As Boolean = False ' shutting down
+        Public _Timer As Integer
+    End Class
 
 #Region "Functions"
 
