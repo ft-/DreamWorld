@@ -216,7 +216,6 @@ Public Class Form1
 
     Private Sub Form1_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 
-
         MyFolder = My.Application.Info.DirectoryPath
 
         If MyFolder.Contains("Setup DreamWorld\bin") Then
@@ -1071,6 +1070,13 @@ Public Class Form1
                     SetIni(simName, "Enabled", "false")
                 End If
 
+                ' Extended in v 2.1
+                SetIni(simName, "NonPhysicalPrimMax", Convert.ToString(RegionClass.NonPhysicalPrimMax(n)))
+                SetIni(simName, "PhysicalPrimMax", Convert.ToString(RegionClass.PhysicalPrimMax(n)))
+                SetIni(simName, "MaxPrims", Convert.ToString(RegionClass.MaxPrims(n)))
+                SetIni(simName, "MaxAgents", Convert.ToString(RegionClass.MaxAgents(n)))
+                SetIni(simName, "ClampPrimSize", Convert.ToString(RegionClass.ClampPrimSize(n)))
+
                 SaveINI()
             End If
             n = n + 1
@@ -1086,7 +1092,7 @@ Public Class Form1
 
         Dim n = 0
         For Each X As Integer In RegionClass.RegionNumbers
-            Debug.Print("Count:" + n.ToString)
+            Debug.Print("Count: " + n.ToString)
             Dim regionName = RegionClass.RegionName(n)
             Dim pathname = RegionClass.IniPath(n)
             Debug.Print(regionName)

@@ -42,6 +42,11 @@ Public Class FormRegion
             Me.Text = Name ' on screen
             RegionName.Text = RegionClass.RegionName(n) ' on form
             UUID.Text = RegionClass.UUID(n)   ' on screen
+            NonphysicalPrimMax.Text = RegionClass.NonphysicalPrimMax(n)
+            PhysicalPrimMax.Text = RegionClass.PhysicalPrimMax(n)
+            ClampPrimSize.Checked = RegionClass.ClampPrimSize(n)
+            MaxPrims.Text = RegionClass.MaxPrims(n)
+            MaxAgents.Text = RegionClass.MaxAgents(n)
 
             Me.Show() ' time to show the results
             Me.Focus()
@@ -238,8 +243,13 @@ Public Class FormRegion
                         "ExternalHostName = " & My.Settings.PublicIP & vbCrLf &
                         "SizeX = " & SizeX.Text & vbCrLf &
                         "SizeY = " & SizeY.Text & vbCrLf &
-                        "Enabled = " & EnabledCheckBox.Checked.ToString & vbCrLf
-        'C:\Opensim\Outworldz Source\OutworldzFiles\Opensim\bin\Regions\Frankis\Region\
+                        "Enabled = " & EnabledCheckBox.Checked.ToString & vbCrLf &
+                        "NonPhysicalPrimMax = " & NonphysicalPrimMax.Text & vbCrLf &
+                        "PhysicalPrimMax = " & PhysicalPrimMax.Text & vbCrLf &
+                        "ClampPrimSize = " & ClampPrimSize.Checked.ToString & vbCrLf &
+                        "MaxPrims = " & MaxPrims.Text & vbCrLf &
+                        "MaxAgents = " & MaxAgents.Text & vbCrLf
+
         Try
             Using outputFile As New StreamWriter(RegionClass.RegionPath(n), False)
                 outputFile.Write(Region)
@@ -480,6 +490,8 @@ Public Class FormRegion
         End If
 
     End Sub
+
+
 
 #End Region
 

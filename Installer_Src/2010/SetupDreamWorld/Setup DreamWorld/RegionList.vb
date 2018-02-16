@@ -1,4 +1,8 @@
-﻿Public Class RegionList
+﻿
+Imports System.IO
+
+
+Public Class RegionList
 
     Dim writetodisk As Boolean
     Dim TheView As Integer = 0
@@ -51,9 +55,12 @@
         Me.Size = New System.Drawing.Size(300, 410)
         imageListLarge.ImageSize = New Size(70, 70)
         pixels = 70
-        imageListLarge = New ImageList()
+
         RegionList.FormExists = True
 
+        imageListLarge = New ImageList()
+        ' ListView Setup
+        ListView1.AllowDrop = True
         ' Set the view to show details.
         ListView1.View = View.Details
         ' Allow the user to edit item text.
@@ -301,7 +308,7 @@
                 Form1.SaveINI()
                 RegionClass.ProcessID(n) = 0
                 Application.DoEvents()
-            ElseIf (e.CurrentValue = CheckState.checked) Then
+            ElseIf (e.CurrentValue = CheckState.Checked) Then
                 RegionClass.RegionEnabled(n) = False
                 ' and region file on disk
                 Form1.LoadIni(RegionClass.RegionPath(n), ";")
@@ -358,6 +365,82 @@
 
     End Sub
 
+#Region "DragDrop"
+
+    Private Sub ListView1_DragEnter(sender As System.Object, e As System.Windows.Forms.DragEventArgs) Handles ListView1.DragEnter
+
+        If e.Data.GetDataPresent(DataFormats.FileDrop) Then
+            e.Effect = DragDropEffects.Copy
+        End If
+
+    End Sub
+
+    Private Sub ListView1_DragDrop(sender As System.Object, e As System.Windows.Forms.DragEventArgs) Handles ListView1.DragDrop
+
+        Dim files() As String = e.Data.GetData(DataFormats.FileDrop)
+
+        Dim dirpathname = ""
+        Dim yesNo As MsgBoxResult = MsgBox("New regions can can be combined with other regions in an existing DOS box (Yes), or run in their own Dos Box (No)", vbYesNo)
+        If yesNo = vbYes Then
+            dirpathname = RegionChosen()
+            If dirpathname = "" Then
+                Form1.PrintFast("Aborted")
+                Return
+            End If
+        End If
+
+        Dim dir = Form1.prefix
+
+        For Each pathname As String In files
+            pathname.Replace("\", "/")
+            Dim extension = Path.GetExtension(pathname)
+            extension = Mid(extension, 2, 5)
+            If extension.ToLower = "ini" Then
+                Dim filename = Path.GetFileNameWithoutExtension(pathname)
+                Dim i = RegionClass.FindRegionByName(filename)
+                If i >= 0 Then
+                    MsgBox("Region name " + filename + " already exists", vbInformation)
+                    Return
+                End If
+
+                If dirpathname = "" Then dirpathname = filename
+
+                Dim NewFilepath = dir & "bin\Regions\" + dirpathname + "\Region\"
+                If Not Directory.Exists(NewFilepath) Then
+                    Directory.CreateDirectory(dir & "bin\Regions\" + dirpathname + "\Region")
+                End If
+
+                File.Copy(pathname, dir & "bin\Regions\" + dirpathname + "\Region\" + filename + ".ini")
+
+            Else
+                Print("Unrecognized file type:" + extension + ".  Drag and drop any Region.ini files to add them to the system")
+            End If
+        Next
+        RegionClass.GetAllRegions()
+        LoadMyListView()
+
+    End Sub
+
+    Private Function RegionChosen() As String
+
+        Dim Chooseform As New Chooser ' form for choosing a set of regions
+        ' Show testDialog as a modal dialog and determine if DialogResult = OK.
+        Dim chosen As String
+        Chooseform.ShowDialog()
+        Try
+            ' Read the chosen sim name
+            chosen = Chooseform.ListBox1.SelectedItem.ToString()
+            If chosen.Length Then
+                Chooseform.Dispose()
+            End If
+        Catch ex As Exception
+            chosen = ""
+        End Try
+        Return chosen
+
+    End Function
+
+#End Region
 
 End Class
 

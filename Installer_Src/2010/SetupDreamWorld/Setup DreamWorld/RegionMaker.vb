@@ -45,6 +45,47 @@ Public Class RegionMaker
 
 #Region "Properties"
 
+    Public Property NonPhysicalPrimMax(n As Integer) As Integer
+        Get
+            Return RegionList(n)._NonphysicalPrimMax
+        End Get
+        Set(ByVal Value As Integer)
+            RegionList(n)._NonphysicalPrimMax = Value
+        End Set
+    End Property
+    Public Property PhysicalPrimMax(n As Integer) As Integer
+        Get
+            Return RegionList(n)._PhysicalPrimMax
+        End Get
+        Set(ByVal Value As Integer)
+            RegionList(n)._PhysicalPrimMax = Value
+        End Set
+    End Property
+    Public Property ClampPrimSize(n As Integer) As Boolean
+        Get
+            Return RegionList(n)._ClampPrimSize
+        End Get
+        Set(ByVal Value As Boolean)
+            RegionList(n)._ClampPrimSize = Value
+        End Set
+    End Property
+    Public Property MaxPrims(n As Integer) As Long
+        Get
+            Return RegionList(n)._MaxPrims
+        End Get
+        Set(ByVal Value As Long)
+            RegionList(n)._MaxPrims = Value
+        End Set
+    End Property
+    Public Property MaxAgents(n As Integer) As Integer
+        Get
+            Return RegionList(n)._MaxAgents
+        End Get
+        Set(ByVal Value As Integer)
+            RegionList(n)._MaxAgents = Value
+        End Set
+    End Property
+
     Public Property Timer(n As Integer) As Integer
         Get
             Return RegionList(n)._Timer
@@ -239,6 +280,12 @@ Public Class RegionMaker
         Public _WarmingUp As Boolean = False    ' booting up
         Public _ShuttingDown As Boolean = False ' shutting down
         Public _Timer As Integer
+        Public _NonPhysicalPrimMax As Integer
+        Public _PhysicalPrimMax As Integer
+        Public _ClampPrimSize As Boolean
+        Public _MaxPrims As Integer
+        Public _MaxAgents As Integer
+
     End Class
 
 #Region "Functions"
@@ -316,6 +363,17 @@ Public Class RegionMaker
         r._CoordX = LargestX() + 4
         r._CoordY = LargestY() + 0
         r._RegionPort = LargestPort() + 1 '8004 + 1
+        r._ProcessID = 0
+        r._AvatarCount = 0
+        r._Ready = False
+        r._WarmingUp = False
+        r._ShuttingDown = False
+        r._Timer = 0
+        r._NonphysicalPrimMax = 1024
+        r._PhysicalPrimMax = 64
+        r._ClampPrimSize = False
+        r._MaxPrims = 45000
+        r._MaxAgents = 100
 
         RegionList.Add(r)
 
@@ -357,6 +415,10 @@ Public Class RegionMaker
                         fName = Path.GetFileName(ini)
                         fName = Mid(fName, 1, Len(fName) - 4)
 
+                        If (fName.Contains("Alpha")) Then
+                            Dim x = 1
+                        End If
+
                         ' make a slot to hold the region data 
                         CreateRegion(fName)
 
@@ -382,6 +444,38 @@ Public Class RegionMaker
                         SizeY(n) = Convert.ToInt16(Form1.GetIni(ini, fName, "SizeY", ";"))
                         RegionPort(n) = Convert.ToInt16(Form1.GetIni(ini, fName, "InternalPort", ";"))
 
+                        ' extended props V2.1
+                        If Convert.ToInt16(Form1.GetIni(ini, fName, "NonPhysicalPrimMax", ";")) = 0 Then
+                            NonPhysicalPrimMax(n) = 1024
+                        Else
+                            NonPhysicalPrimMax(n) = Convert.ToInt16(Form1.GetIni(ini, fName, "NonPhysicalPrimMax", ";"))
+                        End If
+
+                        If Convert.ToInt16(Form1.GetIni(ini, fName, "PhysicalPrimMax", ";")) = 0 Then
+                            PhysicalPrimMax(n) = 64
+                        Else
+                            PhysicalPrimMax(n) = Convert.ToInt16(Form1.GetIni(ini, fName, "PhysicalPrimMax", ";"))
+                        End If
+
+                        If Form1.GetIni(ini, fName, "ClampPrimSize", ";") = "" Then
+                            ClampPrimSize(n) = False
+                        Else
+                            ClampPrimSize(n) = Convert.ToBoolean(Form1.GetIni(ini, fName, "ClampPrimSize", ";"))
+                        End If
+
+                        If Convert.ToInt32(Form1.GetIni(ini, fName, "MaxPrims", ";")) = 0 Then
+                            MaxPrims(n) = 45000
+                        Else
+                            MaxPrims(n) = Convert.ToInt32(Form1.GetIni(ini, fName, "MaxPrims", ";"))
+                        End If
+
+                        If Convert.ToInt16(Form1.GetIni(ini, fName, "MaxAgents", ";")) = 0 Then
+                            MaxAgents(n) = 100
+                        Else
+                            MaxAgents(n) = Convert.ToInt16(Form1.GetIni(ini, fName, "MaxAgents", ";"))
+                        End If
+
+
                         ' Location is int,int format.
                         Dim C = Form1.GetIni(ini, fName, "Location", ";")
                         Dim parts As String() = C.Split(New Char() {","c}) ' split at the comma
@@ -390,12 +484,23 @@ Public Class RegionMaker
 
                         If initted Then
                             ' Backups of transient data 
-                            ProcessID(n) = Backup(n)._ProcessID
-                            AvatarCount(n) = Backup(n)._AvatarCount
-                            Booted(n) = Backup(n)._Ready
-                            WarmingUp(n) = Backup(n)._WarmingUp
-                            ShuttingDown(n) = Backup(n)._ShuttingDown
-                            Timer(n) = Backup(n)._Timer
+                            Try
+                                ProcessID(n) = Backup(n)._ProcessID
+                                AvatarCount(n) = Backup(n)._AvatarCount
+                                Booted(n) = Backup(n)._Ready
+                                WarmingUp(n) = Backup(n)._WarmingUp
+                                ShuttingDown(n) = Backup(n)._ShuttingDown
+                                Timer(n) = Backup(n)._Timer
+                                ' extended
+                                NonphysicalPrimMax(n) = Backup(n)._NonphysicalPrimMax
+                                PhysicalPrimMax(n) = Backup(n)._PhysicalPrimMax
+                                ClampPrimSize(n) = Backup(n)._ClampPrimSize
+                                MaxPrims(n) = Backup(n)._MaxPrims
+                                MaxAgents(n) = Backup(n)._MaxAgents
+
+                            Catch
+                            End Try
+
                         End If
 
                         n = n + 1
@@ -439,6 +544,15 @@ Public Class RegionMaker
         Form1.SetIni(name, "ExternalHostName", My.Settings.PublicIP)
         Form1.SetIni(name, "SizeX", SizeX(n))
         Form1.SetIni(name, "SizeY", SizeY(n))
+
+        ' extended props V2.1
+
+        Form1.SetIni(name, "NonPhysicalPrimMax", NonPhysicalPrimMax(n))
+        Form1.SetIni(name, "PhysicalPrimMax", PhysicalPrimMax(n))
+        Form1.SetIni(name, "ClampPrimSize", Convert.ToString(ClampPrimSize(n)))
+        Form1.SetIni(name, "MaxPrims", MaxPrims(n))
+        Form1.SetIni(name, "MaxAgents", MaxAgents(n))
+
         Form1.SaveINI()
 
     End Sub
