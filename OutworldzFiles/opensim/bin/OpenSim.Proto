@@ -43,7 +43,7 @@
 [Const]
 
 ; Automatically changed by Dreamworld - do not change this
-http_listener_port = 8004
+http_listener_port = 9017
 
 ; Automatically changed by Dreamworld - do not change this
 ;# used by the one-exe-per-instance logic. This becomes the folder for the regions file.
@@ -51,7 +51,7 @@ RegionFolderName = Welcome
 
 ; Automatically changed by Dreamworld - do not change this
 ;# {BaseURL} {} {BaseURL} {"http://example.com","http://127.0.0.1"} "http://127.0.0.1"
-BaseURL = http://Galiedith.Outworldz.net
+BaseURL = http://127.0.0.1
 
 ; Automatically changed by Dreamworld - do not change this
 ;# {PublicPort} {} {PublicPort} {8002} "8002"
@@ -66,7 +66,7 @@ PrivURL = http://127.0.0.1
 
 ; Automatically changed by Dreamworld - do not change this
 ;# Grid Name for Wifi to show
-GridName = DreamGrid
+GridName = Nospam
 
 ; Automatically changed by Dreamworld - do not change this
 ;# Dreamworld runs a listener on this port to run diagnostics. Dreamgrid listens for regions LOGINS enabled
@@ -1253,13 +1253,13 @@ Include-Architecture = "config-include/GridHypergrid.ini"
 ; Automatically changed by Dreamworld - do not change this
 AutoBackupModuleEnabled = true
 AutoBackup = true
-AutoBackupInterval = 720
+AutoBackupInterval = 1440
 AutoBackupBusyCheck = false
 AutoBackupThreshold = 1
 AutoBackupSkipAssets = false
 AutoBackupKeepFilesForDays = 30
 AutoBackupNaming = Time
-AutoBackupDir = C:/Opensim/OutworldzSource/OutworldzFiles/Autobackup/
+AutoBackupDir = C:/Opensim/Outworldz Source/OutworldzFiles/Autobackup/
 
 [CameraOnlyModeModule]
 
