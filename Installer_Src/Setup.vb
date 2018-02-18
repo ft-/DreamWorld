@@ -1052,32 +1052,32 @@ Public Class Form1
 
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
         'Regions - write all region.ini files with public IP and Public port
-        Dim n = 0
-        For Each X In RegionClass.RegionNumbers
-            If RegionClass.RegionName(n) <> "Robust" Then
-                Dim simName = RegionClass.RegionName(n)
 
-                LoadIni(RegionClass.RegionPath(n), ";")
-                SetIni(simName, "InternalPort", Convert.ToString(RegionClass.RegionPort(n)))
+        For Each X In RegionClass.RegionNumbers
+            If RegionClass.RegionName(X) <> "Robust" Then
+                Dim simName = RegionClass.RegionName(X)
+
+                LoadIni(RegionClass.RegionPath(X), ";")
+                SetIni(simName, "InternalPort", Convert.ToString(RegionClass.RegionPort(X)))
                 SetIni(simName, "ExternalHostName", Convert.ToString(My.Settings.PublicIP))
 
                 ' not a standard INI, only use by the Dreamers
-                If RegionClass.RegionEnabled(n) Then
+                If RegionClass.RegionEnabled(X) Then
                     SetIni(simName, "Enabled", "true")
                 Else
                     SetIni(simName, "Enabled", "false")
                 End If
 
                 ' Extended in v 2.1
-                SetIni(simName, "NonPhysicalPrimMax", Convert.ToString(RegionClass.NonPhysicalPrimMax(n)))
-                SetIni(simName, "PhysicalPrimMax", Convert.ToString(RegionClass.PhysicalPrimMax(n)))
-                SetIni(simName, "MaxPrims", Convert.ToString(RegionClass.MaxPrims(n)))
-                SetIni(simName, "MaxAgents", Convert.ToString(RegionClass.MaxAgents(n)))
-                SetIni(simName, "ClampPrimSize", Convert.ToString(RegionClass.ClampPrimSize(n)))
+                SetIni(simName, "NonPhysicalPrimMax", Convert.ToString(RegionClass.NonPhysicalPrimMax(X)))
+                SetIni(simName, "PhysicalPrimMax", Convert.ToString(RegionClass.PhysicalPrimMax(X)))
+                SetIni(simName, "MaxPrims", Convert.ToString(RegionClass.MaxPrims(X)))
+                SetIni(simName, "MaxAgents", Convert.ToString(RegionClass.MaxAgents(X)))
+                SetIni(simName, "ClampPrimSize", Convert.ToString(RegionClass.ClampPrimSize(X)))
 
                 SaveINI()
             End If
-            n = n + 1
+
         Next
 
         Return CopyOpensimProto()
@@ -2195,14 +2195,12 @@ Public Class Form1
                     Dim Group = RegionClass.GroupName(n)
                     For Each Y In RegionClass.RegionListByGroupNum(Group)
 
-                        ConsoleCommand(RegionClass.ProcessID(Y), "change region " + thing + "{Enter}")
-
+                        ConsoleCommand(RegionClass.ProcessID(Y), "change region " + chosen + "{Enter}")
                         If backMeUp = vbYes Then
                             ConsoleCommand(RegionClass.ProcessID(Y), "alert CPU Intensive Backup Started{ENTER}")
                             ConsoleCommand(RegionClass.ProcessID(Y), "save oar  " + """" + BackupPath() + "Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
                         End If
                         ConsoleCommand(RegionClass.ProcessID(Y), "alert New content Is loading..{ENTER}")
-
                         ConsoleCommand(RegionClass.ProcessID(Y), "load oar --force-terrain --force-parcels " + """" + thing + """" + "{ENTER}")
                         ConsoleCommand(RegionClass.ProcessID(Y), "alert New content just loaded." + "{ENTER}")
                         Me.Focus()
@@ -2391,9 +2389,6 @@ Public Class Form1
         Dim region = ChooseRegion(True)
 
         If region.Length Then
-
-            Dim n As Integer = RegionClass.FindRegionByName(region)
-
             Dim backMeUp = MsgBox("Make a backup first?", vbYesNo, "Backup?")
 
             For Each Y In RegionClass.RegionListByGroupNum(region)
@@ -2403,12 +2398,12 @@ Public Class Form1
 
                     ConsoleCommand(RegionClass.ProcessID(Y), "change region " + region + "{ENTER}")
                     If backMeUp = vbYes Then
-                        ConsoleCommand(RegionClass.ProcessID(n), "alert CPU Intensive Backup Started {ENTER}")
-                        ConsoleCommand(RegionClass.ProcessID(n), "save oar " + """" + BackupPath() + "Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
+                        ConsoleCommand(RegionClass.ProcessID(Y), "alert CPU Intensive Backup Started {ENTER}")
+                        ConsoleCommand(RegionClass.ProcessID(Y), "save oar " + """" + BackupPath() + "Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
                     End If
-                    ConsoleCommand(RegionClass.ProcessID(n), "alert New content Is loading ...{ENTER}")
-                    ConsoleCommand(RegionClass.ProcessID(n), "load oar --force-terrain --force-parcels " + """" + thing + """" + "{ENTER}")
-                    ConsoleCommand(RegionClass.ProcessID(n), "alert New content just loaded. {ENTER}")
+                    ConsoleCommand(RegionClass.ProcessID(Y), "alert New content Is loading ...{ENTER}")
+                    ConsoleCommand(RegionClass.ProcessID(Y), "load oar --force-terrain --force-parcels " + """" + thing + """" + "{ENTER}")
+                    ConsoleCommand(RegionClass.ProcessID(Y), "alert New content just loaded. {ENTER}")
 
                 Catch ex As Exception
                     Log("Error: " + ex.Message)
@@ -2428,15 +2423,15 @@ Public Class Form1
             Return
         End If
 
-        Dim n As Integer = -1
+        Dim num As Integer = -1
 
         ' find one that is running
         For Each RegionNum In RegionClass.RegionNumbers
             If RegionClass.Booted(RegionNum) Then
-                n = RegionNum
+                num = RegionNum
             End If
         Next
-        If n = -1 Then
+        If num = -1 Then
             MsgBox("No regions are ready, so cannot load the IAR", vbInformation, "Info")
             Return
         End If
@@ -2444,14 +2439,15 @@ Public Class Form1
         Dim user = InputBox("User name that will get this IAR?")
         Dim password = InputBox("Password for user " + user + "?")
         If user.Length And password.Length Then
-            ConsoleCommand(RegionClass.ProcessID(n), "load iar --merge " + user + " /Objects " + password + " " + """" + thing + """" + "{ENTER}")
-            ConsoleCommand(RegionClass.ProcessID(n), "alert IAR content Is loaded{ENTER}")
-            Me.Focus()
+            For Each Y In RegionClass.RegionListByGroupNum(RegionClass.RegionName(num))   ' a booted region,'s grroup            
+                ConsoleCommand(RegionClass.ProcessID(Y), "load iar --merge " + user + " /Objects " + password + " " + """" + thing + """" + "{ENTER}")
+                ConsoleCommand(RegionClass.ProcessID(Y), "alert IAR content Is loaded{ENTER}")
+            Next
             Print("Opensim is loading your item. You will find it in in Inventory in /Objects soon.")
         Else
             Print("Load IAR cancelled - must use the full user name and password.")
         End If
-
+        Me.Focus()
     End Sub
 
     Private Sub TextBox1_DragDrop(sender As System.Object, e As System.Windows.Forms.DragEventArgs) Handles TextBox1.DragDrop
@@ -2982,24 +2978,23 @@ Public Class Form1
             '8004-whatever
 
             ' !!!regions = regions.OrderBy(Function(x) x.RegionPort).ToList()
-            Dim n = 0
+
             For Each X In RegionClass.RegionNumbers
-                Dim R As Int16 = RegionClass.RegionPort(n)
+                Dim R As Int16 = RegionClass.RegionPort(X)
 
                 If MyUPnpMap.Exists(R, UPnp.Protocol.UDP) Then
                     MyUPnpMap.Remove(R, UPnp.Protocol.UDP)
                 End If
-                MyUPnpMap.Add(UPnp.LocalIP, R, UPnp.Protocol.UDP, "Opensim UDP Region " & RegionClass.RegionName(n) & " ")
-                PrintFast("Region " + RegionClass.RegionName(n) + " is set to " + Convert.ToString(R))
+                MyUPnpMap.Add(UPnp.LocalIP, R, UPnp.Protocol.UDP, "Opensim UDP Region " & RegionClass.RegionName(X) & " ")
+                PrintFast("Region " + RegionClass.RegionName(X) + " is set to " + Convert.ToString(R))
                 BumpProgress(1)
 
                 If MyUPnpMap.Exists(R, UPnp.Protocol.TCP) Then
                     MyUPnpMap.Remove(R, UPnp.Protocol.TCP)
                 End If
-                MyUPnpMap.Add(UPnp.LocalIP, R, UPnp.Protocol.TCP, "Opensim TCP Region " & RegionClass.RegionName(n) & " ")
-                PrintFast("Region " + RegionClass.RegionName(n) + " is set to " + Convert.ToString(R))
+                MyUPnpMap.Add(UPnp.LocalIP, R, UPnp.Protocol.TCP, "Opensim TCP Region " & RegionClass.RegionName(X) & " ")
+                PrintFast("Region " + RegionClass.RegionName(X) + " is set to " + Convert.ToString(R))
                 BumpProgress(1)
-                n = n + 1
             Next
 
         Catch e As Exception
@@ -3415,7 +3410,7 @@ Public Class Form1
 
     Private Sub RegionClick(sender As ToolStripMenuItem, e As EventArgs)
 
-        Dim n As Integer = RegionClass.FindRegionByName(sender.Text)
+        Dim num As Integer = RegionClass.FindRegionByName(sender.Text)
 
         ' Handle robust clicking
         If sender.Text = "Robust" Then
@@ -3439,41 +3434,41 @@ Public Class Form1
             Debug.Print("Region:Clicked region " & sender.Text)
 
             ' Running, stop it
-            If RegionClass.RegionEnabled(n) And (RegionClass.Booted(n) Or RegionClass.WarmingUp(n)) Then
+            If RegionClass.RegionEnabled(num) And (RegionClass.Booted(num) Or RegionClass.WarmingUp(num)) Then
 
                 ' if enabled and running, even partly up, stop it.
                 sender.Checked = False
                 If Running Then
                     Try
-                        ConsoleCommand(RegionClass.ProcessID(n), "quit{ENTER}")
+                        ConsoleCommand(RegionClass.ProcessID(num), "quit{ENTER}")
                         Me.Focus()
 
-                        RegionClass.RegionEnabled(n) = False
-                        RegionClass.Booted(n) = False
-                        RegionClass.WarmingUp(n) = False
-                        RegionClass.ShuttingDown(n) = True
+                        RegionClass.RegionEnabled(num) = False
+                        RegionClass.Booted(num) = False
+                        RegionClass.WarmingUp(num) = False
+                        RegionClass.ShuttingDown(num) = True
 
-                        LoadIni(RegionClass.RegionPath(n), ";")
+                        LoadIni(RegionClass.RegionPath(num), ";")
                         SetIni(sender.Text, "Enabled", "false")
                         SaveINI()
 
-                        Debug.Print("Region:Stopped Region " + RegionClass.RegionName(n))
+                        Debug.Print("Region:Stopped Region " + RegionClass.RegionName(num))
                     Catch ex As Exception
                         Debug.Print("Region:Could not stop Opensim")
                     End Try
                 End If
 
-            ElseIf Not (RegionClass.Booted(n) Or RegionClass.WarmingUp(n) Or RegionClass.ShuttingDown(n)) Then
+            ElseIf Not (RegionClass.Booted(num) Or RegionClass.WarmingUp(num) Or RegionClass.ShuttingDown(num)) Then
                 ' it was stopped, and disabled, so we toggle the enable, and start up
                 sender.Checked = True
 
                 ' and region file on disk
-                LoadIni(RegionClass.RegionPath(n), ";")
+                LoadIni(RegionClass.RegionPath(num), ";")
                 SetIni(sender.Text, "Enabled", "true")
                 SaveINI()
 
-                Boot(RegionClass.RegionName(n))
-                Debug.Print("Region:Started Region " + RegionClass.RegionName(n))
+                Boot(RegionClass.RegionName(num))
+                Debug.Print("Region:Started Region " + RegionClass.RegionName(num))
             End If
         End If
 
@@ -3483,35 +3478,33 @@ Public Class Form1
 
 
         ' Scan all the regions
-        Dim n = 0
+
         For Each X As Integer In RegionClass.RegionNumbers
-            If RegionClass.Booted(n) Then
-                RegionClass.AvatarCount(n) = MysqlConn.IsUserPresent(RegionClass.UUID(n))
-                'Debug.Print(RegionClass.AvatarCount(n).ToString + " avatars in region " + RegionClass.RegionName(n))
+            If RegionClass.Booted(X) Then
+                RegionClass.AvatarCount(X) = MysqlConn.IsUserPresent(RegionClass.UUID(X))
+                'Debug.Print(RegionClass.AvatarCount(X).ToString + " avatars in region " + RegionClass.RegionName(X))
             Else
-                RegionClass.AvatarCount(n) = 0
+                RegionClass.AvatarCount(X) = 0
             End If
-            n = n + 1
         Next
 
         If My.Settings.AutoLoad Then
             For Each X As Integer In RegionClass.RegionNumbers
-                If RegionClass.Timer(n) > 0 Then RegionClass.Timer(n) = RegionClass.Timer(n) - 1
+                If RegionClass.Timer(X) > 0 Then RegionClass.Timer(X) = RegionClass.Timer(X) - 1
 
                 ' if enabled and running, stopit
-                If RegionClass.AvatarCount(n) = 0 Then
-                    If Running And RegionClass.RegionEnabled(n) And RegionClass.Booted(n) Then
-                        Debug.Print("AutoLoad is shutting down " + RegionClass.RegionName(n))
-                        ConsoleCommand(RegionClass.ProcessID(n), "quit{ENTER}")
+                If RegionClass.AvatarCount(X) = 0 Then
+                    If Running And RegionClass.RegionEnabled(X) And RegionClass.Booted(X) Then
+                        Debug.Print("AutoLoad is shutting down " + RegionClass.RegionName(X))
+                        ConsoleCommand(RegionClass.ProcessID(X), "quit{ENTER}")
                         Me.Focus()
-                        RegionClass.Booted(n) = False
-                        RegionClass.WarmingUp(n) = False
-                        RegionClass.ShuttingDown(n) = True
+                        RegionClass.Booted(X) = False
+                        RegionClass.WarmingUp(X) = False
+                        RegionClass.ShuttingDown(X) = True
                     End If
                 Else
-                    RegionClass.Timer(n) = 60 ' 60 seconds and we will shut it off
+                    RegionClass.Timer(X) = 60 ' 60 seconds and we will shut it off
                 End If
-                n = n + 1
             Next
         End If
 

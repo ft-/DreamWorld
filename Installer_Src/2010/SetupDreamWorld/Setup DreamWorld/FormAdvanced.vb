@@ -132,10 +132,10 @@ Public Class AdvancedForm
         Dim counter As Integer = 0
 
         Dim RegionClass As RegionMaker = RegionMaker.Instance
-        Dim n = 0
+
         For Each Z As Integer In RegionClass.RegionNumbers
             Try
-                Dim RegionName = RegionClass.RegionName(n)
+                Dim RegionName = RegionClass.RegionName(Z)
                 Dim ActualForm As New FormRegion
                 ActualForm.SetDesktopLocation(X, Y)
                 ActualForm.Init(RegionName)
@@ -148,7 +148,7 @@ Public Class AdvancedForm
             counter = counter + 1
             Y += 100
             X += 100
-            n = n + 1
+
         Next
 
     End Sub
@@ -246,16 +246,14 @@ Public Class AdvancedForm
         WelcomeBox1.Items.Clear()
 
         Dim RegionClass As RegionMaker = RegionMaker.Instance
-        Dim n = 0
 
         ' !!!regions = regions.OrderBy(Function(x) x.RegionPort).ToList()
         'Dim regions = RegionClass.RegionNumbers.OrderBy(Function(x) x.RegionName).ToList()
 
         For Each X As Integer In RegionClass.RegionNumbers
-            If RegionClass.RegionEnabled(n) Then
-                WelcomeBox1.Items.Add(RegionClass.RegionName(n))
+            If RegionClass.RegionEnabled(X) Then
+                WelcomeBox1.Items.Add(RegionClass.RegionName(X))
             End If
-            n = n + 1
         Next
 
         Dim s = WelcomeBox1.FindString(My.Settings.WelcomeRegion)
