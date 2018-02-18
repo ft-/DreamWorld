@@ -161,7 +161,7 @@ Public Class AdvancedForm
         RegionClass.CreateRegion("")
         Dim ActualForm As New FormRegion
         ActualForm.SetDesktopLocation(X, Y)
-        ActualForm.Init("New Region")
+        ActualForm.Init("")
         ActualForm.Activate()
         ActualForm.Visible = True
 
