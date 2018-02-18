@@ -1,24 +1,47 @@
-﻿Public Class Chooser
+﻿Public Class Choice
     Implements IDisposable
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
-        Dim RegionClass As RegionMaker = RegionMaker.Instance
-        Button1.DialogResult = DialogResult.OK
-        ListBox1.Items.Clear()
+        ' Set the column header style.
+        Dim columnHeaderStyle As New DataGridViewCellStyle
+        columnHeaderStyle.Font = New Font("Verdana", 10, FontStyle.Bold)
+        DataGridView.ColumnHeadersDefaultCellStyle = columnHeaderStyle
 
-
-        Dim n As Integer = 0
-        For Each X As Integer In RegionClass.RegionNumbers
-            If RegionClass.RegionEnabled(n) Then
-                ListBox1.Items.Add(RegionClass.RegionName(n))
-            End If
-            n = n + 1
-        Next
-
-        ListBox1.Sorted = True
-        ListBox1.Text = "Select from..."
+        DataGridView.Text = "Select from..."
 
     End Sub
 
+    Public Sub FillGrid(type As String)
+
+        Dim RegionClass As RegionMaker = RegionMaker.Instance
+
+        Dim L As New List(Of String)
+
+        ' add to list Unique Name
+        Dim n As Integer = 0
+        For Each X As Integer In RegionClass.RegionNumbers
+            Dim name As String
+            If type = "Group" Then
+                name = RegionClass.GroupName(n)
+            Else
+                name = RegionClass.RegionName(n)
+            End If
+
+            If L.Contains(name) Then
+            Else
+                DataGridView.Rows.Add(name)
+            End If
+
+            L.Add(name)
+
+            n = n + 1
+        Next
+
+
+    End Sub
+
+    Private Sub DataGridView_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles DataGridView.CellContentClick
+        DialogResult = vbOK
+    End Sub
 End Class

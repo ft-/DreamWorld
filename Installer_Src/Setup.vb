@@ -1260,6 +1260,33 @@ Public Class Form1
 
 #Region "ToolBars"
 
+    Private Sub ClearCachesToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ClearCachesToolStripMenuItem.Click
+
+        If Not Running Then
+            Try
+                My.Computer.FileSystem.DeleteDirectory(prefix & "bin\bakes\", FileIO.DeleteDirectoryOption.DeleteAllContents)
+                My.Computer.FileSystem.DeleteDirectory(prefix & "bin\\ScriptEngines\", FileIO.DeleteDirectoryOption.DeleteAllContents)
+            Catch
+            End Try
+        End If
+
+        Try
+            My.Computer.FileSystem.DeleteDirectory(prefix & "bin\assetcache\", FileIO.DeleteDirectoryOption.DeleteAllContents)
+            My.Computer.FileSystem.DeleteDirectory(prefix & "bin\\j2kDecodeCache\", FileIO.DeleteDirectoryOption.DeleteAllContents)
+            My.Computer.FileSystem.DeleteDirectory(prefix & "bin\\MeshCache\", FileIO.DeleteDirectoryOption.DeleteAllContents)
+        Catch
+        End Try
+
+        If Not Running Then
+            Print("All Server Caches cleared")
+        Else
+            Print("All Server Caches except scripts and bakes were cleared. Opensim must be stopped to clear script and bake caches.")
+        End If
+
+
+    End Sub
+
+
     Private Sub ToolStripMenuItem2_Click(sender As Object, e As EventArgs) Handles ToolStripMenuItem2.Click
         Print("Starting UPnp Control Panel")
         Dim pi As ProcessStartInfo = New ProcessStartInfo()
@@ -1425,8 +1452,6 @@ Public Class Form1
     Private Function Start_Opensimulator() As Boolean
 
         If Running = False Then Return True
-
-
 
         PortTests()
 
@@ -1672,7 +1697,7 @@ Public Class Form1
             End If
         End If
 
-        Log(RegionClass.RegionName(n) + " stopped")
+        Log(RegionClass.RegionName(n) + " crashed")
         RegionClass.Booted(n) = False
         RegionClass.WarmingUp(n) = False
         RegionClass.ShuttingDown(n) = False
@@ -2306,13 +2331,16 @@ Public Class Form1
 
     Public Function ChooseRegion() As String
 
-        Dim Chooseform As New Chooser ' form for choosing a set of regions
+        Dim Chooseform As New Choice ' form for choosing a set of regions
         ' Show testDialog as a modal dialog and determine if DialogResult = OK.
+
+        Chooseform.FillGrid("Region")  ' populate the grid with either Group or RegionName
+
         Dim chosen As String
         Chooseform.ShowDialog()
         Try
             ' Read the chosen sim name
-            chosen = Chooseform.ListBox1.SelectedItem.ToString()
+            chosen = Chooseform.DataGridView.CurrentCell.Value.ToString()
             If chosen.Length Then
                 Dim n As Integer = RegionClass.FindRegionByName(chosen)
                 ConsoleCommand(RegionClass.ProcessID(n), "change region " + """" + chosen + """" + "{ENTER}")
@@ -3460,6 +3488,8 @@ Public Class Form1
 
 
     End Sub
+
+
 
 
 #End Region

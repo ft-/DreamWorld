@@ -379,7 +379,7 @@ Public Class RegionList
         Dim dirpathname = ""
         Dim yesNo As MsgBoxResult = MsgBox("New regions can can be combined with other regions in an existing DOS box (Yes), or run in their own Dos Box (No)", vbYesNo, "Grouping Regions")
         If yesNo = vbYes Then
-            dirpathname = RegionChosen()
+            dirpathname = PickGroup()
             If dirpathname = "" Then
                 Form1.PrintFast("Aborted")
                 Return
@@ -418,15 +418,18 @@ Public Class RegionList
 
     End Sub
 
-    Private Function RegionChosen() As String
+    Private Function PickGroup() As String
 
-        Dim Chooseform As New Chooser ' form for choosing a set of regions
+        Dim Chooseform As New Choice ' form for choosing a set of regions
         ' Show testDialog as a modal dialog and determine if DialogResult = OK.
+
+        Chooseform.FillGrid("Group")
+
         Dim chosen As String
         Chooseform.ShowDialog()
         Try
-            ' Read the chosen sim name
-            chosen = Chooseform.ListBox1.SelectedItem.ToString()
+            ' Read the chosen GROUP name
+            chosen = Chooseform.DataGridView.CurrentCell.Value.ToString()
             If chosen.Length Then
                 Chooseform.Dispose()
             End If

@@ -28,6 +28,8 @@ Public Class FormRegion
 
     Public Sub Init(Name As String)
 
+        Me.Focus()
+
         Me.Size = New System.Drawing.Size(275, 335)
         Advanced.Visible = False
         Big = True
@@ -235,21 +237,21 @@ Public Class FormRegion
         ' might be a new region, so give them a choice
 
         If isNew Then
-            Dim Newname As String = RegionName.Text
+            Dim NewGroup As String = RegionName.Text
             Dim yesNo As MsgBoxResult = MsgBox("New regions can can be combined with other regions in an existing DOS box (Yes), or run in their own Dos Box (No)", vbYesNo, "Combine Regions?")
             If yesNo = vbYes Then
-                Newname = RegionChosen()
-                If Newname = "" Then
+                NewGroup = RegionChosen()
+                If NewGroup = "" Then
                     Form1.PrintFast("Aborted")
                     Return
                 End If
             End If
 
             If Not Directory.Exists(Filepath) Or Filepath = "" Then
-                Directory.CreateDirectory(dir & "bin\Regions\" + Newname + "\Region")
+                Directory.CreateDirectory(dir & "bin\Regions\" + NewGroup + "\Region")
             End If
 
-            RegionClass.RegionPath(n) = dir & "bin\Regions\" + Newname + "\Region\" + RegionName.Text + ".ini"
+            RegionClass.RegionPath(n) = dir & "bin\Regions\" + NewGroup + "\Region\" + RegionName.Text + ".ini"
 
 
         End If
@@ -286,13 +288,16 @@ Public Class FormRegion
 
     Private Function RegionChosen() As String
 
-        Dim Chooseform As New Chooser ' form for choosing a set of regions
+        Dim Chooseform As New Choice ' form for choosing a set of regions
         ' Show testDialog as a modal dialog and determine if DialogResult = OK.
+
+        Chooseform.FillGrid("Group")  ' populate the grid with either Group or RegionName
+
         Dim chosen As String
         Chooseform.ShowDialog()
         Try
             ' Read the chosen sim name
-            chosen = Chooseform.ListBox1.SelectedItem.ToString()
+            chosen = Chooseform.DataGridView.CurrentCell.Value.ToString()
             If chosen.Length Then
                 Chooseform.Dispose()
             End If
