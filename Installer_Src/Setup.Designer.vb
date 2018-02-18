@@ -49,10 +49,11 @@ Partial Class Form1
         Me.LoopBackToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator()
+        Me.CHeckForUpdatesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.CheckDatabaseToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ClearCachesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.DiagnosticsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripMenuItem2 = New System.Windows.Forms.ToolStripMenuItem()
-        Me.CheckDatabaseToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.CHeckForUpdatesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuAbout = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
         Me.MnuContent = New System.Windows.Forms.ToolStripMenuItem()
@@ -61,12 +62,12 @@ Partial Class Form1
         Me.MoreContentToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator3 = New System.Windows.Forms.ToolStripSeparator()
         Me.BackupRestoreToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.AllRegionsOARsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.BackupDatabaseToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.RestoreDatabaseToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
         Me.OARToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.LoadRegionOarToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.SaveRegionOARToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.AllTheRegionsOarsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.IARToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.LoadInventoryIARToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.SaveInventoryIARToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -82,7 +83,6 @@ Partial Class Form1
         Me.LogButton = New System.Windows.Forms.Button()
         Me.IgnoreButton = New System.Windows.Forms.Button()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
-        Me.ClearCachesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuStrip1.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -252,6 +252,28 @@ Partial Class Form1
         Me.ToolStripSeparator2.Name = "ToolStripSeparator2"
         Me.ToolStripSeparator2.Size = New System.Drawing.Size(207, 6)
         '
+        'CHeckForUpdatesToolStripMenuItem
+        '
+        Me.CHeckForUpdatesToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.download
+        Me.CHeckForUpdatesToolStripMenuItem.Name = "CHeckForUpdatesToolStripMenuItem"
+        Me.CHeckForUpdatesToolStripMenuItem.Size = New System.Drawing.Size(210, 22)
+        Me.CHeckForUpdatesToolStripMenuItem.Text = "Check for Updates"
+        '
+        'CheckDatabaseToolStripMenuItem
+        '
+        Me.CheckDatabaseToolStripMenuItem.Image = CType(resources.GetObject("CheckDatabaseToolStripMenuItem.Image"), System.Drawing.Image)
+        Me.CheckDatabaseToolStripMenuItem.Name = "CheckDatabaseToolStripMenuItem"
+        Me.CheckDatabaseToolStripMenuItem.Size = New System.Drawing.Size(210, 22)
+        Me.CheckDatabaseToolStripMenuItem.Text = "Check Database"
+        Me.CheckDatabaseToolStripMenuItem.ToolTipText = "Repairs corrupt MySQL table"
+        '
+        'ClearCachesToolStripMenuItem
+        '
+        Me.ClearCachesToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.exit_icon
+        Me.ClearCachesToolStripMenuItem.Name = "ClearCachesToolStripMenuItem"
+        Me.ClearCachesToolStripMenuItem.Size = New System.Drawing.Size(210, 22)
+        Me.ClearCachesToolStripMenuItem.Text = "Clear Server Caches"
+        '
         'DiagnosticsToolStripMenuItem
         '
         Me.DiagnosticsToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.server_gWSCLient
@@ -266,21 +288,6 @@ Partial Class Form1
         Me.ToolStripMenuItem2.Name = "ToolStripMenuItem2"
         Me.ToolStripMenuItem2.Size = New System.Drawing.Size(210, 22)
         Me.ToolStripMenuItem2.Text = "Port/UPnp Setup"
-        '
-        'CheckDatabaseToolStripMenuItem
-        '
-        Me.CheckDatabaseToolStripMenuItem.Image = CType(resources.GetObject("CheckDatabaseToolStripMenuItem.Image"), System.Drawing.Image)
-        Me.CheckDatabaseToolStripMenuItem.Name = "CheckDatabaseToolStripMenuItem"
-        Me.CheckDatabaseToolStripMenuItem.Size = New System.Drawing.Size(210, 22)
-        Me.CheckDatabaseToolStripMenuItem.Text = "Check Database"
-        Me.CheckDatabaseToolStripMenuItem.ToolTipText = "Repairs corrupt MySQL table"
-        '
-        'CHeckForUpdatesToolStripMenuItem
-        '
-        Me.CHeckForUpdatesToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.download
-        Me.CHeckForUpdatesToolStripMenuItem.Name = "CHeckForUpdatesToolStripMenuItem"
-        Me.CHeckForUpdatesToolStripMenuItem.Size = New System.Drawing.Size(210, 22)
-        Me.CHeckForUpdatesToolStripMenuItem.Text = "Check for Updates"
         '
         'mnuAbout
         '
@@ -337,36 +344,29 @@ Partial Class Form1
         '
         'BackupRestoreToolStripMenuItem
         '
-        Me.BackupRestoreToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AllRegionsOARsToolStripMenuItem, Me.BackupDatabaseToolStripMenuItem, Me.RestoreDatabaseToolStripMenuItem1})
+        Me.BackupRestoreToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.BackupDatabaseToolStripMenuItem, Me.RestoreDatabaseToolStripMenuItem1})
         Me.BackupRestoreToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.disk_blue
         Me.BackupRestoreToolStripMenuItem.Name = "BackupRestoreToolStripMenuItem"
         Me.BackupRestoreToolStripMenuItem.Size = New System.Drawing.Size(220, 22)
-        Me.BackupRestoreToolStripMenuItem.Text = "Backup and Restore"
-        '
-        'AllRegionsOARsToolStripMenuItem
-        '
-        Me.AllRegionsOARsToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.earth_network
-        Me.AllRegionsOARsToolStripMenuItem.Name = "AllRegionsOARsToolStripMenuItem"
-        Me.AllRegionsOARsToolStripMenuItem.Size = New System.Drawing.Size(184, 22)
-        Me.AllRegionsOARsToolStripMenuItem.Text = "All Regions => OARs"
+        Me.BackupRestoreToolStripMenuItem.Text = "Database Backup/Restore"
         '
         'BackupDatabaseToolStripMenuItem
         '
         Me.BackupDatabaseToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.disk_blue
         Me.BackupDatabaseToolStripMenuItem.Name = "BackupDatabaseToolStripMenuItem"
-        Me.BackupDatabaseToolStripMenuItem.Size = New System.Drawing.Size(184, 22)
-        Me.BackupDatabaseToolStripMenuItem.Text = "Backup Database"
+        Me.BackupDatabaseToolStripMenuItem.Size = New System.Drawing.Size(169, 22)
+        Me.BackupDatabaseToolStripMenuItem.Text = "Backup Databases"
         '
         'RestoreDatabaseToolStripMenuItem1
         '
         Me.RestoreDatabaseToolStripMenuItem1.Image = Global.Outworldz.My.Resources.Resources.cube_blue
         Me.RestoreDatabaseToolStripMenuItem1.Name = "RestoreDatabaseToolStripMenuItem1"
-        Me.RestoreDatabaseToolStripMenuItem1.Size = New System.Drawing.Size(184, 22)
+        Me.RestoreDatabaseToolStripMenuItem1.Size = New System.Drawing.Size(169, 22)
         Me.RestoreDatabaseToolStripMenuItem1.Text = "Restore Database"
         '
         'OARToolStripMenuItem
         '
-        Me.OARToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.LoadRegionOarToolStripMenuItem, Me.SaveRegionOARToolStripMenuItem})
+        Me.OARToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.LoadRegionOarToolStripMenuItem, Me.SaveRegionOARToolStripMenuItem, Me.AllTheRegionsOarsToolStripMenuItem})
         Me.OARToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.disk_green
         Me.OARToolStripMenuItem.Name = "OARToolStripMenuItem"
         Me.OARToolStripMenuItem.Size = New System.Drawing.Size(220, 22)
@@ -376,15 +376,22 @@ Partial Class Form1
         '
         Me.LoadRegionOarToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.data
         Me.LoadRegionOarToolStripMenuItem.Name = "LoadRegionOarToolStripMenuItem"
-        Me.LoadRegionOarToolStripMenuItem.Size = New System.Drawing.Size(165, 22)
-        Me.LoadRegionOarToolStripMenuItem.Text = "Load Region Oar"
+        Me.LoadRegionOarToolStripMenuItem.Size = New System.Drawing.Size(184, 22)
+        Me.LoadRegionOarToolStripMenuItem.Text = "Load Region OAR"
         '
         'SaveRegionOARToolStripMenuItem
         '
         Me.SaveRegionOARToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.disk_green
         Me.SaveRegionOARToolStripMenuItem.Name = "SaveRegionOARToolStripMenuItem"
-        Me.SaveRegionOARToolStripMenuItem.Size = New System.Drawing.Size(165, 22)
+        Me.SaveRegionOARToolStripMenuItem.Size = New System.Drawing.Size(184, 22)
         Me.SaveRegionOARToolStripMenuItem.Text = "Save Region OAR"
+        '
+        'AllTheRegionsOarsToolStripMenuItem
+        '
+        Me.AllTheRegionsOarsToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.disk_green
+        Me.AllTheRegionsOarsToolStripMenuItem.Name = "AllTheRegionsOarsToolStripMenuItem"
+        Me.AllTheRegionsOarsToolStripMenuItem.Size = New System.Drawing.Size(184, 22)
+        Me.AllTheRegionsOarsToolStripMenuItem.Text = "All Regions => OARs"
         '
         'IARToolStripMenuItem
         '
@@ -506,13 +513,6 @@ Partial Class Form1
         Me.PictureBox1.TabIndex = 27
         Me.PictureBox1.TabStop = False
         '
-        'ClearCachesToolStripMenuItem
-        '
-        Me.ClearCachesToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.exit_icon
-        Me.ClearCachesToolStripMenuItem.Name = "ClearCachesToolStripMenuItem"
-        Me.ClearCachesToolStripMenuItem.Size = New System.Drawing.Size(210, 22)
-        Me.ClearCachesToolStripMenuItem.Text = "Clear Server Caches"
-        '
         'Form1
         '
         Me.AllowDrop = True
@@ -605,7 +605,6 @@ Partial Class Form1
     Friend WithEvents ToolStripMenuItem2 As ToolStripMenuItem
     Friend WithEvents RegionsToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents BackupRestoreToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents AllRegionsOARsToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents BackupDatabaseToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents RestoreDatabaseToolStripMenuItem1 As ToolStripMenuItem
     Friend WithEvents OARToolStripMenuItem As ToolStripMenuItem
@@ -618,4 +617,5 @@ Partial Class Form1
     Friend WithEvents ToolStripSeparator2 As ToolStripSeparator
     Friend WithEvents ToolStripSeparator3 As ToolStripSeparator
     Friend WithEvents ClearCachesToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents AllTheRegionsOarsToolStripMenuItem As ToolStripMenuItem
 End Class
