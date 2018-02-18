@@ -19,6 +19,7 @@ OutworldzFiles/opensim/bin/maptiles/*
 OutworldzFiles/opensim/bin/DataSnapshot/*
 OutworldzFiles/opensim/bin/ScriptEngines/*
 OutworldzFiles/opensim/bin/j2kDecodeCache/*
+OutworldzFiles/opensim/bin/MeshCache/*
 OutworldzFiles/opensim/bin/bakes/*
 
 bakes\*

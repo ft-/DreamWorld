@@ -47,87 +47,87 @@ Public Class RegionMaker
 
     Public Property GroupName(n As Integer) As String
         Get
-            Return RegionList(n)._Group
+            Return RegionList(CheckN(n))._Group
         End Get
         Set(ByVal Value As String)
-            RegionList(n)._Group = Value
+            RegionList(CheckN(n))._Group = Value
         End Set
     End Property
     Public Property NonPhysicalPrimMax(n As Integer) As Integer
         Get
-            Return RegionList(n)._NonphysicalPrimMax
+            Return RegionList(CheckN(n))._NonphysicalPrimMax
         End Get
         Set(ByVal Value As Integer)
-            RegionList(n)._NonphysicalPrimMax = Value
+            RegionList(CheckN(n))._NonphysicalPrimMax = Value
         End Set
     End Property
     Public Property PhysicalPrimMax(n As Integer) As Integer
         Get
-            Return RegionList(n)._PhysicalPrimMax
+            Return RegionList(CheckN(n))._PhysicalPrimMax
         End Get
         Set(ByVal Value As Integer)
-            RegionList(n)._PhysicalPrimMax = Value
+            RegionList(CheckN(n))._PhysicalPrimMax = Value
         End Set
     End Property
     Public Property ClampPrimSize(n As Integer) As Boolean
         Get
-            Return RegionList(n)._ClampPrimSize
+            Return RegionList(CheckN(n))._ClampPrimSize
         End Get
         Set(ByVal Value As Boolean)
-            RegionList(n)._ClampPrimSize = Value
+            RegionList(CheckN(n))._ClampPrimSize = Value
         End Set
     End Property
     Public Property MaxPrims(n As Integer) As Long
         Get
-            Return RegionList(n)._MaxPrims
+            Return RegionList(CheckN(n))._MaxPrims
         End Get
         Set(ByVal Value As Long)
-            RegionList(n)._MaxPrims = Value
+            RegionList(CheckN(n))._MaxPrims = Value
         End Set
     End Property
     Public Property MaxAgents(n As Integer) As Integer
         Get
-            Return RegionList(n)._MaxAgents
+            Return RegionList(CheckN(n))._MaxAgents
         End Get
         Set(ByVal Value As Integer)
-            RegionList(n)._MaxAgents = Value
+            RegionList(CheckN(n))._MaxAgents = Value
         End Set
     End Property
 
     Public Property Timer(n As Integer) As Integer
         Get
-            Return RegionList(n)._Timer
+            Return RegionList(CheckN(n))._Timer
         End Get
         Set(ByVal Value As Integer)
-            RegionList(n)._Timer = Value
+            RegionList(CheckN(n))._Timer = Value
         End Set
     End Property
     Public Property ShuttingDown(n As Integer) As Boolean
         Get
-            Return RegionList(n)._ShuttingDown
+            Return RegionList(CheckN(n))._ShuttingDown
         End Get
         Set(ByVal Value As Boolean)
-            Debug.Print(RegionList(n)._RegionName + " ShuttingDown set to " + Value.ToString)
-            RegionList(n)._ShuttingDown = Value
+            Debug.Print(RegionList(CheckN(n))._RegionName + " ShuttingDown set to " + Value.ToString)
+            RegionList(CheckN(n))._ShuttingDown = Value
         End Set
     End Property
     Public Property Booted(n As Integer) As Boolean
         Get
-            'Debug.Print(RegionList(n)._RegionName + "<" + RegionList(n)._Ready.ToString)
-            Return RegionList(n)._Ready
+            'Debug.Print(RegionList(CheckN(n))._RegionName + "<" + RegionList(CheckN(n))._Ready.ToString)
+            Return RegionList(CheckN(n))._Ready
         End Get
         Set(ByVal Value As Boolean)
-            Debug.Print(RegionList(n)._RegionName + " Ready set to " + Value.ToString)
-            RegionList(n)._Ready = Value
+            Debug.Print(RegionList(CheckN(n))._RegionName + " Ready set to " + Value.ToString)
+            RegionList(CheckN(n))._Ready = Value
         End Set
     End Property
     Public Property WarmingUp(n As Integer) As Boolean
         Get
-            Return RegionList(n)._WarmingUp
+            Return RegionList(CheckN(n))._WarmingUp
         End Get
         Set(ByVal Value As Boolean)
-            Debug.Print(RegionList(n)._RegionName + " WarmingUp set to " + Value.ToString)
-            RegionList(n)._WarmingUp = Value
+            Debug.Print(RegionList(CheckN(n))._RegionName + " WarmingUp set to " + Value.ToString)
+            RegionList(CheckN(n))._WarmingUp = Value
         End Set
     End Property
     Public ReadOnly Property RegionCount() As Integer
@@ -138,113 +138,113 @@ Public Class RegionMaker
     ''' ''''''''''''''''''' PATHS ''''''''''''''''''''
     Public Property IniPath(n As Integer) As String
         Get
-            Return RegionList(n)._IniPath
+            Return RegionList(CheckN(n))._IniPath
         End Get
         Set(ByVal Value As String)
 
-            RegionList(n)._IniPath = Value
+            RegionList(CheckN(n))._IniPath = Value
         End Set
     End Property
 
     Public Property RegionPath(n As Integer) As String
         Get
-            Return RegionList(n)._RegionPath
+            Return RegionList(CheckN(n))._RegionPath
         End Get
         Set(ByVal Value As String)
-            RegionList(n)._RegionPath = Value
+            RegionList(CheckN(n))._RegionPath = Value
         End Set
     End Property
     Public Property FolderPath(n As Integer) As String
         Get
-            Return RegionList(n)._FolderPath
+            Return RegionList(CheckN(n))._FolderPath
         End Get
         Set(ByVal Value As String)
-            RegionList(n)._FolderPath = Value
+            RegionList(CheckN(n))._FolderPath = Value
         End Set
     End Property
 
     Public Property RegionEnabled(n As Integer) As Boolean
         Get
-            Return RegionList(n)._RegionEnabled
+            Return RegionList(CheckN(n))._RegionEnabled
         End Get
         Set(ByVal Value As Boolean)
-            RegionList(n)._RegionEnabled = Value
+            RegionList(CheckN(n))._RegionEnabled = Value
         End Set
     End Property
     Public Property ProcessID(n As Integer) As Integer
         Get
-            Return RegionList(n)._ProcessID
+            Return RegionList(CheckN(n))._ProcessID
         End Get
         Set(ByVal Value As Integer)
-            RegionList(n)._ProcessID = Value
+            RegionList(CheckN(n))._ProcessID = Value
         End Set
     End Property
     Public Property AvatarCount(n As Integer) As Integer
         Get
-            Return RegionList(n)._AvatarCount
+            Return RegionList(CheckN(n))._AvatarCount
         End Get
         Set(ByVal Value As Integer)
-            RegionList(n)._AvatarCount = Value
+            RegionList(CheckN(n))._AvatarCount = Value
         End Set
     End Property
 
     Public Property RegionName(n As Integer) As String
         Get
-            Return RegionList(n)._RegionName
+            Return RegionList(CheckN(n))._RegionName
         End Get
         Set(ByVal Value As String)
-            RegionList(n)._RegionName = Value
+            RegionList(CheckN(n))._RegionName = Value
         End Set
     End Property
     Public Property UUID(n As Integer) As String
         Get
-            Return RegionList(n)._UUID
+            Return RegionList(CheckN(n))._UUID
         End Get
         Set(ByVal Value As String)
-            RegionList(n)._UUID = Value
+            RegionList(CheckN(n))._UUID = Value
         End Set
     End Property
     Public Property SizeX(n As Integer) As Integer
         Get
-            Return RegionList(n)._SizeX
+            Return RegionList(CheckN(n))._SizeX
         End Get
         Set(ByVal Value As Integer)
-            RegionList(n)._SizeX = Value
+            RegionList(CheckN(n))._SizeX = Value
         End Set
     End Property
     Public Property SizeY(n As Integer) As Integer
         Get
-            Return RegionList(n)._SizeY
+            Return RegionList(CheckN(n))._SizeY
         End Get
         Set(ByVal Value As Integer)
-            RegionList(n)._SizeY = Value
+            RegionList(CheckN(n))._SizeY = Value
         End Set
     End Property
     Public Property RegionPort(n As Integer) As Integer
         Get
-            If RegionList(n)._RegionPort <= My.Settings.PrivatePort Then
-                RegionList(n)._RegionPort = My.Settings.PrivatePort + 1 ' 8004, by default
+            If RegionList(CheckN(n))._RegionPort <= My.Settings.PrivatePort Then
+                RegionList(CheckN(n))._RegionPort = My.Settings.PrivatePort + 1 ' 8004, by default
             End If
-            Return RegionList(n)._RegionPort
+            Return RegionList(CheckN(n))._RegionPort
         End Get
         Set(ByVal Value As Integer)
-            RegionList(n)._RegionPort = Value
+            RegionList(CheckN(n))._RegionPort = Value
         End Set
     End Property
     Public Property CoordX(n As Integer) As Integer
         Get
-            Return RegionList(n)._CoordX
+            Return RegionList(CheckN(n))._CoordX
         End Get
         Set(ByVal Value As Integer)
-            RegionList(n)._CoordX = Value
+            RegionList(CheckN(n))._CoordX = Value
         End Set
     End Property
     Public Property CoordY(n As Integer) As Integer
         Get
-            Return RegionList(n)._CoordY
+            Return RegionList(CheckN(n))._CoordY
         End Get
         Set(ByVal Value As Integer)
-            RegionList(n)._CoordY = Value
+            RegionList(CheckN(n))._CoordY = Value
         End Set
     End Property
 
@@ -289,6 +289,16 @@ Public Class RegionMaker
     End Class
 
 #Region "Functions"
+    Private Function CheckN(n As Integer) As Integer
+
+        If n >= RegionList.Count Or n < 0 Then
+            Form1.Log("Error: Bad N in Region List " + n.ToString)
+            Return 0
+        End If
+
+        Return n
+
+    End Function
 
     Public Sub RegionDump()
 
@@ -329,11 +339,11 @@ Public Class RegionMaker
 
         Return
 
-        Debug.Print("Region:" + RegionList(n)._RegionName +
-            " WarmingUp=" + RegionList(n)._WarmingUp.ToString +
-           " ShuttingDown=" + RegionList(n)._ShuttingDown.ToString +
-            " Ready=" + RegionList(n)._Ready.ToString +
-           " RegionEnabled=" + RegionList(n)._RegionEnabled.ToString)
+        Debug.Print("Region:" + RegionList(CheckN(n))._RegionName +
+            " WarmingUp=" + RegionList(CheckN(n))._WarmingUp.ToString +
+           " ShuttingDown=" + RegionList(CheckN(n))._ShuttingDown.ToString +
+            " Ready=" + RegionList(CheckN(n))._Ready.ToString +
+           " RegionEnabled=" + RegionList(CheckN(n))._RegionEnabled.ToString)
 
     End Sub
 
@@ -436,80 +446,80 @@ Public Class RegionMaker
                         CreateRegion(fName)
 
                         Try
-                            RegionEnabled(n) = Form1.GetIni(ini, fName, "Enabled", ";")
+                            RegionEnabled(CheckN(n)) = Form1.GetIni(ini, fName, "Enabled", ";")
                         Catch ex As Exception
-                            RegionEnabled(n) = True
+                            RegionEnabled(CheckN(n)) = True
                         End Try
 
-                        RegionPath(n) = ini ' save the path
-                        FolderPath(n) = Path.GetDirectoryName(ini)
+                        RegionPath(CheckN(n)) = ini ' save the path
+                        FolderPath(CheckN(n)) = Path.GetDirectoryName(ini)
 
-                        Dim theEnd As Integer = FolderPath(n).LastIndexOf("\")
-                        IniPath(n) = FolderPath(n).Substring(0, theEnd + 1)
+                        Dim theEnd As Integer = FolderPath(CheckN(n)).LastIndexOf("\")
+                        IniPath(CheckN(n)) = FolderPath(CheckN(n)).Substring(0, theEnd + 1)
 
                         ' need folder name in case there are more than 1 ini
-                        Dim theStart = FolderPath(n).IndexOf("Regions\") + 8
-                        theEnd = FolderPath(n).LastIndexOf("\")
-                        GroupName(n) = FolderPath(n).Substring(theStart, theEnd - theStart)
+                        Dim theStart = FolderPath(CheckN(n)).IndexOf("Regions\") + 8
+                        theEnd = FolderPath(CheckN(n)).LastIndexOf("\")
+                        GroupName(CheckN(n)) = FolderPath(CheckN(n)).Substring(theStart, theEnd - theStart)
 
-                        UUID(n) = Form1.GetIni(ini, fName, "RegionUUID", ";")
-                        SizeX(n) = Convert.ToInt16(Form1.GetIni(ini, fName, "SizeX", ";"))
-                        SizeY(n) = Convert.ToInt16(Form1.GetIni(ini, fName, "SizeY", ";"))
-                        RegionPort(n) = Convert.ToInt16(Form1.GetIni(ini, fName, "InternalPort", ";"))
+                        UUID(CheckN(n)) = Form1.GetIni(ini, fName, "RegionUUID", ";")
+                        SizeX(CheckN(n)) = Convert.ToInt16(Form1.GetIni(ini, fName, "SizeX", ";"))
+                        SizeY(CheckN(n)) = Convert.ToInt16(Form1.GetIni(ini, fName, "SizeY", ";"))
+                        RegionPort(CheckN(n)) = Convert.ToInt16(Form1.GetIni(ini, fName, "InternalPort", ";"))
 
                         ' extended props V2.1
                         If Convert.ToInt16(Form1.GetIni(ini, fName, "NonPhysicalPrimMax", ";")) = 0 Then
-                            NonPhysicalPrimMax(n) = 1024
+                            NonPhysicalPrimMax(CheckN(n)) = 1024
                         Else
-                            NonPhysicalPrimMax(n) = Convert.ToInt16(Form1.GetIni(ini, fName, "NonPhysicalPrimMax", ";"))
+                            NonPhysicalPrimMax(CheckN(n)) = Convert.ToInt16(Form1.GetIni(ini, fName, "NonPhysicalPrimMax", ";"))
                         End If
 
                         If Convert.ToInt16(Form1.GetIni(ini, fName, "PhysicalPrimMax", ";")) = 0 Then
-                            PhysicalPrimMax(n) = 64
+                            PhysicalPrimMax(CheckN(n)) = 64
                         Else
-                            PhysicalPrimMax(n) = Convert.ToInt16(Form1.GetIni(ini, fName, "PhysicalPrimMax", ";"))
+                            PhysicalPrimMax(CheckN(n)) = Convert.ToInt16(Form1.GetIni(ini, fName, "PhysicalPrimMax", ";"))
                         End If
 
                         If Form1.GetIni(ini, fName, "ClampPrimSize", ";") = "" Then
-                            ClampPrimSize(n) = False
+                            ClampPrimSize(CheckN(n)) = False
                         Else
-                            ClampPrimSize(n) = Convert.ToBoolean(Form1.GetIni(ini, fName, "ClampPrimSize", ";"))
+                            ClampPrimSize(CheckN(n)) = Convert.ToBoolean(Form1.GetIni(ini, fName, "ClampPrimSize", ";"))
                         End If
 
                         If Convert.ToInt32(Form1.GetIni(ini, fName, "MaxPrims", ";")) = 0 Then
-                            MaxPrims(n) = 45000
+                            MaxPrims(CheckN(n)) = 45000
                         Else
-                            MaxPrims(n) = Convert.ToInt32(Form1.GetIni(ini, fName, "MaxPrims", ";"))
+                            MaxPrims(CheckN(n)) = Convert.ToInt32(Form1.GetIni(ini, fName, "MaxPrims", ";"))
                         End If
 
                         If Convert.ToInt16(Form1.GetIni(ini, fName, "MaxAgents", ";")) = 0 Then
-                            MaxAgents(n) = 100
+                            MaxAgents(CheckN(n)) = 100
                         Else
-                            MaxAgents(n) = Convert.ToInt16(Form1.GetIni(ini, fName, "MaxAgents", ";"))
+                            MaxAgents(CheckN(n)) = Convert.ToInt16(Form1.GetIni(ini, fName, "MaxAgents", ";"))
                         End If
 
 
                         ' Location is int,int format.
                         Dim C = Form1.GetIni(ini, fName, "Location", ";")
                         Dim parts As String() = C.Split(New Char() {","c}) ' split at the comma
-                        CoordX(n) = parts(0)
-                        CoordY(n) = parts(1)
+                        CoordX(CheckN(n)) = parts(0)
+                        CoordY(CheckN(n)) = parts(1)
 
                         If initted Then
                             ' Backups of transient data 
                             Try
-                                ProcessID(n) = Backup(n)._ProcessID
-                                AvatarCount(n) = Backup(n)._AvatarCount
-                                Booted(n) = Backup(n)._Ready
-                                WarmingUp(n) = Backup(n)._WarmingUp
-                                ShuttingDown(n) = Backup(n)._ShuttingDown
-                                Timer(n) = Backup(n)._Timer
+                                ProcessID(CheckN(n)) = Backup(CheckN(n))._ProcessID
+                                AvatarCount(CheckN(n)) = Backup(CheckN(n))._AvatarCount
+                                Booted(CheckN(n)) = Backup(CheckN(n))._Ready
+                                WarmingUp(CheckN(n)) = Backup(CheckN(n))._WarmingUp
+                                ShuttingDown(CheckN(n)) = Backup(CheckN(n))._ShuttingDown
+                                Timer(CheckN(n)) = Backup(CheckN(n))._Timer
                                 ' extended
-                                NonphysicalPrimMax(n) = Backup(n)._NonphysicalPrimMax
-                                PhysicalPrimMax(n) = Backup(n)._PhysicalPrimMax
-                                ClampPrimSize(n) = Backup(n)._ClampPrimSize
-                                MaxPrims(n) = Backup(n)._MaxPrims
-                                MaxAgents(n) = Backup(n)._MaxAgents
+                                NonPhysicalPrimMax(CheckN(n)) = Backup(CheckN(n))._NonphysicalPrimMax
+                                PhysicalPrimMax(CheckN(n)) = Backup(CheckN(n))._PhysicalPrimMax
+                                ClampPrimSize(CheckN(n)) = Backup(CheckN(n))._ClampPrimSize
+                                MaxPrims(CheckN(n)) = Backup(CheckN(n))._MaxPrims
+                                MaxAgents(CheckN(n)) = Backup(CheckN(n))._MaxAgents
 
                             Catch
                             End Try
@@ -551,20 +561,20 @@ Public Class RegionMaker
         File.Copy(Form1.prefix & "bin\Regions.proto", fname, True)
 
         Form1.LoadIni(fname, ";")
-        Form1.SetIni(name, "RegionUUID", UUID(n))
-        Form1.SetIni(name, "Location", CoordX(n) & "," & CoordY(n))
-        Form1.SetIni(name, "InternalPort", RegionPort(n))
+        Form1.SetIni(name, "RegionUUID", UUID(CheckN(n)))
+        Form1.SetIni(name, "Location", CoordX(CheckN(n)) & "," & CoordY(CheckN(n)))
+        Form1.SetIni(name, "InternalPort", RegionPort(CheckN(n)))
         Form1.SetIni(name, "ExternalHostName", My.Settings.PublicIP)
-        Form1.SetIni(name, "SizeX", SizeX(n))
-        Form1.SetIni(name, "SizeY", SizeY(n))
+        Form1.SetIni(name, "SizeX", SizeX(CheckN(n)))
+        Form1.SetIni(name, "SizeY", SizeY(CheckN(n)))
 
         ' extended props V2.1
 
-        Form1.SetIni(name, "NonPhysicalPrimMax", NonPhysicalPrimMax(n))
-        Form1.SetIni(name, "PhysicalPrimMax", PhysicalPrimMax(n))
-        Form1.SetIni(name, "ClampPrimSize", Convert.ToString(ClampPrimSize(n)))
-        Form1.SetIni(name, "MaxPrims", MaxPrims(n))
-        Form1.SetIni(name, "MaxAgents", MaxAgents(n))
+        Form1.SetIni(name, "NonPhysicalPrimMax", NonPhysicalPrimMax(CheckN(n)))
+        Form1.SetIni(name, "PhysicalPrimMax", PhysicalPrimMax(CheckN(n)))
+        Form1.SetIni(name, "ClampPrimSize", Convert.ToString(ClampPrimSize(CheckN(n))))
+        Form1.SetIni(name, "MaxPrims", MaxPrims(CheckN(n)))
+        Form1.SetIni(name, "MaxAgents", MaxAgents(CheckN(n)))
 
         Form1.SaveINI()
 
@@ -680,17 +690,17 @@ Public Class RegionMaker
                     Return ""
                 End If
 
-                If RegionEnabled(n) = False Then
-                    RegionEnabled(n) = True
-                    Form1.LoadIni(RegionPath(n), ";")
+                If RegionEnabled(CheckN(n)) = False Then
+                    RegionEnabled(CheckN(n)) = True
+                    Form1.LoadIni(RegionPath(CheckN(n)), ";")
                     Form1.SetIni(json.region_name, "Enabled", "true")
                     Form1.SaveINI()
                 End If
 
-                Booted(n) = True
-                WarmingUp(n) = False
-                ShuttingDown(n) = False
-                UUID(n) = json.region_id
+                Booted(CheckN(n)) = True
+                WarmingUp(CheckN(n)) = False
+                ShuttingDown(CheckN(n)) = False
+                UUID(CheckN(n)) = json.region_id
 
             ElseIf json.login = "shutdown" Then
                 Debug.Print("Region " & json.region_name & " shut down")
@@ -700,9 +710,9 @@ Public Class RegionMaker
                     Return ""
                 End If
 
-                Booted(n) = False
-                WarmingUp(n) = False
-                ShuttingDown(n) = False
+                Booted(CheckN(n)) = False
+                WarmingUp(CheckN(n)) = False
+                ShuttingDown(CheckN(n)) = False
 
             End If
         ElseIf POST.Contains("UUID") Then

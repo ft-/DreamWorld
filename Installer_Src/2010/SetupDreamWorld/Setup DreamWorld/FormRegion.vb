@@ -28,6 +28,10 @@ Public Class FormRegion
 
     Public Sub Init(Name As String)
 
+        Me.Size = New System.Drawing.Size(275, 335)
+        Advanced.Visible = False
+        Big = True
+
         RegionClass = RegionMaker.Instance
         If Name = "" Then
             isNew = True

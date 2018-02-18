@@ -115,7 +115,7 @@ Public Class RegionList
 
         writetodisk = False
 
-        ListView1.SuspendLayout()
+        ListView1.BeginUpdate()
 
         imageListLarge = New ImageList()
         If pixels = 0 Then pixels = 20
@@ -201,8 +201,8 @@ Public Class RegionList
         ListView1.SmallImageList = imageListSmall
 
         Me.ListView1.TabIndex = 0
-        Me.ListView1.LabelEdit = False
-        ListView1.ResumeLayout(True)
+
+        ListView1.EndUpdate()
         writetodisk = True
         Timer1.Interval = 30000
 
