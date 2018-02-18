@@ -12,30 +12,36 @@
 
     End Sub
 
-    Public Sub FillGrid(type As String)
+    Public Sub FillGrid(type As String, Optional JustRunning As Boolean = False)
 
         Dim RegionClass As RegionMaker = RegionMaker.Instance
 
         Dim L As New List(Of String)
 
         ' add to list Unique Name
-        Dim n As Integer = 0
+
         For Each X As Integer In RegionClass.RegionNumbers
             Dim name As String
             If type = "Group" Then
-                name = RegionClass.GroupName(n)
+                name = RegionClass.GroupName(X)
             Else
-                name = RegionClass.RegionName(n)
+                name = RegionClass.RegionName(X)
             End If
 
-            If L.Contains(name) Then
-            Else
-                If name <> "" Then DataGridView.Rows.Add(name)
+            ' Only show running sims option
+            If (JustRunning And RegionClass.Booted(X)) Then
+                If L.Contains(name) Then
+                Else
+                    If name <> "" Then DataGridView.Rows.Add(name)
+                End If
+            ElseIf Not JustRunning Then
+                If L.Contains(name) Then
+                Else
+                    If name <> "" Then DataGridView.Rows.Add(name)
+                End If
             End If
 
             L.Add(name)
-
-            n = n + 1
         Next
 
 

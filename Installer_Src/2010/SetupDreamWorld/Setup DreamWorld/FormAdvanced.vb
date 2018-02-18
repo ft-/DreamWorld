@@ -263,7 +263,7 @@ Public Class AdvancedForm
             WelcomeBox1.SelectedIndex = s
         Else
             MsgBox("Choose your Welcome region ", vbInformation, "Choose")
-            Dim chosen = Form1.ChooseRegion()
+            Dim chosen = Form1.ChooseRegion(False)
             Dim Index = WelcomeBox1.FindString(chosen)
             WelcomeBox1.SelectedIndex = Index
         End If
