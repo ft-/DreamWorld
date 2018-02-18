@@ -22,6 +22,7 @@ my @deletions = (
 				 "$dir/OutworldzFiles/mysql/data/opensim",
 				 "$dir/OutworldzFiles/mysql/data/robust",
 				 
+				 
 				 );
 
 foreach my $path ( @deletions) {
@@ -86,8 +87,8 @@ foreach my $file (@files) {
 }
 
 say("Adding folders");
-Process ("../7z.exe -tzip a ..\\Zips\\DreamGrid-Update$type.zip Licenses_to_Content");
-Process ("../7z.exe -tzip a ..\\Zips\\DreamGrid-Update$type.zip OutworldzFiles");
+#Process ("../7z.exe -tzip a ..\\Zips\\DreamGrid-Update$type.zip Licenses_to_Content");
+#Process ("../7z.exe -tzip a ..\\Zips\\DreamGrid-Update$type.zip OutworldzFiles");
 #Process ("../7z.exe -tzip a ..\\Zips\\DreamGrid-Update$type.zip Viewer");
 
 Process ("../7z.exe -tzip a ..\\Zips\\DreamGrid$type.zip Licenses_to_Content");
