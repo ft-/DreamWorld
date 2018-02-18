@@ -596,7 +596,7 @@ Public Class Form1
         Dim result As Integer = MessageBox.Show("Do you want to Abort?", "caption", MessageBoxButtons.YesNo)
         If result = DialogResult.Yes Then
             Print("Stopping")
-            KillAll()
+
             Buttons(StartButton)
             Print("Stopped")
             ProgressBar1.Visible = False
@@ -1697,11 +1697,13 @@ Public Class Form1
             End If
         End If
 
-        Log(RegionClass.RegionName(n) + " crashed")
-        RegionClass.Booted(n) = False
-        RegionClass.WarmingUp(n) = False
-        RegionClass.ShuttingDown(n) = False
-        RegionClass.ProcessID(n) = 0
+        For Each num In RegionClass.RegionListByGroupNum(RegionClass.GroupName(n))
+            Log(RegionClass.RegionName(n) + " crashed")
+            RegionClass.Booted(num) = False
+            RegionClass.WarmingUp(num) = False
+            RegionClass.ShuttingDown(num) = False
+            RegionClass.ProcessID(num) = 0
+        Next
 
     End Sub
 
