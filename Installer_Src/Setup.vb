@@ -1103,9 +1103,7 @@ Public Class Form1
                 SetIni("Const", "PublicPort", My.Settings.HttpPort) ' 8002
                 SetIni("Const", "http_listener_port", RegionClass.RegionPort(n)) ' varies with region
                 SetIni("Const", "PrivatePort", My.Settings.PrivatePort) '8003
-                SetIni("Const", "RegionFolderName", RegionClass.Folder(n))
-
-                SetIni("Const", "RegionFolderName", RegionClass.Folder(n))
+                SetIni("Const", "RegionFolderName", RegionClass.GroupName(n))
 
                 SaveINI()
                 My.Computer.FileSystem.CopyFile(prefix + "bin\Opensim.proto", pathname + "Opensim.ini", True)
@@ -1754,14 +1752,14 @@ Public Class Form1
 
     End Function
 
-    Public Function Boot(Name As String) As Boolean
+    Public Function Boot(BootName As String) As Boolean
 
-        Dim n = RegionClass.FindRegionByName(Name)
+        Dim n = RegionClass.FindRegionByName(BootName)
         If RegionClass.ProcessID(n) Or RegionClass.Booted(n) Or RegionClass.WarmingUp(n) Or RegionClass.ShuttingDown(n) Then
             Return True
         End If
 
-        Environment.SetEnvironmentVariable("OSIM_LOGPATH", prefix + "bin\Regions\" + RegionClass.Folder(n))
+        Environment.SetEnvironmentVariable("OSIM_LOGPATH", prefix + "bin\Regions\" + RegionClass.GroupName(n))
 
         Dim myProcess As Process = GetNewProcess()
 
@@ -1770,7 +1768,7 @@ Public Class Form1
             Return False
         End If
 
-        Print("Starting Region " + Name)
+        Print("Starting Region " + BootName)
 
         Try
             myProcess.EnableRaisingEvents = True
@@ -1780,7 +1778,7 @@ Public Class Form1
             Dim permanent = True
             myProcess.StartInfo.FileName = """" + prefix + "bin\OpenSim.exe" + """"
             myProcess.StartInfo.CreateNoWindow = False
-            myProcess.StartInfo.Arguments = " -inidirectory=" & """" & "./Regions/" & RegionClass.Folder(n) + """"
+            myProcess.StartInfo.Arguments = " -inidirectory=" & """" & "./Regions/" & RegionClass.GroupName(n) + """"
 
             If mnuShow.Checked Then
                 myProcess.StartInfo.WindowStyle = ProcessWindowStyle.Normal
@@ -1789,53 +1787,48 @@ Public Class Form1
             End If
 
             Try
-                My.Computer.FileSystem.DeleteFile(prefix + "bin\Regions\" & RegionClass.Folder(n) & "\Opensim.log")
+                My.Computer.FileSystem.DeleteFile(prefix + "bin\Regions\" & RegionClass.GroupName(n) & "\Opensim.log")
             Catch
             End Try
 
             Try
-                My.Computer.FileSystem.DeleteFile(prefix + "bin\Regions\" & RegionClass.Folder(n) & "\PID.pid")
+                My.Computer.FileSystem.DeleteFile(prefix + "bin\Regions\" & RegionClass.GroupName(n) & "\PID.pid")
             Catch
             End Try
 
             Try
-                My.Computer.FileSystem.DeleteFile(prefix + "bin\regions\" & RegionClass.Folder(n) & "\OpensimConsole.log")
+                My.Computer.FileSystem.DeleteFile(prefix + "bin\regions\" & RegionClass.GroupName(n) & "\OpensimConsole.log")
             Catch ex As Exception
             End Try
 
             Try
-                My.Computer.FileSystem.DeleteFile(prefix + "bin\regions\" & RegionClass.Folder(n) & "\OpenSimStats.log")
+                My.Computer.FileSystem.DeleteFile(prefix + "bin\regions\" & RegionClass.GroupName(n) & "\OpenSimStats.log")
             Catch ex As Exception
             End Try
-
-            ' V2.06
-            'myProcess.EnableRaisingEvents = True
-            'myProcess.StartInfo.UseShellExecute = True ' so we can redirect streams
-            'myProcess.StartInfo.WorkingDirectory = prefix + "bin"
-            'myProcess.StartInfo.FileName = prefix + "bin\OpenSim.exe"
-            'myProcess.StartInfo.CreateNoWindow = False
-            'myProcess.StartInfo.Arguments = """" & "-inidirectory=./Regions/" & o.Folder() & """"
 
             RegionClass.ProcessID(n) = 0
             myProcess.Start()
             RegionClass.ProcessID(n) = myProcess.Id
 
             If myProcess.Id Then
-                RegionClass.WarmingUp(n) = True
-                RegionClass.Booted(n) = False
-                RegionClass.ShuttingDown(n) = False
+
+                For Each num In RegionClass.RegionListByGroupNum(RegionClass.GroupName(n))
+                    RegionClass.WarmingUp(num) = True
+                    RegionClass.Booted(num) = False
+                    RegionClass.ShuttingDown(num) = False
+                Next
 
                 Thread.Sleep(1500)
-                SetWindowText(myProcess.MainWindowHandle, Name)
 
+                SetWindowText(myProcess.MainWindowHandle, RegionClass.GroupName(n))
                 Return True
             End If
 
         Catch ex As Exception
             If ex.Message.Contains("Process has exited") Then Return False
-            Print("Oops! " + Name + " did Not start")
+            Print("Oops! " + BootName + " did Not start")
             Log(ex.Message)
-            Dim yesno = MsgBox("Oops! " + Name + " did Not start. Do you want to see the log file?", vbYesNo)
+            Dim yesno = MsgBox("Oops! " + BootName + " did Not start. Do you want to see the log file?", vbYesNo)
             If (yesno = vbYes) Then
                 System.Diagnostics.Process.Start("notepad.exe", RegionClass.IniPath(n) + "Opensim.log")
             End If

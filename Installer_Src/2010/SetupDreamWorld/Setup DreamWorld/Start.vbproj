@@ -232,6 +232,12 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="RegionMaker.vb" />
+    <Compile Include="RegionTreeView.Designer.vb">
+      <DependentUpon>RegionTreeView.vb</DependentUpon>
+    </Compile>
+    <Compile Include="RegionTreeView.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Settings.vb" />
     <Compile Include="FormVoice.Designer.vb">
       <DependentUpon>FormVoice.vb</DependentUpon>
@@ -276,6 +282,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="RegionList.resx">
       <DependentUpon>RegionList.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RegionTreeView.resx">
+      <DependentUpon>RegionTreeView.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

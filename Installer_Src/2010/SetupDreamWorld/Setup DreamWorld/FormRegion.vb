@@ -11,6 +11,15 @@ Public Class FormRegion
     Dim changed As Boolean    ' true if we need to save a form
     Dim isNew As Integer = False
     Dim RegionClass As RegionMaker
+
+    Public Sub New()
+
+        ' This call is required by the designer.
+        InitializeComponent()
+
+        ' Add any initialization after the InitializeComponent() call.
+
+    End Sub
 #End Region
 
 #Region "Functions"
@@ -185,6 +194,9 @@ Public Class FormRegion
         Dim Filepath = RegionClass.RegionPath(n)
 
         Dim Folderpath = RegionClass.FolderPath(n)
+
+        '!!! Region Treeview
+
 
         ' rename is possible
         If oldname <> RegionName.Text And Not isNew Then

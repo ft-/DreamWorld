@@ -7,9 +7,6 @@ Public Class AdvancedForm
     Dim Awake As Integer = 1000
     Dim Coffee As Integer = 500
     Dim Toomuch As Integer = 0
-    Dim MyRegion As RegionMaker
-
-
 
 #End Region
 
@@ -66,6 +63,7 @@ Public Class AdvancedForm
 
     Private Sub Form1_Closed(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Closed
 
+        ' nothing
 
     End Sub
 
@@ -247,9 +245,12 @@ Public Class AdvancedForm
         ' Default welcome region load
         WelcomeBox1.Items.Clear()
 
-        ' !!!regions = regions.OrderBy(Function(x) x.RegionName).ToList()
         Dim RegionClass As RegionMaker = RegionMaker.Instance
         Dim n = 0
+
+        ' !!!regions = regions.OrderBy(Function(x) x.RegionPort).ToList()
+        'Dim regions = RegionClass.RegionNumbers.OrderBy(Function(x) x.RegionName).ToList()
+
         For Each X As Integer In RegionClass.RegionNumbers
             If RegionClass.RegionEnabled(n) Then
                 WelcomeBox1.Items.Add(RegionClass.RegionName(n))

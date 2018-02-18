@@ -52,7 +52,7 @@ Public Class RegionList
 
     Private Sub _Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 
-        Me.Size = New System.Drawing.Size(300, 410)
+        Me.Size = New System.Drawing.Size(410, 410)
 
         pixels = 70
 
@@ -126,6 +126,7 @@ Public Class RegionList
         ' Create columns for the items and subitems.
         ' Width of -2 indicates auto-size.
         ListView1.Columns.Add("Enabled", 120, HorizontalAlignment.Center)
+        ListView1.Columns.Add("Group", 100, HorizontalAlignment.Center)
         ListView1.Columns.Add("Agents", 60, HorizontalAlignment.Center)
         ListView1.Columns.Add("Status", 60, HorizontalAlignment.Center)
 
@@ -168,6 +169,7 @@ Public Class RegionList
             Dim item1 As New ListViewItem(RegionClass.RegionName(n), Num)
             ' Place a check mark next to the item.
             item1.Checked = RegionClass.RegionEnabled(n)
+            item1.SubItems.Add(RegionClass.GroupName(n).ToString)
             item1.SubItems.Add(RegionClass.AvatarCount(n).ToString)
 
             item1.SubItems.Add(Letter)
@@ -229,7 +231,6 @@ Public Class RegionList
 
     Private Sub ListView1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ListView1.SelectedIndexChanged
 
-
         Dim regions As ListView.SelectedListViewItemCollection = Me.ListView1.SelectedItems
         Dim item As ListViewItem
 
@@ -245,9 +246,9 @@ Public Class RegionList
 
         ' Running, stop it
 
-        If RegionClass.ShuttingDown(n) Then
-            RegionClass.ShuttingDown(n) = False
-        End If
+        'If RegionClass.ShuttingDown(n) Then
+        ' RegionClass.ShuttingDown(n) = False
+        'End If
 
         If RegionClass.RegionEnabled(n) And (RegionClass.Booted(n) Or RegionClass.WarmingUp(n)) Then
             ' if enabled and running, even partly up, stop it.
@@ -445,7 +446,7 @@ Public Class RegionList
 
     Private Sub RegionHelp_Click(sender As Object, e As EventArgs) Handles RegionHelp.Click
 
-        Process.Start(Form1.Domain + "/Outworldz_Installer/RegionHelp.htm")
+        Process.Start(Form1.Domain + "/Outworldz_Installer/RegionHelp.htm") ' !!!
 
     End Sub
 

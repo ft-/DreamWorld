@@ -607,17 +607,17 @@ Namespace My
         End Property
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("AutoBackup")>  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
+         Global.System.Configuration.DefaultSettingValueAttribute("AutoBackup")>
         Public Property BackupFolder() As String
             Get
-                Return CType(Me("BackupFolder"),String)
+                Return CType(Me("BackupFolder"), String)
             End Get
             Set
-                Me("BackupFolder") = value
+                Me("BackupFolder") = Value
             End Set
         End Property
-        
+
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("False")>  _

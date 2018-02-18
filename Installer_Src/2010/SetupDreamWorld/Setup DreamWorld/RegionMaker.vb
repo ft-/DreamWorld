@@ -45,6 +45,14 @@ Public Class RegionMaker
 
 #Region "Properties"
 
+    Public Property GroupName(n As Integer) As String
+        Get
+            Return RegionList(n)._Group
+        End Get
+        Set(ByVal Value As String)
+            RegionList(n)._Group = Value
+        End Set
+    End Property
     Public Property NonPhysicalPrimMax(n As Integer) As Integer
         Get
             Return RegionList(n)._NonphysicalPrimMax
@@ -126,7 +134,6 @@ Public Class RegionMaker
         Get
             Return RegionList.Count
         End Get
-
     End Property
     ''' ''''''''''''''''''' PATHS ''''''''''''''''''''
     Public Property IniPath(n As Integer) As String
@@ -155,14 +162,7 @@ Public Class RegionMaker
             RegionList(n)._FolderPath = Value
         End Set
     End Property
-    Public Property Folder(n As Integer) As String
-        Get
-            Return RegionList(n)._Folder
-        End Get
-        Set(ByVal Value As String)
-            RegionList(n)._Folder = Value
-        End Set
-    End Property
+
     Public Property RegionEnabled(n As Integer) As Boolean
         Get
             Return RegionList(n)._RegionEnabled
@@ -264,7 +264,7 @@ Public Class RegionMaker
     Private Class Region_data
         Public _RegionPath As String = ""  ' The full path to the region ini file
         Public _FolderPath As String = ""   ' the path to the folde r that holds the region ini
-        Public _Folder As String = ""       ' the folder name that holds the region(s), can be different named
+        Public _Group As String = ""       ' the folder name that holds the region(s), can be different named
         Public _IniPath As String = ""      ' the folder that hold the Opensim.ini, above 'Region'
         Public _ProcessID As Integer = 0
         Public _RegionName As String = ""
@@ -293,12 +293,26 @@ Public Class RegionMaker
     Public Sub RegionDump()
 
         Return
+
         Dim ctr = 0
         For Each r As Region_data In RegionList
             DebugRegions(ctr)
             ctr = ctr + 1
         Next
     End Sub
+
+    Public Function RegionListByGroupNum(GroupName As String) As List(Of Integer)
+        Dim L As New List(Of Integer)
+        Dim ctr = 0
+        For Each n As Region_data In RegionList
+            If n._Group = GroupName Then
+                L.Add(ctr)
+            End If
+            ctr = ctr + 1
+        Next
+        Return L
+
+    End Function
 
     Public Function RegionNumbers() As List(Of Integer)
         Dim L As New List(Of Integer)
@@ -369,7 +383,7 @@ Public Class RegionMaker
         r._WarmingUp = False
         r._ShuttingDown = False
         r._Timer = 0
-        r._NonphysicalPrimMax = 1024
+        r._NonPhysicalPrimMax = 1024
         r._PhysicalPrimMax = 64
         r._ClampPrimSize = False
         r._MaxPrims = 45000
@@ -385,7 +399,6 @@ Public Class RegionMaker
     Public Sub GetAllRegions()
 
         Dim Backup As New ArrayList()
-
 
         For Each thing As Region_data In RegionList
             Backup.Add(thing)
@@ -437,7 +450,7 @@ Public Class RegionMaker
                         ' need folder name in case there are more than 1 ini
                         Dim theStart = FolderPath(n).IndexOf("Regions\") + 8
                         theEnd = FolderPath(n).LastIndexOf("\")
-                        Folder(n) = FolderPath(n).Substring(theStart, theEnd - theStart)
+                        GroupName(n) = FolderPath(n).Substring(theStart, theEnd - theStart)
 
                         UUID(n) = Form1.GetIni(ini, fName, "RegionUUID", ";")
                         SizeX(n) = Convert.ToInt16(Form1.GetIni(ini, fName, "SizeX", ";"))

@@ -47,7 +47,7 @@ Partial Class RegionList
         Me.ListView1.MultiSelect = False
         Me.ListView1.Name = "ListView1"
         Me.ListView1.ShowItemToolTips = True
-        Me.ListView1.Size = New System.Drawing.Size(261, 316)
+        Me.ListView1.Size = New System.Drawing.Size(395, 316)
         Me.ListView1.TabIndex = 0
         Me.ToolTip1.SetToolTip(Me.ListView1, "Regions may start/stop in groups, depending upon how your bin\Regions folder is o" &
         "rganized.")
@@ -75,7 +75,7 @@ Partial Class RegionList
         'RegionHelp
         '
         Me.RegionHelp.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.RegionHelp.Location = New System.Drawing.Point(245, 9)
+        Me.RegionHelp.Location = New System.Drawing.Point(359, 12)
         Me.RegionHelp.Name = "RegionHelp"
         Me.RegionHelp.Size = New System.Drawing.Size(28, 27)
         Me.RegionHelp.TabIndex = 1858
@@ -89,7 +89,7 @@ Partial Class RegionList
         '
         'Addregion
         '
-        Me.Addregion.Location = New System.Drawing.Point(156, 13)
+        Me.Addregion.Location = New System.Drawing.Point(154, 13)
         Me.Addregion.Name = "Addregion"
         Me.Addregion.Size = New System.Drawing.Size(57, 23)
         Me.Addregion.TabIndex = 1859
@@ -101,7 +101,7 @@ Partial Class RegionList
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(285, 370)
+        Me.ClientSize = New System.Drawing.Size(419, 370)
         Me.Controls.Add(Me.Addregion)
         Me.Controls.Add(Me.RegionHelp)
         Me.Controls.Add(Me.ViewButton)
