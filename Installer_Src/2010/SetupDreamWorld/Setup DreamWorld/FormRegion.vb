@@ -429,7 +429,7 @@ Public Class FormRegion
     Private Sub FormRegion_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
 
         If changed Then
-            Dim v = MsgBox("Save changes?", vbYesNo)
+            Dim v = MsgBox("Save changes?", vbYesNo, "Region Save")
             If v = vbYes Then
                 Dim message = RegionValidate()
                 If Len(message) Then
@@ -451,7 +451,7 @@ Public Class FormRegion
 
         If initted And SizeX.Text <> "" Then
             If Not IsPowerOf256(Convert.ToSingle(SizeX.Text)) Then
-                MsgBox("Must be a multiple of 256: 256,512,768,1024,1280,1536,1792,2048,2304,2560, ..", vbInformation)
+                MsgBox("Must be a multiple of 256: 256,512,768,1024,1280,1536,1792,2048,2304,2560, ..", vbInformation, "Size X,Y")
             Else
                 If SizeX.Text > 1024 Then
                     RadioButton1.Checked = False
@@ -495,11 +495,11 @@ Public Class FormRegion
             Try
                 My.Computer.FileSystem.RenameFile(RegionClass.RegionPath(n), RegionName.Text + ".bak")
                 RegionClass.GetAllRegions()
-                Me.Close()
+
             Catch ex As Exception
-                MsgBox("Cannot rename region file:" + ex.Message, vbInformation)
             End Try
         End If
+        Me.Close()
 
     End Sub
 

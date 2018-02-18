@@ -238,37 +238,30 @@ Public Class RegionList
             Dim RegionName = item.SubItems(0).Text
             Debug.Print("Clicked row " + RegionName)
             Dim n As Integer = RegionClass.FindRegionByName(RegionName)
-            StartStop(n)
+            StartStopEdit(n)
         Next
 
     End Sub
-    Private Sub StartStop(n As Integer)
+    Private Sub StartStopEdit(n As Integer)
 
-        ' Running, stop it
+        ' stop it, start it, or edit it
 
-        'If RegionClass.ShuttingDown(n) Then
-        ' RegionClass.ShuttingDown(n) = False
-        'End If
-
-        If RegionClass.RegionEnabled(n) And (RegionClass.Booted(n) Or RegionClass.WarmingUp(n)) Then
+        If RegionClass.RegionEnabled(n) And (RegionClass.Booted(n) Or RegionClass.WarmingUp(n)) Or RegionClass.ShuttingDown(n) Then
             ' if enabled and running, even partly up, stop it.
             Try
-                Form1.ConsoleCommand(RegionClass.ProcessID(n), "quit{ENTER}")
-                Me.Focus()
 
-                RegionClass.Booted(n) = False
-                RegionClass.WarmingUp(n) = False
-                RegionClass.ShuttingDown(n) = True
-
-                Form1.LoadIni(RegionClass.RegionPath(n), ";")
-                Form1.SetIni(RegionClass.RegionName(n), "Enabled", "false")
-                Form1.SaveINI()
-
-                Form1.Log("Region:Stopped Region " + RegionClass.RegionName(n))
+                For Each num In RegionClass.RegionListByGroupNum(RegionClass.GroupName(n))
+                    Form1.ConsoleCommand(RegionClass.ProcessID(num), "quit{ENTER}")
+                    RegionClass.Booted(num) = False
+                    RegionClass.WarmingUp(num) = False
+                    RegionClass.ShuttingDown(num) = True
+                    Form1.Log("Region:Stopped Region " + RegionClass.RegionName(num))
+                Next
 
             Catch ex As Exception
                 Form1.Log("Region:Could not stop " + RegionClass.RegionName(n))
             End Try
+            Me.Focus()
 
         ElseIf RegionClass.RegionEnabled(n) And Not (RegionClass.Booted(n) Or RegionClass.WarmingUp(n) Or RegionClass.ShuttingDown(n)) Then
             ' it was stopped, and disabled, so we start up
@@ -281,10 +274,8 @@ Public Class RegionList
             Try
                 Dim ActualForm As New FormRegion
                 ActualForm.Init(RegionClass.RegionName(n))
-                'ActualForm.SetDesktopLocation(X, Y)
                 ActualForm.Activate()
                 ActualForm.Visible = True
-
             Catch ex As Exception
                 Form1.Log("Info:" + ex.Message)
             End Try
@@ -298,7 +289,6 @@ Public Class RegionList
     ' of the ItemCheckEventArgs to retrieve and tally the price of the menu 
     ' items selected.  
     Private Sub ListView1_ItemCheck1(ByVal sender As Object, ByVal e As System.Windows.Forms.ItemCheckEventArgs) Handles ListView1.ItemCheck
-
 
         Dim Item As ListViewItem = ListView1.Items.Item(e.Index)
         Dim n As Integer = RegionClass.FindRegionByName(Item.Text)
@@ -362,7 +352,8 @@ Public Class RegionList
     Private Sub Addregion_Click(sender As Object, e As EventArgs) Handles Addregion.Click
 
         Dim ActualForm As New FormRegion
-        'ActualForm.SetDesktopLocation(300, 200)
+        Dim RegionClass As RegionMaker = RegionMaker.Instance
+        RegionClass.CreateRegion("")
         ActualForm.Init("")
         ActualForm.Activate()
         ActualForm.Visible = True
