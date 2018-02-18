@@ -107,8 +107,7 @@ Public Class RegionList
     Private Sub Timer1_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Timer1.Tick
 
         LoadMyListView()
-        'Timer1.Interval = 30000
-
+        Timer1.Interval = 30000
     End Sub
 
     Private Sub LoadMyListView()
@@ -282,7 +281,7 @@ Public Class RegionList
             End Try
 
         End If
-        Timer1.Interval = 2000
+        Timer1.Interval = 5000
 
     End Sub
 
@@ -312,7 +311,7 @@ Public Class RegionList
                 Application.DoEvents()
             End If
         End If
-        Timer1.Interval = 1000
+        Timer1.Interval = 2000
 
     End Sub
 
