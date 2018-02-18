@@ -1,6 +1,6 @@
 
-my $type  = '-V2.09';# '-Beta-V1.5';
-my $dir = "C:\\Opensim\\OutworldzSource";
+my $type  = '-V2.1';# '-Beta-V1.5';
+my $dir = "C:\\Opensim\\Outworldz Source";
 
 chdir ($dir);
 
