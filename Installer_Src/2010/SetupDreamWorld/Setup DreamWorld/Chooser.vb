@@ -30,7 +30,7 @@
 
             If L.Contains(name) Then
             Else
-                DataGridView.Rows.Add(name)
+                If name <> "" Then DataGridView.Rows.Add(name)
             End If
 
             L.Add(name)

@@ -1,15 +1,10 @@
-﻿
-
-Imports System
-Imports System.IO
-Imports System.Xml
+﻿Imports System.IO
 Imports Newtonsoft.Json
 
 
 Public Class RegionMaker
 
 #Region "Declarations"
-
 
     Public RegionList As New ArrayList()
     Private initted As Boolean = False
@@ -39,7 +34,6 @@ Public Class RegionMaker
         Debug.Print("Loaded " + RegionCount.ToString + " Regions")
 
     End Sub
-
 
 #End Region
 

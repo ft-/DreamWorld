@@ -133,12 +133,15 @@ Public Class FormRegion
 
     Public Shared Function FilenameIsOK(ByVal fileName As String) As Boolean
         ' check for invalid chars in file name for INI file
-        Dim file As String = Path.GetFileName(fileName)
-        Dim directory As String = Path.GetDirectoryName(fileName)
+        Dim file As String
 
-        Return Not (file.Intersect(Path.GetInvalidFileNameChars()).Any() _
-                OrElse
-                directory.Intersect(Path.GetInvalidPathChars()).Any())
+        Dim value As Boolean = False
+        Try
+            value = Not fileName.Intersect(Path.GetInvalidFileNameChars()).Any()
+        Catch
+        End Try
+
+        Return value
 
     End Function
 

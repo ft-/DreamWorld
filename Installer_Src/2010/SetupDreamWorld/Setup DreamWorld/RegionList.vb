@@ -44,7 +44,7 @@ Public Class RegionList
     Private Sub RegionList_Layout(sender As Object, e As LayoutEventArgs) Handles Me.Layout
 
         Dim X = Me.Width - 45
-        Dim Y = Me.Height - 95
+        Dim Y = Me.Height - 125
         ListView1.Size = New System.Drawing.Size(X, Y)
 
     End Sub
@@ -245,8 +245,11 @@ Public Class RegionList
     Private Sub StartStopEdit(n As Integer)
 
         ' stop it, start it, or edit it
+        If RegionClass.ShuttingDown(n) Then
+            RegionClass.ShuttingDown(n) = False
+        End If
 
-        If RegionClass.RegionEnabled(n) And (RegionClass.Booted(n) Or RegionClass.WarmingUp(n)) Or RegionClass.ShuttingDown(n) Then
+        If RegionClass.RegionEnabled(n) And (RegionClass.Booted(n) Or RegionClass.WarmingUp(n)) Then
             ' if enabled and running, even partly up, stop it.
             Try
 
