@@ -10,7 +10,7 @@ Public Class RegionList
     Dim pixels As Integer = 70
     Dim imageListSmall As New ImageList
     Dim imageListLarge As ImageList
-
+    Dim ItemsAreChecked As Boolean = False
     Dim RegionClass As RegionMaker = RegionMaker.Instance
 
 
@@ -107,7 +107,7 @@ Public Class RegionList
     Private Sub Timer1_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Timer1.Tick
 
         LoadMyListView()
-        Timer1.Interval = 30000
+        'Timer1.Interval = 30000
 
     End Sub
 
@@ -115,7 +115,7 @@ Public Class RegionList
 
         writetodisk = False
 
-        Me.SuspendLayout()
+        ListView1.SuspendLayout()
 
         imageListLarge = New ImageList()
         If pixels = 0 Then pixels = 20
@@ -202,8 +202,9 @@ Public Class RegionList
 
         Me.ListView1.TabIndex = 0
         Me.ListView1.LabelEdit = False
-        Me.ResumeLayout(True)
+        ListView1.ResumeLayout(True)
         writetodisk = True
+        Timer1.Interval = 30000
 
     End Sub 'listView1
 
@@ -318,11 +319,13 @@ Public Class RegionList
     ' ColumnClick event handler.
     Private Sub ColumnClick(ByVal o As Object, ByVal e As ColumnClickEventArgs)
 
+        ListView1.SuspendLayout()
         Me.ListView1.Sorting = SortOrder.None
         ' Set the ListViewItemSorter property to a new ListViewItemComparer 
         ' object. Setting this property immediately sorts the 
         ' ListView using the ListViewItemComparer object.
         Me.ListView1.ListViewItemSorter = New ListViewItemComparer(e.Column)
+        ListView1.ResumeLayout()
 
     End Sub
 
@@ -375,7 +378,7 @@ Public Class RegionList
         Dim files() As String = e.Data.GetData(DataFormats.FileDrop)
 
         Dim dirpathname = ""
-        Dim yesNo As MsgBoxResult = MsgBox("New regions can can be combined with other regions in an existing DOS box (Yes), or run in their own Dos Box (No)", vbYesNo)
+        Dim yesNo As MsgBoxResult = MsgBox("New regions can can be combined with other regions in an existing DOS box (Yes), or run in their own Dos Box (No)", vbYesNo, "Grouping Regions")
         If yesNo = vbYes Then
             dirpathname = RegionChosen()
             If dirpathname = "" Then
@@ -394,7 +397,7 @@ Public Class RegionList
                 Dim filename = Path.GetFileNameWithoutExtension(pathname)
                 Dim i = RegionClass.FindRegionByName(filename)
                 If i >= 0 Then
-                    MsgBox("Region name " + filename + " already exists", vbInformation)
+                    MsgBox("Region name " + filename + " already exists", vbInformation, "Info")
                     Return
                 End If
 
@@ -438,6 +441,26 @@ Public Class RegionList
     Private Sub RegionHelp_Click(sender As Object, e As EventArgs) Handles RegionHelp.Click
 
         Process.Start(Form1.Domain + "/Outworldz_Installer/RegionHelp.htm") ' !!!
+
+    End Sub
+
+    Private Sub AllNome_CheckedChanged(sender As Object, e As EventArgs) Handles AllNome.CheckedChanged
+
+        For Each X As ListViewItem In ListView1.Items
+            If ItemsAreChecked Then
+                X.Checked = CheckState.Unchecked
+            Else
+                X.Checked = CheckState.Checked
+            End If
+        Next
+
+        If ItemsAreChecked Then
+            ItemsAreChecked = False
+        Else
+            ItemsAreChecked = True
+        End If
+
+
 
     End Sub
 

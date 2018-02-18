@@ -521,7 +521,7 @@ Public Class RegionMaker
                     Next
 
                 Catch ex As Exception
-                    MsgBox("Error: Cannot parse a Region file:" + fName + ":" + ex.Message)
+                    MsgBox("Error: Cannot understand the contetns of region file " + fName + " : " + ex.Message, vbInformation, "Error")
                     Form1.Log("Err:Parse file " + fName + ":" + ex.Message)
                 End Try
             Next
@@ -677,7 +677,6 @@ Public Class RegionMaker
 
                 Dim n = FindRegionByName(json.region_name)
                 If n < 0 Then
-                    MsgBox("Cannot find region " + json.region_name, vbInformation)
                     Return ""
                 End If
 
@@ -698,7 +697,6 @@ Public Class RegionMaker
 
                 Dim n = FindRegionByName(json.region_name)
                 If n < 0 Then
-                    MsgBox("Cannot find region " + json.region_name, vbInformation)
                     Return ""
                 End If
 

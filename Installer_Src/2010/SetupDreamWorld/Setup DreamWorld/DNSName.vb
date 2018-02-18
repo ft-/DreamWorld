@@ -20,7 +20,7 @@ Public Class DNSName
 
         NextNameButton.Enabled = True
         If TextBox1.Text = String.Empty Then
-            MsgBox("Type in a name for your grid, or just press 'Next' to get a suggested name. You can also use a Dynamic DNS name.", vbInformation)
+            MsgBox("Type in a 'name.Outworldz.net' for your grid, or just press 'Next' to get a suggested name. You can also use a DNS name.", vbInformation, "Name Needed")
         End If
 
     End Sub
@@ -62,11 +62,10 @@ Public Class DNSName
             If IPAddress.TryParse(IP, address) Then
                 My.Settings.DnsName = TextBox1.Text
                 My.Settings.Save()
-
                 Me.Close()
                 Return
             End If
-            MsgBox("Please enter a valid domain name, a XYZ.Outworldz.net name, the IP address of this machine or the router, or register for a dynamic DNS account at http://www.noip.com", vbInformation)
+            MsgBox("Coud net use that name.  Must be valid domain name, a XYZ.Outworldz.net name, the IP address of this machine or the router, a dynamic DNS name.", vbInformation, "Name Needed")
             My.Settings.DnsName = TextBox1.Text
             My.Settings.Save()
 
@@ -88,7 +87,7 @@ Public Class DNSName
         Dim newname = Form1.GetNewDnsName()
         NextNameButton.Text = "Next Name"
         If newname = String.Empty Then
-            MsgBox("Please enter a valid DNS name, or register for one at http://www.noip.com", vbInformation)
+            MsgBox("Please enter a valid DNS name such as Name.Outworldz.net, or register for one at http://www.noip.com", vbInformation, "Name Needed")
             NextNameButton.Enabled = False
         Else
             NextNameButton.Enabled = True

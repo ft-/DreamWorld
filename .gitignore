@@ -3,8 +3,8 @@
 UDProxy
 
 /Signed_Binaries/*
-OutworldzFiles/mysql/data/*.err
-
+/OutworldzFiles/mysql/data/*.err
+/OutworldzFiles/Opensim/bin/addin-db-002/*
 LocalUserStatistics.db
 Diagnostics.log
 OpenSimConsoleHistory.txt

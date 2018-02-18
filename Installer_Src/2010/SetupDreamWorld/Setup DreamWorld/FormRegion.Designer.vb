@@ -34,6 +34,16 @@ Partial Class FormRegion
         Me.RadioButton1 = New System.Windows.Forms.RadioButton()
         Me.SizeY = New System.Windows.Forms.TextBox()
         Me.SizeX = New System.Windows.Forms.TextBox()
+        Me.MaxAgents = New System.Windows.Forms.TextBox()
+        Me.Label5 = New System.Windows.Forms.Label()
+        Me.Label9 = New System.Windows.Forms.Label()
+        Me.PhysicalPrimMax = New System.Windows.Forms.TextBox()
+        Me.Label10 = New System.Windows.Forms.Label()
+        Me.Label11 = New System.Windows.Forms.Label()
+        Me.MaxPrims = New System.Windows.Forms.TextBox()
+        Me.NonphysicalPrimMax = New System.Windows.Forms.TextBox()
+        Me.Label12 = New System.Windows.Forms.Label()
+        Me.ClampPrimSize = New System.Windows.Forms.CheckBox()
         Me.Advanced = New System.Windows.Forms.GroupBox()
         Me.Label6 = New System.Windows.Forms.Label()
         Me.Label4 = New System.Windows.Forms.Label()
@@ -48,16 +58,7 @@ Partial Class FormRegion
         Me.Button1 = New System.Windows.Forms.Button()
         Me.DeleteButton = New System.Windows.Forms.Button()
         Me.EnabledCheckBox = New System.Windows.Forms.CheckBox()
-        Me.MaxAgents = New System.Windows.Forms.TextBox()
-        Me.Label5 = New System.Windows.Forms.Label()
-        Me.Label9 = New System.Windows.Forms.Label()
-        Me.PhysicalPrimMax = New System.Windows.Forms.TextBox()
-        Me.Label10 = New System.Windows.Forms.Label()
-        Me.Label11 = New System.Windows.Forms.Label()
-        Me.MaxPrims = New System.Windows.Forms.TextBox()
-        Me.NonphysicalPrimMax = New System.Windows.Forms.TextBox()
-        Me.Label12 = New System.Windows.Forms.Label()
-        Me.ClampPrimSize = New System.Windows.Forms.CheckBox()
+        Me.Button2 = New System.Windows.Forms.Button()
         Me.Advanced.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.SuspendLayout()
@@ -158,6 +159,102 @@ Partial Class FormRegion
         Me.SizeX.TabIndex = 6
         Me.ToolTip1.SetToolTip(Me.SizeX, "Must be the same as Y")
         '
+        'MaxAgents
+        '
+        Me.MaxAgents.Location = New System.Drawing.Point(146, 212)
+        Me.MaxAgents.Name = "MaxAgents"
+        Me.MaxAgents.Size = New System.Drawing.Size(40, 20)
+        Me.MaxAgents.TabIndex = 23
+        Me.ToolTip1.SetToolTip(Me.MaxAgents, "Clamps how many Avatars + NPC's can be in a sim before the region is shown as Ful" &
+        "l.   The actual value is set in Estate Settings in the viewer.")
+        '
+        'Label5
+        '
+        Me.Label5.AutoSize = True
+        Me.Label5.Location = New System.Drawing.Point(32, 114)
+        Me.Label5.Name = "Label5"
+        Me.Label5.Size = New System.Drawing.Size(105, 13)
+        Me.Label5.TabIndex = 30
+        Me.Label5.Text = "NonphysicalPrimMax"
+        Me.ToolTip1.SetToolTip(Me.Label5, "You cannot make a regular prim bigger than this.")
+        '
+        'Label9
+        '
+        Me.Label9.AutoSize = True
+        Me.Label9.Location = New System.Drawing.Point(60, 137)
+        Me.Label9.Name = "Label9"
+        Me.Label9.Size = New System.Drawing.Size(86, 13)
+        Me.Label9.TabIndex = 31
+        Me.Label9.Text = "PhysicalPrimMax"
+        Me.ToolTip1.SetToolTip(Me.Label9, "You cannot make a physical prim bigger than this.")
+        '
+        'PhysicalPrimMax
+        '
+        Me.PhysicalPrimMax.Location = New System.Drawing.Point(146, 134)
+        Me.PhysicalPrimMax.Name = "PhysicalPrimMax"
+        Me.PhysicalPrimMax.Size = New System.Drawing.Size(40, 20)
+        Me.PhysicalPrimMax.TabIndex = 32
+        Me.ToolTip1.SetToolTip(Me.PhysicalPrimMax, "You cannot make a physical prim bigger than this.")
+        '
+        'Label10
+        '
+        Me.Label10.AutoSize = True
+        Me.Label10.Location = New System.Drawing.Point(61, 163)
+        Me.Label10.Name = "Label10"
+        Me.Label10.Size = New System.Drawing.Size(76, 13)
+        Me.Label10.TabIndex = 34
+        Me.Label10.Text = "ClampPrimSize"
+        Me.ToolTip1.SetToolTip(Me.Label10, "ClampPrimSize option to ensure no prim can exceed the set size.")
+        '
+        'Label11
+        '
+        Me.Label11.AutoSize = True
+        Me.Label11.Location = New System.Drawing.Point(85, 189)
+        Me.Label11.Name = "Label11"
+        Me.Label11.Size = New System.Drawing.Size(52, 13)
+        Me.Label11.TabIndex = 36
+        Me.Label11.Text = "MaxPrims"
+        Me.ToolTip1.SetToolTip(Me.Label11, "Not what you think it is.  Only used to tell scripts the max size allowed. Id not" &
+        " enforced by Opensim.  Viewer stop at 45,000, Opensim does not!")
+        '
+        'MaxPrims
+        '
+        Me.MaxPrims.Location = New System.Drawing.Point(146, 186)
+        Me.MaxPrims.Name = "MaxPrims"
+        Me.MaxPrims.Size = New System.Drawing.Size(40, 20)
+        Me.MaxPrims.TabIndex = 35
+        Me.ToolTip1.SetToolTip(Me.MaxPrims, "Not what you think it is.  Only used to tell scripts the max size allowed. Id not" &
+        " enforced by Opensim.  Viewer stop at 45,000, Opensim does not!")
+        '
+        'NonphysicalPrimMax
+        '
+        Me.NonphysicalPrimMax.Location = New System.Drawing.Point(146, 107)
+        Me.NonphysicalPrimMax.Name = "NonphysicalPrimMax"
+        Me.NonphysicalPrimMax.Size = New System.Drawing.Size(40, 20)
+        Me.NonphysicalPrimMax.TabIndex = 37
+        Me.ToolTip1.SetToolTip(Me.NonphysicalPrimMax, "You cannot make a regular prim bigger than this.")
+        '
+        'Label12
+        '
+        Me.Label12.AutoSize = True
+        Me.Label12.Location = New System.Drawing.Point(77, 215)
+        Me.Label12.Name = "Label12"
+        Me.Label12.Size = New System.Drawing.Size(60, 13)
+        Me.Label12.TabIndex = 38
+        Me.Label12.Text = "MaxAgents"
+        Me.ToolTip1.SetToolTip(Me.Label12, "Clamps how many Avatars + NPC's can be in a sim before the region is shown as Ful" &
+        "l.   The actual value is set in Estate Settings in the viewer.")
+        '
+        'ClampPrimSize
+        '
+        Me.ClampPrimSize.AutoSize = True
+        Me.ClampPrimSize.Location = New System.Drawing.Point(146, 163)
+        Me.ClampPrimSize.Name = "ClampPrimSize"
+        Me.ClampPrimSize.Size = New System.Drawing.Size(15, 14)
+        Me.ClampPrimSize.TabIndex = 39
+        Me.ToolTip1.SetToolTip(Me.ClampPrimSize, "ClampPrimSize option to ensure no prim can exceed the set size..")
+        Me.ClampPrimSize.UseVisualStyleBackColor = True
+        '
         'Advanced
         '
         Me.Advanced.Controls.Add(Me.ClampPrimSize)
@@ -178,7 +275,7 @@ Partial Class FormRegion
         Me.Advanced.Controls.Add(Me.Label21)
         Me.Advanced.Controls.Add(Me.CoordY)
         Me.Advanced.Controls.Add(Me.CoordX)
-        Me.Advanced.Location = New System.Drawing.Point(14, 207)
+        Me.Advanced.Location = New System.Drawing.Point(15, 242)
         Me.Advanced.Name = "Advanced"
         Me.Advanced.Size = New System.Drawing.Size(230, 241)
         Me.Advanced.TabIndex = 26
@@ -285,16 +382,16 @@ Partial Class FormRegion
         '
         'Button1
         '
-        Me.Button1.Location = New System.Drawing.Point(13, 454)
+        Me.Button1.Location = New System.Drawing.Point(93, 207)
         Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(75, 23)
+        Me.Button1.Size = New System.Drawing.Size(59, 23)
         Me.Button1.TabIndex = 27
         Me.Button1.Text = "Save"
         Me.Button1.UseVisualStyleBackColor = True
         '
         'DeleteButton
         '
-        Me.DeleteButton.Location = New System.Drawing.Point(160, 454)
+        Me.DeleteButton.Location = New System.Drawing.Point(169, 207)
         Me.DeleteButton.Name = "DeleteButton"
         Me.DeleteButton.Size = New System.Drawing.Size(75, 23)
         Me.DeleteButton.TabIndex = 28
@@ -311,101 +408,14 @@ Partial Class FormRegion
         Me.EnabledCheckBox.Text = "Enabled"
         Me.EnabledCheckBox.UseVisualStyleBackColor = True
         '
-        'MaxAgents
+        'Button2
         '
-        Me.MaxAgents.Location = New System.Drawing.Point(146, 212)
-        Me.MaxAgents.Name = "MaxAgents"
-        Me.MaxAgents.Size = New System.Drawing.Size(40, 20)
-        Me.MaxAgents.TabIndex = 23
-        Me.ToolTip1.SetToolTip(Me.MaxAgents, "Clamps how many Avatars + NPC's can be in a sim before the region is shown as Ful" &
-        "l.   The actual value is set in Estate Settings in the viewer.")
-        '
-        'Label5
-        '
-        Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(32, 114)
-        Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(105, 13)
-        Me.Label5.TabIndex = 30
-        Me.Label5.Text = "NonphysicalPrimMax"
-        Me.ToolTip1.SetToolTip(Me.Label5, "You cannot make a regular prim bigger than this.")
-        '
-        'Label9
-        '
-        Me.Label9.AutoSize = True
-        Me.Label9.Location = New System.Drawing.Point(60, 137)
-        Me.Label9.Name = "Label9"
-        Me.Label9.Size = New System.Drawing.Size(86, 13)
-        Me.Label9.TabIndex = 31
-        Me.Label9.Text = "PhysicalPrimMax"
-        Me.ToolTip1.SetToolTip(Me.Label9, "You cannot make a physical prim bigger than this.")
-        '
-        'PhysicalPrimMax
-        '
-        Me.PhysicalPrimMax.Location = New System.Drawing.Point(146, 134)
-        Me.PhysicalPrimMax.Name = "PhysicalPrimMax"
-        Me.PhysicalPrimMax.Size = New System.Drawing.Size(40, 20)
-        Me.PhysicalPrimMax.TabIndex = 32
-        Me.ToolTip1.SetToolTip(Me.PhysicalPrimMax, "You cannot make a physical prim bigger than this.")
-        '
-        'Label10
-        '
-        Me.Label10.AutoSize = True
-        Me.Label10.Location = New System.Drawing.Point(61, 163)
-        Me.Label10.Name = "Label10"
-        Me.Label10.Size = New System.Drawing.Size(76, 13)
-        Me.Label10.TabIndex = 34
-        Me.Label10.Text = "ClampPrimSize"
-        Me.ToolTip1.SetToolTip(Me.Label10, "ClampPrimSize option to ensure no prim can exceed the set size..")
-        '
-        'Label11
-        '
-        Me.Label11.AutoSize = True
-        Me.Label11.Location = New System.Drawing.Point(85, 189)
-        Me.Label11.Name = "Label11"
-        Me.Label11.Size = New System.Drawing.Size(52, 13)
-        Me.Label11.TabIndex = 36
-        Me.Label11.Text = "MaxPrims"
-        Me.ToolTip1.SetToolTip(Me.Label11, "Not what you think it is.  Only used to tell scripts the max size allowed. Id not" &
-        " enforced by Opensim.  Viewer stop at 45,000, Opensim does not!")
-        '
-        'MaxPrims
-        '
-        Me.MaxPrims.Location = New System.Drawing.Point(146, 186)
-        Me.MaxPrims.Name = "MaxPrims"
-        Me.MaxPrims.Size = New System.Drawing.Size(40, 20)
-        Me.MaxPrims.TabIndex = 35
-        Me.ToolTip1.SetToolTip(Me.MaxPrims, "Not what you think it is.  Only used to tell scripts the max size allowed. Id not" &
-        " enforced by Opensim.  Viewer stop at 45,000, Opensim does not!")
-        '
-        'NonphysicalPrimMax
-        '
-        Me.NonphysicalPrimMax.Location = New System.Drawing.Point(146, 107)
-        Me.NonphysicalPrimMax.Name = "NonphysicalPrimMax"
-        Me.NonphysicalPrimMax.Size = New System.Drawing.Size(40, 20)
-        Me.NonphysicalPrimMax.TabIndex = 37
-        Me.ToolTip1.SetToolTip(Me.NonphysicalPrimMax, "You cannot make a regular prim bigger than this.")
-        '
-        'Label12
-        '
-        Me.Label12.AutoSize = True
-        Me.Label12.Location = New System.Drawing.Point(77, 215)
-        Me.Label12.Name = "Label12"
-        Me.Label12.Size = New System.Drawing.Size(60, 13)
-        Me.Label12.TabIndex = 38
-        Me.Label12.Text = "MaxAgents"
-        Me.ToolTip1.SetToolTip(Me.Label12, "Clamps how many Avatars + NPC's can be in a sim before the region is shown as Ful" &
-        "l.   The actual value is set in Estate Settings in the viewer.")
-        '
-        'ClampPrimSize
-        '
-        Me.ClampPrimSize.AutoSize = True
-        Me.ClampPrimSize.Location = New System.Drawing.Point(146, 163)
-        Me.ClampPrimSize.Name = "ClampPrimSize"
-        Me.ClampPrimSize.Size = New System.Drawing.Size(15, 14)
-        Me.ClampPrimSize.TabIndex = 39
-        Me.ToolTip1.SetToolTip(Me.ClampPrimSize, "ClampPrimSize option to ensure no prim can exceed the set size..")
-        Me.ClampPrimSize.UseVisualStyleBackColor = True
+        Me.Button2.Location = New System.Drawing.Point(14, 207)
+        Me.Button2.Name = "Button2"
+        Me.Button2.Size = New System.Drawing.Size(69, 23)
+        Me.Button2.TabIndex = 30
+        Me.Button2.Text = "More"
+        Me.Button2.UseVisualStyleBackColor = True
         '
         'FormRegion
         '
@@ -414,7 +424,8 @@ Partial Class FormRegion
         Me.AutoSize = True
         Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.BackColor = System.Drawing.SystemColors.Control
-        Me.ClientSize = New System.Drawing.Size(259, 498)
+        Me.ClientSize = New System.Drawing.Size(259, 496)
+        Me.Controls.Add(Me.Button2)
         Me.Controls.Add(Me.EnabledCheckBox)
         Me.Controls.Add(Me.DeleteButton)
         Me.Controls.Add(Me.Button1)
@@ -468,4 +479,5 @@ Partial Class FormRegion
     Friend WithEvents Label11 As Label
     Friend WithEvents MaxPrims As TextBox
     Friend WithEvents ClampPrimSize As CheckBox
+    Friend WithEvents Button2 As Button
 End Class

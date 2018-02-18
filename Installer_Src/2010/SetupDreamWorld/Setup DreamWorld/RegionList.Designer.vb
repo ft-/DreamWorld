@@ -31,6 +31,7 @@ Partial Class RegionList
         Me.RegionHelp = New System.Windows.Forms.PictureBox()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.Addregion = New System.Windows.Forms.Button()
+        Me.AllNome = New System.Windows.Forms.CheckBox()
         CType(Me.RegionHelp, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -43,7 +44,7 @@ Partial Class RegionList
         Me.ListView1.HideSelection = False
         ListViewItem1.ToolTipText = "Click to Start or Stop Robust"
         Me.ListView1.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem1})
-        Me.ListView1.Location = New System.Drawing.Point(12, 42)
+        Me.ListView1.Location = New System.Drawing.Point(12, 66)
         Me.ListView1.MultiSelect = False
         Me.ListView1.Name = "ListView1"
         Me.ListView1.ShowItemToolTips = True
@@ -75,7 +76,7 @@ Partial Class RegionList
         'RegionHelp
         '
         Me.RegionHelp.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.RegionHelp.Location = New System.Drawing.Point(359, 12)
+        Me.RegionHelp.Location = New System.Drawing.Point(235, 13)
         Me.RegionHelp.Name = "RegionHelp"
         Me.RegionHelp.Size = New System.Drawing.Size(28, 27)
         Me.RegionHelp.TabIndex = 1858
@@ -97,11 +98,22 @@ Partial Class RegionList
         Me.Addregion.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.Addregion.UseVisualStyleBackColor = True
         '
+        'AllNome
+        '
+        Me.AllNome.AutoSize = True
+        Me.AllNome.Location = New System.Drawing.Point(22, 43)
+        Me.AllNome.Name = "AllNome"
+        Me.AllNome.Size = New System.Drawing.Size(68, 17)
+        Me.AllNome.TabIndex = 1860
+        Me.AllNome.Text = "All/None"
+        Me.AllNome.UseVisualStyleBackColor = True
+        '
         'RegionList
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(419, 370)
+        Me.ClientSize = New System.Drawing.Size(419, 403)
+        Me.Controls.Add(Me.AllNome)
         Me.Controls.Add(Me.Addregion)
         Me.Controls.Add(Me.RegionHelp)
         Me.Controls.Add(Me.ViewButton)
@@ -112,6 +124,7 @@ Partial Class RegionList
         Me.Text = "Region List"
         CType(Me.RegionHelp, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
+        Me.PerformLayout()
 
     End Sub
 
@@ -122,4 +135,5 @@ Partial Class RegionList
     Friend WithEvents RegionHelp As PictureBox
     Friend WithEvents ToolTip1 As ToolTip
     Friend WithEvents Addregion As Button
+    Friend WithEvents AllNome As CheckBox
 End Class

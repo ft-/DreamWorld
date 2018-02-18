@@ -5,6 +5,7 @@ Imports System.ComponentModel
 Public Class FormRegion
 
 #Region "Declarations"
+    Dim Big As Integer = False
     Dim n As Integer
     Dim oldname As String = ""
     Dim initted As Boolean = False ' needed a flag to see if we are initted as the dialogs change on start.
@@ -39,6 +40,12 @@ Public Class FormRegion
             RegionPort.Text = RegionClass.LargestPort() + 1 '8004 + 1
             EnabledCheckBox.Checked = True
             RadioButton1.Checked = True
+            NonphysicalPrimMax.Text = 1024
+            PhysicalPrimMax.Text = 64
+            ClampPrimSize.Checked = False
+            MaxPrims.Text = 45000
+            MaxAgents.Text = 100
+
 
             n = RegionClass.CreateRegion("")
 
@@ -213,7 +220,7 @@ Public Class FormRegion
                 RegionClass.RegionPath(n) = Filepath
                 Form1.CopyOpensimProto()
             Catch
-                MsgBox("Cannot create new region. It seems to already exist")
+                MsgBox("Cannot create new region. It seems to already exist", vbInformation, "Info")
                 Form1.PrintFast("Aborted")
                 Return
             End Try
@@ -225,7 +232,7 @@ Public Class FormRegion
 
         If isNew Then
             Dim Newname As String = RegionName.Text
-            Dim yesNo As MsgBoxResult = MsgBox("New regions can can be combined with other regions in an existing DOS box (Yes), or run in their own Dos Box (No)", vbYesNo)
+            Dim yesNo As MsgBoxResult = MsgBox("New regions can can be combined with other regions in an existing DOS box (Yes), or run in their own Dos Box (No)", vbYesNo, "Combine Regions?")
             If yesNo = vbYes Then
                 Newname = RegionChosen()
                 If Newname = "" Then
@@ -336,7 +343,7 @@ Public Class FormRegion
 
         If Len(RegionName.Text) > 0 And initted Then
             If Not FilenameIsOK(RegionName.Text) Then
-                MsgBox("Region name can't use special characters such as < > : """" / \ | ? *", vbInformation)
+                MsgBox("Region name can't use special characters such as < > : """" / \ | ? *", vbInformation, "Info")
                 Return
             End If
 
@@ -389,14 +396,14 @@ Public Class FormRegion
     Private Sub UUID_LostFocus(sender As Object, e As EventArgs) Handles UUID.LostFocus
 
         If UUID.Text <> UUID.Text And initted Then
-            Dim resp = MsgBox("Changing the UUID will lose all data in the old sim and create a new, empty sim. Are you sure you wish to change the UUID?", vbYesNo)
+            Dim resp = MsgBox("Changing the UUID will lose all data in the old sim and create a new, empty sim. Are you sure you wish to change the UUID?", vbYesNo, "Info")
             If resp = vbYes Then
                 changed = True
                 Dim result As Guid
                 If Guid.TryParse(UUID.Text, result) Then
 
                 Else
-                    Dim ok = MsgBox("Not a valid UUID. Do you want a new, Random UUID?", vbOKCancel)
+                    Dim ok = MsgBox("Not a valid UUID. Do you want a new, Random UUID?", vbOKCancel, "Info")
                     If ok = vbOK Then
                         UUID.Text = System.Guid.NewGuid.ToString
                     End If
@@ -411,7 +418,7 @@ Public Class FormRegion
 
         Dim message = RegionValidate()
         If Len(message) Then
-            Dim v = MsgBox(message + vbCrLf + "Discard all changes and exit anyway?", vbYesNo)
+            Dim v = MsgBox(message + vbCrLf + "Discard all changes and exit anyway?", vbYesNo, "Info")
             If v = vbYes Then
                 Me.Close()
             End If
@@ -433,7 +440,7 @@ Public Class FormRegion
             If v = vbYes Then
                 Dim message = RegionValidate()
                 If Len(message) Then
-                    v = MsgBox(message + vbCrLf + "Discard all changes and exit anyway?", vbYesNo)
+                    v = MsgBox(message + vbCrLf + "Discard all changes and exit anyway?", vbYesNo, "Info")
                     If v = vbYes Then
                         Me.Close()
                     End If
@@ -485,7 +492,7 @@ Public Class FormRegion
     Private Sub DeleteButton_Click(sender As Object, e As EventArgs) Handles DeleteButton.Click
 
 
-        Dim msg = MsgBox("Are you sure you want to delete this region? ", vbYesNo)
+        Dim msg = MsgBox("Are you sure you want to delete this region? ", vbYesNo, "Delete?")
         If msg = vbYes Then
             Try
                 My.Computer.FileSystem.DeleteFile(Form1.prefix & "bin\Regions\" + RegionName.Text + "\Region\" + RegionName.Text + ".bak")
@@ -501,6 +508,18 @@ Public Class FormRegion
         End If
         Me.Close()
 
+    End Sub
+
+    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
+        If Big Then
+            Me.Size = New System.Drawing.Size(275, 535)
+            Advanced.Visible = True
+            Big = False
+        Else
+            Me.Size = New System.Drawing.Size(275, 335)
+            Advanced.Visible = False
+            Big = True
+        End If
     End Sub
 
 

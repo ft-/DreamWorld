@@ -309,7 +309,7 @@ Public Class Form1
         gUseIcons = True
         Dim wsstarted = CheckPort(My.Settings.PublicIP, My.Settings.DiagnosticPort)
         If wsstarted = False Then
-            MsgBox("Diagnostics port " + My.Settings.DiagnosticPort + " is blocked by firewall or antivirus.")
+            MsgBox("Diagnostics port " + My.Settings.DiagnosticPort + " is blocked by router, firewall, loopback or antivirus.", "Cannot Hypergrid")
             gUseIcons = False
         End If
 
@@ -404,7 +404,7 @@ Public Class Form1
         End If
 
         If Not My.Settings.RunOnce Then
-            MsgBox("Please type 'create user<ret>' to make the system owner's account in the ROBUST console, and then answer any questions.", vbInformation)
+            MsgBox("Please type 'create user<ret>' to make the system owner's account in the ROBUST console, and then answer any questions.", vbInformation, "Info")
             Sleep(10000)
             My.Settings.RunOnce = True
             My.Settings.Save()
@@ -722,7 +722,7 @@ Public Class Form1
         Try
             Data = parser.ReadFile(filepath, System.Text.Encoding.ASCII)
         Catch ex As Exception
-            MsgBox("Cannot read an INI file: " + ex.Message)
+            MsgBox("Cannot read an INI file: " + ex.Message, "INI Error")
         End Try
 
         gINI = filepath
@@ -737,7 +737,7 @@ Public Class Form1
             Data(section)(key) = value ' replace it and save it
         Catch ex As Exception
             Log("Info:Cannot locate '" + key + "' in section '" + section + "' in file " + gINI + ". This is not good")
-            MsgBox("Cannot locate '" + key + "' in section '" + section + "' in file " + gINI + ". This is not good", vbOK)
+            MsgBox("Cannot locate '" + key + "' in section '" + section + "' in file " + gINI + ". This is not good", vbOK, "Region Error")
         End Try
 
     End Sub
@@ -834,7 +834,7 @@ Public Class Form1
             End Try
 
         Catch ex As Exception
-            MsgBox("Could not set default sim for visitors. Check the Common Settings panel.")
+            MsgBox("Could not set default sim for visitors. Check the Common Settings panel.", "Settings")
         End Try
 
     End Sub
@@ -1226,7 +1226,7 @@ Public Class Form1
                 If ports(RegionClass.RegionPort(n)) Is Nothing Then
                     ports(RegionClass.RegionPort(n)) = RegionClass.RegionName(n)
                 Else
-                    MsgBox(RegionClass.RegionName(n) + " has a duplicated port with " + ports(RegionClass.RegionPort(n)) + ". Skipping boot of " + RegionClass.RegionName(n))
+                    MsgBox(RegionClass.RegionName(n) + " has a duplicated port with " + ports(RegionClass.RegionPort(n)) + ". Skipping boot of " + RegionClass.RegionName(n), "Error")
                     RegionClass.RegionEnabled(n) = False
                     Passfail = False
                 End If
@@ -1250,7 +1250,7 @@ Public Class Form1
             My.Settings.HttpPort = 8002
             My.Settings.PrivatePort = 8003
 
-            MsgBox("Port conflict detected. Sim Ports have been reset to the defaults", vbInformation)
+            MsgBox("Port conflict detected. Sim Ports have been reset to the defaults", vbInformation, "Error")
         End If
 
     End Sub
@@ -1400,7 +1400,7 @@ Public Class Form1
                 Print("Error:Robust failed to start")
                 KillAll()
                 Buttons(StartButton)
-                Dim yesno = MsgBox("Robust did not start. Do you want to see the log file?", vbYesNo)
+                Dim yesno = MsgBox("Robust did not start. Do you want to see the log file?", vbYesNo, "Error")
                 If (yesno = vbYes) Then
                     Dim Log As String = """" + MyFolder + "\OutworldzFiles\Opensim\bin\Robust.log" + """"
                     System.Diagnostics.Process.Start("wordpad.exe", Log)
@@ -1437,8 +1437,6 @@ Public Class Form1
                 If RegionClass.RegionEnabled(n) And Running Then '
                     If Not Boot(RegionClass.RegionName(n)) Then
                         Print("Boot skipped for " + RegionClass.RegionName(n))
-                    Else
-                        Sleep(2000) ' no rush, give it time to boot and read environment
                     End If
                 End If
                 n = n + 1
@@ -1668,7 +1666,7 @@ Public Class Form1
         If n < 0 Then Return
 
         If RegionClass.WarmingUp(n) = True Then
-            Dim yesno = MsgBox(RegionClass.RegionName(n) + " did not start. Do you want to see the log file?", vbYesNo)
+            Dim yesno = MsgBox(RegionClass.RegionName(n) + " did not start. Do you want to see the log file?", vbYesNo, "Error")
             If (yesno = vbYes) Then
                 System.Diagnostics.Process.Start("notepad.exe", RegionClass.IniPath(n) + "Opensim.log")
             End If
@@ -1828,7 +1826,7 @@ Public Class Form1
             If ex.Message.Contains("Process has exited") Then Return False
             Print("Oops! " + BootName + " did Not start")
             Log(ex.Message)
-            Dim yesno = MsgBox("Oops! " + BootName + " did Not start. Do you want to see the log file?", vbYesNo)
+            Dim yesno = MsgBox("Oops! " + BootName + " did Not start. Do you want to see the log file?", vbYesNo, "Error")
             If (yesno = vbYes) Then
                 System.Diagnostics.Process.Start("notepad.exe", RegionClass.IniPath(n) + "Opensim.log")
             End If
@@ -2153,7 +2151,7 @@ Public Class Form1
 
             ' Process input if the user clicked OK.
             If UserClickedOK = True Then
-                Dim backMeUp = MsgBox("Make a backup and then load the new content?", vbYesNo)
+                Dim backMeUp = MsgBox("Make a backup first and then load the new content?", vbYesNo, "Backup?")
                 Dim thing = openFileDialog1.FileName
                 If thing.Length Then
                     thing = thing.Replace("\", "/")    ' because Opensim uses unix-like slashes, that's why
@@ -2342,7 +2340,7 @@ Public Class Form1
 
             Dim n As Integer = RegionClass.FindRegionByName(region)
 
-            Dim backMeUp = MsgBox("Make a backup first?", vbYesNo)
+            Dim backMeUp = MsgBox("Make a backup first?", vbYesNo, "Backup?")
             Try
                 Print("Opensimulator will load  " + thing + ".  This may take some time.")
                 thing = thing.Replace("\", "/")    ' because Opensim uses unix-like slashes, that's why
@@ -2577,7 +2575,7 @@ Public Class Form1
         Try
             fileName = client.DownloadString(Domain + "/Outworldz_Installer/GetUpdaterGrid.plx?r" + Random())
         Catch
-            MsgBox("Could not fetch an update. Please try again, later", vbInformation)
+            MsgBox("Could not fetch an update. Please try again, later", vbInformation, "Info")
             Return ""
         End Try
 
@@ -2587,7 +2585,7 @@ Public Class Form1
             ' The DownloadFile() method downloads the Web resource and saves it into the current file-system folder.
             myWebClient.DownloadFile(Domain + "/Outworldz_Installer/" + fileName, fileName)
         Catch e As Exception
-            MsgBox("Could not fetch an update. Please try again, later", vbInformation)
+            MsgBox("Could not fetch an update. Please try again, later", vbInformation, "Info")
             Log("Warn:" + e.Message)
             Return ""
         End Try
@@ -2831,7 +2829,7 @@ Public Class Form1
         gUseIcons = True
         Dim wsstarted = CheckPort(My.Settings.PublicIP, My.Settings.DiagnosticPort)
         If wsstarted = False Then
-            MsgBox("Diagnostics port " + My.Settings.DiagnosticPort + " is not working or blocked by firewall or anti virus, icons disabled.")
+            MsgBox("Diagnostics port " + My.Settings.DiagnosticPort + " is not working or blocked by firewall or anti virus, icons disabled.", "Cannot HG")
             gUseIcons = False
             My.Settings.DiagFailed = True
             My.Settings.Save()
@@ -3023,7 +3021,7 @@ Public Class Form1
             Dim thing = openFileDialog1.FileName
             If thing.Length Then
 
-                Dim yesno = MsgBox("Are you sure? Your database will re-loaded from the backup and all existing content replaced. Avatars, sims, inventory, all of it.", vbYesNo)
+                Dim yesno = MsgBox("Are you sure? Your database will re-loaded from the backup and all existing content replaced. Avatars, sims, inventory, all of it.", vbYesNo,"Restore?")
                 If yesno = vbYes Then
                     ' thing = thing.Replace("\", "/")    ' because Opensim uses unix-like slashes, that's why
 
@@ -3143,7 +3141,7 @@ Public Class Form1
             Dim MysqlLog As String = MyFolder + "\OutworldzFiles\mysql\data"
             If ProgressBar1.Value = 100 Then ' about 30 seconds when it fails
 
-                Dim yesno = MsgBox("The database did not start. Do you want to see the log file?", vbYesNo)
+                Dim yesno = MsgBox("The database did not start. Do you want to see the log file?", vbYesNo, "Error")
                 If (yesno = vbYes) Then
                     Dim files() As String
                     files = Directory.GetFiles(MysqlLog, "*.err", SearchOption.TopDirectoryOnly)
@@ -3301,7 +3299,7 @@ Public Class Form1
                     BumpProgress10()
                     My.Settings.DnsName = newname
                     My.Settings.Save()
-                    MsgBox("Your system's name has been set to " + newname + ". You can change the name in the Advanced menu at any time")
+                    MsgBox("Your system's name has been set to " + newname + ". You can change the name in the Advanced menu at any time", "Info")
                 End If
             End If
             BumpProgress10()

@@ -321,9 +321,9 @@ Public Class Expert
         Dim IP = Form1.DoGetHostAddresses(My.Settings.DnsName)
         Dim address As IPAddress = Nothing
         If IPAddress.TryParse(IP, address) Then
-            MsgBox(My.Settings.DnsName + " was resolved to " + IP)
+            MsgBox(My.Settings.DnsName + " was resolved to " + IP, vbInformation, "Test Result")
         Else
-            MsgBox("Cannot resolve " + My.Settings.DnsName)
+            MsgBox("Cannot resolve " + My.Settings.DnsName, vbInformation, "Error")
         End If
 
     End Sub
@@ -450,7 +450,7 @@ Public Class Expert
             End If
 
         Else
-            MsgBox("DreamGrid must be started in Administrator mode to setup a scheduled task. Right click the icon and select Run As Administrator.")
+            MsgBox("DreamGrid must be started in Administrator mode to setup a scheduled task. Right click the icon and select Run As Administrator.", vbInformation, "Escalation Needed")
         End If
     End Sub
 
