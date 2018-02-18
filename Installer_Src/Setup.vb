@@ -382,8 +382,6 @@ Public Class Form1
 
     Private Sub Startup()
 
-
-
         ProgressBar1.Value = 0
         ProgressBar1.Visible = True
         Buttons(BusyButton)
@@ -1779,6 +1777,9 @@ Public Class Form1
 
     Public Function Boot(BootName As String) As Boolean
 
+        Running = True
+        Buttons(StopButton)
+
         Dim n = RegionClass.FindRegionByName(BootName)
         If RegionClass.ProcessID(n) Or RegionClass.Booted(n) Or RegionClass.WarmingUp(n) Or RegionClass.ShuttingDown(n) Then
             Return True
@@ -2132,7 +2133,7 @@ Public Class Form1
 
         If (Running) Then
 
-            Dim chosen = ChooseRegion()
+            Dim chosen = ChooseRegion(True)
             Dim n As Integer = RegionClass.FindRegionByName(chosen)
 
 
@@ -2141,14 +2142,22 @@ Public Class Form1
             ' Set prompt.
             Message = "Enter a name for your backup:"
             title = "Backup to OAR"
-            defaultValue = "*.oar"   ' Set default value.
+            defaultValue = chosen + ".oar"   ' Set default value.
 
             ' Display message, title, and default value.
             myValue = InputBox(Message, title, defaultValue)
             ' If user has clicked Cancel, set myValue to defaultValue 
             If myValue.length = 0 Then Return
-            ConsoleCommand(RegionClass.ProcessID(n), "alert CPU Intensive Backup Started{ENTER}")
-            ConsoleCommand(RegionClass.ProcessID(n), "save oar " + """" + BackupPath() + myValue + """" + "{ENTER}")
+
+            If RegionClass.Booted(n) Then
+                Dim Group = RegionClass.GroupName(n)
+                For Each Y In RegionClass.RegionListByGroupNum(Group)
+                    ConsoleCommand(RegionClass.ProcessID(Y), "alert CPU Intensive Backup Started{ENTER}")
+                    ConsoleCommand(RegionClass.ProcessID(Y), "change region " + """" + chosen + """" + "{ENTER}")
+                    ConsoleCommand(RegionClass.ProcessID(Y), "save oar " + """" + BackupPath() + RegionClass.RegionName(Y) + "_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
+                    Application.DoEvents()
+                Next
+            End If
             Me.Focus()
             Print("Saving " + myValue + " to " + BackupPath())
         Else
@@ -2160,9 +2169,8 @@ Public Class Form1
     Private Sub LoadRegionOarToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles LoadRegionOarToolStripMenuItem.Click
 
         If (Running) Then
-            Dim chosen = ChooseRegion()
+            Dim chosen = ChooseRegion(True)
             Dim n As Integer = RegionClass.FindRegionByName(chosen)
-
 
             ' Create an instance of the open file dialog box.
             Dim openFileDialog1 As OpenFileDialog = New OpenFileDialog
@@ -2183,18 +2191,26 @@ Public Class Form1
                 If thing.Length Then
                     thing = thing.Replace("\", "/")    ' because Opensim uses unix-like slashes, that's why
 
-                    If backMeUp = vbYes Then
-                        ConsoleCommand(RegionClass.ProcessID(n), "alert CPU Intensive Backup Started{ENTER}")
-                        ConsoleCommand(RegionClass.ProcessID(n), "save oar  " + """" + BackupPath() + "Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
-                    End If
-                    ConsoleCommand(RegionClass.ProcessID(n), "alert New content is loading..{ENTER}")
-                    ConsoleCommand(RegionClass.ProcessID(n), "load oar --force-terrain --force-parcels " + """" + thing + """" + "{ENTER}")
-                    ConsoleCommand(RegionClass.ProcessID(n), "alert New content just loaded." + "{ENTER}")
-                    Me.Focus()
+
+                    Dim Group = RegionClass.GroupName(n)
+                    For Each Y In RegionClass.RegionListByGroupNum(Group)
+
+                        ConsoleCommand(RegionClass.ProcessID(Y), "change region " + thing + "{Enter}")
+
+                        If backMeUp = vbYes Then
+                            ConsoleCommand(RegionClass.ProcessID(Y), "alert CPU Intensive Backup Started{ENTER}")
+                            ConsoleCommand(RegionClass.ProcessID(Y), "save oar  " + """" + BackupPath() + "Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
+                        End If
+                        ConsoleCommand(RegionClass.ProcessID(Y), "alert New content Is loading..{ENTER}")
+
+                        ConsoleCommand(RegionClass.ProcessID(Y), "load oar --force-terrain --force-parcels " + """" + thing + """" + "{ENTER}")
+                        ConsoleCommand(RegionClass.ProcessID(Y), "alert New content just loaded." + "{ENTER}")
+                        Me.Focus()
+                    Next
                 End If
             End If
         Else
-            Print("Opensim is not running. Cannot load the OAR file.")
+            Print("Opensim Is Not running. Cannot load the OAR file.")
         End If
 
     End Sub
@@ -2209,21 +2225,35 @@ Public Class Form1
 
     End Function
 
-    Private Sub AllRegionsOARsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AllRegionsOARsToolStripMenuItem.Click
+    Private Sub AllRegionsOARsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AllTheRegionsOarsToolStripMenuItem.Click
 
         If Not Running Then
-            Print("Opensim is not running. Cannot save an OAR at this time.")
+            Print("Opensim Is Not running. Cannot save an OAR at this time.")
             Return
         End If
 
-        Dim n = 0
+        Dim n As Integer = 0
+        Dim L As New List(Of String)
+        ' L.Add("Xyzzy")
+
         For Each X In RegionClass.RegionNumbers
             If RegionClass.Booted(n) Then
-                ConsoleCommand(RegionClass.ProcessID(n), "save oar  " + """" + BackupPath() + RegionClass.RegionName(n) + "_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
-                Me.Focus()
-                Application.DoEvents()
+
+                Dim Group = RegionClass.GroupName(n)
+
+                For Each Y In RegionClass.RegionListByGroupNum(Group)
+                    If Not L.Contains(RegionClass.RegionName(Y)) Then
+                        ConsoleCommand(RegionClass.ProcessID(n), "change region " + """" + RegionClass.RegionName(Y) + """" + "{Enter}")
+                        ConsoleCommand(RegionClass.ProcessID(n), "save oar  " + """" + BackupPath() + RegionClass.RegionName(Y) + "_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
+                        Application.DoEvents()
+                        L.Add(RegionClass.RegionName(Y))
+                    End If
+                Next
+
             End If
+
             n = n + 1
+
         Next
 
     End Sub
@@ -2252,7 +2282,7 @@ Public Class Form1
                 End If
             End If
         Else
-            Print("Opensim is not running. Cannot load an IAR at this time.")
+            Print("Opensim Is Not running. Cannot load an IAR at this time.")
         End If
 
     End Sub
@@ -2266,7 +2296,7 @@ Public Class Form1
             ' Object Name to back up
             Dim itemName As String
             ' Set prompt.
-            Message = "Enter the object name ('/' will  backup everything, and '/Objects/box' will back up box in folder Objects) :"
+            Message = "Enter the Object name ('/' will  backup everything, and '/Objects/box' will back up box in folder Objects) :"
             title = "Backup Name?"
             defaultValue = "/"   ' Set default value.
 
@@ -2331,24 +2361,18 @@ Public Class Form1
 
     End Sub
 
-    Public Function ChooseRegion() As String
+    Public Function ChooseRegion(Optional JustRunning As Boolean = False) As String
 
         Dim Chooseform As New Choice ' form for choosing a set of regions
         ' Show testDialog as a modal dialog and determine if DialogResult = OK.
 
-        Chooseform.FillGrid("Region")  ' populate the grid with either Group or RegionName
+        Chooseform.FillGrid("Region", JustRunning)  ' populate the grid with either Group or RegionName
 
         Dim chosen As String
         Chooseform.ShowDialog()
         Try
             ' Read the chosen sim name
             chosen = Chooseform.DataGridView.CurrentCell.Value.ToString()
-            If chosen.Length Then
-                Dim n As Integer = RegionClass.FindRegionByName(chosen)
-                ConsoleCommand(RegionClass.ProcessID(n), "change region " + """" + chosen + """" + "{ENTER}")
-                Me.Focus()
-                Chooseform.Dispose()
-            End If
         Catch ex As Exception
             Log("Warn:Could not chose a displayed region. " + ex.Message)
             chosen = ""
@@ -2364,27 +2388,35 @@ Public Class Form1
             Return
         End If
 
-        Dim region = ChooseRegion()
+        Dim region = ChooseRegion(True)
 
         If region.Length Then
 
             Dim n As Integer = RegionClass.FindRegionByName(region)
 
             Dim backMeUp = MsgBox("Make a backup first?", vbYesNo, "Backup?")
-            Try
-                Print("Opensimulator will load  " + thing + ".  This may take some time.")
-                thing = thing.Replace("\", "/")    ' because Opensim uses unix-like slashes, that's why
-                If backMeUp = vbYes Then
-                    ConsoleCommand(RegionClass.ProcessID(n), "alert CPU Intensive Backup Started {ENTER}")
-                    ConsoleCommand(RegionClass.ProcessID(n), "save oar " + """" + BackupPath() + "Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
-                End If
-                ConsoleCommand(RegionClass.ProcessID(n), "alert New content Is loading..{ENTER}")
-                ConsoleCommand(RegionClass.ProcessID(n), "load oar --force-terrain --force-parcels " + """" + thing + """" + "{ENTER}")
-                ConsoleCommand(RegionClass.ProcessID(n), "alert New content just loaded. {ENTER}")
-                Me.Focus()
-            Catch ex As Exception
-                Log("Error: " + ex.Message)
-            End Try
+
+            For Each Y In RegionClass.RegionListByGroupNum(region)
+                Try
+                    Print("Opensimulator will load  " + thing + ".  This may take some time.")
+                    thing = thing.Replace("\", "/")    ' because Opensim uses unix-like slashes, that's why
+
+                    ConsoleCommand(RegionClass.ProcessID(Y), "change region " + region + "{ENTER}")
+                    If backMeUp = vbYes Then
+                        ConsoleCommand(RegionClass.ProcessID(n), "alert CPU Intensive Backup Started {ENTER}")
+                        ConsoleCommand(RegionClass.ProcessID(n), "save oar " + """" + BackupPath() + "Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
+                    End If
+                    ConsoleCommand(RegionClass.ProcessID(n), "alert New content Is loading ...{ENTER}")
+                    ConsoleCommand(RegionClass.ProcessID(n), "load oar --force-terrain --force-parcels " + """" + thing + """" + "{ENTER}")
+                    ConsoleCommand(RegionClass.ProcessID(n), "alert New content just loaded. {ENTER}")
+
+                Catch ex As Exception
+                    Log("Error: " + ex.Message)
+                End Try
+            Next
+
+            Me.Focus()
+
         End If
 
     End Sub
@@ -2396,14 +2428,26 @@ Public Class Form1
             Return
         End If
 
-        Dim n As Integer = RegionClass.FindRegionByName(My.Settings.WelcomeRegion)
+        Dim n As Integer = -1
+
+        ' find one that is running
+        For Each RegionNum In RegionClass.RegionNumbers
+            If RegionClass.Booted(RegionNum) Then
+                n = RegionNum
+            End If
+        Next
+        If n = -1 Then
+            MsgBox("No regions are ready, so cannot load the IAR", vbInformation, "Info")
+            Return
+        End If
+
         Dim user = InputBox("User name that will get this IAR?")
         Dim password = InputBox("Password for user " + user + "?")
         If user.Length And password.Length Then
-            ConsoleCommand(RegionClass.ProcessID(n), "load iar --merge " + user + " / " + password + " " + """" + thing + """" + "{ENTER}")
+            ConsoleCommand(RegionClass.ProcessID(n), "load iar --merge " + user + " /Objects " + password + " " + """" + thing + """" + "{ENTER}")
             ConsoleCommand(RegionClass.ProcessID(n), "alert IAR content Is loaded{ENTER}")
             Me.Focus()
-            Print("Opensim is loading your item. You will find it in your inventory in / soon.")
+            Print("Opensim is loading your item. You will find it in in Inventory in /Objects soon.")
         Else
             Print("Load IAR cancelled - must use the full user name and password.")
         End If
