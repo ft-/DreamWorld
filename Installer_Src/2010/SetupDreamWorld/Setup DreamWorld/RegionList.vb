@@ -131,68 +131,73 @@ Public Class RegionList
 
         Dim imageList1 As New ImageList
         Dim Num As Integer = 0
-        Dim n As Integer = 0
+
+        Dim L As New List(Of String)
+
         For Each X In RegionClass.RegionNumbers
 
             Application.DoEvents()
-            RegionClass.DebugRegions(n)
 
-            ' If RegionClass.RegionName(n) = "Deliverance" Then
-            ' Debug.Print("Deliverance")
-            ' End If
+            If Not L.Contains(RegionClass.RegionName(X)) Then
 
-            Dim Letter As String = ""
-            If RegionClass.WarmingUp(n) Then
-                Letter = "Booting"
-                Num = 0
-            ElseIf RegionClass.ShuttingDown(n) Then
-                Letter = "Shutting Down"
-                Num = 1
-            ElseIf RegionClass.Booted(n) Then
-                Letter = "Running"
-                Num = 2
-            ElseIf Not RegionClass.ProcessID(n) And RegionClass.ShuttingDown(n) Then
-                Letter = "Exiting"
-                Num = 3
-            ElseIf Not RegionClass.RegionEnabled(n) Then
-                Letter = "Disabled"
-                Num = 4
-            ElseIf RegionClass.RegionEnabled(n) Then
-                Letter = "Stopped"
-                Num = 5
-            Else
-                Num = 5
-            End If
+                L.Add(RegionClass.RegionName(X))
 
-            ' Create  items and subitems for each item.
-            Dim item1 As New ListViewItem(RegionClass.RegionName(n), Num)
-            ' Place a check mark next to the item.
-            item1.Checked = RegionClass.RegionEnabled(n)
-            item1.SubItems.Add(RegionClass.GroupName(n).ToString)
-            item1.SubItems.Add(RegionClass.AvatarCount(n).ToString)
+                ' If RegionClass.RegionName(X) = "Deliverance" Then
+                '   Debug.Print("Deliverance")
+                ' End If
 
-            item1.SubItems.Add(Letter)
-
-            ListView1.Items.AddRange(New ListViewItem() {item1})
-
-            If TheView = 2 Then
-                If RegionClass.Booted(n) Then
-                    Dim img As String = "http://127.0.0.1:" + RegionClass.RegionPort(n).ToString + "/" + "index.php?method=regionImage" + RegionClass.UUID(n).Replace("-", "")
-                    Debug.Print(img)
-                    Dim bmp As Image = LoadImage(img)
-                    If bmp Is Nothing Then
-                        imageListLarge.Images.Add(My.Resources.ResourceManager.GetObject("water"))
-                    Else
-                        imageListLarge.Images.Add(bmp)
-                    End If
-                    Num = n
+                Dim Letter As String = ""
+                If RegionClass.WarmingUp(X) Then
+                    Letter = "Booting"
+                    Num = 0
+                ElseIf RegionClass.ShuttingDown(X) Then
+                    Letter = "Shutting Down"
+                    Num = 1
+                ElseIf RegionClass.Booted(X) Then
+                    Letter = "Running"
+                    Num = 2
+                ElseIf Not RegionClass.ProcessID(X) And RegionClass.ShuttingDown(X) Then
+                    Letter = "Exiting"
+                    Num = 3
+                ElseIf Not RegionClass.RegionEnabled(X) Then
+                    Letter = "Disabled"
+                    Num = 4
+                ElseIf RegionClass.RegionEnabled(X) Then
+                    Letter = "Stopped"
+                    Num = 5
                 Else
-                    imageListLarge.Images.Add(My.Resources.ResourceManager.GetObject("water"))
-                    Num = n
+                    Num = 5
                 End If
+
+                ' Create  items and subitems for each item.
+                Dim item1 As New ListViewItem(RegionClass.RegionName(X), Num)
+                ' Place a check mark next to the item.
+                item1.Checked = RegionClass.RegionEnabled(X)
+                item1.SubItems.Add(RegionClass.GroupName(X).ToString)
+                item1.SubItems.Add(RegionClass.AvatarCount(X).ToString)
+
+                item1.SubItems.Add(Letter)
+                ListView1.Items.AddRange(New ListViewItem() {item1})
+
+                If TheView = 2 Then
+                    If RegionClass.Booted(X) Then
+                        Dim img As String = "http://127.0.0.1:" + RegionClass.RegionPort(X).ToString + "/" + "index.php?method=regionImage" + RegionClass.UUID(X).Replace("-", "")
+                        Debug.Print(img)
+                        Dim bmp As Image = LoadImage(img)
+                        If bmp Is Nothing Then
+                            imageListLarge.Images.Add(My.Resources.ResourceManager.GetObject("water"))
+                        Else
+                            imageListLarge.Images.Add(bmp)
+                        End If
+                        Num = X
+                    Else
+                        imageListLarge.Images.Add(My.Resources.ResourceManager.GetObject("water"))
+                        Num = X
+                    End If
+                End If
+
             End If
-            'ListView1.Items(n).ImageIndex = 1
-            n = n + 1
+
         Next
 
         'Assign the ImageList objects to the ListView.
@@ -237,8 +242,7 @@ Public Class RegionList
         For Each item In regions
             Dim RegionName = item.SubItems(0).Text
             Debug.Print("Clicked row " + RegionName)
-            Dim n As Integer = RegionClass.FindRegionByName(RegionName)
-            StartStopEdit(n)
+            StartStopEdit(RegionClass.FindRegionByName(RegionName))
         Next
 
     End Sub
