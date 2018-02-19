@@ -2338,7 +2338,7 @@ Public Class Form1
             Password = InputBox(Message, title, defaultValue)
 
             Dim r As Integer = -1
-            For Each d As Integer In RegionClass.RegionList
+            For Each d As Integer In RegionClass.RegionNumbers
                 If RegionClass.Booted(d) Then
                     r = d
                 End If
