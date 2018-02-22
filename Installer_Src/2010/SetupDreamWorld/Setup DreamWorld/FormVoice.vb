@@ -2,14 +2,14 @@
 
     Private Sub Loaded(sender As Object, e As EventArgs) Handles Me.Load
         Me.Text = "Vivox Voice Settings"
-        VivoxEnable.Checked = My.Settings.VivoxEnabled
-        VivoxPassword.Text = My.Settings.Vivox_password
-        VivoxUserName.Text = My.Settings.Vivox_username
+        VivoxEnable.Checked = Form1.MySetting.VivoxEnabled
+        VivoxPassword.Text = Form1.MySetting.Vivox_password
+        VivoxUserName.Text = Form1.MySetting.Vivox_UserName
         VivoxPassword.UseSystemPasswordChar = True
     End Sub
     Private Sub CheckBox1_CheckedChanged(sender As Object, e As EventArgs) Handles VivoxEnable.CheckedChanged
-        My.Settings.VivoxEnabled = VivoxEnable.Checked
-        My.Settings.Save()
+        Form1.MySetting.VivoxEnabled = VivoxEnable.Checked
+        Form1.MySetting.SaveINI()
     End Sub
 
     Private Sub RequestPassword_Click(sender As Object, e As EventArgs) Handles RequestPassword.Click
@@ -18,14 +18,14 @@
     End Sub
 
     Private Sub VivoxUserName_TextChanged(sender As Object, e As EventArgs) Handles VivoxUserName.TextChanged
-        My.Settings.Vivox_username = VivoxUserName.Text
-        My.Settings.Save()
+        Form1.MySetting.Vivox_UserName = VivoxUserName.Text
+        Form1.MySetting.SaveINI()
     End Sub
 
     Private Sub VivoxPassword_TextChanged(sender As Object, e As EventArgs) Handles VivoxPassword.TextChanged
         VivoxPassword.UseSystemPasswordChar = False
-        My.Settings.Vivox_password = VivoxPassword.Text
-        My.Settings.Save()
+        Form1.MySetting.Vivox_password = VivoxPassword.Text
+        Form1.MySetting.SaveINI()
     End Sub
     Private Sub VivoxPassword_Clicked(sender As Object, e As EventArgs) Handles VivoxPassword.Click
         VivoxPassword.UseSystemPasswordChar = False

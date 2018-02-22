@@ -24,11 +24,11 @@ Public Class RegionMaker
         GetAllRegions()
         If RegionCount() = 0 Then
             CreateRegion("Welcome")
-            My.Settings.WelcomeRegion = "Welcome"
+            Form1.MySetting.WelcomeRegion = "Welcome"
             WriteRegionObject("Welcome")
             GetAllRegions()
-            My.Settings.WelcomeRegion = "Welcome"
-            My.Settings.Save()
+            Form1.MySetting.WelcomeRegion = "Welcome"
+            Form1.MySetting.SaveINI()
         End If
 
         Debug.Print("Loaded " + RegionCount.ToString + " Regions")
@@ -216,8 +216,8 @@ Public Class RegionMaker
     End Property
     Public Property RegionPort(n As Integer) As Integer
         Get
-            If RegionList(CheckN(n))._RegionPort <= My.Settings.PrivatePort Then
-                RegionList(CheckN(n))._RegionPort = My.Settings.PrivatePort + 1 ' 8004, by default
+            If RegionList(CheckN(n))._RegionPort <= Form1.MySetting.PrivatePort Then
+                RegionList(CheckN(n))._RegionPort = Form1.MySetting.PrivatePort + 1 ' 8004, by default
             End If
             Return RegionList(CheckN(n))._RegionPort
         End Get
@@ -440,7 +440,7 @@ Public Class RegionMaker
                         CreateRegion(fName)
 
                         Try
-                            RegionEnabled(CheckN(n)) = Form1.GetIni(ini, fName, "Enabled", ";")
+                            RegionEnabled(CheckN(n)) = Form1.MySetting.GetIni(ini, fName, "Enabled", ";")
                         Catch ex As Exception
                             RegionEnabled(CheckN(n)) = True
                         End Try
@@ -456,45 +456,45 @@ Public Class RegionMaker
                         theEnd = FolderPath(CheckN(n)).LastIndexOf("\")
                         GroupName(CheckN(n)) = FolderPath(CheckN(n)).Substring(theStart, theEnd - theStart)
 
-                        UUID(CheckN(n)) = Form1.GetIni(ini, fName, "RegionUUID", ";")
-                        SizeX(CheckN(n)) = Convert.ToInt16(Form1.GetIni(ini, fName, "SizeX", ";"))
-                        SizeY(CheckN(n)) = Convert.ToInt16(Form1.GetIni(ini, fName, "SizeY", ";"))
-                        RegionPort(CheckN(n)) = Convert.ToInt16(Form1.GetIni(ini, fName, "InternalPort", ";"))
+                        UUID(CheckN(n)) = Form1.MySetting.GetIni(ini, fName, "RegionUUID", ";")
+                        SizeX(CheckN(n)) = Convert.ToInt16(Form1.MySetting.GetIni(ini, fName, "SizeX", ";"))
+                        SizeY(CheckN(n)) = Convert.ToInt16(Form1.MySetting.GetIni(ini, fName, "SizeY", ";"))
+                        RegionPort(CheckN(n)) = Convert.ToInt16(Form1.MySetting.GetIni(ini, fName, "InternalPort", ";"))
 
                         ' extended props V2.1
-                        If Convert.ToInt16(Form1.GetIni(ini, fName, "NonPhysicalPrimMax", ";")) = 0 Then
+                        If Convert.ToInt16(Form1.MySetting.GetIni(ini, fName, "NonPhysicalPrimMax", ";")) = 0 Then
                             NonPhysicalPrimMax(CheckN(n)) = 1024
                         Else
-                            NonPhysicalPrimMax(CheckN(n)) = Convert.ToInt16(Form1.GetIni(ini, fName, "NonPhysicalPrimMax", ";"))
+                            NonPhysicalPrimMax(CheckN(n)) = Convert.ToInt16(Form1.MySetting.GetIni(ini, fName, "NonPhysicalPrimMax", ";"))
                         End If
 
-                        If Convert.ToInt16(Form1.GetIni(ini, fName, "PhysicalPrimMax", ";")) = 0 Then
+                        If Convert.ToInt16(Form1.MySetting.GetIni(ini, fName, "PhysicalPrimMax", ";")) = 0 Then
                             PhysicalPrimMax(CheckN(n)) = 64
                         Else
-                            PhysicalPrimMax(CheckN(n)) = Convert.ToInt16(Form1.GetIni(ini, fName, "PhysicalPrimMax", ";"))
+                            PhysicalPrimMax(CheckN(n)) = Convert.ToInt16(Form1.MySetting.GetIni(ini, fName, "PhysicalPrimMax", ";"))
                         End If
 
-                        If Form1.GetIni(ini, fName, "ClampPrimSize", ";") = "" Then
+                        If Form1.MySetting.GetIni(ini, fName, "ClampPrimSize", ";") = "" Then
                             ClampPrimSize(CheckN(n)) = False
                         Else
-                            ClampPrimSize(CheckN(n)) = Convert.ToBoolean(Form1.GetIni(ini, fName, "ClampPrimSize", ";"))
+                            ClampPrimSize(CheckN(n)) = Convert.ToBoolean(Form1.MySetting.GetIni(ini, fName, "ClampPrimSize", ";"))
                         End If
 
-                        If Convert.ToInt32(Form1.GetIni(ini, fName, "MaxPrims", ";")) = 0 Then
+                        If Convert.ToInt32(Form1.MySetting.GetIni(ini, fName, "MaxPrims", ";")) = 0 Then
                             MaxPrims(CheckN(n)) = 45000
                         Else
-                            MaxPrims(CheckN(n)) = Convert.ToInt32(Form1.GetIni(ini, fName, "MaxPrims", ";"))
+                            MaxPrims(CheckN(n)) = Convert.ToInt32(Form1.MySetting.GetIni(ini, fName, "MaxPrims", ";"))
                         End If
 
-                        If Convert.ToInt16(Form1.GetIni(ini, fName, "MaxAgents", ";")) = 0 Then
+                        If Convert.ToInt16(Form1.MySetting.GetIni(ini, fName, "MaxAgents", ";")) = 0 Then
                             MaxAgents(CheckN(n)) = 100
                         Else
-                            MaxAgents(CheckN(n)) = Convert.ToInt16(Form1.GetIni(ini, fName, "MaxAgents", ";"))
+                            MaxAgents(CheckN(n)) = Convert.ToInt16(Form1.MySetting.GetIni(ini, fName, "MaxAgents", ";"))
                         End If
 
 
                         ' Location is int,int format.
-                        Dim C = Form1.GetIni(ini, fName, "Location", ";")
+                        Dim C = Form1.MySetting.GetIni(ini, fName, "Location", ";")
                         Dim parts As String() = C.Split(New Char() {","c}) ' split at the comma
                         CoordX(CheckN(n)) = parts(0)
                         CoordY(CheckN(n)) = parts(1)
@@ -537,7 +537,7 @@ Public Class RegionMaker
 
         Dim n As Integer = FindRegionByName(name)
         If n < 0 Then
-            MsgBox("Cannot find region " + name, vbInformation)
+            MsgBox("Cannot find region " + name, vbInformation, "Error")
             Return
         End If
 
@@ -554,23 +554,23 @@ Public Class RegionMaker
 
         File.Copy(Form1.prefix & "bin\Regions.proto", fname, True)
 
-        Form1.LoadIni(fname, ";")
-        Form1.SetIni(name, "RegionUUID", UUID(CheckN(n)))
-        Form1.SetIni(name, "Location", CoordX(CheckN(n)) & "," & CoordY(CheckN(n)))
-        Form1.SetIni(name, "InternalPort", RegionPort(CheckN(n)))
-        Form1.SetIni(name, "ExternalHostName", My.Settings.PublicIP)
-        Form1.SetIni(name, "SizeX", SizeX(CheckN(n)))
-        Form1.SetIni(name, "SizeY", SizeY(CheckN(n)))
+        Form1.MySetting.LoadIni(fname, ";")
+        Form1.MySetting.SetIni(name, "RegionUUID", UUID(CheckN(n)))
+        Form1.MySetting.SetIni(name, "Location", CoordX(CheckN(n)) & "," & CoordY(CheckN(n)))
+        Form1.MySetting.SetIni(name, "InternalPort", RegionPort(CheckN(n)))
+        Form1.MySetting.SetIni(name, "ExternalHostName", Form1.MySetting.PublicIP)
+        Form1.MySetting.SetIni(name, "SizeX", SizeX(CheckN(n)))
+        Form1.MySetting.SetIni(name, "SizeY", SizeY(CheckN(n)))
 
         ' extended props V2.1
 
-        Form1.SetIni(name, "NonPhysicalPrimMax", NonPhysicalPrimMax(CheckN(n)))
-        Form1.SetIni(name, "PhysicalPrimMax", PhysicalPrimMax(CheckN(n)))
-        Form1.SetIni(name, "ClampPrimSize", Convert.ToString(ClampPrimSize(CheckN(n))))
-        Form1.SetIni(name, "MaxPrims", MaxPrims(CheckN(n)))
-        Form1.SetIni(name, "MaxAgents", MaxAgents(CheckN(n)))
+        Form1.MySetting.SetIni(name, "NonPhysicalPrimMax", NonPhysicalPrimMax(CheckN(n)))
+        Form1.MySetting.SetIni(name, "PhysicalPrimMax", PhysicalPrimMax(CheckN(n)))
+        Form1.MySetting.SetIni(name, "ClampPrimSize", Convert.ToString(ClampPrimSize(CheckN(n))))
+        Form1.MySetting.SetIni(name, "MaxPrims", MaxPrims(CheckN(n)))
+        Form1.MySetting.SetIni(name, "MaxAgents", MaxAgents(CheckN(n)))
 
-        Form1.SaveINI()
+        Form1.MySetting.SaveINI()
 
     End Sub
 
@@ -608,7 +608,7 @@ Public Class RegionMaker
             Dim val = obj._RegionPort
             If val > Max Then Max = val
         Next
-        If Max = 0 Then Max = My.Settings.PrivatePort
+        If Max = 0 Then Max = Form1.MySetting.PrivatePort
         Return Max
 
     End Function
@@ -686,9 +686,9 @@ Public Class RegionMaker
 
                 If RegionEnabled(CheckN(n)) = False Then
                     RegionEnabled(CheckN(n)) = True
-                    Form1.LoadIni(RegionPath(CheckN(n)), ";")
-                    Form1.SetIni(json.region_name, "Enabled", "true")
-                    Form1.SaveINI()
+                    Form1.MySetting.LoadIni(RegionPath(CheckN(n)), ";")
+                    Form1.MySetting.SetIni(json.region_name, "Enabled", "true")
+                    Form1.MySetting.SaveINI()
                 End If
 
                 Booted(CheckN(n)) = True

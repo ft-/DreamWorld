@@ -16,7 +16,7 @@ Public Class DNSName
 
         Me.Text = "DynDNS"
 
-        TextBox1.Text = My.Settings.DnsName
+        TextBox1.Text = Form1.MySetting.DNSName
 
         NextNameButton.Enabled = True
         If TextBox1.Text = String.Empty Then
@@ -60,18 +60,18 @@ Public Class DNSName
             Dim IP = Form1.DoGetHostAddresses(TextBox1.Text)
             Dim address As IPAddress = Nothing
             If IPAddress.TryParse(IP, address) Then
-                My.Settings.DnsName = TextBox1.Text
-                My.Settings.Save()
+                Form1.MySetting.DNSName = TextBox1.Text
+                Form1.MySetting.SaveINI()
                 Me.Close()
                 Return
             End If
             MsgBox("Coud net use that name.  Must be valid domain name, a XYZ.Outworldz.net name, the IP address of this machine or the router, a dynamic DNS name.", vbInformation, "Name Needed")
-            My.Settings.DnsName = TextBox1.Text
-            My.Settings.Save()
+            Form1.MySetting.DNSName = TextBox1.Text
+            Form1.MySetting.SaveINI()
 
         Else
-            My.Settings.DnsName = TextBox1.Text
-            My.Settings.Save()
+            Form1.MySetting.DNSName = TextBox1.Text
+            Form1.MySetting.SaveINI()
 
             Me.Close()
         End If

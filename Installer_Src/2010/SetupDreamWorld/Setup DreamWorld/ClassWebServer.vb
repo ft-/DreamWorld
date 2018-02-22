@@ -24,7 +24,9 @@ Public Class NetServer
 
     End Sub
 
-    Public Sub StartServer(folder As String)
+    Public Sub StartServer(folder As String, IP As String)
+
+        LocalAddress = IPAddress.Parse(IP)
 
         If running Then Return
         Myfolder = folder
@@ -42,11 +44,11 @@ Public Class NetServer
 
     Private Sub Looper()
 
-        Dim oaddress = GetIPv4Address()
+        Dim oaddress = LocalAddress
         Log("Info:IP:" + oaddress.ToString)
         listen = True
         Try
-            LocalTCPListener = New TcpListener(oaddress, My.Settings.DiagnosticPort)
+            LocalTCPListener = New TcpListener(oaddress, Form1.MySetting.DiagnosticPort)
         Catch ex As Exception
             Log(ex.Message)
             Return
@@ -108,12 +110,6 @@ Public Class NetServer
         running = False
 
     End Sub
-
-    Private Function GetIPv4Address() As IPAddress
-
-        Return IPAddress.Parse(My.Settings.PublicIP)
-
-    End Function
 
     Public Sub StopWebServer()
 

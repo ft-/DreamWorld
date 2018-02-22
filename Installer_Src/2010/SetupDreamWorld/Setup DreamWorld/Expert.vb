@@ -10,13 +10,13 @@ Public Class Expert
 
     Private Sub Loaded(sender As Object, e As EventArgs) Handles Me.Load
 
-        RobustServer.Text = My.Settings.RobustServer
-        uPnPEnabled.Checked = My.Settings.UPnPEnabled
-        AutoLoadCheckbox.Checked = My.Settings.AutoLoad
-        GridName.Text = My.Settings.SimName
-        DNSName.Text = My.Settings.DnsName
-        SplashPage.Text = My.Settings.SplashPage
-        WebStats.Checked = My.Settings.WebStats
+        RobustServer.Text = Form1.MySetting.RobustServer
+        uPnPEnabled.Checked = Form1.MySetting.UPnPEnabled
+        AutoLoadCheckbox.Checked = Form1.MySetting.AutoLoad
+        GridName.Text = Form1.MySetting.SimName
+        DNSName.Text = Form1.MySetting.DNSName
+        SplashPage.Text = Form1.MySetting.SplashPage
+        WebStats.Checked = Form1.MySetting.WebStats
 
         If Form1.isRunning Then
             StatsButton.Enabled = True
@@ -30,25 +30,25 @@ Public Class Expert
         RobustDBPassword.UseSystemPasswordChar = True
 
         ' ports
-        AdminPassword.Text = My.Settings.Password
-        AdminLast.Text = My.Settings.AdminLast
-        AdminFirst.Text = My.Settings.AdminFirst
+        AdminPassword.Text = Form1.MySetting.Password
+        AdminLast.Text = Form1.MySetting.AdminLast
+        AdminFirst.Text = Form1.MySetting.AdminFirst
 
         'gods
-        RegionGod.Checked = My.Settings.region_owner_is_god
-        ManagerGod.Checked = My.Settings.region_manager_is_god
+        RegionGod.Checked = Form1.MySetting.region_owner_is_god
+        ManagerGod.Checked = Form1.MySetting.region_manager_is_god
 
         'Wifi
-        WifiEnabled.Checked = My.Settings.WifiEnabled
-        AdminEmail.Text = My.Settings.AdminEmail
-        AccountConfirmationRequired.Checked = My.Settings.AccountConfirmationRequired
-        GmailPassword.Text = My.Settings.SmtpPassword
-        GmailUsername.Text = My.Settings.SmtpUsername
+        WifiEnabled.Checked = Form1.MySetting.WifiEnabled
+        AdminEmail.Text = Form1.MySetting.AdminEmail
+        AccountConfirmationRequired.Checked = Form1.MySetting.AccountConfirmationRequired
+        GmailPassword.Text = Form1.MySetting.SmtpPassword
+        GmailUsername.Text = Form1.MySetting.SmtpUsername
 
         ' Unique ID
-        UniqueId.Text = My.Settings.MachineID
+        UniqueId.Text = Form1.MySetting.MachineID
 
-        Select Case My.Settings.Physics
+        Select Case Form1.MySetting.Physics
             Case 0 : PhysicsNone.Checked = True
             Case 1 : PhysicsODE.Checked = True
             Case 2 : PhysicsBullet.Checked = True
@@ -58,28 +58,28 @@ Public Class Expert
         End Select
 
         'ports
-        DiagnosticPort.Text = My.Settings.DiagnosticPort
-        PrivatePort.Text = My.Settings.PrivatePort
-        HTTPPort.Text = My.Settings.HttpPort
-        DiagnosticPort.Text = My.Settings.DiagnosticPort
+        DiagnosticPort.Text = Form1.MySetting.DiagnosticPort
+        PrivatePort.Text = Form1.MySetting.PrivatePort
+        HTTPPort.Text = Form1.MySetting.HttpPort
+        DiagnosticPort.Text = Form1.MySetting.DiagnosticPort
 
         'Database 
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''
-        RegionDbName.Text = My.Settings.RegionDBName
-        RegionDBUsername.Text = My.Settings.RegionDBUsername
-        RegionMySqlPassword.Text = My.Settings.RegionDbPassword
+        RegionDbName.Text = Form1.MySetting.RegionDBName
+        RegionDBUsername.Text = Form1.MySetting.RegionDBUsername
+        RegionMySqlPassword.Text = Form1.MySetting.RegionDbPassword
 
 
         ' Robust DB
-        RobustDbName.Text = My.Settings.RobustMySqlName
-        RobustDBPassword.Text = My.Settings.RobustMySqlPassword
-        RobustDBUsername.Text = My.Settings.RobustMySqlUsername
-        RobustDbPort.Text = My.Settings.MySqlPort
+        RobustDbName.Text = Form1.MySetting.RobustMySqlName
+        RobustDBPassword.Text = Form1.MySetting.RobustMySqlPassword
+        RobustDBUsername.Text = Form1.MySetting.RobustMySqlUsername
+        RobustDbPort.Text = Form1.MySetting.MySqlPort
 
-        AutoStartCheckbox.Checked = My.Settings.Autostart
-        BootStart.Checked = My.Settings.BootStart
+        AutoStartCheckbox.Checked = Form1.MySetting.Autostart
+        BootStart.Checked = Form1.MySetting.BootStart
 
-        EnableHypergrid.Checked = My.Settings.EnableHypergrid
+        EnableHypergrid.Checked = Form1.MySetting.EnableHypergrid
 
         initted = True ' sppress the install of the startup on formload
 
@@ -89,29 +89,29 @@ Public Class Expert
 
 #Region "Ports"
     Private Sub Http_Port_TextChanged(sender As Object, e As EventArgs)
-        My.Settings.DiagnosticPort = DiagnosticPort.Text
-        My.Settings.Save()
+        Form1.MySetting.DiagnosticPort = DiagnosticPort.Text
+        Form1.MySetting.SaveINI()
         Form1.CheckDefaultPorts()
 
     End Sub
 
     Private Sub PrivatePort_TextChanged(sender As Object, e As EventArgs) Handles PrivatePort.TextChanged
-        My.Settings.PrivatePort = PrivatePort.Text
-        My.Settings.Save()
+        Form1.MySetting.PrivatePort = PrivatePort.Text
+        Form1.MySetting.SaveINI()
         Form1.CheckDefaultPorts()
 
     End Sub
 
     Private Sub PublicPort_TextChanged(sender As Object, e As EventArgs) Handles DiagnosticPort.TextChanged
-        My.Settings.DiagnosticPort = DiagnosticPort.Text
-        My.Settings.Save()
+        Form1.MySetting.DiagnosticPort = DiagnosticPort.Text
+        Form1.MySetting.SaveINI()
         Form1.CheckDefaultPorts()
 
     End Sub
 
     Private Sub HTTP_Port_TextChanged_1(sender As Object, e As EventArgs) Handles HTTPPort.TextChanged
-        My.Settings.HttpPort = HTTPPort.Text
-        My.Settings.Save()
+        Form1.MySetting.HttpPort = HTTPPort.Text
+        Form1.MySetting.SaveINI()
         Form1.CheckDefaultPorts()
     End Sub
 
@@ -120,13 +120,13 @@ Public Class Expert
 
 #Region "Wifi"
     Private Sub AdminFirst_TextChanged_2(sender As Object, e As EventArgs) Handles AdminFirst.TextChanged
-        My.Settings.AdminFirst = AdminFirst.Text
-        My.Settings.Save()
+        Form1.MySetting.AdminFirst = AdminFirst.Text
+        Form1.MySetting.SaveINI()
     End Sub
 
     Private Sub AdminLast_TextChanged(sender As Object, e As EventArgs) Handles AdminLast.TextChanged
-        My.Settings.AdminLast = AdminLast.Text
-        My.Settings.Save()
+        Form1.MySetting.AdminLast = AdminLast.Text
+        Form1.MySetting.SaveINI()
     End Sub
 
     Private Sub Password_click(sender As Object, e As EventArgs) Handles AdminPassword.GotFocus
@@ -134,28 +134,28 @@ Public Class Expert
     End Sub
 
     Private Sub Password_TextChanged(sender As Object, e As EventArgs) Handles AdminPassword.LostFocus
-        My.Settings.Password = AdminPassword.Text
-        My.Settings.Save()
+        Form1.MySetting.Password = AdminPassword.Text
+        Form1.MySetting.SaveINI()
 
         If Form1.Running Then
-            Form1.ConsoleCommand(Form1.gRobustProcID, "reset user password Wifi Admin " + My.Settings.Password + "{Enter}")
+            Form1.ConsoleCommand(Form1.gRobustProcID, "reset user password Wifi Admin " + Form1.MySetting.Password + "{Enter}")
         End If
         'Me.Focus()
     End Sub
 
     Private Sub TextBox1_TextChanged_3(sender As Object, e As EventArgs) Handles AdminEmail.TextChanged
-        My.Settings.AdminEmail = AdminEmail.Text
-        My.Settings.Save()
+        Form1.MySetting.AdminEmail = AdminEmail.Text
+        Form1.MySetting.SaveINI()
     End Sub
 
     Private Sub AccountConfirmationRequired_CheckedChanged(sender As Object, e As EventArgs) Handles AccountConfirmationRequired.CheckedChanged
-        My.Settings.AccountConfirmationRequired = AccountConfirmationRequired.Checked
-        My.Settings.Save()
+        Form1.MySetting.AccountConfirmationRequired = AccountConfirmationRequired.Checked
+        Form1.MySetting.SaveINI()
     End Sub
 
     Private Sub SmtpUsername_TextChanged(sender As Object, e As EventArgs) Handles GmailUsername.TextChanged
-        My.Settings.SmtpUsername = GmailUsername.Text
-        My.Settings.Save()
+        Form1.MySetting.SmtpUsername = GmailUsername.Text
+        Form1.MySetting.SaveINI()
     End Sub
 
     Private Sub SmtpUsername_Click(sender As Object, e As EventArgs) Handles GmailPassword.Click
@@ -163,13 +163,13 @@ Public Class Expert
     End Sub
 
     Private Sub SmtpPassword_TextChanged(sender As Object, e As EventArgs) Handles GmailPassword.TextChanged
-        My.Settings.SmtpPassword = GmailPassword.Text
-        My.Settings.Save()
+        Form1.MySetting.SmtpPassword = GmailPassword.Text
+        Form1.MySetting.SaveINI()
     End Sub
 
     Private Sub WifiEnabled_CheckedChanged(sender As Object, e As EventArgs) Handles WifiEnabled.CheckedChanged
-        My.Settings.WifiEnabled = WifiEnabled.Checked
-        My.Settings.Save()
+        Form1.MySetting.WifiEnabled = WifiEnabled.Checked
+        Form1.MySetting.SaveINI()
 
         If WifiEnabled.Checked Then
             AdminFirst.Enabled = True
@@ -197,13 +197,13 @@ Public Class Expert
 #Region "Gods"
 
     Private Sub RegionGod_CheckedChanged(sender As Object, e As EventArgs) Handles RegionGod.CheckedChanged
-        My.Settings.region_owner_is_god = RegionGod.Checked
-        My.Settings.Save()
+        Form1.MySetting.region_owner_is_god = RegionGod.Checked
+        Form1.MySetting.SaveINI()
     End Sub
 
     Private Sub ManagerGod_CheckedChanged(sender As Object, e As EventArgs) Handles ManagerGod.CheckedChanged
-        My.Settings.region_manager_is_god = ManagerGod.Checked
-        My.Settings.Save()
+        Form1.MySetting.region_manager_is_god = ManagerGod.Checked
+        Form1.MySetting.SaveINI()
     End Sub
 
 
@@ -213,30 +213,30 @@ Public Class Expert
 #Region "Misc"
     Private Sub GridName_TextChanged(sender As Object, e As EventArgs) Handles GridName.TextChanged
 
-        My.Settings.SimName = GridName.Text
-        My.Settings.Save()
+        Form1.MySetting.SimName = GridName.Text
+        Form1.MySetting.SaveINI()
 
     End Sub
 
     Private Sub UPnPEnabled_CheckedChanged(sender As Object, e As EventArgs) Handles uPnPEnabled.CheckedChanged
 
-        My.Settings.UPnPEnabled = uPnPEnabled.Checked
-        My.Settings.Save()
+        Form1.MySetting.UPnPEnabled = uPnPEnabled.Checked
+        Form1.MySetting.SaveINI()
 
     End Sub
 
 
     Private Sub UniqueId_TextChanged(sender As Object, e As EventArgs) Handles UniqueId.TextChanged
 
-        My.Settings.MachineID = UniqueId.Text
-        My.Settings.Save()
+        Form1.MySetting.MachineID = UniqueId.Text
+        Form1.MySetting.SaveINI()
 
     End Sub
 
     Private Sub StatsButton_Click(sender As Object, e As EventArgs) Handles StatsButton.Click
 
         If Form1.isRunning And WebStats.Checked Then
-            Dim webAddress As String = "http://127.0.0.1:" + My.Settings.HttpPort + "/SStats/"
+            Dim webAddress As String = "http://127.0.0.1:" + Form1.MySetting.HttpPort + "/SStats/"
             Process.Start(webAddress)
         Else
             Print("Opensim is not running. Cannot open the Statistics web page.")
@@ -246,8 +246,8 @@ Public Class Expert
 
     Private Sub CheckBox1_CheckedChanged(sender As Object, e As EventArgs) Handles WebStats.CheckedChanged
 
-        My.Settings.WebStats = WebStats.Checked
-        My.Settings.Save()
+        Form1.MySetting.WebStats = WebStats.Checked
+        Form1.MySetting.SaveINI()
         'Form1.WebStatsToolStripMenuItem.Visible = WebStats.Checked
 
     End Sub
@@ -256,8 +256,8 @@ Public Class Expert
 #Region "Splash"
 
     Private Sub TextBox1_TextChanged(sender As Object, e As EventArgs) Handles SplashPage.TextChanged
-        My.Settings.SplashPage = SplashPage.Text
-        My.Settings.Save()
+        Form1.MySetting.SplashPage = SplashPage.Text
+        Form1.MySetting.SaveINI()
     End Sub
 #End Region
 
@@ -265,36 +265,36 @@ Public Class Expert
 
     Private Sub PhysicsNone_CheckedChanged(sender As Object, e As EventArgs) Handles PhysicsNone.CheckedChanged
         If PhysicsNone.Checked Then
-            My.Settings.Physics = 0
-            My.Settings.Save()
+            Form1.MySetting.Physics = 0
+            Form1.MySetting.SaveINI()
         End If
     End Sub
 
     Private Sub RadioButton1_CheckedChanged(sender As Object, e As EventArgs) Handles PhysicsODE.CheckedChanged
         If PhysicsODE.Checked Then
-            My.Settings.Physics = 1
-            My.Settings.Save()
+            Form1.MySetting.Physics = 1
+            Form1.MySetting.SaveINI()
         End If
     End Sub
 
     Private Sub PhysicsBullet_CheckedChanged(sender As Object, e As EventArgs) Handles PhysicsBullet.CheckedChanged
         If PhysicsBullet.Checked Then
-            My.Settings.Physics = 2
-            My.Settings.Save()
+            Form1.MySetting.Physics = 2
+            Form1.MySetting.SaveINI()
         End If
     End Sub
 
     Private Sub PhysicsSeparate_CheckedChanged(sender As Object, e As EventArgs) Handles PhysicsSeparate.CheckedChanged
         If PhysicsSeparate.Checked Then
-            My.Settings.Physics = 3
-            My.Settings.Save()
+            Form1.MySetting.Physics = 3
+            Form1.MySetting.SaveINI()
         End If
     End Sub
 
     Private Sub PhysicsubODE_CheckedChanged(sender As Object, e As EventArgs) Handles PhysicsubODE.CheckedChanged
         If PhysicsubODE.Checked Then
-            My.Settings.Physics = 4
-            My.Settings.Save()
+            Form1.MySetting.Physics = 4
+            Form1.MySetting.SaveINI()
         End If
     End Sub
 
@@ -304,8 +304,8 @@ Public Class Expert
 
     Private Sub EnableHypergrid_CheckedChanged(sender As Object, e As EventArgs) Handles EnableHypergrid.CheckedChanged
 
-        My.Settings.EnableHypergrid = EnableHypergrid.Checked
-        My.Settings.Save()
+        Form1.MySetting.EnableHypergrid = EnableHypergrid.Checked
+        Form1.MySetting.SaveINI()
 
     End Sub
 
@@ -318,19 +318,19 @@ Public Class Expert
 
     Private Sub TestButton1_Click_1(sender As Object, e As EventArgs) Handles TestButton1.Click
 
-        Dim IP = Form1.DoGetHostAddresses(My.Settings.DnsName)
+        Dim IP = Form1.DoGetHostAddresses(Form1.MySetting.DNSName)
         Dim address As IPAddress = Nothing
         If IPAddress.TryParse(IP, address) Then
-            MsgBox(My.Settings.DnsName + " was resolved to " + IP, vbInformation, "Test Result")
+            MsgBox(Form1.MySetting.DNSName + " was resolved to " + IP, vbInformation, "Test Result")
         Else
-            MsgBox("Cannot resolve " + My.Settings.DnsName, vbInformation, "Error")
+            MsgBox("Cannot resolve " + Form1.MySetting.DNSName, vbInformation, "Error")
         End If
 
     End Sub
 
     Private Sub HypericaButton_Click(sender As Object, e As EventArgs) Handles HypericaButton.Click
 
-        Dim webAddress As String = "http://www.hyperica.com/directory/?GridName=" + My.Settings.DnsName
+        Dim webAddress As String = "http://www.hyperica.com/directory/?GridName=" + Form1.MySetting.DNSName
         Process.Start(webAddress)
 
     End Sub
@@ -341,18 +341,18 @@ Public Class Expert
 
 
     Private Sub RobustServer_TextChanged(sender As Object, e As EventArgs) Handles RobustServer.TextChanged
-        My.Settings.RobustServer = RobustServer.Text
-        My.Settings.Save()
+        Form1.MySetting.RobustServer = RobustServer.Text
+        Form1.MySetting.SaveINI()
     End Sub
 
     Private Sub DatabaseNameUser_TextChanged(sender As Object, e As EventArgs) Handles RegionDbName.TextChanged
-        My.Settings.RegionDBName = RegionDbName.Text
-        My.Settings.Save()
+        Form1.MySetting.RegionDBName = RegionDbName.Text
+        Form1.MySetting.SaveINI()
     End Sub
 
     Private Sub DbUsername_TextChanged(sender As Object, e As EventArgs) Handles RegionDBUsername.TextChanged
-        My.Settings.RegionDBUsername = RegionDBUsername.Text
-        My.Settings.Save()
+        Form1.MySetting.RegionDBUsername = RegionDBUsername.Text
+        Form1.MySetting.SaveINI()
     End Sub
 
     Private Sub DbPassword_click(sender As Object, e As EventArgs) Handles RegionMySqlPassword.Click
@@ -360,23 +360,23 @@ Public Class Expert
     End Sub
 
     Private Sub DbPassword_TextChanged(sender As Object, e As EventArgs) Handles RegionMySqlPassword.TextChanged
-        My.Settings.RegionDbPassword = RegionMySqlPassword.Text
-        My.Settings.Save()
+        Form1.MySetting.RegionDbPassword = RegionMySqlPassword.Text
+        Form1.MySetting.SaveINI()
     End Sub
 
     Private Sub TextBox1_TextChanged_1(sender As Object, e As EventArgs) Handles RobustDbName.TextChanged
-        My.Settings.RobustMySqlName = RobustDbName.Text
-        My.Settings.Save()
+        Form1.MySetting.RobustMySqlName = RobustDbName.Text
+        Form1.MySetting.SaveINI()
     End Sub
 
     Private Sub RobustUsernameTextBox_TextChanged(sender As Object, e As EventArgs) Handles RobustDBUsername.TextChanged
-        My.Settings.RobustMySqlUsername = RobustDBUsername.Text
-        My.Settings.Save()
+        Form1.MySetting.RobustMySqlUsername = RobustDBUsername.Text
+        Form1.MySetting.SaveINI()
     End Sub
 
     Private Sub RobustPasswordTextBox_TextChanged(sender As Object, e As EventArgs) Handles RobustDBPassword.TextChanged
-        My.Settings.RobustMySqlPassword = RobustDBPassword.Text
-        My.Settings.Save()
+        Form1.MySetting.RobustMySqlPassword = RobustDBPassword.Text
+        Form1.MySetting.SaveINI()
     End Sub
 
     Private Sub RobustPasswordClicked(sender As Object, e As EventArgs) Handles RobustDBPassword.Click
@@ -384,8 +384,8 @@ Public Class Expert
     End Sub
 
     Private Sub RobustDbPortTextbox_TextChanged(sender As Object, e As EventArgs) Handles RobustDbPort.TextChanged
-        My.Settings.MySqlPort = RobustDbPort.Text
-        My.Settings.Save()
+        Form1.MySetting.MySqlPort = RobustDbPort.Text
+        Form1.MySetting.SaveINI()
     End Sub
 
 
@@ -411,8 +411,8 @@ Public Class Expert
 
     Private Sub AutoStartCheckbox_CheckedChanged(sender As Object, e As EventArgs) Handles AutoStartCheckbox.CheckedChanged
 
-        My.Settings.Autostart = AutoStartCheckbox.Checked
-        My.Settings.Save()
+        Form1.MySetting.Autostart = AutoStartCheckbox.Checked
+        Form1.MySetting.SaveINI()
 
     End Sub
 
@@ -420,7 +420,7 @@ Public Class Expert
 
         If Not initted Then Return
 
-        My.Settings.BootStart = BootStart.Checked
+        Form1.MySetting.BootStart = BootStart.Checked
         Dim ProcessTask As Process = New Process()
         Dim pi As ProcessStartInfo = New ProcessStartInfo()
         pi.WindowStyle = ProcessWindowStyle.Normal
@@ -433,8 +433,8 @@ Public Class Expert
                 Try
                     ProcessTask.Start()
                     AutoStartCheckbox.Checked = True
-                    My.Settings.Autostart = True
-                    My.Settings.Save()
+                    Form1.MySetting.Autostart = True
+                    Form1.MySetting.SaveINI()
                 Catch ex As Exception
                     Form1.Log("Error:ProcessTask failed to launch:" + ex.Message)
                 End Try
@@ -474,8 +474,8 @@ Public Class Expert
 
     Private Sub CheckBox1_CheckedChanged_1(sender As Object, e As EventArgs) Handles AutoLoadCheckbox.CheckedChanged
 
-        My.Settings.AutoLoad = AutoLoadCheckbox.Checked
-        My.Settings.Save()
+        Form1.MySetting.AutoLoad = AutoLoadCheckbox.Checked
+        Form1.MySetting.SaveINI()
 
     End Sub
 

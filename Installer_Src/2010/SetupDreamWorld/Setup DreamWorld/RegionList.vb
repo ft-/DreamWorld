@@ -304,17 +304,17 @@ Public Class RegionList
             If (e.CurrentValue = CheckState.Unchecked) Then
                 RegionClass.RegionEnabled(n) = True
                 ' and region file on disk
-                Form1.LoadIni(RegionClass.RegionPath(n), ";")
-                Form1.SetIni(RegionClass.RegionName(n), "Enabled", "true")
-                Form1.SaveINI()
+                Form1.MySetting.LoadIni(RegionClass.RegionPath(n), ";")
+                Form1.MySetting.SetIni(RegionClass.RegionName(n), "Enabled", "true")
+                Form1.MySetting.SaveINI()
                 RegionClass.ProcessID(n) = 0
                 Application.DoEvents()
             ElseIf (e.CurrentValue = CheckState.Checked) Then
                 RegionClass.RegionEnabled(n) = False
                 ' and region file on disk
-                Form1.LoadIni(RegionClass.RegionPath(n), ";")
-                Form1.SetIni(RegionClass.RegionName(n), "Enabled", "false")
-                Form1.SaveINI()
+                Form1.MySetting.LoadIni(RegionClass.RegionPath(n), ";")
+                Form1.MySetting.SetIni(RegionClass.RegionName(n), "Enabled", "false")
+                Form1.MySetting.SaveINI()
                 Application.DoEvents()
             End If
         End If

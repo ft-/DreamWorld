@@ -10,10 +10,10 @@ Public Class Mysql
     Public Sub New()
 
         Dim robustconnStr = "server=" + "127.0.0.1" _
-            + ";database=" + My.Settings.RobustMySqlName _
-            + ";port=" + My.Settings.MySqlPort _
-            + ";user=" + My.Settings.RobustMySqlUsername _
-            + ";password=" + My.Settings.RobustMySqlPassword
+            + ";database=" + Form1.MySetting.RobustMySqlName _
+            + ";port=" + Form1.MySetting.MySqlPort _
+            + ";user=" + Form1.MySetting.RobustMySqlUsername _
+            + ";password=" + Form1.MySetting.RobustMySqlPassword
 
         MysqlConn = New MySqlConnection(robustconnStr)
 
@@ -29,7 +29,7 @@ Public Class Mysql
     End Function
     Public Function IsMySqlRunning() As String
 
-        Dim Mysql = CheckPort("127.0.0.1", My.Settings.MySqlPort)
+        Dim Mysql = CheckPort("127.0.0.1", Form1.MySetting.MySqlPort)
         If Mysql Then
             Dim version = QueryString("SELECT VERSION()")
             Debug.Print("MySQL version: {0}", version)
