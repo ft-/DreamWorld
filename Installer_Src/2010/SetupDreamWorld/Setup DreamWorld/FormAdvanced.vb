@@ -13,20 +13,20 @@ Public Class AdvancedForm
 #Region "Functions"
 
     Private Sub Loaded(sender As Object, e As EventArgs) Handles Me.Load
-        AutoBackupKeepFilesForDays.Text = My.Settings.KeepForDays
-        If My.Settings.AutobackupInterval = 60 Then
+        AutoBackupKeepFilesForDays.Text = Form1.MySetting.KeepForDays
+        If Form1.MySetting.AutobackupInterval = 60 Then
             AutoBackupInterval.SelectedIndex = 0
-        ElseIf My.Settings.AutobackupInterval = 12 * 60 Then
+        ElseIf Form1.MySetting.AutobackupInterval = 12 * 60 Then
             AutoBackupInterval.SelectedIndex = 1
-        ElseIf My.Settings.AutobackupInterval = 24 * 60 Then
+        ElseIf Form1.MySetting.AutobackupInterval = 24 * 60 Then
             AutoBackupInterval.SelectedIndex = 2
         Else
             AutoBackupInterval.SelectedIndex = 3
         End If
 
-        BackupFolder.Text = My.Settings.BackupFolder
+        BackupFolder.Text = Form1.MySetting.BackupFolder
 
-        Dim Chattime = My.Settings.ChatTime
+        Dim Chattime = Form1.MySetting.ChatTime
 
         If Chattime = Sleepy Then
             ChatSpeed.SelectedIndex = 0
@@ -38,22 +38,22 @@ Public Class AdvancedForm
             ChatSpeed.SelectedIndex = 3
         End If
 
-        AutoBackup.Checked = My.Settings.AutoBackup
-        TimerInterval.Text = Str(My.Settings.TimerInterval)
+        AutoBackup.Checked = Form1.MySetting.AutoBackup
+        TimerInterval.Text = Str(Form1.MySetting.TimerInterval)
 
-        If My.Settings.MapType = "None" Then
+        If Form1.MySetting.MapType = "None" Then
             MapNone.Checked = True
             MapPicture.Image = Nothing
-        ElseIf My.Settings.MapType = "Simple" Then
+        ElseIf Form1.MySetting.MapType = "Simple" Then
             MapSimple.Checked = True
             MapPicture.Image = My.Resources.Simple
-        ElseIf My.Settings.MapType = "Good" Then
+        ElseIf Form1.MySetting.MapType = "Good" Then
             MapGood.Checked = True
             MapPicture.Image = My.Resources.Good
-        ElseIf My.Settings.MapType = "Better" Then
+        ElseIf Form1.MySetting.MapType = "Better" Then
             MapBetter.Checked = True
             MapPicture.Image = My.Resources.Better
-        ElseIf My.Settings.MapType = "Best" Then
+        ElseIf Form1.MySetting.MapType = "Best" Then
             MapBest.Checked = True
             MapPicture.Image = My.Resources.Best
         End If
@@ -68,8 +68,8 @@ Public Class AdvancedForm
     End Sub
 
     Private Sub ABEnabled_CheckedChanged(sender As Object, e As EventArgs) Handles AutoBackup.CheckedChanged
-        My.Settings.AutoBackup = AutoBackup.Checked
-        My.Settings.Save()
+        Form1.MySetting.AutoBackup = AutoBackup.Checked
+        Form1.MySetting.SaveINI()
     End Sub
 
     Private Sub AutoBackupInterval_SelectedIndexChanged(sender As Object, e As EventArgs) Handles AutoBackupInterval.SelectedIndexChanged
@@ -79,14 +79,14 @@ Public Class AdvancedForm
         If text = "12 Hour" Then Interval = 60 * 12
         If text = "Daily" Then Interval = 60 * 24
         If text = "Weekly" Then Interval = 60 * 24 * 7
-        My.Settings.AutobackupInterval = Interval
-        My.Settings.Save()
+        Form1.MySetting.AutobackupInterval = Interval
+        Form1.MySetting.SaveINI()
     End Sub
 
     Private Sub AutoBackupKeepFilesForDays_TextChanged(sender As Object, e As EventArgs) Handles AutoBackupKeepFilesForDays.TextChanged
         If Convert.ToInt32(AutoBackupKeepFilesForDays.Text) > 0 Then
-            My.Settings.KeepForDays = Convert.ToInt32(AutoBackupKeepFilesForDays.Text)
-            My.Settings.Save()
+            Form1.MySetting.KeepForDays = Convert.ToInt32(AutoBackupKeepFilesForDays.Text)
+            Form1.MySetting.SaveINI()
         End If
     End Sub
 
@@ -99,8 +99,8 @@ Public Class AdvancedForm
         If text = "After Coffee" Then ChatTime = 500
         If text = "Too much Coffee" Then ChatTime = 0
 
-        My.Settings.ChatTime = ChatTime
-        My.Settings.Save()
+        Form1.MySetting.ChatTime = ChatTime
+        Form1.MySetting.SaveINI()
         Form1.gChatTime = ChatTime
     End Sub
 
@@ -109,16 +109,16 @@ Public Class AdvancedForm
         Try
             If Len(TimerInterval.Text) > 0 Then
 
-                My.Settings.TimerInterval = CInt(TimerInterval.Text)
-                If (My.Settings.TimerInterval > 0) Then
+                Form1.MySetting.TimerInterval = CInt(TimerInterval.Text)
+                If (Form1.MySetting.TimerInterval > 0) Then
                     Form1.PaintImage()
                 Else
                     Form1.PictureBox1.Visible = False
                 End If
             Else
                 Form1.PictureBox1.Visible = False
-                My.Settings.TimerInterval = 0
-                My.Settings.Save()
+                Form1.MySetting.TimerInterval = 0
+                Form1.MySetting.SaveINI()
             End If
         Catch
         End Try
@@ -177,33 +177,33 @@ Public Class AdvancedForm
     End Sub
 
     Private Sub MapNone_CheckedChanged(sender As Object, e As EventArgs) Handles MapNone.CheckedChanged
-        My.Settings.MapType = "None"
-        My.Settings.Save()
+        Form1.MySetting.MapType = "None"
+        Form1.MySetting.SaveINI()
         MapPicture.Image = Nothing
 
     End Sub
 
     Private Sub MapSimple_CheckedChanged(sender As Object, e As EventArgs) Handles MapSimple.CheckedChanged
-        My.Settings.MapType = "Simple"
-        My.Settings.Save()
+        Form1.MySetting.MapType = "Simple"
+        Form1.MySetting.SaveINI()
         MapPicture.Image = My.Resources.Simple
     End Sub
 
     Private Sub MapGood_CheckedChanged(sender As Object, e As EventArgs) Handles MapGood.CheckedChanged
-        My.Settings.MapType = "Good"
-        My.Settings.Save()
+        Form1.MySetting.MapType = "Good"
+        Form1.MySetting.SaveINI()
         MapPicture.Image = My.Resources.Good
     End Sub
 
     Private Sub MapBetter_CheckedChanged(sender As Object, e As EventArgs) Handles MapBetter.CheckedChanged
-        My.Settings.MapType = "Better"
-        My.Settings.Save()
+        Form1.MySetting.MapType = "Better"
+        Form1.MySetting.SaveINI()
         MapPicture.Image = My.Resources.Better
     End Sub
 
     Private Sub MapBest_CheckedChanged(sender As Object, e As EventArgs) Handles MapBest.CheckedChanged
-        My.Settings.MapType = "Best"
-        My.Settings.Save()
+        Form1.MySetting.MapType = "Best"
+        Form1.MySetting.SaveINI()
         MapPicture.Image = My.Resources.Best
     End Sub
 
@@ -219,8 +219,8 @@ Public Class AdvancedForm
         If UserClickedOK = True Then
             Dim thing = openFileDialog1.SelectedPath
             If thing.Length Then
-                My.Settings.BackupFolder = thing
-                My.Settings.Save()
+                Form1.MySetting.BackupFolder = thing
+                Form1.MySetting.SaveINI()
                 BackupFolder.Text = thing
             End If
         End If
@@ -233,10 +233,10 @@ Public Class AdvancedForm
     Private Sub ComboBox1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles WelcomeBox1.SelectedIndexChanged
 
         Dim value As String = TryCast(WelcomeBox1.SelectedItem, String)
-        My.Settings.WelcomeRegion = value
+        Form1.MySetting.WelcomeRegion = value
 
         Debug.Print("Selected " + value)
-        My.Settings.Save()
+        Form1.MySetting.SaveINI()
 
     End Sub
 
@@ -256,7 +256,7 @@ Public Class AdvancedForm
             End If
         Next
 
-        Dim s = WelcomeBox1.FindString(My.Settings.WelcomeRegion)
+        Dim s = WelcomeBox1.FindString(Form1.MySetting.WelcomeRegion)
         If s > -1 Then
             WelcomeBox1.SelectedIndex = s
         Else

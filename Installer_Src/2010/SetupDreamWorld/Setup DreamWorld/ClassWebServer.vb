@@ -16,6 +16,7 @@ Public Class NetServer
     Private Shared singleWebserver As NetServer
     Private Myfolder As String
     Private IP As String = Nothing
+    Private MyPort As Integer
     Dim RegionClass As RegionMaker = RegionMaker.Instance
 
     Private Sub New()
@@ -24,7 +25,10 @@ Public Class NetServer
 
     End Sub
 
-    Public Sub StartServer(folder As String)
+    Public Sub StartServer(folder As String, IP As String, Port As String)
+
+        MyPort = Port
+        LocalAddress = IPAddress.Parse(IP)
 
         If running Then Return
         Myfolder = folder
@@ -42,11 +46,10 @@ Public Class NetServer
 
     Private Sub Looper()
 
-        Dim oaddress = GetIPv4Address()
-        Log("Info:IP:" + oaddress.ToString)
+        Log("Info:IP:" + LocalAddress.ToString)
         listen = True
         Try
-            LocalTCPListener = New TcpListener(oaddress, My.Settings.DiagnosticPort)
+            LocalTCPListener = New TcpListener(LocalAddress, MyPort)
         Catch ex As Exception
             Log(ex.Message)
             Return
@@ -63,7 +66,7 @@ Public Class NetServer
             End If
 
             Dim client As TcpClient = LocalTCPListener.AcceptTcpClient()
-            Log("Info:Accepted client")
+            Log("DiagnosticPort:Accepted client")
 
             Dim stream As NetworkStream = client.GetStream() ' Get a stream object for reading and writing
             Dim Response As String = ""
@@ -83,7 +86,7 @@ Public Class NetServer
                 Loop While stream.DataAvailable
 
                 ' Print out the received message to the console.
-                'Log("Received:" + myCompleteMessage.ToString())
+                Log("Received:" + myCompleteMessage.ToString())
                 Response = RegionClass.ParsePost(myCompleteMessage.ToString())
             Else
                 Log("Error:Cannot read from this NetworkStream.")
@@ -108,12 +111,6 @@ Public Class NetServer
         running = False
 
     End Sub
-
-    Private Function GetIPv4Address() As IPAddress
-
-        Return IPAddress.Parse(My.Settings.PublicIP)
-
-    End Function
 
     Public Sub StopWebServer()
 

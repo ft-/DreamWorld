@@ -133,7 +133,7 @@ Public Class FormRegion
 
     Public Shared Function FilenameIsOK(ByVal fileName As String) As Boolean
         ' check for invalid chars in file name for INI file
-        Dim file As String
+
 
         Dim value As Boolean = False
         Try
@@ -268,7 +268,7 @@ Public Class FormRegion
                         "InternalAddress = 0.0.0.0" & vbCrLf &
                         "InternalPort = " & RegionPort.Text & vbCrLf &
                         "AllowAlternatePorts = False" & vbCrLf &
-                        "ExternalHostName = " & My.Settings.PublicIP & vbCrLf &
+                        "ExternalHostName = " & Form1.MySetting.PublicIP & vbCrLf &
                         "SizeX = " & SizeX.Text & vbCrLf &
                         "SizeY = " & SizeY.Text & vbCrLf &
                         "Enabled = " & EnabledCheckBox.Checked.ToString & vbCrLf &

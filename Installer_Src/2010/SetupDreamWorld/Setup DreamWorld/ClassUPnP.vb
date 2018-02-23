@@ -13,6 +13,7 @@ Public Class UPnp
     Private staticEnabled As Boolean = True
     Private dynamicEnabled As Boolean = True
     Private myfolder As String = ""
+    Private CacheIP As String
 
     ''' <summary>
     ''' The different supported protocols
@@ -45,6 +46,8 @@ Public Class UPnp
             Return staticEnabled = True OrElse dynamicEnabled = True
         End Get
     End Property
+
+
 
     ''' <summary>
     ''' The UPnp Managed Class
@@ -181,26 +184,34 @@ Public Class UPnp
         Return False
 
     End Function
-    Public Shared Function LocalIP() As String
+    Public Function LocalIP() As String
 
-        If My.Settings.DnsName = "localhost" Or My.Settings.DnsName = "127.0.0.1" Then
-            Return My.Settings.DnsName
+        If CacheIP = "" Then
+            If Form1.MySetting.DNSName = "localhost" Or Form1.MySetting.DNSName = "127.0.0.1" Then
+                Return Form1.MySetting.DNSName
+            End If
+
+            Dim sock As Socket = New Socket(AddressFamily.InterNetwork, SocketType.Dgram, 0)
+            Try
+                Using sock
+                    sock.Connect("8.8.8.8", 65530)  ' try Google
+                    Dim EndPoint As IPEndPoint = sock.LocalEndPoint
+                    LocalIP = EndPoint.Address.ToString()
+                End Using
+            Catch ex As Exception
+                LocalIP = LocalIPForced()
+
+                If LocalIP = String.Empty Then
+                    LocalIP = "127.0.0.1"
+                End If
+            End Try
+            CacheIP = LocalIP
+
+        Else
+            LocalIP = CacheIP
         End If
 
-        Dim sock As Socket = New Socket(AddressFamily.InterNetwork, SocketType.Dgram, 0)
-        Try
-            Using sock
-                sock.Connect("8.8.8.8", 65530)  ' try Google
-                Dim EndPoint As IPEndPoint = sock.LocalEndPoint
-                LocalIP = EndPoint.Address.ToString()
-            End Using
-        Catch ex As Exception
-            LocalIP = LocalIPForced()
 
-            If LocalIP = String.Empty Then
-                LocalIP = "127.0.0.1"
-            End If
-        End Try
 
     End Function
 

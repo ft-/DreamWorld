@@ -57,42 +57,6 @@ Namespace My
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("True")>  _
-        Public Property ConsoleShow() As Boolean
-            Get
-                Return CType(Me("ConsoleShow"),Boolean)
-            End Get
-            Set
-                Me("ConsoleShow") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("True")>  _
-        Public Property AvatarShow() As Boolean
-            Get
-                Return CType(Me("AvatarShow"),Boolean)
-            End Get
-            Set
-                Me("AvatarShow") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
-        Public Property ViewerEase() As Boolean
-            Get
-                Return CType(Me("ViewerEase"),Boolean)
-            End Get
-            Set
-                Me("ViewerEase") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("True")>  _
         Public Property AutoBackup() As Boolean
             Get
                 Return CType(Me("AutoBackup"),Boolean)
@@ -607,17 +571,17 @@ Namespace My
         End Property
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
-         Global.System.Configuration.DefaultSettingValueAttribute("AutoBackup")>
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("AutoBackup")>  _
         Public Property BackupFolder() As String
             Get
-                Return CType(Me("BackupFolder"), String)
+                Return CType(Me("BackupFolder"),String)
             End Get
             Set
-                Me("BackupFolder") = Value
+                Me("BackupFolder") = value
             End Set
         End Property
-
+        
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
@@ -927,6 +891,18 @@ Namespace My
             End Get
             Set
                 Me("RunOnce") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("True")>  _
+        Public Property ConsoleShow() As Boolean
+            Get
+                Return CType(Me("ConsoleShow"),Boolean)
+            End Get
+            Set
+                Me("ConsoleShow") = value
             End Set
         End Property
     End Class
