@@ -171,14 +171,14 @@ Public Class MySettings
 
     End Sub
 
-    Public Sub LoadIni()
+    Public Sub LoadIni(arg As String, comment As String)
 
         Myparser = New FileIniDataParser()
 
         Myparser.Parser.Configuration.SkipInvalidLines = True
-        Myparser.Parser.Configuration.CommentString = ";" ' Opensim uses semicolons
+        Myparser.Parser.Configuration.CommentString = comment ' Opensim uses semicolons
         Try
-            Data = Myparser.ReadFile(Form1.MyFolder + "\OutworldzFiles\Settings.ini", System.Text.Encoding.ASCII)
+            Data = Myparser.ReadFile(arg, System.Text.Encoding.ASCII)
         Catch ex As Exception
         End Try
 
