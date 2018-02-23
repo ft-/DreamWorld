@@ -43,7 +43,7 @@
 [Const]
 
 ; Automatically changed by Dreamworld - do not change this
-http_listener_port = 9017
+http_listener_port = 8004
 
 ; Automatically changed by Dreamworld - do not change this
 ;# used by the one-exe-per-instance logic. This becomes the folder for the regions file.
@@ -51,7 +51,7 @@ RegionFolderName = Welcome
 
 ; Automatically changed by Dreamworld - do not change this
 ;# {BaseURL} {} {BaseURL} {"http://example.com","http://127.0.0.1"} "http://127.0.0.1"
-BaseURL = http://fred.outworldz.net
+BaseURL = http://24.173.0.66
 
 ; Automatically changed by Dreamworld - do not change this
 ;# {PublicPort} {} {PublicPort} {8002} "8002"
@@ -62,7 +62,7 @@ PublicPort = 8002
 PrivatePort = 8003
 
 ;# so localhost can be changed if necessary
-PrivURL = http://127.0.0.1
+PrivURL = http://10.6.1.103
 
 ; Automatically changed by Dreamworld - do not change this
 ;# Grid Name for Wifi to show
@@ -325,7 +325,7 @@ channel_notify = -800
 login_disable = true
 
 ; - send an alert as json to a service
-alert_uri = ${Const|BaseURL}:${Const|DiagnosticsPort}
+alert_uri = ${Const|PrivURL}:${Const|DiagnosticsPort}
 
 [AccessControl]
 
@@ -359,7 +359,7 @@ GenerateMaptiles = true
 
 ;# {MapImageModule} {} {The map image module to use} {MapImageModule Warp3DImageModule} MapImageModule
 ;; The module to use in order to generate map images.
-MapImageModule = Warp3DImageModule
+MapImageModule = MapImageModule
 
 ;; generate better images.
 ;MapImageModule = "MapImageModule"
@@ -374,23 +374,23 @@ MapImageModule = Warp3DImageModule
 ; MaptileStaticUUID = "00000000-0000-0000-0000-000000000000"
 ;# {TextureOnMapTile} {} {Use terrain textures for map tiles?} {true false} true
 ;; Use terrain texture for maptiles if true, use shaded green if false
-TextureOnMapTile = true
+TextureOnMapTile = false
 
 ;# {DrawPrimOnMapTile} {} {Draw prim shapes on map tiles?} {true false} false
 ;; Draw objects on maptile.  This step might take a long time if you've
 ;; got a large number of objects, so you can turn it off here if you'd like.
-DrawPrimOnMapTile = true
+DrawPrimOnMapTile = false
 
 ;# {TexturePrims} {} {Texture prims on map tiles?} {true false} true
 ;; Texture the faces of the prims that are rendered on the map tiles.
-TexturePrims = true
+TexturePrims = false
 
 ;# {TexturePrimSize} {} {Size of prims to texture faces?} {} 48
 ;; Only texture prims that have a diagonal size greater than this number
 ; TexturePrimSize = 48
 ;# {RenderMeshes} {} {Render meshes and sculpties on map tiles?} {true false} false
 ;; Attempt to render meshes and sculpties on the map
-RenderMeshes = true
+RenderMeshes = false
 
 [Permissions]
 
