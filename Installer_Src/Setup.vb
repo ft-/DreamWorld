@@ -249,7 +249,6 @@ Public Class Form1
         TextBox1.BackColor = Me.BackColor
         TextBox1.AllowDrop = True
 
-        PictureBox1.Image = My.Resources.ResourceManager.GetObject("fairy")
         PictureBox1.Enabled = True
         PictureBox1.AllowDrop = True
 
@@ -284,13 +283,10 @@ Public Class Form1
         MySetting.PrivateURL = MySetting.PublicIP
 #Enable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
 
-        MySetting.SaveMyINI()
 
         If (MySetting.SplashPage = "") Then
             MySetting.SplashPage = Domain + "/Outworldz_installer/Welcome.htm"
-            MySetting.SaveMyINI()
-
-		end If
+        End If
 
         ProgressBar1.Value = 100
         ProgressBar1.Value = 0
@@ -311,7 +307,6 @@ Public Class Form1
         If Not MySetting.RanAllDiags Or gDebug Then
             DoDiag()
             MySetting.RanAllDiags = True
-            MySetting.SaveMyINI()
         End If
 
         If Not SetIniData() Then Return
@@ -323,7 +318,6 @@ Public Class Form1
             BumpProgress10()
             Dim Password = New PassGen
             MySetting.Password = Password.GeneratePass()
-            MySetting.SaveMyINI()
         End If
 
         ' Find out if the viewer is installed
@@ -338,6 +332,8 @@ Public Class Form1
             Else
                 Print("Ready to Launch! Click 'Start' to begin your adventure in Opensimulator.")
             End If
+
+            MySetting.SaveMyINI()
 
         Else
 
