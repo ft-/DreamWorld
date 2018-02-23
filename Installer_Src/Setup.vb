@@ -185,6 +185,7 @@ Public Class Form1
         End Get
         Set(ByVal Value As String)
             MySetting.SplashPage = Value
+
             MySetting.SaveMyINI()
         End Set
     End Property
@@ -288,11 +289,11 @@ Public Class Form1
         If (MySetting.SplashPage = "") Then
             MySetting.SplashPage = Domain + "/Outworldz_installer/Welcome.htm"
             MySetting.SaveMyINI()
-        End If
+
+		end If
 
         ProgressBar1.Value = 100
         ProgressBar1.Value = 0
-
 
         If Not MySetting.SkipUpdateCheck Then
             CheckForUpdates()
@@ -303,16 +304,8 @@ Public Class Form1
         ' must start after region Class is instantiated
         ws = NetServer.GetWebServer
         Log("Info:Starting Web Server ")
-#Disable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
-        ws.StartServer(MyFolder, MySetting.PrivateURL, MySetting.DiagnosticPort)
-#Enable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
 
-        gUseIcons = True
-        Dim wsstarted = CheckPort(MyUPnpMap.LocalIP, MySetting.DiagnosticPort)
-        If wsstarted = False Then
-            MsgBox("Diagnostics port " + MySetting.DiagnosticPort + " is blocked by router, firewall, loopback or antivirus.", vbInformation, "Cannot Hypergrid")
-            gUseIcons = False
-        End If
+        ws.StartServer(MyFolder, MySetting.PrivateURL, MySetting.DiagnosticPort)
 
         ' Run diagnostics, maybe
         If Not MySetting.RanAllDiags Or gDebug Then
@@ -321,7 +314,7 @@ Public Class Form1
             MySetting.SaveMyINI()
         End If
 
-        If Not SetGetSetting() Then Return
+        If Not SetIniData() Then Return
 
         mnuSettings.Visible = True
         SetIAROARContent() ' load IAR and OAR web content
@@ -394,7 +387,8 @@ Public Class Form1
             OpenPorts()
         End If
 
-        If Not SetGetSetting() Then Return   ' set up the INI files
+
+        If Not SetIniData() Then Return   ' set up the INI files
 
         If Not StartMySQL() Then Return
 
@@ -406,6 +400,7 @@ Public Class Form1
             MsgBox("Please type 'create user<ret>' to make the system owner's account in the ROBUST console, and then answer any questions.", vbInformation, "Info")
             Sleep(10000)
             MySetting.RunOnce = True
+
             MySetting.SaveMyINI()
         End If
 
@@ -726,7 +721,7 @@ Public Class Form1
             ' save to disk
             DefaultName = RegionClass.RegionName(o)
             MySetting.WelcomeRegion = DefaultName
-            MySetting.SaveMyINI()
+            MySetting.SaveINI()
 
 
             '(replace spaces with underscore)
@@ -782,7 +777,7 @@ Public Class Form1
 
     End Sub
 
-    Private Function SetGetSetting() As Boolean
+    Private Function SetIniData() As Boolean
 
         'mnuShow shows the DOS box for Opensimulator
         mnuShow.Checked = MySetting.ConsoleShow
@@ -803,7 +798,8 @@ Public Class Form1
         ''''''''''''''''''''''''''''''''''''''''''''''''
         ' Robust 
         ' Grid regions need GridDBName
-        
+        MySetting.SaveINI()
+
         MySetting.LoadIni(prefix + "bin\config-include\Gridcommon.ini", ";")
         Dim ConnectionString = """" _
             + "Data Source=" + "127.0.0.1" _
@@ -848,6 +844,7 @@ Public Class Form1
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
         ' Opensim.ini
         MySetting.LoadIni(prefix + "bin\Opensim.proto", ";")
+
 
         If (MySetting.Region_owner_is_god Or MySetting.Region_manager_is_god) Then
             MySetting.SetIni("Permissions", "allow_grid_gods", "true")
@@ -1029,7 +1026,7 @@ Public Class Form1
                 MySetting.SetIni("Const", "http_listener_port", RegionClass.RegionPort(X)) ' varies with region
                 MySetting.SetIni("Const", "PrivatePort", MySetting.PrivatePort) '8003
                 MySetting.SetIni("Const", "RegionFolderName", RegionClass.GroupName(X))
-
+                MySetting.SetIni("Const", "PrivatePort", MySetting.PrivatePort) '8003
                 MySetting.SaveINI()
                 My.Computer.FileSystem.CopyFile(prefix + "bin\Opensim.proto", pathname + "Opensim.ini", True)
 
@@ -2736,6 +2733,7 @@ Public Class Form1
 #Disable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
             MySetting.PublicIP = MyUPnpMap.LocalIP()
 #Enable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
+
             MySetting.SaveMyINI()
         End If
 
@@ -2827,11 +2825,13 @@ Public Class Form1
 
     Private Sub CheckDiagPort()
         gUseIcons = True
+
         Dim wsstarted = CheckPort(MyUPnpMap.LocalIP, MySetting.DiagnosticPort)
         If wsstarted = False Then
             MsgBox("Diagnostics port " + MySetting.DiagnosticPort + " is not working or blocked by firewall or anti virus, icons disabled.", vbInformation, "Cannot HG")
             gUseIcons = False
             MySetting.DiagFailed = True
+
             MySetting.SaveMyINI()
         End If
 
@@ -3102,6 +3102,7 @@ Public Class Form1
         MySetting.SetIni("mysqld", "datadir", """" + gCurSlashDir + "/OutworldzFiles/Mysql/Data" + """")
         MySetting.SetIni("mysqld", "port", MySetting.MySqlPort)
         MySetting.SetIni("client", "port", MySetting.MySqlPort)
+
         MySetting.SaveMyINI()
 
         ' create test program 
@@ -3301,6 +3302,7 @@ Public Class Form1
                 If RegisterName(newname) <> "" Then
                     BumpProgress10()
                     MySetting.DNSName = newname
+
                     MySetting.SaveMyINI()
                     MsgBox("Your system's name has been set to " + newname + ". You can change the name in the Advanced menu at any time", vbInformation, "Info")
                 End If
@@ -3384,6 +3386,7 @@ Public Class Form1
 
                         MySetting.LoadIni(RegionClass.RegionPath(num), ";")
                         MySetting.SetIni(sender.Text, "Enabled", "false")
+
                         MySetting.SaveMyINI()
 
                         Debug.Print("Region:Stopped Region " + RegionClass.RegionName(num))
@@ -3399,6 +3402,7 @@ Public Class Form1
                 ' and region file on disk
                 MySetting.LoadIni(RegionClass.RegionPath(num), ";")
                 MySetting.SetIni(sender.Text, "Enabled", "true")
+
                 MySetting.SaveMyINI()
 
                 Boot(RegionClass.RegionName(num))

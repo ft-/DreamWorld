@@ -25,6 +25,7 @@ Public Class NetServer
 
     End Sub
 
+
     Public Sub StartServer(folder As String, IP As String, Port As String)
 
         MyPort = Port
@@ -45,6 +46,7 @@ Public Class NetServer
     End Sub
 
     Private Sub Looper()
+
 
         Log("Info:IP:" + LocalAddress.ToString)
         listen = True

@@ -10,7 +10,6 @@ Public Class MySettings
     Dim MyData As IniParser.Model.IniData
     Dim myINI As String = ""
 
-
 #Region "New"
     Public Sub New()
 
@@ -73,8 +72,7 @@ Public Class MySettings
             KeepForDays() = My.Settings.KeepForDays
 
             LoopBackDiag() = My.Settings.LoopBackDiag
-
-            ' Save a random machine ID - we don't want any data to be sent that's personal or identifiable,  but it needs to be unique
+     ' Save a random machine ID - we don't want any data to be sent that's personal or identifiable,  but it needs to be unique
             Randomize()
             ' Save a random machine ID - we don't want any data to be sent that's personal or identifiable,  but it needs to be unique\
             MachineID() = Random()  ' a random machine ID
@@ -173,21 +171,22 @@ Public Class MySettings
 
     End Sub
 
-    Public Sub LoadIni(filepath As String, delim As String)
+    Public Sub LoadIni()
 
-        parser = New FileIniDataParser()
+        Myparser = New FileIniDataParser()
 
-        parser.Parser.Configuration.SkipInvalidLines = True
-        parser.Parser.Configuration.CommentString = delim ' Opensim uses semicolons
+        Myparser.Parser.Configuration.SkipInvalidLines = True
+        Myparser.Parser.Configuration.CommentString = ";" ' Opensim uses semicolons
         Try
-            Data = parser.ReadFile(filepath, System.Text.Encoding.ASCII)
+            Data = Myparser.ReadFile(Form1.MyFolder + "\OutworldzFiles\Settings.ini", System.Text.Encoding.ASCII)
         Catch ex As Exception
         End Try
 
-        INI = filepath
-
     End Sub
 
+#End Region
+
+#Region "GetSet"
     Public Function GetIni(section As String, key As String, Optional D As String = "") As String
 
         GetIni = Stripqq(Data(section)(key))
@@ -202,7 +201,6 @@ Public Class MySettings
         GetMyIni = Stripqq(MyData(section)(key))
         If GetMyIni = Nothing Then GetMyIni = D
         Return GetMyIni
-
     End Function
 
     Public Sub SaveINI()
@@ -215,6 +213,7 @@ Public Class MySettings
 
     End Sub
 
+
     Public Sub SaveMyINI()
 
         Try
@@ -224,12 +223,14 @@ Public Class MySettings
         End Try
 
     End Sub
-    Public Function Random() As String
 
-        Dim value As Integer = CInt(Int((600000000 * Rnd()) + 1))
+    Public Function Random() As String
+    
+	    Dim value As Integer = CInt(Int((600000000 * Rnd()) + 1))
         Random = System.Convert.ToString(value)
 
     End Function
+	
     Private Function Stripqq(input As String) As String
 
         Return Replace(input, """", "")
@@ -240,6 +241,7 @@ Public Class MySettings
 #End Region
 
 #Region "Properties"
+
 
     Public Function GetMySetting(key As String) As String
 
@@ -263,6 +265,19 @@ Public Class MySettings
         End Set
     End Property
 
+    Public Property INIData(key As String) As String
+        Get
+            Try
+                Return GetIni(INI, "Data", key)
+            Catch
+            End Try
+            Return Nothing
+        End Get
+        Set
+            SetIni("Data", key, Value)
+        End Set
+    End Property
+
     Public Property ConsoleShow() As Boolean
         Get
             Return CType(GetMySetting("ConsoleShow"), Boolean)
@@ -274,6 +289,7 @@ Public Class MySettings
 
     Public Property AutoBackup() As Boolean
         Get
+
             Return CType(GetMySetting("AutoBackup"), Boolean)
         End Get
         Set
@@ -292,6 +308,7 @@ Public Class MySettings
 
     Public Property CoordX() As String
         Get
+
             Return CType(GetMySetting("CoordX"), String)
         End Get
         Set
@@ -372,6 +389,7 @@ Public Class MySettings
 
     Public Property AdminLast() As String
         Get
+
             Return CType(GetMySetting("AdminLast"), String)
         End Get
         Set
@@ -437,19 +455,19 @@ Public Class MySettings
 
     Public Property Region_owner_is_god() As Boolean
         Get
-            Return CType(GetMySetting("region_owner_is_god"), Boolean)
+            Return CType(INIData("region_owner_is_god"), Boolean)
         End Get
         Set
-            SetMySetting("region_owner_is_god", Value)
+            INIData("region_owner_is_god") = Value
         End Set
     End Property
 
     Public Property Region_manager_is_god() As Boolean
         Get
-            Return CType(GetMySetting("region_manager_is_god"), Boolean)
+            Return CType(INIData("region_manager_is_god"), Boolean)
         End Get
         Set
-            SetMySetting("region_manager_is_god", Value)
+            INIData("region_manager_is_god") = Value
         End Set
     End Property
 
@@ -483,6 +501,7 @@ Public Class MySettings
 
     Public Property SmtpPassword() As String
         Get
+
             Return CType(GetMySetting("SmtpPassword"), String)
         End Get
         Set

@@ -439,6 +439,7 @@ Public Class RegionMaker
                         Form1.MySetting.LoadIni(ini, ";")
 
                         Try
+
                             RegionEnabled(CheckN(n)) = Form1.MySetting.GetIni(fName, "Enabled")
                         Catch ex As Exception
                             RegionEnabled(CheckN(n)) = True
@@ -455,6 +456,7 @@ Public Class RegionMaker
                         theEnd = FolderPath(CheckN(n)).LastIndexOf("\")
                         GroupName(CheckN(n)) = FolderPath(CheckN(n)).Substring(theStart, theEnd - theStart)
 
+
                         UUID(CheckN(n)) = Form1.MySetting.GetIni(fName, "RegionUUID")
                         SizeX(CheckN(n)) = Convert.ToInt16(Form1.MySetting.GetIni(fName, "SizeX"))
                         SizeY(CheckN(n)) = Convert.ToInt16(Form1.MySetting.GetIni(fName, "SizeY"))
@@ -469,6 +471,7 @@ Public Class RegionMaker
 
                         ' Location is int,int format.
                         Dim C = Form1.MySetting.GetIni(fName, "Location")
+
                         Dim parts As String() = C.Split(New Char() {","c}) ' split at the comma
                         CoordX(CheckN(n)) = parts(0)
                         CoordY(CheckN(n)) = parts(1)
