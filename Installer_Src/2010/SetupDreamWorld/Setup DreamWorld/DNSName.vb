@@ -1,4 +1,4 @@
-﻿Imports System.Text.RegularExpressions
+﻿
 Imports System.Net
 
 Public Class DNSName
@@ -9,6 +9,7 @@ Public Class DNSName
         Dim value As Integer = CInt(Int((600000000 * Rnd()) + 1))
         Random = System.Convert.ToString(value)
     End Function
+
 #End Region
 
 #Region "Buttons"
@@ -93,6 +94,10 @@ Public Class DNSName
             NextNameButton.Enabled = True
             TextBox1.Text = newname
         End If
+
+    End Sub
+
+    Private Sub TextBox1_TextChanged(sender As Object, e As EventArgs) Handles TextBox1.TextChanged
 
     End Sub
 

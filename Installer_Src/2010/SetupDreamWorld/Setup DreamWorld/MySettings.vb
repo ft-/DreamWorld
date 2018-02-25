@@ -86,6 +86,7 @@ Public Class MySettings
             Physics() = My.Settings.Physics
             PrivatePort() = My.Settings.PrivatePort
 
+
             PublicIP() = My.Settings.PublicIP
 
             Region_owner_is_god() = My.Settings.region_owner_is_god
@@ -100,6 +101,12 @@ Public Class MySettings
             RobustMySqlUsername() = My.Settings.RobustMySqlUsername
             RobustMySqlName() = My.Settings.RobustMySqlName
             RunOnce() = My.Settings.RunOnce
+
+            SC_Enable() = False
+            SC_PortBase() = 8000
+            SC_Password() = "A password"
+            SC_AdminPassword() = ""
+            SC_Show() = True
 
             SizeX() = My.Settings.SizeX
             SizeY() = My.Settings.SizeY
@@ -830,6 +837,46 @@ Public Class MySettings
         End Get
         Set
             SetMySetting("RunOnce", Value)
+        End Set
+    End Property
+    Public Property SC_Enable() As Boolean
+        Get
+            Return CType(GetMySetting("SC_Enable"), Boolean)
+        End Get
+        Set
+            SetMySetting("SC_Enable", Value)
+        End Set
+    End Property
+    Public Property SC_PortBase() As Integer
+        Get
+            Return CType(GetMySetting("PortBase"), Integer)
+        End Get
+        Set
+            SetMySetting("PortBase", Value)
+        End Set
+    End Property
+    Public Property SC_Password() As String
+        Get
+            Return CType(GetMySetting("SC_Password"), String)
+        End Get
+        Set
+            SetMySetting("SC_Password", Value)
+        End Set
+    End Property
+    Public Property SC_AdminPassword() As String
+        Get
+            Return CType(GetMySetting("SC_AdminPassword"), String)
+        End Get
+        Set
+            SetMySetting("SC_AdminPassword", Value)
+        End Set
+    End Property
+    Public Property SC_Show() As Boolean
+        Get
+            Return CType(GetMySetting("SC_Show"), Boolean)
+        End Get
+        Set
+            SetMySetting("SC_Show", Value)
         End Set
     End Property
 End Class

@@ -30,7 +30,7 @@
 
     Private Sub FormisClosed(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Closed
 
-        Form1.DoGloebits(Form1.prefix + "bin\Gloebit.ini")
+        Form1.DoGloebits()
 
     End Sub
 

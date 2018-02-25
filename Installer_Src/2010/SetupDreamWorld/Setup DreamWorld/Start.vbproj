@@ -246,6 +246,12 @@
     <Compile Include="FormVoice.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Shoutcast.Designer.vb">
+      <DependentUpon>Shoutcast.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Shoutcast.vb">
+      <SubType>Form</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="..\..\..\Setup.resx">
@@ -286,6 +292,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="RegionTreeView.resx">
       <DependentUpon>RegionTreeView.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Shoutcast.resx">
+      <DependentUpon>Shoutcast.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -105,6 +105,11 @@ Public Class Form1
     Dim gIPv4Address As String
     Public MySetting As New MySettings
 
+    ' Shoutcast
+    Dim gShoutcastProcID As Boolean = False
+    Private WithEvents ShoutcastProcess As New Process()
+
+
     <CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA2101:SpecifyMarshalingForPInvokeStringArguments", MessageId:="1")>
     <CodeAnalysis.SuppressMessage("Microsoft.Interoperability", "CA1401:PInvokesShouldNotBeVisible")>
     <CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1060:MovePInvokesToNativeMethodsClass")>
@@ -185,7 +190,6 @@ Public Class Form1
         End Get
         Set(ByVal Value As String)
             MySetting.SplashPage = Value
-
             MySetting.SaveMyINI()
         End Set
     End Property
@@ -333,8 +337,6 @@ Public Class Form1
                 Print("Ready to Launch! Click 'Start' to begin your adventure in Opensimulator.")
             End If
 
-            MySetting.SaveMyINI()
-
         Else
 
             Print("Installing Desktop icon clicky thingy")
@@ -383,8 +385,9 @@ Public Class Form1
             OpenPorts()
         End If
 
-
         If Not SetIniData() Then Return   ' set up the INI files
+
+        StartShoutcast()
 
         If Not StartMySQL() Then Return
 
@@ -396,7 +399,6 @@ Public Class Form1
             MsgBox("Please type 'create user<ret>' to make the system owner's account in the ROBUST console, and then answer any questions.", vbInformation, "Info")
             Sleep(10000)
             MySetting.RunOnce = True
-
             MySetting.SaveMyINI()
         End If
 
@@ -441,6 +443,9 @@ Public Class Form1
         ProgressBar1.Value = 90
 
         Print("Hold fast to your dreams ...")
+
+        StopShoutcast()
+
         KillAll()
         ProgressBar1.Value = 10
         Print("I'll tell you my next dream when I wake up.")
@@ -660,8 +665,8 @@ Public Class Form1
         mnuHide.Checked = False
 
         MySetting.ConsoleShow = mnuShow.Checked
-
         MySetting.SaveMyINI()
+
         If Running Then
             Print("The Opensimulator Console will be shown the next time the system is started.")
         End If
@@ -674,7 +679,8 @@ Public Class Form1
         mnuHide.Checked = True
 
         MySetting.ConsoleShow = mnuShow.Checked
-        MySetting.SaveINI()
+        MySetting.SaveMyINI()
+
         If Running Then
             Print("The Opensimulator Console will not be shown. Change will occur when Opensim is restarted")
         End If
@@ -714,11 +720,11 @@ Public Class Form1
             If o < 0 Then
                 o = 0
             End If
+
             ' save to disk
             DefaultName = RegionClass.RegionName(o)
             MySetting.WelcomeRegion = DefaultName
-            MySetting.SaveINI()
-
+            MySetting.SaveMyINI()
 
             '(replace spaces with underscore)
             DefaultName = DefaultName.Replace(" ", "_")    ' because this is a screwy thing they did in the INI file
@@ -787,6 +793,7 @@ Public Class Form1
 
         Print("Saving all settings")
 
+        MySetting.SaveMyINI()
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
         ' set the defaults in the INI for the viewer to use. Painful to do as it's a Left hand side edit 
 
@@ -794,7 +801,7 @@ Public Class Form1
         ''''''''''''''''''''''''''''''''''''''''''''''''
         ' Robust 
         ' Grid regions need GridDBName
-        MySetting.SaveINI()
+
 
         MySetting.LoadIni(prefix + "bin\config-include\Gridcommon.ini", ";")
         Dim ConnectionString = """" _
@@ -948,7 +955,6 @@ Public Class Form1
         MySetting.SetIni("AutoBackupModule", "AutoBackupKeepFilesForDays", MySetting.KeepForDays)
         MySetting.SetIni("AutoBackupModule", "AutoBackupDir", BackupPath())
 
-
         ' Voice
         If MySetting.VivoxEnabled Then
             MySetting.SetIni("VivoxVoice", "enabled", "true")
@@ -963,13 +969,19 @@ Public Class Form1
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
         ' Wifi Settings
 
-        DoWifi("bin\Wifi.ini")
-        'DoWifi("addins-registry\addins\Diva.Wifi.0.9.0.0.13\Wifi.ini")
+        DoWifi()
 
-        ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+        DoShoutcast()
 
-        DoGloebits(prefix + "bin\Gloebit.ini")
+        DoGloebits()
 
+        DoRegions()
+
+        Return CopyOpensimProto()
+
+    End Function
+
+    Private Sub DoRegions()
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
         'Regions - write all region.ini files with public IP and Public port
 
@@ -994,54 +1006,32 @@ Public Class Form1
                 MySetting.SetIni(simName, "MaxPrims", Convert.ToString(RegionClass.MaxPrims(X)))
                 MySetting.SetIni(simName, "MaxAgents", Convert.ToString(RegionClass.MaxAgents(X)))
                 MySetting.SetIni(simName, "ClampPrimSize", Convert.ToString(RegionClass.ClampPrimSize(X)))
-
-                MySetting.SaveINI()
             End If
 
-        Next
-
-        Return CopyOpensimProto()
-
-    End Function
-
-    Function CopyOpensimProto() As Boolean
-
-        ' COPY OPENSIM.INI prototype to all region folders and set the Sim Name
-
-        For Each X As Integer In RegionClass.RegionNumbers
-            Debug.Print("Count: " + X.ToString)
-            Dim regionName = RegionClass.RegionName(X)
-            Dim pathname = RegionClass.IniPath(X)
-            Debug.Print(regionName)
-
-            Try
-                MySetting.LoadIni(prefix + "bin\Opensim.proto", ";")
-                MySetting.SetIni("Const", "BaseURL", "http://" + MySetting.PublicIP)
-                MySetting.SetIni("Const", "PrivURL", "http://" + MySetting.PrivateURL)
-                MySetting.SetIni("Const", "PublicPort", MySetting.HttpPort) ' 8002
-                MySetting.SetIni("Const", "http_listener_port", RegionClass.RegionPort(X)) ' varies with region
-                MySetting.SetIni("Const", "PrivatePort", MySetting.PrivatePort) '8003
-                MySetting.SetIni("Const", "RegionFolderName", RegionClass.GroupName(X))
-                MySetting.SetIni("Const", "PrivatePort", MySetting.PrivatePort) '8003
-                MySetting.SaveINI()
-                My.Computer.FileSystem.CopyFile(prefix + "bin\Opensim.proto", pathname + "Opensim.ini", True)
-
-            Catch ex As Exception
-                Print("Error:Failed to set the Opensim.ini for sim " + regionName + ":" + ex.Message)
-                Return False
-            End Try
+            MySetting.SaveINI()
 
         Next
 
-        Return True
+    End Sub
 
-    End Function
+    Public Sub DoShoutcast()
 
-    Public Sub DoGloebits(path As String)
+        ' Shoutcast.ini   
+        MySetting.LoadIni(prefix + "/SHOUTcast/Shoutcast.ini", ";")
+
+        MySetting.SetIni("SHOUTCAST", "Password", MySetting.SC_Password)
+        MySetting.SetIni("SHOUTCAST", "PortBase", MySetting.SC_PortBase.ToString)
+        MySetting.SetIni("SHOUTCAST", "AdminPassword", MySetting.SC_AdminPassword)
+        MySetting.SetIni("SHOUTCAST", "TitleFormat", MySetting.SimName + " Radio: %s")
+
+        MySetting.SaveINI()
+
+    End Sub
+
+    Public Sub DoGloebits()
 
         'Gloebits.ini
-
-        MySetting.LoadIni(path, ";")
+        MySetting.LoadIni(prefix + "bin\Gloebit.ini", ";")
         If MySetting.GloebitsEnable Then
             MySetting.SetIni("Gloebit", "Enabled", "true")
         Else
@@ -1076,10 +1066,9 @@ Public Class Form1
 
     End Sub
 
-    Private Sub DoWifi(param As String)
+    Private Sub DoWifi()
 
-
-        MySetting.LoadIni(prefix + param, ";")
+        MySetting.LoadIni(prefix + "bin\Wifi.ini", ";")
 
         Dim ConnectionString = """" _
                 + "Data Source=" + "127.0.0.1" _
@@ -1113,7 +1102,6 @@ Public Class Form1
         MySetting.SetIni("WifiService", "SmtpUsername", MySetting.SmtpUsername)
         MySetting.SetIni("WifiService", "SmtpPassword", MySetting.SmtpPassword)
 
-
         If MySetting.AccountConfirmationRequired Then
             MySetting.SetIni("WifiService", "AccountConfirmationRequired", "true")
         Else
@@ -1121,8 +1109,42 @@ Public Class Form1
         End If
 
         MySetting.SaveINI()
+
     End Sub
 
+    Function CopyOpensimProto() As Boolean
+
+        ' COPY OPENSIM.INI prototype to all region folders and set the Sim Name
+
+        For Each X As Integer In RegionClass.RegionNumbers
+            Debug.Print("Count: " + X.ToString)
+            Dim regionName = RegionClass.RegionName(X)
+            Dim pathname = RegionClass.IniPath(X)
+            Debug.Print(regionName)
+
+            Try
+                MySetting.LoadIni(prefix + "bin\Opensim.proto", ";")
+                MySetting.SetIni("Const", "BaseURL", "http://" + MySetting.PublicIP)
+                MySetting.SetIni("Const", "PrivURL", "http://" + MySetting.PrivateURL)
+                MySetting.SetIni("Const", "PublicPort", MySetting.HttpPort) ' 8002
+                MySetting.SetIni("Const", "http_listener_port", RegionClass.RegionPort(X)) ' varies with region
+                MySetting.SetIni("Const", "PrivatePort", MySetting.PrivatePort) '8003
+                MySetting.SetIni("Const", "RegionFolderName", RegionClass.GroupName(X))
+                MySetting.SetIni("Const", "PrivatePort", MySetting.PrivatePort) '8003
+                MySetting.SaveINI()
+
+                My.Computer.FileSystem.CopyFile(prefix + "bin\Opensim.proto", pathname + "Opensim.ini", True)
+
+            Catch ex As Exception
+                Print("Error:Failed to set the Opensim.ini for sim " + regionName + ":" + ex.Message)
+                Return False
+            End Try
+
+        Next
+
+        Return True
+
+    End Function
 #End Region
 
 #Region "Ports"
@@ -1295,6 +1317,42 @@ Public Class Form1
     Private Sub RobustProcess_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles RobustProcess.Exited
 
         gRobustProcID = Nothing
+
+    End Sub
+
+    Public Sub StartShoutcast()
+
+        If Not MySetting.SC_Enable Then
+            Return
+        End If
+
+        gShoutcastProcID = Nothing
+        Print("Starting Shoutcast")
+
+        Try
+            ShoutcastProcess.EnableRaisingEvents = True
+            ShoutcastProcess.StartInfo.UseShellExecute = True ' so we can redirect streams
+            ShoutcastProcess.StartInfo.FileName = MyFolder + "\Shoutcast\Shoutcast.exe"
+
+            ShoutcastProcess.StartInfo.CreateNoWindow = False
+            ShoutcastProcess.StartInfo.WorkingDirectory = MyFolder + "OutworldzFiles\"
+
+            If MySetting.SC_Show Then
+                ShoutcastProcess.StartInfo.WindowStyle = ProcessWindowStyle.Normal
+            Else
+                ShoutcastProcess.StartInfo.WindowStyle = ProcessWindowStyle.Minimized
+            End If
+
+            ShoutcastProcess.StartInfo.Arguments = "Shoutcast.ini"
+            ShoutcastProcess.Start()
+            gShoutcastProcID = ShoutcastProcess.Id
+
+            Thread.Sleep(1000)
+            SetWindowText(ShoutcastProcess.MainWindowHandle, "Shoutcast")
+
+        Catch ex As Exception
+            Print("Error: Shoutcast did not start: " + ex.Message)
+        End Try
 
     End Sub
 
@@ -2649,7 +2707,6 @@ Public Class Form1
             If MySetting.DNSName.Length Then
                 BumpProgress10()
                 MySetting.PublicIP = MySetting.DNSName
-                MySetting.SaveMyINI()
             End If
 
 #Disable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
@@ -2827,7 +2884,6 @@ Public Class Form1
             MsgBox("Diagnostics port " + MySetting.DiagnosticPort + " is not working or blocked by firewall or anti virus, icons disabled.", vbInformation, "Cannot HG")
             gUseIcons = False
             MySetting.DiagFailed = True
-
             MySetting.SaveMyINI()
         End If
 
@@ -3098,8 +3154,7 @@ Public Class Form1
         MySetting.SetIni("mysqld", "datadir", """" + gCurSlashDir + "/OutworldzFiles/Mysql/Data" + """")
         MySetting.SetIni("mysqld", "port", MySetting.MySqlPort)
         MySetting.SetIni("client", "port", MySetting.MySqlPort)
-
-        MySetting.SaveMyINI()
+        MySetting.SaveINI()
 
         ' create test program 
         ' slants the other way:
@@ -3168,6 +3223,12 @@ Public Class Form1
         Return True
 
     End Function
+
+    Private Sub StopShoutcast()
+
+        Zap("Shoutcast")
+
+    End Sub
 
     Private Sub StopMysql()
 
@@ -3298,7 +3359,6 @@ Public Class Form1
                 If RegisterName(newname) <> "" Then
                     BumpProgress10()
                     MySetting.DNSName = newname
-
                     MySetting.SaveMyINI()
                     MsgBox("Your system's name has been set to " + newname + ". You can change the name in the Advanced menu at any time", vbInformation, "Info")
                 End If
@@ -3382,7 +3442,6 @@ Public Class Form1
 
                         MySetting.LoadIni(RegionClass.RegionPath(num), ";")
                         MySetting.SetIni(sender.Text, "Enabled", "false")
-
                         MySetting.SaveMyINI()
 
                         Debug.Print("Region:Stopped Region " + RegionClass.RegionName(num))
@@ -3398,7 +3457,6 @@ Public Class Form1
                 ' and region file on disk
                 MySetting.LoadIni(RegionClass.RegionPath(num), ";")
                 MySetting.SetIni(sender.Text, "Enabled", "true")
-
                 MySetting.SaveMyINI()
 
                 Boot(RegionClass.RegionName(num))

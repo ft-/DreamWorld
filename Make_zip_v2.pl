@@ -1,5 +1,5 @@
 
-my $type  = '-V2.1';# '-Beta-V1.5';
+my $type  = '-V2.11';# '-Beta-V1.5';
 my $dir = "C:\\Opensim\\Outworldz Source";
 
 chdir ($dir);
@@ -32,6 +32,7 @@ foreach my $path ( @deletions) {
 #clean up opensim
 unlink "$dir/OutworldzFiles/Opensim/bin/Opensim.log" ;
 unlink "$dir/OutworldzFiles/Opensim/bin/Opensimstats.log" ;
+unlink "$dir/OutworldzFiles/Shoutcast/Shoutcast.log" ;
 
 unlink "$dir/OutworldzFiles/Opensim/bin/OpensimConsoleHistory.txt" ;
 unlink "$dir/OutworldzFiles/Opensim-0.9/bin/OpensimConsoleHistory.txt" ;
@@ -103,7 +104,8 @@ say("Drop mysql files from update");
 # now delete the mysql from the UPDATE
 Process ("../7z.exe -tzip d ..\\Zips\\DreamGrid-Update$type.zip Outworldzfiles\\mysql\\data\\ -r ");
 
-
+say ("Dropping Setting.ini from updater");
+Process ("../7z.exe -tzip d ..\\Zips\\DreamGrid-Update$type.zip Outworldzfiles\\Settings.ini -r ");
 
 # del Dot net because we cannot overwrite an open file
 Process ("../7z.exe -tzip d ..\\Zips\\DreamGrid-Update$type.zip DotNetZip.dll ");

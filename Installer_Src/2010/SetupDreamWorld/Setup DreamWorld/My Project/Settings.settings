@@ -2,7 +2,6 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="My" GeneratedClassName="MySettings" UseMySettingsClassName="true">
   <Profiles />
   <Settings>
-
     <Setting Name="AutoBackup" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
@@ -138,9 +137,6 @@
     <Setting Name="DiagsRun2" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="WelcomeRegion" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Welcome</Value>
-    </Setting>
     <Setting Name="GloebitsEnable" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
@@ -161,9 +157,6 @@
     </Setting>
     <Setting Name="GLProdKey" Type="System.String" Scope="User">
       <Value Profile="(Default)">OAuth Production key</Value>
-    </Setting>
-    <Setting Name="MySqlPort" Type="System.String" Scope="User">
-      <Value Profile="(Default)">3306</Value>
     </Setting>
     <Setting Name="GLProdSecret" Type="System.String" Scope="User">
       <Value Profile="(Default)">OAuth Production secret</Value>
@@ -192,12 +185,6 @@
     <Setting Name="RobustMySqlPassword" Type="System.String" Scope="User">
       <Value Profile="(Default)">robustpassword</Value>
     </Setting>
-    <Setting Name="SimName" Type="System.String" Scope="User">
-      <Value Profile="(Default)">DreamGrid</Value>
-    </Setting>
-    <Setting Name="UPnPEnabled" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
     <Setting Name="Autostart" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
@@ -214,6 +201,57 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="ConsoleShow" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="AvatarShow" Type="System.String" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="ViewerEase" Type="System.String" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="GridFolder" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Opensim</Value>
+    </Setting>
+    <Setting Name="PublicPort" Type="System.String" Scope="User">
+      <Value Profile="(Default)">8001</Value>
+    </Setting>
+    <Setting Name="Onlook" Type="System.String" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="SimName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">DreamWorld</Value>
+    </Setting>
+    <Setting Name="MySqlPort" Type="System.String" Scope="User">
+      <Value Profile="(Default)">3309</Value>
+    </Setting>
+    <Setting Name="allow_grid_gods" Type="System.String" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="parcel_owner_is_god" Type="System.String" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="DBName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">opensim</Value>
+    </Setting>
+    <Setting Name="DBUserID" Type="System.String" Scope="User">
+      <Value Profile="(Default)">opensimuser</Value>
+    </Setting>
+    <Setting Name="DBPassword" Type="System.String" Scope="User">
+      <Value Profile="(Default)">opensimpassword</Value>
+    </Setting>
+    <Setting Name="DBSource" Type="System.String" Scope="User">
+      <Value Profile="(Default)">127.0.0.1</Value>
+    </Setting>
+    <Setting Name="MyIP" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="DiagsRun" Type="System.String" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="WelcomeRegion" Type="System.String" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="UPnPEnabled" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
   </Settings>

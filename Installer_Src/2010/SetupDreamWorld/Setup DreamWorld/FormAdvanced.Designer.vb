@@ -57,6 +57,7 @@ Partial Class AdvancedForm
         Me.Label3 = New System.Windows.Forms.Label()
         Me.AddRegion = New System.Windows.Forms.Button()
         Me.RegionButton = New System.Windows.Forms.Button()
+        Me.Shoutcast = New System.Windows.Forms.Button()
         CType(Me.MapHelp, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PersonalityHelp, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.AutoBackupHelp, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -249,7 +250,7 @@ Partial Class AdvancedForm
         '
         'ExpertButton1
         '
-        Me.ExpertButton1.Location = New System.Drawing.Point(399, 215)
+        Me.ExpertButton1.Location = New System.Drawing.Point(399, 244)
         Me.ExpertButton1.Name = "ExpertButton1"
         Me.ExpertButton1.Size = New System.Drawing.Size(143, 23)
         Me.ExpertButton1.TabIndex = 1866
@@ -405,11 +406,21 @@ Partial Class AdvancedForm
         Me.RegionButton.Text = "Configure Regions"
         Me.RegionButton.UseVisualStyleBackColor = True
         '
+        'Shoutcast
+        '
+        Me.Shoutcast.Location = New System.Drawing.Point(399, 215)
+        Me.Shoutcast.Name = "Shoutcast"
+        Me.Shoutcast.Size = New System.Drawing.Size(143, 23)
+        Me.Shoutcast.TabIndex = 1868
+        Me.Shoutcast.Text = "Shoutcast Setup"
+        Me.Shoutcast.UseVisualStyleBackColor = True
+        '
         'AdvancedForm
         '
         Me.AutoSize = True
         Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-        Me.ClientSize = New System.Drawing.Size(625, 263)
+        Me.ClientSize = New System.Drawing.Size(625, 292)
+        Me.Controls.Add(Me.Shoutcast)
         Me.Controls.Add(Me.GloebitsButton)
         Me.Controls.Add(Me.ExpertButton1)
         Me.Controls.Add(Me.MapBox)
@@ -470,4 +481,5 @@ Partial Class AdvancedForm
     Friend WithEvents AddRegion As Button
     Friend WithEvents RegionButton As Button
     Friend WithEvents RegionHelp As PictureBox
+    Friend WithEvents Shoutcast As Button
 End Class

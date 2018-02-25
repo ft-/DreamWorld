@@ -312,6 +312,16 @@ Public Class AdvancedForm
         Application.DoEvents()
     End Sub
 
+    Private Sub Shoutcast_Click(sender As Object, e As EventArgs) Handles Shoutcast.Click
+        Dim ActualForm As New Shoutcast
+        Dim X As Integer = 300
+        Dim Y As Integer = 200
+        ActualForm.SetDesktopLocation(X, Y)
+        ActualForm.Visible = True
+        ActualForm.Activate()
+        Application.DoEvents()
+    End Sub
+
 
 #End Region
 
