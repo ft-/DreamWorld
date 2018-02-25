@@ -2123,7 +2123,7 @@ Public Class Form1
             ' Set prompt.
             Message = "Enter a name for your backup:"
             title = "Backup to OAR"
-            defaultValue = chosen + ".oar"   ' Set default value.
+            defaultValue = chosen + "_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar"
 
             ' Display message, title, and default value.
             myValue = InputBox(Message, title, defaultValue)
@@ -2289,7 +2289,7 @@ Public Class Form1
             Dim backupName As String
             Message = "Backup name? :"
             title = "Backup Name?"
-            defaultValue = "backup.iar"   ' Set default value.
+            defaultValue = "backup" + "_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".iar"   ' Set default value.
 
             ' Display message, title, and default value.
             backupName = InputBox(Message, title, defaultValue)
@@ -2318,21 +2318,17 @@ Public Class Form1
             ' Display message, title, and default value.
             Password = InputBox(Message, title, defaultValue)
 
-            Dim r As Integer = -1
+            Dim r As Integer = 0
             For Each d As Integer In RegionClass.RegionNumbers
-                If RegionClass.Booted(d) Then
-                    r = d
+                Dim GName = RegionClass.GroupName(d)
+                Dim RNUm = RegionClass.FindRegionByName(GName)
+                If RegionClass.Booted(d) And r = 0 Then
+                    ConsoleCommand(RegionClass.ProcessID(d), "save iar " + Name + " " + """" + itemName + """" + " " + Password + " " + """" + BackupPath() + backupName + """" + "{ENTER}")
+                    r = r + 1
+                    Me.Focus()
+                    Print("Saving " + backupName + " to " + BackupPath())
                 End If
             Next
-
-            If r < 0 Then
-                Print("No regions are running")
-                Return
-            End If
-
-            ConsoleCommand(RegionClass.ProcessID(r), "save iar " + Name + " " + """" + itemName + """" + " " + Password + " " + """" + BackupPath() + backupName + """" + "{ENTER}")
-            Me.Focus()
-            Print("Saving " + backupName + " to " + BackupPath())
 
         Else
             Print("Opensim is not running. Cannot make a backup now.")
@@ -2371,8 +2367,9 @@ Public Class Form1
 
         If region.Length Then
             Dim backMeUp = MsgBox("Make a backup first?", vbYesNo, "Backup?")
-
-            For Each Y In RegionClass.RegionListByGroupNum(region)
+            Dim num = RegionClass.FindRegionByName(region)
+            Dim GroupName = RegionClass.GroupName(num)
+            For Each Y In RegionClass.RegionListByGroupNum(GroupName)
                 Try
                     Print("Opensimulator will load  " + thing + ".  This may take some time.")
                     thing = thing.Replace("\", "/")    ' because Opensim uses unix-like slashes, that's why
@@ -2420,7 +2417,7 @@ Public Class Form1
         Dim user = InputBox("User name that will get this IAR?")
         Dim password = InputBox("Password for user " + user + "?")
         If user.Length And password.Length Then
-            For Each Y In RegionClass.RegionListByGroupNum(RegionClass.RegionName(num))   ' a booted region,'s grroup            
+            For Each Y In RegionClass.RegionListByGroupNum(RegionClass.GroupName(num))   ' a booted region,'s grroup            
                 ConsoleCommand(RegionClass.ProcessID(Y), "load iar --merge " + user + " /Objects " + password + " " + """" + thing + """" + "{ENTER}")
                 ConsoleCommand(RegionClass.ProcessID(Y), "alert IAR content Is loaded{ENTER}")
             Next
