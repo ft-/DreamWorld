@@ -15,6 +15,7 @@ Public Class MySettings
 
         parser = New FileIniDataParser()
         parser.Parser.Configuration.SkipInvalidLines = True
+        parser.Parser.Configuration.AssigmentSpacer = ""
 
     End Sub
 
@@ -171,6 +172,7 @@ Public Class MySettings
         Myparser = New FileIniDataParser()
 
         Myparser.Parser.Configuration.SkipInvalidLines = True
+        parser.Parser.Configuration.AssigmentSpacer = ""
         Myparser.Parser.Configuration.CommentString = ";" ' Opensim uses semicolons
         Try
             MyData = Myparser.ReadFile(Form1.MyFolder + "\OutworldzFiles\Settings.ini", System.Text.Encoding.ASCII)
@@ -184,6 +186,7 @@ Public Class MySettings
         parser = New FileIniDataParser()
 
         parser.Parser.Configuration.SkipInvalidLines = True
+        parser.Parser.Configuration.AssigmentSpacer = ""
         parser.Parser.Configuration.CommentString = comment ' Opensim uses semicolons
         Try
             Data = parser.ReadFile(arg, System.Text.Encoding.ASCII)

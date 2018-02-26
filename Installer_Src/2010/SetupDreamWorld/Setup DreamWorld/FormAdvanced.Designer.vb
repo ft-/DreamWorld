@@ -84,7 +84,7 @@ Partial Class AdvancedForm
         Me.MapNone.AutoSize = True
         Me.MapNone.Location = New System.Drawing.Point(23, 29)
         Me.MapNone.Name = "MapNone"
-        Me.MapNone.Size = New System.Drawing.Size(51, 17)
+        Me.MapNone.Size = New System.Drawing.Size(63, 21)
         Me.MapNone.TabIndex = 137
         Me.MapNone.TabStop = True
         Me.MapNone.Text = "None"
@@ -96,7 +96,7 @@ Partial Class AdvancedForm
         Me.MapSimple.AutoSize = True
         Me.MapSimple.Location = New System.Drawing.Point(23, 48)
         Me.MapSimple.Name = "MapSimple"
-        Me.MapSimple.Size = New System.Drawing.Size(94, 17)
+        Me.MapSimple.Size = New System.Drawing.Size(122, 21)
         Me.MapSimple.TabIndex = 33
         Me.MapSimple.TabStop = True
         Me.MapSimple.Text = "Simple but fast"
@@ -108,7 +108,7 @@ Partial Class AdvancedForm
         Me.MapBetter.AutoSize = True
         Me.MapBetter.Location = New System.Drawing.Point(24, 87)
         Me.MapBetter.Name = "MapBetter"
-        Me.MapBetter.Size = New System.Drawing.Size(116, 17)
+        Me.MapBetter.Size = New System.Drawing.Size(153, 21)
         Me.MapBetter.TabIndex = 35
         Me.MapBetter.TabStop = True
         Me.MapBetter.Text = "Better (Prims, Slow)"
@@ -121,7 +121,7 @@ Partial Class AdvancedForm
         Me.MapBest.AutoSize = True
         Me.MapBest.Location = New System.Drawing.Point(23, 109)
         Me.MapBest.Name = "MapBest"
-        Me.MapBest.Size = New System.Drawing.Size(144, 17)
+        Me.MapBest.Size = New System.Drawing.Size(189, 21)
         Me.MapBest.TabIndex = 136
         Me.MapBest.TabStop = True
         Me.MapBest.Text = "Best (Prims +Mesh, Slow)"
@@ -133,7 +133,7 @@ Partial Class AdvancedForm
         Me.MapGood.AutoSize = True
         Me.MapGood.Location = New System.Drawing.Point(24, 67)
         Me.MapGood.Name = "MapGood"
-        Me.MapGood.Size = New System.Drawing.Size(100, 17)
+        Me.MapGood.Size = New System.Drawing.Size(130, 21)
         Me.MapGood.TabIndex = 34
         Me.MapGood.TabStop = True
         Me.MapGood.Text = "Good (Warp3D)"
@@ -154,7 +154,7 @@ Partial Class AdvancedForm
         '
         Me.TimerInterval.Location = New System.Drawing.Point(135, 38)
         Me.TimerInterval.Name = "TimerInterval"
-        Me.TimerInterval.Size = New System.Drawing.Size(39, 20)
+        Me.TimerInterval.Size = New System.Drawing.Size(39, 22)
         Me.TimerInterval.TabIndex = 9
         Me.ToolTip1.SetToolTip(Me.TimerInterval, "The cycle time for the wall paper - in seconds. 0 = Off")
         '
@@ -164,7 +164,7 @@ Partial Class AdvancedForm
         Me.ChatSpeed.Items.AddRange(New Object() {"Sleepy", "Awake", "After Coffee", "Too much Coffee"})
         Me.ChatSpeed.Location = New System.Drawing.Point(9, 14)
         Me.ChatSpeed.Name = "ChatSpeed"
-        Me.ChatSpeed.Size = New System.Drawing.Size(113, 21)
+        Me.ChatSpeed.Size = New System.Drawing.Size(113, 24)
         Me.ChatSpeed.TabIndex = 8
         Me.ToolTip1.SetToolTip(Me.ChatSpeed, "The speed the sleepy chat occurs at.  ")
         '
@@ -182,7 +182,7 @@ Partial Class AdvancedForm
         '
         Me.AutoBackupKeepFilesForDays.Location = New System.Drawing.Point(86, 65)
         Me.AutoBackupKeepFilesForDays.Name = "AutoBackupKeepFilesForDays"
-        Me.AutoBackupKeepFilesForDays.Size = New System.Drawing.Size(47, 20)
+        Me.AutoBackupKeepFilesForDays.Size = New System.Drawing.Size(47, 22)
         Me.AutoBackupKeepFilesForDays.TabIndex = 3
         Me.ToolTip1.SetToolTip(Me.AutoBackupKeepFilesForDays, "Backaups older than this number will be deleted")
         '
@@ -193,7 +193,7 @@ Partial Class AdvancedForm
         Me.AutoBackupInterval.Items.AddRange(New Object() {"Hourly", "12 Hour", "Daily", "Weekly"})
         Me.AutoBackupInterval.Location = New System.Drawing.Point(6, 39)
         Me.AutoBackupInterval.Name = "AutoBackupInterval"
-        Me.AutoBackupInterval.Size = New System.Drawing.Size(121, 21)
+        Me.AutoBackupInterval.Size = New System.Drawing.Size(121, 24)
         Me.AutoBackupInterval.TabIndex = 2
         Me.ToolTip1.SetToolTip(Me.AutoBackupInterval, "The sim nust run this long and it will back up")
         '
@@ -202,7 +202,7 @@ Partial Class AdvancedForm
         Me.AutoBackup.AutoSize = True
         Me.AutoBackup.Location = New System.Drawing.Point(62, 21)
         Me.AutoBackup.Name = "AutoBackup"
-        Me.AutoBackup.Size = New System.Drawing.Size(65, 17)
+        Me.AutoBackup.Size = New System.Drawing.Size(82, 21)
         Me.AutoBackup.TabIndex = 1
         Me.AutoBackup.Text = "Enabled"
         Me.ToolTip1.SetToolTip(Me.AutoBackup, "Saves OAR files periodically")
@@ -213,7 +213,7 @@ Partial Class AdvancedForm
         Me.WelcomeRegion.AutoSize = True
         Me.WelcomeRegion.Location = New System.Drawing.Point(6, 22)
         Me.WelcomeRegion.Name = "WelcomeRegion"
-        Me.WelcomeRegion.Size = New System.Drawing.Size(123, 13)
+        Me.WelcomeRegion.Size = New System.Drawing.Size(166, 17)
         Me.WelcomeRegion.TabIndex = 32
         Me.WelcomeRegion.Text = "Default region for visitors"
         Me.ToolTip1.SetToolTip(Me.WelcomeRegion, "This region is where visitors first arrive")
@@ -225,7 +225,7 @@ Partial Class AdvancedForm
         Me.WelcomeBox1.Items.AddRange(New Object() {"Hourly", "12 Hour", "Daily", "Weekly"})
         Me.WelcomeBox1.Location = New System.Drawing.Point(4, 38)
         Me.WelcomeBox1.Name = "WelcomeBox1"
-        Me.WelcomeBox1.Size = New System.Drawing.Size(148, 21)
+        Me.WelcomeBox1.Size = New System.Drawing.Size(148, 24)
         Me.WelcomeBox1.TabIndex = 31
         Me.ToolTip1.SetToolTip(Me.WelcomeBox1, "The first sim a visitor will arrive in")
         '
@@ -301,7 +301,7 @@ Partial Class AdvancedForm
         Me.Label15.AutoSize = True
         Me.Label15.Location = New System.Drawing.Point(6, 41)
         Me.Label15.Name = "Label15"
-        Me.Label15.Size = New System.Drawing.Size(116, 13)
+        Me.Label15.Size = New System.Drawing.Size(156, 17)
         Me.Label15.TabIndex = 25
         Me.Label15.Text = "Wallpaper Time (0=Off)"
         '
@@ -336,7 +336,7 @@ Partial Class AdvancedForm
         Me.Label6.AutoSize = True
         Me.Label6.Location = New System.Drawing.Point(6, 96)
         Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(83, 13)
+        Me.Label6.Size = New System.Drawing.Size(109, 17)
         Me.Label6.TabIndex = 16
         Me.Label6.Text = "Save To Folder:"
         '
@@ -344,7 +344,7 @@ Partial Class AdvancedForm
         '
         Me.BackupFolder.Location = New System.Drawing.Point(6, 112)
         Me.BackupFolder.Name = "BackupFolder"
-        Me.BackupFolder.Size = New System.Drawing.Size(163, 20)
+        Me.BackupFolder.Size = New System.Drawing.Size(163, 22)
         Me.BackupFolder.TabIndex = 15
         '
         'Label9
@@ -352,7 +352,7 @@ Partial Class AdvancedForm
         Me.Label9.AutoSize = True
         Me.Label9.Location = New System.Drawing.Point(6, 68)
         Me.Label9.Name = "Label9"
-        Me.Label9.Size = New System.Drawing.Size(74, 13)
+        Me.Label9.Size = New System.Drawing.Size(98, 17)
         Me.Label9.TabIndex = 14
         Me.Label9.Text = "Keep for Days"
         '
@@ -361,7 +361,7 @@ Partial Class AdvancedForm
         Me.Label8.AutoSize = True
         Me.Label8.Location = New System.Drawing.Point(3, 21)
         Me.Label8.Name = "Label8"
-        Me.Label8.Size = New System.Drawing.Size(45, 13)
+        Me.Label8.Size = New System.Drawing.Size(58, 17)
         Me.Label8.TabIndex = 12
         Me.Label8.Text = "Interval:"
         '
@@ -385,7 +385,7 @@ Partial Class AdvancedForm
         Me.Label3.AutoSize = True
         Me.Label3.Location = New System.Drawing.Point(15, 31)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(0, 13)
+        Me.Label3.Size = New System.Drawing.Size(0, 17)
         Me.Label3.TabIndex = 28
         '
         'AddRegion
@@ -417,8 +417,6 @@ Partial Class AdvancedForm
         '
         'AdvancedForm
         '
-        Me.AutoSize = True
-        Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.ClientSize = New System.Drawing.Size(625, 292)
         Me.Controls.Add(Me.Shoutcast)
         Me.Controls.Add(Me.GloebitsButton)

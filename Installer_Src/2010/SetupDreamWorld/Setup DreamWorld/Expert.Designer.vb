@@ -144,9 +144,9 @@ Partial Class Expert
         Me.GroupBox3.Controls.Add(Me.Label19)
         Me.GroupBox3.Controls.Add(Me.SplashPage)
         Me.GroupBox3.Location = New System.Drawing.Point(16, 15)
-        Me.GroupBox3.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.GroupBox3.Margin = New System.Windows.Forms.Padding(4)
         Me.GroupBox3.Name = "GroupBox3"
-        Me.GroupBox3.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.GroupBox3.Padding = New System.Windows.Forms.Padding(4)
         Me.GroupBox3.Size = New System.Drawing.Size(256, 452)
         Me.GroupBox3.TabIndex = 49
         Me.GroupBox3.TabStop = False
@@ -156,7 +156,7 @@ Partial Class Expert
         '
         Me.EnableHypergrid.AutoSize = True
         Me.EnableHypergrid.Location = New System.Drawing.Point(24, 33)
-        Me.EnableHypergrid.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.EnableHypergrid.Margin = New System.Windows.Forms.Padding(4)
         Me.EnableHypergrid.Name = "EnableHypergrid"
         Me.EnableHypergrid.Size = New System.Drawing.Size(140, 21)
         Me.EnableHypergrid.TabIndex = 1866
@@ -167,7 +167,7 @@ Partial Class Expert
         '
         Me.PictureBox7.Image = Global.Outworldz.My.Resources.Resources.about
         Me.PictureBox7.Location = New System.Drawing.Point(189, 354)
-        Me.PictureBox7.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.PictureBox7.Margin = New System.Windows.Forms.Padding(4)
         Me.PictureBox7.Name = "PictureBox7"
         Me.PictureBox7.Size = New System.Drawing.Size(40, 42)
         Me.PictureBox7.TabIndex = 1865
@@ -178,7 +178,7 @@ Partial Class Expert
         '
         Me.PictureBox6.Image = Global.Outworldz.My.Resources.Resources.about
         Me.PictureBox6.Location = New System.Drawing.Point(179, 226)
-        Me.PictureBox6.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.PictureBox6.Margin = New System.Windows.Forms.Padding(4)
         Me.PictureBox6.Name = "PictureBox6"
         Me.PictureBox6.Size = New System.Drawing.Size(40, 42)
         Me.PictureBox6.TabIndex = 1864
@@ -189,7 +189,7 @@ Partial Class Expert
         '
         Me.PictureBox5.Image = Global.Outworldz.My.Resources.Resources.about
         Me.PictureBox5.Location = New System.Drawing.Point(171, 144)
-        Me.PictureBox5.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.PictureBox5.Margin = New System.Windows.Forms.Padding(4)
         Me.PictureBox5.Name = "PictureBox5"
         Me.PictureBox5.Size = New System.Drawing.Size(40, 42)
         Me.PictureBox5.TabIndex = 1860
@@ -210,7 +210,7 @@ Partial Class Expert
         'UniqueId
         '
         Me.UniqueId.Location = New System.Drawing.Point(7, 187)
-        Me.UniqueId.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.UniqueId.Margin = New System.Windows.Forms.Padding(4)
         Me.UniqueId.Name = "UniqueId"
         Me.UniqueId.Size = New System.Drawing.Size(229, 22)
         Me.UniqueId.TabIndex = 1862
@@ -218,7 +218,7 @@ Partial Class Expert
         'DNSButton
         '
         Me.DNSButton.Location = New System.Drawing.Point(11, 73)
-        Me.DNSButton.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.DNSButton.Margin = New System.Windows.Forms.Padding(4)
         Me.DNSButton.Name = "DNSButton"
         Me.DNSButton.Size = New System.Drawing.Size(227, 28)
         Me.DNSButton.TabIndex = 1861
@@ -229,7 +229,7 @@ Partial Class Expert
         '
         Me.DNSHelp.Image = Global.Outworldz.My.Resources.Resources.about
         Me.DNSHelp.Location = New System.Drawing.Point(120, 108)
-        Me.DNSHelp.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.DNSHelp.Margin = New System.Windows.Forms.Padding(4)
         Me.DNSHelp.Name = "DNSHelp"
         Me.DNSHelp.Size = New System.Drawing.Size(37, 33)
         Me.DNSHelp.TabIndex = 1859
@@ -239,7 +239,7 @@ Partial Class Expert
         'HypericaButton
         '
         Me.HypericaButton.Location = New System.Drawing.Point(7, 309)
-        Me.HypericaButton.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.HypericaButton.Margin = New System.Windows.Forms.Padding(4)
         Me.HypericaButton.Name = "HypericaButton"
         Me.HypericaButton.Size = New System.Drawing.Size(229, 28)
         Me.HypericaButton.TabIndex = 34
@@ -249,7 +249,7 @@ Partial Class Expert
         'TestButton1
         '
         Me.TestButton1.Location = New System.Drawing.Point(11, 111)
-        Me.TestButton1.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TestButton1.Margin = New System.Windows.Forms.Padding(4)
         Me.TestButton1.Name = "TestButton1"
         Me.TestButton1.Size = New System.Drawing.Size(100, 28)
         Me.TestButton1.TabIndex = 33
@@ -278,7 +278,7 @@ Partial Class Expert
         'GridName
         '
         Me.GridName.Location = New System.Drawing.Point(7, 277)
-        Me.GridName.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.GridName.Margin = New System.Windows.Forms.Padding(4)
         Me.GridName.Name = "GridName"
         Me.GridName.Size = New System.Drawing.Size(229, 22)
         Me.GridName.TabIndex = 10
@@ -296,7 +296,7 @@ Partial Class Expert
         'SplashPage
         '
         Me.SplashPage.Location = New System.Drawing.Point(7, 405)
-        Me.SplashPage.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.SplashPage.Margin = New System.Windows.Forms.Padding(4)
         Me.SplashPage.Name = "SplashPage"
         Me.SplashPage.Size = New System.Drawing.Size(235, 22)
         Me.SplashPage.TabIndex = 45
@@ -308,9 +308,9 @@ Partial Class Expert
         Me.GroupBox4.Controls.Add(Me.ManagerGod)
         Me.GroupBox4.Controls.Add(Me.RegionGod)
         Me.GroupBox4.Location = New System.Drawing.Point(296, 183)
-        Me.GroupBox4.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.GroupBox4.Margin = New System.Windows.Forms.Padding(4)
         Me.GroupBox4.Name = "GroupBox4"
-        Me.GroupBox4.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.GroupBox4.Padding = New System.Windows.Forms.Padding(4)
         Me.GroupBox4.Size = New System.Drawing.Size(248, 113)
         Me.GroupBox4.TabIndex = 48
         Me.GroupBox4.TabStop = False
@@ -320,7 +320,7 @@ Partial Class Expert
         '
         Me.GodHelp.Image = Global.Outworldz.My.Resources.Resources.about
         Me.GodHelp.Location = New System.Drawing.Point(179, 7)
-        Me.GodHelp.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.GodHelp.Margin = New System.Windows.Forms.Padding(4)
         Me.GodHelp.Name = "GodHelp"
         Me.GodHelp.Size = New System.Drawing.Size(40, 42)
         Me.GodHelp.TabIndex = 1857
@@ -331,7 +331,7 @@ Partial Class Expert
         '
         Me.ManagerGod.AutoSize = True
         Me.ManagerGod.Location = New System.Drawing.Point(20, 64)
-        Me.ManagerGod.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.ManagerGod.Margin = New System.Windows.Forms.Padding(4)
         Me.ManagerGod.Name = "ManagerGod"
         Me.ManagerGod.Size = New System.Drawing.Size(185, 21)
         Me.ManagerGod.TabIndex = 6
@@ -342,7 +342,7 @@ Partial Class Expert
         '
         Me.RegionGod.AutoSize = True
         Me.RegionGod.Location = New System.Drawing.Point(20, 34)
-        Me.RegionGod.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.RegionGod.Margin = New System.Windows.Forms.Padding(4)
         Me.RegionGod.Name = "RegionGod"
         Me.RegionGod.Size = New System.Drawing.Size(171, 21)
         Me.RegionGod.TabIndex = 1855
@@ -367,9 +367,9 @@ Partial Class Expert
         Me.Web.Controls.Add(Me.Label10)
         Me.Web.Controls.Add(Me.AdminPassword)
         Me.Web.Location = New System.Drawing.Point(575, 191)
-        Me.Web.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Web.Margin = New System.Windows.Forms.Padding(4)
         Me.Web.Name = "Web"
-        Me.Web.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Web.Padding = New System.Windows.Forms.Padding(4)
         Me.Web.Size = New System.Drawing.Size(256, 276)
         Me.Web.TabIndex = 47
         Me.Web.TabStop = False
@@ -379,7 +379,7 @@ Partial Class Expert
         '
         Me.PictureBox4.Image = Global.Outworldz.My.Resources.Resources.about
         Me.PictureBox4.Location = New System.Drawing.Point(169, 5)
-        Me.PictureBox4.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.PictureBox4.Margin = New System.Windows.Forms.Padding(4)
         Me.PictureBox4.Name = "PictureBox4"
         Me.PictureBox4.Size = New System.Drawing.Size(40, 42)
         Me.PictureBox4.TabIndex = 1858
@@ -390,7 +390,7 @@ Partial Class Expert
         '
         Me.WifiEnabled.AutoSize = True
         Me.WifiEnabled.Location = New System.Drawing.Point(35, 23)
-        Me.WifiEnabled.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.WifiEnabled.Margin = New System.Windows.Forms.Padding(4)
         Me.WifiEnabled.Name = "WifiEnabled"
         Me.WifiEnabled.Size = New System.Drawing.Size(82, 21)
         Me.WifiEnabled.TabIndex = 22
@@ -401,7 +401,7 @@ Partial Class Expert
         'GmailPassword
         '
         Me.GmailPassword.Location = New System.Drawing.Point(115, 229)
-        Me.GmailPassword.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.GmailPassword.Margin = New System.Windows.Forms.Padding(4)
         Me.GmailPassword.Name = "GmailPassword"
         Me.GmailPassword.Size = New System.Drawing.Size(132, 22)
         Me.GmailPassword.TabIndex = 20
@@ -440,7 +440,7 @@ Partial Class Expert
         'GmailUsername
         '
         Me.GmailUsername.Location = New System.Drawing.Point(115, 198)
-        Me.GmailUsername.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.GmailUsername.Margin = New System.Windows.Forms.Padding(4)
         Me.GmailUsername.Name = "GmailUsername"
         Me.GmailUsername.Size = New System.Drawing.Size(132, 22)
         Me.GmailUsername.TabIndex = 19
@@ -448,7 +448,7 @@ Partial Class Expert
         'AdminEmail
         '
         Me.AdminEmail.Location = New System.Drawing.Point(115, 138)
-        Me.AdminEmail.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.AdminEmail.Margin = New System.Windows.Forms.Padding(4)
         Me.AdminEmail.Name = "AdminEmail"
         Me.AdminEmail.Size = New System.Drawing.Size(132, 22)
         Me.AdminEmail.TabIndex = 17
@@ -467,7 +467,7 @@ Partial Class Expert
         '
         Me.AccountConfirmationRequired.AutoSize = True
         Me.AccountConfirmationRequired.Location = New System.Drawing.Point(28, 171)
-        Me.AccountConfirmationRequired.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.AccountConfirmationRequired.Margin = New System.Windows.Forms.Padding(4)
         Me.AccountConfirmationRequired.Name = "AccountConfirmationRequired"
         Me.AccountConfirmationRequired.Size = New System.Drawing.Size(233, 21)
         Me.AccountConfirmationRequired.TabIndex = 18
@@ -478,7 +478,7 @@ Partial Class Expert
         'AdminLast
         '
         Me.AdminLast.Location = New System.Drawing.Point(115, 81)
-        Me.AdminLast.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.AdminLast.Margin = New System.Windows.Forms.Padding(4)
         Me.AdminLast.Name = "AdminLast"
         Me.AdminLast.Size = New System.Drawing.Size(132, 22)
         Me.AdminLast.TabIndex = 15
@@ -486,7 +486,7 @@ Partial Class Expert
         'AdminFirst
         '
         Me.AdminFirst.Location = New System.Drawing.Point(115, 54)
-        Me.AdminFirst.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.AdminFirst.Margin = New System.Windows.Forms.Padding(4)
         Me.AdminFirst.Name = "AdminFirst"
         Me.AdminFirst.Size = New System.Drawing.Size(132, 22)
         Me.AdminFirst.TabIndex = 14
@@ -514,7 +514,7 @@ Partial Class Expert
         'AdminPassword
         '
         Me.AdminPassword.Location = New System.Drawing.Point(115, 111)
-        Me.AdminPassword.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.AdminPassword.Margin = New System.Windows.Forms.Padding(4)
         Me.AdminPassword.Name = "AdminPassword"
         Me.AdminPassword.Size = New System.Drawing.Size(132, 22)
         Me.AdminPassword.TabIndex = 16
@@ -531,9 +531,9 @@ Partial Class Expert
         Me.GroupBox2.Controls.Add(Me.DiagnosticPort)
         Me.GroupBox2.Controls.Add(Me.Label4)
         Me.GroupBox2.Location = New System.Drawing.Point(565, 15)
-        Me.GroupBox2.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.GroupBox2.Margin = New System.Windows.Forms.Padding(4)
         Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.GroupBox2.Padding = New System.Windows.Forms.Padding(4)
         Me.GroupBox2.Size = New System.Drawing.Size(265, 149)
         Me.GroupBox2.TabIndex = 44
         Me.GroupBox2.TabStop = False
@@ -543,7 +543,7 @@ Partial Class Expert
         '
         Me.PictureBox2.Image = Global.Outworldz.My.Resources.Resources.about
         Me.PictureBox2.Location = New System.Drawing.Point(165, 10)
-        Me.PictureBox2.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.PictureBox2.Margin = New System.Windows.Forms.Padding(4)
         Me.PictureBox2.Name = "PictureBox2"
         Me.PictureBox2.Size = New System.Drawing.Size(40, 42)
         Me.PictureBox2.TabIndex = 1859
@@ -554,7 +554,7 @@ Partial Class Expert
         '
         Me.uPnPEnabled.AutoSize = True
         Me.uPnPEnabled.Location = New System.Drawing.Point(29, 28)
-        Me.uPnPEnabled.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.uPnPEnabled.Margin = New System.Windows.Forms.Padding(4)
         Me.uPnPEnabled.Name = "uPnPEnabled"
         Me.uPnPEnabled.Size = New System.Drawing.Size(122, 21)
         Me.uPnPEnabled.TabIndex = 40
@@ -584,7 +584,7 @@ Partial Class Expert
         'HTTPPort
         '
         Me.HTTPPort.Location = New System.Drawing.Point(184, 86)
-        Me.HTTPPort.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.HTTPPort.Margin = New System.Windows.Forms.Padding(4)
         Me.HTTPPort.Name = "HTTPPort"
         Me.HTTPPort.Size = New System.Drawing.Size(61, 22)
         Me.HTTPPort.TabIndex = 39
@@ -592,7 +592,7 @@ Partial Class Expert
         'PrivatePort
         '
         Me.PrivatePort.Location = New System.Drawing.Point(184, 118)
-        Me.PrivatePort.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.PrivatePort.Margin = New System.Windows.Forms.Padding(4)
         Me.PrivatePort.Name = "PrivatePort"
         Me.PrivatePort.Size = New System.Drawing.Size(61, 22)
         Me.PrivatePort.TabIndex = 35
@@ -600,7 +600,7 @@ Partial Class Expert
         'DiagnosticPort
         '
         Me.DiagnosticPort.Location = New System.Drawing.Point(185, 54)
-        Me.DiagnosticPort.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.DiagnosticPort.Margin = New System.Windows.Forms.Padding(4)
         Me.DiagnosticPort.Name = "DiagnosticPort"
         Me.DiagnosticPort.Size = New System.Drawing.Size(61, 22)
         Me.DiagnosticPort.TabIndex = 34
@@ -620,9 +620,9 @@ Partial Class Expert
         Me.GroupBox7.Controls.Add(Me.StatsButton)
         Me.GroupBox7.Controls.Add(Me.WebStats)
         Me.GroupBox7.Location = New System.Drawing.Point(296, 324)
-        Me.GroupBox7.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.GroupBox7.Margin = New System.Windows.Forms.Padding(4)
         Me.GroupBox7.Name = "GroupBox7"
-        Me.GroupBox7.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.GroupBox7.Padding = New System.Windows.Forms.Padding(4)
         Me.GroupBox7.Size = New System.Drawing.Size(252, 59)
         Me.GroupBox7.TabIndex = 43
         Me.GroupBox7.TabStop = False
@@ -632,7 +632,7 @@ Partial Class Expert
         'StatsButton
         '
         Me.StatsButton.Location = New System.Drawing.Point(111, 18)
-        Me.StatsButton.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.StatsButton.Margin = New System.Windows.Forms.Padding(4)
         Me.StatsButton.Name = "StatsButton"
         Me.StatsButton.Size = New System.Drawing.Size(100, 28)
         Me.StatsButton.TabIndex = 22
@@ -643,7 +643,7 @@ Partial Class Expert
         '
         Me.WebStats.AutoSize = True
         Me.WebStats.Location = New System.Drawing.Point(16, 23)
-        Me.WebStats.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.WebStats.Margin = New System.Windows.Forms.Padding(4)
         Me.WebStats.Name = "WebStats"
         Me.WebStats.Size = New System.Drawing.Size(74, 21)
         Me.WebStats.TabIndex = 21
@@ -658,9 +658,9 @@ Partial Class Expert
         Me.GroupBox1.Controls.Add(Me.PhysicsBullet)
         Me.GroupBox1.Controls.Add(Me.PhysicsODE)
         Me.GroupBox1.Location = New System.Drawing.Point(292, 26)
-        Me.GroupBox1.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.GroupBox1.Margin = New System.Windows.Forms.Padding(4)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.GroupBox1.Padding = New System.Windows.Forms.Padding(4)
         Me.GroupBox1.Size = New System.Drawing.Size(252, 142)
         Me.GroupBox1.TabIndex = 42
         Me.GroupBox1.TabStop = False
@@ -670,7 +670,7 @@ Partial Class Expert
         '
         Me.PhysicsSeparate.AutoSize = True
         Me.PhysicsSeparate.Location = New System.Drawing.Point(8, 113)
-        Me.PhysicsSeparate.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.PhysicsSeparate.Margin = New System.Windows.Forms.Padding(4)
         Me.PhysicsSeparate.Name = "PhysicsSeparate"
         Me.PhysicsSeparate.Size = New System.Drawing.Size(239, 21)
         Me.PhysicsSeparate.TabIndex = 37
@@ -682,7 +682,7 @@ Partial Class Expert
         '
         Me.PhysicsNone.AutoSize = True
         Me.PhysicsNone.Location = New System.Drawing.Point(8, 23)
-        Me.PhysicsNone.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.PhysicsNone.Margin = New System.Windows.Forms.Padding(4)
         Me.PhysicsNone.Name = "PhysicsNone"
         Me.PhysicsNone.Size = New System.Drawing.Size(63, 21)
         Me.PhysicsNone.TabIndex = 33
@@ -694,7 +694,7 @@ Partial Class Expert
         '
         Me.PhysicsubODE.AutoSize = True
         Me.PhysicsubODE.Location = New System.Drawing.Point(8, 69)
-        Me.PhysicsubODE.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.PhysicsubODE.Margin = New System.Windows.Forms.Padding(4)
         Me.PhysicsubODE.Name = "PhysicsubODE"
         Me.PhysicsubODE.Size = New System.Drawing.Size(199, 21)
         Me.PhysicsubODE.TabIndex = 35
@@ -706,7 +706,7 @@ Partial Class Expert
         '
         Me.PhysicsBullet.AutoSize = True
         Me.PhysicsBullet.Location = New System.Drawing.Point(8, 91)
-        Me.PhysicsBullet.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.PhysicsBullet.Margin = New System.Windows.Forms.Padding(4)
         Me.PhysicsBullet.Name = "PhysicsBullet"
         Me.PhysicsBullet.Size = New System.Drawing.Size(116, 21)
         Me.PhysicsBullet.TabIndex = 136
@@ -718,7 +718,7 @@ Partial Class Expert
         '
         Me.PhysicsODE.AutoSize = True
         Me.PhysicsODE.Location = New System.Drawing.Point(8, 47)
-        Me.PhysicsODE.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.PhysicsODE.Margin = New System.Windows.Forms.Padding(4)
         Me.PhysicsODE.Name = "PhysicsODE"
         Me.PhysicsODE.Size = New System.Drawing.Size(177, 21)
         Me.PhysicsODE.TabIndex = 34
@@ -739,9 +739,9 @@ Partial Class Expert
         Me.GridGroup.Controls.Add(Me.RobustDBPassword)
         Me.GridGroup.Controls.Add(Me.RobustDBUsername)
         Me.GridGroup.Location = New System.Drawing.Point(839, 15)
-        Me.GridGroup.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.GridGroup.Margin = New System.Windows.Forms.Padding(4)
         Me.GridGroup.Name = "GridGroup"
-        Me.GridGroup.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.GridGroup.Padding = New System.Windows.Forms.Padding(4)
         Me.GridGroup.Size = New System.Drawing.Size(324, 199)
         Me.GridGroup.TabIndex = 53
         Me.GridGroup.TabStop = False
@@ -750,7 +750,7 @@ Partial Class Expert
         'RobustServer
         '
         Me.RobustServer.Location = New System.Drawing.Point(159, 31)
-        Me.RobustServer.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.RobustServer.Margin = New System.Windows.Forms.Padding(4)
         Me.RobustServer.Name = "RobustServer"
         Me.RobustServer.Size = New System.Drawing.Size(141, 22)
         Me.RobustServer.TabIndex = 39
@@ -788,7 +788,7 @@ Partial Class Expert
         'RobustDbPort
         '
         Me.RobustDbPort.Location = New System.Drawing.Point(164, 159)
-        Me.RobustDbPort.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.RobustDbPort.Margin = New System.Windows.Forms.Padding(4)
         Me.RobustDbPort.Name = "RobustDbPort"
         Me.RobustDbPort.Size = New System.Drawing.Size(61, 22)
         Me.RobustDbPort.TabIndex = 33
@@ -796,7 +796,7 @@ Partial Class Expert
         'RobustDbName
         '
         Me.RobustDbName.Location = New System.Drawing.Point(159, 63)
-        Me.RobustDbName.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.RobustDbName.Margin = New System.Windows.Forms.Padding(4)
         Me.RobustDbName.Name = "RobustDbName"
         Me.RobustDbName.Size = New System.Drawing.Size(141, 22)
         Me.RobustDbName.TabIndex = 36
@@ -824,7 +824,7 @@ Partial Class Expert
         'RobustDBPassword
         '
         Me.RobustDBPassword.Location = New System.Drawing.Point(161, 127)
-        Me.RobustDBPassword.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.RobustDBPassword.Margin = New System.Windows.Forms.Padding(4)
         Me.RobustDBPassword.Name = "RobustDBPassword"
         Me.RobustDBPassword.Size = New System.Drawing.Size(141, 22)
         Me.RobustDBPassword.TabIndex = 37
@@ -833,7 +833,7 @@ Partial Class Expert
         'RobustDBUsername
         '
         Me.RobustDBUsername.Location = New System.Drawing.Point(161, 95)
-        Me.RobustDBUsername.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.RobustDBUsername.Margin = New System.Windows.Forms.Padding(4)
         Me.RobustDBUsername.Name = "RobustDBUsername"
         Me.RobustDBUsername.Size = New System.Drawing.Size(141, 22)
         Me.RobustDBUsername.TabIndex = 36
@@ -842,7 +842,7 @@ Partial Class Expert
         '
         Me.PictureBox1.Image = Global.Outworldz.My.Resources.Resources.about
         Me.PictureBox1.Location = New System.Drawing.Point(284, 0)
-        Me.PictureBox1.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.PictureBox1.Margin = New System.Windows.Forms.Padding(4)
         Me.PictureBox1.Name = "PictureBox1"
         Me.PictureBox1.Size = New System.Drawing.Size(40, 42)
         Me.PictureBox1.TabIndex = 1858
@@ -853,7 +853,7 @@ Partial Class Expert
         '
         Me.PictureBox3.Image = Global.Outworldz.My.Resources.Resources.about
         Me.PictureBox3.Location = New System.Drawing.Point(975, 206)
-        Me.PictureBox3.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.PictureBox3.Margin = New System.Windows.Forms.Padding(4)
         Me.PictureBox3.Name = "PictureBox3"
         Me.PictureBox3.Size = New System.Drawing.Size(40, 42)
         Me.PictureBox3.TabIndex = 1860
@@ -864,7 +864,7 @@ Partial Class Expert
         '
         Me.AutoLoadCheckbox.AutoSize = True
         Me.AutoLoadCheckbox.Location = New System.Drawing.Point(16, 23)
-        Me.AutoLoadCheckbox.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.AutoLoadCheckbox.Margin = New System.Windows.Forms.Padding(4)
         Me.AutoLoadCheckbox.Name = "AutoLoadCheckbox"
         Me.AutoLoadCheckbox.Size = New System.Drawing.Size(74, 21)
         Me.AutoLoadCheckbox.TabIndex = 21
@@ -876,7 +876,7 @@ Partial Class Expert
         'RegionMySqlPassword
         '
         Me.RegionMySqlPassword.Location = New System.Drawing.Point(160, 95)
-        Me.RegionMySqlPassword.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.RegionMySqlPassword.Margin = New System.Windows.Forms.Padding(4)
         Me.RegionMySqlPassword.Name = "RegionMySqlPassword"
         Me.RegionMySqlPassword.Size = New System.Drawing.Size(141, 22)
         Me.RegionMySqlPassword.TabIndex = 32
@@ -895,7 +895,7 @@ Partial Class Expert
         'RegionDBUsername
         '
         Me.RegionDBUsername.Location = New System.Drawing.Point(160, 59)
-        Me.RegionDBUsername.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.RegionDBUsername.Margin = New System.Windows.Forms.Padding(4)
         Me.RegionDBUsername.Name = "RegionDBUsername"
         Me.RegionDBUsername.Size = New System.Drawing.Size(141, 22)
         Me.RegionDBUsername.TabIndex = 31
@@ -903,7 +903,7 @@ Partial Class Expert
         'RegionDbName
         '
         Me.RegionDbName.Location = New System.Drawing.Point(160, 27)
-        Me.RegionDbName.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.RegionDbName.Margin = New System.Windows.Forms.Padding(4)
         Me.RegionDbName.Name = "RegionDbName"
         Me.RegionDbName.Size = New System.Drawing.Size(141, 22)
         Me.RegionDbName.TabIndex = 30
@@ -937,9 +937,9 @@ Partial Class Expert
         Me.StandaloneGroup.Controls.Add(Me.Label21)
         Me.StandaloneGroup.Controls.Add(Me.RegionMySqlPassword)
         Me.StandaloneGroup.Location = New System.Drawing.Point(839, 222)
-        Me.StandaloneGroup.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.StandaloneGroup.Margin = New System.Windows.Forms.Padding(4)
         Me.StandaloneGroup.Name = "StandaloneGroup"
-        Me.StandaloneGroup.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.StandaloneGroup.Padding = New System.Windows.Forms.Padding(4)
         Me.StandaloneGroup.Size = New System.Drawing.Size(324, 151)
         Me.StandaloneGroup.TabIndex = 54
         Me.StandaloneGroup.TabStop = False
@@ -953,9 +953,9 @@ Partial Class Expert
         Me.AutoStart.Controls.Add(Me.BootStart)
         Me.AutoStart.Controls.Add(Me.AutoStartCheckbox)
         Me.AutoStart.Location = New System.Drawing.Point(839, 380)
-        Me.AutoStart.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.AutoStart.Margin = New System.Windows.Forms.Padding(4)
         Me.AutoStart.Name = "AutoStart"
-        Me.AutoStart.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.AutoStart.Padding = New System.Windows.Forms.Padding(4)
         Me.AutoStart.Size = New System.Drawing.Size(324, 86)
         Me.AutoStart.TabIndex = 44
         Me.AutoStart.TabStop = False
@@ -985,7 +985,7 @@ Partial Class Expert
         '
         Me.BootStart.AutoSize = True
         Me.BootStart.Location = New System.Drawing.Point(163, 42)
-        Me.BootStart.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.BootStart.Margin = New System.Windows.Forms.Padding(4)
         Me.BootStart.Name = "BootStart"
         Me.BootStart.Size = New System.Drawing.Size(74, 21)
         Me.BootStart.TabIndex = 22
@@ -996,7 +996,7 @@ Partial Class Expert
         '
         Me.AutoStartCheckbox.AutoSize = True
         Me.AutoStartCheckbox.Location = New System.Drawing.Point(17, 42)
-        Me.AutoStartCheckbox.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.AutoStartCheckbox.Margin = New System.Windows.Forms.Padding(4)
         Me.AutoStartCheckbox.Name = "AutoStartCheckbox"
         Me.AutoStartCheckbox.Size = New System.Drawing.Size(74, 21)
         Me.AutoStartCheckbox.TabIndex = 21
@@ -1007,9 +1007,9 @@ Partial Class Expert
         '
         Me.GroupBox5.Controls.Add(Me.AutoLoadCheckbox)
         Me.GroupBox5.Location = New System.Drawing.Point(300, 398)
-        Me.GroupBox5.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.GroupBox5.Margin = New System.Windows.Forms.Padding(4)
         Me.GroupBox5.Name = "GroupBox5"
-        Me.GroupBox5.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.GroupBox5.Padding = New System.Windows.Forms.Padding(4)
         Me.GroupBox5.Size = New System.Drawing.Size(252, 59)
         Me.GroupBox5.TabIndex = 55
         Me.GroupBox5.TabStop = False
@@ -1020,8 +1020,6 @@ Partial Class Expert
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.AutoSize = True
-        Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.ClientSize = New System.Drawing.Size(1196, 498)
         Me.Controls.Add(Me.PictureBox3)
         Me.Controls.Add(Me.GroupBox5)
@@ -1034,7 +1032,7 @@ Partial Class Expert
         Me.Controls.Add(Me.GroupBox2)
         Me.Controls.Add(Me.GroupBox7)
         Me.Controls.Add(Me.GroupBox1)
-        Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.Name = "Expert"
         Me.Text = "Expert"
         Me.GroupBox3.ResumeLayout(False)

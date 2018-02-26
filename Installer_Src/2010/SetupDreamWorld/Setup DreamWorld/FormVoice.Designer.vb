@@ -40,18 +40,21 @@ Partial Class FormVoice
         Me.GroupBox1.Controls.Add(Me.VivoxEnable)
         Me.GroupBox1.Controls.Add(Me.VivoxPassword)
         Me.GroupBox1.Controls.Add(Me.VivoxUserName)
-        Me.GroupBox1.Location = New System.Drawing.Point(12, 12)
+        Me.GroupBox1.Location = New System.Drawing.Point(16, 15)
+        Me.GroupBox1.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(245, 135)
+        Me.GroupBox1.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.GroupBox1.Size = New System.Drawing.Size(327, 166)
         Me.GroupBox1.TabIndex = 0
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Vivox Voice"
         '
         'RequestPassword
         '
-        Me.RequestPassword.Location = New System.Drawing.Point(6, 18)
+        Me.RequestPassword.Location = New System.Drawing.Point(8, 22)
+        Me.RequestPassword.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.RequestPassword.Name = "RequestPassword"
-        Me.RequestPassword.Size = New System.Drawing.Size(225, 23)
+        Me.RequestPassword.Size = New System.Drawing.Size(300, 28)
         Me.RequestPassword.TabIndex = 0
         Me.RequestPassword.Text = "Click to Request a Free Voice Service"
         Me.RequestPassword.UseVisualStyleBackColor = True
@@ -59,54 +62,58 @@ Partial Class FormVoice
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(6, 108)
+        Me.Label2.Location = New System.Drawing.Point(8, 133)
+        Me.Label2.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(53, 13)
+        Me.Label2.Size = New System.Drawing.Size(69, 17)
         Me.Label2.TabIndex = 5
         Me.Label2.Text = "Password"
         '
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(6, 82)
+        Me.Label1.Location = New System.Drawing.Point(8, 101)
+        Me.Label1.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(43, 13)
+        Me.Label1.Size = New System.Drawing.Size(55, 17)
         Me.Label1.TabIndex = 4
         Me.Label1.Text = "User ID"
         '
         'VivoxEnable
         '
         Me.VivoxEnable.AutoSize = True
-        Me.VivoxEnable.Location = New System.Drawing.Point(9, 51)
+        Me.VivoxEnable.Location = New System.Drawing.Point(12, 63)
+        Me.VivoxEnable.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.VivoxEnable.Name = "VivoxEnable"
-        Me.VivoxEnable.Size = New System.Drawing.Size(59, 17)
+        Me.VivoxEnable.Size = New System.Drawing.Size(74, 21)
         Me.VivoxEnable.TabIndex = 3
         Me.VivoxEnable.Text = "Enable"
         Me.VivoxEnable.UseVisualStyleBackColor = True
         '
         'VivoxPassword
         '
-        Me.VivoxPassword.Location = New System.Drawing.Point(109, 101)
+        Me.VivoxPassword.Location = New System.Drawing.Point(145, 124)
+        Me.VivoxPassword.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.VivoxPassword.Name = "VivoxPassword"
-        Me.VivoxPassword.Size = New System.Drawing.Size(130, 20)
+        Me.VivoxPassword.Size = New System.Drawing.Size(172, 22)
         Me.VivoxPassword.TabIndex = 2
         Me.VivoxPassword.UseSystemPasswordChar = True
         '
         'VivoxUserName
         '
-        Me.VivoxUserName.Location = New System.Drawing.Point(109, 76)
+        Me.VivoxUserName.Location = New System.Drawing.Point(145, 94)
+        Me.VivoxUserName.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.VivoxUserName.Name = "VivoxUserName"
-        Me.VivoxUserName.Size = New System.Drawing.Size(130, 20)
+        Me.VivoxUserName.Size = New System.Drawing.Size(172, 22)
         Me.VivoxUserName.TabIndex = 1
         '
         'FormVoice
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.AutoSize = True
-        Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-        Me.ClientSize = New System.Drawing.Size(272, 171)
+        Me.ClientSize = New System.Drawing.Size(363, 210)
         Me.Controls.Add(Me.GroupBox1)
+        Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.Name = "FormVoice"
         Me.Text = "Form2"
         Me.GroupBox1.ResumeLayout(False)

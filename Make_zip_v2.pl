@@ -21,6 +21,7 @@ my @deletions = (
 				 "$dir/OutworldzFiles/Opensim/bin/bakes",
 				 "$dir/OutworldzFiles/mysql/data/opensim",
 				 "$dir/OutworldzFiles/mysql/data/robust",
+				 "$dir/OutworldzFiles/mysql/data/addin-db-002",
 				 
 				 
 				 );
@@ -38,12 +39,9 @@ unlink "$dir/OutworldzFiles/Opensim/bin/OpensimConsoleHistory.txt" ;
 unlink "$dir/OutworldzFiles/Opensim-0.9/bin/OpensimConsoleHistory.txt" ;
 unlink "$dir/OutworldzFiles/Opensim/bin/LocalUserStatistics.db" ;
 
-#mysql
-unlink "$dir/OutworldzFiles/mysql/data/Alienware.err" ;
-unlink "$dir/OutworldzFiles/mysql/data/Alienware.pid" ;
-unlink	"$dir/OutworldzFiles/mysql/data/ib_logfile0";
-unlink	"$dir/OutworldzFiles/mysql/data/ib_logfile1";
-unlink	"$dir/OutworldzFiles/mysql/data/ibdata1";
+#Setting
+unlink "$dir/Outworldzfiles/Settings.ini" ;
+if (!copy ("$dir/Outworldzfiles/Settings.bak", "$dir/Outworldzfiles/Settings.ini"))  {die $!;}
 
 #logs
 unlink "$dir/OutworldzFiles/Diagnostics.log" ;
@@ -65,8 +63,14 @@ print `mysqlcheck.exe --port 3306 -u root -r opensim`;
 print `mysqlcheck.exe --port 3306 -u root -r robust`;
 print `mysqladmin.exe --port 3306 -u root shutdown`;
 
+
+#mysql
 unlink "$dir/OutworldzFiles/mysql/data/Alienware.err" ;
 unlink "$dir/OutworldzFiles/mysql/data/Alienware.pid" ;
+unlink	"$dir/OutworldzFiles/mysql/data/ib_logfile0" || die;
+unlink	"$dir/OutworldzFiles/mysql/data/ib_logfile1" || die;
+unlink	"$dir/OutworldzFiles/mysql/data/ibdata1" || die;
+
 
 chdir ($dir);
 # SIGN FIRST
@@ -94,7 +98,7 @@ say("Adding folders");
 
 Process ("../7z.exe -tzip a ..\\Zips\\DreamGrid$type.zip Licenses_to_Content");
 Process ("../7z.exe -tzip a ..\\Zips\\DreamGrid$type.zip OutworldzFiles");
-
+Process ("../7z.exe -tzip a ..\\Zips\\DreamGrid$type.zip Shoutcast");
 
 		
 say("Updater Build");

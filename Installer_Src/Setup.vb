@@ -387,13 +387,13 @@ Public Class Form1
 
         If Not SetIniData() Then Return   ' set up the INI files
 
-        StartShoutcast()
-
         If Not StartMySQL() Then Return
 
         If Not Start_Robust() Then
             Return
         End If
+
+        StartShoutcast()
 
         If Not MySetting.RunOnce Then
             MsgBox("Please type 'create user<ret>' to make the system owner's account in the ROBUST console, and then answer any questions.", vbInformation, "Info")
@@ -444,8 +444,6 @@ Public Class Form1
 
         Print("Hold fast to your dreams ...")
 
-        StopShoutcast()
-
         KillAll()
         ProgressBar1.Value = 10
         Print("I'll tell you my next dream when I wake up.")
@@ -478,6 +476,8 @@ Public Class Form1
         ' close everything as gracefully as possible.
 
         Application.DoEvents()
+
+        StopShoutcast()
 
         Dim n As Integer = RegionClass.RegionCount()
         Debug.Print("N=" + n.ToString())
@@ -1017,7 +1017,7 @@ Public Class Form1
     Public Sub DoShoutcast()
 
         ' Shoutcast.ini   
-        MySetting.LoadIni(prefix + "/SHOUTcast/Shoutcast.ini", ";")
+        MySetting.LoadIni(MyFolder + "/Shoutcast/Shoutcast.ini", ";")
 
         MySetting.SetIni("SHOUTCAST", "Password", MySetting.SC_Password)
         MySetting.SetIni("SHOUTCAST", "PortBase", MySetting.SC_PortBase.ToString)
@@ -1325,6 +1325,11 @@ Public Class Form1
         If Not MySetting.SC_Enable Then
             Return
         End If
+
+        Try
+            My.Computer.FileSystem.DeleteFile(MyFolder + "\Shoutcast\Shoutcast.log")
+        Catch ex As Exception
+        End Try
 
         gShoutcastProcID = Nothing
         Print("Starting Shoutcast")
@@ -1812,6 +1817,7 @@ Public Class Form1
                 My.Computer.FileSystem.DeleteFile(prefix + "bin\regions\" & RegionClass.GroupName(n) & "\OpenSimStats.log")
             Catch ex As Exception
             End Try
+
 
             RegionClass.ProcessID(n) = 0
             myProcess.Start()
@@ -2975,6 +2981,18 @@ Public Class Form1
                 PrintFast("Region " + RegionClass.RegionName(X) + " is set to " + Convert.ToString(R))
                 BumpProgress(1)
             Next
+
+            If MyUPnpMap.Exists(Convert.ToInt16(MySetting.SC_PortBase), UPnp.Protocol.TCP) Then
+                MyUPnpMap.Remove(Convert.ToInt16(MySetting.SC_PortBase), UPnp.Protocol.TCP)
+            End If
+            MyUPnpMap.Add(MyUPnpMap.LocalIP, Convert.ToInt16(MySetting.SC_PortBase), UPnp.Protocol.TCP, "Shoutcast TCP" + MySetting.SC_PortBase)
+            PrintFast("Shoutcast Port is set to " + MySetting.SC_PortBase)
+
+
+            BumpProgress10()
+
+
+
 
         Catch e As Exception
             Log("UPnp: UPnp Exception caught:  " + e.Message)

@@ -44,10 +44,20 @@
             L.Add(name)
         Next
 
+        L.Sort()
 
     End Sub
 
-    Private Sub DataGridView_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles DataGridView.CellContentClick
-        DialogResult = vbOK
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+
+        Dim selectedRowCount = DataGridView.Rows.GetRowCount(DataGridViewElementStates.Selected)
+        If selectedRowCount > 1 Then
+            MsgBox("Please select only one row", vbInformation, "Oops")
+        End If
+        If selectedRowCount = 1 Then
+            DialogResult = vbOK
+        End If
     End Sub
+
+
 End Class

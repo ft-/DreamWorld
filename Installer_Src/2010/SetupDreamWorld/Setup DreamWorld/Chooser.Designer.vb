@@ -24,6 +24,7 @@ Partial Class Choice
     Private Sub InitializeComponent()
         Me.DataGridView = New System.Windows.Forms.DataGridView()
         Me.Group = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Button1 = New System.Windows.Forms.Button()
         CType(Me.DataGridView, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -35,11 +36,12 @@ Partial Class Choice
         Me.DataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing
         Me.DataGridView.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Group})
         Me.DataGridView.Location = New System.Drawing.Point(1, -1)
+        Me.DataGridView.Margin = New System.Windows.Forms.Padding(4)
         Me.DataGridView.MultiSelect = False
         Me.DataGridView.Name = "DataGridView"
         Me.DataGridView.ReadOnly = True
         Me.DataGridView.RowHeadersWidth = 40
-        Me.DataGridView.Size = New System.Drawing.Size(215, 189)
+        Me.DataGridView.Size = New System.Drawing.Size(287, 233)
         Me.DataGridView.TabIndex = 2
         '
         'Group
@@ -52,14 +54,23 @@ Partial Class Choice
         Me.Group.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
         Me.Group.ToolTipText = "Click to choose a group"
         '
+        'Button1
+        '
+        Me.Button1.Location = New System.Drawing.Point(114, 240)
+        Me.Button1.Name = "Button1"
+        Me.Button1.Size = New System.Drawing.Size(75, 30)
+        Me.Button1.TabIndex = 3
+        Me.Button1.Text = "OK"
+        Me.Button1.UseVisualStyleBackColor = True
+        '
         'Choice
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.AutoSize = True
-        Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-        Me.ClientSize = New System.Drawing.Size(217, 189)
+        Me.ClientSize = New System.Drawing.Size(289, 277)
+        Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.DataGridView)
+        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.Name = "Choice"
         Me.Text = "Choose Region"
         CType(Me.DataGridView, System.ComponentModel.ISupportInitialize).EndInit()
@@ -68,4 +79,5 @@ Partial Class Choice
     End Sub
     Friend WithEvents DataGridView As DataGridView
     Friend WithEvents Group As DataGridViewTextBoxColumn
+    Friend WithEvents Button1 As Button
 End Class
