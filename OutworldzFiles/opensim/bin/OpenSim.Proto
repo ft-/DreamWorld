@@ -43,35 +43,35 @@
 [Const]
 
 ; Automatically changed by Dreamworld - do not change this
-http_listener_port = 8004
+http_listener_port=8004
 
 ; Automatically changed by Dreamworld - do not change this
 ;# used by the one-exe-per-instance logic. This becomes the folder for the regions file.
-RegionFolderName = Welcome
+RegionFolderName=Welcome
 
 ; Automatically changed by Dreamworld - do not change this
 ;# {BaseURL} {} {BaseURL} {"http://example.com","http://127.0.0.1"} "http://127.0.0.1"
-BaseURL = http://24.173.0.66
+BaseURL=http://192.168.2.100
 
 ; Automatically changed by Dreamworld - do not change this
 ;# {PublicPort} {} {PublicPort} {8002} "8002"
-PublicPort = 8002
+PublicPort=8002
 
 ; Automatically changed by Dreamworld - do not change this
 ;# {PrivatePort} {} {PrivatePort} {8003} "8003"
-PrivatePort = 8003
+PrivatePort=8003
 
 ;# so localhost can be changed if necessary
-PrivURL = http://10.6.1.103
+PrivURL=http://192.168.2.100
 
 ; Automatically changed by Dreamworld - do not change this
 ;# Grid Name for Wifi to show
-GridName = DreamGrid
+GridName=DreamGrid
 
 ; Automatically changed by Dreamworld - do not change this
 ;# Dreamworld runs a listener on this port to run diagnostics. Dreamgrid listens for regions LOGINS enabled
 ;# {DiagnosticsPort} {} {DiagnosticsPort} {8001} "8001"
-DiagnosticsPort = 8001
+DiagnosticsPort=8001
 
 [Startup]
 
@@ -84,7 +84,7 @@ DiagnosticsPort = 8001
 ; ConsolePrompt = "Region (\R) "
 ;# {ConsoleHistoryFileEnabled} {} {Save console commands to a history file?} {true false} true
 ;; Console commands can be saved to a file, so the command history persists after a restart. (default is false)
-ConsoleHistoryFileEnabled = false
+ConsoleHistoryFileEnabled=false
 
 ;# {ConsoleHistoryFile} {} {Filename in which to save history} {} OpenSimConsoleHistory.txt
 ;; The history file can be just a filename (relative to OpenSim's bin/ directory
@@ -111,21 +111,21 @@ ConsoleHistoryFileEnabled = false
 ;; Place to create a PID file
 ;;PIDFile = "/tmp/OpenSim.exe.pid"
 ;; relocated by DreamGrid
-PIDFile = "./Regions/${Const|RegionFolderName}/PID.pid"
+PIDFile="./Regions/${Const|RegionFolderName}/PID.pid"
 
 ;# {RegistryLocation} {} {Addins Registry Location} {}
 ; Set path to directory for addin registry if you want addins outside of bin.
 ; Information about the registered repositories and installed plugins will
 ; be stored here. The OpenSim.exe process must have R/W access to the location.
 ;RegistryLocation = "../addins-registry"
-RegistryLocation = "."
+RegistryLocation="."
 
 ;# {ConfigDirectory} {} {Set path to directory for modular ini files} {}
 ; Used by region module addins. You can set this to outside bin, so that addin
 ; configurations will survive updates. The OpenSim.exe process must have R/W access
 ; to the location.
 ;ConfigDirectory = "../addins-config"
-ConfigDirectory = "."
+ConfigDirectory="."
 
 ;# {region_info_source} {} {Where to load region from?} {filesystem web} filesystem
 ;; Determine where OpenSimulator looks for the files which tell it
@@ -138,7 +138,7 @@ ConfigDirectory = "."
 ;; these from the filesystem.
 ;; Defaults to bin/Regions in your OpenSimulator installation directory
 ; regionload_regionsdir="C:\somewhere\xmlfiles\"
-regionload_regionsdir = ./Regions/${Const|RegionFolderName}/Region/
+regionload_regionsdir=./Regions/${Const|RegionFolderName}/Region/
 
 ;# {regionload_webserver_url} {region_info_source} {URL to load region from?} {}
 ;; Determines the page from which regions xml is retrieved if you are
@@ -153,7 +153,7 @@ regionload_regionsdir = ./Regions/${Const|RegionFolderName}/Region/
 ; allow_regionless = false
 ;# {MaxPrimUndos} {} {Maximum number of undos avialable for position, rotation and scale changes of each prim} {} 20
 ;; Increasing the number of undos available number will increase memory usage.
-MaxPrimUndos = 20
+MaxPrimUndos=20
 
 ;# {NonPhysicalPrimMin} {} {Minimum size of nonphysical prims?} {} 0.001
 ;; Minimum size for non-physical prims.  Affects resizing of existing
@@ -164,7 +164,7 @@ MaxPrimUndos = 20
 ;; Maximum size for non-physical prims.  Affects resizing of existing
 ;; prims. This can be overridden in the region config file (as
 ;; NonPhysicalPrimMax!).
-NonPhysicalPrimMax = 1024
+NonPhysicalPrimMax=1024
 
 ;# {PhysicalPrimMin} {} {Minimum size of physical prims?} {} 0.01
 ;; Minimum size where a prim can be physical.  Affects resizing of
@@ -173,7 +173,7 @@ NonPhysicalPrimMax = 1024
 ;# {PhysicalPrimMax} {} {Maximum size of physical prims?} {} 64
 ;; Maximum size where a prim can be physical.  Affects resizing of
 ;; existing prims.  This can be overridden in the region config file.
-PhysicalPrimMax = 128
+PhysicalPrimMax=128
 
 ;# {ClampPrimSize} {} {Clamp viewer rezzed prims to max sizes?} {true false} false
 ;; If a viewer attempts to rez a prim larger than the non-physical or
@@ -236,7 +236,7 @@ PhysicalPrimMax = 128
 ;; Default is Meshmerizer
 ; meshing = Meshmerizer
 ; meshing = ZeroMesher
-meshing = Meshmerizer
+meshing=Meshmerizer
 
 ;; Choose one of the physics engines below
 ;# {physics} {} {Select physics engine} {OpenDynamicsEngine BulletSim basicphysics POS} BulletSim
@@ -250,10 +250,10 @@ meshing = Meshmerizer
 ; physics = BulletSim
 ; physics = basicphysics
 ; physics = POS
-physics = BulletSim
+physics=BulletSim
 
 ;
-UseSeparatePhysicsThread = true
+UseSeparatePhysicsThread=true
 
 ;# {DefaultScriptEngine} {} {Default script engine} {XEngine} XEngine
 ;; Default script engine to use. Currently, we only have XEngine
@@ -272,7 +272,7 @@ UseSeparatePhysicsThread = true
 ;# {emailmodule} {} {Provide llEmail and llGetNextEmail functionality? (requires SMTP server)} {true false} false
 ;; The email module requires some configuration. It needs an SMTP
 ;; server to send mail through.
-emailmodule = DefaultEmailModule
+emailmodule=DefaultEmailModule
 
 ;# {SpawnPointRouting} {} {Set routing method for Telehub Spawnpoints} {closest random sequence} closest
 ;; SpawnPointRouting adjusts the landing for incoming avatars.
@@ -291,13 +291,13 @@ emailmodule = DefaultEmailModule
 ; #
 ; Simulator statistics are output to the console periodically at debug level INFO.
 ; Setting this to zero disables this output.
-LogShowStatsSeconds = 3600
+LogShowStatsSeconds=3600
 
 ; http://opensimulator.org/wiki/User_talk:BlueWall
 ; Simulator Stats URI
 ; Enable JSON simulator data by setting a URI name (case sensitive)
 ; Returns regular sim stats (SimFPS, ...)
-Stats_URI = "jsonSimStats"
+Stats_URI="jsonSimStats"
 
 ; Simulator StatsManager URI
 ; Enable fetch of StatsManager registered stats. Fetch is query which can optionally
@@ -305,12 +305,12 @@ Stats_URI = "jsonSimStats"
 ; http://simulatorHTTPport/ManagedStats/?cat=Category&cont=Container&stat=Statistic
 ; ManagedStatsRemoteFetchURI = "ManagedStats"
 ;# economy module
-economymodule = Gloebit
+economymodule=Gloebit
 
 [RegionReady]
 
 ; Enable this module to get notified once all items and scripts in the region have been completely loaded and compiled
-enabled = true
+enabled=true
 
 ; Channel on which to signal region readiness through a message
 ; formatted as follows: "{server_startup|oar_file_load},{0|1},n,[oar error]"
@@ -318,14 +318,14 @@ enabled = true
 ; - the second field is a number indicating whether the OAR file loaded ok (1 == ok, 0 == error)
 ; - the third field is a number indicating how many scripts failed to compile
 ; - "oar error" if supplied, provides the error message from the OAR load
-channel_notify = -800
+channel_notify=-800
 
 ; - disallow logins while scripts are loading
 ; Instability can occur on regions with 100+ scripts if users enter before they have finished loading
-login_disable = true
+login_disable=true
 
 ; - send an alert as json to a service
-alert_uri = ${Const|PrivURL}:${Const|DiagnosticsPort}
+alert_uri=${Const|PrivURL}:${Const|DiagnosticsPort}
 
 [AccessControl]
 
@@ -355,11 +355,11 @@ alert_uri = ${Const|PrivURL}:${Const|DiagnosticsPort}
 ;; If false then the texture referenced by MaptileStaticUUID is used instead, which can also be overridden
 ;; in individual region config file(s).  If you do not want to upload map tiles at all, then you will need
 ;; both to set this to false and comment out the [Modules] MapImageServiceModule setting in config-include/
-GenerateMaptiles = true
+GenerateMaptiles=true
 
 ;# {MapImageModule} {} {The map image module to use} {MapImageModule Warp3DImageModule} MapImageModule
 ;; The module to use in order to generate map images.
-MapImageModule = MapImageModule
+MapImageModule=Warp3DImageModule
 
 ;; generate better images.
 ;MapImageModule = "MapImageModule"
@@ -374,23 +374,23 @@ MapImageModule = MapImageModule
 ; MaptileStaticUUID = "00000000-0000-0000-0000-000000000000"
 ;# {TextureOnMapTile} {} {Use terrain textures for map tiles?} {true false} true
 ;; Use terrain texture for maptiles if true, use shaded green if false
-TextureOnMapTile = false
+TextureOnMapTile=true
 
 ;# {DrawPrimOnMapTile} {} {Draw prim shapes on map tiles?} {true false} false
 ;; Draw objects on maptile.  This step might take a long time if you've
 ;; got a large number of objects, so you can turn it off here if you'd like.
-DrawPrimOnMapTile = false
+DrawPrimOnMapTile=true
 
 ;# {TexturePrims} {} {Texture prims on map tiles?} {true false} true
 ;; Texture the faces of the prims that are rendered on the map tiles.
-TexturePrims = false
+TexturePrims=true
 
 ;# {TexturePrimSize} {} {Size of prims to texture faces?} {} 48
 ;; Only texture prims that have a diagonal size greater than this number
 ; TexturePrimSize = 48
 ;# {RenderMeshes} {} {Render meshes and sculpties on map tiles?} {true false} false
 ;; Attempt to render meshes and sculpties on the map
-RenderMeshes = false
+RenderMeshes=true
 
 [Permissions]
 
@@ -409,17 +409,17 @@ RenderMeshes = false
 ;# {allow_grid_gods} {} {Allow grid gods?} {true false} false
 ;; This allows users with a UserLevel of 200 or more to assume god
 ;; powers in the regions in this simulator.
-allow_grid_gods = false
+allow_grid_gods=false
 
 ;; This allows some control over permissions
 ;; please note that this still doesn't duplicate SL, and is not intended to
 ;# {region_owner_is_god} {} {Allow region owner gods} {true false} true
 ;; Allow region owners to assume god powers in their regions
-region_owner_is_god = false
+region_owner_is_god=false
 
 ;# {region_manager_is_god} {} {Allow region manager gods} {true false} false
 ;; Allow region managers to assume god powers in regions they manage
-region_manager_is_god = false
+region_manager_is_god=false
 
 ;# {simple_build_permissions} {} {Allow building in parcel by access list (no groups)} {true false} false
 ;; More control over permissions
@@ -460,7 +460,7 @@ region_manager_is_god = false
 ;; destinations.
 ;# {enabled} {[Startup]emailmodule:DefaultEmailModule} {Enable SMTP service?} {true false} false
 ;; Enable sending email via SMTP
-enabled = true
+enabled=true
 
 ;# {internal_object_host} {[Startup]emailmodule:DefaultEmailModule enabled:true} {Host name to treat as internal (object to object) email?} {} lsl.opensim.local
 ; internal_object_host = lsl.opensim.local
@@ -492,14 +492,14 @@ enabled = true
 ;; Simulator HTTP port. This is not the region port, but the port the
 ;; entire simulator listens on. This port uses the TCP protocol, while
 ;; the region ports use UDP.
-http_listener_port = ${Const|http_listener_port}
+http_listener_port=${Const|http_listener_port}
 
 ; By default, OpenSimulator does not allow scripts to make HTTP calls to addresses on the simulator's LAN.
 ; See the OutboundDisallowForUserScripts parameter in OpenSimDefaults.ini for more information on this filter.
 ; If you need to allow scripts to make some LAN calls use the OutboundDisallowForUserScriptsExcept parameter below.
 ; We recommend that you do not override OutboundDisallowForUserScripts directly unless you are very sure about what you're doing.
 ;
-OutboundDisallowForUserScriptsExcept = 192.168.2.4:80|192.168.2.4:5000
+OutboundDisallowForUserScriptsExcept=192.168.2.4:80|192.168.2.4:5000
 
 ; You can whitelist individual endpoints by IP or FQDN, e.g.
 ;
@@ -535,14 +535,14 @@ OutboundDisallowForUserScriptsExcept = 192.168.2.4:80|192.168.2.4:5000
 ;; Hostname to use in llRequestURL/llRequestSecureURL
 ;; if not defined - default machine name is being used
 ;; (on Windows this mean NETBIOS name - useably only inside local network)
-ExternalHostNameForLSL = "www.outworldz.com"
+ExternalHostNameForLSL="www.outworldz.com"
 
 ;# {shard} {} {Name to use for X-Secondlife-Shard header? (press enter if unsure)} {} OpenSim
 ;; What is reported as the "X-Secondlife-Shard"
 ;; Defaults to the user server url if not set
 ;; The old default is "OpenSim", set here for compatibility
 ;; The below is not commented for compatibility.
-shard = "OpenSim"
+shard="OpenSim"
 
 ;# {user_agent} {} {User agent to report to web servers?} {} OpenSim LSL (Mozilla Compatible)
 ;; What is reported as the "User-Agent" when using llHTTPRequest
@@ -606,10 +606,10 @@ shard = "OpenSim"
 ;;   "<url>" -- capability enabled and served by some other server
 ;;
 ; These are enabled by default to localhost. Change if you see fit.
-Cap_GetTexture = "localhost"
-Cap_GetMesh = "localhost"
-Cap_AvatarPickerSearch = "localhost"
-Cap_GetDisplayNames = "localhost"
+Cap_GetTexture="localhost"
+Cap_GetMesh="localhost"
+Cap_AvatarPickerSearch="localhost"
+Cap_GetDisplayNames="localhost"
 
 [SimulatorFeatures]
 
@@ -624,7 +624,7 @@ Cap_GetDisplayNames = "localhost"
 ;; This serves the same purpose as the DestinationGuideURI in the
 ;; LoginService setting in the Robust server. This will override
 ;; the Robust setting if desired as an option.
-DestinationGuide = "http://www.hyperica.com/destination-guide"
+DestinationGuide="http://www.hyperica.com/destination-guide"
 
 [Chat]
 
@@ -655,7 +655,7 @@ DestinationGuide = "http://www.hyperica.com/destination-guide"
 ;; web service to do this. See OpenSim wiki.
 ; OfflineMessageModule = OfflineMessageModule
 ;; Or, alternatively, use this one, which works for both standalones and grids
-OfflineMessageModule = "Offline Message Module V2"
+OfflineMessageModule="Offline Message Module V2"
 
 ;# {OfflineMessageURL} {OfflineMessageModule:OfflineMessageModule Offline Message Module V2:Offline Message Module V2} {URL of offline messaging service} {}
 ;; URL of web service for offline message storage. Leave it commented if your service is local to the sim.
@@ -667,23 +667,23 @@ OfflineMessageModule = "Offline Message Module V2"
 ;# {MuteListModule} {OfflineMessageModule:OfflineMessageModule} {} {} MuteListModule
 ;; Mute list handler (not yet implemented). MUST BE SET to allow offline
 ;; messages to work
-MuteListModule = MuteListModule
+MuteListModule=MuteListModule
 
 ;# {MuteListURL} {OfflineMessageModule:OfflineMessageModule} {} {} http://yourserver/Mute.php
 ;; URL of the web service that serves mute lists. Not currently used, but
 ;; must be set to allow offline messaging to work.
-MuteListURL = http://www.outworldz.com/Mute.php
+MuteListURL=http://www.outworldz.com/Mute.php
 
 ;; Control whether group invites and notices are stored for offline users.
 ;; Default is true.
 ;; This applies to both core groups module.
-ForwardOfflineGroupMessages = true
+ForwardOfflineGroupMessages=true
 
 [BulletSim]
 
 ;# {AvatarToAvatarCollisionsByDefault} {[Startup]physics:BulletSim} {Should avatars collide with each other?} {true false} true
-AvatarToAvatarCollisionsByDefault = true
-UseSeparatePhysicsThread = true
+AvatarToAvatarCollisionsByDefault=true
+UseSeparatePhysicsThread=true
 
 [ODEPhysicsSettings]
 
@@ -778,7 +778,7 @@ UseSeparatePhysicsThread = true
 ;; such as the Meta7 viewer.
 ;; It has no ill effect on viewers which do not support server-side
 ;; windlight settings.
-enable_windlight = true
+enable_windlight=true
 
 [Materials]
 
@@ -803,7 +803,7 @@ enable_windlight = true
 ;# {gridname} {index_sims:true} {Enter the name fo your grid} {} OSGrid
 ;; If search is on, change this to your grid name; will be ignored for
 ;; standalones
-gridname = "${Const|GridName}"
+gridname="${Const|GridName}"
 
 ;
 ;# {default_snapshot_period} {index_sims:true} {Period between data snapshots?} {} 1200
@@ -883,7 +883,7 @@ gridname = "${Const|GridName}"
 ;; then startup will be considerably faster since scripts won't need to be recompiled. However, then it becomes your responsibility to delete the
 ;; compiled scripts if you're recompiling OpenSim from source code and internal interfaces used
 ;; by scripts have changed.
-DeleteScriptsOnStartup = false
+DeleteScriptsOnStartup=false
 
 ;# {DefaultCompileLanguage} {Enabled:true} {Default script language?} {lsl vb cs} lsl
 ;; Default language for scripts
@@ -902,7 +902,7 @@ DeleteScriptsOnStartup = false
 ; EventLimit = 30
 ;# {KillTimedOutScripts} {} {Kill script in case of event time overruns?} {true false} false
 ;; If a script overruns it's event limit, kill the script?
-KillTimedOutScripts = true
+KillTimedOutScripts=true
 
 ;# {ScriptDelayFactor} {} {Multiplier for scripting delays} {} 1.0
 ;; Sets the multiplier for the scripting delays
@@ -934,7 +934,7 @@ KillTimedOutScripts = true
 ;# {Include-osslEnable} {} {Include file for enabling and permissions for OSSL functions} {}
 ;; Optionally include file to enable OSSL functions and set permissions on who can use which.
 ;; If this INI file is not included, the OSSL functions are disabled.
-Include-osslEnable = "config-include/osslEnable.ini"
+Include-osslEnable="config-include/osslEnable.ini"
 
 [MRM]
 
@@ -977,24 +977,24 @@ Include-osslEnable = "config-include/osslEnable.ini"
 ;
 ; For this to work you need to obtain an admin account from Vivox
 ; that allows you to create voice accounts and region channels.
-enabled = false
+enabled=false
 
 ; vivox voice server
-vivox_server = www.osp.vivox.com
+vivox_server=www.osp.vivox.com
 
 ; vivox SIP URI
-vivox_sip_uri = osp.vivox.com
+vivox_sip_uri=osp.vivox.com
 
 ; vivox admin user name
-vivox_admin_user = someusername
+vivox_admin_user=someusername
 
 ; vivox admin password
-vivox_admin_password = somepassword
+vivox_admin_password=somepassword
 
 ; channel type: "channel" or "positional"
 ; - positional: spatial sound (default)
 ; - channel: normal "conference call", no spatial sound
-vivox_channel_type = positional
+vivox_channel_type=positional
 
 ; channel characteristics (unless you know what you are doing, i'd
 ; leave them as they are --- now you WILL muck around with them,
@@ -1004,32 +1004,32 @@ vivox_channel_type = positional
 ; 1 - inverse distance attenuation
 ; 2 - linear attenuation (default)
 ; 3 - exponential attenuation
-vivox_channel_distance_model = 2
+vivox_channel_distance_model=2
 
 ; channel mode:
 ; - "open" (default)
 ; - "lecture"
 ; - "presentation"
 ; - "auditorium"
-vivox_channel_mode = "open"
+vivox_channel_mode="open"
 
 ; channel roll off: rate of attenuation
 ; - a value between 1.0 and 4.0, default is 2.0
-vivox_channel_roll_off = 2.0
+vivox_channel_roll_off=2.0
 
 ; channel max range: distance at which channel is silent
 ; - a value between 0 and 160, default is 80
-vivox_channel_max_range = 80
+vivox_channel_max_range=80
 
 ; channel clamping distance: distance before attenuation applies
 ; - a value between 0 and 160, default is 10
-vivox_channel_clamping_distance = 10
+vivox_channel_clamping_distance=10
 
 [Groups]
 
 ;# {Enabled} {} {Enable groups?} {true false} false
 ;; Enables the groups module
-Enabled = true
+Enabled=true
 
 ;# {LevelGroupCreate} {Enabled:true} {User level for creating groups} {} 0
 ;; Minimum user level required to create groups
@@ -1040,7 +1040,7 @@ Enabled = true
 ;; or from the SimianGrid project at http://code.google.com/p/openmetaverse
 ; Module = Default
 ;; or... use Groups Module V2, which works for standalones and robust grids
-Module = "Groups Module V2"
+Module="Groups Module V2"
 
 ;# {StorageProvider} {Module:Groups Module V2} {The DLL that provides the storage for V2} {OpenSim.Data.MySQL.dll}
 ; StorageProvider = OpenSim.Data.MySQL.dll
@@ -1052,11 +1052,11 @@ Module = "Groups Module V2"
 ;; -- for V2 Groups, grided sim, non-HG use "Groups Remote Service Connector"
 ;; -- for V2 Groups, HG, both standalone and grided sim, use "Groups HG Service Connector"
 ;; Note that the quotes "" around the words are important!
-ServicesConnectorModule = "Groups HG Service Connector"
+ServicesConnectorModule="Groups HG Service Connector"
 
 ;# {LocalService} {ServicesConnectorModule:Groups HG Service Connector} {Is the group service in this process or elsewhere?} {local remote} local
 ;; Used for V2 in HG only. If standalone, set this to local; if grided sim, set this to remote
-LocalService = remote
+LocalService=remote
 
 ;# {SecretKey} {ServicesConnectorModule:Groups Remote Service Connector} {Secret key between sim and remote group service} {} ""
 ;; Used for V2 in Remote only.
@@ -1067,7 +1067,7 @@ LocalService = remote
 ;; or http://mygridserver.com:82/Grid/ for SimianGrid
 ;; or ${Const|PrivURL}:${Const|PrivatePort} for robust, V2
 ;; Leave it commented for standalones, V2
-GroupsServerURI = ${Const|PrivURL}:${Const|PrivatePort}
+GroupsServerURI=${Const|PrivURL}:${Const|PrivatePort}
 
 ;# {HomeURI} {ServicesConnectorModule:Groups HG Service Connector} {What's the home address of this world?} {}
 ;; Used for V2 in HG only. For example
@@ -1079,17 +1079,17 @@ GroupsServerURI = ${Const|PrivURL}:${Const|PrivatePort}
 ;# {MessagingModule} {MessagingEnabled:true} {Module to use for groups messaging} {GroupsMessagingModule "Groups Messaging Module V2"} GroupsMessagingModule
 ; MessagingModule = GroupsMessagingModule
 ;; or use V2 for Groups V2
-MessagingModule = "Groups Messaging Module V2"
+MessagingModule="Groups Messaging Module V2"
 
 ;# {NoticesEnabled} {Module:GroupsModule Module:Groups Module V2} {Enable group notices?} {true false} true
 ;; Enable Group Notices
-NoticesEnabled = true
+NoticesEnabled=true
 
 ;# {MessageOnlineUsersOnly} {Module:GroupsModule Module} {Message online users only?} {true false} false
 ; Experimental option to only message online users rather than all users
 ; Should make large groups with few online members messaging faster, as the expense of more calls to presence service
 ; Applies Flotsam Group only. V2 has this always on, no other option
-MessageOnlineUsersOnly = true
+MessageOnlineUsersOnly=true
 
 ;; This makes the Group module very chatty on the console.
 ; DebugEnabled = false
@@ -1117,7 +1117,7 @@ MessageOnlineUsersOnly = true
 [NPC]
 
 ;# {Enabled} {} {Enable Non Player Character (NPC) facilities} {true false} false
-Enabled = true
+Enabled=true
 
 ;
 ;; several options to control NPCs creation
@@ -1148,7 +1148,7 @@ Enabled = true
 ;# {ProfileServiceURL} {} {Set url to UserProfilesService} {}
 ;; Set the value of the url to your UserProfilesService
 ;; If un-set / "" the module is disabled
-ProfileServiceURL = ${Const|BaseURL}:${Const|PublicPort}
+ProfileServiceURL=${Const|BaseURL}:${Const|PublicPort}
 
 ;
 [XBakes]
@@ -1157,7 +1157,7 @@ ProfileServiceURL = ${Const|BaseURL}:${Const|PublicPort}
 ;# {URL} {} {Set URL for Baked texture service} {}
 ;; Sets the URL for the baked texture ROBUST service.
 ;; Disabled when unset.
-URL = ${Const|PrivURL}:${Const|PrivatePort}
+URL=${Const|PrivURL}:${Const|PrivatePort}
 
 ;;
 ;; Optional module to highlight God names in the viewer.
@@ -1186,7 +1186,7 @@ URL = ${Const|PrivURL}:${Const|PrivatePort}
 ; Include-Architecture = "config-include/Standalone.ini"
 ;Include-Architecture = "config-include/StandaloneHypergrid.ini"
 ; Include-Architecture = "config-include/Grid.ini"
-Include-Architecture = "config-include/GridHypergrid.ini"
+Include-Architecture="config-include/GridHypergrid.ini"
 
 ; Include-Architecture = "config-include/SimianGrid.ini"
 ; Include-Architecture = "config-include/HyperSimianGrid.ini"
@@ -1251,38 +1251,38 @@ Include-Architecture = "config-include/GridHypergrid.ini"
 ;auto-backup, or manually created or uploaded. It is not recommended to use
 ;the bin directory for your auto backups for this reason.
 ; Automatically changed by Dreamworld - do not change this
-AutoBackupModuleEnabled = true
-AutoBackup = true
-AutoBackupInterval = 720
-AutoBackupBusyCheck = false
-AutoBackupThreshold = 1
-AutoBackupSkipAssets = false
-AutoBackupKeepFilesForDays = 30
-AutoBackupNaming = Time
-AutoBackupDir = C:/Opensim/Outworldz Source/OutworldzFiles/Autobackup/
+AutoBackupModuleEnabled=true
+AutoBackup=true
+AutoBackupInterval=720
+AutoBackupBusyCheck=false
+AutoBackupThreshold=1
+AutoBackupSkipAssets=false
+AutoBackupKeepFilesForDays=30
+AutoBackupNaming=Time
+AutoBackupDir=C:/Opensim/Outworldz Source/OutworldzFiles/Autobackup/
 
 [CameraOnlyModeModule]
 
 ;# include the camera versus avatar settings.
-enabled = false
+enabled=false
 
 ; Automatically changed by Dreamworld - do not change this
 ;; Users with UserLevel equal or less than this will be sent this mode.
 ;; Others above will not.
 ; Automatically changed by Dreamworld - do not change this
-UserLevel = 0
+UserLevel=0
 
 ;
 [SpecialUIModule]
 
 ; Automatically changed by Dreamworld - do not change this
-enabled = false
+enabled=false
 
 ; Automatically changed by Dreamworld - do not change this
 [WebStats]
-enabled = True
+enabled=True
 
 ;
 ;Include-Wifi = "Wifi.ini"
 [AutoLoadTeleport]
-Enabled = true
+Enabled=true
