@@ -35,7 +35,7 @@ Public Class Form1
 #Region "Declarations"
 
 
-    Dim MyVersion As String = "2.11"
+    Dim MyVersion As String = "2.14"
     Dim DebugPath As String = "C:\Opensim\Outworldz Source"  ' no slash at end
     Public Domain As String = "http://www.outworldz.com"
     Public prefix As String ' Holds path to Opensim folder
@@ -1089,7 +1089,7 @@ Public Class Form1
         End If
 
         MySetting.SetIni("WifiService", "GridName", MySetting.SimName)
-        MySetting.SetIni("WifiService", "LoginURL", "http: //" + MySetting.PublicIP + ":" + MySetting.HttpPort)
+        MySetting.SetIni("WifiService", "LoginURL", "http://" + MySetting.PublicIP + ":" + MySetting.HttpPort)
         MySetting.SetIni("WifiService", "WebAddress", "http://" + MySetting.PublicIP + ":" + MySetting.HttpPort)
 
         ' Wifi Admin'
@@ -1943,6 +1943,7 @@ Public Class Form1
             command.Replace("%", "{%}")
             command.Replace("(", "{(}")
             command.Replace(")", "{)}")
+            '!!!
 
             AppActivate(ProcessID)
 
