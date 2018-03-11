@@ -2428,7 +2428,7 @@ Public Class Form1
                 ConsoleCommand(RegionClass.ProcessID(Y), "load iar --merge " + user + " /Objects " + password + " " + """" + thing + """" + "{ENTER}")
                 ConsoleCommand(RegionClass.ProcessID(Y), "alert IAR content Is loaded{ENTER}")
             Next
-            Print("Opensim is loading your item. You will find it in in Inventory in /Objects soon.")
+            Print("Opensim is loading your item. You will find it in Inventory in /Objects soon.")
         Else
             Print("Load IAR cancelled - must use the full user name and password.")
         End If
