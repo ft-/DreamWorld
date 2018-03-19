@@ -104,10 +104,13 @@ Public Class MySettings
             RunOnce() = My.Settings.RunOnce
 
             SC_Enable() = False
-            SC_PortBase() = 8000
+            SC_PortBase() = 8080
+            SC_Portbase1() = 8081
             SC_Password() = "A password"
             SC_AdminPassword() = ""
             SC_Show() = True
+
+
 
             SizeX() = My.Settings.SizeX
             SizeY() = My.Settings.SizeY
@@ -856,6 +859,19 @@ Public Class MySettings
         End Get
         Set
             SetMySetting("PortBase", Value)
+        End Set
+    End Property
+    Public Property SC_PortBase1() As Integer
+        Get
+            Try ' required as it has been added
+                Return CType(GetMySetting("PortBase1"), Integer)
+            Catch
+                Return 8081
+            End Try
+
+        End Get
+        Set
+            SetMySetting("PortBase1", Value)
         End Set
     End Property
     Public Property SC_Password() As String

@@ -246,10 +246,10 @@
     <Compile Include="FormVoice.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Shoutcast.Designer.vb">
-      <DependentUpon>Shoutcast.vb</DependentUpon>
+    <Compile Include="IceCast.Designer.vb">
+      <DependentUpon>IceCast.vb</DependentUpon>
     </Compile>
-    <Compile Include="Shoutcast.vb">
+    <Compile Include="IceCast.vb">
       <SubType>Form</SubType>
     </Compile>
   </ItemGroup>
@@ -293,8 +293,8 @@
     <EmbeddedResource Include="RegionTreeView.resx">
       <DependentUpon>RegionTreeView.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Shoutcast.resx">
-      <DependentUpon>Shoutcast.vb</DependentUpon>
+    <EmbeddedResource Include="IceCast.resx">
+      <DependentUpon>IceCast.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

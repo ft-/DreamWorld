@@ -82,7 +82,7 @@ Partial Class AdvancedForm
         'MapNone
         '
         Me.MapNone.AutoSize = True
-        Me.MapNone.Location = New System.Drawing.Point(23, 29)
+        Me.MapNone.Location = New System.Drawing.Point(6, 29)
         Me.MapNone.Name = "MapNone"
         Me.MapNone.Size = New System.Drawing.Size(63, 21)
         Me.MapNone.TabIndex = 137
@@ -94,7 +94,7 @@ Partial Class AdvancedForm
         'MapSimple
         '
         Me.MapSimple.AutoSize = True
-        Me.MapSimple.Location = New System.Drawing.Point(23, 48)
+        Me.MapSimple.Location = New System.Drawing.Point(6, 48)
         Me.MapSimple.Name = "MapSimple"
         Me.MapSimple.Size = New System.Drawing.Size(122, 21)
         Me.MapSimple.TabIndex = 33
@@ -106,7 +106,7 @@ Partial Class AdvancedForm
         'MapBetter
         '
         Me.MapBetter.AutoSize = True
-        Me.MapBetter.Location = New System.Drawing.Point(24, 87)
+        Me.MapBetter.Location = New System.Drawing.Point(7, 87)
         Me.MapBetter.Name = "MapBetter"
         Me.MapBetter.Size = New System.Drawing.Size(153, 21)
         Me.MapBetter.TabIndex = 35
@@ -119,7 +119,7 @@ Partial Class AdvancedForm
         'MapBest
         '
         Me.MapBest.AutoSize = True
-        Me.MapBest.Location = New System.Drawing.Point(23, 109)
+        Me.MapBest.Location = New System.Drawing.Point(6, 109)
         Me.MapBest.Name = "MapBest"
         Me.MapBest.Size = New System.Drawing.Size(189, 21)
         Me.MapBest.TabIndex = 136
@@ -131,7 +131,7 @@ Partial Class AdvancedForm
         'MapGood
         '
         Me.MapGood.AutoSize = True
-        Me.MapGood.Location = New System.Drawing.Point(24, 67)
+        Me.MapGood.Location = New System.Drawing.Point(7, 67)
         Me.MapGood.Name = "MapGood"
         Me.MapGood.Size = New System.Drawing.Size(130, 21)
         Me.MapGood.TabIndex = 34
@@ -152,7 +152,7 @@ Partial Class AdvancedForm
         '
         'TimerInterval
         '
-        Me.TimerInterval.Location = New System.Drawing.Point(135, 38)
+        Me.TimerInterval.Location = New System.Drawing.Point(130, 68)
         Me.TimerInterval.Name = "TimerInterval"
         Me.TimerInterval.Size = New System.Drawing.Size(39, 22)
         Me.TimerInterval.TabIndex = 9
@@ -162,7 +162,7 @@ Partial Class AdvancedForm
         '
         Me.ChatSpeed.FormattingEnabled = True
         Me.ChatSpeed.Items.AddRange(New Object() {"Sleepy", "Awake", "After Coffee", "Too much Coffee"})
-        Me.ChatSpeed.Location = New System.Drawing.Point(9, 14)
+        Me.ChatSpeed.Location = New System.Drawing.Point(9, 21)
         Me.ChatSpeed.Name = "ChatSpeed"
         Me.ChatSpeed.Size = New System.Drawing.Size(113, 24)
         Me.ChatSpeed.TabIndex = 8
@@ -171,7 +171,7 @@ Partial Class AdvancedForm
         'AutoBackupHelp
         '
         Me.AutoBackupHelp.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.AutoBackupHelp.Location = New System.Drawing.Point(135, 21)
+        Me.AutoBackupHelp.Location = New System.Drawing.Point(154, 17)
         Me.AutoBackupHelp.Name = "AutoBackupHelp"
         Me.AutoBackupHelp.Size = New System.Drawing.Size(28, 32)
         Me.AutoBackupHelp.TabIndex = 1857
@@ -180,7 +180,7 @@ Partial Class AdvancedForm
         '
         'AutoBackupKeepFilesForDays
         '
-        Me.AutoBackupKeepFilesForDays.Location = New System.Drawing.Point(86, 65)
+        Me.AutoBackupKeepFilesForDays.Location = New System.Drawing.Point(125, 85)
         Me.AutoBackupKeepFilesForDays.Name = "AutoBackupKeepFilesForDays"
         Me.AutoBackupKeepFilesForDays.Size = New System.Drawing.Size(47, 22)
         Me.AutoBackupKeepFilesForDays.TabIndex = 3
@@ -191,7 +191,7 @@ Partial Class AdvancedForm
         Me.AutoBackupInterval.AutoCompleteCustomSource.AddRange(New String() {"1 Hour", "4 Hour", "12 Hour", "Daily", "Weekly"})
         Me.AutoBackupInterval.FormattingEnabled = True
         Me.AutoBackupInterval.Items.AddRange(New Object() {"Hourly", "12 Hour", "Daily", "Weekly"})
-        Me.AutoBackupInterval.Location = New System.Drawing.Point(6, 39)
+        Me.AutoBackupInterval.Location = New System.Drawing.Point(80, 55)
         Me.AutoBackupInterval.Name = "AutoBackupInterval"
         Me.AutoBackupInterval.Size = New System.Drawing.Size(121, 24)
         Me.AutoBackupInterval.TabIndex = 2
@@ -200,7 +200,7 @@ Partial Class AdvancedForm
         'AutoBackup
         '
         Me.AutoBackup.AutoSize = True
-        Me.AutoBackup.Location = New System.Drawing.Point(62, 21)
+        Me.AutoBackup.Location = New System.Drawing.Point(22, 24)
         Me.AutoBackup.Name = "AutoBackup"
         Me.AutoBackup.Size = New System.Drawing.Size(82, 21)
         Me.AutoBackup.TabIndex = 1
@@ -232,7 +232,7 @@ Partial Class AdvancedForm
         'RegionHelp
         '
         Me.RegionHelp.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.RegionHelp.Location = New System.Drawing.Point(158, 19)
+        Me.RegionHelp.Location = New System.Drawing.Point(168, 14)
         Me.RegionHelp.Name = "RegionHelp"
         Me.RegionHelp.Size = New System.Drawing.Size(28, 27)
         Me.RegionHelp.TabIndex = 1858
@@ -241,7 +241,7 @@ Partial Class AdvancedForm
         '
         'GloebitsButton
         '
-        Me.GloebitsButton.Location = New System.Drawing.Point(399, 157)
+        Me.GloebitsButton.Location = New System.Drawing.Point(467, 150)
         Me.GloebitsButton.Name = "GloebitsButton"
         Me.GloebitsButton.Size = New System.Drawing.Size(143, 23)
         Me.GloebitsButton.TabIndex = 1867
@@ -250,7 +250,7 @@ Partial Class AdvancedForm
         '
         'ExpertButton1
         '
-        Me.ExpertButton1.Location = New System.Drawing.Point(399, 244)
+        Me.ExpertButton1.Location = New System.Drawing.Point(467, 237)
         Me.ExpertButton1.Name = "ExpertButton1"
         Me.ExpertButton1.Size = New System.Drawing.Size(143, 23)
         Me.ExpertButton1.TabIndex = 1866
@@ -266,9 +266,9 @@ Partial Class AdvancedForm
         Me.MapBox.Controls.Add(Me.MapBetter)
         Me.MapBox.Controls.Add(Me.MapBest)
         Me.MapBox.Controls.Add(Me.MapGood)
-        Me.MapBox.Location = New System.Drawing.Point(204, 13)
+        Me.MapBox.Location = New System.Drawing.Point(225, 13)
         Me.MapBox.Name = "MapBox"
-        Me.MapBox.Size = New System.Drawing.Size(180, 231)
+        Me.MapBox.Size = New System.Drawing.Size(210, 267)
         Me.MapBox.TabIndex = 1865
         Me.MapBox.TabStop = False
         Me.MapBox.Text = "Maps"
@@ -276,7 +276,7 @@ Partial Class AdvancedForm
         'MapPicture
         '
         Me.MapPicture.InitialImage = CType(resources.GetObject("MapPicture.InitialImage"), System.Drawing.Image)
-        Me.MapPicture.Location = New System.Drawing.Point(49, 132)
+        Me.MapPicture.Location = New System.Drawing.Point(49, 154)
         Me.MapPicture.Name = "MapPicture"
         Me.MapPicture.Size = New System.Drawing.Size(100, 93)
         Me.MapPicture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
@@ -289,9 +289,9 @@ Partial Class AdvancedForm
         Me.GroupBox5.Controls.Add(Me.Label15)
         Me.GroupBox5.Controls.Add(Me.TimerInterval)
         Me.GroupBox5.Controls.Add(Me.ChatSpeed)
-        Me.GroupBox5.Location = New System.Drawing.Point(12, 163)
+        Me.GroupBox5.Location = New System.Drawing.Point(12, 176)
         Me.GroupBox5.Name = "GroupBox5"
-        Me.GroupBox5.Size = New System.Drawing.Size(182, 81)
+        Me.GroupBox5.Size = New System.Drawing.Size(182, 104)
         Me.GroupBox5.TabIndex = 1863
         Me.GroupBox5.TabStop = False
         Me.GroupBox5.Text = "Personality"
@@ -299,7 +299,7 @@ Partial Class AdvancedForm
         'Label15
         '
         Me.Label15.AutoSize = True
-        Me.Label15.Location = New System.Drawing.Point(6, 41)
+        Me.Label15.Location = New System.Drawing.Point(13, 51)
         Me.Label15.Name = "Label15"
         Me.Label15.Size = New System.Drawing.Size(156, 17)
         Me.Label15.TabIndex = 25
@@ -307,7 +307,7 @@ Partial Class AdvancedForm
         '
         'VoiceButton1
         '
-        Me.VoiceButton1.Location = New System.Drawing.Point(399, 186)
+        Me.VoiceButton1.Location = New System.Drawing.Point(467, 179)
         Me.VoiceButton1.Name = "VoiceButton1"
         Me.VoiceButton1.Size = New System.Drawing.Size(143, 23)
         Me.VoiceButton1.TabIndex = 1864
@@ -326,7 +326,7 @@ Partial Class AdvancedForm
         Me.GroupBox3.Controls.Add(Me.AutoBackup)
         Me.GroupBox3.Location = New System.Drawing.Point(12, 12)
         Me.GroupBox3.Name = "GroupBox3"
-        Me.GroupBox3.Size = New System.Drawing.Size(175, 145)
+        Me.GroupBox3.Size = New System.Drawing.Size(207, 158)
         Me.GroupBox3.TabIndex = 1862
         Me.GroupBox3.TabStop = False
         Me.GroupBox3.Text = "Auto Backup"
@@ -334,7 +334,7 @@ Partial Class AdvancedForm
         'Label6
         '
         Me.Label6.AutoSize = True
-        Me.Label6.Location = New System.Drawing.Point(6, 96)
+        Me.Label6.Location = New System.Drawing.Point(6, 110)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(109, 17)
         Me.Label6.TabIndex = 16
@@ -342,7 +342,7 @@ Partial Class AdvancedForm
         '
         'BackupFolder
         '
-        Me.BackupFolder.Location = New System.Drawing.Point(6, 112)
+        Me.BackupFolder.Location = New System.Drawing.Point(9, 133)
         Me.BackupFolder.Name = "BackupFolder"
         Me.BackupFolder.Size = New System.Drawing.Size(163, 22)
         Me.BackupFolder.TabIndex = 15
@@ -350,7 +350,7 @@ Partial Class AdvancedForm
         'Label9
         '
         Me.Label9.AutoSize = True
-        Me.Label9.Location = New System.Drawing.Point(6, 68)
+        Me.Label9.Location = New System.Drawing.Point(6, 88)
         Me.Label9.Name = "Label9"
         Me.Label9.Size = New System.Drawing.Size(98, 17)
         Me.Label9.TabIndex = 14
@@ -359,7 +359,7 @@ Partial Class AdvancedForm
         'Label8
         '
         Me.Label8.AutoSize = True
-        Me.Label8.Location = New System.Drawing.Point(3, 21)
+        Me.Label8.Location = New System.Drawing.Point(6, 58)
         Me.Label8.Name = "Label8"
         Me.Label8.Size = New System.Drawing.Size(58, 17)
         Me.Label8.TabIndex = 12
@@ -373,7 +373,7 @@ Partial Class AdvancedForm
         Me.GroupBox2.Controls.Add(Me.Label3)
         Me.GroupBox2.Controls.Add(Me.AddRegion)
         Me.GroupBox2.Controls.Add(Me.RegionButton)
-        Me.GroupBox2.Location = New System.Drawing.Point(390, 13)
+        Me.GroupBox2.Location = New System.Drawing.Point(458, 13)
         Me.GroupBox2.Name = "GroupBox2"
         Me.GroupBox2.Size = New System.Drawing.Size(202, 131)
         Me.GroupBox2.TabIndex = 1861
@@ -408,16 +408,18 @@ Partial Class AdvancedForm
         '
         'Shoutcast
         '
-        Me.Shoutcast.Location = New System.Drawing.Point(399, 215)
+        Me.Shoutcast.Location = New System.Drawing.Point(467, 208)
         Me.Shoutcast.Name = "Shoutcast"
         Me.Shoutcast.Size = New System.Drawing.Size(143, 23)
         Me.Shoutcast.TabIndex = 1868
-        Me.Shoutcast.Text = "Shoutcast Setup"
+        Me.Shoutcast.Text = "Icecast Setup"
         Me.Shoutcast.UseVisualStyleBackColor = True
         '
         'AdvancedForm
         '
-        Me.ClientSize = New System.Drawing.Size(625, 292)
+        Me.AutoSize = True
+        Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
+        Me.ClientSize = New System.Drawing.Size(672, 292)
         Me.Controls.Add(Me.Shoutcast)
         Me.Controls.Add(Me.GloebitsButton)
         Me.Controls.Add(Me.ExpertButton1)

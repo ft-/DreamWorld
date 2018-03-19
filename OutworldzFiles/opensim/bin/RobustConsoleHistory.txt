@@ -1,17 +1,3 @@
-reset user password Wifi Admin #pzkKc
-quit
-quit
-show users
-quit
-create user Test User
-quit
-create user test User Test User
-quit
-quit
-reset user password Wifi Admin #pzkKc
-quit
-Tequit
-quit
 create user Test User
 quit
 quit
@@ -96,5 +82,20 @@ quit
 quit
 quit
 quit
+quit
+quit
+quit
+quit
+create user Test User
+quit
+quit
+create user Test User 123
+create user Test User 123
+quit
+create user Test User 123
+quit
+quit
+quit
+reset user password Wifi Admin ABC123
 quit
 quit
