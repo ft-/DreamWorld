@@ -599,7 +599,7 @@ Public Class Form1
     End Sub
 
 
-    Private Sub mnuAbout_Click(sender As System.Object, e As System.EventArgs) Handles mnuAbout.Click
+    Private Sub MnuAbout_Click(sender As System.Object, e As System.EventArgs) Handles mnuAbout.Click
         Print("(c) 2017 Outworldz,LLC")
         Dim webAddress As String = Domain + "/Outworldz_Installer"
         Try
@@ -644,7 +644,7 @@ Public Class Form1
         End If
     End Sub
 
-    Private Sub mnuEasy_Click_1(sender As System.Object, e As System.EventArgs) Handles mnuEasy.Click
+    Private Sub MnuEasy_Click_1(sender As System.Object, e As System.EventArgs) Handles mnuEasy.Click
         mnuEasy.Checked = True
         mnuFull.Checked = False
         My.Settings.ViewerEase = True

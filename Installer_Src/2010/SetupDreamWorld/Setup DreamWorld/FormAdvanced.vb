@@ -202,15 +202,15 @@ Public Class AdvancedForm
         Password.UseSystemPasswordChar = False
 
     End Sub
-    Private Sub Password_TextChanged(sender As Object, e As EventArgs) Handles Password.TextChanged
-        My.Settings.Password = Password.Text
-        My.Settings.Save()
 
+    Private Sub Password_LostFocus(sender As Object, e As EventArgs) Handles Password.LostFocus
         If Form1.Running Then
             Form1.ConsoleCommand("reset user password Wifi Admin " + My.Settings.Password + "{Enter}")
         End If
-
+        My.Settings.Password = Password.Text
+        My.Settings.Save()
     End Sub
+
 
     Private Sub ChatSpeed_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ChatSpeed.SelectedIndexChanged
 
@@ -500,7 +500,7 @@ Public Class AdvancedForm
 
     End Sub
 
-    Private Sub http_Port_TextChanged(sender As Object, e As EventArgs) Handles httpPort.TextChanged
+    Private Sub Http_Port_TextChanged(sender As Object, e As EventArgs) Handles httpPort.TextChanged
         My.Settings.HttpPort = httpPort.Text
         My.Settings.Save()
     End Sub
@@ -644,7 +644,7 @@ Public Class AdvancedForm
 
     End Sub
 
-    Private Sub uPnPEnabled_CheckedChanged(sender As Object, e As EventArgs) Handles uPnPEnabled.CheckedChanged
+    Private Sub UPnPEnabled_CheckedChanged(sender As Object, e As EventArgs) Handles uPnPEnabled.CheckedChanged
 
         My.Settings.UPnPEnabled = uPnPEnabled.Checked
         My.Settings.Save()
