@@ -37,12 +37,9 @@ Public Class Form1
 
 #Region "Declarations"
 
-    Dim MyVersion As String = "1.76"
+    Dim MyVersion As String = "1.77"
     Dim DebugPath As String = "C:\Opensim\OpensimV1.75 Source"
     Public Domain As String = "http://www.outworldz.com"
-
-    Private gFailDebug = False ' set to true to fail diagnostic
-
 
     Public MyFolder As String   ' Holds the current folder that we are running in
     Dim gCurSlashDir As String '  holds the current directory info in Unix format
@@ -200,7 +197,6 @@ Public Class Form1
             ' for debugging when compiling
             If arguments(1) = "-debug" Then
                 gDebug = True
-                gFailDebug = True
                 MyFolder = DebugPath ' for testing, as the compiler buries itself in ../../../debug
 
             End If
@@ -245,13 +241,7 @@ Public Class Form1
 
         BumpProgress10()
 
-        ' Run diagnostics, maybe
-        If gDebug Then
-            gFailDebug = True
-            DoDiag()
-            gFailDebug = False
-            My.Settings.DiagsRun = False
-        End If
+
         Application.DoEvents()
         RegisterDNS()
 
@@ -1867,7 +1857,7 @@ Public Class Form1
         BumpProgress10()
 
 
-        If result = "Test completed" And Not gFailDebug Then
+        If result = "Test completed" Then
             Log("Passed:" + result)
             My.Settings.LoopBackDiag = True
             My.Settings.Save()
@@ -1899,7 +1889,7 @@ Public Class Form1
     End Sub
     Private Function ProbePublicPort() As Boolean
 
-        Print("Checing Hypergrid Port")
+        Print("Checking Hypergrid Port")
         Dim ip As String = GetPubIP()
 
 
@@ -1920,7 +1910,7 @@ Public Class Form1
 
         BumpProgress10()
 
-        If isPortOpen = "yes" And Not gFailDebug Then
+        If isPortOpen = "yes" Then
             My.Settings.PublicIP = ip
             Log("Public IP set to " + ip)
             My.Settings.Save()
@@ -2223,6 +2213,8 @@ Public Class Form1
             Log("Error:StartManually" + ex.Message)
         End Try
 
+        CreateService()
+
         BumpProgress(5)
 
         ' Mysql was not running, so lets start it up.
@@ -2264,6 +2256,26 @@ Public Class Form1
         Return True
     End Function
 
+    Private Sub CreateService()
+
+        ' create test program 
+        ' slants the other way:
+        Dim testProgram As String = MyFolder & "\OutworldzFiles\Mysql\bin\InstallAsAService.bat"
+        Try
+            My.Computer.FileSystem.DeleteFile(testProgram)
+        Catch ex As Exception
+            Log("DeleteFile: " + ex.Message)
+        End Try
+        Try
+            Using outputFile As New StreamWriter(testProgram, True)
+                outputFile.WriteLine("@REM Program to run Mysql as a Service" + vbCrLf +
+                "mysqld.exe --install Mysql --defaults-file=" + """" + gCurSlashDir + "/OutworldzFiles/mysql/my.ini" + """")
+            End Using
+        Catch ex As Exception
+            Log("Error:InstallAsAService" + ex.Message)
+        End Try
+
+    End Sub
     Function CheckMysql() As Boolean
 
         Dim version = MysqlConn.isMySqlRunning()
@@ -2398,8 +2410,8 @@ Public Class Form1
 
         ChDir(MyFolder & "\OutworldzFiles\mysql\bin")
         pi.WindowStyle = ProcessWindowStyle.Normal
-        pi.Arguments = My.Settings.MySqlPort
         pi.FileName = "CheckAndRepair.bat"
+        pi.Arguments = My.Settings.MySqlPort.ToString
         pMySqlDiag.StartInfo = pi
         pMySqlDiag.Start()
         pMySqlDiag.WaitForExit()
