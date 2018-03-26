@@ -3198,6 +3198,9 @@ Public Class Form1
             Log("Error:StartManually" + ex.Message)
         End Try
 
+	CreateService()
+
+
         BumpProgress(5)
 
         ' Mysql was not running, so lets start it up.
@@ -3237,6 +3240,28 @@ Public Class Form1
         Return True
 
     End Function
+
+    Private Sub CreateService()
+
+        ' create test program 
+        ' slants the other way:
+        Dim testProgram As String = MyFolder & "\OutworldzFiles\Mysql\bin\InstallAsAService.bat"
+        Try
+            My.Computer.FileSystem.DeleteFile(testProgram)
+        Catch ex As Exception
+            Log("DeleteFile: " + ex.Message)
+        End Try
+        Try
+            Using outputFile As New StreamWriter(testProgram, True)
+                outputFile.WriteLine("@REM Program to run Mysql as a Service" + vbcrlf +
+                "mysqld.exe --install Mysql --defaults-file=" + """" + gCurSlashDir + "/OutworldzFiles/mysql/my.ini" + """")
+            End Using
+        Catch ex As Exception
+            Log("Error:InstallAsAService" + ex.Message)
+        End Try
+
+    End Sub
+
 
     Function CheckMysql() As Boolean
 

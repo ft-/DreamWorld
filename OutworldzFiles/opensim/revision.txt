@@ -1,0 +1,2 @@
+See http://opensimulator.org/viewgit/?a=commitdiff&p=opensim&h=0a1d96b95eb09f1d87a0f9d2e14e9e8c3fade61c
+0a1d96b95eb09f1d87a0f9d2e14e9e8c3fade61c

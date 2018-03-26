@@ -1,10 +1,10 @@
 <icecast>
-<hostname>Fred.outworldz.net</hostname>
+<hostname></hostname>
 <location>DreamGrid</location>
 <admin></admin>
 <shoutcast-mount>/stream</shoutcast-mount>
 <listen-socket>
-    <port>8080</port>
+    <port>8000</port>
 </listen-socket>
 <listen-socket>
    <port>8081</port>
@@ -21,10 +21,10 @@
     <burst-size>65535</burst-size>
 </limits>
 <authentication>
-<source-password>123</source-password>
-<relay-password>123</relay-password>
+<source-password>AGoodpassword</source-password>
+<relay-password>AGoodpassword</relay-password>
 <admin-user>admin</admin-user>
-<admin-password>123</admin-password>
+<admin-password>AGreatpassword</admin-password>
 </authentication>
 <http-headers>
     <header name="Access-Control-Allow-Origin" value="*"/>

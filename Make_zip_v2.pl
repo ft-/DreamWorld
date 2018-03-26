@@ -1,5 +1,5 @@
 
-my $type  = '-V2.14';# '-Beta-V1.5';
+my $type  = '-V2.15';# '-Beta-V1.5';
 my $dir = "C:\\Opensim\\Outworldz Source";
 
 chdir ($dir);
@@ -33,7 +33,8 @@ foreach my $path ( @deletions) {
 #clean up opensim
 unlink "$dir/OutworldzFiles/Opensim/bin/Opensim.log" ;
 unlink "$dir/OutworldzFiles/Opensim/bin/Opensimstats.log" ;
-unlink "$dir/OutworldzFiles/Shoutcast/Shoutcast.log" ;
+unlink "$dir/Icecast/error.log" ;
+unlink "$dir/Icecast/access.log" ;
 
 unlink "$dir/OutworldzFiles/Opensim/bin/OpensimConsoleHistory.txt" ;
 unlink "$dir/OutworldzFiles/Opensim-0.9/bin/OpensimConsoleHistory.txt" ;
@@ -98,7 +99,7 @@ say("Adding folders");
 
 Process ("../7z.exe -tzip a ..\\Zips\\DreamGrid$type.zip Licenses_to_Content");
 Process ("../7z.exe -tzip a ..\\Zips\\DreamGrid$type.zip OutworldzFiles");
-Process ("../7z.exe -tzip a ..\\Zips\\DreamGrid$type.zip Shoutcast");
+Process ("../7z.exe -tzip a ..\\Zips\\DreamGrid$type.zip Icecast");
 
 		
 say("Updater Build");

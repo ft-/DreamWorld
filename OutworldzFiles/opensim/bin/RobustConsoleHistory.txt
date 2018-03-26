@@ -1,5 +1,3 @@
-create user Test User
-quit
 quit
 quit
 Test
@@ -98,4 +96,6 @@ quit
 quit
 reset user password Wifi Admin ABC123
 quit
+quit
+create user Test User
 quit

@@ -28,7 +28,7 @@ GridName=DreamGrid
 http_listener_port=8002
 
 ; The URL of the Robust server
-BaseURL=http://Fred.outworldz.net
+BaseURL=http://192.168.2.100
 
 ; The public port of the Robust server
 PublicPort=8002
@@ -170,9 +170,10 @@ AllowllHTTPRequestIn=false
 ; * The following are for the remote console
 ; * They have no effect for the local or basic console types
 ; * Leave commented to diable logins to the console
-;ConsoleUser = Test
-;ConsolePass = secret
-;ConsolePort = 0
+ConsoleUser=Admin
+ConsolePass=secret
+ConsolePort=0
+
 [Hypergrid]
 
 ;# {HomeURI} {Hypergrid} {The Home URL of this world} {}
@@ -825,4 +826,4 @@ SmtpPassword=Gmail password
 ;; base folder "bin" can be accessed via path <WebAddress>/bin/data/, e.g.
 ;; http://localhost:8002/bin/data/prototype.js.
 ServePath_BinData="data, /bin/data"
-AdminPassword=!!X1J)
+AdminPassword=123
