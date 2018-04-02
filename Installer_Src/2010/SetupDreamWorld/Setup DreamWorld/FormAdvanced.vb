@@ -313,7 +313,7 @@ Public Class AdvancedForm
     End Sub
 
     Private Sub Shoutcast_Click(sender As Object, e As EventArgs) Handles Shoutcast.Click
-        Dim ActualForm As New Shoutcast
+        Dim ActualForm As New Icecast
         Dim X As Integer = 300
         Dim Y As Integer = 200
         ActualForm.SetDesktopLocation(X, Y)

@@ -35,7 +35,7 @@ Public Class Form1
 #Region "Declarations"
 
 
-    Dim MyVersion As String = "2.14"
+    Dim MyVersion As String = "2.15"
     Dim DebugPath As String = "C:\Opensim\Outworldz Source"  ' no slash at end
     Public Domain As String = "http://www.outworldz.com"
     Public prefix As String ' Holds path to Opensim folder
@@ -106,8 +106,8 @@ Public Class Form1
     Public MySetting As New MySettings
 
     ' Shoutcast
-    Dim gShoutcastProcID As Boolean = False
-    Private WithEvents ShoutcastProcess As New Process()
+    Dim gIcecastProcID As Boolean = False
+    Private WithEvents IcecastProcess As New Process()
 
 
     <CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA2101:SpecifyMarshalingForPInvokeStringArguments", MessageId:="1")>
@@ -231,6 +231,12 @@ Public Class Form1
         End If
         gCurSlashDir = MyFolder.Replace("\", "/")    ' because Mysql uses unix like slashes, that's why
         prefix = MyFolder & "\OutworldzFiles\Opensim\"
+
+        ' Kill Shoutcast
+        Try
+            My.Computer.FileSystem.DeleteDirectory(MyFolder + "\Shoutcast", FileIO.DeleteDirectoryOption.DeleteAllContents)
+        Catch
+        End Try
 
         MySetting.Init()
 
@@ -393,8 +399,6 @@ Public Class Form1
             Return
         End If
 
-        StartShoutcast()
-
         If Not MySetting.RunOnce Then
             MsgBox("Please type 'create user<ret>' to make the system owner's account in the ROBUST console, and then answer any questions.", vbInformation, "Info")
             Sleep(10000)
@@ -405,6 +409,9 @@ Public Class Form1
         If Not Start_Opensimulator() Then ' Launch the rockets
             Return
         End If
+
+
+        StartIcecast()
 
         ' show the IAR and OAR menu when we are up 
         If gContentAvailable Then
@@ -477,7 +484,7 @@ Public Class Form1
 
         Application.DoEvents()
 
-        StopShoutcast()
+        StopIcecast()
 
         Dim n As Integer = RegionClass.RegionCount()
         Debug.Print("N=" + n.ToString())
@@ -971,13 +978,12 @@ Public Class Form1
 
         DoWifi()
 
-        DoShoutcast()
-
         DoGloebits()
 
         DoRegions()
 
         Return CopyOpensimProto()
+
 
     End Function
 
@@ -1014,19 +1020,6 @@ Public Class Form1
 
     End Sub
 
-    Public Sub DoShoutcast()
-
-        ' Shoutcast.ini   
-        MySetting.LoadIni(MyFolder + "/Shoutcast/Shoutcast.ini", ";")
-
-        MySetting.SetIni("SHOUTCAST", "Password", MySetting.SC_Password)
-        MySetting.SetIni("SHOUTCAST", "PortBase", MySetting.SC_PortBase.ToString)
-        MySetting.SetIni("SHOUTCAST", "AdminPassword", MySetting.SC_AdminPassword)
-        MySetting.SetIni("SHOUTCAST", "TitleFormat", MySetting.SimName + " Radio: %s")
-
-        MySetting.SaveINI()
-
-    End Sub
 
     Public Sub DoGloebits()
 
@@ -1320,43 +1313,50 @@ Public Class Form1
 
     End Sub
 
-    Public Sub StartShoutcast()
+    Public Sub StartIcecast()
 
         If Not MySetting.SC_Enable Then
             Return
         End If
 
         Try
-            My.Computer.FileSystem.DeleteFile(MyFolder + "\Shoutcast\Shoutcast.log")
+            My.Computer.FileSystem.DeleteFile(MyFolder + "\Icecast\log\access.log")
         Catch ex As Exception
         End Try
 
-        gShoutcastProcID = Nothing
-        Print("Starting Shoutcast")
+        Try
+            My.Computer.FileSystem.DeleteFile(MyFolder + "\Icecast\log\error.log")
+        Catch ex As Exception
+        End Try
+
+        gIcecastProcID = Nothing
+        Print("Starting Icecast")
 
         Try
-            ShoutcastProcess.EnableRaisingEvents = True
-            ShoutcastProcess.StartInfo.UseShellExecute = True ' so we can redirect streams
-            ShoutcastProcess.StartInfo.FileName = MyFolder + "\Shoutcast\Shoutcast.exe"
+            IcecastProcess.EnableRaisingEvents = True
+            IcecastProcess.StartInfo.UseShellExecute = True ' so we can redirect streams
+            IcecastProcess.StartInfo.FileName = MyFolder + "\icecast\bin\icecast.exe"
 
-            ShoutcastProcess.StartInfo.CreateNoWindow = False
-            ShoutcastProcess.StartInfo.WorkingDirectory = MyFolder + "OutworldzFiles\"
+            '.\bin\icecast.exe -c .\icecast.xml
+
+            IcecastProcess.StartInfo.CreateNoWindow = False
+            IcecastProcess.StartInfo.WorkingDirectory = MyFolder + "\icecast"
 
             If MySetting.SC_Show Then
-                ShoutcastProcess.StartInfo.WindowStyle = ProcessWindowStyle.Normal
+                IcecastProcess.StartInfo.WindowStyle = ProcessWindowStyle.Normal
             Else
-                ShoutcastProcess.StartInfo.WindowStyle = ProcessWindowStyle.Minimized
+                IcecastProcess.StartInfo.WindowStyle = ProcessWindowStyle.Minimized
             End If
 
-            ShoutcastProcess.StartInfo.Arguments = "Shoutcast.ini"
-            ShoutcastProcess.Start()
-            gShoutcastProcID = ShoutcastProcess.Id
+            IcecastProcess.StartInfo.Arguments = "-c .\icecast_run.xml" + """"
+            IcecastProcess.Start()
+            gIcecastProcID = IcecastProcess.Id
 
             Thread.Sleep(1000)
-            SetWindowText(ShoutcastProcess.MainWindowHandle, "Shoutcast")
+            SetWindowText(IcecastProcess.MainWindowHandle, "Icecast")
 
         Catch ex As Exception
-            Print("Error: Shoutcast did not start: " + ex.Message)
+            Print("Error: Icecast did not start: " + ex.Message)
         End Try
 
     End Sub
@@ -2428,7 +2428,7 @@ Public Class Form1
                 ConsoleCommand(RegionClass.ProcessID(Y), "load iar --merge " + user + " /Objects " + password + " " + """" + thing + """" + "{ENTER}")
                 ConsoleCommand(RegionClass.ProcessID(Y), "alert IAR content Is loaded{ENTER}")
             Next
-            Print("Opensim is loading your item. You will find it in in Inventory in /Objects soon.")
+            Print("Opensim is loading your item. You will find it in Inventory in /Objects soon.")
         Else
             Print("Load IAR cancelled - must use the full user name and password.")
         End If
@@ -2727,7 +2727,7 @@ Public Class Form1
             MySetting.SaveMyINI()
 
             If MySetting.DNSName.ToLower.Contains("outworldz.net") Then
-                Print("Registering Dyn DNS")
+                Print("Checking DNS")
             End If
 
             If RegisterDNS() Then
@@ -2938,6 +2938,15 @@ Public Class Form1
         Log("Local ip seems to be " + MyUPnpMap.LocalIP)
         Print("Puny human is instructed to wait while I check out the router ...")
         Try
+
+            'Icecast 8080
+            If MyUPnpMap.Exists(Convert.ToInt16(MySetting.SC_PortBase), UPnp.Protocol.TCP) Then
+                MyUPnpMap.Remove(Convert.ToInt16(MySetting.SC_PortBase), UPnp.Protocol.TCP)
+            End If
+            MyUPnpMap.Add(MyUPnpMap.LocalIP, Convert.ToInt16(MySetting.SC_PortBase), UPnp.Protocol.TCP, "Icecast TCP Public " + MySetting.SC_PortBase)
+            PrintFast("Icecast Port is set to " + MySetting.SC_PortBase)
+            BumpProgress10()
+
             'diagnostics 8001
             If MyUPnpMap.Exists(Convert.ToInt16(MySetting.DiagnosticPort), UPnp.Protocol.TCP) Then
                 MyUPnpMap.Remove(Convert.ToInt16(MySetting.DiagnosticPort), UPnp.Protocol.TCP)
@@ -2986,8 +2995,8 @@ Public Class Form1
             If MyUPnpMap.Exists(Convert.ToInt16(MySetting.SC_PortBase), UPnp.Protocol.TCP) Then
                 MyUPnpMap.Remove(Convert.ToInt16(MySetting.SC_PortBase), UPnp.Protocol.TCP)
             End If
-            MyUPnpMap.Add(MyUPnpMap.LocalIP, Convert.ToInt16(MySetting.SC_PortBase), UPnp.Protocol.TCP, "Shoutcast TCP" + MySetting.SC_PortBase)
-            PrintFast("Shoutcast Port is set to " + MySetting.SC_PortBase)
+            MyUPnpMap.Add(MyUPnpMap.LocalIP, Convert.ToInt16(MySetting.SC_PortBase), UPnp.Protocol.TCP, "Icecast TCP" + MySetting.SC_PortBase)
+            PrintFast("Icecast Port is set to " + MySetting.SC_PortBase)
 
 
             BumpProgress10()
@@ -3189,6 +3198,9 @@ Public Class Form1
             Log("Error:StartManually" + ex.Message)
         End Try
 
+	CreateService()
+
+
         BumpProgress(5)
 
         ' Mysql was not running, so lets start it up.
@@ -3229,6 +3241,28 @@ Public Class Form1
 
     End Function
 
+    Private Sub CreateService()
+
+        ' create test program 
+        ' slants the other way:
+        Dim testProgram As String = MyFolder & "\OutworldzFiles\Mysql\bin\InstallAsAService.bat"
+        Try
+            My.Computer.FileSystem.DeleteFile(testProgram)
+        Catch ex As Exception
+            Log("DeleteFile: " + ex.Message)
+        End Try
+        Try
+            Using outputFile As New StreamWriter(testProgram, True)
+                outputFile.WriteLine("@REM Program to run Mysql as a Service" + vbcrlf +
+                "mysqld.exe --install Mysql --defaults-file=" + """" + gCurSlashDir + "/OutworldzFiles/mysql/my.ini" + """")
+            End Using
+        Catch ex As Exception
+            Log("Error:InstallAsAService" + ex.Message)
+        End Try
+
+    End Sub
+
+
     Function CheckMysql() As Boolean
 
         Dim version = MysqlConn.IsMySqlRunning()
@@ -3240,9 +3274,9 @@ Public Class Form1
 
     End Function
 
-    Private Sub StopShoutcast()
+    Private Sub StopIcecast()
 
-        Zap("Shoutcast")
+        Zap("icecast")
 
     End Sub
 
