@@ -22,6 +22,7 @@ my @deletions = (
 				 "$dir/OutworldzFiles/mysql/data/opensim",
 				 "$dir/OutworldzFiles/mysql/data/robust",
 				 "$dir/OutworldzFiles/mysql/data/addin-db-002",
+				 "$dir/OutworldzFiles/mysql/data/fsassets",
 				 
 				 
 				 );
