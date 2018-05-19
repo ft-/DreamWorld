@@ -184,28 +184,6 @@ Public Class Form1
             gIPv4Address = Value
         End Set
     End Property
-    Public Property Splashpage() As String
-        Get
-            Return MySetting.SplashPage
-        End Get
-        Set(ByVal Value As String)
-            MySetting.SplashPage = Value
-            MySetting.SaveMyINI()
-        End Set
-    End Property
-
-    ' Save a random machine ID - we don't want any data to be sent that's personal or identifiable,  but it needs to be unique
-    Public Property Machine() As String
-        Get
-            Return MySetting.MachineID
-        End Get
-        Set(ByVal Value As String)
-            If (MySetting.MachineID = "") Then
-                MySetting.MachineID = Value
-                MySetting.SaveMyINI()
-            End If
-        End Set
-    End Property
 
     Public Property Running() As Boolean
         Get
@@ -239,6 +217,11 @@ Public Class Form1
         End Try
 
         MySetting.Init()
+
+        ' Save a random machine ID - we don't want any data to be sent that's personal or identifiable,  but it needs to be unique
+        Randomize()
+        MySetting.Machine() = Random()  ' a random machine ID may be generated.  Happens only once
+
 
         'hide progress
         ProgressBar1.Visible = True
@@ -810,7 +793,7 @@ Public Class Form1
         ' Grid regions need GridDBName
 
 
-        MySetting.LoadIni(prefix + "bin\config-include\Gridcommon.ini", ";")
+        MySetting.LoadOtherIni(prefix + "bin\config-include\Gridcommon.ini", ";")
         Dim ConnectionString = """" _
             + "Data Source=" + "127.0.0.1" _
             + ";Database=" + MySetting.RegionDBName _
@@ -819,12 +802,12 @@ Public Class Form1
             + ";Password=" + MySetting.RegionDbPassword _
             + ";Old Guids=True;Allow Zero Datetime=True;" _
             + """"
-        MySetting.SetIni("DatabaseService", "ConnectionString", ConnectionString)
-        MySetting.SaveINI()
+        MySetting.SetOtherIni("DatabaseService", "ConnectionString", ConnectionString)
+        MySetting.SaveOtherINI()
 
         ''''''''''''''''''''''''''''''''''''''''''
         ' Robust Process
-        MySetting.LoadIni(prefix + "bin\Robust.HG.ini", ";")
+        MySetting.LoadOtherIni(prefix + "bin\Robust.HG.ini", ";")
 
         ConnectionString = """" _
             + "Data Source=" + MySetting.RobustServer _
@@ -835,43 +818,44 @@ Public Class Form1
             + ";Old Guids=True;Allow Zero Datetime=True;" _
             + """"
 
-        MySetting.SetIni("DatabaseService", "ConnectionString", ConnectionString)
-        MySetting.SetIni("Const", "GridName", MySetting.SimName)
-        MySetting.SetIni("Const", "BaseURL", "http://" + MySetting.PublicIP)
-        MySetting.SetIni("Const", "PublicPort", MySetting.HttpPort) ' 8002
-        MySetting.SetIni("Const", "PrivatePort", MySetting.PrivatePort) ' 8003
-        MySetting.SetIni("Const", "http_listener_port", MySetting.HttpPort)
-        MySetting.SetIni("GridInfoService", "welcome", Splashpage)
+        MySetting.SetOtherIni("DatabaseService", "ConnectionString", ConnectionString)
+        MySetting.SetOtherIni("Const", "GridName", MySetting.SimName)
+        MySetting.SetOtherIni("Const", "BaseURL", "http://" + MySetting.PublicIP)
+        MySetting.SetOtherIni("Const", "PublicPort", MySetting.HttpPort) ' 8002
+        MySetting.SetOtherIni("Const", "PrivatePort", MySetting.PrivatePort) ' 8003
+        MySetting.SetOtherIni("Const", "http_listener_port", MySetting.HttpPort)
+        MySetting.SetOtherIni("GridInfoService", "welcome", MySetting.SplashPage)
 
-        If MySetting.WebStats Then
-            MySetting.SetIni("WebStats", "enabled", "True")
-        Else
-            MySetting.SetIni("WebStats", "enabled", "False")
-        End If
-
-        MySetting.SaveINI()
+        MySetting.SaveOtherINI()
 
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
         ' Opensim.ini
-        MySetting.LoadIni(prefix + "bin\Opensim.proto", ";")
+        MySetting.LoadOtherIni(prefix + "bin\Opensim.proto", ";")
 
+        If MySetting.Clouds Then
+            MySetting.SetOtherIni("Cloud", "enabled", "true")
+            MySetting.SetOtherIni("Cloud", "density", MySetting.Density)
+        Else
+            MySetting.SetOtherIni("Cloud", "enabled", "false")
+            MySetting.SetOtherIni("Cloud", "density", MySetting.Density)
+        End If
 
         If (MySetting.Region_owner_is_god Or MySetting.Region_manager_is_god) Then
-            MySetting.SetIni("Permissions", "allow_grid_gods", "true")
+            MySetting.SetOtherIni("Permissions", "allow_grid_gods", "true")
         Else
-            MySetting.SetIni("Permissions", "allow_grid_gods", "false")
+            MySetting.SetOtherIni("Permissions", "allow_grid_gods", "false")
         End If
 
         If (MySetting.Region_owner_is_god) Then
-            MySetting.SetIni("Permissions", "region_owner_is_god", "true")
+            MySetting.SetOtherIni("Permissions", "region_owner_is_god", "true")
         Else
-            MySetting.SetIni("Permissions", "region_owner_is_god", "false")
+            MySetting.SetOtherIni("Permissions", "region_owner_is_god", "false")
         End If
 
         If (MySetting.Region_manager_is_god) Then
-            MySetting.SetIni("Permissions", "region_manager_is_god", "true")
+            MySetting.SetOtherIni("Permissions", "region_manager_is_god", "true")
         Else
-            MySetting.SetIni("Permissions", "region_manager_is_god", "false")
+            MySetting.SetOtherIni("Permissions", "region_manager_is_god", "false")
         End If
 
         ' Physics
@@ -888,90 +872,90 @@ Public Class Form1
 
         Select Case MySetting.Physics
             Case 0
-                MySetting.SetIni("Startup", "meshing", "ZeroMesher")
-                MySetting.SetIni("Startup", "physics", "basicphysics")
-                MySetting.SetIni("Startup", "UseSeparatePhysicsThread", "false")
+                MySetting.SetOtherIni("Startup", "meshing", "ZeroMesher")
+                MySetting.SetOtherIni("Startup", "physics", "basicphysics")
+                MySetting.SetOtherIni("Startup", "UseSeparatePhysicsThread", "false")
             Case 1
-                MySetting.SetIni("Startup", "meshing", "Meshmerizer")
-                MySetting.SetIni("Startup", "physics", "OpenDynamicsEngine")
-                MySetting.SetIni("Startup", "UseSeparatePhysicsThread", "false")
+                MySetting.SetOtherIni("Startup", "meshing", "Meshmerizer")
+                MySetting.SetOtherIni("Startup", "physics", "OpenDynamicsEngine")
+                MySetting.SetOtherIni("Startup", "UseSeparatePhysicsThread", "false")
             Case 2
-                MySetting.SetIni("Startup", "meshing", "Meshmerizer")
-                MySetting.SetIni("Startup", "physics", "BulletSim")
-                MySetting.SetIni("Startup", "UseSeparatePhysicsThread", "false")
+                MySetting.SetOtherIni("Startup", "meshing", "Meshmerizer")
+                MySetting.SetOtherIni("Startup", "physics", "BulletSim")
+                MySetting.SetOtherIni("Startup", "UseSeparatePhysicsThread", "false")
             Case 3
-                MySetting.SetIni("Startup", "meshing", "Meshmerizer")
-                MySetting.SetIni("Startup", "physics", "BulletSim")
-                MySetting.SetIni("Startup", "UseSeparatePhysicsThread", "true")
+                MySetting.SetOtherIni("Startup", "meshing", "Meshmerizer")
+                MySetting.SetOtherIni("Startup", "physics", "BulletSim")
+                MySetting.SetOtherIni("Startup", "UseSeparatePhysicsThread", "true")
             Case 4
-                MySetting.SetIni("Startup", "meshing", "ubODEMeshmerizer")
-                MySetting.SetIni("Startup", "physics", "ubODE")
-                MySetting.SetIni("Startup", "UseSeparatePhysicsThread", "false")
+                MySetting.SetOtherIni("Startup", "meshing", "ubODEMeshmerizer")
+                MySetting.SetOtherIni("Startup", "physics", "ubODE")
+                MySetting.SetOtherIni("Startup", "UseSeparatePhysicsThread", "false")
             Case Else
-                MySetting.SetIni("Startup", "meshing", "Meshmerizer")
-                MySetting.SetIni("Startup", "physics", "BulletSim")
-                MySetting.SetIni("Startup", "UseSeparatePhysicsThread", "true")
+                MySetting.SetOtherIni("Startup", "meshing", "Meshmerizer")
+                MySetting.SetOtherIni("Startup", "physics", "BulletSim")
+                MySetting.SetOtherIni("Startup", "UseSeparatePhysicsThread", "true")
         End Select
 
-        MySetting.SetIni("Const", "DiagnosticsPort", MySetting.DiagnosticPort)
-        MySetting.SetIni("Const", "GridName", MySetting.SimName)
+        MySetting.SetOtherIni("Const", "DiagnosticsPort", MySetting.DiagnosticPort)
+        MySetting.SetOtherIni("Const", "GridName", MySetting.SimName)
 
         If MySetting.MapType = "None" Then
-            MySetting.SetIni("Map", "GenerateMaptiles", "false")
+            MySetting.SetOtherIni("Map", "GenerateMaptiles", "false")
         ElseIf MySetting.MapType = "Simple" Then
-            MySetting.SetIni("Map", "GenerateMaptiles", "true")
-            MySetting.SetIni("Map", "MapImageModule", "MapImageModule")  ' versus Warp3DImageModule
-            MySetting.SetIni("Map", "TextureOnMapTile", "false")         ' versus true
-            MySetting.SetIni("Map", "DrawPrimOnMapTile", "false")
-            MySetting.SetIni("Map", "TexturePrims", "false")
-            MySetting.SetIni("Map", "RenderMeshes", "false")
+            MySetting.SetOtherIni("Map", "GenerateMaptiles", "true")
+            MySetting.SetOtherIni("Map", "MapImageModule", "MapImageModule")  ' versus Warp3DImageModule
+            MySetting.SetOtherIni("Map", "TextureOnMapTile", "false")         ' versus true
+            MySetting.SetOtherIni("Map", "DrawPrimOnMapTile", "false")
+            MySetting.SetOtherIni("Map", "TexturePrims", "false")
+            MySetting.SetOtherIni("Map", "RenderMeshes", "false")
         ElseIf MySetting.MapType = "Good" Then
-            MySetting.SetIni("Map", "GenerateMaptiles", "true")
-            MySetting.SetIni("Map", "MapImageModule", "Warp3DImageModule")  ' versus MapImageModule
-            MySetting.SetIni("Map", "TextureOnMapTile", "false")         ' versus true
-            MySetting.SetIni("Map", "DrawPrimOnMapTile", "false")
-            MySetting.SetIni("Map", "TexturePrims", "false")
-            MySetting.SetIni("Map", "RenderMeshes", "false")
+            MySetting.SetOtherIni("Map", "GenerateMaptiles", "true")
+            MySetting.SetOtherIni("Map", "MapImageModule", "Warp3DImageModule")  ' versus MapImageModule
+            MySetting.SetOtherIni("Map", "TextureOnMapTile", "false")         ' versus true
+            MySetting.SetOtherIni("Map", "DrawPrimOnMapTile", "false")
+            MySetting.SetOtherIni("Map", "TexturePrims", "false")
+            MySetting.SetOtherIni("Map", "RenderMeshes", "false")
         ElseIf MySetting.MapType = "Better" Then
-            MySetting.SetIni("Map", "GenerateMaptiles", "true")
-            MySetting.SetIni("Map", "MapImageModule", "Warp3DImageModule")  ' versus MapImageModule
-            MySetting.SetIni("Map", "TextureOnMapTile", "true")         ' versus true
-            MySetting.SetIni("Map", "DrawPrimOnMapTile", "true")
-            MySetting.SetIni("Map", "TexturePrims", "false")
-            MySetting.SetIni("Map", "RenderMeshes", "false")
+            MySetting.SetOtherIni("Map", "GenerateMaptiles", "true")
+            MySetting.SetOtherIni("Map", "MapImageModule", "Warp3DImageModule")  ' versus MapImageModule
+            MySetting.SetOtherIni("Map", "TextureOnMapTile", "true")         ' versus true
+            MySetting.SetOtherIni("Map", "DrawPrimOnMapTile", "true")
+            MySetting.SetOtherIni("Map", "TexturePrims", "false")
+            MySetting.SetOtherIni("Map", "RenderMeshes", "false")
         ElseIf MySetting.MapType = "Best" Then
-            MySetting.SetIni("Map", "GenerateMaptiles", "true")
-            MySetting.SetIni("Map", "MapImageModule", "Warp3DImageModule")  ' versus MapImageModule
-            MySetting.SetIni("Map", "TextureOnMapTile", "true")      ' versus true
-            MySetting.SetIni("Map", "DrawPrimOnMapTile", "true")
-            MySetting.SetIni("Map", "TexturePrims", "true")
-            MySetting.SetIni("Map", "RenderMeshes", "true")
+            MySetting.SetOtherIni("Map", "GenerateMaptiles", "true")
+            MySetting.SetOtherIni("Map", "MapImageModule", "Warp3DImageModule")  ' versus MapImageModule
+            MySetting.SetOtherIni("Map", "TextureOnMapTile", "true")      ' versus true
+            MySetting.SetOtherIni("Map", "DrawPrimOnMapTile", "true")
+            MySetting.SetOtherIni("Map", "TexturePrims", "true")
+            MySetting.SetOtherIni("Map", "RenderMeshes", "true")
         End If
 
 
         ' Autobackup
         If MySetting.AutoBackup Then
             Log("Info:Autobackup is On")
-            MySetting.SetIni("AutoBackupModule", "AutoBackup", "true")
+            MySetting.SetOtherIni("AutoBackupModule", "AutoBackup", "true")
         Else
             Log("Info:Autobackup is Off")
-            MySetting.SetIni("AutoBackupModule", "AutoBackup", "false")
+            MySetting.SetOtherIni("AutoBackupModule", "AutoBackup", "false")
         End If
 
-        MySetting.SetIni("AutoBackupModule", "AutoBackupInterval", MySetting.AutobackupInterval)
-        MySetting.SetIni("AutoBackupModule", "AutoBackupKeepFilesForDays", MySetting.KeepForDays)
-        MySetting.SetIni("AutoBackupModule", "AutoBackupDir", BackupPath())
+        MySetting.SetOtherIni("AutoBackupModule", "AutoBackupInterval", MySetting.AutobackupInterval)
+        MySetting.SetOtherIni("AutoBackupModule", "AutoBackupKeepFilesForDays", MySetting.KeepForDays)
+        MySetting.SetOtherIni("AutoBackupModule", "AutoBackupDir", BackupPath())
 
         ' Voice
         If MySetting.VivoxEnabled Then
-            MySetting.SetIni("VivoxVoice", "enabled", "true")
+            MySetting.SetOtherIni("VivoxVoice", "enabled", "true")
         Else
-            MySetting.SetIni("VivoxVoice", "enabled", "false")
+            MySetting.SetOtherIni("VivoxVoice", "enabled", "false")
         End If
-        MySetting.SetIni("VivoxVoice", "vivox_admin_user", MySetting.Vivox_UserName)
-        MySetting.SetIni("VivoxVoice", "vivox_admin_password", MySetting.Vivox_password)
+        MySetting.SetOtherIni("VivoxVoice", "vivox_admin_user", MySetting.Vivox_UserName)
+        MySetting.SetOtherIni("VivoxVoice", "vivox_admin_password", MySetting.Vivox_password)
 
-        MySetting.SaveINI()
+        MySetting.SaveOtherINI()
 
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
         ' Wifi Settings
@@ -995,26 +979,26 @@ Public Class Form1
             If RegionClass.RegionName(X) <> "Robust" Then
                 Dim simName = RegionClass.RegionName(X)
 
-                MySetting.LoadIni(RegionClass.RegionPath(X), ";")
-                MySetting.SetIni(simName, "InternalPort", Convert.ToString(RegionClass.RegionPort(X)))
-                MySetting.SetIni(simName, "ExternalHostName", Convert.ToString(MySetting.PublicIP))
+                MySetting.LoadOtherIni(RegionClass.RegionPath(X), ";")
+                MySetting.SetOtherIni(simName, "InternalPort", Convert.ToString(RegionClass.RegionPort(X)))
+                MySetting.SetOtherIni(simName, "ExternalHostName", Convert.ToString(MySetting.PublicIP))
 
                 ' not a standard INI, only use by the Dreamers
                 If RegionClass.RegionEnabled(X) Then
-                    MySetting.SetIni(simName, "Enabled", "true")
+                    MySetting.SetOtherIni(simName, "Enabled", "true")
                 Else
-                    MySetting.SetIni(simName, "Enabled", "false")
+                    MySetting.SetOtherIni(simName, "Enabled", "false")
                 End If
 
                 ' Extended in v 2.1
-                MySetting.SetIni(simName, "NonPhysicalPrimMax", Convert.ToString(RegionClass.NonPhysicalPrimMax(X)))
-                MySetting.SetIni(simName, "PhysicalPrimMax", Convert.ToString(RegionClass.PhysicalPrimMax(X)))
-                MySetting.SetIni(simName, "MaxPrims", Convert.ToString(RegionClass.MaxPrims(X)))
-                MySetting.SetIni(simName, "MaxAgents", Convert.ToString(RegionClass.MaxAgents(X)))
-                MySetting.SetIni(simName, "ClampPrimSize", Convert.ToString(RegionClass.ClampPrimSize(X)))
+                MySetting.SetOtherIni(simName, "NonPhysicalPrimMax", Convert.ToString(RegionClass.NonPhysicalPrimMax(X)))
+                MySetting.SetOtherIni(simName, "PhysicalPrimMax", Convert.ToString(RegionClass.PhysicalPrimMax(X)))
+                MySetting.SetOtherIni(simName, "MaxPrims", Convert.ToString(RegionClass.MaxPrims(X)))
+                MySetting.SetOtherIni(simName, "MaxAgents", Convert.ToString(RegionClass.MaxAgents(X)))
+                MySetting.SetOtherIni(simName, "ClampPrimSize", Convert.ToString(RegionClass.ClampPrimSize(X)))
             End If
 
-            MySetting.SaveINI()
+            MySetting.SaveOtherINI()
 
         Next
 
@@ -1024,25 +1008,25 @@ Public Class Form1
     Public Sub DoGloebits()
 
         'Gloebits.ini
-        MySetting.LoadIni(prefix + "bin\Gloebit.ini", ";")
+        MySetting.LoadOtherIni(prefix + "bin\Gloebit.ini", ";")
         If MySetting.GloebitsEnable Then
-            MySetting.SetIni("Gloebit", "Enabled", "true")
+            MySetting.SetOtherIni("Gloebit", "Enabled", "true")
         Else
-            MySetting.SetIni("Gloebit", "Enabled", "false")
+            MySetting.SetOtherIni("Gloebit", "Enabled", "false")
         End If
 
         If MySetting.GloebitsMode Then
-            MySetting.SetIni("Gloebit", "GLBEnvironment", "production")
-            MySetting.SetIni("Gloebit", "GLBKey", MySetting.GLProdKey)
-            MySetting.SetIni("Gloebit", "GLBSecret", MySetting.GLProdSecret)
+            MySetting.SetOtherIni("Gloebit", "GLBEnvironment", "production")
+            MySetting.SetOtherIni("Gloebit", "GLBKey", MySetting.GLProdKey)
+            MySetting.SetOtherIni("Gloebit", "GLBSecret", MySetting.GLProdSecret)
         Else
-            MySetting.SetIni("Gloebit", "GLBEnvironment", "sandbox")
-            MySetting.SetIni("Gloebit", "GLBKey", MySetting.GLSandKey)
-            MySetting.SetIni("Gloebit", "GLBSecret", MySetting.GLSandSecret)
+            MySetting.SetOtherIni("Gloebit", "GLBEnvironment", "sandbox")
+            MySetting.SetOtherIni("Gloebit", "GLBKey", MySetting.GLSandKey)
+            MySetting.SetOtherIni("Gloebit", "GLBSecret", MySetting.GLSandSecret)
         End If
 
-        MySetting.SetIni("Gloebit", "GLBOwnerName", MySetting.GLBOwnerName)
-        MySetting.SetIni("Gloebit", "GLBOwnerEmail", MySetting.GLBOwnerEmail)
+        MySetting.SetOtherIni("Gloebit", "GLBOwnerName", MySetting.GLBOwnerName)
+        MySetting.SetOtherIni("Gloebit", "GLBOwnerEmail", MySetting.GLBOwnerEmail)
 
 
         Dim ConnectionString = """" _
@@ -1053,15 +1037,15 @@ Public Class Form1
             + ";Password=" + MySetting.RegionDbPassword _
             + ";Old Guids=True;Allow Zero Datetime=True;" _
             + """"
-        MySetting.SetIni("Gloebit", "GLBSpecificConnectionString", ConnectionString)
+        MySetting.SetOtherIni("Gloebit", "GLBSpecificConnectionString", ConnectionString)
 
-        MySetting.SaveINI()
+        MySetting.SaveOtherINI()
 
     End Sub
 
     Private Sub DoWifi()
 
-        MySetting.LoadIni(prefix + "bin\Wifi.ini", ";")
+        MySetting.LoadOtherIni(prefix + "bin\Wifi.ini", ";")
 
         Dim ConnectionString = """" _
                 + "Data Source=" + "127.0.0.1" _
@@ -1071,37 +1055,37 @@ Public Class Form1
                 + ";Password=" + MySetting.RobustMySqlPassword _
                 + """"
 
-        MySetting.SetIni("DatabaseService", "ConnectionString", ConnectionString)
+        MySetting.SetOtherIni("DatabaseService", "ConnectionString", ConnectionString)
 
         ' Wifi Section
 
         If (MySetting.WifiEnabled) Then
-            MySetting.SetIni("WifiService", "Enabled", "true")
+            MySetting.SetOtherIni("WifiService", "Enabled", "true")
         Else
-            MySetting.SetIni("WifiService", "Enabled", "false")
+            MySetting.SetOtherIni("WifiService", "Enabled", "false")
         End If
 
-        MySetting.SetIni("WifiService", "GridName", MySetting.SimName)
-        MySetting.SetIni("WifiService", "LoginURL", "http://" + MySetting.PublicIP + ":" + MySetting.HttpPort)
-        MySetting.SetIni("WifiService", "WebAddress", "http://" + MySetting.PublicIP + ":" + MySetting.HttpPort)
+        MySetting.SetOtherIni("WifiService", "GridName", MySetting.SimName)
+        MySetting.SetOtherIni("WifiService", "LoginURL", "http://" + MySetting.PublicIP + ":" + MySetting.HttpPort)
+        MySetting.SetOtherIni("WifiService", "WebAddress", "http://" + MySetting.PublicIP + ":" + MySetting.HttpPort)
 
         ' Wifi Admin'
-        MySetting.SetIni("WifiService", "AdminFirst", MySetting.AdminFirst)
-        MySetting.SetIni("WifiService", "AdminPassword", MySetting.Password)
-        MySetting.SetIni("WifiService", "AdminLast", MySetting.AdminLast)
+        MySetting.SetOtherIni("WifiService", "AdminFirst", MySetting.AdminFirst)
+        MySetting.SetOtherIni("WifiService", "AdminPassword", MySetting.Password)
+        MySetting.SetOtherIni("WifiService", "AdminLast", MySetting.AdminLast)
 
         'Gmail
-        MySetting.SetIni("WifiService", "AdminPassword", MySetting.Password)
-        MySetting.SetIni("WifiService", "SmtpUsername", MySetting.SmtpUsername)
-        MySetting.SetIni("WifiService", "SmtpPassword", MySetting.SmtpPassword)
+        MySetting.SetOtherIni("WifiService", "AdminPassword", MySetting.Password)
+        MySetting.SetOtherIni("WifiService", "SmtpUsername", MySetting.SmtpUsername)
+        MySetting.SetOtherIni("WifiService", "SmtpPassword", MySetting.SmtpPassword)
 
         If MySetting.AccountConfirmationRequired Then
-            MySetting.SetIni("WifiService", "AccountConfirmationRequired", "true")
+            MySetting.SetOtherIni("WifiService", "AccountConfirmationRequired", "true")
         Else
-            MySetting.SetIni("WifiService", "AccountConfirmationRequired", "false")
+            MySetting.SetOtherIni("WifiService", "AccountConfirmationRequired", "false")
         End If
 
-        MySetting.SaveINI()
+        MySetting.SaveOtherINI()
 
     End Sub
 
@@ -1116,15 +1100,15 @@ Public Class Form1
             Debug.Print(regionName)
 
             Try
-                MySetting.LoadIni(prefix + "bin\Opensim.proto", ";")
-                MySetting.SetIni("Const", "BaseURL", "http://" + MySetting.PublicIP)
-                MySetting.SetIni("Const", "PrivURL", "http://" + MySetting.PrivateURL)
-                MySetting.SetIni("Const", "PublicPort", MySetting.HttpPort) ' 8002
-                MySetting.SetIni("Const", "http_listener_port", RegionClass.RegionPort(X)) ' varies with region
-                MySetting.SetIni("Const", "PrivatePort", MySetting.PrivatePort) '8003
-                MySetting.SetIni("Const", "RegionFolderName", RegionClass.GroupName(X))
-                MySetting.SetIni("Const", "PrivatePort", MySetting.PrivatePort) '8003
-                MySetting.SaveINI()
+                MySetting.LoadOtherIni(prefix + "bin\Opensim.proto", ";")
+                MySetting.SetOtherIni("Const", "BaseURL", "http://" + MySetting.PublicIP)
+                MySetting.SetOtherIni("Const", "PrivURL", "http://" + MySetting.PrivateURL)
+                MySetting.SetOtherIni("Const", "PublicPort", MySetting.HttpPort) ' 8002
+                MySetting.SetOtherIni("Const", "http_listener_port", RegionClass.RegionPort(X)) ' varies with region
+                MySetting.SetOtherIni("Const", "PrivatePort", MySetting.PrivatePort) '8003
+                MySetting.SetOtherIni("Const", "RegionFolderName", RegionClass.GroupName(X))
+                MySetting.SetOtherIni("Const", "PrivatePort", MySetting.PrivatePort) '8003
+                MySetting.SaveOtherINI()
 
                 My.Computer.FileSystem.CopyFile(prefix + "bin\Opensim.proto", pathname + "Opensim.ini", True)
 
@@ -2078,17 +2062,6 @@ Public Class Form1
 
     End Sub
 
-    Private Sub WebStatsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles WebStatsToolStripMenuItem.Click
-
-        If (Running) Then
-            Dim webAddress As String = "http://127.0.0.1:" + MySetting.HttpPort + "\bin\data\sim.html"
-            Process.Start(webAddress)
-        Else
-            Print("Opensim is not running. Cannot open the Statistics web page.")
-        End If
-
-    End Sub
-
     Private Sub BumpProgress(bump As Integer)
 
         If ProgressBar1.Value < 100 Then
@@ -2655,7 +2628,6 @@ Public Class Form1
         Dim Data As String = GetPostData()
 
         MySetting.SkipUpdateCheck = False
-        MySetting.SaveMyINI()
 
         Try
             Update = client.DownloadString(Domain + "/Outworldz_Installer/UpdateGrid.plx?Ver=" + Str(MyVersion) + Data)
@@ -3027,7 +2999,7 @@ Public Class Form1
         End If
 
 
-        Dim data As String = "&Machine=" + Machine _
+        Dim data As String = "&Machine=" + MySetting.Machine _
             + "&V=" + MyVersion _
             + "&OV=" + SimVersion _
             + "&uPnp=" + UPnp _
@@ -3174,12 +3146,12 @@ Public Class Form1
         Print("Starting Database")
 
         ' SAVE INI file
-        MySetting.LoadIni(MyFolder & "\OutworldzFiles\mysql\my.ini", "#")
-        MySetting.SetIni("mysqld", "basedir", """" + gCurSlashDir + "/OutworldzFiles/Mysql" + """")
-        MySetting.SetIni("mysqld", "datadir", """" + gCurSlashDir + "/OutworldzFiles/Mysql/Data" + """")
-        MySetting.SetIni("mysqld", "port", MySetting.MySqlPort)
-        MySetting.SetIni("client", "port", MySetting.MySqlPort)
-        MySetting.SaveINI()
+        MySetting.LoadOtherIni(MyFolder & "\OutworldzFiles\mysql\my.ini", "#")
+        MySetting.SetOtherIni("mysqld", "basedir", """" + gCurSlashDir + "/OutworldzFiles/Mysql" + """")
+        MySetting.SetOtherIni("mysqld", "datadir", """" + gCurSlashDir + "/OutworldzFiles/Mysql/Data" + """")
+        MySetting.SetOtherIni("mysqld", "port", MySetting.MySqlPort)
+        MySetting.SetOtherIni("client", "port", MySetting.MySqlPort)
+        MySetting.SaveOtherINI()
 
         ' create test program 
         ' slants the other way:
@@ -3490,9 +3462,9 @@ Public Class Form1
                         RegionClass.WarmingUp(num) = False
                         RegionClass.ShuttingDown(num) = True
 
-                        MySetting.LoadIni(RegionClass.RegionPath(num), ";")
-                        MySetting.SetIni(sender.Text, "Enabled", "false")
-                        MySetting.SaveMyINI()
+                        MySetting.LoadOtherIni(RegionClass.RegionPath(num), ";")
+                        MySetting.SetOtherIni(sender.Text, "Enabled", "false")
+                        MySetting.SaveOtherINI()
 
                         Debug.Print("Region:Stopped Region " + RegionClass.RegionName(num))
                     Catch ex As Exception
@@ -3505,9 +3477,9 @@ Public Class Form1
                 sender.Checked = True
 
                 ' and region file on disk
-                MySetting.LoadIni(RegionClass.RegionPath(num), ";")
-                MySetting.SetIni(sender.Text, "Enabled", "true")
-                MySetting.SaveMyINI()
+                MySetting.LoadOtherIni(RegionClass.RegionPath(num), ";")
+                MySetting.SetOtherIni(sender.Text, "Enabled", "true")
+                MySetting.SaveOtherINI()
 
                 Boot(RegionClass.RegionName(num))
                 Debug.Print("Region:Started Region " + RegionClass.RegionName(num))

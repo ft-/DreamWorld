@@ -22,8 +22,11 @@ Public Class MySettings
     Public Sub Init()
 
         myINI = Form1.MyFolder + "\OutworldzFiles\Settings.ini"
-        If Not File.Exists(myINI) Then
+        If File.Exists(myINI) Then
+            LoadMyIni()
+        Else
 
+            myINI = Form1.MyFolder + "\OutworldzFiles\Settings.ini"
             Dim contents = "[Data]" + vbCrLf
             Using outputFile As New StreamWriter(myINI, True)
                 outputFile.WriteLine(contents)
@@ -44,6 +47,8 @@ Public Class MySettings
             BootStart() = My.Settings.BootStart
 
             ChatTime() = My.Settings.ChatTime
+            Clouds() = False    ' does not exist in old code, so set it off
+            Density() = 0.5
             ConsoleUser() = My.Settings.ConsoleUser
             ConsolePass() = My.Settings.ConsolePass
             CoordX() = My.Settings.CoordX
@@ -73,10 +78,7 @@ Public Class MySettings
             KeepForDays() = My.Settings.KeepForDays
 
             LoopBackDiag() = My.Settings.LoopBackDiag
-     ' Save a random machine ID - we don't want any data to be sent that's personal or identifiable,  but it needs to be unique
-            Randomize()
-            ' Save a random machine ID - we don't want any data to be sent that's personal or identifiable,  but it needs to be unique\
-            MachineID() = Random()  ' a random machine ID
+
             MapType() = My.Settings.MapType
 
             MySqlPort() = My.Settings.MySqlPort
@@ -86,13 +88,10 @@ Public Class MySettings
             Password() = My.Settings.Password
             Physics() = My.Settings.Physics
             PrivatePort() = My.Settings.PrivatePort
-
-
             PublicIP() = My.Settings.PublicIP
 
             Region_owner_is_god() = My.Settings.region_owner_is_god
             Region_manager_is_god() = My.Settings.region_manager_is_god
-
             RanAllDiags() = My.Settings.RanAllDiags
             RegionDBName() = My.Settings.RegionDBName
             RegionDbPassword() = My.Settings.RegionDbPassword
@@ -105,12 +104,10 @@ Public Class MySettings
 
             SC_Enable() = False
             SC_PortBase() = 8080
-            SC_Portbase1() = 8081
+            SC_PortBase1() = 8081
             SC_Password() = "A password"
             SC_AdminPassword() = ""
             SC_Show() = True
-
-
 
             SizeX() = My.Settings.SizeX
             SizeY() = My.Settings.SizeY
@@ -131,22 +128,29 @@ Public Class MySettings
             Vivox_UserName() = My.Settings.Vivox_username
             Vivox_password() = My.Settings.Vivox_password
 
-            WebStats() = My.Settings.WebStats
             WelcomeRegion() = My.Settings.WelcomeRegion
             WifiEnabled() = My.Settings.WifiEnabled
 
-            Form1.MySetting.SaveMyINI()
-
         End If
 
-        LoadMyIni()
+        ' new bool vars have to exist
+        Try
+            Dim x = Clouds()
+        Catch ex As Exception
+            Clouds() = False
+            Density() = 0.5
+            SaveMyINI()
+        End Try
+
+        SaveMyINI()
+
 
     End Sub
 #End Region
 
 #Region "Functions And Subs"
 
-    Public Sub SetIni(section As String, key As String, value As String)
+    Public Sub SetOtherIni(section As String, key As String, value As String)
 
         ' sets values into any INI file
         Try
@@ -180,11 +184,12 @@ Public Class MySettings
         Try
             MyData = Myparser.ReadFile(Form1.MyFolder + "\OutworldzFiles\Settings.ini", System.Text.Encoding.ASCII)
         Catch ex As Exception
+
         End Try
 
     End Sub
 
-    Public Sub LoadIni(arg As String, comment As String)
+    Public Sub LoadOtherIni(arg As String, comment As String)
 
         parser = New FileIniDataParser()
 
@@ -217,7 +222,7 @@ Public Class MySettings
 
     End Function
 
-    Public Sub SaveINI()
+    Public Sub SaveOtherINI()
 
         Try
             parser.WriteFile(INI, Data, System.Text.Encoding.ASCII)
@@ -258,8 +263,12 @@ Public Class MySettings
 
     Public Function GetMySetting(key As String, Optional D As String = "") As String
 
-        Dim value = GetMyIni("Data", key, D)
-        Return value
+        Try
+            Dim value = GetMyIni("Data", key, D)
+            Return value
+        Catch
+            Return ""
+        End Try
 
     End Function
     Public Sub SetMySetting(key As String, value As String)
@@ -267,6 +276,24 @@ Public Class MySettings
         SetMyIni("Data", key, value)
 
     End Sub
+    Public Property Clouds() As Boolean
+        Get
+            Return CType(GetMySetting("Clouds"), Boolean)
+        End Get
+        Set
+            SetMySetting("Clouds", Value)
+        End Set
+    End Property
+
+    Public Property Density() As Single
+        Get
+            Return CType(GetMySetting("Density"), Single)
+        End Get
+        Set
+            SetMySetting("Density", Value)
+        End Set
+    End Property
+
     Public Property PrivateURL() As String
         Get
             Return CType(GetMySetting("PrivateURL"), String)
@@ -275,18 +302,7 @@ Public Class MySettings
             SetMySetting("PrivateURL", Value)
         End Set
     End Property
-    Public Property INIData(key As String) As String
-        Get
-            Try
-                Return GetIni(INI, "Data", key)
-            Catch
-            End Try
-            Return Nothing
-        End Get
-        Set
-            SetIni("Data", key, Value)
-        End Set
-    End Property
+
     Public Property ConsoleShow() As Boolean
         Get
             Return CType(GetMySetting("ConsoleShow"), Boolean)
@@ -522,14 +538,7 @@ Public Class MySettings
             SetMySetting("DnsName", Value)
         End Set
     End Property
-    Public Property WebStats() As Boolean
-        Get
-            Return CType(GetMySetting("WebStats"), Boolean)
-        End Get
-        Set
-            SetMySetting("WebStats", Value)
-        End Set
-    End Property
+
     Public Property HttpPort() As String
         Get
             Return CType(GetMySetting("HttpPort"), String)
@@ -897,6 +906,20 @@ Public Class MySettings
         Set
             SetMySetting("SC_Show", Value)
         End Set
+    End Property
+
+    'Save a random machine ID - we don't want any data to be sent that's personal or identifiable,  but it needs to be unique
+    Public Property Machine() As String
+        Get
+            Return CType(GetMySetting("MachineID"), String)
+        End Get
+        Set(ByVal Value As String)
+            If (GetMySetting("MachineID") = "") Then
+                SetMySetting("MachineID", Value)
+            End If
+        End Set
+
+
     End Property
 End Class
 

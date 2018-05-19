@@ -28,7 +28,7 @@ Public Class RegionMaker
             WriteRegionObject("Welcome")
             GetAllRegions()
             Form1.MySetting.WelcomeRegion = "Welcome"
-            Form1.MySetting.SaveINI()
+            Form1.MySetting.SaveMyINI()
         End If
 
         Debug.Print("Loaded " + RegionCount.ToString + " Regions")
@@ -436,7 +436,7 @@ Public Class RegionMaker
                         CreateRegion(fName)
 
                         ' must be after Createregion or port blows up
-                        Form1.MySetting.LoadIni(ini, ";")
+                        Form1.MySetting.LoadOtherIni(ini, ";")
 
                         Try
 
@@ -531,23 +531,23 @@ Public Class RegionMaker
 
         File.Copy(Form1.prefix & "bin\Regions.proto", fname, True)
 
-        Form1.MySetting.LoadIni(fname, ";")
-        Form1.MySetting.SetIni(name, "RegionUUID", UUID(CheckN(n)))
-        Form1.MySetting.SetIni(name, "Location", CoordX(CheckN(n)) & "," & CoordY(CheckN(n)))
-        Form1.MySetting.SetIni(name, "InternalPort", RegionPort(CheckN(n)))
-        Form1.MySetting.SetIni(name, "ExternalHostName", Form1.MySetting.PublicIP)
-        Form1.MySetting.SetIni(name, "SizeX", SizeX(CheckN(n)))
-        Form1.MySetting.SetIni(name, "SizeY", SizeY(CheckN(n)))
+        Form1.MySetting.LoadOtherIni(fname, ";")
+        Form1.MySetting.SetOtherIni(name, "RegionUUID", UUID(CheckN(n)))
+        Form1.MySetting.SetOtherIni(name, "Location", CoordX(CheckN(n)) & "," & CoordY(CheckN(n)))
+        Form1.MySetting.SetOtherIni(name, "InternalPort", RegionPort(CheckN(n)))
+        Form1.MySetting.SetOtherIni(name, "ExternalHostName", Form1.MySetting.PublicIP)
+        Form1.MySetting.SetOtherIni(name, "SizeX", SizeX(CheckN(n)))
+        Form1.MySetting.SetOtherIni(name, "SizeY", SizeY(CheckN(n)))
 
         ' extended props V2.1
 
-        Form1.MySetting.SetIni(name, "NonPhysicalPrimMax", NonPhysicalPrimMax(CheckN(n)))
-        Form1.MySetting.SetIni(name, "PhysicalPrimMax", PhysicalPrimMax(CheckN(n)))
-        Form1.MySetting.SetIni(name, "ClampPrimSize", Convert.ToString(ClampPrimSize(CheckN(n))))
-        Form1.MySetting.SetIni(name, "MaxPrims", MaxPrims(CheckN(n)))
-        Form1.MySetting.SetIni(name, "MaxAgents", MaxAgents(CheckN(n)))
+        Form1.MySetting.SetOtherIni(name, "NonPhysicalPrimMax", NonPhysicalPrimMax(CheckN(n)))
+        Form1.MySetting.SetOtherIni(name, "PhysicalPrimMax", PhysicalPrimMax(CheckN(n)))
+        Form1.MySetting.SetOtherIni(name, "ClampPrimSize", Convert.ToString(ClampPrimSize(CheckN(n))))
+        Form1.MySetting.SetOtherIni(name, "MaxPrims", MaxPrims(CheckN(n)))
+        Form1.MySetting.SetOtherIni(name, "MaxAgents", MaxAgents(CheckN(n)))
 
-        Form1.MySetting.SaveINI()
+        Form1.MySetting.SaveMyINI()
 
     End Sub
 
@@ -663,9 +663,9 @@ Public Class RegionMaker
 
                 If RegionEnabled(CheckN(n)) = False Then
                     RegionEnabled(CheckN(n)) = True
-                    Form1.MySetting.LoadIni(RegionPath(CheckN(n)), ";")
-                    Form1.MySetting.SetIni(json.region_name, "Enabled", "true")
-                    Form1.MySetting.SaveINI()
+                    Form1.MySetting.LoadOtherIni(RegionPath(CheckN(n)), ";")
+                    Form1.MySetting.SetOtherIni(json.region_name, "Enabled", "true")
+                    Form1.MySetting.SaveMyINI()
                 End If
 
                 Booted(CheckN(n)) = True

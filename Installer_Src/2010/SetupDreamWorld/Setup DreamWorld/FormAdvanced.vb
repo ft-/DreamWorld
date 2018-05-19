@@ -69,7 +69,7 @@ Public Class AdvancedForm
 
     Private Sub ABEnabled_CheckedChanged(sender As Object, e As EventArgs) Handles AutoBackup.CheckedChanged
         Form1.MySetting.AutoBackup = AutoBackup.Checked
-        Form1.MySetting.SaveINI()
+        Form1.MySetting.SaveMyINI()
     End Sub
 
     Private Sub AutoBackupInterval_SelectedIndexChanged(sender As Object, e As EventArgs) Handles AutoBackupInterval.SelectedIndexChanged
@@ -80,13 +80,13 @@ Public Class AdvancedForm
         If text = "Daily" Then Interval = 60 * 24
         If text = "Weekly" Then Interval = 60 * 24 * 7
         Form1.MySetting.AutobackupInterval = Interval
-        Form1.MySetting.SaveINI()
+        Form1.MySetting.SaveMyINI()
     End Sub
 
     Private Sub AutoBackupKeepFilesForDays_TextChanged(sender As Object, e As EventArgs) Handles AutoBackupKeepFilesForDays.TextChanged
         If Convert.ToInt32(AutoBackupKeepFilesForDays.Text) > 0 Then
             Form1.MySetting.KeepForDays = Convert.ToInt32(AutoBackupKeepFilesForDays.Text)
-            Form1.MySetting.SaveINI()
+            Form1.MySetting.SaveMyINI()
         End If
     End Sub
 
@@ -100,7 +100,7 @@ Public Class AdvancedForm
         If text = "Too much Coffee" Then ChatTime = 0
 
         Form1.MySetting.ChatTime = ChatTime
-        Form1.MySetting.SaveINI()
+        Form1.MySetting.SaveMyINI()
         Form1.gChatTime = ChatTime
     End Sub
 
@@ -118,7 +118,7 @@ Public Class AdvancedForm
             Else
                 Form1.PictureBox1.Visible = False
                 Form1.MySetting.TimerInterval = 0
-                Form1.MySetting.SaveINI()
+                Form1.MySetting.SaveMyINI()
             End If
         Catch
         End Try
@@ -178,32 +178,32 @@ Public Class AdvancedForm
 
     Private Sub MapNone_CheckedChanged(sender As Object, e As EventArgs) Handles MapNone.CheckedChanged
         Form1.MySetting.MapType = "None"
-        Form1.MySetting.SaveINI()
+        Form1.MySetting.SaveMyINI()
         MapPicture.Image = Nothing
 
     End Sub
 
     Private Sub MapSimple_CheckedChanged(sender As Object, e As EventArgs) Handles MapSimple.CheckedChanged
         Form1.MySetting.MapType = "Simple"
-        Form1.MySetting.SaveINI()
+        Form1.MySetting.SaveMyINI()
         MapPicture.Image = My.Resources.Simple
     End Sub
 
     Private Sub MapGood_CheckedChanged(sender As Object, e As EventArgs) Handles MapGood.CheckedChanged
         Form1.MySetting.MapType = "Good"
-        Form1.MySetting.SaveINI()
+        Form1.MySetting.SaveMyINI()
         MapPicture.Image = My.Resources.Good
     End Sub
 
     Private Sub MapBetter_CheckedChanged(sender As Object, e As EventArgs) Handles MapBetter.CheckedChanged
         Form1.MySetting.MapType = "Better"
-        Form1.MySetting.SaveINI()
+        Form1.MySetting.SaveMyINI()
         MapPicture.Image = My.Resources.Better
     End Sub
 
     Private Sub MapBest_CheckedChanged(sender As Object, e As EventArgs) Handles MapBest.CheckedChanged
         Form1.MySetting.MapType = "Best"
-        Form1.MySetting.SaveINI()
+        Form1.MySetting.SaveMyINI()
         MapPicture.Image = My.Resources.Best
     End Sub
 
@@ -220,7 +220,7 @@ Public Class AdvancedForm
             Dim thing = openFileDialog1.SelectedPath
             If thing.Length Then
                 Form1.MySetting.BackupFolder = thing
-                Form1.MySetting.SaveINI()
+                Form1.MySetting.SaveMyINI()
                 BackupFolder.Text = thing
             End If
         End If
@@ -236,7 +236,7 @@ Public Class AdvancedForm
         Form1.MySetting.WelcomeRegion = value
 
         Debug.Print("Selected " + value)
-        Form1.MySetting.SaveINI()
+        Form1.MySetting.SaveMyINI()
 
     End Sub
 
