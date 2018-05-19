@@ -51,7 +51,7 @@ RegionFolderName=Welcome
 
 ; Automatically changed by Dreamworld - do not change this
 ;# {BaseURL} {} {BaseURL} {"http://example.com","http://127.0.0.1"} "http://127.0.0.1"
-BaseURL=http://Veriwien.Outworldz.net
+BaseURL=http://127.0.0.1
 
 ; Automatically changed by Dreamworld - do not change this
 ;# {PublicPort} {} {PublicPort} {8002} "8002"
@@ -62,7 +62,7 @@ PublicPort=8002
 PrivatePort=8003
 
 ;# so localhost can be changed if necessary
-PrivURL=http://192.168.2.100
+PrivURL=http://127.0.0.1
 
 ; Automatically changed by Dreamworld - do not change this
 ;# Grid Name for Wifi to show
@@ -1260,7 +1260,7 @@ AutoBackupThreshold=1
 AutoBackupSkipAssets=false
 AutoBackupKeepFilesForDays=30
 AutoBackupNaming=Time
-AutoBackupDir=C:/Opensim/Outworldz Source/OutworldzFiles/Autobackup/
+AutoBackupDir=C:/Opensim/Outworldz DreamGrid Source/OutworldzFiles/Autobackup/
 
 [CameraOnlyModeModule]
 
