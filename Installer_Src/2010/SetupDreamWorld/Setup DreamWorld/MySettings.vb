@@ -25,7 +25,6 @@ Public Class MySettings
         If File.Exists(myINI) Then
             LoadMyIni()
         Else
-
             myINI = Form1.MyFolder + "\OutworldzFiles\Settings.ini"
             Dim contents = "[Data]" + vbCrLf
             Using outputFile As New StreamWriter(myINI, True)
@@ -113,9 +112,13 @@ Public Class MySettings
             SizeY() = My.Settings.SizeY
             SimName() = My.Settings.SimName
             SkipUpdateCheck() = My.Settings.SkipUpdateCheck
+
+            'email
+            SmtpHost() = "smtp.gmail.com"
+            SmtpPort() = "587"
             SmtpUsername() = My.Settings.SmtpUsername
             SmtpPassword() = My.Settings.SmtpPassword
-            SplashPage() = My.Settings.SplashPage
+
             SplashPage() = My.Settings.SplashPage
 
             TimerInterval() = My.Settings.TimerInterval
@@ -256,13 +259,7 @@ Public Class MySettings
 
     End Function
 
-
-#End Region
-
-#Region "Properties"
-
     Public Function GetMySetting(key As String, Optional D As String = "") As String
-
         Try
             Dim value = GetMyIni("Data", key, D)
             Return value
@@ -276,6 +273,28 @@ Public Class MySettings
         SetMyIni("Data", key, value)
 
     End Sub
+#End Region
+
+#Region "Properties"
+
+    Public Property SmtpHost() As String
+        Get
+            Return CType(GetMySetting("SmtpHost"), String)
+        End Get
+        Set
+            SetMySetting("SmtpHost", Value)
+        End Set
+    End Property
+
+    Public Property SmtpPort() As String
+        Get
+            Return CType(GetMySetting("SmtpPort"), String)
+        End Get
+        Set
+            SetMySetting("SmtpPort", Value)
+        End Set
+    End Property
+
     Public Property Clouds() As Boolean
         Get
             Return CType(GetMySetting("Clouds"), Boolean)

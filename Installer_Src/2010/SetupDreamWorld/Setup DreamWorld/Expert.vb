@@ -15,7 +15,6 @@ Public Class Expert
         BootStart.Checked = Form1.MySetting.BootStart
 
         'Clouds
-
         DomainUpDown1.SelectedIndex = (1 - Form1.MySetting.Density) * 10
         Clouds.Checked = Form1.MySetting.Clouds
 
@@ -46,6 +45,8 @@ Public Class Expert
         AccountConfirmationRequired.Checked = Form1.MySetting.AccountConfirmationRequired
         GmailPassword.Text = Form1.MySetting.SmtpPassword
         GmailUsername.Text = Form1.MySetting.SmtpUsername
+        SmtpPort.Text = Form1.MySetting.SmtpPort
+        SmtpHost.Text = Form1.MySetting.SmtpHost
 
         ' Unique ID
         UniqueId.Text = Form1.MySetting.MachineID
@@ -407,6 +408,7 @@ Public Class Expert
 
         If Not initted Then Return
 
+
         Form1.MySetting.BootStart = BootStart.Checked
         Dim ProcessTask As Process = New Process()
         Dim pi As ProcessStartInfo = New ProcessStartInfo()
@@ -478,6 +480,16 @@ Public Class Expert
             Form1.MySetting.SaveMyINI()
         End If
 
+    End Sub
+
+    Private Sub SmtpHost_TextChanged(sender As Object, e As EventArgs) Handles SmtpHost.TextChanged
+        Form1.MySetting.SmtpHost = SmtpHost.Text
+        Form1.MySetting.SaveMyINI()
+    End Sub
+
+    Private Sub SmtpPort_TextChanged(sender As Object, e As EventArgs) Handles SmtpPort.TextChanged
+        Form1.MySetting.SmtpPort = SmtpPort.Text
+        Form1.MySetting.SaveMyINI()
     End Sub
 
 

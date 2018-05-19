@@ -44,6 +44,10 @@ Partial Class Expert
         Me.ManagerGod = New System.Windows.Forms.CheckBox()
         Me.RegionGod = New System.Windows.Forms.CheckBox()
         Me.Web = New System.Windows.Forms.GroupBox()
+        Me.SmtpPort = New System.Windows.Forms.TextBox()
+        Me.Label24 = New System.Windows.Forms.Label()
+        Me.SmtpHost = New System.Windows.Forms.TextBox()
+        Me.Label23 = New System.Windows.Forms.Label()
         Me.PictureBox4 = New System.Windows.Forms.PictureBox()
         Me.WifiEnabled = New System.Windows.Forms.CheckBox()
         Me.GmailPassword = New System.Windows.Forms.TextBox()
@@ -69,6 +73,8 @@ Partial Class Expert
         Me.DiagnosticPort = New System.Windows.Forms.TextBox()
         Me.Label4 = New System.Windows.Forms.Label()
         Me.GroupBox7 = New System.Windows.Forms.GroupBox()
+        Me.DomainUpDown1 = New System.Windows.Forms.DomainUpDown()
+        Me.PictureBox8 = New System.Windows.Forms.PictureBox()
         Me.Clouds = New System.Windows.Forms.CheckBox()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.PhysicsSeparate = New System.Windows.Forms.RadioButton()
@@ -104,8 +110,6 @@ Partial Class Expert
         Me.BootStart = New System.Windows.Forms.CheckBox()
         Me.AutoStartCheckbox = New System.Windows.Forms.CheckBox()
         Me.GroupBox5 = New System.Windows.Forms.GroupBox()
-        Me.PictureBox8 = New System.Windows.Forms.PictureBox()
-        Me.DomainUpDown1 = New System.Windows.Forms.DomainUpDown()
         Me.GroupBox3.SuspendLayout()
         CType(Me.PictureBox7, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox6, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -118,6 +122,7 @@ Partial Class Expert
         Me.GroupBox2.SuspendLayout()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox7.SuspendLayout()
+        CType(Me.PictureBox8, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox1.SuspendLayout()
         Me.GridGroup.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -125,7 +130,6 @@ Partial Class Expert
         Me.StandaloneGroup.SuspendLayout()
         Me.AutoStart.SuspendLayout()
         Me.GroupBox5.SuspendLayout()
-        CType(Me.PictureBox8, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'GroupBox3
@@ -331,6 +335,10 @@ Partial Class Expert
         '
         'Web
         '
+        Me.Web.Controls.Add(Me.SmtpPort)
+        Me.Web.Controls.Add(Me.Label24)
+        Me.Web.Controls.Add(Me.SmtpHost)
+        Me.Web.Controls.Add(Me.Label23)
         Me.Web.Controls.Add(Me.PictureBox4)
         Me.Web.Controls.Add(Me.WifiEnabled)
         Me.Web.Controls.Add(Me.GmailPassword)
@@ -348,10 +356,44 @@ Partial Class Expert
         Me.Web.Controls.Add(Me.AdminPassword)
         Me.Web.Location = New System.Drawing.Point(431, 155)
         Me.Web.Name = "Web"
-        Me.Web.Size = New System.Drawing.Size(192, 224)
+        Me.Web.Size = New System.Drawing.Size(192, 272)
         Me.Web.TabIndex = 47
         Me.Web.TabStop = False
         Me.Web.Text = "Wifi Interface Admin"
+        '
+        'SmtpPort
+        '
+        Me.SmtpPort.Location = New System.Drawing.Point(88, 242)
+        Me.SmtpPort.Name = "SmtpPort"
+        Me.SmtpPort.Size = New System.Drawing.Size(100, 20)
+        Me.SmtpPort.TabIndex = 1861
+        Me.SmtpPort.UseSystemPasswordChar = True
+        '
+        'Label24
+        '
+        Me.Label24.AutoSize = True
+        Me.Label24.Location = New System.Drawing.Point(6, 245)
+        Me.Label24.Name = "Label24"
+        Me.Label24.Size = New System.Drawing.Size(53, 13)
+        Me.Label24.TabIndex = 1862
+        Me.Label24.Text = "Smtp Port"
+        '
+        'SmtpHost
+        '
+        Me.SmtpHost.Location = New System.Drawing.Point(88, 212)
+        Me.SmtpHost.Name = "SmtpHost"
+        Me.SmtpHost.Size = New System.Drawing.Size(100, 20)
+        Me.SmtpHost.TabIndex = 1859
+        Me.SmtpHost.UseSystemPasswordChar = True
+        '
+        'Label23
+        '
+        Me.Label23.AutoSize = True
+        Me.Label23.Location = New System.Drawing.Point(6, 215)
+        Me.Label23.Name = "Label23"
+        Me.Label23.Size = New System.Drawing.Size(56, 13)
+        Me.Label23.TabIndex = 1860
+        Me.Label23.Text = "Smtp Host"
         '
         'PictureBox4
         '
@@ -387,18 +429,18 @@ Partial Class Expert
         Me.Label18.AutoSize = True
         Me.Label18.Location = New System.Drawing.Point(4, 189)
         Me.Label18.Name = "Label18"
-        Me.Label18.Size = New System.Drawing.Size(82, 13)
+        Me.Label18.Size = New System.Drawing.Size(81, 13)
         Me.Label18.TabIndex = 21
-        Me.Label18.Text = "Gmail Password"
+        Me.Label18.Text = "Email Password"
         '
         'Label14
         '
         Me.Label14.AutoSize = True
         Me.Label14.Location = New System.Drawing.Point(4, 168)
         Me.Label14.Name = "Label14"
-        Me.Label14.Size = New System.Drawing.Size(61, 13)
+        Me.Label14.Size = New System.Drawing.Size(32, 13)
         Me.Label14.TabIndex = 20
-        Me.Label14.Text = "Gmail Email"
+        Me.Label14.Text = "Email"
         '
         'Label17
         '
@@ -579,6 +621,35 @@ Partial Class Expert
         Me.GroupBox7.TabIndex = 43
         Me.GroupBox7.TabStop = False
         Me.GroupBox7.Text = "Clouds"
+        '
+        'DomainUpDown1
+        '
+        Me.DomainUpDown1.Items.Add("100%")
+        Me.DomainUpDown1.Items.Add("90%")
+        Me.DomainUpDown1.Items.Add("80%")
+        Me.DomainUpDown1.Items.Add("70%")
+        Me.DomainUpDown1.Items.Add("60%")
+        Me.DomainUpDown1.Items.Add("50%")
+        Me.DomainUpDown1.Items.Add("40%")
+        Me.DomainUpDown1.Items.Add("30%")
+        Me.DomainUpDown1.Items.Add("20%")
+        Me.DomainUpDown1.Items.Add("10%")
+        Me.DomainUpDown1.Items.Add("0%")
+        Me.DomainUpDown1.Location = New System.Drawing.Point(15, 45)
+        Me.DomainUpDown1.Name = "DomainUpDown1"
+        Me.DomainUpDown1.Size = New System.Drawing.Size(66, 20)
+        Me.DomainUpDown1.TabIndex = 1859
+        Me.DomainUpDown1.Text = "Density"
+        '
+        'PictureBox8
+        '
+        Me.PictureBox8.Image = Global.Outworldz.My.Resources.Resources.about
+        Me.PictureBox8.Location = New System.Drawing.Point(87, 11)
+        Me.PictureBox8.Name = "PictureBox8"
+        Me.PictureBox8.Size = New System.Drawing.Size(30, 34)
+        Me.PictureBox8.TabIndex = 1858
+        Me.PictureBox8.TabStop = False
+        Me.ToolTip1.SetToolTip(Me.PictureBox8, "If set, you get 0% to 100% clouds on your sims")
         '
         'Clouds
         '
@@ -918,40 +989,11 @@ Partial Class Expert
         Me.GroupBox5.Text = "AutoLoad on Teleport"
         Me.GroupBox5.Visible = False
         '
-        'PictureBox8
-        '
-        Me.PictureBox8.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.PictureBox8.Location = New System.Drawing.Point(87, 11)
-        Me.PictureBox8.Name = "PictureBox8"
-        Me.PictureBox8.Size = New System.Drawing.Size(30, 34)
-        Me.PictureBox8.TabIndex = 1858
-        Me.PictureBox8.TabStop = False
-        Me.ToolTip1.SetToolTip(Me.PictureBox8, "If set, you get 0% to 100% clouds on your sims")
-        '
-        'DomainUpDown1
-        '
-        Me.DomainUpDown1.Items.Add("100%")
-        Me.DomainUpDown1.Items.Add("90%")
-        Me.DomainUpDown1.Items.Add("80%")
-        Me.DomainUpDown1.Items.Add("70%")
-        Me.DomainUpDown1.Items.Add("60%")
-        Me.DomainUpDown1.Items.Add("50%")
-        Me.DomainUpDown1.Items.Add("40%")
-        Me.DomainUpDown1.Items.Add("30%")
-        Me.DomainUpDown1.Items.Add("20%")
-        Me.DomainUpDown1.Items.Add("10%")
-        Me.DomainUpDown1.Items.Add("0%")
-        Me.DomainUpDown1.Location = New System.Drawing.Point(15, 45)
-        Me.DomainUpDown1.Name = "DomainUpDown1"
-        Me.DomainUpDown1.Size = New System.Drawing.Size(66, 20)
-        Me.DomainUpDown1.TabIndex = 1859
-        Me.DomainUpDown1.Text = "Density"
-        '
         'Expert
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(897, 405)
+        Me.ClientSize = New System.Drawing.Size(897, 463)
         Me.Controls.Add(Me.PictureBox3)
         Me.Controls.Add(Me.GroupBox5)
         Me.Controls.Add(Me.AutoStart)
@@ -982,6 +1024,7 @@ Partial Class Expert
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox7.ResumeLayout(False)
         Me.GroupBox7.PerformLayout()
+        CType(Me.PictureBox8, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
         Me.GridGroup.ResumeLayout(False)
@@ -994,7 +1037,6 @@ Partial Class Expert
         Me.AutoStart.PerformLayout()
         Me.GroupBox5.ResumeLayout(False)
         Me.GroupBox5.PerformLayout()
-        CType(Me.PictureBox8, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -1081,4 +1123,8 @@ Partial Class Expert
     Friend WithEvents Label16 As Label
     Friend WithEvents DomainUpDown1 As DomainUpDown
     Friend WithEvents PictureBox8 As PictureBox
+    Friend WithEvents SmtpPort As TextBox
+    Friend WithEvents Label24 As Label
+    Friend WithEvents SmtpHost As TextBox
+    Friend WithEvents Label23 As Label
 End Class

@@ -832,6 +832,14 @@ Public Class Form1
         ' Opensim.ini
         MySetting.LoadOtherIni(prefix + "bin\Opensim.proto", ";")
 
+        ' LSL emails
+        MySetting.SetOtherIni("SMTP", "SMTP_SERVER_HOSTNAME", MySetting.SmtpHost)
+        MySetting.SetOtherIni("SMTP", "SMTP_SERVER_PORT", MySetting.SmtpPort)
+        MySetting.SetOtherIni("SMTP", "SMTP_SERVER_LOGIN", MySetting.SmtpUsername)
+        MySetting.SetOtherIni("SMTP", "SMTP_SERVER_PASSWORD", MySetting.SmtpPassword)
+        MySetting.SetOtherIni("SMTP", "host_domain_header_from", MySetting.DNSName)
+
+        ' the old Clouds
         If MySetting.Clouds Then
             MySetting.SetOtherIni("Cloud", "enabled", "true")
             MySetting.SetOtherIni("Cloud", "density", MySetting.Density)
@@ -840,6 +848,7 @@ Public Class Form1
             MySetting.SetOtherIni("Cloud", "density", MySetting.Density)
         End If
 
+        ' Gods
         If (MySetting.Region_owner_is_god Or MySetting.Region_manager_is_god) Then
             MySetting.SetOtherIni("Permissions", "allow_grid_gods", "true")
         Else
@@ -1071,13 +1080,16 @@ Public Class Form1
 
         ' Wifi Admin'
         MySetting.SetOtherIni("WifiService", "AdminFirst", MySetting.AdminFirst)
-        MySetting.SetOtherIni("WifiService", "AdminPassword", MySetting.Password)
         MySetting.SetOtherIni("WifiService", "AdminLast", MySetting.AdminLast)
 
         'Gmail
+
+        MySetting.SetOtherIni("WifiService", "SmtpHost", MySetting.SmtpHost)
+        MySetting.SetOtherIni("WifiService", "SmtpPort", MySetting.SmtpPort)
         MySetting.SetOtherIni("WifiService", "AdminPassword", MySetting.Password)
         MySetting.SetOtherIni("WifiService", "SmtpUsername", MySetting.SmtpUsername)
         MySetting.SetOtherIni("WifiService", "SmtpPassword", MySetting.SmtpPassword)
+
 
         If MySetting.AccountConfirmationRequired Then
             MySetting.SetOtherIni("WifiService", "AccountConfirmationRequired", "true")
