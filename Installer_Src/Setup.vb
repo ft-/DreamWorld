@@ -229,7 +229,7 @@ Public Class Form1
         ProgressBar1.Maximum = 100
         ProgressBar1.Value = 0
 
-        If MySetting.MyX > 2000 Or MySetting.MyY > 2000 Then
+        If MySetting.MyX > 1000 Or MySetting.MyY > 1000 Then
             Me.CenterToScreen()
         ElseIf MySetting.MyX < 0 Or MySetting.MyY < 0 Then
             Me.CenterToScreen()

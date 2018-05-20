@@ -82,7 +82,7 @@ Public Class MySettings
 
             MySqlPort() = My.Settings.MySqlPort
             MyX() = My.Settings.MyX
-            MyY = My.Settings.MyY
+            MyY() = My.Settings.MyY
 
             Password() = My.Settings.Password
             Physics() = My.Settings.Physics
@@ -144,6 +144,10 @@ Public Class MySettings
             Density() = 0.5
             SaveMyINI()
         End Try
+
+        ' check for default
+        If (SmtpHost() = "") Then SmtpHost() = "smtp.gmail.com"
+        If (SmtpPort() = "") Then SmtpPort() = "587"
 
         SaveMyINI()
 

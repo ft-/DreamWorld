@@ -345,9 +345,10 @@ Public Class RegionList
             ListView1.CheckBoxes = False
             ListView1.View = View.List
         ElseIf TheView = 1 Then
+            ListView1.Show()
             ListView1.CheckBoxes = False
             ListView1.View = View.LargeIcon
-        ElseIf TheView = 2 Then
+        ElseIf TheView = 3 Then
             ListView1.CheckBoxes = True
             ListView1.View = View.Details
         End If
@@ -469,9 +470,8 @@ Public Class RegionList
             ItemsAreChecked = True
         End If
 
-
-
     End Sub
+
 
 #End Region
 

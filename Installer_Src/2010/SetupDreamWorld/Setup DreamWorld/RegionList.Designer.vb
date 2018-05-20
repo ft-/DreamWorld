@@ -28,10 +28,10 @@ Partial Class RegionList
         Me.ListView1 = New System.Windows.Forms.ListView()
         Me.Button1 = New System.Windows.Forms.Button()
         Me.ViewButton = New System.Windows.Forms.Button()
-        Me.RegionHelp = New System.Windows.Forms.PictureBox()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.Addregion = New System.Windows.Forms.Button()
         Me.AllNome = New System.Windows.Forms.CheckBox()
+        Me.RegionHelp = New System.Windows.Forms.PictureBox()
         CType(Me.RegionHelp, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -73,15 +73,6 @@ Partial Class RegionList
         Me.ViewButton.Text = "View"
         Me.ViewButton.UseVisualStyleBackColor = True
         '
-        'RegionHelp
-        '
-        Me.RegionHelp.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.RegionHelp.Location = New System.Drawing.Point(235, 13)
-        Me.RegionHelp.Name = "RegionHelp"
-        Me.RegionHelp.Size = New System.Drawing.Size(28, 27)
-        Me.RegionHelp.TabIndex = 1858
-        Me.RegionHelp.TabStop = False
-        '
         'ToolTip1
         '
         Me.ToolTip1.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info
@@ -108,11 +99,20 @@ Partial Class RegionList
         Me.AllNome.Text = "All/None"
         Me.AllNome.UseVisualStyleBackColor = True
         '
+        'RegionHelp
+        '
+        Me.RegionHelp.Image = Global.Outworldz.My.Resources.Resources.about
+        Me.RegionHelp.Location = New System.Drawing.Point(235, 13)
+        Me.RegionHelp.Name = "RegionHelp"
+        Me.RegionHelp.Size = New System.Drawing.Size(28, 27)
+        Me.RegionHelp.TabIndex = 1858
+        Me.RegionHelp.TabStop = False
+        '
         'RegionList
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(419, 403)
+        Me.ClientSize = New System.Drawing.Size(437, 395)
         Me.Controls.Add(Me.AllNome)
         Me.Controls.Add(Me.Addregion)
         Me.Controls.Add(Me.RegionHelp)

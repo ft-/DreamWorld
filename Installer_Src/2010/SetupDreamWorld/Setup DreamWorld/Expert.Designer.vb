@@ -367,7 +367,6 @@ Partial Class Expert
         Me.SmtpPort.Name = "SmtpPort"
         Me.SmtpPort.Size = New System.Drawing.Size(100, 20)
         Me.SmtpPort.TabIndex = 1861
-        Me.SmtpPort.UseSystemPasswordChar = True
         '
         'Label24
         '
@@ -384,7 +383,6 @@ Partial Class Expert
         Me.SmtpHost.Name = "SmtpHost"
         Me.SmtpHost.Size = New System.Drawing.Size(100, 20)
         Me.SmtpHost.TabIndex = 1859
-        Me.SmtpHost.UseSystemPasswordChar = True
         '
         'Label23
         '
