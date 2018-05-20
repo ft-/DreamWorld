@@ -22,9 +22,9 @@ OutworldzFiles/opensim/bin/j2kDecodeCache/*
 OutworldzFiles/opensim/bin/fsassets/*
 OutworldzFiles/opensim/bin/MeshCache/*
 OutworldzFiles/opensim/bin/bakes/*
-/Outworldzfiles/opensim/bin/Robust.HG.ini.bak
-/Outworldzfiles/Settings.ini
-/Outworldzfiles/Settings.bak
+Outworldzfiles/opensim/bin/Robust.HG.ini.bak
+Outworldzfiles/Settings.ini
+Outworldzfiles/Settings.bak
 OutworldzFiles/opensim/bin/bakes/*
 
 Thumbs.db
