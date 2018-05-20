@@ -35,11 +35,12 @@ Public Class Form1
 #Region "Declarations"
 
 
-    Dim MyVersion As String = "2.15"
+    Dim MyVersion As String = "2.16"
     Dim DebugPath As String = "C:\Opensim\Outworldz DreamGrid Source"  ' no slash at end
     Public Domain As String = "http://www.outworldz.com"
     Public prefix As String ' Holds path to Opensim folder
 
+    Dim REGIONMAX As Integer = 100
     Public MyFolder As String   ' Holds the current folder that we are running in
     Dim gCurSlashDir As String '  holds the current directory info in Unix format
     Public isRunning As Boolean = False
@@ -95,7 +96,7 @@ Public Class Form1
     Public MyUPnpMap As UPnp
     Dim ws As NetServer
     Public RegionClass As RegionMaker
-    Dim RegionHandles(50) As Boolean
+    Dim RegionHandles(REGIONMAX) As Boolean
     Dim gStopping As Boolean = False
     Dim Timertick As Integer        ' counts the seconds uintil wallpaper changes
     Public Shared MysqlConn As Mysql    ' object lets us query Mysql database
@@ -108,7 +109,6 @@ Public Class Form1
     ' Shoutcast
     Dim gIcecastProcID As Boolean = False
     Private WithEvents IcecastProcess As New Process()
-
 
     <CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA2101:SpecifyMarshalingForPInvokeStringArguments", MessageId:="1")>
     <CodeAnalysis.SuppressMessage("Microsoft.Interoperability", "CA1401:PInvokesShouldNotBeVisible")>
@@ -473,7 +473,7 @@ Public Class Form1
         Debug.Print("N=" + n.ToString())
 
 
-        Dim counter = 50
+        Dim counter = REGIONMAX
         While counter
             RegionHandles(counter) = False
             counter = counter - 1
@@ -1307,6 +1307,7 @@ Public Class Form1
 
         gRobustProcID = Nothing
 
+
     End Sub
 
     Public Sub StartIcecast()
@@ -1459,6 +1460,10 @@ Public Class Form1
 #End Region
 
 #Region "Exited"
+    Private Sub Robust_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles RobustProcess.Exited
+        RegionHandles(0) = False
+        DoExit(sender)
+    End Sub
     Private Sub OpensimProcess01_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess1.Exited
         RegionHandles(1) = False
         DoExit(sender)

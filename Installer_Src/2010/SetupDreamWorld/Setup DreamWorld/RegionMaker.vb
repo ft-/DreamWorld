@@ -1,7 +1,6 @@
 ﻿Imports System.IO
 Imports Newtonsoft.Json
 
-
 Public Class RegionMaker
 
 #Region "Declarations"
@@ -15,7 +14,6 @@ Public Class RegionMaker
             If (FInstance Is Nothing) Then
                 FInstance = New RegionMaker()
             End If
-
             Return FInstance
         End Get
     End Property
@@ -30,7 +28,6 @@ Public Class RegionMaker
             Form1.MySetting.WelcomeRegion = "Welcome"
             Form1.MySetting.SaveMyINI()
         End If
-
         Debug.Print("Loaded " + RegionCount.ToString + " Regions")
 
     End Sub
@@ -252,15 +249,12 @@ Public Class RegionMaker
         Public region_id As String
     End Class
 
-#End Region
-
     ' hold a copy of the Main region data on a per-form basis
     Private Class Region_data
         Public _RegionPath As String = ""  ' The full path to the region ini file
         Public _FolderPath As String = ""   ' the path to the folde r that holds the region ini
         Public _Group As String = ""       ' the folder name that holds the region(s), can be different named
         Public _IniPath As String = ""      ' the folder that hold the Opensim.ini, above 'Region'
-        Public _ProcessID As Integer = 0
         Public _RegionName As String = ""
         Public _UUID As String = ""
         Public _CoordX As Integer = 0
@@ -268,41 +262,55 @@ Public Class RegionMaker
         Public _RegionPort As Integer = 0
         Public _SizeX As Integer = 0
         Public _SizeY As Integer = 0
-        Public _AvatarCount As Integer = 0
         Public _RegionEnabled As Boolean = False ' Will run or not
-        Public _Ready As Boolean = False       ' is up
-        Public _WarmingUp As Boolean = False    ' booting up
-        Public _ShuttingDown As Boolean = False ' shutting down
-        Public _Timer As Integer
         Public _NonPhysicalPrimMax As Integer
         Public _PhysicalPrimMax As Integer
         Public _ClampPrimSize As Boolean
         Public _MaxPrims As Integer
         Public _MaxAgents As Integer
 
+        ' RAM vars, not from files
+        Public _AvatarCount As Integer = 0
+        Public _ProcessID As Integer = 0
+        Public _Ready As Boolean = False       ' is up
+        Public _WarmingUp As Boolean = False    ' booting up
+        Public _ShuttingDown As Boolean = False ' shutting down
+        Public _Timer As Integer
+
     End Class
 
+#End Region
+
 #Region "Functions"
+
     Private Function CheckN(n As Integer) As Integer
 
         If n >= RegionList.Count Or n < 0 Then
             Form1.Log("Error: Bad N in Region List " + n.ToString)
             Return 0
         End If
-
         Return n
 
     End Function
 
     Public Sub RegionDump()
 
-        Return
-
         Dim ctr = 0
         For Each r As Region_data In RegionList
             DebugRegions(ctr)
             ctr = ctr + 1
         Next
+
+    End Sub
+
+    Public Sub DebugRegions(n As Integer)
+
+        Debug.Print("Region:" + RegionList(CheckN(n))._RegionName +
+            " WarmingUp=" + RegionList(CheckN(n))._WarmingUp.ToString +
+           " ShuttingDown=" + RegionList(CheckN(n))._ShuttingDown.ToString +
+            " Ready=" + RegionList(CheckN(n))._Ready.ToString +
+           " RegionEnabled=" + RegionList(CheckN(n))._RegionEnabled.ToString)
+
     End Sub
 
     Public Function RegionListByGroupNum(GroupName As String) As List(Of Integer)
@@ -328,18 +336,6 @@ Public Class RegionMaker
         'Debug.Print("List Len = " + L.Count.ToString)
         Return L
     End Function
-
-    Public Sub DebugRegions(n As Integer)
-
-        Return
-
-        Debug.Print("Region:" + RegionList(CheckN(n))._RegionName +
-            " WarmingUp=" + RegionList(CheckN(n))._WarmingUp.ToString +
-           " ShuttingDown=" + RegionList(CheckN(n))._ShuttingDown.ToString +
-            " Ready=" + RegionList(CheckN(n))._Ready.ToString +
-           " RegionEnabled=" + RegionList(CheckN(n))._RegionEnabled.ToString)
-
-    End Sub
 
     Public Function FindRegionByName(Name As String) As Integer
 
@@ -478,20 +474,13 @@ Public Class RegionMaker
 
                         If initted Then
                             ' Backups of transient data 
-                            Try
-                                ProcessID(CheckN(n)) = Backup(CheckN(n))._ProcessID
+                            Try ' 6 temp vars
                                 AvatarCount(CheckN(n)) = Backup(CheckN(n))._AvatarCount
+                                ProcessID(CheckN(n)) = Backup(CheckN(n))._ProcessID
                                 Booted(CheckN(n)) = Backup(CheckN(n))._Ready
                                 WarmingUp(CheckN(n)) = Backup(CheckN(n))._WarmingUp
                                 ShuttingDown(CheckN(n)) = Backup(CheckN(n))._ShuttingDown
                                 Timer(CheckN(n)) = Backup(CheckN(n))._Timer
-                                ' extended
-                                NonPhysicalPrimMax(CheckN(n)) = Backup(CheckN(n))._NonphysicalPrimMax
-                                PhysicalPrimMax(CheckN(n)) = Backup(CheckN(n))._PhysicalPrimMax
-                                ClampPrimSize(CheckN(n)) = Backup(CheckN(n))._ClampPrimSize
-                                MaxPrims(CheckN(n)) = Backup(CheckN(n))._MaxPrims
-                                MaxAgents(CheckN(n)) = Backup(CheckN(n))._MaxAgents
-
                             Catch
                             End Try
 
@@ -578,7 +567,7 @@ Public Class RegionMaker
 
     Public Function LargestPort() As Integer
 
-        ' locate largest global coords
+        ' locate largest port
         Dim Max As Integer
         Dim counter As Integer = 0
         For Each obj As Region_data In RegionList

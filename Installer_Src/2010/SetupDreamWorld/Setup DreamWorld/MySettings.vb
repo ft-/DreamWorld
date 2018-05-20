@@ -277,6 +277,7 @@ Public Class MySettings
 
 #Region "Properties"
 
+
     Public Property SmtpHost() As String
         Get
             Return CType(GetMySetting("SmtpHost"), String)
