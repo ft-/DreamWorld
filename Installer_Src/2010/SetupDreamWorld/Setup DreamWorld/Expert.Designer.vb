@@ -44,6 +44,10 @@ Partial Class Expert
         Me.ManagerGod = New System.Windows.Forms.CheckBox()
         Me.RegionGod = New System.Windows.Forms.CheckBox()
         Me.Web = New System.Windows.Forms.GroupBox()
+        Me.SmtpPort = New System.Windows.Forms.TextBox()
+        Me.Label24 = New System.Windows.Forms.Label()
+        Me.SmtpHost = New System.Windows.Forms.TextBox()
+        Me.Label23 = New System.Windows.Forms.Label()
         Me.PictureBox4 = New System.Windows.Forms.PictureBox()
         Me.WifiEnabled = New System.Windows.Forms.CheckBox()
         Me.GmailPassword = New System.Windows.Forms.TextBox()
@@ -69,8 +73,9 @@ Partial Class Expert
         Me.DiagnosticPort = New System.Windows.Forms.TextBox()
         Me.Label4 = New System.Windows.Forms.Label()
         Me.GroupBox7 = New System.Windows.Forms.GroupBox()
-        Me.StatsButton = New System.Windows.Forms.Button()
-        Me.WebStats = New System.Windows.Forms.CheckBox()
+        Me.DomainUpDown1 = New System.Windows.Forms.DomainUpDown()
+        Me.PictureBox8 = New System.Windows.Forms.PictureBox()
+        Me.Clouds = New System.Windows.Forms.CheckBox()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.PhysicsSeparate = New System.Windows.Forms.RadioButton()
         Me.PhysicsNone = New System.Windows.Forms.RadioButton()
@@ -117,6 +122,7 @@ Partial Class Expert
         Me.GroupBox2.SuspendLayout()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox7.SuspendLayout()
+        CType(Me.PictureBox8, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox1.SuspendLayout()
         Me.GridGroup.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -143,11 +149,9 @@ Partial Class Expert
         Me.GroupBox3.Controls.Add(Me.GridName)
         Me.GroupBox3.Controls.Add(Me.Label19)
         Me.GroupBox3.Controls.Add(Me.SplashPage)
-        Me.GroupBox3.Location = New System.Drawing.Point(16, 15)
-        Me.GroupBox3.Margin = New System.Windows.Forms.Padding(4)
+        Me.GroupBox3.Location = New System.Drawing.Point(12, 12)
         Me.GroupBox3.Name = "GroupBox3"
-        Me.GroupBox3.Padding = New System.Windows.Forms.Padding(4)
-        Me.GroupBox3.Size = New System.Drawing.Size(256, 452)
+        Me.GroupBox3.Size = New System.Drawing.Size(192, 367)
         Me.GroupBox3.TabIndex = 49
         Me.GroupBox3.TabStop = False
         Me.GroupBox3.Text = "Grid"
@@ -155,10 +159,9 @@ Partial Class Expert
         'EnableHypergrid
         '
         Me.EnableHypergrid.AutoSize = True
-        Me.EnableHypergrid.Location = New System.Drawing.Point(24, 33)
-        Me.EnableHypergrid.Margin = New System.Windows.Forms.Padding(4)
+        Me.EnableHypergrid.Location = New System.Drawing.Point(18, 27)
         Me.EnableHypergrid.Name = "EnableHypergrid"
-        Me.EnableHypergrid.Size = New System.Drawing.Size(140, 21)
+        Me.EnableHypergrid.Size = New System.Drawing.Size(107, 17)
         Me.EnableHypergrid.TabIndex = 1866
         Me.EnableHypergrid.Text = "Enable Hypergrid"
         Me.EnableHypergrid.UseVisualStyleBackColor = True
@@ -166,10 +169,9 @@ Partial Class Expert
         'PictureBox7
         '
         Me.PictureBox7.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.PictureBox7.Location = New System.Drawing.Point(189, 354)
-        Me.PictureBox7.Margin = New System.Windows.Forms.Padding(4)
+        Me.PictureBox7.Location = New System.Drawing.Point(142, 288)
         Me.PictureBox7.Name = "PictureBox7"
-        Me.PictureBox7.Size = New System.Drawing.Size(40, 42)
+        Me.PictureBox7.Size = New System.Drawing.Size(30, 34)
         Me.PictureBox7.TabIndex = 1865
         Me.PictureBox7.TabStop = False
         Me.ToolTip1.SetToolTip(Me.PictureBox7, "The web page shown when your users log in")
@@ -177,10 +179,9 @@ Partial Class Expert
         'PictureBox6
         '
         Me.PictureBox6.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.PictureBox6.Location = New System.Drawing.Point(179, 226)
-        Me.PictureBox6.Margin = New System.Windows.Forms.Padding(4)
+        Me.PictureBox6.Location = New System.Drawing.Point(134, 184)
         Me.PictureBox6.Name = "PictureBox6"
-        Me.PictureBox6.Size = New System.Drawing.Size(40, 42)
+        Me.PictureBox6.Size = New System.Drawing.Size(30, 34)
         Me.PictureBox6.TabIndex = 1864
         Me.PictureBox6.TabStop = False
         Me.ToolTip1.SetToolTip(Me.PictureBox6, "Appears in the Diva Wifi web page ")
@@ -188,10 +189,9 @@ Partial Class Expert
         'PictureBox5
         '
         Me.PictureBox5.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.PictureBox5.Location = New System.Drawing.Point(171, 144)
-        Me.PictureBox5.Margin = New System.Windows.Forms.Padding(4)
+        Me.PictureBox5.Location = New System.Drawing.Point(128, 117)
         Me.PictureBox5.Name = "PictureBox5"
-        Me.PictureBox5.Size = New System.Drawing.Size(40, 42)
+        Me.PictureBox5.Size = New System.Drawing.Size(30, 34)
         Me.PictureBox5.TabIndex = 1860
         Me.PictureBox5.TabStop = False
         Me.ToolTip1.SetToolTip(Me.PictureBox5, "This ID reserves your DYNDNS name. Used if you have more than one PC using DreamG" &
@@ -200,27 +200,24 @@ Partial Class Expert
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(5, 167)
-        Me.Label1.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label1.Location = New System.Drawing.Point(4, 136)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(101, 17)
+        Me.Label1.Size = New System.Drawing.Size(77, 13)
         Me.Label1.TabIndex = 1863
         Me.Label1.Text = "Unique Grid ID"
         '
         'UniqueId
         '
-        Me.UniqueId.Location = New System.Drawing.Point(7, 187)
-        Me.UniqueId.Margin = New System.Windows.Forms.Padding(4)
+        Me.UniqueId.Location = New System.Drawing.Point(5, 152)
         Me.UniqueId.Name = "UniqueId"
-        Me.UniqueId.Size = New System.Drawing.Size(229, 22)
+        Me.UniqueId.Size = New System.Drawing.Size(173, 20)
         Me.UniqueId.TabIndex = 1862
         '
         'DNSButton
         '
-        Me.DNSButton.Location = New System.Drawing.Point(11, 73)
-        Me.DNSButton.Margin = New System.Windows.Forms.Padding(4)
+        Me.DNSButton.Location = New System.Drawing.Point(8, 59)
         Me.DNSButton.Name = "DNSButton"
-        Me.DNSButton.Size = New System.Drawing.Size(227, 28)
+        Me.DNSButton.Size = New System.Drawing.Size(170, 23)
         Me.DNSButton.TabIndex = 1861
         Me.DNSButton.Text = "DNS Name or IP Address"
         Me.DNSButton.UseVisualStyleBackColor = True
@@ -228,30 +225,27 @@ Partial Class Expert
         'DNSHelp
         '
         Me.DNSHelp.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.DNSHelp.Location = New System.Drawing.Point(120, 108)
-        Me.DNSHelp.Margin = New System.Windows.Forms.Padding(4)
+        Me.DNSHelp.Location = New System.Drawing.Point(90, 88)
         Me.DNSHelp.Name = "DNSHelp"
-        Me.DNSHelp.Size = New System.Drawing.Size(37, 33)
+        Me.DNSHelp.Size = New System.Drawing.Size(28, 27)
         Me.DNSHelp.TabIndex = 1859
         Me.DNSHelp.TabStop = False
         Me.ToolTip1.SetToolTip(Me.DNSHelp, "Click For Help on DNS")
         '
         'HypericaButton
         '
-        Me.HypericaButton.Location = New System.Drawing.Point(7, 309)
-        Me.HypericaButton.Margin = New System.Windows.Forms.Padding(4)
+        Me.HypericaButton.Location = New System.Drawing.Point(5, 251)
         Me.HypericaButton.Name = "HypericaButton"
-        Me.HypericaButton.Size = New System.Drawing.Size(229, 28)
+        Me.HypericaButton.Size = New System.Drawing.Size(172, 23)
         Me.HypericaButton.TabIndex = 34
         Me.HypericaButton.Text = "Add Details to Directory"
         Me.HypericaButton.UseVisualStyleBackColor = True
         '
         'TestButton1
         '
-        Me.TestButton1.Location = New System.Drawing.Point(11, 111)
-        Me.TestButton1.Margin = New System.Windows.Forms.Padding(4)
+        Me.TestButton1.Location = New System.Drawing.Point(8, 90)
         Me.TestButton1.Name = "TestButton1"
-        Me.TestButton1.Size = New System.Drawing.Size(100, 28)
+        Me.TestButton1.Size = New System.Drawing.Size(75, 23)
         Me.TestButton1.TabIndex = 33
         Me.TestButton1.Text = "Test DNS"
         Me.TestButton1.UseVisualStyleBackColor = True
@@ -259,46 +253,41 @@ Partial Class Expert
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(3, 255)
-        Me.Label2.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label2.Location = New System.Drawing.Point(2, 207)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(171, 17)
+        Me.Label2.Size = New System.Drawing.Size(126, 13)
         Me.Label2.TabIndex = 26
         Me.Label2.Text = "This Grid's Friendly Name"
         '
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(20, 38)
-        Me.Label3.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label3.Location = New System.Drawing.Point(15, 31)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(0, 17)
+        Me.Label3.Size = New System.Drawing.Size(0, 13)
         Me.Label3.TabIndex = 28
         '
         'GridName
         '
-        Me.GridName.Location = New System.Drawing.Point(7, 277)
-        Me.GridName.Margin = New System.Windows.Forms.Padding(4)
+        Me.GridName.Location = New System.Drawing.Point(5, 225)
         Me.GridName.Name = "GridName"
-        Me.GridName.Size = New System.Drawing.Size(229, 22)
+        Me.GridName.Size = New System.Drawing.Size(173, 20)
         Me.GridName.TabIndex = 10
         '
         'Label19
         '
         Me.Label19.AutoSize = True
-        Me.Label19.Location = New System.Drawing.Point(7, 383)
-        Me.Label19.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label19.Location = New System.Drawing.Point(5, 311)
         Me.Label19.Name = "Label19"
-        Me.Label19.Size = New System.Drawing.Size(182, 17)
+        Me.Label19.Size = New System.Drawing.Size(139, 13)
         Me.Label19.TabIndex = 46
         Me.Label19.Text = "Viewer Splash Screen URL:"
         '
         'SplashPage
         '
-        Me.SplashPage.Location = New System.Drawing.Point(7, 405)
-        Me.SplashPage.Margin = New System.Windows.Forms.Padding(4)
+        Me.SplashPage.Location = New System.Drawing.Point(5, 329)
         Me.SplashPage.Name = "SplashPage"
-        Me.SplashPage.Size = New System.Drawing.Size(235, 22)
+        Me.SplashPage.Size = New System.Drawing.Size(177, 20)
         Me.SplashPage.TabIndex = 45
         Me.ToolTip1.SetToolTip(Me.SplashPage, "The web page thaty appears iwhen you log in to this grid")
         '
@@ -307,11 +296,9 @@ Partial Class Expert
         Me.GroupBox4.Controls.Add(Me.GodHelp)
         Me.GroupBox4.Controls.Add(Me.ManagerGod)
         Me.GroupBox4.Controls.Add(Me.RegionGod)
-        Me.GroupBox4.Location = New System.Drawing.Point(296, 183)
-        Me.GroupBox4.Margin = New System.Windows.Forms.Padding(4)
+        Me.GroupBox4.Location = New System.Drawing.Point(222, 149)
         Me.GroupBox4.Name = "GroupBox4"
-        Me.GroupBox4.Padding = New System.Windows.Forms.Padding(4)
-        Me.GroupBox4.Size = New System.Drawing.Size(248, 113)
+        Me.GroupBox4.Size = New System.Drawing.Size(186, 92)
         Me.GroupBox4.TabIndex = 48
         Me.GroupBox4.TabStop = False
         Me.GroupBox4.Text = "Permissions"
@@ -319,10 +306,9 @@ Partial Class Expert
         'GodHelp
         '
         Me.GodHelp.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.GodHelp.Location = New System.Drawing.Point(179, 7)
-        Me.GodHelp.Margin = New System.Windows.Forms.Padding(4)
+        Me.GodHelp.Location = New System.Drawing.Point(134, 6)
         Me.GodHelp.Name = "GodHelp"
-        Me.GodHelp.Size = New System.Drawing.Size(40, 42)
+        Me.GodHelp.Size = New System.Drawing.Size(30, 34)
         Me.GodHelp.TabIndex = 1857
         Me.GodHelp.TabStop = False
         Me.ToolTip1.SetToolTip(Me.GodHelp, "Click for Help on God Mode")
@@ -330,10 +316,9 @@ Partial Class Expert
         'ManagerGod
         '
         Me.ManagerGod.AutoSize = True
-        Me.ManagerGod.Location = New System.Drawing.Point(20, 64)
-        Me.ManagerGod.Margin = New System.Windows.Forms.Padding(4)
+        Me.ManagerGod.Location = New System.Drawing.Point(15, 52)
         Me.ManagerGod.Name = "ManagerGod"
-        Me.ManagerGod.Size = New System.Drawing.Size(185, 21)
+        Me.ManagerGod.Size = New System.Drawing.Size(141, 17)
         Me.ManagerGod.TabIndex = 6
         Me.ManagerGod.Text = "Region manager is god?"
         Me.ManagerGod.UseVisualStyleBackColor = True
@@ -341,16 +326,19 @@ Partial Class Expert
         'RegionGod
         '
         Me.RegionGod.AutoSize = True
-        Me.RegionGod.Location = New System.Drawing.Point(20, 34)
-        Me.RegionGod.Margin = New System.Windows.Forms.Padding(4)
+        Me.RegionGod.Location = New System.Drawing.Point(15, 28)
         Me.RegionGod.Name = "RegionGod"
-        Me.RegionGod.Size = New System.Drawing.Size(171, 21)
+        Me.RegionGod.Size = New System.Drawing.Size(132, 17)
         Me.RegionGod.TabIndex = 1855
         Me.RegionGod.Text = "Region owner is god? "
         Me.RegionGod.UseVisualStyleBackColor = True
         '
         'Web
         '
+        Me.Web.Controls.Add(Me.SmtpPort)
+        Me.Web.Controls.Add(Me.Label24)
+        Me.Web.Controls.Add(Me.SmtpHost)
+        Me.Web.Controls.Add(Me.Label23)
         Me.Web.Controls.Add(Me.PictureBox4)
         Me.Web.Controls.Add(Me.WifiEnabled)
         Me.Web.Controls.Add(Me.GmailPassword)
@@ -366,22 +354,51 @@ Partial Class Expert
         Me.Web.Controls.Add(Me.Label11)
         Me.Web.Controls.Add(Me.Label10)
         Me.Web.Controls.Add(Me.AdminPassword)
-        Me.Web.Location = New System.Drawing.Point(575, 191)
-        Me.Web.Margin = New System.Windows.Forms.Padding(4)
+        Me.Web.Location = New System.Drawing.Point(431, 155)
         Me.Web.Name = "Web"
-        Me.Web.Padding = New System.Windows.Forms.Padding(4)
-        Me.Web.Size = New System.Drawing.Size(256, 276)
+        Me.Web.Size = New System.Drawing.Size(192, 272)
         Me.Web.TabIndex = 47
         Me.Web.TabStop = False
         Me.Web.Text = "Wifi Interface Admin"
         '
+        'SmtpPort
+        '
+        Me.SmtpPort.Location = New System.Drawing.Point(88, 242)
+        Me.SmtpPort.Name = "SmtpPort"
+        Me.SmtpPort.Size = New System.Drawing.Size(100, 20)
+        Me.SmtpPort.TabIndex = 1861
+        '
+        'Label24
+        '
+        Me.Label24.AutoSize = True
+        Me.Label24.Location = New System.Drawing.Point(6, 245)
+        Me.Label24.Name = "Label24"
+        Me.Label24.Size = New System.Drawing.Size(53, 13)
+        Me.Label24.TabIndex = 1862
+        Me.Label24.Text = "Smtp Port"
+        '
+        'SmtpHost
+        '
+        Me.SmtpHost.Location = New System.Drawing.Point(88, 212)
+        Me.SmtpHost.Name = "SmtpHost"
+        Me.SmtpHost.Size = New System.Drawing.Size(100, 20)
+        Me.SmtpHost.TabIndex = 1859
+        '
+        'Label23
+        '
+        Me.Label23.AutoSize = True
+        Me.Label23.Location = New System.Drawing.Point(6, 215)
+        Me.Label23.Name = "Label23"
+        Me.Label23.Size = New System.Drawing.Size(56, 13)
+        Me.Label23.TabIndex = 1860
+        Me.Label23.Text = "Smtp Host"
+        '
         'PictureBox4
         '
         Me.PictureBox4.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.PictureBox4.Location = New System.Drawing.Point(169, 5)
-        Me.PictureBox4.Margin = New System.Windows.Forms.Padding(4)
+        Me.PictureBox4.Location = New System.Drawing.Point(127, 4)
         Me.PictureBox4.Name = "PictureBox4"
-        Me.PictureBox4.Size = New System.Drawing.Size(40, 42)
+        Me.PictureBox4.Size = New System.Drawing.Size(30, 34)
         Me.PictureBox4.TabIndex = 1858
         Me.PictureBox4.TabStop = False
         Me.ToolTip1.SetToolTip(Me.PictureBox4, "Wifi is a Web Based Login and User control panel.")
@@ -389,10 +406,9 @@ Partial Class Expert
         'WifiEnabled
         '
         Me.WifiEnabled.AutoSize = True
-        Me.WifiEnabled.Location = New System.Drawing.Point(35, 23)
-        Me.WifiEnabled.Margin = New System.Windows.Forms.Padding(4)
+        Me.WifiEnabled.Location = New System.Drawing.Point(26, 19)
         Me.WifiEnabled.Name = "WifiEnabled"
-        Me.WifiEnabled.Size = New System.Drawing.Size(82, 21)
+        Me.WifiEnabled.Size = New System.Drawing.Size(65, 17)
         Me.WifiEnabled.TabIndex = 22
         Me.WifiEnabled.Text = "Enabled"
         Me.ToolTip1.SetToolTip(Me.WifiEnabled, "A Web UI for creating and managing User Accounts")
@@ -400,76 +416,68 @@ Partial Class Expert
         '
         'GmailPassword
         '
-        Me.GmailPassword.Location = New System.Drawing.Point(115, 229)
-        Me.GmailPassword.Margin = New System.Windows.Forms.Padding(4)
+        Me.GmailPassword.Location = New System.Drawing.Point(86, 186)
         Me.GmailPassword.Name = "GmailPassword"
-        Me.GmailPassword.Size = New System.Drawing.Size(132, 22)
+        Me.GmailPassword.Size = New System.Drawing.Size(100, 20)
         Me.GmailPassword.TabIndex = 20
         Me.GmailPassword.UseSystemPasswordChar = True
         '
         'Label18
         '
         Me.Label18.AutoSize = True
-        Me.Label18.Location = New System.Drawing.Point(5, 233)
-        Me.Label18.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label18.Location = New System.Drawing.Point(4, 189)
         Me.Label18.Name = "Label18"
-        Me.Label18.Size = New System.Drawing.Size(109, 17)
+        Me.Label18.Size = New System.Drawing.Size(81, 13)
         Me.Label18.TabIndex = 21
-        Me.Label18.Text = "Gmail Password"
+        Me.Label18.Text = "Email Password"
         '
         'Label14
         '
         Me.Label14.AutoSize = True
-        Me.Label14.Location = New System.Drawing.Point(5, 207)
-        Me.Label14.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label14.Location = New System.Drawing.Point(4, 168)
         Me.Label14.Name = "Label14"
-        Me.Label14.Size = New System.Drawing.Size(82, 17)
+        Me.Label14.Size = New System.Drawing.Size(32, 13)
         Me.Label14.TabIndex = 20
-        Me.Label14.Text = "Gmail Email"
+        Me.Label14.Text = "Email"
         '
         'Label17
         '
         Me.Label17.AutoSize = True
-        Me.Label17.Location = New System.Drawing.Point(5, 146)
-        Me.Label17.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label17.Location = New System.Drawing.Point(4, 119)
         Me.Label17.Name = "Label17"
-        Me.Label17.Size = New System.Drawing.Size(42, 17)
+        Me.Label17.Size = New System.Drawing.Size(32, 13)
         Me.Label17.TabIndex = 15
         Me.Label17.Text = "Email"
         '
         'GmailUsername
         '
-        Me.GmailUsername.Location = New System.Drawing.Point(115, 198)
-        Me.GmailUsername.Margin = New System.Windows.Forms.Padding(4)
+        Me.GmailUsername.Location = New System.Drawing.Point(86, 161)
         Me.GmailUsername.Name = "GmailUsername"
-        Me.GmailUsername.Size = New System.Drawing.Size(132, 22)
+        Me.GmailUsername.Size = New System.Drawing.Size(100, 20)
         Me.GmailUsername.TabIndex = 19
         '
         'AdminEmail
         '
-        Me.AdminEmail.Location = New System.Drawing.Point(115, 138)
-        Me.AdminEmail.Margin = New System.Windows.Forms.Padding(4)
+        Me.AdminEmail.Location = New System.Drawing.Point(86, 112)
         Me.AdminEmail.Name = "AdminEmail"
-        Me.AdminEmail.Size = New System.Drawing.Size(132, 22)
+        Me.AdminEmail.Size = New System.Drawing.Size(100, 20)
         Me.AdminEmail.TabIndex = 17
         '
         'Label12
         '
         Me.Label12.AutoSize = True
-        Me.Label12.Location = New System.Drawing.Point(5, 85)
-        Me.Label12.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label12.Location = New System.Drawing.Point(4, 69)
         Me.Label12.Name = "Label12"
-        Me.Label12.Size = New System.Drawing.Size(76, 17)
+        Me.Label12.Size = New System.Drawing.Size(58, 13)
         Me.Label12.TabIndex = 13
         Me.Label12.Text = "Last Name"
         '
         'AccountConfirmationRequired
         '
         Me.AccountConfirmationRequired.AutoSize = True
-        Me.AccountConfirmationRequired.Location = New System.Drawing.Point(28, 171)
-        Me.AccountConfirmationRequired.Margin = New System.Windows.Forms.Padding(4)
+        Me.AccountConfirmationRequired.Location = New System.Drawing.Point(21, 139)
         Me.AccountConfirmationRequired.Name = "AccountConfirmationRequired"
-        Me.AccountConfirmationRequired.Size = New System.Drawing.Size(233, 21)
+        Me.AccountConfirmationRequired.Size = New System.Drawing.Size(175, 17)
         Me.AccountConfirmationRequired.TabIndex = 18
         Me.AccountConfirmationRequired.Text = "Confirmation required to Log in?"
         Me.ToolTip1.SetToolTip(Me.AccountConfirmationRequired, "You must log in as Wifi Admin and enabled new users before they can log in.")
@@ -477,46 +485,41 @@ Partial Class Expert
         '
         'AdminLast
         '
-        Me.AdminLast.Location = New System.Drawing.Point(115, 81)
-        Me.AdminLast.Margin = New System.Windows.Forms.Padding(4)
+        Me.AdminLast.Location = New System.Drawing.Point(86, 66)
         Me.AdminLast.Name = "AdminLast"
-        Me.AdminLast.Size = New System.Drawing.Size(132, 22)
+        Me.AdminLast.Size = New System.Drawing.Size(100, 20)
         Me.AdminLast.TabIndex = 15
         '
         'AdminFirst
         '
-        Me.AdminFirst.Location = New System.Drawing.Point(115, 54)
-        Me.AdminFirst.Margin = New System.Windows.Forms.Padding(4)
+        Me.AdminFirst.Location = New System.Drawing.Point(86, 44)
         Me.AdminFirst.Name = "AdminFirst"
-        Me.AdminFirst.Size = New System.Drawing.Size(132, 22)
+        Me.AdminFirst.Size = New System.Drawing.Size(100, 20)
         Me.AdminFirst.TabIndex = 14
         '
         'Label11
         '
         Me.Label11.AutoSize = True
-        Me.Label11.Location = New System.Drawing.Point(5, 58)
-        Me.Label11.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label11.Location = New System.Drawing.Point(4, 47)
         Me.Label11.Name = "Label11"
-        Me.Label11.Size = New System.Drawing.Size(76, 17)
+        Me.Label11.Size = New System.Drawing.Size(57, 13)
         Me.Label11.TabIndex = 10
         Me.Label11.Text = "First Name"
         '
         'Label10
         '
         Me.Label10.AutoSize = True
-        Me.Label10.Location = New System.Drawing.Point(5, 114)
-        Me.Label10.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label10.Location = New System.Drawing.Point(4, 93)
         Me.Label10.Name = "Label10"
-        Me.Label10.Size = New System.Drawing.Size(69, 17)
+        Me.Label10.Size = New System.Drawing.Size(53, 13)
         Me.Label10.TabIndex = 9
         Me.Label10.Text = "Password"
         '
         'AdminPassword
         '
-        Me.AdminPassword.Location = New System.Drawing.Point(115, 111)
-        Me.AdminPassword.Margin = New System.Windows.Forms.Padding(4)
+        Me.AdminPassword.Location = New System.Drawing.Point(86, 90)
         Me.AdminPassword.Name = "AdminPassword"
-        Me.AdminPassword.Size = New System.Drawing.Size(132, 22)
+        Me.AdminPassword.Size = New System.Drawing.Size(100, 20)
         Me.AdminPassword.TabIndex = 16
         Me.AdminPassword.UseSystemPasswordChar = True
         '
@@ -530,11 +533,9 @@ Partial Class Expert
         Me.GroupBox2.Controls.Add(Me.PrivatePort)
         Me.GroupBox2.Controls.Add(Me.DiagnosticPort)
         Me.GroupBox2.Controls.Add(Me.Label4)
-        Me.GroupBox2.Location = New System.Drawing.Point(565, 15)
-        Me.GroupBox2.Margin = New System.Windows.Forms.Padding(4)
+        Me.GroupBox2.Location = New System.Drawing.Point(424, 12)
         Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Padding = New System.Windows.Forms.Padding(4)
-        Me.GroupBox2.Size = New System.Drawing.Size(265, 149)
+        Me.GroupBox2.Size = New System.Drawing.Size(199, 121)
         Me.GroupBox2.TabIndex = 44
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Ports"
@@ -542,10 +543,9 @@ Partial Class Expert
         'PictureBox2
         '
         Me.PictureBox2.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.PictureBox2.Location = New System.Drawing.Point(165, 10)
-        Me.PictureBox2.Margin = New System.Windows.Forms.Padding(4)
+        Me.PictureBox2.Location = New System.Drawing.Point(124, 8)
         Me.PictureBox2.Name = "PictureBox2"
-        Me.PictureBox2.Size = New System.Drawing.Size(40, 42)
+        Me.PictureBox2.Size = New System.Drawing.Size(30, 34)
         Me.PictureBox2.TabIndex = 1859
         Me.PictureBox2.TabStop = False
         Me.ToolTip1.SetToolTip(Me.PictureBox2, "UPnP may port forward your ports for you.")
@@ -553,10 +553,9 @@ Partial Class Expert
         'uPnPEnabled
         '
         Me.uPnPEnabled.AutoSize = True
-        Me.uPnPEnabled.Location = New System.Drawing.Point(29, 28)
-        Me.uPnPEnabled.Margin = New System.Windows.Forms.Padding(4)
+        Me.uPnPEnabled.Location = New System.Drawing.Point(22, 23)
         Me.uPnPEnabled.Name = "uPnPEnabled"
-        Me.uPnPEnabled.Size = New System.Drawing.Size(122, 21)
+        Me.uPnPEnabled.Size = New System.Drawing.Size(96, 17)
         Me.uPnPEnabled.TabIndex = 40
         Me.uPnPEnabled.Text = "UPnP Enabled"
         Me.uPnPEnabled.UseVisualStyleBackColor = True
@@ -564,91 +563,101 @@ Partial Class Expert
         'Label7
         '
         Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(24, 127)
-        Me.Label7.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label7.Location = New System.Drawing.Point(18, 103)
         Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(82, 17)
+        Me.Label7.Size = New System.Drawing.Size(62, 13)
         Me.Label7.TabIndex = 38
         Me.Label7.Text = "Private Port"
         '
         'Label5
         '
         Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(25, 63)
-        Me.Label5.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label5.Location = New System.Drawing.Point(19, 51)
         Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(104, 17)
+        Me.Label5.Size = New System.Drawing.Size(79, 13)
         Me.Label5.TabIndex = 33
         Me.Label5.Text = "Diagnostic Port"
         '
         'HTTPPort
         '
-        Me.HTTPPort.Location = New System.Drawing.Point(184, 86)
-        Me.HTTPPort.Margin = New System.Windows.Forms.Padding(4)
+        Me.HTTPPort.Location = New System.Drawing.Point(138, 70)
         Me.HTTPPort.Name = "HTTPPort"
-        Me.HTTPPort.Size = New System.Drawing.Size(61, 22)
+        Me.HTTPPort.Size = New System.Drawing.Size(47, 20)
         Me.HTTPPort.TabIndex = 39
         '
         'PrivatePort
         '
-        Me.PrivatePort.Location = New System.Drawing.Point(184, 118)
-        Me.PrivatePort.Margin = New System.Windows.Forms.Padding(4)
+        Me.PrivatePort.Location = New System.Drawing.Point(138, 96)
         Me.PrivatePort.Name = "PrivatePort"
-        Me.PrivatePort.Size = New System.Drawing.Size(61, 22)
+        Me.PrivatePort.Size = New System.Drawing.Size(47, 20)
         Me.PrivatePort.TabIndex = 35
         '
         'DiagnosticPort
         '
-        Me.DiagnosticPort.Location = New System.Drawing.Point(185, 54)
-        Me.DiagnosticPort.Margin = New System.Windows.Forms.Padding(4)
+        Me.DiagnosticPort.Location = New System.Drawing.Point(139, 44)
         Me.DiagnosticPort.Name = "DiagnosticPort"
-        Me.DiagnosticPort.Size = New System.Drawing.Size(61, 22)
+        Me.DiagnosticPort.Size = New System.Drawing.Size(47, 20)
         Me.DiagnosticPort.TabIndex = 34
         '
         'Label4
         '
         Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(24, 94)
-        Me.Label4.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label4.Location = New System.Drawing.Point(18, 76)
         Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(64, 17)
+        Me.Label4.Size = New System.Drawing.Size(49, 13)
         Me.Label4.TabIndex = 32
         Me.Label4.Text = "Http Port"
         '
         'GroupBox7
         '
-        Me.GroupBox7.Controls.Add(Me.StatsButton)
-        Me.GroupBox7.Controls.Add(Me.WebStats)
-        Me.GroupBox7.Location = New System.Drawing.Point(296, 324)
-        Me.GroupBox7.Margin = New System.Windows.Forms.Padding(4)
+        Me.GroupBox7.Controls.Add(Me.DomainUpDown1)
+        Me.GroupBox7.Controls.Add(Me.PictureBox8)
+        Me.GroupBox7.Controls.Add(Me.Clouds)
+        Me.GroupBox7.Location = New System.Drawing.Point(222, 263)
         Me.GroupBox7.Name = "GroupBox7"
-        Me.GroupBox7.Padding = New System.Windows.Forms.Padding(4)
-        Me.GroupBox7.Size = New System.Drawing.Size(252, 59)
+        Me.GroupBox7.Size = New System.Drawing.Size(189, 71)
         Me.GroupBox7.TabIndex = 43
         Me.GroupBox7.TabStop = False
-        Me.GroupBox7.Text = "WebStats"
-        Me.GroupBox7.Visible = False
+        Me.GroupBox7.Text = "Clouds"
         '
-        'StatsButton
+        'DomainUpDown1
         '
-        Me.StatsButton.Location = New System.Drawing.Point(111, 18)
-        Me.StatsButton.Margin = New System.Windows.Forms.Padding(4)
-        Me.StatsButton.Name = "StatsButton"
-        Me.StatsButton.Size = New System.Drawing.Size(100, 28)
-        Me.StatsButton.TabIndex = 22
-        Me.StatsButton.Text = "View"
-        Me.StatsButton.UseVisualStyleBackColor = True
+        Me.DomainUpDown1.Items.Add("100%")
+        Me.DomainUpDown1.Items.Add("90%")
+        Me.DomainUpDown1.Items.Add("80%")
+        Me.DomainUpDown1.Items.Add("70%")
+        Me.DomainUpDown1.Items.Add("60%")
+        Me.DomainUpDown1.Items.Add("50%")
+        Me.DomainUpDown1.Items.Add("40%")
+        Me.DomainUpDown1.Items.Add("30%")
+        Me.DomainUpDown1.Items.Add("20%")
+        Me.DomainUpDown1.Items.Add("10%")
+        Me.DomainUpDown1.Items.Add("0%")
+        Me.DomainUpDown1.Location = New System.Drawing.Point(15, 45)
+        Me.DomainUpDown1.Name = "DomainUpDown1"
+        Me.DomainUpDown1.Size = New System.Drawing.Size(66, 20)
+        Me.DomainUpDown1.TabIndex = 1859
+        Me.DomainUpDown1.Text = "Density"
         '
-        'WebStats
+        'PictureBox8
         '
-        Me.WebStats.AutoSize = True
-        Me.WebStats.Location = New System.Drawing.Point(16, 23)
-        Me.WebStats.Margin = New System.Windows.Forms.Padding(4)
-        Me.WebStats.Name = "WebStats"
-        Me.WebStats.Size = New System.Drawing.Size(74, 21)
-        Me.WebStats.TabIndex = 21
-        Me.WebStats.Text = "Enable"
-        Me.WebStats.UseVisualStyleBackColor = True
+        Me.PictureBox8.Image = Global.Outworldz.My.Resources.Resources.about
+        Me.PictureBox8.Location = New System.Drawing.Point(87, 11)
+        Me.PictureBox8.Name = "PictureBox8"
+        Me.PictureBox8.Size = New System.Drawing.Size(30, 34)
+        Me.PictureBox8.TabIndex = 1858
+        Me.PictureBox8.TabStop = False
+        Me.ToolTip1.SetToolTip(Me.PictureBox8, "If set, you get 0% to 100% clouds on your sims")
+        '
+        'Clouds
+        '
+        Me.Clouds.AutoSize = True
+        Me.Clouds.Location = New System.Drawing.Point(12, 19)
+        Me.Clouds.Name = "Clouds"
+        Me.Clouds.Size = New System.Drawing.Size(59, 17)
+        Me.Clouds.TabIndex = 21
+        Me.Clouds.Text = "Enable"
+        Me.Clouds.UseVisualStyleBackColor = True
         '
         'GroupBox1
         '
@@ -657,11 +666,9 @@ Partial Class Expert
         Me.GroupBox1.Controls.Add(Me.PhysicsubODE)
         Me.GroupBox1.Controls.Add(Me.PhysicsBullet)
         Me.GroupBox1.Controls.Add(Me.PhysicsODE)
-        Me.GroupBox1.Location = New System.Drawing.Point(292, 26)
-        Me.GroupBox1.Margin = New System.Windows.Forms.Padding(4)
+        Me.GroupBox1.Location = New System.Drawing.Point(219, 21)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Padding = New System.Windows.Forms.Padding(4)
-        Me.GroupBox1.Size = New System.Drawing.Size(252, 142)
+        Me.GroupBox1.Size = New System.Drawing.Size(189, 115)
         Me.GroupBox1.TabIndex = 42
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Physics Engine"
@@ -669,10 +676,9 @@ Partial Class Expert
         'PhysicsSeparate
         '
         Me.PhysicsSeparate.AutoSize = True
-        Me.PhysicsSeparate.Location = New System.Drawing.Point(8, 113)
-        Me.PhysicsSeparate.Margin = New System.Windows.Forms.Padding(4)
+        Me.PhysicsSeparate.Location = New System.Drawing.Point(6, 92)
         Me.PhysicsSeparate.Name = "PhysicsSeparate"
-        Me.PhysicsSeparate.Size = New System.Drawing.Size(239, 21)
+        Me.PhysicsSeparate.Size = New System.Drawing.Size(180, 17)
         Me.PhysicsSeparate.TabIndex = 37
         Me.PhysicsSeparate.TabStop = True
         Me.PhysicsSeparate.Text = "Bullet physics in separate thread."
@@ -681,10 +687,9 @@ Partial Class Expert
         'PhysicsNone
         '
         Me.PhysicsNone.AutoSize = True
-        Me.PhysicsNone.Location = New System.Drawing.Point(8, 23)
-        Me.PhysicsNone.Margin = New System.Windows.Forms.Padding(4)
+        Me.PhysicsNone.Location = New System.Drawing.Point(6, 19)
         Me.PhysicsNone.Name = "PhysicsNone"
-        Me.PhysicsNone.Size = New System.Drawing.Size(63, 21)
+        Me.PhysicsNone.Size = New System.Drawing.Size(51, 17)
         Me.PhysicsNone.TabIndex = 33
         Me.PhysicsNone.TabStop = True
         Me.PhysicsNone.Text = "None"
@@ -693,10 +698,9 @@ Partial Class Expert
         'PhysicsubODE
         '
         Me.PhysicsubODE.AutoSize = True
-        Me.PhysicsubODE.Location = New System.Drawing.Point(8, 69)
-        Me.PhysicsubODE.Margin = New System.Windows.Forms.Padding(4)
+        Me.PhysicsubODE.Location = New System.Drawing.Point(6, 56)
         Me.PhysicsubODE.Name = "PhysicsubODE"
-        Me.PhysicsubODE.Size = New System.Drawing.Size(199, 21)
+        Me.PhysicsubODE.Size = New System.Drawing.Size(153, 17)
         Me.PhysicsubODE.TabIndex = 35
         Me.PhysicsubODE.TabStop = True
         Me.PhysicsubODE.Text = "Ubit Open Dynamic Engine"
@@ -705,10 +709,9 @@ Partial Class Expert
         'PhysicsBullet
         '
         Me.PhysicsBullet.AutoSize = True
-        Me.PhysicsBullet.Location = New System.Drawing.Point(8, 91)
-        Me.PhysicsBullet.Margin = New System.Windows.Forms.Padding(4)
+        Me.PhysicsBullet.Location = New System.Drawing.Point(6, 74)
         Me.PhysicsBullet.Name = "PhysicsBullet"
-        Me.PhysicsBullet.Size = New System.Drawing.Size(116, 21)
+        Me.PhysicsBullet.Size = New System.Drawing.Size(90, 17)
         Me.PhysicsBullet.TabIndex = 136
         Me.PhysicsBullet.TabStop = True
         Me.PhysicsBullet.Text = "Bullet Physics"
@@ -717,10 +720,9 @@ Partial Class Expert
         'PhysicsODE
         '
         Me.PhysicsODE.AutoSize = True
-        Me.PhysicsODE.Location = New System.Drawing.Point(8, 47)
-        Me.PhysicsODE.Margin = New System.Windows.Forms.Padding(4)
+        Me.PhysicsODE.Location = New System.Drawing.Point(6, 38)
         Me.PhysicsODE.Name = "PhysicsODE"
-        Me.PhysicsODE.Size = New System.Drawing.Size(177, 21)
+        Me.PhysicsODE.Size = New System.Drawing.Size(136, 17)
         Me.PhysicsODE.TabIndex = 34
         Me.PhysicsODE.TabStop = True
         Me.PhysicsODE.Text = "Open Dynamics Engine"
@@ -738,113 +740,100 @@ Partial Class Expert
         Me.GridGroup.Controls.Add(Me.Label8)
         Me.GridGroup.Controls.Add(Me.RobustDBPassword)
         Me.GridGroup.Controls.Add(Me.RobustDBUsername)
-        Me.GridGroup.Location = New System.Drawing.Point(839, 15)
-        Me.GridGroup.Margin = New System.Windows.Forms.Padding(4)
+        Me.GridGroup.Location = New System.Drawing.Point(629, 12)
         Me.GridGroup.Name = "GridGroup"
-        Me.GridGroup.Padding = New System.Windows.Forms.Padding(4)
-        Me.GridGroup.Size = New System.Drawing.Size(324, 199)
+        Me.GridGroup.Size = New System.Drawing.Size(243, 162)
         Me.GridGroup.TabIndex = 53
         Me.GridGroup.TabStop = False
         Me.GridGroup.Text = "Robust Database"
         '
         'RobustServer
         '
-        Me.RobustServer.Location = New System.Drawing.Point(159, 31)
-        Me.RobustServer.Margin = New System.Windows.Forms.Padding(4)
+        Me.RobustServer.Location = New System.Drawing.Point(119, 25)
         Me.RobustServer.Name = "RobustServer"
-        Me.RobustServer.Size = New System.Drawing.Size(141, 22)
+        Me.RobustServer.Size = New System.Drawing.Size(107, 20)
         Me.RobustServer.TabIndex = 39
         '
         'Label16
         '
         Me.Label16.AutoSize = True
-        Me.Label16.Location = New System.Drawing.Point(23, 33)
-        Me.Label16.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label16.Location = New System.Drawing.Point(17, 27)
         Me.Label16.Name = "Label16"
-        Me.Label16.Size = New System.Drawing.Size(99, 17)
+        Me.Label16.Size = New System.Drawing.Size(75, 13)
         Me.Label16.TabIndex = 38
         Me.Label16.Text = "Robust Server"
         '
         'Dbnameindex
         '
         Me.Dbnameindex.AutoSize = True
-        Me.Dbnameindex.Location = New System.Drawing.Point(23, 63)
-        Me.Dbnameindex.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Dbnameindex.Location = New System.Drawing.Point(17, 51)
         Me.Dbnameindex.Name = "Dbnameindex"
-        Me.Dbnameindex.Size = New System.Drawing.Size(94, 17)
+        Me.Dbnameindex.Size = New System.Drawing.Size(72, 13)
         Me.Dbnameindex.TabIndex = 35
         Me.Dbnameindex.Text = "Robust Name"
         '
         'Label9
         '
         Me.Label9.AutoSize = True
-        Me.Label9.Location = New System.Drawing.Point(20, 127)
-        Me.Label9.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label9.Location = New System.Drawing.Point(15, 103)
         Me.Label9.Name = "Label9"
-        Me.Label9.Size = New System.Drawing.Size(69, 17)
+        Me.Label9.Size = New System.Drawing.Size(53, 13)
         Me.Label9.TabIndex = 35
         Me.Label9.Text = "Password"
         '
         'RobustDbPort
         '
-        Me.RobustDbPort.Location = New System.Drawing.Point(164, 159)
-        Me.RobustDbPort.Margin = New System.Windows.Forms.Padding(4)
+        Me.RobustDbPort.Location = New System.Drawing.Point(123, 129)
         Me.RobustDbPort.Name = "RobustDbPort"
-        Me.RobustDbPort.Size = New System.Drawing.Size(61, 22)
+        Me.RobustDbPort.Size = New System.Drawing.Size(47, 20)
         Me.RobustDbPort.TabIndex = 33
         '
         'RobustDbName
         '
-        Me.RobustDbName.Location = New System.Drawing.Point(159, 63)
-        Me.RobustDbName.Margin = New System.Windows.Forms.Padding(4)
+        Me.RobustDbName.Location = New System.Drawing.Point(119, 51)
         Me.RobustDbName.Name = "RobustDbName"
-        Me.RobustDbName.Size = New System.Drawing.Size(141, 22)
+        Me.RobustDbName.Size = New System.Drawing.Size(107, 20)
         Me.RobustDbName.TabIndex = 36
         '
         'Label15
         '
         Me.Label15.AutoSize = True
-        Me.Label15.Location = New System.Drawing.Point(20, 95)
-        Me.Label15.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label15.Location = New System.Drawing.Point(15, 77)
         Me.Label15.Name = "Label15"
-        Me.Label15.Size = New System.Drawing.Size(73, 17)
+        Me.Label15.Size = New System.Drawing.Size(55, 13)
         Me.Label15.TabIndex = 34
         Me.Label15.Text = "Username"
         '
         'Label8
         '
         Me.Label8.AutoSize = True
-        Me.Label8.Location = New System.Drawing.Point(23, 159)
-        Me.Label8.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label8.Location = New System.Drawing.Point(17, 129)
         Me.Label8.Name = "Label8"
-        Me.Label8.Size = New System.Drawing.Size(76, 17)
+        Me.Label8.Size = New System.Drawing.Size(58, 13)
         Me.Label8.TabIndex = 32
         Me.Label8.Text = "MySql Port"
         '
         'RobustDBPassword
         '
-        Me.RobustDBPassword.Location = New System.Drawing.Point(161, 127)
-        Me.RobustDBPassword.Margin = New System.Windows.Forms.Padding(4)
+        Me.RobustDBPassword.Location = New System.Drawing.Point(121, 103)
         Me.RobustDBPassword.Name = "RobustDBPassword"
-        Me.RobustDBPassword.Size = New System.Drawing.Size(141, 22)
+        Me.RobustDBPassword.Size = New System.Drawing.Size(107, 20)
         Me.RobustDBPassword.TabIndex = 37
         Me.RobustDBPassword.UseSystemPasswordChar = True
         '
         'RobustDBUsername
         '
-        Me.RobustDBUsername.Location = New System.Drawing.Point(161, 95)
-        Me.RobustDBUsername.Margin = New System.Windows.Forms.Padding(4)
+        Me.RobustDBUsername.Location = New System.Drawing.Point(121, 77)
         Me.RobustDBUsername.Name = "RobustDBUsername"
-        Me.RobustDBUsername.Size = New System.Drawing.Size(141, 22)
+        Me.RobustDBUsername.Size = New System.Drawing.Size(107, 20)
         Me.RobustDBUsername.TabIndex = 36
         '
         'PictureBox1
         '
         Me.PictureBox1.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.PictureBox1.Location = New System.Drawing.Point(284, 0)
-        Me.PictureBox1.Margin = New System.Windows.Forms.Padding(4)
+        Me.PictureBox1.Location = New System.Drawing.Point(213, 0)
         Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(40, 42)
+        Me.PictureBox1.Size = New System.Drawing.Size(30, 34)
         Me.PictureBox1.TabIndex = 1858
         Me.PictureBox1.TabStop = False
         Me.ToolTip1.SetToolTip(Me.PictureBox1, "Right click Dreamgrid and start as Administrator to enable this.")
@@ -852,10 +841,9 @@ Partial Class Expert
         'PictureBox3
         '
         Me.PictureBox3.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.PictureBox3.Location = New System.Drawing.Point(975, 206)
-        Me.PictureBox3.Margin = New System.Windows.Forms.Padding(4)
+        Me.PictureBox3.Location = New System.Drawing.Point(731, 167)
         Me.PictureBox3.Name = "PictureBox3"
-        Me.PictureBox3.Size = New System.Drawing.Size(40, 42)
+        Me.PictureBox3.Size = New System.Drawing.Size(30, 34)
         Me.PictureBox3.TabIndex = 1860
         Me.PictureBox3.TabStop = False
         Me.ToolTip1.SetToolTip(Me.PictureBox3, "A local Database for Region storage")
@@ -863,10 +851,9 @@ Partial Class Expert
         'AutoLoadCheckbox
         '
         Me.AutoLoadCheckbox.AutoSize = True
-        Me.AutoLoadCheckbox.Location = New System.Drawing.Point(16, 23)
-        Me.AutoLoadCheckbox.Margin = New System.Windows.Forms.Padding(4)
+        Me.AutoLoadCheckbox.Location = New System.Drawing.Point(12, 19)
         Me.AutoLoadCheckbox.Name = "AutoLoadCheckbox"
-        Me.AutoLoadCheckbox.Size = New System.Drawing.Size(74, 21)
+        Me.AutoLoadCheckbox.Size = New System.Drawing.Size(59, 17)
         Me.AutoLoadCheckbox.TabIndex = 21
         Me.AutoLoadCheckbox.Text = "Enable"
         Me.ToolTip1.SetToolTip(Me.AutoLoadCheckbox, "Click to enable Autoloading of Sims on Teleport requests. All sims except the Wel" &
@@ -875,56 +862,50 @@ Partial Class Expert
         '
         'RegionMySqlPassword
         '
-        Me.RegionMySqlPassword.Location = New System.Drawing.Point(160, 95)
-        Me.RegionMySqlPassword.Margin = New System.Windows.Forms.Padding(4)
+        Me.RegionMySqlPassword.Location = New System.Drawing.Point(120, 77)
         Me.RegionMySqlPassword.Name = "RegionMySqlPassword"
-        Me.RegionMySqlPassword.Size = New System.Drawing.Size(141, 22)
+        Me.RegionMySqlPassword.Size = New System.Drawing.Size(107, 20)
         Me.RegionMySqlPassword.TabIndex = 32
         Me.RegionMySqlPassword.UseSystemPasswordChar = True
         '
         'Label21
         '
         Me.Label21.AutoSize = True
-        Me.Label21.Location = New System.Drawing.Point(23, 59)
-        Me.Label21.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label21.Location = New System.Drawing.Point(17, 48)
         Me.Label21.Name = "Label21"
-        Me.Label21.Size = New System.Drawing.Size(73, 17)
+        Me.Label21.Size = New System.Drawing.Size(55, 13)
         Me.Label21.TabIndex = 16
         Me.Label21.Text = "Username"
         '
         'RegionDBUsername
         '
-        Me.RegionDBUsername.Location = New System.Drawing.Point(160, 59)
-        Me.RegionDBUsername.Margin = New System.Windows.Forms.Padding(4)
+        Me.RegionDBUsername.Location = New System.Drawing.Point(120, 48)
         Me.RegionDBUsername.Name = "RegionDBUsername"
-        Me.RegionDBUsername.Size = New System.Drawing.Size(141, 22)
+        Me.RegionDBUsername.Size = New System.Drawing.Size(107, 20)
         Me.RegionDBUsername.TabIndex = 31
         '
         'RegionDbName
         '
-        Me.RegionDbName.Location = New System.Drawing.Point(160, 27)
-        Me.RegionDbName.Margin = New System.Windows.Forms.Padding(4)
+        Me.RegionDbName.Location = New System.Drawing.Point(120, 22)
         Me.RegionDbName.Name = "RegionDbName"
-        Me.RegionDbName.Size = New System.Drawing.Size(141, 22)
+        Me.RegionDbName.Size = New System.Drawing.Size(107, 20)
         Me.RegionDbName.TabIndex = 30
         '
         'Label20
         '
         Me.Label20.AutoSize = True
-        Me.Label20.Location = New System.Drawing.Point(21, 27)
-        Me.Label20.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label20.Location = New System.Drawing.Point(16, 22)
         Me.Label20.Name = "Label20"
-        Me.Label20.Size = New System.Drawing.Size(68, 17)
+        Me.Label20.Size = New System.Drawing.Size(53, 13)
         Me.Label20.TabIndex = 13
         Me.Label20.Text = "DB Name"
         '
         'Label22
         '
         Me.Label22.AutoSize = True
-        Me.Label22.Location = New System.Drawing.Point(23, 92)
-        Me.Label22.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label22.Location = New System.Drawing.Point(17, 75)
         Me.Label22.Name = "Label22"
-        Me.Label22.Size = New System.Drawing.Size(69, 17)
+        Me.Label22.Size = New System.Drawing.Size(53, 13)
         Me.Label22.TabIndex = 17
         Me.Label22.Text = "Password"
         '
@@ -936,11 +917,9 @@ Partial Class Expert
         Me.StandaloneGroup.Controls.Add(Me.RegionDBUsername)
         Me.StandaloneGroup.Controls.Add(Me.Label21)
         Me.StandaloneGroup.Controls.Add(Me.RegionMySqlPassword)
-        Me.StandaloneGroup.Location = New System.Drawing.Point(839, 222)
-        Me.StandaloneGroup.Margin = New System.Windows.Forms.Padding(4)
+        Me.StandaloneGroup.Location = New System.Drawing.Point(629, 180)
         Me.StandaloneGroup.Name = "StandaloneGroup"
-        Me.StandaloneGroup.Padding = New System.Windows.Forms.Padding(4)
-        Me.StandaloneGroup.Size = New System.Drawing.Size(324, 151)
+        Me.StandaloneGroup.Size = New System.Drawing.Size(243, 123)
         Me.StandaloneGroup.TabIndex = 54
         Me.StandaloneGroup.TabStop = False
         Me.StandaloneGroup.Text = "Local Region Database"
@@ -952,11 +931,9 @@ Partial Class Expert
         Me.AutoStart.Controls.Add(Me.Label6)
         Me.AutoStart.Controls.Add(Me.BootStart)
         Me.AutoStart.Controls.Add(Me.AutoStartCheckbox)
-        Me.AutoStart.Location = New System.Drawing.Point(839, 380)
-        Me.AutoStart.Margin = New System.Windows.Forms.Padding(4)
+        Me.AutoStart.Location = New System.Drawing.Point(629, 309)
         Me.AutoStart.Name = "AutoStart"
-        Me.AutoStart.Padding = New System.Windows.Forms.Padding(4)
-        Me.AutoStart.Size = New System.Drawing.Size(324, 86)
+        Me.AutoStart.Size = New System.Drawing.Size(243, 70)
         Me.AutoStart.TabIndex = 44
         Me.AutoStart.TabStop = False
         Me.AutoStart.Text = "AutoStart and Start on Boot"
@@ -964,30 +941,27 @@ Partial Class Expert
         'Label13
         '
         Me.Label13.AutoSize = True
-        Me.Label13.Location = New System.Drawing.Point(13, 25)
-        Me.Label13.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label13.Location = New System.Drawing.Point(10, 20)
         Me.Label13.Name = "Label13"
-        Me.Label13.Size = New System.Drawing.Size(102, 17)
+        Me.Label13.Size = New System.Drawing.Size(78, 13)
         Me.Label13.TabIndex = 24
         Me.Label13.Text = "One Click Start"
         '
         'Label6
         '
         Me.Label6.AutoSize = True
-        Me.Label6.Location = New System.Drawing.Point(157, 25)
-        Me.Label6.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label6.Location = New System.Drawing.Point(118, 20)
         Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(125, 17)
+        Me.Label6.Size = New System.Drawing.Size(96, 13)
         Me.Label6.TabIndex = 23
         Me.Label6.Text = "Run on PC Bootup"
         '
         'BootStart
         '
         Me.BootStart.AutoSize = True
-        Me.BootStart.Location = New System.Drawing.Point(163, 42)
-        Me.BootStart.Margin = New System.Windows.Forms.Padding(4)
+        Me.BootStart.Location = New System.Drawing.Point(122, 34)
         Me.BootStart.Name = "BootStart"
-        Me.BootStart.Size = New System.Drawing.Size(74, 21)
+        Me.BootStart.Size = New System.Drawing.Size(59, 17)
         Me.BootStart.TabIndex = 22
         Me.BootStart.Text = "Enable"
         Me.BootStart.UseVisualStyleBackColor = True
@@ -995,10 +969,9 @@ Partial Class Expert
         'AutoStartCheckbox
         '
         Me.AutoStartCheckbox.AutoSize = True
-        Me.AutoStartCheckbox.Location = New System.Drawing.Point(17, 42)
-        Me.AutoStartCheckbox.Margin = New System.Windows.Forms.Padding(4)
+        Me.AutoStartCheckbox.Location = New System.Drawing.Point(13, 34)
         Me.AutoStartCheckbox.Name = "AutoStartCheckbox"
-        Me.AutoStartCheckbox.Size = New System.Drawing.Size(74, 21)
+        Me.AutoStartCheckbox.Size = New System.Drawing.Size(59, 17)
         Me.AutoStartCheckbox.TabIndex = 21
         Me.AutoStartCheckbox.Text = "Enable"
         Me.AutoStartCheckbox.UseVisualStyleBackColor = True
@@ -1006,11 +979,9 @@ Partial Class Expert
         'GroupBox5
         '
         Me.GroupBox5.Controls.Add(Me.AutoLoadCheckbox)
-        Me.GroupBox5.Location = New System.Drawing.Point(300, 398)
-        Me.GroupBox5.Margin = New System.Windows.Forms.Padding(4)
+        Me.GroupBox5.Location = New System.Drawing.Point(225, 341)
         Me.GroupBox5.Name = "GroupBox5"
-        Me.GroupBox5.Padding = New System.Windows.Forms.Padding(4)
-        Me.GroupBox5.Size = New System.Drawing.Size(252, 59)
+        Me.GroupBox5.Size = New System.Drawing.Size(189, 48)
         Me.GroupBox5.TabIndex = 55
         Me.GroupBox5.TabStop = False
         Me.GroupBox5.Text = "AutoLoad on Teleport"
@@ -1018,9 +989,9 @@ Partial Class Expert
         '
         'Expert
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1196, 498)
+        Me.ClientSize = New System.Drawing.Size(897, 463)
         Me.Controls.Add(Me.PictureBox3)
         Me.Controls.Add(Me.GroupBox5)
         Me.Controls.Add(Me.AutoStart)
@@ -1032,7 +1003,6 @@ Partial Class Expert
         Me.Controls.Add(Me.GroupBox2)
         Me.Controls.Add(Me.GroupBox7)
         Me.Controls.Add(Me.GroupBox1)
-        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.Name = "Expert"
         Me.Text = "Expert"
         Me.GroupBox3.ResumeLayout(False)
@@ -1052,6 +1022,7 @@ Partial Class Expert
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox7.ResumeLayout(False)
         Me.GroupBox7.PerformLayout()
+        CType(Me.PictureBox8, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
         Me.GridGroup.ResumeLayout(False)
@@ -1101,8 +1072,7 @@ Partial Class Expert
     Friend WithEvents Label4 As Label
     Friend WithEvents DiagnosticPort As TextBox
     Friend WithEvents GroupBox7 As GroupBox
-    Friend WithEvents StatsButton As Button
-    Friend WithEvents WebStats As CheckBox
+    Friend WithEvents Clouds As CheckBox
     Friend WithEvents GroupBox1 As GroupBox
     Friend WithEvents PhysicsSeparate As RadioButton
     Friend WithEvents PhysicsNone As RadioButton
@@ -1149,4 +1119,10 @@ Partial Class Expert
     Friend WithEvents AutoLoadCheckbox As CheckBox
     Friend WithEvents RobustServer As TextBox
     Friend WithEvents Label16 As Label
+    Friend WithEvents DomainUpDown1 As DomainUpDown
+    Friend WithEvents PictureBox8 As PictureBox
+    Friend WithEvents SmtpPort As TextBox
+    Friend WithEvents Label24 As Label
+    Friend WithEvents SmtpHost As TextBox
+    Friend WithEvents Label23 As Label
 End Class

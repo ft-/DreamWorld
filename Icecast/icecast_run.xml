@@ -1,10 +1,10 @@
 <icecast>
-<hostname></hostname>
-<location>DreamGrid</location>
+<hostname>Heriwin.Outworldz.net</hostname>
+<location>DreamWorld</location>
 <admin></admin>
 <shoutcast-mount>/stream</shoutcast-mount>
 <listen-socket>
-    <port>8000</port>
+    <port>8080</port>
 </listen-socket>
 <listen-socket>
    <port>8081</port>
@@ -21,10 +21,10 @@
     <burst-size>65535</burst-size>
 </limits>
 <authentication>
-<source-password>AGoodpassword</source-password>
-<relay-password>AGoodpassword</relay-password>
+<source-password>A password</source-password>
+<relay-password>A password</relay-password>
 <admin-user>admin</admin-user>
-<admin-password>AGreatpassword</admin-password>
+<admin-password>fred</admin-password>
 </authentication>
 <http-headers>
     <header name="Access-Control-Allow-Origin" value="*"/>

@@ -1,10 +1,5 @@
 quit
 quit
-Test
-User
-create user
-quit
-quit
 quit
 quit
 quit
@@ -98,4 +93,9 @@ reset user password Wifi Admin ABC123
 quit
 quit
 create user Test User
+quit
+quit
+quit
+set log level all
+set log level allert New content just loaded.
 quit

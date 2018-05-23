@@ -304,17 +304,17 @@ Public Class RegionList
             If (e.CurrentValue = CheckState.Unchecked) Then
                 RegionClass.RegionEnabled(n) = True
                 ' and region file on disk
-                Form1.MySetting.LoadIni(RegionClass.RegionPath(n), ";")
-                Form1.MySetting.SetIni(RegionClass.RegionName(n), "Enabled", "true")
-                Form1.MySetting.SaveINI()
+                Form1.MySetting.LoadOtherIni(RegionClass.RegionPath(n), ";")
+                Form1.MySetting.SetOtherIni(RegionClass.RegionName(n), "Enabled", "true")
+                Form1.MySetting.SaveOtherINI()
                 RegionClass.ProcessID(n) = 0
                 Application.DoEvents()
             ElseIf (e.CurrentValue = CheckState.Checked) Then
                 RegionClass.RegionEnabled(n) = False
                 ' and region file on disk
-                Form1.MySetting.LoadIni(RegionClass.RegionPath(n), ";")
-                Form1.MySetting.SetIni(RegionClass.RegionName(n), "Enabled", "false")
-                Form1.MySetting.SaveINI()
+                Form1.MySetting.LoadOtherIni(RegionClass.RegionPath(n), ";")
+                Form1.MySetting.SetOtherIni(RegionClass.RegionName(n), "Enabled", "false")
+                Form1.MySetting.SaveOtherINI()
                 Application.DoEvents()
             End If
         End If
@@ -345,9 +345,10 @@ Public Class RegionList
             ListView1.CheckBoxes = False
             ListView1.View = View.List
         ElseIf TheView = 1 Then
+            ListView1.Show()
             ListView1.CheckBoxes = False
             ListView1.View = View.LargeIcon
-        ElseIf TheView = 2 Then
+        ElseIf TheView = 3 Then
             ListView1.CheckBoxes = True
             ListView1.View = View.Details
         End If
@@ -469,9 +470,8 @@ Public Class RegionList
             ItemsAreChecked = True
         End If
 
-
-
     End Sub
+
 
 #End Region
 

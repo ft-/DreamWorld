@@ -62,17 +62,17 @@ Public Class DNSName
             Dim address As IPAddress = Nothing
             If IPAddress.TryParse(IP, address) Then
                 Form1.MySetting.DNSName = TextBox1.Text
-                Form1.MySetting.SaveINI()
+                Form1.MySetting.SaveMyINI()
                 Me.Close()
                 Return
             End If
             MsgBox("Coud net use that name.  Must be valid domain name, a XYZ.Outworldz.net name, the IP address of this machine or the router, a dynamic DNS name.", vbInformation, "Name Needed")
             Form1.MySetting.DNSName = TextBox1.Text
-            Form1.MySetting.SaveINI()
+            Form1.MySetting.SaveMyINI()
 
         Else
             Form1.MySetting.DNSName = TextBox1.Text
-            Form1.MySetting.SaveINI()
+            Form1.MySetting.SaveMyINI()
 
             Me.Close()
         End If
