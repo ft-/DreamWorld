@@ -15,7 +15,7 @@ OutworldzFiles/Opensim*/bin/ScriptEngines
 OutworldzFiles/Opensim*/bin/j2kDecodeCache
 OutworldzFiles/Opensim*/bin/maptiles
 
-OutworldzFiles/addins-registry/
+OutworldzFiles/Opensim/addins-registry/
 OutworldzFiles/Init.txt
 OutworldzFiles/Outworldz.log
 OutworldzFiles/Opensim/bin/assetcache/*
@@ -23,6 +23,8 @@ OutworldzFiles/Opensim/bin/ScriptEngines
 OutworldzFiles/Opensim/bin/j2kDecodeCache
 OutworldzFiles/Opensim/bin/maptiles
 OutworldzFiles/mysql/data/*.err
+
+Installer_Src/2010/SetupDreamWorld/Setup DreamWorld/obj/*
 
 Thumbs.db
 .vs/*
