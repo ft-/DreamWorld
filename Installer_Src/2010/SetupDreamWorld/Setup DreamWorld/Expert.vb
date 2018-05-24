@@ -153,16 +153,16 @@ Public Class Expert
         Form1.MySetting.SaveMyINI()
     End Sub
 
-    Private Sub SmtpUsername_TextChanged(sender As Object, e As EventArgs) Handles GmailUsername.TextChanged
+    Private Sub SmtpUsername_TextChanged(sender As Object, e As EventArgs)
         Form1.MySetting.SmtpUsername = GmailUsername.Text
         Form1.MySetting.SaveMyINI()
     End Sub
 
-    Private Sub SmtpUsername_Click(sender As Object, e As EventArgs) Handles GmailPassword.Click
+    Private Sub SmtpUsername_Click(sender As Object, e As EventArgs)
         GmailPassword.UseSystemPasswordChar = False
     End Sub
 
-    Private Sub SmtpPassword_TextChanged(sender As Object, e As EventArgs) Handles GmailPassword.TextChanged
+    Private Sub SmtpPassword_TextChanged(sender As Object, e As EventArgs)
         Form1.MySetting.SmtpPassword = GmailPassword.Text
         Form1.MySetting.SaveMyINI()
     End Sub
@@ -195,14 +195,20 @@ Public Class Expert
 #End Region
 
 #Region "Gods"
+    Private Sub CheckBox1_CheckedChanged_2(sender As Object, e As EventArgs) Handles AllowGods.CheckedChanged
+        Form1.MySetting.Allow_grid_gods = AllowGods.Checked
+        Form1.MySetting.SaveMyINI()
+    End Sub
 
     Private Sub RegionGod_CheckedChanged(sender As Object, e As EventArgs) Handles RegionGod.CheckedChanged
-        Form1.MySetting.region_owner_is_god = RegionGod.Checked
+        Form1.MySetting.Region_owner_is_god = RegionGod.Checked
+        If RegionGod.Checked Then AllowGods.Checked = True
         Form1.MySetting.SaveMyINI()
     End Sub
 
     Private Sub ManagerGod_CheckedChanged(sender As Object, e As EventArgs) Handles ManagerGod.CheckedChanged
-        Form1.MySetting.region_manager_is_god = ManagerGod.Checked
+        Form1.MySetting.Region_manager_is_god = ManagerGod.Checked
+        If ManagerGod.Checked Then AllowGods.Checked = True
         Form1.MySetting.SaveMyINI()
     End Sub
 
@@ -482,16 +488,15 @@ Public Class Expert
 
     End Sub
 
-    Private Sub SmtpHost_TextChanged(sender As Object, e As EventArgs) Handles SmtpHost.TextChanged
+    Private Sub SmtpHost_TextChanged(sender As Object, e As EventArgs)
         Form1.MySetting.SmtpHost = SmtpHost.Text
         Form1.MySetting.SaveMyINI()
     End Sub
 
-    Private Sub SmtpPort_TextChanged(sender As Object, e As EventArgs) Handles SmtpPort.TextChanged
+    Private Sub SmtpPort_TextChanged(sender As Object, e As EventArgs)
         Form1.MySetting.SmtpPort = SmtpPort.Text
         Form1.MySetting.SaveMyINI()
     End Sub
-
 
 
 #End Region

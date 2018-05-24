@@ -3,10 +3,6 @@ quit
 quit
 quit
 quit
-quit
-quit
-quit
-quit
 create user Test User
 quit
 quit
@@ -98,4 +94,7 @@ quit
 quit
 set log level all
 set log level allert New content just loaded.
+quit
+createuser Ferd Frederix
+create user Ferd Frederix
 quit

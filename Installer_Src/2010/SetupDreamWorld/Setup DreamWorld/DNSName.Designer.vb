@@ -28,34 +28,32 @@ Partial Class DNSName
         Me.NextNameButton = New System.Windows.Forms.Button()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.PictureBox4 = New System.Windows.Forms.PictureBox()
+        Me.CheckBox1 = New System.Windows.Forms.CheckBox()
         CType(Me.PictureBox4, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'TextBox1
         '
-        Me.TextBox1.Location = New System.Drawing.Point(8, 12)
-        Me.TextBox1.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TextBox1.Location = New System.Drawing.Point(6, 10)
         Me.TextBox1.Name = "TextBox1"
-        Me.TextBox1.Size = New System.Drawing.Size(241, 22)
+        Me.TextBox1.Size = New System.Drawing.Size(182, 20)
         Me.TextBox1.TabIndex = 1
         Me.ToolTip1.SetToolTip(Me.TextBox1, "Alpha-Numeric plus - ( no spaces or special chars)")
         '
         'SaveButton
         '
-        Me.SaveButton.Location = New System.Drawing.Point(165, 43)
-        Me.SaveButton.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.SaveButton.Location = New System.Drawing.Point(12, 87)
         Me.SaveButton.Name = "SaveButton"
-        Me.SaveButton.Size = New System.Drawing.Size(85, 28)
+        Me.SaveButton.Size = New System.Drawing.Size(64, 23)
         Me.SaveButton.TabIndex = 5
         Me.SaveButton.Text = "Save"
         Me.SaveButton.UseVisualStyleBackColor = True
         '
         'NextNameButton
         '
-        Me.NextNameButton.Location = New System.Drawing.Point(8, 43)
-        Me.NextNameButton.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.NextNameButton.Location = New System.Drawing.Point(6, 36)
         Me.NextNameButton.Name = "NextNameButton"
-        Me.NextNameButton.Size = New System.Drawing.Size(104, 28)
+        Me.NextNameButton.Size = New System.Drawing.Size(78, 23)
         Me.NextNameButton.TabIndex = 6
         Me.NextNameButton.Text = "Next Name"
         Me.NextNameButton.UseVisualStyleBackColor = True
@@ -68,25 +66,36 @@ Partial Class DNSName
         'PictureBox4
         '
         Me.PictureBox4.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.PictureBox4.Location = New System.Drawing.Point(276, 12)
-        Me.PictureBox4.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.PictureBox4.Location = New System.Drawing.Point(186, 53)
         Me.PictureBox4.Name = "PictureBox4"
-        Me.PictureBox4.Size = New System.Drawing.Size(37, 39)
+        Me.PictureBox4.Size = New System.Drawing.Size(28, 32)
         Me.PictureBox4.TabIndex = 1859
         Me.PictureBox4.TabStop = False
         Me.ToolTip1.SetToolTip(Me.PictureBox4, "Click for Help on DNS Names")
         '
+        'CheckBox1
+        '
+        Me.CheckBox1.AutoSize = True
+        Me.CheckBox1.Location = New System.Drawing.Point(99, 91)
+        Me.CheckBox1.Name = "CheckBox1"
+        Me.CheckBox1.Size = New System.Drawing.Size(105, 17)
+        Me.CheckBox1.TabIndex = 1860
+        Me.CheckBox1.Text = "Display Publicly?"
+        Me.ToolTip1.SetToolTip(Me.CheckBox1, "GDPR rules require you to opt in to making your sim publicly available on Hyerica" &
+        ".com Click to agree.")
+        Me.CheckBox1.UseVisualStyleBackColor = True
+        '
         'DNSName
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(336, 91)
+        Me.ClientSize = New System.Drawing.Size(252, 122)
+        Me.Controls.Add(Me.CheckBox1)
         Me.Controls.Add(Me.PictureBox4)
         Me.Controls.Add(Me.NextNameButton)
         Me.Controls.Add(Me.SaveButton)
         Me.Controls.Add(Me.TextBox1)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
-        Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.Name = "DNSName"
         Me.Text = "DNS Name"
         CType(Me.PictureBox4, System.ComponentModel.ISupportInitialize).EndInit()
@@ -99,4 +108,5 @@ Partial Class DNSName
     Friend WithEvents NextNameButton As Button
     Friend WithEvents ToolTip1 As ToolTip
     Friend WithEvents PictureBox4 As PictureBox
+    Friend WithEvents CheckBox1 As CheckBox
 End Class

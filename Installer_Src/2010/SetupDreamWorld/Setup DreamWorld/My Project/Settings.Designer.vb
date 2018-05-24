@@ -80,18 +80,6 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
-        Public Property RunViewer() As Boolean
-            Get
-                Return CType(Me("RunViewer"),Boolean)
-            End Get
-            Set
-                Me("RunViewer") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("2000")>  _
         Public Property CoordX() As String
             Get
@@ -255,18 +243,6 @@ Namespace My
             End Get
             Set
                 Me("ChatTime") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
-        Public Property ViewerInstalled() As Boolean
-            Get
-                Return CType(Me("ViewerInstalled"),Boolean)
-            End Get
-            Set
-                Me("ViewerInstalled") = value
             End Set
         End Property
         
@@ -903,18 +879,6 @@ Namespace My
             End Get
             Set
                 Me("PublicPort") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("True")>  _
-        Public Property Onlook() As String
-            Get
-                Return CType(Me("Onlook"),String)
-            End Get
-            Set
-                Me("Onlook") = value
             End Set
         End Property
         

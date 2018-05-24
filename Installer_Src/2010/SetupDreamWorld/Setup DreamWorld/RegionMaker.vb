@@ -617,7 +617,7 @@ Public Class RegionMaker
         'Content-Length:  118
         'Connection: Keep-Alive
         '
-        '{"alert":"region_ready","login":"enabled","region_name":"Welcome","region_id":"19f6adf0-5f35-4106-bcb8-dc3f2e846b89"}
+        '{"alert":"region_ready","login":"enabled","region_name":"Region 2","region_id":"19f6adf0-5f35-4106-bcb8-dc3f2e846b89"}
 
         ' we want region name, UUID and server_startup
         ' could also be a probe from the outworldz to check if ports are open.

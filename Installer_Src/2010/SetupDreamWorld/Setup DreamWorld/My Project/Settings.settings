@@ -8,9 +8,6 @@
     <Setting Name="PublicIP" Type="System.String" Scope="User">
       <Value Profile="(Default)">127.0.0.1</Value>
     </Setting>
-    <Setting Name="RunViewer" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
     <Setting Name="CoordX" Type="System.String" Scope="User">
       <Value Profile="(Default)">2000</Value>
     </Setting>
@@ -52,9 +49,6 @@
     </Setting>
     <Setting Name="ChatTime" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">1000</Value>
-    </Setting>
-    <Setting Name="ViewerInstalled" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="ImageNum" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
@@ -214,9 +208,6 @@
     </Setting>
     <Setting Name="PublicPort" Type="System.String" Scope="User">
       <Value Profile="(Default)">8001</Value>
-    </Setting>
-    <Setting Name="Onlook" Type="System.String" Scope="User">
-      <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="SimName" Type="System.String" Scope="User">
       <Value Profile="(Default)">DreamWorld</Value>

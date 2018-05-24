@@ -849,6 +849,14 @@ Public Class Form1
         End If
 
         ' Gods
+
+
+        If (MySetting.allow_grid_gods) Then
+            MySetting.SetOtherIni("Permissions", "allow_grid_gods", "true")
+        Else
+            MySetting.SetOtherIni("Permissions", "allow_grid_gods", "false")
+        End If
+
         If (MySetting.Region_owner_is_god Or MySetting.Region_manager_is_god) Then
             MySetting.SetOtherIni("Permissions", "allow_grid_gods", "true")
         Else
@@ -3377,8 +3385,9 @@ Public Class Form1
 
         Try
             Checkname = client.DownloadString("http://outworldz.net/dns.plx/?GridName=" + name _
-                                              + "&ID=" + MySetting.MachineID _
+                                              + "&MachineID=" + MySetting.MachineID _
                                               + "&Port=" + MySetting.HttpPort _
+                                              + "&Public=" + MySetting.GDPR _
                                               + "&r=" + Random())
         Catch ex As Exception
             Log("Warn: Cannot check the DNS Name" + ex.Message)
