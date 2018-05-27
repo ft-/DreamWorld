@@ -27,6 +27,7 @@ Public Class AdvancedForm
 
     Private Sub Loaded(sender As Object, e As EventArgs) Handles Me.Load
 
+
         uPnPEnabled.Checked = My.Settings.UPnPEnabled
         PublicPort.Text = My.Settings.PublicPort
         PrivatePort.Text = My.Settings.PrivatePort
@@ -87,7 +88,7 @@ Public Class AdvancedForm
         SmtpPassword.Text = My.Settings.SmtpPassword
         SmtpUsername.Text = My.Settings.SmtpUsername
 
-        DnsName.Text = My.Settings.DnsName
+
         WebStats.Checked = My.Settings.WebStats
 
         DbConnection.Text = My.Settings.DBSource
@@ -127,7 +128,6 @@ Public Class AdvancedForm
             Form1.Log("Info:0.9.1 enabled")
         End If
 
-        GridName.Text = My.Settings.SimName
 
         If My.Settings.MapType = "None" Then
             MapNone.Checked = True
@@ -146,25 +146,39 @@ Public Class AdvancedForm
             MapPicture.Image = My.Resources.Best
         End If
 
+        ' DNS Group
+        GridName.Text = My.Settings.SimName
+        DnsName.Text = My.Settings.DnsName
+        MachineIDTextBox.Text = My.Settings.MachineID
+        GDPRCheckBox.Checked = My.Settings.GDPR
+
+        Try
+            PictureBox8.Image = Bitmap.FromFile(Form1.MyFolder & "\OutworldzFiles\Photo.png")
+        Catch
+            PictureBox8.Image = My.Resources.blankbox
+        End Try
+
         LoadWelcomeBox()
+
     End Sub
 
     Private Sub Form1_Closed(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Closed
 
-        If Form1.Running Then
-            Form1.ConsoleCommand("reset user password Wifi Admin " + My.Settings.Password + "{Enter}")
-        End If
 
     End Sub
 
     Private Sub TextBox1_TextChanged_1(sender As Object, e As EventArgs) Handles DbPort.TextChanged
+
         My.Settings.MySqlPort = DbPort.Text
         My.Settings.Save()
+
     End Sub
 
     Private Sub ABEnabled_CheckedChanged(sender As Object, e As EventArgs) Handles AutoBackup.CheckedChanged
+
         My.Settings.AutoBackup = AutoBackup.Checked
         My.Settings.Save()
+
     End Sub
 
     Private Sub AutoBackupInterval_SelectedIndexChanged(sender As Object, e As EventArgs) Handles AutoBackupInterval.SelectedIndexChanged
@@ -180,6 +194,7 @@ Public Class AdvancedForm
     End Sub
 
     Private Sub AutoBackupKeepFilesForDays_TextChanged(sender As Object, e As EventArgs) Handles AutoBackupKeepFilesForDays.TextChanged
+
         If Convert.ToInt32(AutoBackupKeepFilesForDays.Text) > 0 Then
             My.Settings.KeepForDays = Convert.ToInt32(AutoBackupKeepFilesForDays.Text)
             My.Settings.Save()
@@ -188,30 +203,34 @@ Public Class AdvancedForm
     End Sub
 
     Private Sub TextBox1_TextChanged_2(sender As Object, e As EventArgs) Handles AdminFirst.TextChanged
+
         My.Settings.AdminFirst = AdminFirst.Text
         My.Settings.Save()
 
     End Sub
 
     Private Sub AdminLast_TextChanged(sender As Object, e As EventArgs) Handles AdminLast.TextChanged
+
         My.Settings.AdminLast = AdminLast.Text
         My.Settings.Save()
 
     End Sub
 
     Private Sub Password_click(sender As Object, e As EventArgs) Handles Password.Click
+
         Password.UseSystemPasswordChar = False
 
     End Sub
 
     Private Sub Password_LostFocus(sender As Object, e As EventArgs) Handles Password.LostFocus
+
         If Form1.Running Then
             Form1.ConsoleCommand("reset user password Wifi Admin " + My.Settings.Password + "{Enter}")
         End If
         My.Settings.Password = Password.Text
         My.Settings.Save()
-    End Sub
 
+    End Sub
 
     Private Sub ChatSpeed_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ChatSpeed.SelectedIndexChanged
 
@@ -226,12 +245,12 @@ Public Class AdvancedForm
         My.Settings.ChatTime = ChatTime
         My.Settings.Save()
         Form1.gChatTime = ChatTime
+
     End Sub
 
 #End Region
 
 #Region "Gods"
-
 
     Private Sub AllowGods_CheckedChanged(sender As Object, e As EventArgs) Handles AllowGods.CheckedChanged
 
@@ -256,6 +275,7 @@ Public Class AdvancedForm
 
 
     Private Sub TimerInterval_TextChanged(sender As Object, e As EventArgs) Handles TimerInterval.TextChanged
+
         If Len(TimerInterval.Text) > 0 Then
             My.Settings.TimerInterval = CInt(TimerInterval.Text)
             If (My.Settings.TimerInterval > 0) Then
@@ -268,15 +288,18 @@ Public Class AdvancedForm
             My.Settings.TimerInterval = 0
             My.Settings.Save()
         End If
+
     End Sub
 
     Private Sub TextBox1_TextChanged_3(sender As Object, e As EventArgs) Handles AdminEmail.TextChanged
+
         My.Settings.AdminEmail = AdminEmail.Text
         My.Settings.Save()
 
     End Sub
 
     Private Sub AccountConfirmationRequired_CheckedChanged(sender As Object, e As EventArgs) Handles AccountConfirmationRequired.CheckedChanged
+
         My.Settings.AccountConfirmationRequired = AccountConfirmationRequired.Checked
         My.Settings.Save()
 
@@ -284,17 +307,21 @@ Public Class AdvancedForm
 
 
     Private Sub DnsName_TextChanged(sender As Object, e As EventArgs) Handles DnsName.TextChanged
+
         My.Settings.DnsName = DnsName.Text
         My.Settings.Save()
 
     End Sub
 
     Private Sub DnsName_TextClicked(sender As Object, e As EventArgs) Handles DnsName.Click
+
         Dim F As New DNSName
         F.Show()
+
     End Sub
 
-    Private Sub CheckBox1_CheckedChanged(sender As Object, e As EventArgs) Handles WebStats.CheckedChanged
+    Private Sub Webstats_CheckedChanged(sender As Object, e As EventArgs) Handles WebStats.CheckedChanged
+
         My.Settings.WebStats = WebStats.Checked
         My.Settings.Save()
         Form1.WebStatsToolStripMenuItem.Visible = WebStats.Checked
@@ -302,6 +329,7 @@ Public Class AdvancedForm
     End Sub
 
     Private Sub DatabaseNameUser_TextChanged(sender As Object, e As EventArgs) Handles DbName.TextChanged
+
         My.Settings.DBName = DbName.Text
         My.Settings.Save()
 
@@ -315,35 +343,43 @@ Public Class AdvancedForm
     End Sub
 
     Private Sub DbUsername_TextChanged(sender As Object, e As EventArgs) Handles DbUsername.TextChanged
+
         My.Settings.DBUserID = DbUsername.Text
         My.Settings.Save()
 
     End Sub
     Private Sub DbPassword_click(sender As Object, e As EventArgs) Handles DbPassword.Click
+
         DbPassword.UseSystemPasswordChar = False
 
     End Sub
 
     Private Sub DbPassword_TextChanged(sender As Object, e As EventArgs) Handles DbPassword.TextChanged
+
         My.Settings.DBPassword = DbPassword.Text
         My.Settings.Save()
 
     End Sub
 
     Private Sub TextBox1_TextChanged(sender As Object, e As EventArgs) Handles SplashPage.TextChanged
+
         My.Settings.SplashPage = SplashPage.Text
         My.Settings.Save()
 
     End Sub
 
     Private Sub PrivatePort_TextChanged(sender As Object, e As EventArgs) Handles PrivatePort.TextChanged
+
         My.Settings.PrivatePort = PrivatePort.Text
         My.Settings.Save()
+
     End Sub
 
     Private Sub PublicPort_TextChanged(sender As Object, e As EventArgs) Handles PublicPort.TextChanged
+
         My.Settings.PublicPort = PublicPort.Text
         My.Settings.Save()
+
     End Sub
 
     Private Sub RegionButton1_Click(sender As Object, e As EventArgs) Handles RegionButton.Click
@@ -373,6 +409,7 @@ Public Class AdvancedForm
             Y += 100
             X += 100
         End While
+
     End Sub
 
     Private Sub AddRegion_Click(sender As Object, e As EventArgs) Handles AddRegion.Click
@@ -401,48 +438,56 @@ Public Class AdvancedForm
         Catch ex As Exception
             Form1.Log("Info:" + ex.Message)
         End Try
+
     End Sub
 
     Private Sub PhysicsNone_CheckedChanged(sender As Object, e As EventArgs) Handles PhysicsNone.CheckedChanged
+
         If PhysicsNone.Checked Then
             My.Settings.Physics = 0
             My.Settings.Save()
-
         End If
+
     End Sub
 
     Private Sub RadioButton1_CheckedChanged(sender As Object, e As EventArgs) Handles PhysicsODE.CheckedChanged
+
         If PhysicsODE.Checked Then
             My.Settings.Physics = 1
             My.Settings.Save()
-
         End If
+
     End Sub
 
     Private Sub PhysicsBullet_CheckedChanged(sender As Object, e As EventArgs) Handles PhysicsBullet.CheckedChanged
+
         If PhysicsBullet.Checked Then
             My.Settings.Physics = 2
             My.Settings.Save()
-
         End If
+
     End Sub
 
     Private Sub PhysicsSeparate_CheckedChanged(sender As Object, e As EventArgs) Handles PhysicsSeparate.CheckedChanged
+
         If PhysicsSeparate.Checked Then
             My.Settings.Physics = 3
             My.Settings.Save()
-
         End If
+
     End Sub
 
     Private Sub PhysicsubODE_CheckedChanged(sender As Object, e As EventArgs) Handles PhysicsubODE.CheckedChanged
+
         If PhysicsubODE.Checked Then
             My.Settings.Physics = 4
             My.Settings.Save()
         End If
+
     End Sub
 
     Private Sub OpensImNew_CheckedChanged(sender As Object, e As EventArgs) Handles OpensImNew.CheckedChanged
+
         My.Settings.GridFolder = "Opensim-0.9"
         My.Settings.Save()
 
@@ -450,9 +495,11 @@ Public Class AdvancedForm
             My.Computer.FileSystem.RenameFile(Form1.MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\Regions\RegionConfig.ini", "Outworldz.ini")
         Catch ex As Exception
         End Try
+
     End Sub
 
     Private Sub OpensimOld_CheckedChanged(sender As Object, e As EventArgs) Handles OpensimOld.CheckedChanged
+
         My.Settings.GridFolder = "Opensim"
         My.Settings.Save()
 
@@ -460,35 +507,51 @@ Public Class AdvancedForm
             My.Computer.FileSystem.RenameFile(Form1.MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\Regions\RegionConfig.ini", "Outworldz.ini")
         Catch ex As Exception
         End Try
+
     End Sub
 
+    Private Sub MachineIDTextBox_TextChanged(sender As Object, e As EventArgs) Handles MachineIDTextBox.TextChanged
+
+        My.Settings.MachineID = MachineIDTextBox.Text
+        My.Settings.Save()
+
+    End Sub
+
+
     Private Sub GridName_TextChanged(sender As Object, e As EventArgs) Handles GridName.TextChanged
+
         My.Settings.SimName = GridName.Text
         My.Settings.Save()
 
     End Sub
 
     Private Sub DnsName_TextChanged_1(sender As Object, e As EventArgs) Handles DnsName.TextChanged
+
         My.Settings.PublicIP = DnsName.Text
         My.Settings.Save()
+
     End Sub
 
     Private Sub StatsButton_Click(sender As Object, e As EventArgs) Handles StatsButton.Click
+
         If Form1.isRunning And WebStats.Checked Then
             Dim webAddress As String = "http://127.0.0.1:" + My.Settings.HttpPort + "/SStats/"
             Process.Start(webAddress)
         Else
             Print("Opensim is not running. Cannot open the Statistics web page.")
         End If
+
     End Sub
 
     Private Sub VoiceButton1_Click(sender As Object, e As EventArgs) Handles VoiceButton1.Click
+
         Dim Voice As New Form2
         ' Set the new form's desktop location so it appears below and
         ' to the right of the current form.
         Voice.SetDesktopLocation(300, 200)
         Voice.Activate()
         Voice.Visible = True
+
     End Sub
     Private Sub TOSButton_Click(sender As Object, e As EventArgs) Handles TOSButton.Click
 
@@ -502,11 +565,14 @@ Public Class AdvancedForm
     End Sub
 
     Private Sub Http_Port_TextChanged(sender As Object, e As EventArgs) Handles httpPort.TextChanged
+
         My.Settings.HttpPort = httpPort.Text
         My.Settings.Save()
+
     End Sub
 
     Private Sub MapNone_CheckedChanged(sender As Object, e As EventArgs) Handles MapNone.CheckedChanged
+
         My.Settings.MapType = "None"
         My.Settings.Save()
         MapPicture.Image = Nothing
@@ -514,6 +580,7 @@ Public Class AdvancedForm
     End Sub
 
     Private Sub MapSimple_CheckedChanged(sender As Object, e As EventArgs) Handles MapSimple.CheckedChanged
+
         My.Settings.MapType = "Simple"
         My.Settings.Save()
         MapPicture.Image = My.Resources.Simple
@@ -521,6 +588,7 @@ Public Class AdvancedForm
     End Sub
 
     Private Sub MapGood_CheckedChanged(sender As Object, e As EventArgs) Handles MapGood.CheckedChanged
+
         My.Settings.MapType = "Good"
         My.Settings.Save()
         MapPicture.Image = My.Resources.Good
@@ -528,6 +596,7 @@ Public Class AdvancedForm
     End Sub
 
     Private Sub MapBetter_CheckedChanged(sender As Object, e As EventArgs) Handles MapBetter.CheckedChanged
+
         My.Settings.MapType = "Better"
         My.Settings.Save()
         MapPicture.Image = My.Resources.Better
@@ -535,6 +604,7 @@ Public Class AdvancedForm
     End Sub
 
     Private Sub MapBest_CheckedChanged(sender As Object, e As EventArgs) Handles MapBest.CheckedChanged
+
         My.Settings.MapType = "Best"
         My.Settings.Save()
         MapPicture.Image = My.Resources.Best
@@ -627,11 +697,14 @@ Public Class AdvancedForm
         Else
             MsgBox("Cannot resolve " + My.Settings.DnsName + ". Check for illegal characters")
         End If
+
     End Sub
 
     Private Sub HypericaButton_Click(sender As Object, e As EventArgs) Handles HypericaButton.Click
+
         Dim webAddress As String = "http://www.hyperica.com/directory/"
         Process.Start(webAddress)
+
     End Sub
 
     Private Sub GloebitsButton_Click(sender As Object, e As EventArgs) Handles GloebitsButton.Click
@@ -685,7 +758,6 @@ Public Class AdvancedForm
         Dim webAddress As String = Form1.Domain + "/Outworldz_installer/technical.htm#RegionDatabase"
         Process.Start(webAddress)
 
-
     End Sub
 
     Private Sub RegionHelp_Click(sender As Object, e As EventArgs) Handles RegionHelp.Click
@@ -702,10 +774,8 @@ Public Class AdvancedForm
 
     End Sub
 
-
-
-
 #End Region
+
 #Region "SMTP"
 
     Private Sub SmtpUsername_TextChanged(sender As Object, e As EventArgs) Handles SmtpUsername.TextChanged
@@ -737,6 +807,48 @@ Public Class AdvancedForm
         My.Settings.SMTPPort = SMTPPortTextBox.Text
         My.Settings.Save()
     End Sub
+
+    Private Sub PictureBox8_Click(sender As Object, e As EventArgs) Handles PictureBox8.Click
+        Dim ofd As New OpenFileDialog
+        ofd.Filter = "PNG Files (*.PNG,*.png)|*.png;|All Files (*.*)|*.*"
+        ofd.FilterIndex = 1
+        ofd.Multiselect = False
+        If ofd.ShowDialog = DialogResult.OK Then
+            If ofd.FileName <> String.Empty Then
+                PictureBox8.Image = Bitmap.FromFile(ofd.FileName)
+                Try
+                    My.Computer.FileSystem.DeleteFile(Form1.MyFolder & "\OutworldzFiles\Photo.png")
+                Catch
+                End Try
+                Try
+                    PictureBox8.Image.Save(Form1.MyFolder & "\OutworldzFiles\Photo.png", System.Drawing.Imaging.ImageFormat.Png)
+                Catch ex As Exception
+                End Try
+
+                Dim params As New Specialized.NameValueCollection
+                params.Add("MachineID", My.Settings.MachineID)
+                'params.Add("file", "Photo.png")
+
+                Dim Myupload As New UploadImage
+                Myupload.PostContent_UploadFile("https://www.outworldz.com/cgi/uploadphoto.plx", Form1.MyFolder & "\OutworldzFiles\Photo.png", params)
+
+            End If
+        End If
+    End Sub
+
+    Private Sub CheckBox1_CheckedChanged(sender As Object, e As EventArgs) Handles WebStats.CheckedChanged
+
+        My.Settings.WebStats = WebStats.Checked
+        My.Settings.Save()
+
+    End Sub
+
+    Private Sub GDPRCheckBox_CheckedChanged(sender As Object, e As EventArgs) Handles GDPRCheckBox.CheckedChanged
+        My.Settings.GDPR = GDPRCheckBox.Checked
+        My.Settings.Save()
+    End Sub
+
+
 
 
 #End Region

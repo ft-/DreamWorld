@@ -115,19 +115,6 @@ Public Class Form1
         End Set
     End Property
 
-    ' Save a random machine ID - we don't want any data to be sent that's personal or identifiable,  but it needs to be unique
-    Public Property Machine() As String
-        Get
-            Return My.Settings.MachineID
-        End Get
-        Set(ByVal Value As String)
-            If (My.Settings.MachineID = "") Then
-                My.Settings.MachineID = Value
-                My.Settings.Save()
-            End If
-        End Set
-    End Property
-
     Public Property Running() As Boolean
         Get
             Return isRunning
@@ -147,7 +134,7 @@ Public Class Form1
 
         ' Save a random machine ID - we don't want any data to be sent that's personal or identifiable,  but it needs to be unique\
         Randomize()
-        If Machine = "" Then Machine = Random()  ' a random machine ID
+        If My.Settings.MachineID = "" Then My.Settings.MachineID = Random()  ' a random machine ID
 
         'hide progress
         ProgressBar1.Visible = True
@@ -2130,7 +2117,7 @@ Public Class Form1
         End If
 
         Dim data
-        data = "&MachineID=" + Machine _
+        data = "&MachineID=" + My.Settings.MachineID _
             + "&V=" + MyVersion _
             + "&OV=" + SimVersion _
             + "&UpNp=" + UpNp _
@@ -2398,12 +2385,15 @@ Public Class Form1
         Dim Checkname As String = String.Empty
 
         Try
-            Checkname = client.DownloadString("http://outworldz.net/dns.plx/?GridName=" + name + GetPostData())
+            Checkname = client.DownloadString("http://outworldz.net/dnsm.plx/?GridName=" + name + GetPostData())
         Catch ex As Exception
             Log("Warn:Cannot check the DNS Name" + ex.Message)
         End Try
         If Checkname = "NEW" Or Checkname = "UPDATED" Then
             Return name
+        End If
+        If Checkname = "NAK" Then
+            MsgBox("DNS name is already in use. If this is your DNS name, make sure you have the correct Password or Machine ID that you used before.")
         End If
         Return ""
     End Function

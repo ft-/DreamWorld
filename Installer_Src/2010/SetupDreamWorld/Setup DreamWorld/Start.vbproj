@@ -228,6 +228,8 @@
     <Compile Include="TosForm.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="UploadImage.vb" />
+    <Compile Include="UploadInfo.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="..\..\..\Setup.resx">
@@ -393,6 +395,7 @@
     <None Include="Resources\Simple.jpg" />
     <None Include="Resources\disk_green.png" />
     <None Include="Resources\disk_yellow.png" />
+    <None Include="Resources\blankbox.jpg" />
     <Content Include="Resources\wp_habitat.gif" />
     <Content Include="Resources\wp_Inside_in_shadows.gif" />
     <Content Include="Resources\wp_Mooferd.gif" />
