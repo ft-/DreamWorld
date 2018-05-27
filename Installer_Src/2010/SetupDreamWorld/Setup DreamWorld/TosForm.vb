@@ -22,7 +22,7 @@ Public Class TosForm
     Private Sub Form1_Closed(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Closed
 
         ' save file MyFolder + "TOS.txt"
-        Using outputFile As New StreamWriter(Form1.MyFolder + "TOS.txt")
+        Using outputFile As New StreamWriter(Form1.MyFolder + "\TOS.txt")
             outputFile.WriteLine(RichTextBox1.Text)
         End Using
 
