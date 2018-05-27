@@ -7,6 +7,6 @@ Location = "2159,1266"
 InternalAddress = "0.0.0.0"
 InternalPort = 8010
 AllowAlternatePorts = False
-ExternalHostName = Foameth.Outworldz.net
+ExternalHostName = 127.0.0.1
 SizeX = 256
 SizeY = 256

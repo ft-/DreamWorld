@@ -356,3 +356,17 @@ td.userlevel {
   height:1px;
   margin:1.1em auto 0.75em auto;
 }
+
+li {
+  list-style-position: inside;
+}
+h5 {
+  font-size: large;
+  text-align:left;
+  margin-top: 20px;
+  color: #eeeeee;
+}
+p{
+  margin-top: 10px;
+  color: #eeeeee;
+}

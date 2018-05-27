@@ -42,6 +42,6 @@ Thumbs.db
 *.userprefs
 ~*
 *~
-obj/
+obj/*
 Release/
 Debug/

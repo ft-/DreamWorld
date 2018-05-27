@@ -869,6 +869,102 @@ Namespace My
                 Me("UPnPEnabled") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public Property GDPR() As Boolean
+            Get
+                Return CType(Me("GDPR"),Boolean)
+            End Get
+            Set
+                Me("GDPR") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public Property TOSEnabled() As Boolean
+            Get
+                Return CType(Me("TOSEnabled"),Boolean)
+            End Get
+            Set
+                Me("TOSEnabled") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("Please read and agree to the Terms of Service")>  _
+        Public Property TOSMessage() As String
+            Get
+                Return CType(Me("TOSMessage"),String)
+            End Get
+            Set
+                Me("TOSMessage") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public Property ShowToLocalUsers() As Boolean
+            Get
+                Return CType(Me("ShowToLocalUsers"),Boolean)
+            End Get
+            Set
+                Me("ShowToLocalUsers") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public Property ShowToForeignUsers() As Boolean
+            Get
+                Return CType(Me("ShowToForeignUsers"),Boolean)
+            End Get
+            Set
+                Me("ShowToForeignUsers") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property TOSText() As String
+            Get
+                Return CType(Me("TOSText"),String)
+            End Get
+            Set
+                Me("TOSText") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("smtp.gmail.com")>  _
+        Public Property SMTPServer() As String
+            Get
+                Return CType(Me("SMTPServer"),String)
+            End Get
+            Set
+                Me("SMTPServer") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("587")>  _
+        Public Property SMTPPort() As Integer
+            Get
+                Return CType(Me("SMTPPort"),Integer)
+            End Get
+            Set
+                Me("SMTPPort") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

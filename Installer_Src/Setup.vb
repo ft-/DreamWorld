@@ -30,15 +30,10 @@ Imports System.Threading
 
 Public Class Form1
 
-    ' Command line args:
-    '
-    '     '-debug' forces this to use the DebugPath folder for testing
-    '
-
 #Region "Declarations"
 
     Dim MyVersion As String = "1.77"
-    Dim DebugPath As String = "C:\Opensim\OpensimV1.75 Source"
+    Dim DebugPath As String = "C:\Opensim\Opensim DreamWorld Source"
     Public Domain As String = "http://www.outworldz.com"
 
     Public MyFolder As String   ' Holds the current folder that we are running in
@@ -863,6 +858,15 @@ Public Class Form1
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
         LoadIni(MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder & "\bin\config-include\MyWorld.ini", ";")
 
+        ' TOSModule
+        SetIni("TOSModule", "Enabled", My.Settings.TOSEnabled)
+        SetIni("TOSModule", "Message", My.Settings.TOSMessage)
+        SetIni("TOSModule", "ShowToLocalUsers", My.Settings.ShowToLocalUsers)
+        SetIni("TOSModule", "ShowToForeignUsers", My.Settings.ShowToForeignUsers)
+
+        My.Computer.FileSystem.CopyFile(MyFolder + "\TOS.txt", MyFolder + "\bin\WifiPages\termsofservice.html", True)
+
+
         ' set viewer Splash Page V 1.54
         SetIni("GridInfoService", "welcome", My.Settings.SplashPage)
 
@@ -971,10 +975,13 @@ Public Class Form1
 
 
         ' Wifi
+        SetIni("WifiService", "AdminFirst", My.Settings.AdminFirst)
+        SetIni("WifiService", "AdminLast", My.Settings.AdminLast)
         SetIni("WifiService", "AdminPassword", My.Settings.Password)
         SetIni("WifiService", "AdminEmail", My.Settings.AdminEmail)
 
-        ' V1.74 bug reported 
+        SetIni("WifiService", "SMTPServer", My.Settings.SMTPServer)
+        SetIni("WifiService", "SMTPPort", My.Settings.SMTPPort)
         SetIni("WifiService", "SmtpUsername", My.Settings.SmtpUsername)
         SetIni("WifiService", "SmtpPassword", My.Settings.SmtpPassword)
 
@@ -983,9 +990,6 @@ Public Class Form1
         Else
             SetIni("WifiService", "AccountConfirmationRequired", "false")
         End If
-
-        ' Gmail
-        SetIni("WifiService", "AdminPassword", My.Settings.Password)
 
         ' Autobackup
         If My.Settings.AutoBackup Then
@@ -2119,7 +2123,7 @@ Public Class Form1
 
 
         Dim data
-        data = "&Machine=" + Machine _
+        data = "&MachineID=" + Machine _
             + "&V=" + MyVersion _
             + "&OV=" + SimVersion _
             + "&UpNp=" + UpNp _

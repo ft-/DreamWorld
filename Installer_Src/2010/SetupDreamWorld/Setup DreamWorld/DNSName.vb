@@ -17,7 +17,7 @@ Public Class DNSName
         Me.Text = "DynDNS"
 
         TextBox1.Text = My.Settings.DnsName
-
+        CheckBox1.Checked = My.Settings.GDPR
         NextNameButton.Enabled = True
         If TextBox1.Text = String.Empty Then
             MsgBox("Type in a name for your grid, or just press 'Next' to get a suggested name. You can also use a Dynamic DNS name.", vbInformation)
@@ -102,7 +102,10 @@ Public Class DNSName
         Process.Start(webAddress)
     End Sub
 
-
+    Private Sub CheckBox1_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBox1.CheckedChanged
+        My.Settings.GDPR = CheckBox1.Checked
+        My.Settings.Save()
+    End Sub
 
 
 #End Region

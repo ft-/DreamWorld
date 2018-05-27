@@ -222,6 +222,12 @@
     <Compile Include="FormVoice.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="TosForm.Designer.vb">
+      <DependentUpon>TosForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="TosForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="..\..\..\Setup.resx">
@@ -252,6 +258,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormVoice.resx">
       <DependentUpon>FormVoice.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TosForm.resx">
+      <DependentUpon>TosForm.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

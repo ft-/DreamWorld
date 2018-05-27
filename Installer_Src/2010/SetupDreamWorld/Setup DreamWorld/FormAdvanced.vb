@@ -269,24 +269,6 @@ Public Class AdvancedForm
 
     End Sub
 
-    Private Sub SmtpUsername_TextChanged(sender As Object, e As EventArgs) Handles SmtpUsername.TextChanged
-
-        My.Settings.SmtpUsername = SmtpUsername.Text
-        My.Settings.Save()
-
-    End Sub
-    Private Sub SmtpUsername_Click(sender As Object, e As EventArgs) Handles SmtpPassword.Click
-
-        SmtpPassword.UseSystemPasswordChar = False
-        My.Settings.Save()
-
-    End Sub
-    Private Sub SmtpPassword_TextChanged(sender As Object, e As EventArgs) Handles SmtpPassword.TextChanged
-
-        My.Settings.SmtpPassword = SmtpPassword.Text
-        My.Settings.Save()
-
-    End Sub
 
     Private Sub DnsName_TextChanged(sender As Object, e As EventArgs) Handles DnsName.TextChanged
         My.Settings.DnsName = DnsName.Text
@@ -495,8 +477,14 @@ Public Class AdvancedForm
         Voice.Activate()
         Voice.Visible = True
     End Sub
+    Private Sub TOSButton_Click(sender As Object, e As EventArgs) Handles TOSButton.Click
 
-    Private Sub Label2_Click(sender As Object, e As EventArgs) Handles Label2.Click
+        Dim Tos As New TosForm
+        ' Set the new form's desktop location so it appears below and
+        ' to the right of the current form.
+        Tos.SetDesktopLocation(300, 200)
+        Tos.Activate()
+        Tos.Visible = True
 
     End Sub
 
@@ -701,6 +689,41 @@ Public Class AdvancedForm
 
     End Sub
 
+
+
+
+#End Region
+#Region "SMTP"
+
+    Private Sub SmtpUsername_TextChanged(sender As Object, e As EventArgs) Handles SmtpUsername.TextChanged
+
+        My.Settings.SmtpUsername = SmtpUsername.Text
+        My.Settings.Save()
+
+    End Sub
+
+    Private Sub SmtpPassword_Click(sender As Object, e As EventArgs) Handles SmtpPassword.Click
+
+        SmtpPassword.UseSystemPasswordChar = False
+        My.Settings.Save()
+
+    End Sub
+    Private Sub SmtpPassword_TextChanged(sender As Object, e As EventArgs) Handles SmtpPassword.TextChanged
+
+        My.Settings.SmtpPassword = SmtpPassword.Text
+        My.Settings.Save()
+
+    End Sub
+
+    Private Sub TextBox2_TextChanged(sender As Object, e As EventArgs) Handles SMTPServerTextBox.TextChanged
+        My.Settings.SMTPServer = SMTPServerTextBox.Text
+        My.Settings.Save()
+    End Sub
+
+    Private Sub TextBox1_TextChanged_4(sender As Object, e As EventArgs) Handles SMTPPortTextBox.TextChanged
+        My.Settings.SMTPPort = SMTPPortTextBox.Text
+        My.Settings.Save()
+    End Sub
 
 #End Region
 

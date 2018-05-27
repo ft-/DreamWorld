@@ -28,6 +28,7 @@ Partial Class DNSName
         Me.NextNameButton = New System.Windows.Forms.Button()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.PictureBox4 = New System.Windows.Forms.PictureBox()
+        Me.CheckBox1 = New System.Windows.Forms.CheckBox()
         CType(Me.PictureBox4, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -41,7 +42,7 @@ Partial Class DNSName
         '
         'SaveButton
         '
-        Me.SaveButton.Location = New System.Drawing.Point(124, 35)
+        Me.SaveButton.Location = New System.Drawing.Point(12, 79)
         Me.SaveButton.Name = "SaveButton"
         Me.SaveButton.Size = New System.Drawing.Size(64, 23)
         Me.SaveButton.TabIndex = 5
@@ -65,12 +66,24 @@ Partial Class DNSName
         'PictureBox4
         '
         Me.PictureBox4.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.PictureBox4.Location = New System.Drawing.Point(207, 10)
+        Me.PictureBox4.Location = New System.Drawing.Point(182, 45)
         Me.PictureBox4.Name = "PictureBox4"
         Me.PictureBox4.Size = New System.Drawing.Size(28, 32)
         Me.PictureBox4.TabIndex = 1859
         Me.PictureBox4.TabStop = False
         Me.ToolTip1.SetToolTip(Me.PictureBox4, "Click for Help on DNS Names")
+        '
+        'CheckBox1
+        '
+        Me.CheckBox1.AutoSize = True
+        Me.CheckBox1.Location = New System.Drawing.Point(105, 83)
+        Me.CheckBox1.Name = "CheckBox1"
+        Me.CheckBox1.Size = New System.Drawing.Size(105, 17)
+        Me.CheckBox1.TabIndex = 1860
+        Me.CheckBox1.Text = "Display Publicly?"
+        Me.ToolTip1.SetToolTip(Me.CheckBox1, "GDPR rules require you to opt in to making your sim publicly available on Hyerica" &
+        ".com Click to agree.")
+        Me.CheckBox1.UseVisualStyleBackColor = True
         '
         'DNSName
         '
@@ -78,7 +91,8 @@ Partial Class DNSName
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.AutoSize = True
         Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-        Me.ClientSize = New System.Drawing.Size(252, 74)
+        Me.ClientSize = New System.Drawing.Size(252, 114)
+        Me.Controls.Add(Me.CheckBox1)
         Me.Controls.Add(Me.PictureBox4)
         Me.Controls.Add(Me.NextNameButton)
         Me.Controls.Add(Me.SaveButton)
@@ -95,4 +109,5 @@ Partial Class DNSName
     Friend WithEvents NextNameButton As Button
     Friend WithEvents ToolTip1 As ToolTip
     Friend WithEvents PictureBox4 As PictureBox
+    Friend WithEvents CheckBox1 As CheckBox
 End Class

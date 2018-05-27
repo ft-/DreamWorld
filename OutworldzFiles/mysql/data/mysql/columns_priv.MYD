@@ -12,4 +12,10 @@
 160907 23:13:54 [ERROR] Native table 'performance_schema'.'file_summary_by_event_name' has the wrong structure
 160907 23:13:54 [ERROR] Native table 'performance_schema'.'file_summary_by_instance' has the wrong structure
 160907 23:13:54 [ERROR] Native table 'performance_schema'.'mutex_instances' has the wrong structure
-160907 23:13:54 [ERROR] Native table 'performance_schema'.'rwlock_instances' has the wrong structur
+160907 23:13:54 [ERROR] Native table 'performance_schema'.'rwlock_instances' has the wrong structur180408 21:25:49 [Warning] 'procs_priv' entry 'e
+160918  1:47:13 [error] native table 'performance_schema'.'se' ignored, bad routine type
+180408 21:25:49 [Warning] 'procs_priv' entry '_event_name' has the wrong structure
+160918  1:47:13 [error] na' ignored, bad routine type
+180408 21:25:49 [Note] Event Scheduler: Loaded 0 events
+180408 21:25:49 [Note] C:\Opensim\Opensim DreamWorld Source\OutworldzFiles\mysql\bin\mysqld.exe: ready for connections.
+Version: '5.5.8'  socket: ''  port: 3309  MySQL Community Server (GPL)
