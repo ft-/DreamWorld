@@ -33,7 +33,7 @@ Public Class Form1
 #Region "Declarations"
 
     Dim MyVersion As String = "1.77"
-    Dim DebugPath As String = "C:\Opensim\Opensim DreamWorld Source"
+    Dim DebugPath As String = "C:\Opensim\Outworldz DreamWorld Source"
     Public Domain As String = "http://www.outworldz.com"
 
     Public MyFolder As String   ' Holds the current folder that we are running in
