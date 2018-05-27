@@ -2121,6 +2121,10 @@ Public Class Form1
             Loopb = "Fail"
         End If
 
+        Dim P As String = "0"
+        If My.Settings.GDPR Then
+            P = "1"
+        End If
 
         Dim data
         data = "&MachineID=" + Machine _
@@ -2129,6 +2133,7 @@ Public Class Form1
             + "&UpNp=" + UpNp _
             + "&Loop=" + Loopb _
             + "&DnsName=" + My.Settings.DnsName _
+            + "&isPublic=" + P _
             + "&r=" + Random()
         Return data
 
@@ -2333,11 +2338,13 @@ Public Class Form1
         End If
 
         Dim client As New System.Net.WebClient
-        Dim Checkname As String = String.Empty
+
 
         Try
             Print("Checking DNS name " + My.Settings.DnsName)
-            Checkname = client.DownloadString("http://outworldz.net/dns.plx/?GridName=" + My.Settings.DnsName + GetPostData())
+            Dim url As String = "http://outworldz.net/dns.plx/?GridName=" + My.Settings.DnsName + GetPostData()
+            Dim Checkname As String = client.DownloadString(url)
+            Debug.Print(Checkname)
         Catch ex As Exception
             Log("Warn:Cannot check the DNS Name" + ex.Message)
         End Try
