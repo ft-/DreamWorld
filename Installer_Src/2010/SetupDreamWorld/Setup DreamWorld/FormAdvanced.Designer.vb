@@ -680,7 +680,7 @@ Partial Class AdvancedForm
         Me.GroupBox4.Controls.Add(Me.RegionGod)
         Me.GroupBox4.Location = New System.Drawing.Point(12, 159)
         Me.GroupBox4.Name = "GroupBox4"
-        Me.GroupBox4.Size = New System.Drawing.Size(175, 129)
+        Me.GroupBox4.Size = New System.Drawing.Size(175, 106)
         Me.GroupBox4.TabIndex = 18
         Me.GroupBox4.TabStop = False
         Me.GroupBox4.Text = "Permissions"
@@ -698,7 +698,7 @@ Partial Class AdvancedForm
         'ManagerGod
         '
         Me.ManagerGod.AutoSize = True
-        Me.ManagerGod.Location = New System.Drawing.Point(11, 93)
+        Me.ManagerGod.Location = New System.Drawing.Point(11, 74)
         Me.ManagerGod.Name = "ManagerGod"
         Me.ManagerGod.Size = New System.Drawing.Size(141, 17)
         Me.ManagerGod.TabIndex = 6
@@ -709,7 +709,7 @@ Partial Class AdvancedForm
         'RegionGod
         '
         Me.RegionGod.AutoSize = True
-        Me.RegionGod.Location = New System.Drawing.Point(11, 70)
+        Me.RegionGod.Location = New System.Drawing.Point(9, 51)
         Me.RegionGod.Name = "RegionGod"
         Me.RegionGod.Size = New System.Drawing.Size(132, 17)
         Me.RegionGod.TabIndex = 1855
@@ -978,7 +978,7 @@ Partial Class AdvancedForm
         'Gloebits
         '
         Me.Gloebits.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.Gloebits.Location = New System.Drawing.Point(142, 317)
+        Me.Gloebits.Location = New System.Drawing.Point(144, 278)
         Me.Gloebits.Name = "Gloebits"
         Me.Gloebits.Size = New System.Drawing.Size(28, 27)
         Me.Gloebits.TabIndex = 1857
@@ -1158,7 +1158,7 @@ Partial Class AdvancedForm
         Me.MapBox.Controls.Add(Me.MapBetter)
         Me.MapBox.Controls.Add(Me.MapBest)
         Me.MapBox.Controls.Add(Me.MapGood)
-        Me.MapBox.Location = New System.Drawing.Point(15, 382)
+        Me.MapBox.Location = New System.Drawing.Point(12, 361)
         Me.MapBox.Name = "MapBox"
         Me.MapBox.Size = New System.Drawing.Size(384, 140)
         Me.MapBox.TabIndex = 137
@@ -1188,7 +1188,7 @@ Partial Class AdvancedForm
         '
         'GloebitsButton
         '
-        Me.GloebitsButton.Location = New System.Drawing.Point(21, 336)
+        Me.GloebitsButton.Location = New System.Drawing.Point(23, 297)
         Me.GloebitsButton.Name = "GloebitsButton"
         Me.GloebitsButton.Size = New System.Drawing.Size(111, 23)
         Me.GloebitsButton.TabIndex = 1859
@@ -1238,7 +1238,7 @@ Partial Class AdvancedForm
         'AllowGods
         '
         Me.AllowGods.AutoSize = True
-        Me.AllowGods.Location = New System.Drawing.Point(11, 47)
+        Me.AllowGods.Location = New System.Drawing.Point(11, 27)
         Me.AllowGods.Name = "AllowGods"
         Me.AllowGods.Size = New System.Drawing.Size(86, 17)
         Me.AllowGods.TabIndex = 1857
@@ -1269,7 +1269,6 @@ Partial Class AdvancedForm
         Me.Controls.Add(Me.Web)
         Me.Controls.Add(Me.GroupBox3)
         Me.Controls.Add(Me.GroupBox2)
-        Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "AdvancedForm"
         Me.Text = "Advanced"
