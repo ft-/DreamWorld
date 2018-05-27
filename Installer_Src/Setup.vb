@@ -970,9 +970,12 @@ Public Class Form1
         End If
 
         If My.Settings.region_owner_is_god Or My.Settings.region_manager_is_god Then
-            SetIni("Permissions", "region_manager_is_god", "false")
+            SetIni("Permissions", "allow_grid_gods", "true")
         End If
 
+        If My.Settings.allow_grid_gods Then
+            SetIni("Permissions", "allow_grid_gods", "true")
+        End If
 
         ' Wifi
         SetIni("WifiService", "AdminFirst", My.Settings.AdminFirst)
@@ -2342,9 +2345,12 @@ Public Class Form1
 
         Try
             Print("Checking DNS name " + My.Settings.DnsName)
-            Dim url As String = "http://outworldz.net/dns.plx/?GridName=" + My.Settings.DnsName + GetPostData()
+            Dim url As String = "http://outworldz.net/dnsm.plx/?GridName=" + My.Settings.DnsName + GetPostData()
             Dim Checkname As String = client.DownloadString(url)
             Debug.Print(Checkname)
+            If Checkname = "NAK" Then
+                MsgBox("DNS name is already in use. If this is your DNS name, make sure you have the correct Machine ID that you used before.")
+            End If
         Catch ex As Exception
             Log("Warn:Cannot check the DNS Name" + ex.Message)
         End Try

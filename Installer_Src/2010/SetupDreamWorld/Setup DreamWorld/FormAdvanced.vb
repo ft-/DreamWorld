@@ -227,15 +227,27 @@ Public Class AdvancedForm
         Form1.gChatTime = ChatTime
     End Sub
 
+#End Region
 
+#Region "Gods"
+
+
+    Private Sub AllowGods_CheckedChanged(sender As Object, e As EventArgs) Handles AllowGods.CheckedChanged
+
+        My.Settings.allow_grid_gods = AllowGods.Checked
+        My.Settings.Save()
+
+    End Sub
 
     Private Sub RegionGod_CheckedChanged(sender As Object, e As EventArgs) Handles RegionGod.CheckedChanged
+
         My.Settings.region_owner_is_god = RegionGod.Checked
         My.Settings.Save()
 
     End Sub
 
     Private Sub ManagerGod_CheckedChanged(sender As Object, e As EventArgs) Handles ManagerGod.CheckedChanged
+
         My.Settings.region_manager_is_god = ManagerGod.Checked
         My.Settings.Save()
 
@@ -724,6 +736,7 @@ Public Class AdvancedForm
         My.Settings.SMTPPort = SMTPPortTextBox.Text
         My.Settings.Save()
     End Sub
+
 
 #End Region
 

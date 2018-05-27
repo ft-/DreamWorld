@@ -404,18 +404,6 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
-        Public Property parcel_owner_is_god() As Boolean
-            Get
-                Return CType(Me("parcel_owner_is_god"),Boolean)
-            End Get
-            Set
-                Me("parcel_owner_is_god") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("60")>  _
         Public Property TimerInterval() As Integer
             Get

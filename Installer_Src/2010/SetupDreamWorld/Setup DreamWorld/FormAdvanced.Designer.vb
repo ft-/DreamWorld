@@ -129,6 +129,7 @@ Partial Class AdvancedForm
         Me.GroupBox9 = New System.Windows.Forms.GroupBox()
         Me.GroupBox10 = New System.Windows.Forms.GroupBox()
         Me.TOSButton = New System.Windows.Forms.Button()
+        Me.AllowGods = New System.Windows.Forms.CheckBox()
         Me.GroupBox2.SuspendLayout()
         CType(Me.GridNameHelp, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox3.SuspendLayout()
@@ -673,12 +674,13 @@ Partial Class AdvancedForm
         '
         'GroupBox4
         '
+        Me.GroupBox4.Controls.Add(Me.AllowGods)
         Me.GroupBox4.Controls.Add(Me.PictureBox1)
         Me.GroupBox4.Controls.Add(Me.ManagerGod)
         Me.GroupBox4.Controls.Add(Me.RegionGod)
         Me.GroupBox4.Location = New System.Drawing.Point(12, 159)
         Me.GroupBox4.Name = "GroupBox4"
-        Me.GroupBox4.Size = New System.Drawing.Size(175, 99)
+        Me.GroupBox4.Size = New System.Drawing.Size(175, 129)
         Me.GroupBox4.TabIndex = 18
         Me.GroupBox4.TabStop = False
         Me.GroupBox4.Text = "Permissions"
@@ -696,7 +698,7 @@ Partial Class AdvancedForm
         'ManagerGod
         '
         Me.ManagerGod.AutoSize = True
-        Me.ManagerGod.Location = New System.Drawing.Point(14, 66)
+        Me.ManagerGod.Location = New System.Drawing.Point(11, 93)
         Me.ManagerGod.Name = "ManagerGod"
         Me.ManagerGod.Size = New System.Drawing.Size(141, 17)
         Me.ManagerGod.TabIndex = 6
@@ -707,7 +709,7 @@ Partial Class AdvancedForm
         'RegionGod
         '
         Me.RegionGod.AutoSize = True
-        Me.RegionGod.Location = New System.Drawing.Point(14, 43)
+        Me.RegionGod.Location = New System.Drawing.Point(11, 70)
         Me.RegionGod.Name = "RegionGod"
         Me.RegionGod.Size = New System.Drawing.Size(132, 17)
         Me.RegionGod.TabIndex = 1855
@@ -976,7 +978,7 @@ Partial Class AdvancedForm
         'Gloebits
         '
         Me.Gloebits.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.Gloebits.Location = New System.Drawing.Point(142, 266)
+        Me.Gloebits.Location = New System.Drawing.Point(142, 317)
         Me.Gloebits.Name = "Gloebits"
         Me.Gloebits.Size = New System.Drawing.Size(28, 27)
         Me.Gloebits.TabIndex = 1857
@@ -1156,7 +1158,7 @@ Partial Class AdvancedForm
         Me.MapBox.Controls.Add(Me.MapBetter)
         Me.MapBox.Controls.Add(Me.MapBest)
         Me.MapBox.Controls.Add(Me.MapGood)
-        Me.MapBox.Location = New System.Drawing.Point(15, 353)
+        Me.MapBox.Location = New System.Drawing.Point(15, 382)
         Me.MapBox.Name = "MapBox"
         Me.MapBox.Size = New System.Drawing.Size(384, 140)
         Me.MapBox.TabIndex = 137
@@ -1186,7 +1188,7 @@ Partial Class AdvancedForm
         '
         'GloebitsButton
         '
-        Me.GloebitsButton.Location = New System.Drawing.Point(21, 285)
+        Me.GloebitsButton.Location = New System.Drawing.Point(21, 336)
         Me.GloebitsButton.Name = "GloebitsButton"
         Me.GloebitsButton.Size = New System.Drawing.Size(111, 23)
         Me.GloebitsButton.TabIndex = 1859
@@ -1233,11 +1235,22 @@ Partial Class AdvancedForm
         Me.TOSButton.Text = "TOS Settings"
         Me.TOSButton.UseVisualStyleBackColor = True
         '
+        'AllowGods
+        '
+        Me.AllowGods.AutoSize = True
+        Me.AllowGods.Location = New System.Drawing.Point(11, 47)
+        Me.AllowGods.Name = "AllowGods"
+        Me.AllowGods.Size = New System.Drawing.Size(86, 17)
+        Me.AllowGods.TabIndex = 1857
+        Me.AllowGods.Text = "Allow gods? "
+        Me.ToolTip1.SetToolTip(Me.AllowGods, "Default: Off")
+        Me.AllowGods.UseVisualStyleBackColor = True
+        '
         'AdvancedForm
         '
         Me.AutoSize = True
         Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-        Me.ClientSize = New System.Drawing.Size(899, 521)
+        Me.ClientSize = New System.Drawing.Size(899, 550)
         Me.Controls.Add(Me.PictureBox5)
         Me.Controls.Add(Me.TOSButton)
         Me.Controls.Add(Me.GroupBox10)
@@ -1407,4 +1420,5 @@ Partial Class AdvancedForm
     Friend WithEvents SMTPPortTextBox As TextBox
     Friend WithEvents Label25 As Label
     Friend WithEvents Label24 As Label
+    Friend WithEvents AllowGods As CheckBox
 End Class
