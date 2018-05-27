@@ -1,5 +1,5 @@
 <h3>Terms of Service</h3>
-<!-- Change the text at your own will. This is just some suggested terms and does not represent any legal advice.-->
+<!-- Change the text at your own will. These are suggested terms and do not represent any legal advice.-->
 
 <h1>Welcome to <!-- #get var=GridName -->!</h1>
 <p>Your access to and use of <!-- #get var=GridName --> is conditioned on your acceptance of and compliance with
@@ -65,4 +65,5 @@ This Agreement may be modified for any reason, without prior notice (unless prio
 
 <h5>Agreement</h5>
 <p>You specifically give <!-- #get var=GridName -->  my permission to collect and use my data as indicated in this Policy and I agree to be bound by this Terms of Service. </p>
+
 
