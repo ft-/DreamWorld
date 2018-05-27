@@ -77,6 +77,7 @@ Public Class AdvancedForm
 
         RegionGod.Checked = My.Settings.region_owner_is_god
         ManagerGod.Checked = My.Settings.region_manager_is_god
+        AllowGods.Checked = My.Settings.allow_grid_gods
 
         TimerInterval.Text = Str(My.Settings.TimerInterval)
         AdminEmail.Text = My.Settings.AdminEmail
