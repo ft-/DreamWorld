@@ -7,21 +7,13 @@ Public Class UploadImage
     Private Delegate Sub UploadStateChange(ByVal Data As String, ByVal Info As UploadInfo)
 
     Private Sub UploadError(ByVal Data As String)
-        'If Me.InvokeRequired Then
-        'Dim d As New UploadStateChange(AddressOf UploadError)
-        'Me.Invoke(d, Data, Info) : Return
-        ' End If
         ' Your Upload failure Routine Goes here
         MsgBox("Upload Error:" + Data)
     End Sub
 
     Private Sub UploadComplete(ByVal Data As String)
-        'If Me.InvokeRequired Then
-        ' Dim d As New UploadStateChange(AddressOf UploadComplete)
-        'Me.Invoke(d, Data, Info) : Return
-        'End If
         ' Your Upload Success Routine Goes here
-        MsgBox("Upload Complete:" + Data)
+        'MsgBox("Upload Complete" + Data)
     End Sub
 
     Private Class HttpRequestState
@@ -61,13 +53,11 @@ Public Class UploadImage
         sw.WriteLine("--" & boundary)
         Debug.Print("--" & boundary)
 
-        'sw.Write("Content-Disposition:form-data; name=""file"";")
-        sw.Write("Content-Disposition:form-data; name=" + """" + "FILE1" + """")
-        'sw.Write("Content-Disposition:form-data; name=""file"";")
-        Debug.Print("Content-Disposition:form-data; name=" + """" + "FILE1" + """")
+        sw.WriteLine(String.Format("Content-Disposition: form-data; name=""{0}"";", "FILE1"))
+        Debug.Print(String.Format("Content-Disposition: form-data; name=""{0}"";", "FILE1"))
 
-        'sw.Write(String.Format(" filename=""{0}""", WebUtility.UrlEncode(IO.Path.GetFileName(r_State.FileName))))
-        'Debug.Print(String.Format(" filename=""{0}""", WebUtility.UrlEncode(IO.Path.GetFileName(r_State.FileName))))
+        sw.Write(String.Format(" filename=""{0}""", WebUtility.UrlEncode(IO.Path.GetFileName(r_State.FileName))))
+        Debug.Print(String.Format(" filename=""{0}""", WebUtility.UrlEncode(IO.Path.GetFileName(r_State.FileName))))
 
         sw.WriteLine()
         sw.WriteLine("Content-Type: application/octet-stream")
