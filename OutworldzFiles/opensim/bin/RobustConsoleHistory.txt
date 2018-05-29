@@ -98,3 +98,4 @@ quit
 createuser Ferd Frederix
 create user Ferd Frederix
 quit
+quit
