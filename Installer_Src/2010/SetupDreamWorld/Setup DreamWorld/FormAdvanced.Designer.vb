@@ -182,7 +182,7 @@ Partial Class AdvancedForm
         Me.GroupBox2.Controls.Add(Me.Label7)
         Me.GroupBox2.Location = New System.Drawing.Point(662, 11)
         Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Size = New System.Drawing.Size(442, 187)
+        Me.GroupBox2.Size = New System.Drawing.Size(442, 171)
         Me.GroupBox2.TabIndex = 5
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Grid"
@@ -190,7 +190,7 @@ Partial Class AdvancedForm
         'Label26
         '
         Me.Label26.AutoSize = True
-        Me.Label26.Location = New System.Drawing.Point(6, 92)
+        Me.Label26.Location = New System.Drawing.Point(7, 83)
         Me.Label26.Name = "Label26"
         Me.Label26.Size = New System.Drawing.Size(94, 13)
         Me.Label26.TabIndex = 1866
@@ -198,7 +198,7 @@ Partial Class AdvancedForm
         '
         'MachineIDTextBox
         '
-        Me.MachineIDTextBox.Location = New System.Drawing.Point(4, 108)
+        Me.MachineIDTextBox.Location = New System.Drawing.Point(5, 99)
         Me.MachineIDTextBox.Name = "MachineIDTextBox"
         Me.MachineIDTextBox.Size = New System.Drawing.Size(173, 20)
         Me.MachineIDTextBox.TabIndex = 1865
@@ -230,11 +230,12 @@ Partial Class AdvancedForm
         Me.GDPRCheckBox.AutoSize = True
         Me.GDPRCheckBox.Location = New System.Drawing.Point(237, 141)
         Me.GDPRCheckBox.Name = "GDPRCheckBox"
-        Me.GDPRCheckBox.Size = New System.Drawing.Size(172, 17)
+        Me.GDPRCheckBox.Size = New System.Drawing.Size(177, 17)
         Me.GDPRCheckBox.TabIndex = 1861
-        Me.GDPRCheckBox.Text = "Puiblish Info on Hyperica.com?"
+        Me.GDPRCheckBox.Text = "Puiblish Info on Outworldz.com?"
         Me.ToolTip1.SetToolTip(Me.GDPRCheckBox, "Displays your grid information publicly on Hyperica.com. Click to agree to expose" &
-        " this information to the public.")
+        " this information to the public. on wwwOutworldz.com/hyperica and in-world on te" &
+        "leports.  The URL and photo are listed.")
         Me.GDPRCheckBox.UseVisualStyleBackColor = True
         '
         'HypericaButton
@@ -258,7 +259,7 @@ Partial Class AdvancedForm
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(6, 134)
+        Me.Label2.Location = New System.Drawing.Point(6, 123)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(57, 13)
         Me.Label2.TabIndex = 26
@@ -294,7 +295,7 @@ Partial Class AdvancedForm
         '
         'GridName
         '
-        Me.GridName.Location = New System.Drawing.Point(9, 152)
+        Me.GridName.Location = New System.Drawing.Point(5, 141)
         Me.GridName.Name = "GridName"
         Me.GridName.Size = New System.Drawing.Size(173, 20)
         Me.GridName.TabIndex = 10
@@ -948,9 +949,9 @@ Partial Class AdvancedForm
         '
         'StatsButton
         '
-        Me.StatsButton.Location = New System.Drawing.Point(12, 42)
+        Me.StatsButton.Location = New System.Drawing.Point(12, 47)
         Me.StatsButton.Name = "StatsButton"
-        Me.StatsButton.Size = New System.Drawing.Size(75, 23)
+        Me.StatsButton.Size = New System.Drawing.Size(108, 23)
         Me.StatsButton.TabIndex = 22
         Me.StatsButton.Text = "View"
         Me.ToolTip1.SetToolTip(Me.StatsButton, "Enabled only when Opensim is running")
@@ -1020,7 +1021,7 @@ Partial Class AdvancedForm
         'PictureBox5
         '
         Me.PictureBox5.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.PictureBox5.Location = New System.Drawing.Point(1022, 328)
+        Me.PictureBox5.Location = New System.Drawing.Point(1020, 384)
         Me.PictureBox5.Name = "PictureBox5"
         Me.PictureBox5.Size = New System.Drawing.Size(28, 32)
         Me.PictureBox5.TabIndex = 1863
@@ -1050,7 +1051,7 @@ Partial Class AdvancedForm
         'Gloebits
         '
         Me.Gloebits.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.Gloebits.Location = New System.Drawing.Point(1022, 366)
+        Me.Gloebits.Location = New System.Drawing.Point(1020, 422)
         Me.Gloebits.Name = "Gloebits"
         Me.Gloebits.Size = New System.Drawing.Size(28, 27)
         Me.Gloebits.TabIndex = 1857
@@ -1060,7 +1061,7 @@ Partial Class AdvancedForm
         'VoiceHelp
         '
         Me.VoiceHelp.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.VoiceHelp.Location = New System.Drawing.Point(1019, 293)
+        Me.VoiceHelp.Location = New System.Drawing.Point(1017, 349)
         Me.VoiceHelp.Name = "VoiceHelp"
         Me.VoiceHelp.Size = New System.Drawing.Size(28, 32)
         Me.VoiceHelp.TabIndex = 1859
@@ -1100,7 +1101,7 @@ Partial Class AdvancedForm
         'Webstat
         '
         Me.Webstat.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.Webstat.Location = New System.Drawing.Point(117, 15)
+        Me.Webstat.Location = New System.Drawing.Point(126, 17)
         Me.Webstat.Name = "Webstat"
         Me.Webstat.Size = New System.Drawing.Size(28, 32)
         Me.Webstat.TabIndex = 1862
@@ -1112,9 +1113,9 @@ Partial Class AdvancedForm
         Me.GroupBox7.Controls.Add(Me.Webstat)
         Me.GroupBox7.Controls.Add(Me.StatsButton)
         Me.GroupBox7.Controls.Add(Me.WebStats)
-        Me.GroupBox7.Location = New System.Drawing.Point(905, 412)
+        Me.GroupBox7.Location = New System.Drawing.Point(891, 269)
         Me.GroupBox7.Name = "GroupBox7"
-        Me.GroupBox7.Size = New System.Drawing.Size(157, 77)
+        Me.GroupBox7.Size = New System.Drawing.Size(213, 77)
         Me.GroupBox7.TabIndex = 26
         Me.GroupBox7.TabStop = False
         Me.GroupBox7.Text = "WebStats"
@@ -1132,7 +1133,7 @@ Partial Class AdvancedForm
         Me.GroupBox8.Controls.Add(Me.DbName)
         Me.GroupBox8.Controls.Add(Me.Label)
         Me.GroupBox8.Controls.Add(Me.DbPort)
-        Me.GroupBox8.Location = New System.Drawing.Point(667, 382)
+        Me.GroupBox8.Location = New System.Drawing.Point(662, 320)
         Me.GroupBox8.Name = "GroupBox8"
         Me.GroupBox8.Size = New System.Drawing.Size(214, 139)
         Me.GroupBox8.TabIndex = 27
@@ -1214,7 +1215,7 @@ Partial Class AdvancedForm
         '
         'VoiceButton1
         '
-        Me.VoiceButton1.Location = New System.Drawing.Point(905, 313)
+        Me.VoiceButton1.Location = New System.Drawing.Point(903, 354)
         Me.VoiceButton1.Name = "VoiceButton1"
         Me.VoiceButton1.Size = New System.Drawing.Size(108, 23)
         Me.VoiceButton1.TabIndex = 30
@@ -1251,16 +1252,16 @@ Partial Class AdvancedForm
         '
         Me.GroupBox6.Controls.Add(Me.OpensImNew)
         Me.GroupBox6.Controls.Add(Me.OpensimOld)
-        Me.GroupBox6.Location = New System.Drawing.Point(897, 213)
+        Me.GroupBox6.Location = New System.Drawing.Point(891, 186)
         Me.GroupBox6.Name = "GroupBox6"
-        Me.GroupBox6.Size = New System.Drawing.Size(180, 77)
+        Me.GroupBox6.Size = New System.Drawing.Size(213, 77)
         Me.GroupBox6.TabIndex = 26
         Me.GroupBox6.TabStop = False
         Me.GroupBox6.Text = "Grid Version"
         '
         'GloebitsButton
         '
-        Me.GloebitsButton.Location = New System.Drawing.Point(905, 374)
+        Me.GloebitsButton.Location = New System.Drawing.Point(903, 424)
         Me.GloebitsButton.Name = "GloebitsButton"
         Me.GloebitsButton.Size = New System.Drawing.Size(111, 23)
         Me.GloebitsButton.TabIndex = 1859
@@ -1277,7 +1278,7 @@ Partial Class AdvancedForm
         Me.GroupBox9.Controls.Add(Me.PublicPort)
         Me.GroupBox9.Controls.Add(Me.httpPort)
         Me.GroupBox9.Controls.Add(Me.Label13)
-        Me.GroupBox9.Location = New System.Drawing.Point(662, 216)
+        Me.GroupBox9.Location = New System.Drawing.Point(662, 188)
         Me.GroupBox9.Name = "GroupBox9"
         Me.GroupBox9.Size = New System.Drawing.Size(219, 124)
         Me.GroupBox9.TabIndex = 1861
@@ -1300,7 +1301,7 @@ Partial Class AdvancedForm
         '
         'TOSButton
         '
-        Me.TOSButton.Location = New System.Drawing.Point(905, 342)
+        Me.TOSButton.Location = New System.Drawing.Point(903, 392)
         Me.TOSButton.Name = "TOSButton"
         Me.TOSButton.Size = New System.Drawing.Size(111, 23)
         Me.TOSButton.TabIndex = 1862
@@ -1311,7 +1312,7 @@ Partial Class AdvancedForm
         '
         Me.AutoSize = True
         Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-        Me.ClientSize = New System.Drawing.Size(1116, 550)
+        Me.ClientSize = New System.Drawing.Size(1116, 477)
         Me.Controls.Add(Me.PictureBox5)
         Me.Controls.Add(Me.TOSButton)
         Me.Controls.Add(Me.GroupBox10)

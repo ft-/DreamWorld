@@ -27,6 +27,7 @@ Partial Class TosForm
         Me.ShowToLocalUsersCheckbox = New System.Windows.Forms.CheckBox()
         Me.TOSEnable = New System.Windows.Forms.CheckBox()
         Me.Label1 = New System.Windows.Forms.Label()
+        Me.Button1 = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'RichTextBox1
@@ -34,7 +35,7 @@ Partial Class TosForm
         Me.RichTextBox1.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.RichTextBox1.Location = New System.Drawing.Point(13, 117)
         Me.RichTextBox1.Name = "RichTextBox1"
-        Me.RichTextBox1.Size = New System.Drawing.Size(556, 302)
+        Me.RichTextBox1.Size = New System.Drawing.Size(556, 276)
         Me.RichTextBox1.TabIndex = 0
         Me.RichTextBox1.Text = ""
         '
@@ -77,11 +78,21 @@ Partial Class TosForm
         Me.Label1.TabIndex = 4
         Me.Label1.Text = "The TOS module shows your users and/or visitors the HTML text  below."
         '
+        'Button1
+        '
+        Me.Button1.Location = New System.Drawing.Point(24, 399)
+        Me.Button1.Name = "Button1"
+        Me.Button1.Size = New System.Drawing.Size(121, 23)
+        Me.Button1.TabIndex = 5
+        Me.Button1.Text = "Preview in Browser"
+        Me.Button1.UseVisualStyleBackColor = True
+        '
         'TosForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(581, 431)
+        Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.TOSEnable)
         Me.Controls.Add(Me.ShowToLocalUsersCheckbox)
@@ -99,4 +110,5 @@ Partial Class TosForm
     Friend WithEvents ShowToLocalUsersCheckbox As CheckBox
     Friend WithEvents TOSEnable As CheckBox
     Friend WithEvents Label1 As Label
+    Friend WithEvents Button1 As Button
 End Class

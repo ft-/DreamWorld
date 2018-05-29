@@ -29,17 +29,35 @@ Public Class TosForm
     End Sub
 
     Private Sub CheckBox2_CheckedChanged(sender As Object, e As EventArgs) Handles ShowToLocalUsersCheckbox.CheckedChanged
+
         My.Settings.ShowToLocalUsers = ShowToLocalUsersCheckbox.Checked
         My.Settings.Save()
+
     End Sub
 
     Private Sub ShowToHGUsersCheckbox_CheckedChanged(sender As Object, e As EventArgs) Handles ShowToHGUsersCheckbox.CheckedChanged
+
         My.Settings.ShowToForeignUsers = ShowToHGUsersCheckbox.Checked
         My.Settings.Save()
+
     End Sub
 
     Private Sub TOSEnable_CheckedChanged(sender As Object, e As EventArgs) Handles TOSEnable.CheckedChanged
+
         My.Settings.TOSEnabled = TOSEnable.Checked
         My.Settings.Save()
+
+    End Sub
+
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+
+        If Form1.Running Then
+            Dim webAddress As String = My.Settings.DnsName + ":" + My.Settings.HttpPort + "/wifi/termsofservice.html"
+            Process.Start(webAddress)
+            Process.Start(webAddress)
+        Else
+            MsgBox("Opensim must be running to show you the TOS.")
+        End If
+
     End Sub
 End Class
