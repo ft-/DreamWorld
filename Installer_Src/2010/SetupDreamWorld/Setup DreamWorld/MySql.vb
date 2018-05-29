@@ -8,7 +8,7 @@ Public Class Mysql
 
     Public Sub New()
 
-        Dim robustconnStr = "server=" + "127.0.0.1" _
+        Dim robustconnStr = "server=" + My.Settings.DBSource _
             + ";database=" + My.Settings.DBName _
             + ";port=" + My.Settings.MySqlPort _
             + ";user=" + My.Settings.DBUserID _
@@ -28,7 +28,7 @@ Public Class Mysql
     End Function
 
     <CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2100:Review SQL queries for security vulnerabilities")>
-    Private Function QueryString(SQL As String) As String
+    Public Function QueryString(SQL As String) As String
         Try
             'Debug.Print("Connecting to MySQL...")
             MysqlConn.Open()

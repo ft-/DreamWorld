@@ -851,7 +851,7 @@ Public Class Form1
         SetIni("TOSModule", "ShowToLocalUsers", My.Settings.ShowToLocalUsers)
         SetIni("TOSModule", "ShowToForeignUsers", My.Settings.ShowToForeignUsers)
 
-        My.Computer.FileSystem.CopyFile(MyFolder + "\TOS.txt", MyFolder + "\bin\WifiPages\termsofservice.html", True)
+        My.Computer.FileSystem.CopyFile(MyFolder + "\TOS.txt", MyFolder & "\OutworldzFiles\" & My.Settings.GridFolder + "\bin\WifiPages\TOS.html", True)
 
 
         ' set viewer Splash Page V 1.54

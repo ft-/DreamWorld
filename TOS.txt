@@ -10,7 +10,7 @@ with any part of the terms then you may not access the Service.</strong>
 <p>&nbsp;</p>
 
 <h5>DRM in Opensimulator</h5>
-<p>You acknowledge the use of Digital Rights Management of Opensimulator that grants certain content licenses to other users through the permissions system.
+<p>You acknowledge the use of Digital Rights Management in Opensimulator that grants certain content licenses to other users through the permissions system.
 This may include the copy, modify, and transfer settings for indicating how other users may use, reproduce, distribute, prepare derivative works of, display, or perform your Content subject to choices you make.
 You agree to respect, follow and allow the DRM rights of others that use this system.</p>
 <p>You acknowledge that content creators maintain their rights to their content. You accept full responsibility for use of provided content and remain liable for unlawful usage.
@@ -25,9 +25,6 @@ You agree to respect, follow and allow the DRM rights of others that use this sy
 
 <h5>Age</h5>
 <p>You certify that by clicking ACCEPT that you are over 18 years of age.</p>
-
-<h5>Gloebits</h5>
-<p>If you use the Gloebits money system, you agree to the Gloebits Terms and Conditions at <a href="https://www.gloebit.com/display-tos/">https://www.gloebit.com/display-tos/</a></p>
 
 <h5>Data Rights</h5>
 <p>Yuo grant <!-- #get var=GridName --> permission to process your data to maintain your account. This includes:</p>
@@ -47,7 +44,7 @@ You agree to respect, follow and allow the DRM rights of others that use this sy
 
 <h5>Hyperlinks</h5>
 <p><!-- #get var=GridName -->  may contain links or hyperlinks to third-party services that are not owned or controlled by <!-- #get var=GridName -->. Hyperlinks are destinations that you may travel to. Hyperlinks connect to third parties and they will have access to limited data. They will need this info to provide Hypergrid service, and may not follow the GDPR act, but may use this information by means outside of our control.</p>
-<p>You agree that your Avatar Name, Session ID, IP address and other technical information can be sent to other opensim grids when you travel the hypergrid.  <!-- #get var=GridName -->  may contain links to third-party services that are not owned or controlled by <!-- #get var=GridName -->. <!-- #get var=GridName --> has no control over, and assumes no responsibility for, the content, privacy policies, or practices of any third party web sites or services. You further acknowledge and agree that <!-- #get var=GridName -->  may contain links to third-party services that are not owned or controlled
+<p>You agree that your Avatar Name, Session ID, IP address and other technical information can be sent to other opensim grids when you travel the hypergrid.  <!-- #get var=GridName --> has no control over, and assumes no responsibility for, the content, privacy policies, or practices of any third party web sites or services. You further acknowledge and agree that <!-- #get var=GridName -->  may contain links to third-party services that are not owned or controlled
 by <!-- #get var=GridName -->.</p>
 
 <h5>Liability</h5>
@@ -65,5 +62,8 @@ This Agreement may be modified for any reason, without prior notice (unless prio
 
 <h5>Agreement</h5>
 <p>You specifically give <!-- #get var=GridName -->  my permission to collect and use my data as indicated in this Policy and I agree to be bound by this Terms of Service. </p>
+
+
+
 
 
