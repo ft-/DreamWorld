@@ -128,7 +128,6 @@ Public Class MySettings
             UPnPEnabled() = My.Settings.UPnPEnabled
             UPnpDiag() = My.Settings.UPnpDiag
 
-            ViewerInstalled() = My.Settings.ViewerInstalled
             VivoxEnabled = My.Settings.VivoxEnabled
             Vivox_UserName() = My.Settings.Vivox_username
             Vivox_password() = My.Settings.Vivox_password
