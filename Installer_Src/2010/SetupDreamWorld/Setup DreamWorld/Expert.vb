@@ -81,6 +81,12 @@ Public Class Expert
 
         uPnPEnabled.Checked = Form1.MySetting.UPnPEnabled
 
+        Try
+            PictureBox8.Image = Bitmap.FromFile(Form1.MyFolder & "\OutworldzFiles\Photo.png")
+        Catch
+            PictureBox8.Image = My.Resources.blankbox
+        End Try
+
         initted = True ' suppress the install of the startup on formload
 
     End Sub
@@ -498,6 +504,43 @@ Public Class Expert
         Form1.MySetting.SaveMyINI()
     End Sub
 
+    Private Sub GDPRCheckBox_CheckedChanged(sender As Object, e As EventArgs) Handles GDPRCheckBox.CheckedChanged
+        Form1.MySetting.GDPR() = GDPRCheckBox.Checked
+        My.Settings.Save()
+    End Sub
+
+    Private Sub GridNameHelp_Click(sender As Object, e As EventArgs) Handles GridNameHelp.Click
+        Dim webAddress As String = Form1.Domain + "/Outworldz_installer/technical.htm#Grid"
+        Process.Start(webAddress)
+    End Sub
+
+    Private Sub PictureBox9_Click(sender As Object, e As EventArgs) Handles PictureBox9.Click
+        Dim ofd As New OpenFileDialog
+        ofd.Filter = "PNG Files (*.PNG,*.png)|*.png;|All Files (*.*)|*.*"
+        ofd.FilterIndex = 1
+        ofd.Multiselect = False
+        If ofd.ShowDialog = DialogResult.OK Then
+            If ofd.FileName <> String.Empty Then
+                PictureBox9.Image = Bitmap.FromFile(ofd.FileName)
+                Try
+                    My.Computer.FileSystem.DeleteFile(Form1.MyFolder & "\OutworldzFiles\Photo.png")
+                Catch
+                End Try
+                Try
+                    PictureBox9.Image.Save(Form1.MyFolder & "\OutworldzFiles\Photo.png", System.Drawing.Imaging.ImageFormat.Png)
+                Catch ex As Exception
+                End Try
+
+                Dim params As New Specialized.NameValueCollection
+                params.Add("MachineID", My.Settings.MachineID)
+                'params.Add("file", "Photo.png")
+
+                Dim Myupload As New UploadImage
+                Myupload.PostContent_UploadFile("https://www.outworldz.com/cgi/uploadphoto.plx", Form1.MyFolder & "\OutworldzFiles\Photo.png", params)
+
+            End If
+        End If
+    End Sub
 
 #End Region
 

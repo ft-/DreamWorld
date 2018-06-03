@@ -35,7 +35,7 @@ Public Class Form1
 #Region "Declarations"
 
 
-    Dim MyVersion As String = "2.16"
+    Dim MyVersion As String = "2.17"
     Dim DebugPath As String = "C:\Opensim\Outworldz DreamGrid Source"  ' no slash at end
     Public Domain As String = "http://www.outworldz.com"
     Public prefix As String ' Holds path to Opensim folder
@@ -832,6 +832,12 @@ Public Class Form1
         ' Opensim.ini
         MySetting.LoadOtherIni(prefix + "bin\Opensim.proto", ";")
 
+        If MySetting.GloebitsEnable Then
+            MySetting.SetOtherIni("Startup", "economymodule", "Gloebit")
+        Else
+            MySetting.SetOtherIni("Startup", "economymodule", "")
+        End If
+
         ' LSL emails
         MySetting.SetOtherIni("SMTP", "SMTP_SERVER_HOSTNAME", MySetting.SmtpHost)
         MySetting.SetOtherIni("SMTP", "SMTP_SERVER_PORT", MySetting.SmtpPort)
@@ -850,13 +856,6 @@ Public Class Form1
 
         ' Gods
 
-
-        If (MySetting.allow_grid_gods) Then
-            MySetting.SetOtherIni("Permissions", "allow_grid_gods", "true")
-        Else
-            MySetting.SetOtherIni("Permissions", "allow_grid_gods", "false")
-        End If
-
         If (MySetting.Region_owner_is_god Or MySetting.Region_manager_is_god) Then
             MySetting.SetOtherIni("Permissions", "allow_grid_gods", "true")
         Else
@@ -874,6 +873,13 @@ Public Class Form1
         Else
             MySetting.SetOtherIni("Permissions", "region_manager_is_god", "false")
         End If
+
+        If (MySetting.Allow_grid_gods) Then
+            MySetting.SetOtherIni("Permissions", "allow_grid_gods", "true")
+        Else
+            MySetting.SetOtherIni("Permissions", "allow_grid_gods", "false")
+        End If
+
 
         ' Physics
         ' choices for meshmerizer, where Ubit's ODE requires a special one

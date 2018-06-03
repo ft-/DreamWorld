@@ -224,6 +224,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="My Project\Uploadinfo.vb" />
     <Compile Include="MySettings.vb" />
     <Compile Include="Mysql.vb" />
     <Compile Include="RegionList.Designer.vb">
@@ -246,6 +247,7 @@
     <Compile Include="IceCast.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="UploadImage.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="..\..\..\Setup.resx">
@@ -438,6 +440,7 @@
     <None Include="Resources\orange-planets-background.jpg" />
     <None Include="Resources\water.jpg" />
     <None Include="Resources\fairy.jpg" />
+    <None Include="Resources\blankbox.jpg" />
     <Content Include="Resources\wp_habitat.gif" />
     <Content Include="Resources\wp_Inside_in_shadows.gif" />
     <Content Include="Resources\wp_Mooferd.gif" />
