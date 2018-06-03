@@ -43,26 +43,6 @@ Partial Class Expert
         Me.GodHelp = New System.Windows.Forms.PictureBox()
         Me.ManagerGod = New System.Windows.Forms.CheckBox()
         Me.RegionGod = New System.Windows.Forms.CheckBox()
-        Me.Web = New System.Windows.Forms.GroupBox()
-        Me.SmtpPort = New System.Windows.Forms.TextBox()
-        Me.Label24 = New System.Windows.Forms.Label()
-        Me.SmtpHost = New System.Windows.Forms.TextBox()
-        Me.Label23 = New System.Windows.Forms.Label()
-        Me.PictureBox4 = New System.Windows.Forms.PictureBox()
-        Me.WifiEnabled = New System.Windows.Forms.CheckBox()
-        Me.GmailPassword = New System.Windows.Forms.TextBox()
-        Me.Label18 = New System.Windows.Forms.Label()
-        Me.Label14 = New System.Windows.Forms.Label()
-        Me.Label17 = New System.Windows.Forms.Label()
-        Me.GmailUsername = New System.Windows.Forms.TextBox()
-        Me.AdminEmail = New System.Windows.Forms.TextBox()
-        Me.Label12 = New System.Windows.Forms.Label()
-        Me.AccountConfirmationRequired = New System.Windows.Forms.CheckBox()
-        Me.AdminLast = New System.Windows.Forms.TextBox()
-        Me.AdminFirst = New System.Windows.Forms.TextBox()
-        Me.Label11 = New System.Windows.Forms.Label()
-        Me.Label10 = New System.Windows.Forms.Label()
-        Me.AdminPassword = New System.Windows.Forms.TextBox()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
         Me.PictureBox2 = New System.Windows.Forms.PictureBox()
         Me.uPnPEnabled = New System.Windows.Forms.CheckBox()
@@ -110,6 +90,28 @@ Partial Class Expert
         Me.BootStart = New System.Windows.Forms.CheckBox()
         Me.AutoStartCheckbox = New System.Windows.Forms.CheckBox()
         Me.GroupBox5 = New System.Windows.Forms.GroupBox()
+        Me.AllowGods = New System.Windows.Forms.CheckBox()
+        Me.AdminPassword = New System.Windows.Forms.TextBox()
+        Me.Label10 = New System.Windows.Forms.Label()
+        Me.Label11 = New System.Windows.Forms.Label()
+        Me.AdminFirst = New System.Windows.Forms.TextBox()
+        Me.AdminLast = New System.Windows.Forms.TextBox()
+        Me.AccountConfirmationRequired = New System.Windows.Forms.CheckBox()
+        Me.Label12 = New System.Windows.Forms.Label()
+        Me.AdminEmail = New System.Windows.Forms.TextBox()
+        Me.Label17 = New System.Windows.Forms.Label()
+        Me.WifiEnabled = New System.Windows.Forms.CheckBox()
+        Me.PictureBox4 = New System.Windows.Forms.PictureBox()
+        Me.Web = New System.Windows.Forms.GroupBox()
+        Me.GroupBox6 = New System.Windows.Forms.GroupBox()
+        Me.SmtpPort = New System.Windows.Forms.TextBox()
+        Me.Label24 = New System.Windows.Forms.Label()
+        Me.SmtpHost = New System.Windows.Forms.TextBox()
+        Me.Label23 = New System.Windows.Forms.Label()
+        Me.GmailPassword = New System.Windows.Forms.TextBox()
+        Me.Label18 = New System.Windows.Forms.Label()
+        Me.Label14 = New System.Windows.Forms.Label()
+        Me.GmailUsername = New System.Windows.Forms.TextBox()
         Me.GroupBox3.SuspendLayout()
         CType(Me.PictureBox7, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox6, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -117,8 +119,6 @@ Partial Class Expert
         CType(Me.DNSHelp, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox4.SuspendLayout()
         CType(Me.GodHelp, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.Web.SuspendLayout()
-        CType(Me.PictureBox4, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox2.SuspendLayout()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox7.SuspendLayout()
@@ -130,6 +130,9 @@ Partial Class Expert
         Me.StandaloneGroup.SuspendLayout()
         Me.AutoStart.SuspendLayout()
         Me.GroupBox5.SuspendLayout()
+        CType(Me.PictureBox4, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.Web.SuspendLayout()
+        Me.GroupBox6.SuspendLayout()
         Me.SuspendLayout()
         '
         'GroupBox3
@@ -164,6 +167,7 @@ Partial Class Expert
         Me.EnableHypergrid.Size = New System.Drawing.Size(107, 17)
         Me.EnableHypergrid.TabIndex = 1866
         Me.EnableHypergrid.Text = "Enable Hypergrid"
+        Me.ToolTip1.SetToolTip(Me.EnableHypergrid, "Enables Hypergrid to all sims.")
         Me.EnableHypergrid.UseVisualStyleBackColor = True
         '
         'PictureBox7
@@ -189,29 +193,29 @@ Partial Class Expert
         'PictureBox5
         '
         Me.PictureBox5.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.PictureBox5.Location = New System.Drawing.Point(128, 117)
+        Me.PictureBox5.Location = New System.Drawing.Point(112, 128)
         Me.PictureBox5.Name = "PictureBox5"
         Me.PictureBox5.Size = New System.Drawing.Size(30, 34)
         Me.PictureBox5.TabIndex = 1860
         Me.PictureBox5.TabStop = False
-        Me.ToolTip1.SetToolTip(Me.PictureBox5, "This ID reserves your DYNDNS name. Used if you have more than one PC using DreamG" &
-        "rid")
+        Me.ToolTip1.SetToolTip(Me.PictureBox5, "This ID reserves your DYNDNS name. ")
         '
         'Label1
         '
         Me.Label1.AutoSize = True
         Me.Label1.Location = New System.Drawing.Point(4, 136)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(77, 13)
+        Me.Label1.Size = New System.Drawing.Size(93, 13)
         Me.Label1.TabIndex = 1863
-        Me.Label1.Text = "Unique Grid ID"
+        Me.Label1.Text = "DynDns password"
         '
         'UniqueId
         '
         Me.UniqueId.Location = New System.Drawing.Point(5, 152)
         Me.UniqueId.Name = "UniqueId"
-        Me.UniqueId.Size = New System.Drawing.Size(173, 20)
+        Me.UniqueId.Size = New System.Drawing.Size(101, 20)
         Me.UniqueId.TabIndex = 1862
+        Me.ToolTip1.SetToolTip(Me.UniqueId, "Reserves your DYN DNS name, this is like a password to your name.")
         '
         'DNSButton
         '
@@ -225,7 +229,7 @@ Partial Class Expert
         'DNSHelp
         '
         Me.DNSHelp.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.DNSHelp.Location = New System.Drawing.Point(90, 88)
+        Me.DNSHelp.Location = New System.Drawing.Point(134, 19)
         Me.DNSHelp.Name = "DNSHelp"
         Me.DNSHelp.Size = New System.Drawing.Size(28, 27)
         Me.DNSHelp.TabIndex = 1859
@@ -273,6 +277,7 @@ Partial Class Expert
         Me.GridName.Name = "GridName"
         Me.GridName.Size = New System.Drawing.Size(173, 20)
         Me.GridName.TabIndex = 10
+        Me.ToolTip1.SetToolTip(Me.GridName, "Appears on the Web Page")
         '
         'Label19
         '
@@ -289,16 +294,17 @@ Partial Class Expert
         Me.SplashPage.Name = "SplashPage"
         Me.SplashPage.Size = New System.Drawing.Size(177, 20)
         Me.SplashPage.TabIndex = 45
-        Me.ToolTip1.SetToolTip(Me.SplashPage, "The web page thaty appears iwhen you log in to this grid")
+        Me.ToolTip1.SetToolTip(Me.SplashPage, "The web page that appears iwhen you log in to this grid")
         '
         'GroupBox4
         '
+        Me.GroupBox4.Controls.Add(Me.AllowGods)
         Me.GroupBox4.Controls.Add(Me.GodHelp)
         Me.GroupBox4.Controls.Add(Me.ManagerGod)
         Me.GroupBox4.Controls.Add(Me.RegionGod)
         Me.GroupBox4.Location = New System.Drawing.Point(222, 149)
         Me.GroupBox4.Name = "GroupBox4"
-        Me.GroupBox4.Size = New System.Drawing.Size(186, 92)
+        Me.GroupBox4.Size = New System.Drawing.Size(186, 119)
         Me.GroupBox4.TabIndex = 48
         Me.GroupBox4.TabStop = False
         Me.GroupBox4.Text = "Permissions"
@@ -316,212 +322,24 @@ Partial Class Expert
         'ManagerGod
         '
         Me.ManagerGod.AutoSize = True
-        Me.ManagerGod.Location = New System.Drawing.Point(15, 52)
+        Me.ManagerGod.Location = New System.Drawing.Point(15, 82)
         Me.ManagerGod.Name = "ManagerGod"
         Me.ManagerGod.Size = New System.Drawing.Size(141, 17)
         Me.ManagerGod.TabIndex = 6
         Me.ManagerGod.Text = "Region manager is god?"
+        Me.ToolTip1.SetToolTip(Me.ManagerGod, "Allow region managers to assume god powers in regions they manage")
         Me.ManagerGod.UseVisualStyleBackColor = True
         '
         'RegionGod
         '
         Me.RegionGod.AutoSize = True
-        Me.RegionGod.Location = New System.Drawing.Point(15, 28)
+        Me.RegionGod.Location = New System.Drawing.Point(15, 58)
         Me.RegionGod.Name = "RegionGod"
         Me.RegionGod.Size = New System.Drawing.Size(132, 17)
         Me.RegionGod.TabIndex = 1855
         Me.RegionGod.Text = "Region owner is god? "
+        Me.ToolTip1.SetToolTip(Me.RegionGod, "Allow region owners to assume god powers in their regions")
         Me.RegionGod.UseVisualStyleBackColor = True
-        '
-        'Web
-        '
-        Me.Web.Controls.Add(Me.SmtpPort)
-        Me.Web.Controls.Add(Me.Label24)
-        Me.Web.Controls.Add(Me.SmtpHost)
-        Me.Web.Controls.Add(Me.Label23)
-        Me.Web.Controls.Add(Me.PictureBox4)
-        Me.Web.Controls.Add(Me.WifiEnabled)
-        Me.Web.Controls.Add(Me.GmailPassword)
-        Me.Web.Controls.Add(Me.Label18)
-        Me.Web.Controls.Add(Me.Label14)
-        Me.Web.Controls.Add(Me.Label17)
-        Me.Web.Controls.Add(Me.GmailUsername)
-        Me.Web.Controls.Add(Me.AdminEmail)
-        Me.Web.Controls.Add(Me.Label12)
-        Me.Web.Controls.Add(Me.AccountConfirmationRequired)
-        Me.Web.Controls.Add(Me.AdminLast)
-        Me.Web.Controls.Add(Me.AdminFirst)
-        Me.Web.Controls.Add(Me.Label11)
-        Me.Web.Controls.Add(Me.Label10)
-        Me.Web.Controls.Add(Me.AdminPassword)
-        Me.Web.Location = New System.Drawing.Point(431, 155)
-        Me.Web.Name = "Web"
-        Me.Web.Size = New System.Drawing.Size(192, 272)
-        Me.Web.TabIndex = 47
-        Me.Web.TabStop = False
-        Me.Web.Text = "Wifi Interface Admin"
-        '
-        'SmtpPort
-        '
-        Me.SmtpPort.Location = New System.Drawing.Point(88, 242)
-        Me.SmtpPort.Name = "SmtpPort"
-        Me.SmtpPort.Size = New System.Drawing.Size(100, 20)
-        Me.SmtpPort.TabIndex = 1861
-        '
-        'Label24
-        '
-        Me.Label24.AutoSize = True
-        Me.Label24.Location = New System.Drawing.Point(6, 245)
-        Me.Label24.Name = "Label24"
-        Me.Label24.Size = New System.Drawing.Size(53, 13)
-        Me.Label24.TabIndex = 1862
-        Me.Label24.Text = "Smtp Port"
-        '
-        'SmtpHost
-        '
-        Me.SmtpHost.Location = New System.Drawing.Point(88, 212)
-        Me.SmtpHost.Name = "SmtpHost"
-        Me.SmtpHost.Size = New System.Drawing.Size(100, 20)
-        Me.SmtpHost.TabIndex = 1859
-        '
-        'Label23
-        '
-        Me.Label23.AutoSize = True
-        Me.Label23.Location = New System.Drawing.Point(6, 215)
-        Me.Label23.Name = "Label23"
-        Me.Label23.Size = New System.Drawing.Size(56, 13)
-        Me.Label23.TabIndex = 1860
-        Me.Label23.Text = "Smtp Host"
-        '
-        'PictureBox4
-        '
-        Me.PictureBox4.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.PictureBox4.Location = New System.Drawing.Point(127, 4)
-        Me.PictureBox4.Name = "PictureBox4"
-        Me.PictureBox4.Size = New System.Drawing.Size(30, 34)
-        Me.PictureBox4.TabIndex = 1858
-        Me.PictureBox4.TabStop = False
-        Me.ToolTip1.SetToolTip(Me.PictureBox4, "Wifi is a Web Based Login and User control panel.")
-        '
-        'WifiEnabled
-        '
-        Me.WifiEnabled.AutoSize = True
-        Me.WifiEnabled.Location = New System.Drawing.Point(26, 19)
-        Me.WifiEnabled.Name = "WifiEnabled"
-        Me.WifiEnabled.Size = New System.Drawing.Size(65, 17)
-        Me.WifiEnabled.TabIndex = 22
-        Me.WifiEnabled.Text = "Enabled"
-        Me.ToolTip1.SetToolTip(Me.WifiEnabled, "A Web UI for creating and managing User Accounts")
-        Me.WifiEnabled.UseVisualStyleBackColor = True
-        '
-        'GmailPassword
-        '
-        Me.GmailPassword.Location = New System.Drawing.Point(86, 186)
-        Me.GmailPassword.Name = "GmailPassword"
-        Me.GmailPassword.Size = New System.Drawing.Size(100, 20)
-        Me.GmailPassword.TabIndex = 20
-        Me.GmailPassword.UseSystemPasswordChar = True
-        '
-        'Label18
-        '
-        Me.Label18.AutoSize = True
-        Me.Label18.Location = New System.Drawing.Point(4, 189)
-        Me.Label18.Name = "Label18"
-        Me.Label18.Size = New System.Drawing.Size(81, 13)
-        Me.Label18.TabIndex = 21
-        Me.Label18.Text = "Email Password"
-        '
-        'Label14
-        '
-        Me.Label14.AutoSize = True
-        Me.Label14.Location = New System.Drawing.Point(4, 168)
-        Me.Label14.Name = "Label14"
-        Me.Label14.Size = New System.Drawing.Size(32, 13)
-        Me.Label14.TabIndex = 20
-        Me.Label14.Text = "Email"
-        '
-        'Label17
-        '
-        Me.Label17.AutoSize = True
-        Me.Label17.Location = New System.Drawing.Point(4, 119)
-        Me.Label17.Name = "Label17"
-        Me.Label17.Size = New System.Drawing.Size(32, 13)
-        Me.Label17.TabIndex = 15
-        Me.Label17.Text = "Email"
-        '
-        'GmailUsername
-        '
-        Me.GmailUsername.Location = New System.Drawing.Point(86, 161)
-        Me.GmailUsername.Name = "GmailUsername"
-        Me.GmailUsername.Size = New System.Drawing.Size(100, 20)
-        Me.GmailUsername.TabIndex = 19
-        '
-        'AdminEmail
-        '
-        Me.AdminEmail.Location = New System.Drawing.Point(86, 112)
-        Me.AdminEmail.Name = "AdminEmail"
-        Me.AdminEmail.Size = New System.Drawing.Size(100, 20)
-        Me.AdminEmail.TabIndex = 17
-        '
-        'Label12
-        '
-        Me.Label12.AutoSize = True
-        Me.Label12.Location = New System.Drawing.Point(4, 69)
-        Me.Label12.Name = "Label12"
-        Me.Label12.Size = New System.Drawing.Size(58, 13)
-        Me.Label12.TabIndex = 13
-        Me.Label12.Text = "Last Name"
-        '
-        'AccountConfirmationRequired
-        '
-        Me.AccountConfirmationRequired.AutoSize = True
-        Me.AccountConfirmationRequired.Location = New System.Drawing.Point(21, 139)
-        Me.AccountConfirmationRequired.Name = "AccountConfirmationRequired"
-        Me.AccountConfirmationRequired.Size = New System.Drawing.Size(175, 17)
-        Me.AccountConfirmationRequired.TabIndex = 18
-        Me.AccountConfirmationRequired.Text = "Confirmation required to Log in?"
-        Me.ToolTip1.SetToolTip(Me.AccountConfirmationRequired, "You must log in as Wifi Admin and enabled new users before they can log in.")
-        Me.AccountConfirmationRequired.UseVisualStyleBackColor = True
-        '
-        'AdminLast
-        '
-        Me.AdminLast.Location = New System.Drawing.Point(86, 66)
-        Me.AdminLast.Name = "AdminLast"
-        Me.AdminLast.Size = New System.Drawing.Size(100, 20)
-        Me.AdminLast.TabIndex = 15
-        '
-        'AdminFirst
-        '
-        Me.AdminFirst.Location = New System.Drawing.Point(86, 44)
-        Me.AdminFirst.Name = "AdminFirst"
-        Me.AdminFirst.Size = New System.Drawing.Size(100, 20)
-        Me.AdminFirst.TabIndex = 14
-        '
-        'Label11
-        '
-        Me.Label11.AutoSize = True
-        Me.Label11.Location = New System.Drawing.Point(4, 47)
-        Me.Label11.Name = "Label11"
-        Me.Label11.Size = New System.Drawing.Size(57, 13)
-        Me.Label11.TabIndex = 10
-        Me.Label11.Text = "First Name"
-        '
-        'Label10
-        '
-        Me.Label10.AutoSize = True
-        Me.Label10.Location = New System.Drawing.Point(4, 93)
-        Me.Label10.Name = "Label10"
-        Me.Label10.Size = New System.Drawing.Size(53, 13)
-        Me.Label10.TabIndex = 9
-        Me.Label10.Text = "Password"
-        '
-        'AdminPassword
-        '
-        Me.AdminPassword.Location = New System.Drawing.Point(86, 90)
-        Me.AdminPassword.Name = "AdminPassword"
-        Me.AdminPassword.Size = New System.Drawing.Size(100, 20)
-        Me.AdminPassword.TabIndex = 16
-        Me.AdminPassword.UseSystemPasswordChar = True
         '
         'GroupBox2
         '
@@ -543,7 +361,7 @@ Partial Class Expert
         'PictureBox2
         '
         Me.PictureBox2.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.PictureBox2.Location = New System.Drawing.Point(124, 8)
+        Me.PictureBox2.Location = New System.Drawing.Point(155, 9)
         Me.PictureBox2.Name = "PictureBox2"
         Me.PictureBox2.Size = New System.Drawing.Size(30, 34)
         Me.PictureBox2.TabIndex = 1859
@@ -558,6 +376,7 @@ Partial Class Expert
         Me.uPnPEnabled.Size = New System.Drawing.Size(96, 17)
         Me.uPnPEnabled.TabIndex = 40
         Me.uPnPEnabled.Text = "UPnP Enabled"
+        Me.ToolTip1.SetToolTip(Me.uPnPEnabled, "If on, will attempt to program the router port forwards. ")
         Me.uPnPEnabled.UseVisualStyleBackColor = True
         '
         'Label7
@@ -584,6 +403,7 @@ Partial Class Expert
         Me.HTTPPort.Name = "HTTPPort"
         Me.HTTPPort.Size = New System.Drawing.Size(47, 20)
         Me.HTTPPort.TabIndex = 39
+        Me.ToolTip1.SetToolTip(Me.HTTPPort, "Port 8002 is the default")
         '
         'PrivatePort
         '
@@ -591,13 +411,15 @@ Partial Class Expert
         Me.PrivatePort.Name = "PrivatePort"
         Me.PrivatePort.Size = New System.Drawing.Size(47, 20)
         Me.PrivatePort.TabIndex = 35
+        Me.ToolTip1.SetToolTip(Me.PrivatePort, "Port 8003 is the default")
         '
         'DiagnosticPort
         '
-        Me.DiagnosticPort.Location = New System.Drawing.Point(139, 44)
+        Me.DiagnosticPort.Location = New System.Drawing.Point(138, 44)
         Me.DiagnosticPort.Name = "DiagnosticPort"
         Me.DiagnosticPort.Size = New System.Drawing.Size(47, 20)
         Me.DiagnosticPort.TabIndex = 34
+        Me.ToolTip1.SetToolTip(Me.DiagnosticPort, "Port 8001 is the default.")
         '
         'Label4
         '
@@ -613,7 +435,7 @@ Partial Class Expert
         Me.GroupBox7.Controls.Add(Me.DomainUpDown1)
         Me.GroupBox7.Controls.Add(Me.PictureBox8)
         Me.GroupBox7.Controls.Add(Me.Clouds)
-        Me.GroupBox7.Location = New System.Drawing.Point(222, 263)
+        Me.GroupBox7.Location = New System.Drawing.Point(225, 286)
         Me.GroupBox7.Name = "GroupBox7"
         Me.GroupBox7.Size = New System.Drawing.Size(189, 71)
         Me.GroupBox7.TabIndex = 43
@@ -657,6 +479,7 @@ Partial Class Expert
         Me.Clouds.Size = New System.Drawing.Size(59, 17)
         Me.Clouds.TabIndex = 21
         Me.Clouds.Text = "Enable"
+        Me.ToolTip1.SetToolTip(Me.Clouds, "The original Sl clouds")
         Me.Clouds.UseVisualStyleBackColor = True
         '
         'GroupBox1
@@ -682,6 +505,8 @@ Partial Class Expert
         Me.PhysicsSeparate.TabIndex = 37
         Me.PhysicsSeparate.TabStop = True
         Me.PhysicsSeparate.Text = "Bullet physics in separate thread."
+        Me.ToolTip1.SetToolTip(Me.PhysicsSeparate, "(Default)  Runs Bullet physics in a thread where it will not be affected by scrip" &
+        "ts")
         Me.PhysicsSeparate.UseVisualStyleBackColor = True
         '
         'PhysicsNone
@@ -693,6 +518,7 @@ Partial Class Expert
         Me.PhysicsNone.TabIndex = 33
         Me.PhysicsNone.TabStop = True
         Me.PhysicsNone.Text = "None"
+        Me.ToolTip1.SetToolTip(Me.PhysicsNone, "No physics at all. Useful for troubleshooting.")
         Me.PhysicsNone.UseVisualStyleBackColor = True
         '
         'PhysicsubODE
@@ -704,6 +530,7 @@ Partial Class Expert
         Me.PhysicsubODE.TabIndex = 35
         Me.PhysicsubODE.TabStop = True
         Me.PhysicsubODE.Text = "Ubit Open Dynamic Engine"
+        Me.ToolTip1.SetToolTip(Me.PhysicsubODE, "A more-SL-like physics engine with more compatible vehicles and  sim crossings.")
         Me.PhysicsubODE.UseVisualStyleBackColor = True
         '
         'PhysicsBullet
@@ -715,6 +542,7 @@ Partial Class Expert
         Me.PhysicsBullet.TabIndex = 136
         Me.PhysicsBullet.TabStop = True
         Me.PhysicsBullet.Text = "Bullet Physics"
+        Me.ToolTip1.SetToolTip(Me.PhysicsBullet, "Academy Award-winning physics engine")
         Me.PhysicsBullet.UseVisualStyleBackColor = True
         '
         'PhysicsODE
@@ -726,6 +554,9 @@ Partial Class Expert
         Me.PhysicsODE.TabIndex = 34
         Me.PhysicsODE.TabStop = True
         Me.PhysicsODE.Text = "Open Dynamics Engine"
+        Me.ToolTip1.SetToolTip(Me.PhysicsODE, "OpenDynamicsEngine was the previous default physics engine in OpenSimulator 0.7.6" &
+        ".1 and before.    It continues to provide a workable physics implementation.  It" &
+        " does not currently support varregions.")
         Me.PhysicsODE.UseVisualStyleBackColor = True
         '
         'GridGroup
@@ -841,7 +672,7 @@ Partial Class Expert
         'PictureBox3
         '
         Me.PictureBox3.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.PictureBox3.Location = New System.Drawing.Point(731, 167)
+        Me.PictureBox3.Location = New System.Drawing.Point(192, 12)
         Me.PictureBox3.Name = "PictureBox3"
         Me.PictureBox3.Size = New System.Drawing.Size(30, 34)
         Me.PictureBox3.TabIndex = 1860
@@ -862,7 +693,7 @@ Partial Class Expert
         '
         'RegionMySqlPassword
         '
-        Me.RegionMySqlPassword.Location = New System.Drawing.Point(120, 77)
+        Me.RegionMySqlPassword.Location = New System.Drawing.Point(120, 107)
         Me.RegionMySqlPassword.Name = "RegionMySqlPassword"
         Me.RegionMySqlPassword.Size = New System.Drawing.Size(107, 20)
         Me.RegionMySqlPassword.TabIndex = 32
@@ -871,7 +702,7 @@ Partial Class Expert
         'Label21
         '
         Me.Label21.AutoSize = True
-        Me.Label21.Location = New System.Drawing.Point(17, 48)
+        Me.Label21.Location = New System.Drawing.Point(17, 78)
         Me.Label21.Name = "Label21"
         Me.Label21.Size = New System.Drawing.Size(55, 13)
         Me.Label21.TabIndex = 16
@@ -879,14 +710,14 @@ Partial Class Expert
         '
         'RegionDBUsername
         '
-        Me.RegionDBUsername.Location = New System.Drawing.Point(120, 48)
+        Me.RegionDBUsername.Location = New System.Drawing.Point(120, 78)
         Me.RegionDBUsername.Name = "RegionDBUsername"
         Me.RegionDBUsername.Size = New System.Drawing.Size(107, 20)
         Me.RegionDBUsername.TabIndex = 31
         '
         'RegionDbName
         '
-        Me.RegionDbName.Location = New System.Drawing.Point(120, 22)
+        Me.RegionDbName.Location = New System.Drawing.Point(120, 52)
         Me.RegionDbName.Name = "RegionDbName"
         Me.RegionDbName.Size = New System.Drawing.Size(107, 20)
         Me.RegionDbName.TabIndex = 30
@@ -894,7 +725,7 @@ Partial Class Expert
         'Label20
         '
         Me.Label20.AutoSize = True
-        Me.Label20.Location = New System.Drawing.Point(16, 22)
+        Me.Label20.Location = New System.Drawing.Point(16, 52)
         Me.Label20.Name = "Label20"
         Me.Label20.Size = New System.Drawing.Size(53, 13)
         Me.Label20.TabIndex = 13
@@ -903,7 +734,7 @@ Partial Class Expert
         'Label22
         '
         Me.Label22.AutoSize = True
-        Me.Label22.Location = New System.Drawing.Point(17, 75)
+        Me.Label22.Location = New System.Drawing.Point(17, 105)
         Me.Label22.Name = "Label22"
         Me.Label22.Size = New System.Drawing.Size(53, 13)
         Me.Label22.TabIndex = 17
@@ -912,14 +743,15 @@ Partial Class Expert
         'StandaloneGroup
         '
         Me.StandaloneGroup.Controls.Add(Me.Label22)
+        Me.StandaloneGroup.Controls.Add(Me.PictureBox3)
         Me.StandaloneGroup.Controls.Add(Me.Label20)
         Me.StandaloneGroup.Controls.Add(Me.RegionDbName)
         Me.StandaloneGroup.Controls.Add(Me.RegionDBUsername)
         Me.StandaloneGroup.Controls.Add(Me.Label21)
         Me.StandaloneGroup.Controls.Add(Me.RegionMySqlPassword)
-        Me.StandaloneGroup.Location = New System.Drawing.Point(629, 180)
+        Me.StandaloneGroup.Location = New System.Drawing.Point(633, 180)
         Me.StandaloneGroup.Name = "StandaloneGroup"
-        Me.StandaloneGroup.Size = New System.Drawing.Size(243, 123)
+        Me.StandaloneGroup.Size = New System.Drawing.Size(243, 142)
         Me.StandaloneGroup.TabIndex = 54
         Me.StandaloneGroup.TabStop = False
         Me.StandaloneGroup.Text = "Local Region Database"
@@ -931,7 +763,7 @@ Partial Class Expert
         Me.AutoStart.Controls.Add(Me.Label6)
         Me.AutoStart.Controls.Add(Me.BootStart)
         Me.AutoStart.Controls.Add(Me.AutoStartCheckbox)
-        Me.AutoStart.Location = New System.Drawing.Point(629, 309)
+        Me.AutoStart.Location = New System.Drawing.Point(639, 334)
         Me.AutoStart.Name = "AutoStart"
         Me.AutoStart.Size = New System.Drawing.Size(243, 70)
         Me.AutoStart.TabIndex = 44
@@ -979,7 +811,7 @@ Partial Class Expert
         'GroupBox5
         '
         Me.GroupBox5.Controls.Add(Me.AutoLoadCheckbox)
-        Me.GroupBox5.Location = New System.Drawing.Point(225, 341)
+        Me.GroupBox5.Location = New System.Drawing.Point(15, 387)
         Me.GroupBox5.Name = "GroupBox5"
         Me.GroupBox5.Size = New System.Drawing.Size(189, 48)
         Me.GroupBox5.TabIndex = 55
@@ -987,12 +819,226 @@ Partial Class Expert
         Me.GroupBox5.Text = "AutoLoad on Teleport"
         Me.GroupBox5.Visible = False
         '
+        'AllowGods
+        '
+        Me.AllowGods.AutoSize = True
+        Me.AllowGods.Location = New System.Drawing.Point(15, 35)
+        Me.AllowGods.Name = "AllowGods"
+        Me.AllowGods.Size = New System.Drawing.Size(85, 17)
+        Me.AllowGods.TabIndex = 1858
+        Me.AllowGods.Text = "Allow Gods?"
+        Me.ToolTip1.SetToolTip(Me.AllowGods, "By itself, this allows users with a UserLevel of 200 or more to assume god" & Global.Microsoft.VisualBasic.ChrW(10) & " power" &
+        "s in the regions in this simulator..")
+        Me.AllowGods.UseVisualStyleBackColor = True
+        '
+        'AdminPassword
+        '
+        Me.AdminPassword.Location = New System.Drawing.Point(86, 90)
+        Me.AdminPassword.Name = "AdminPassword"
+        Me.AdminPassword.Size = New System.Drawing.Size(100, 20)
+        Me.AdminPassword.TabIndex = 16
+        Me.AdminPassword.UseSystemPasswordChar = True
+        '
+        'Label10
+        '
+        Me.Label10.AutoSize = True
+        Me.Label10.Location = New System.Drawing.Point(4, 93)
+        Me.Label10.Name = "Label10"
+        Me.Label10.Size = New System.Drawing.Size(53, 13)
+        Me.Label10.TabIndex = 9
+        Me.Label10.Text = "Password"
+        '
+        'Label11
+        '
+        Me.Label11.AutoSize = True
+        Me.Label11.Location = New System.Drawing.Point(4, 47)
+        Me.Label11.Name = "Label11"
+        Me.Label11.Size = New System.Drawing.Size(57, 13)
+        Me.Label11.TabIndex = 10
+        Me.Label11.Text = "First Name"
+        '
+        'AdminFirst
+        '
+        Me.AdminFirst.Location = New System.Drawing.Point(86, 44)
+        Me.AdminFirst.Name = "AdminFirst"
+        Me.AdminFirst.Size = New System.Drawing.Size(100, 20)
+        Me.AdminFirst.TabIndex = 14
+        Me.ToolTip1.SetToolTip(Me.AdminFirst, "The first name of the Wifi Administrator.  Default is Wifi")
+        '
+        'AdminLast
+        '
+        Me.AdminLast.Location = New System.Drawing.Point(86, 66)
+        Me.AdminLast.Name = "AdminLast"
+        Me.AdminLast.Size = New System.Drawing.Size(100, 20)
+        Me.AdminLast.TabIndex = 15
+        Me.ToolTip1.SetToolTip(Me.AdminLast, "The last name of the Wifi Administrator.  Default is Admin")
+        '
+        'AccountConfirmationRequired
+        '
+        Me.AccountConfirmationRequired.AutoSize = True
+        Me.AccountConfirmationRequired.Location = New System.Drawing.Point(21, 139)
+        Me.AccountConfirmationRequired.Name = "AccountConfirmationRequired"
+        Me.AccountConfirmationRequired.Size = New System.Drawing.Size(175, 17)
+        Me.AccountConfirmationRequired.TabIndex = 18
+        Me.AccountConfirmationRequired.Text = "Confirmation required to Log in?"
+        Me.ToolTip1.SetToolTip(Me.AccountConfirmationRequired, "You must log in as Wifi Admin and enabled new users before they can log in.")
+        Me.AccountConfirmationRequired.UseVisualStyleBackColor = True
+        '
+        'Label12
+        '
+        Me.Label12.AutoSize = True
+        Me.Label12.Location = New System.Drawing.Point(4, 69)
+        Me.Label12.Name = "Label12"
+        Me.Label12.Size = New System.Drawing.Size(58, 13)
+        Me.Label12.TabIndex = 13
+        Me.Label12.Text = "Last Name"
+        '
+        'AdminEmail
+        '
+        Me.AdminEmail.Location = New System.Drawing.Point(86, 112)
+        Me.AdminEmail.Name = "AdminEmail"
+        Me.AdminEmail.Size = New System.Drawing.Size(100, 20)
+        Me.AdminEmail.TabIndex = 17
+        Me.ToolTip1.SetToolTip(Me.AdminEmail, "The email address to send requests for an account to.")
+        '
+        'Label17
+        '
+        Me.Label17.AutoSize = True
+        Me.Label17.Location = New System.Drawing.Point(4, 119)
+        Me.Label17.Name = "Label17"
+        Me.Label17.Size = New System.Drawing.Size(32, 13)
+        Me.Label17.TabIndex = 15
+        Me.Label17.Text = "Email"
+        '
+        'WifiEnabled
+        '
+        Me.WifiEnabled.AutoSize = True
+        Me.WifiEnabled.Location = New System.Drawing.Point(26, 19)
+        Me.WifiEnabled.Name = "WifiEnabled"
+        Me.WifiEnabled.Size = New System.Drawing.Size(65, 17)
+        Me.WifiEnabled.TabIndex = 22
+        Me.WifiEnabled.Text = "Enabled"
+        Me.ToolTip1.SetToolTip(Me.WifiEnabled, "A Web UI for creating and managing User Accounts")
+        Me.WifiEnabled.UseVisualStyleBackColor = True
+        '
+        'PictureBox4
+        '
+        Me.PictureBox4.Image = Global.Outworldz.My.Resources.Resources.about
+        Me.PictureBox4.Location = New System.Drawing.Point(148, 4)
+        Me.PictureBox4.Name = "PictureBox4"
+        Me.PictureBox4.Size = New System.Drawing.Size(30, 34)
+        Me.PictureBox4.TabIndex = 1858
+        Me.PictureBox4.TabStop = False
+        Me.ToolTip1.SetToolTip(Me.PictureBox4, "Wifi is a Web Based Login and User control panel.")
+        '
+        'Web
+        '
+        Me.Web.Controls.Add(Me.PictureBox4)
+        Me.Web.Controls.Add(Me.WifiEnabled)
+        Me.Web.Controls.Add(Me.Label17)
+        Me.Web.Controls.Add(Me.AdminEmail)
+        Me.Web.Controls.Add(Me.Label12)
+        Me.Web.Controls.Add(Me.AccountConfirmationRequired)
+        Me.Web.Controls.Add(Me.AdminLast)
+        Me.Web.Controls.Add(Me.AdminFirst)
+        Me.Web.Controls.Add(Me.Label11)
+        Me.Web.Controls.Add(Me.Label10)
+        Me.Web.Controls.Add(Me.AdminPassword)
+        Me.Web.Location = New System.Drawing.Point(431, 155)
+        Me.Web.Name = "Web"
+        Me.Web.Size = New System.Drawing.Size(192, 167)
+        Me.Web.TabIndex = 47
+        Me.Web.TabStop = False
+        Me.Web.Text = "Wifi Interface Admin"
+        '
+        'GroupBox6
+        '
+        Me.GroupBox6.Controls.Add(Me.SmtpPort)
+        Me.GroupBox6.Controls.Add(Me.Label24)
+        Me.GroupBox6.Controls.Add(Me.SmtpHost)
+        Me.GroupBox6.Controls.Add(Me.Label23)
+        Me.GroupBox6.Controls.Add(Me.GmailPassword)
+        Me.GroupBox6.Controls.Add(Me.Label18)
+        Me.GroupBox6.Controls.Add(Me.Label14)
+        Me.GroupBox6.Controls.Add(Me.GmailUsername)
+        Me.GroupBox6.Location = New System.Drawing.Point(433, 329)
+        Me.GroupBox6.Name = "GroupBox6"
+        Me.GroupBox6.Size = New System.Drawing.Size(200, 150)
+        Me.GroupBox6.TabIndex = 1861
+        Me.GroupBox6.TabStop = False
+        Me.GroupBox6.Text = "SMTP Email Account"
+        '
+        'SmtpPort
+        '
+        Me.SmtpPort.Location = New System.Drawing.Point(96, 107)
+        Me.SmtpPort.Name = "SmtpPort"
+        Me.SmtpPort.Size = New System.Drawing.Size(33, 20)
+        Me.SmtpPort.TabIndex = 1869
+        '
+        'Label24
+        '
+        Me.Label24.AutoSize = True
+        Me.Label24.Location = New System.Drawing.Point(10, 110)
+        Me.Label24.Name = "Label24"
+        Me.Label24.Size = New System.Drawing.Size(53, 13)
+        Me.Label24.TabIndex = 1870
+        Me.Label24.Text = "Smtp Port"
+        '
+        'SmtpHost
+        '
+        Me.SmtpHost.Location = New System.Drawing.Point(97, 81)
+        Me.SmtpHost.Name = "SmtpHost"
+        Me.SmtpHost.Size = New System.Drawing.Size(95, 20)
+        Me.SmtpHost.TabIndex = 1867
+        '
+        'Label23
+        '
+        Me.Label23.AutoSize = True
+        Me.Label23.Location = New System.Drawing.Point(9, 84)
+        Me.Label23.Name = "Label23"
+        Me.Label23.Size = New System.Drawing.Size(56, 13)
+        Me.Label23.TabIndex = 1868
+        Me.Label23.Text = "Smtp Host"
+        '
+        'GmailPassword
+        '
+        Me.GmailPassword.Location = New System.Drawing.Point(95, 55)
+        Me.GmailPassword.Name = "GmailPassword"
+        Me.GmailPassword.Size = New System.Drawing.Size(95, 20)
+        Me.GmailPassword.TabIndex = 1864
+        Me.GmailPassword.UseSystemPasswordChar = True
+        '
+        'Label18
+        '
+        Me.Label18.AutoSize = True
+        Me.Label18.Location = New System.Drawing.Point(7, 58)
+        Me.Label18.Name = "Label18"
+        Me.Label18.Size = New System.Drawing.Size(86, 13)
+        Me.Label18.TabIndex = 1866
+        Me.Label18.Text = "SMTP Password"
+        '
+        'Label14
+        '
+        Me.Label14.AutoSize = True
+        Me.Label14.Location = New System.Drawing.Point(7, 37)
+        Me.Label14.Name = "Label14"
+        Me.Label14.Size = New System.Drawing.Size(55, 13)
+        Me.Label14.TabIndex = 1865
+        Me.Label14.Text = "Username"
+        '
+        'GmailUsername
+        '
+        Me.GmailUsername.Location = New System.Drawing.Point(95, 30)
+        Me.GmailUsername.Name = "GmailUsername"
+        Me.GmailUsername.Size = New System.Drawing.Size(95, 20)
+        Me.GmailUsername.TabIndex = 1863
+        '
         'Expert
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(897, 463)
-        Me.Controls.Add(Me.PictureBox3)
+        Me.ClientSize = New System.Drawing.Size(897, 489)
+        Me.Controls.Add(Me.GroupBox6)
         Me.Controls.Add(Me.GroupBox5)
         Me.Controls.Add(Me.AutoStart)
         Me.Controls.Add(Me.StandaloneGroup)
@@ -1014,9 +1060,6 @@ Partial Class Expert
         Me.GroupBox4.ResumeLayout(False)
         Me.GroupBox4.PerformLayout()
         CType(Me.GodHelp, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.Web.ResumeLayout(False)
-        Me.Web.PerformLayout()
-        CType(Me.PictureBox4, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox2.ResumeLayout(False)
         Me.GroupBox2.PerformLayout()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()
@@ -1035,6 +1078,11 @@ Partial Class Expert
         Me.AutoStart.PerformLayout()
         Me.GroupBox5.ResumeLayout(False)
         Me.GroupBox5.PerformLayout()
+        CType(Me.PictureBox4, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.Web.ResumeLayout(False)
+        Me.Web.PerformLayout()
+        Me.GroupBox6.ResumeLayout(False)
+        Me.GroupBox6.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -1050,20 +1098,6 @@ Partial Class Expert
     Friend WithEvents GodHelp As PictureBox
     Friend WithEvents ManagerGod As CheckBox
     Friend WithEvents RegionGod As CheckBox
-    Friend WithEvents Web As GroupBox
-    Friend WithEvents GmailPassword As TextBox
-    Friend WithEvents Label18 As Label
-    Friend WithEvents Label14 As Label
-    Friend WithEvents Label17 As Label
-    Friend WithEvents GmailUsername As TextBox
-    Friend WithEvents AdminEmail As TextBox
-    Friend WithEvents Label12 As Label
-    Friend WithEvents AccountConfirmationRequired As CheckBox
-    Friend WithEvents AdminLast As TextBox
-    Friend WithEvents AdminFirst As TextBox
-    Friend WithEvents Label11 As Label
-    Friend WithEvents Label10 As Label
-    Friend WithEvents AdminPassword As TextBox
     Friend WithEvents Label19 As Label
     Friend WithEvents SplashPage As TextBox
     Friend WithEvents GroupBox2 As GroupBox
@@ -1088,7 +1122,6 @@ Partial Class Expert
     Friend WithEvents Label8 As Label
     Friend WithEvents RobustDBPassword As TextBox
     Friend WithEvents RobustDBUsername As TextBox
-    Friend WithEvents WifiEnabled As CheckBox
     Friend WithEvents ToolTip1 As ToolTip
     Friend WithEvents HTTPPort As TextBox
     Friend WithEvents Label7 As Label
@@ -1108,7 +1141,6 @@ Partial Class Expert
     Friend WithEvents Label6 As Label
     Friend WithEvents BootStart As CheckBox
     Friend WithEvents PictureBox5 As PictureBox
-    Friend WithEvents PictureBox4 As PictureBox
     Friend WithEvents PictureBox2 As PictureBox
     Friend WithEvents PictureBox3 As PictureBox
     Friend WithEvents PictureBox1 As PictureBox
@@ -1121,8 +1153,26 @@ Partial Class Expert
     Friend WithEvents Label16 As Label
     Friend WithEvents DomainUpDown1 As DomainUpDown
     Friend WithEvents PictureBox8 As PictureBox
+    Friend WithEvents AllowGods As CheckBox
+    Friend WithEvents AdminPassword As TextBox
+    Friend WithEvents Label10 As Label
+    Friend WithEvents Label11 As Label
+    Friend WithEvents AdminFirst As TextBox
+    Friend WithEvents AdminLast As TextBox
+    Friend WithEvents AccountConfirmationRequired As CheckBox
+    Friend WithEvents Label12 As Label
+    Friend WithEvents AdminEmail As TextBox
+    Friend WithEvents Label17 As Label
+    Friend WithEvents WifiEnabled As CheckBox
+    Friend WithEvents PictureBox4 As PictureBox
+    Friend WithEvents Web As GroupBox
+    Friend WithEvents GroupBox6 As GroupBox
     Friend WithEvents SmtpPort As TextBox
     Friend WithEvents Label24 As Label
     Friend WithEvents SmtpHost As TextBox
     Friend WithEvents Label23 As Label
+    Friend WithEvents GmailPassword As TextBox
+    Friend WithEvents Label18 As Label
+    Friend WithEvents Label14 As Label
+    Friend WithEvents GmailUsername As TextBox
 End Class

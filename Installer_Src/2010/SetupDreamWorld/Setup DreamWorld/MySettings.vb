@@ -89,8 +89,10 @@ Public Class MySettings
             PrivatePort() = My.Settings.PrivatePort
             PublicIP() = My.Settings.PublicIP
 
+            Allow_grid_gods() = My.Settings.allow_grid_gods
             Region_owner_is_god() = My.Settings.region_owner_is_god
             Region_manager_is_god() = My.Settings.region_manager_is_god
+
             RanAllDiags() = My.Settings.RanAllDiags
             RegionDBName() = My.Settings.RegionDBName
             RegionDbPassword() = My.Settings.RegionDbPassword
@@ -136,7 +138,7 @@ Public Class MySettings
 
         End If
 
-        ' new bool vars have to exist
+        ' new bool vars have to exist before we can read them, and this hack is the only way to set this is to test if they do exist
         Try
             Dim x = Clouds()
         Catch ex As Exception
@@ -144,6 +146,21 @@ Public Class MySettings
             Density() = 0.5
             SaveMyINI()
         End Try
+
+        Try
+            Dim x = Allow_grid_gods()
+        Catch ex As Exception
+            Allow_grid_gods() = False
+            SaveMyINI()
+        End Try
+
+        Try
+            Dim x = GDPR()
+        Catch ex As Exception
+            GDPR() = False
+            SaveMyINI()
+        End Try
+
 
         ' check for default
         If (SmtpHost() = "") Then SmtpHost() = "smtp.gmail.com"
@@ -239,7 +256,6 @@ Public Class MySettings
 
     End Sub
 
-
     Public Sub SaveMyINI()
 
         Try
@@ -280,7 +296,14 @@ Public Class MySettings
 #End Region
 
 #Region "Properties"
-
+    Public Property GDPR() As Boolean
+        Get
+            Return CType(GetMySetting("GDPR"), Boolean)
+        End Get
+        Set
+            SetMySetting("GDPR", Value)
+        End Set
+    End Property
 
     Public Property SmtpHost() As String
         Get
@@ -481,6 +504,16 @@ Public Class MySettings
             SetMySetting("ImageNum", Value)
         End Set
     End Property
+
+    Public Property Allow_grid_gods() As Boolean
+        Get
+            Return CType(GetMySetting("Allow_grid_gods"), Boolean)
+        End Get
+        Set
+            SetMySetting("Allow_grid_gods", Value)
+        End Set
+    End Property
+
     Public Property Region_owner_is_god() As Boolean
         Get
             Return CType(GetMySetting("Region_owner_is_god"), Boolean)

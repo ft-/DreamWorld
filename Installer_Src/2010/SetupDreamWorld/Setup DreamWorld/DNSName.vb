@@ -66,7 +66,7 @@ Public Class DNSName
                 Me.Close()
                 Return
             End If
-            MsgBox("Coud net use that name.  Must be valid domain name, a XYZ.Outworldz.net name, the IP address of this machine or the router, a dynamic DNS name.", vbInformation, "Name Needed")
+            MsgBox("Could not use that name.  Must be valid domain name, a 'XYZ'.Outworldz.net name, the IP address of this machine or the router, a static or dynamic DNS name.", vbInformation, "Name Needed")
             Form1.MySetting.DNSName = TextBox1.Text
             Form1.MySetting.SaveMyINI()
 
@@ -99,6 +99,11 @@ Public Class DNSName
 
     Private Sub TextBox1_TextChanged(sender As Object, e As EventArgs) Handles TextBox1.TextChanged
 
+    End Sub
+
+    Private Sub CheckBox1_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBox1.CheckedChanged
+        Form1.MySetting.GDPR = CheckBox1.Checked
+        Form1.MySetting.SaveMyINI()
     End Sub
 
 
