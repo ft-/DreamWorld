@@ -33,7 +33,6 @@ Partial Class Expert
         Me.UniqueId = New System.Windows.Forms.TextBox()
         Me.DNSButton = New System.Windows.Forms.Button()
         Me.DNSHelp = New System.Windows.Forms.PictureBox()
-        Me.HypericaButton = New System.Windows.Forms.Button()
         Me.TestButton1 = New System.Windows.Forms.Button()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Label3 = New System.Windows.Forms.Label()
@@ -86,6 +85,7 @@ Partial Class Expert
         Me.WifiEnabled = New System.Windows.Forms.CheckBox()
         Me.PictureBox4 = New System.Windows.Forms.PictureBox()
         Me.GDPRCheckBox = New System.Windows.Forms.CheckBox()
+        Me.GridNameHelp = New System.Windows.Forms.PictureBox()
         Me.RegionMySqlPassword = New System.Windows.Forms.TextBox()
         Me.Label21 = New System.Windows.Forms.Label()
         Me.RegionDBUsername = New System.Windows.Forms.TextBox()
@@ -116,7 +116,6 @@ Partial Class Expert
         Me.GmailUsername = New System.Windows.Forms.TextBox()
         Me.PictureBox9 = New System.Windows.Forms.PictureBox()
         Me.GroupBox11 = New System.Windows.Forms.GroupBox()
-        Me.GridNameHelp = New System.Windows.Forms.PictureBox()
         Me.GroupBox3.SuspendLayout()
         CType(Me.PictureBox7, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox6, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -133,6 +132,7 @@ Partial Class Expert
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox3, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox4, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.GridNameHelp, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.StandaloneGroup.SuspendLayout()
         Me.AutoStart.SuspendLayout()
         Me.GroupBox5.SuspendLayout()
@@ -140,7 +140,6 @@ Partial Class Expert
         Me.GroupBox6.SuspendLayout()
         CType(Me.PictureBox9, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox11.SuspendLayout()
-        CType(Me.GridNameHelp, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'GroupBox3
@@ -153,7 +152,6 @@ Partial Class Expert
         Me.GroupBox3.Controls.Add(Me.UniqueId)
         Me.GroupBox3.Controls.Add(Me.DNSButton)
         Me.GroupBox3.Controls.Add(Me.DNSHelp)
-        Me.GroupBox3.Controls.Add(Me.HypericaButton)
         Me.GroupBox3.Controls.Add(Me.TestButton1)
         Me.GroupBox3.Controls.Add(Me.Label2)
         Me.GroupBox3.Controls.Add(Me.Label3)
@@ -162,7 +160,7 @@ Partial Class Expert
         Me.GroupBox3.Controls.Add(Me.SplashPage)
         Me.GroupBox3.Location = New System.Drawing.Point(12, 12)
         Me.GroupBox3.Name = "GroupBox3"
-        Me.GroupBox3.Size = New System.Drawing.Size(192, 367)
+        Me.GroupBox3.Size = New System.Drawing.Size(192, 345)
         Me.GroupBox3.TabIndex = 49
         Me.GroupBox3.TabStop = False
         Me.GroupBox3.Text = "Grid"
@@ -181,7 +179,7 @@ Partial Class Expert
         'PictureBox7
         '
         Me.PictureBox7.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.PictureBox7.Location = New System.Drawing.Point(142, 288)
+        Me.PictureBox7.Location = New System.Drawing.Point(148, 273)
         Me.PictureBox7.Name = "PictureBox7"
         Me.PictureBox7.Size = New System.Drawing.Size(30, 34)
         Me.PictureBox7.TabIndex = 1865
@@ -244,15 +242,6 @@ Partial Class Expert
         Me.DNSHelp.TabStop = False
         Me.ToolTip1.SetToolTip(Me.DNSHelp, "Click For Help on DNS")
         '
-        'HypericaButton
-        '
-        Me.HypericaButton.Location = New System.Drawing.Point(5, 251)
-        Me.HypericaButton.Name = "HypericaButton"
-        Me.HypericaButton.Size = New System.Drawing.Size(172, 23)
-        Me.HypericaButton.TabIndex = 34
-        Me.HypericaButton.Text = "Add Details to Directory"
-        Me.HypericaButton.UseVisualStyleBackColor = True
-        '
         'TestButton1
         '
         Me.TestButton1.Location = New System.Drawing.Point(8, 90)
@@ -290,7 +279,7 @@ Partial Class Expert
         'Label19
         '
         Me.Label19.AutoSize = True
-        Me.Label19.Location = New System.Drawing.Point(5, 311)
+        Me.Label19.Location = New System.Drawing.Point(6, 293)
         Me.Label19.Name = "Label19"
         Me.Label19.Size = New System.Drawing.Size(139, 13)
         Me.Label19.TabIndex = 46
@@ -298,7 +287,7 @@ Partial Class Expert
         '
         'SplashPage
         '
-        Me.SplashPage.Location = New System.Drawing.Point(5, 329)
+        Me.SplashPage.Location = New System.Drawing.Point(5, 317)
         Me.SplashPage.Name = "SplashPage"
         Me.SplashPage.Size = New System.Drawing.Size(177, 20)
         Me.SplashPage.TabIndex = 45
@@ -770,7 +759,7 @@ Partial Class Expert
         'GDPRCheckBox
         '
         Me.GDPRCheckBox.AutoSize = True
-        Me.GDPRCheckBox.Location = New System.Drawing.Point(15, 117)
+        Me.GDPRCheckBox.Location = New System.Drawing.Point(18, 19)
         Me.GDPRCheckBox.Name = "GDPRCheckBox"
         Me.GDPRCheckBox.Size = New System.Drawing.Size(231, 17)
         Me.GDPRCheckBox.TabIndex = 1863
@@ -779,6 +768,16 @@ Partial Class Expert
         " this information to the public. on wwwOutworldz.com/hyperica and in-world on te" &
         "leports.  The URL and photo are listed.")
         Me.GDPRCheckBox.UseVisualStyleBackColor = True
+        '
+        'GridNameHelp
+        '
+        Me.GridNameHelp.Image = Global.Outworldz.My.Resources.Resources.about
+        Me.GridNameHelp.Location = New System.Drawing.Point(255, 12)
+        Me.GridNameHelp.Name = "GridNameHelp"
+        Me.GridNameHelp.Size = New System.Drawing.Size(28, 27)
+        Me.GridNameHelp.TabIndex = 1865
+        Me.GridNameHelp.TabStop = False
+        Me.ToolTip1.SetToolTip(Me.GridNameHelp, "Click for Help on Grid Name")
         '
         'RegionMySqlPassword
         '
@@ -900,7 +899,7 @@ Partial Class Expert
         'GroupBox5
         '
         Me.GroupBox5.Controls.Add(Me.AutoLoadCheckbox)
-        Me.GroupBox5.Location = New System.Drawing.Point(653, 410)
+        Me.GroupBox5.Location = New System.Drawing.Point(639, 410)
         Me.GroupBox5.Name = "GroupBox5"
         Me.GroupBox5.Size = New System.Drawing.Size(189, 48)
         Me.GroupBox5.TabIndex = 55
@@ -948,9 +947,9 @@ Partial Class Expert
         Me.Label17.AutoSize = True
         Me.Label17.Location = New System.Drawing.Point(4, 119)
         Me.Label17.Name = "Label17"
-        Me.Label17.Size = New System.Drawing.Size(32, 13)
+        Me.Label17.Size = New System.Drawing.Size(62, 13)
         Me.Label17.TabIndex = 15
-        Me.Label17.Text = "Email"
+        Me.Label17.Text = "Notify Email"
         '
         'Web
         '
@@ -984,10 +983,10 @@ Partial Class Expert
         Me.GroupBox6.Controls.Add(Me.GmailUsername)
         Me.GroupBox6.Location = New System.Drawing.Point(433, 329)
         Me.GroupBox6.Name = "GroupBox6"
-        Me.GroupBox6.Size = New System.Drawing.Size(200, 150)
+        Me.GroupBox6.Size = New System.Drawing.Size(200, 192)
         Me.GroupBox6.TabIndex = 1861
         Me.GroupBox6.TabStop = False
-        Me.GroupBox6.Text = "SMTP Email Account"
+        Me.GroupBox6.Text = "SMTP Send Email Account"
         '
         'SmtpPort
         '
@@ -1057,7 +1056,7 @@ Partial Class Expert
         'PictureBox9
         '
         Me.PictureBox9.InitialImage = CType(resources.GetObject("PictureBox9.InitialImage"), System.Drawing.Image)
-        Me.PictureBox9.Location = New System.Drawing.Point(12, 11)
+        Me.PictureBox9.Location = New System.Drawing.Point(12, 42)
         Me.PictureBox9.Name = "PictureBox9"
         Me.PictureBox9.Size = New System.Drawing.Size(180, 100)
         Me.PictureBox9.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
@@ -1071,26 +1070,16 @@ Partial Class Expert
         Me.GroupBox11.Controls.Add(Me.PictureBox9)
         Me.GroupBox11.Location = New System.Drawing.Point(12, 387)
         Me.GroupBox11.Name = "GroupBox11"
-        Me.GroupBox11.Size = New System.Drawing.Size(415, 134)
+        Me.GroupBox11.Size = New System.Drawing.Size(415, 146)
         Me.GroupBox11.TabIndex = 1865
         Me.GroupBox11.TabStop = False
         Me.GroupBox11.Text = "Public Photo"
-        '
-        'GridNameHelp
-        '
-        Me.GridNameHelp.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.GridNameHelp.Location = New System.Drawing.Point(207, 84)
-        Me.GridNameHelp.Name = "GridNameHelp"
-        Me.GridNameHelp.Size = New System.Drawing.Size(28, 27)
-        Me.GridNameHelp.TabIndex = 1865
-        Me.GridNameHelp.TabStop = False
-        Me.ToolTip1.SetToolTip(Me.GridNameHelp, "Click for Help on Grid Name")
         '
         'Expert
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(900, 533)
+        Me.ClientSize = New System.Drawing.Size(900, 547)
         Me.Controls.Add(Me.GroupBox11)
         Me.Controls.Add(Me.GroupBox6)
         Me.Controls.Add(Me.GroupBox5)
@@ -1127,6 +1116,7 @@ Partial Class Expert
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox3, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox4, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.GridNameHelp, System.ComponentModel.ISupportInitialize).EndInit()
         Me.StandaloneGroup.ResumeLayout(False)
         Me.StandaloneGroup.PerformLayout()
         Me.AutoStart.ResumeLayout(False)
@@ -1140,14 +1130,12 @@ Partial Class Expert
         CType(Me.PictureBox9, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox11.ResumeLayout(False)
         Me.GroupBox11.PerformLayout()
-        CType(Me.GridNameHelp, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
     Friend WithEvents GroupBox3 As GroupBox
     Friend WithEvents DNSButton As Button
     Friend WithEvents DNSHelp As PictureBox
-    Friend WithEvents HypericaButton As Button
     Friend WithEvents TestButton1 As Button
     Friend WithEvents Label2 As Label
     Friend WithEvents Label3 As Label

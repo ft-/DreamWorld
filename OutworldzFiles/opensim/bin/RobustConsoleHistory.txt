@@ -3,13 +3,6 @@ quit
 quit
 quit
 quit
-create user Test User
-quit
-quit
-quit
-quit
-quit
-quit
 quit
 quit
 quit
@@ -97,5 +90,12 @@ set log level allert New content just loaded.
 quit
 createuser Ferd Frederix
 create user Ferd Frederix
+quit
+quit
+create user Test User 123
+cvcreate user Ferd Frederix 4a<$more
+create user Ferd Frederix 4a<$more
+create user Ferd Frederix 4a<$more
+quit
 quit
 quit

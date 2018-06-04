@@ -101,11 +101,6 @@ Public Class DNSName
 
     End Sub
 
-    Private Sub CheckBox1_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBox1.CheckedChanged
-        Form1.MySetting.GDPR = CheckBox1.Checked
-        Form1.MySetting.SaveMyINI()
-    End Sub
-
 
 
 

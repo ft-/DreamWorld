@@ -82,9 +82,9 @@ Public Class Expert
         uPnPEnabled.Checked = Form1.MySetting.UPnPEnabled
 
         Try
-            PictureBox8.Image = Bitmap.FromFile(Form1.MyFolder & "\OutworldzFiles\Photo.png")
+            PictureBox9.Image = Bitmap.FromFile(Form1.MyFolder & "\OutworldzFiles\Photo.png")
         Catch
-            PictureBox8.Image = My.Resources.blankbox
+            PictureBox9.Image = My.Resources.blankbox
         End Try
 
         initted = True ' suppress the install of the startup on formload
@@ -325,13 +325,6 @@ Public Class Expert
         Else
             MsgBox("Cannot resolve " + Form1.MySetting.DNSName, vbInformation, "Error")
         End If
-
-    End Sub
-
-    Private Sub HypericaButton_Click(sender As Object, e As EventArgs) Handles HypericaButton.Click
-
-        Dim webAddress As String = "http://www.hyperica.com/directory/?GridName=" + Form1.MySetting.DNSName
-        Process.Start(webAddress)
 
     End Sub
 

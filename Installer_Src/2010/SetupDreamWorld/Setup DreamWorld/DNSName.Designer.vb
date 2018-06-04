@@ -1,9 +1,9 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class DNSName
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -20,7 +20,7 @@ Partial Class DNSName
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Me.TextBox1 = New System.Windows.Forms.TextBox()
@@ -28,13 +28,12 @@ Partial Class DNSName
         Me.NextNameButton = New System.Windows.Forms.Button()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.PictureBox4 = New System.Windows.Forms.PictureBox()
-        Me.CheckBox1 = New System.Windows.Forms.CheckBox()
         CType(Me.PictureBox4, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'TextBox1
         '
-        Me.TextBox1.Location = New System.Drawing.Point(6, 10)
+        Me.TextBox1.Location = New System.Drawing.Point(6, 19)
         Me.TextBox1.Name = "TextBox1"
         Me.TextBox1.Size = New System.Drawing.Size(182, 20)
         Me.TextBox1.TabIndex = 1
@@ -51,7 +50,7 @@ Partial Class DNSName
         '
         'NextNameButton
         '
-        Me.NextNameButton.Location = New System.Drawing.Point(6, 36)
+        Me.NextNameButton.Location = New System.Drawing.Point(6, 45)
         Me.NextNameButton.Name = "NextNameButton"
         Me.NextNameButton.Size = New System.Drawing.Size(78, 23)
         Me.NextNameButton.TabIndex = 6
@@ -66,31 +65,18 @@ Partial Class DNSName
         'PictureBox4
         '
         Me.PictureBox4.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.PictureBox4.Location = New System.Drawing.Point(186, 53)
+        Me.PictureBox4.Location = New System.Drawing.Point(194, 7)
         Me.PictureBox4.Name = "PictureBox4"
         Me.PictureBox4.Size = New System.Drawing.Size(28, 32)
         Me.PictureBox4.TabIndex = 1859
         Me.PictureBox4.TabStop = False
         Me.ToolTip1.SetToolTip(Me.PictureBox4, "Click for Help on DNS Names")
         '
-        'CheckBox1
-        '
-        Me.CheckBox1.AutoSize = True
-        Me.CheckBox1.Location = New System.Drawing.Point(99, 91)
-        Me.CheckBox1.Name = "CheckBox1"
-        Me.CheckBox1.Size = New System.Drawing.Size(105, 17)
-        Me.CheckBox1.TabIndex = 1860
-        Me.CheckBox1.Text = "Display Publicly?"
-        Me.ToolTip1.SetToolTip(Me.CheckBox1, "GDPR rules require you to opt in to making your sim publicly available on Hyerica" &
-        ".com Click to agree.")
-        Me.CheckBox1.UseVisualStyleBackColor = True
-        '
         'DNSName
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(252, 122)
-        Me.Controls.Add(Me.CheckBox1)
         Me.Controls.Add(Me.PictureBox4)
         Me.Controls.Add(Me.NextNameButton)
         Me.Controls.Add(Me.SaveButton)
@@ -108,5 +94,4 @@ Partial Class DNSName
     Friend WithEvents NextNameButton As Button
     Friend WithEvents ToolTip1 As ToolTip
     Friend WithEvents PictureBox4 As PictureBox
-    Friend WithEvents CheckBox1 As CheckBox
 End Class
