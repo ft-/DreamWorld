@@ -260,6 +260,7 @@ Public Class MySettings
         Try
             Myparser.WriteFile(myINI, MyData, System.Text.Encoding.ASCII)
         Catch ex As Exception
+            MsgBox("Unable to save settings to " + myINI)
             Form1.Log("Error:" + ex.Message)
         End Try
 
