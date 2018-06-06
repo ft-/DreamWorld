@@ -34,7 +34,6 @@ Public Class Form1
 
 #Region "Declarations"
 
-
     Dim MyVersion As String = "2.17"
     Dim DebugPath As String = "C:\Opensim\Outworldz DreamGrid Source"  ' no slash at end
     Public Domain As String = "http://www.outworldz.com"
@@ -105,7 +104,7 @@ Public Class Form1
     Dim gUseIcons As Boolean = True
     Dim gIPv4Address As String
     Public MySetting As New MySettings
-
+    Dim exiting As Boolean = False
     ' Shoutcast
     Dim gIcecastProcID As Boolean = False
     Private WithEvents IcecastProcess As New Process()
@@ -413,6 +412,7 @@ Public Class Form1
 
     Private Sub Startup()
 
+        exiting = False  ' suppress exit warning messages
         ProgressBar1.Value = 0
         ProgressBar1.Visible = True
         Buttons(BusyButton)
@@ -509,6 +509,7 @@ Public Class Form1
 
     Private Sub KillAll()
 
+        exiting = True ' force msgbox is anything exists
         Timer1.Stop()
         gStopping = True
         ProgressBar1.Value = 100
@@ -1366,14 +1367,6 @@ Public Class Form1
 
     End Sub
 
-    ' Handle Exited event and display process information.
-    Private Sub RobustProcess_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles RobustProcess.Exited
-
-        gRobustProcID = Nothing
-
-
-    End Sub
-
     Public Sub StartIcecast()
 
         If Not MySetting.SC_Enable Then
@@ -1524,26 +1517,37 @@ Public Class Form1
 #End Region
 
 #Region "Exited"
+    ' Handle Exited event and display process information.
+    Private Sub RobustProcess_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles RobustProcess.Exited
 
-    Private Sub Mysql_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles pMySql.Exited
-        MsgBox("Icecast has exited")
-    End Sub
-    Private Sub IceCast_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles IcecastProcess.Exited
+        gRobustProcID = Nothing
 
-        Dim yesno = MsgBox("The database crashed. Do you want to see the log file?", vbYesNo, "Error")
+        If exiting Then Return
+        Dim yesno = MsgBox("Robust exited. Do you want to see the error log file?", vbYesNo, "Error")
         If (yesno = vbYes) Then
-            Dim files() As String
-            Dim MysqlLog As String = MyFolder + "\OutworldzFiles\mysql\data"
-            files = Directory.GetFiles(MysqlLog, "*.err", SearchOption.TopDirectoryOnly)
-            For Each FileName As String In files
-                System.Diagnostics.Process.Start("notepad.exe", FileName)
-            Next
+            Dim MysqlLog As String = MyFolder + "\OutworldzFiles\Opensim\bin\Robust.log"
+            System.Diagnostics.Process.Start("notepad.exe", MysqlLog)
         End If
 
     End Sub
-    Private Sub Robust_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles RobustProcess.Exited
-        RegionHandles(0) = False
-        DoExit(sender)
+    Private Sub Mysql_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles pMySql.Exited
+
+        If exiting Then Return
+        Dim yesno = MsgBox("Mysql exited. Do you want to see the error log file?", vbYesNo, "Error")
+        If (yesno = vbYes) Then
+            Dim MysqlLog As String = MyFolder + "\OutworldzFiles\Opensim\bin\Robust.log"
+            System.Diagnostics.Process.Start("notepad.exe", MysqlLog)
+        End If
+    End Sub
+    Private Sub IceCast_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles IcecastProcess.Exited
+
+        If exiting Then Return
+        Dim yesno = MsgBox("Icecast quit. Do you want to see the error log file?", vbYesNo, "Error")
+        If (yesno = vbYes) Then
+            Dim IceCastLog As String = MyFolder + "\Icecast\log\error.log"
+            System.Diagnostics.Process.Start("notepad.exe", IceCastLog)
+        End If
+
     End Sub
     Private Sub OpensimProcess01_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess1.Exited
         RegionHandles(1) = False
@@ -1967,7 +1971,7 @@ Public Class Form1
         End If
 
         For Each num In RegionClass.RegionListByGroupNum(RegionClass.GroupName(n))
-            Log(RegionClass.RegionName(n) + " crashed")
+            Log(RegionClass.RegionName(n) + " Exited")
             RegionClass.Booted(num) = False
             RegionClass.WarmingUp(num) = False
             RegionClass.ShuttingDown(num) = False
