@@ -101,7 +101,6 @@ Public Class UploadImage
         If webResp IsNot Nothing Then
             Using respReadr As StreamReader = New StreamReader(webResp.GetResponseStream())
                 sData = respReadr.ReadToEnd()
-                respReadr.Close() : webResp.Close()
             End Using
             If webResp.StatusCode = HttpStatusCode.OK Then
                 Call UploadComplete(sData)
@@ -111,6 +110,7 @@ Public Class UploadImage
         Else
             Call UploadError(sData)
         End If
+        webResp.Close()
         webResp = Nothing
     End Sub
 
