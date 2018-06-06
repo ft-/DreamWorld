@@ -52,7 +52,6 @@ Public Class FormRegion
             MaxPrims.Text = 45000
             MaxAgents.Text = 100
 
-
             n = RegionClass.CreateRegion("")
 
         Else
@@ -206,13 +205,8 @@ Public Class FormRegion
         ' save the Region File, choose an existing DOS box to put it in, or make a new one
 
         Dim dir = Form1.prefix
-
         Dim Filepath = RegionClass.RegionPath(n)
-
         Dim Folderpath = RegionClass.FolderPath(n)
-
-        '!!! Region Treeview
-
 
         ' rename is possible
         If oldname <> RegionName.Text And Not isNew Then
@@ -233,8 +227,6 @@ Public Class FormRegion
                 Form1.PrintFast("Aborted")
                 Return
             End Try
-
-
         End If
 
         ' might be a new region, so give them a choice
@@ -358,8 +350,6 @@ Public Class FormRegion
                 MsgBox("Region name can't use special characters such as < > : """" / \ | ? *", vbInformation, "Info")
                 Return
             End If
-
-            Me.Text = RegionName.Text
             changed = True
         End If
 
@@ -427,7 +417,6 @@ Public Class FormRegion
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
 
-
         Dim message = RegionValidate()
         If Len(message) Then
             Dim v = MsgBox(message + vbCrLf + "Discard all changes and exit anyway?", vbYesNo, "Info")
@@ -437,8 +426,9 @@ Public Class FormRegion
         Else
 
             WriteRegion()
-            Form1.CopyOpensimProto()
             RegionClass.GetAllRegions()
+            Form1.CopyOpensimProto()
+
             changed = False
             Me.Close()
         End If
