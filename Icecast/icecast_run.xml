@@ -1,5 +1,5 @@
 <icecast>
-<hostname>Heriwin.Outworldz.net</hostname>
+<hostname></hostname>
 <location>DreamWorld</location>
 <admin></admin>
 <shoutcast-mount>/stream</shoutcast-mount>
@@ -24,7 +24,7 @@
 <source-password>A password</source-password>
 <relay-password>A password</relay-password>
 <admin-user>admin</admin-user>
-<admin-password>fred</admin-password>
+<admin-password>123</admin-password>
 </authentication>
 <http-headers>
     <header name="Access-Control-Allow-Origin" value="*"/>

@@ -2,11 +2,6 @@ quit
 quit
 quit
 quit
-quit
-quit
-quit
-quit
-quit
 show regions
 deregister region id ab8d7770-3782-21e4-8c41-1813211c9b44
 show regions
@@ -96,6 +91,11 @@ create user Test User 123
 cvcreate user Ferd Frederix 4a<$more
 create user Ferd Frederix 4a<$more
 create user Ferd Frederix 4a<$more
+quit
+quit
+quit
+create user Test User 123
+quit
 quit
 quit
 quit

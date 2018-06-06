@@ -362,8 +362,8 @@ Public Class RegionList
     Private Sub Addregion_Click(sender As Object, e As EventArgs) Handles Addregion.Click
 
         Dim ActualForm As New FormRegion
-        Dim RegionClass As RegionMaker = RegionMaker.Instance
-        RegionClass.CreateRegion("")
+        'Dim RegionClass As RegionMaker = RegionMaker.Instance
+        'RegionClass.CreateRegion("")
         ActualForm.Init("")
         ActualForm.Activate()
         ActualForm.Visible = True

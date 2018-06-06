@@ -28,6 +28,8 @@ Public Class RegionMaker
             Form1.MySetting.WelcomeRegion = "Welcome"
             Form1.MySetting.SaveMyINI()
         End If
+        RegionDump()
+
         Debug.Print("Loaded " + RegionCount.ToString + " Regions")
 
     End Sub
@@ -136,7 +138,6 @@ Public Class RegionMaker
             RegionList(CheckN(n))._IniPath = Value
         End Set
     End Property
-
     Public Property RegionPath(n As Integer) As String
         Get
             Return RegionList(CheckN(n))._RegionPath
@@ -178,7 +179,6 @@ Public Class RegionMaker
             RegionList(CheckN(n))._AvatarCount = Value
         End Set
     End Property
-
     Public Property RegionName(n As Integer) As String
         Get
             Return RegionList(CheckN(n))._RegionName
@@ -305,7 +305,8 @@ Public Class RegionMaker
 
     Public Sub DebugRegions(n As Integer)
 
-        Debug.Print("Region:" + RegionList(CheckN(n))._RegionName +
+        Debug.Print("RegionNumber:" + n.ToString +
+            " Region:" + RegionList(CheckN(n))._RegionName +
             " WarmingUp=" + RegionList(CheckN(n))._WarmingUp.ToString +
            " ShuttingDown=" + RegionList(CheckN(n))._ShuttingDown.ToString +
             " Ready=" + RegionList(CheckN(n))._Ready.ToString +
@@ -390,7 +391,7 @@ Public Class RegionMaker
         r._MaxAgents = 100
 
         RegionList.Add(r)
-
+        RegionDump()
         Return RegionList.Count - 1
 
     End Function
