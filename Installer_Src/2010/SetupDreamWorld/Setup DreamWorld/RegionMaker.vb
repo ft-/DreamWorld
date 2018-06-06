@@ -390,7 +390,8 @@ Public Class RegionMaker
         r._MaxPrims = 45000
         r._MaxAgents = 100
 
-        RegionList.Add(r)
+        RegionList.Insert(RegionList.Count, r)
+        'RegionList.Add(r)
         RegionDump()
         Return RegionList.Count - 1
 
@@ -425,9 +426,9 @@ Public Class RegionMaker
                         fName = Path.GetFileName(ini)
                         fName = Mid(fName, 1, Len(fName) - 4)
 
-                        If (fName.Contains("Alpha")) Then
-                            Dim x = 1
-                        End If
+                        'If (fName.Contains("Alpha")) Then
+                        'Dim x = 1
+                        'End If
 
                         ' make a slot to hold the region data 
                         CreateRegion(fName)
