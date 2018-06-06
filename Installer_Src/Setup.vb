@@ -54,7 +54,7 @@ Public Class Form1
     Public Shared ActualForm As AdvancedForm
 
     ' with events
-    Private pMySql As Process = New Process()
+    Private WithEvents pMySql As Process = New Process()
     Public Event Exited As EventHandler
 
     Dim Data As IniParser.Model.IniData
@@ -170,6 +170,56 @@ Public Class Form1
     Private WithEvents MyProcess48 As New Process()
     Private WithEvents MyProcess49 As New Process()
     Private WithEvents MyProcess50 As New Process()
+    Private WithEvents MyProcess51 As New Process()
+    Private WithEvents MyProcess52 As New Process()
+    Private WithEvents MyProcess53 As New Process()
+    Private WithEvents MyProcess54 As New Process()
+    Private WithEvents MyProcess55 As New Process()
+    Private WithEvents MyProcess56 As New Process()
+    Private WithEvents MyProcess57 As New Process()
+    Private WithEvents MyProcess58 As New Process()
+    Private WithEvents MyProcess59 As New Process()
+    Private WithEvents MyProcess60 As New Process()
+    Private WithEvents MyProcess61 As New Process()
+    Private WithEvents MyProcess62 As New Process()
+    Private WithEvents MyProcess63 As New Process()
+    Private WithEvents MyProcess64 As New Process()
+    Private WithEvents MyProcess65 As New Process()
+    Private WithEvents MyProcess66 As New Process()
+    Private WithEvents MyProcess67 As New Process()
+    Private WithEvents MyProcess68 As New Process()
+    Private WithEvents MyProcess69 As New Process()
+    Private WithEvents MyProcess70 As New Process()
+    Private WithEvents MyProcess71 As New Process()
+    Private WithEvents MyProcess72 As New Process()
+    Private WithEvents MyProcess73 As New Process()
+    Private WithEvents MyProcess74 As New Process()
+    Private WithEvents MyProcess75 As New Process()
+    Private WithEvents MyProcess76 As New Process()
+    Private WithEvents MyProcess77 As New Process()
+    Private WithEvents MyProcess78 As New Process()
+    Private WithEvents MyProcess79 As New Process()
+    Private WithEvents MyProcess80 As New Process()
+    Private WithEvents MyProcess81 As New Process()
+    Private WithEvents MyProcess82 As New Process()
+    Private WithEvents MyProcess83 As New Process()
+    Private WithEvents MyProcess84 As New Process()
+    Private WithEvents MyProcess85 As New Process()
+    Private WithEvents MyProcess86 As New Process()
+    Private WithEvents MyProcess87 As New Process()
+    Private WithEvents MyProcess88 As New Process()
+    Private WithEvents MyProcess89 As New Process()
+    Private WithEvents MyProcess90 As New Process()
+    Private WithEvents MyProcess91 As New Process()
+    Private WithEvents MyProcess92 As New Process()
+    Private WithEvents MyProcess93 As New Process()
+    Private WithEvents MyProcess94 As New Process()
+    Private WithEvents MyProcess95 As New Process()
+    Private WithEvents MyProcess96 As New Process()
+    Private WithEvents MyProcess97 As New Process()
+    Private WithEvents MyProcess98 As New Process()
+    Private WithEvents MyProcess99 As New Process()
+    Private WithEvents MyProcess100 As New Process()
 
 
 #End Region
@@ -1474,6 +1524,23 @@ Public Class Form1
 #End Region
 
 #Region "Exited"
+
+    Private Sub Mysql_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles pMySql.Exited
+        MsgBox("Icecast has exited")
+    End Sub
+    Private Sub IceCast_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles IcecastProcess.Exited
+
+        Dim yesno = MsgBox("The database crashed. Do you want to see the log file?", vbYesNo, "Error")
+        If (yesno = vbYes) Then
+            Dim files() As String
+            Dim MysqlLog As String = MyFolder + "\OutworldzFiles\mysql\data"
+            files = Directory.GetFiles(MysqlLog, "*.err", SearchOption.TopDirectoryOnly)
+            For Each FileName As String In files
+                System.Diagnostics.Process.Start("notepad.exe", FileName)
+            Next
+        End If
+
+    End Sub
     Private Sub Robust_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles RobustProcess.Exited
         RegionHandles(0) = False
         DoExit(sender)
@@ -1679,6 +1746,209 @@ Public Class Form1
         DoExit(sender)
     End Sub
 
+    Private Sub OpensimProcess51_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess51.Exited
+        RegionHandles(1) = False
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess52_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess52.Exited
+        RegionHandles(2) = False
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess53_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess53.Exited
+        RegionHandles(3) = False
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess54_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess54.Exited
+        RegionHandles(4) = False
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess55_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess55.Exited
+        RegionHandles(5) = False
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess56_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess56.Exited
+        RegionHandles(6) = False
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess57_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess57.Exited
+        RegionHandles(7) = False
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess58_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess58.Exited
+        RegionHandles(8) = False
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess59_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess59.Exited
+        RegionHandles(9) = False
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess60_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess60.Exited
+        RegionHandles(10) = False
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess61_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess61.Exited
+        RegionHandles(11) = False
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess62_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess62.Exited
+        RegionHandles(12) = False
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess63_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess63.Exited
+        RegionHandles(13) = False
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess64_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess64.Exited
+        RegionHandles(14) = False
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess65_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess65.Exited
+        RegionHandles(15) = False
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess66_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess66.Exited
+        RegionHandles(16) = False
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess67_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess67.Exited
+        RegionHandles(17) = False
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess68_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess68.Exited
+        RegionHandles(18) = False
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess69_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess69.Exited
+        RegionHandles(19) = False
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess70_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess70.Exited
+        RegionHandles(20) = False
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess71_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess71.Exited
+        RegionHandles(21) = False
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess72_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess72.Exited
+        RegionHandles(22) = False
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess73_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess73.Exited
+        RegionHandles(23) = False
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess74_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess74.Exited
+        RegionHandles(24) = False
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess75_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess75.Exited
+        RegionHandles(25) = False
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess76_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess76.Exited
+        RegionHandles(26) = False
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess77_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess77.Exited
+        RegionHandles(27) = False
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess78_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess78.Exited
+        RegionHandles(28) = False
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess79_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess79.Exited
+        RegionHandles(29) = False
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess80_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess80.Exited
+        RegionHandles(30) = False
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess81_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess81.Exited
+        RegionHandles(31) = False
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess82_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess82.Exited
+        RegionHandles(32) = False
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess83_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess83.Exited
+        RegionHandles(33) = False
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess84_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess84.Exited
+        RegionHandles(34) = False
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess85_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess85.Exited
+        RegionHandles(35) = False
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess86_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess86.Exited
+        RegionHandles(36) = False
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess87_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess87.Exited
+        RegionHandles(37) = False
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess88_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess88.Exited
+        RegionHandles(38) = False
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess89_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess89.Exited
+        RegionHandles(39) = False
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess90_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess90.Exited
+        RegionHandles(40) = False
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess91_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess91.Exited
+        RegionHandles(41) = False
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess92_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess92.Exited
+        RegionHandles(42) = False
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess93_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess93.Exited
+        RegionHandles(43) = False
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess94_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess94.Exited
+        RegionHandles(44) = False
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess95_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess95.Exited
+        RegionHandles(45) = False
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess96_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess96.Exited
+        RegionHandles(46) = False
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess97_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess97.Exited
+        RegionHandles(47) = False
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess98_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess98.Exited
+        RegionHandles(48) = False
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess99_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess99.Exited
+        RegionHandles(49) = False
+        DoExit(sender)
+    End Sub
+    Private Sub OpensimProcess100_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess100.Exited
+        RegionHandles(50) = False
+        DoExit(sender)
+    End Sub
+
+
+
 #End Region
 
 #Region "ExitHandlers"
@@ -1710,14 +1980,14 @@ Public Class Form1
 
         ' find a empty regionhandle
         Dim ProcessCount As Integer = 0
-        While ProcessCount < 50
+        While ProcessCount < 100
             If Not RegionHandles(ProcessCount) Then
                 RegionHandles(ProcessCount) = True
                 Exit While
             End If
             ProcessCount = ProcessCount + 1
         End While
-        If ProcessCount = 50 Then
+        If ProcessCount = 100 Then
             Return Nothing
         End If
 
@@ -1772,6 +2042,59 @@ Public Class Form1
         If ProcessCount = 48 Then Return MyProcess49
         If ProcessCount = 49 Then Return MyProcess50
 
+        If ProcessCount = 50 Then Return MyProcess51
+        If ProcessCount = 51 Then Return MyProcess52
+        If ProcessCount = 52 Then Return MyProcess53
+        If ProcessCount = 53 Then Return MyProcess54
+        If ProcessCount = 54 Then Return MyProcess55
+        If ProcessCount = 55 Then Return MyProcess56
+        If ProcessCount = 56 Then Return MyProcess57
+        If ProcessCount = 57 Then Return MyProcess58
+        If ProcessCount = 58 Then Return MyProcess59
+        If ProcessCount = 59 Then Return MyProcess60
+        If ProcessCount = 60 Then Return MyProcess61
+        If ProcessCount = 61 Then Return MyProcess62
+        If ProcessCount = 62 Then Return MyProcess63
+        If ProcessCount = 63 Then Return MyProcess64
+        If ProcessCount = 64 Then Return MyProcess65
+        If ProcessCount = 65 Then Return MyProcess66
+        If ProcessCount = 66 Then Return MyProcess67
+        If ProcessCount = 67 Then Return MyProcess68
+        If ProcessCount = 68 Then Return MyProcess69
+        If ProcessCount = 69 Then Return MyProcess70
+        If ProcessCount = 70 Then Return MyProcess71
+        If ProcessCount = 71 Then Return MyProcess72
+        If ProcessCount = 72 Then Return MyProcess73
+        If ProcessCount = 73 Then Return MyProcess74
+        If ProcessCount = 74 Then Return MyProcess75
+        If ProcessCount = 75 Then Return MyProcess76
+        If ProcessCount = 76 Then Return MyProcess77
+        If ProcessCount = 77 Then Return MyProcess78
+        If ProcessCount = 78 Then Return MyProcess79
+        If ProcessCount = 79 Then Return MyProcess80
+        If ProcessCount = 80 Then Return MyProcess81
+        If ProcessCount = 81 Then Return MyProcess82
+        If ProcessCount = 82 Then Return MyProcess83
+        If ProcessCount = 83 Then Return MyProcess84
+        If ProcessCount = 84 Then Return MyProcess85
+        If ProcessCount = 85 Then Return MyProcess86
+        If ProcessCount = 86 Then Return MyProcess87
+        If ProcessCount = 87 Then Return MyProcess88
+        If ProcessCount = 88 Then Return MyProcess89
+        If ProcessCount = 89 Then Return MyProcess90
+        If ProcessCount = 90 Then Return MyProcess91
+        If ProcessCount = 91 Then Return MyProcess92
+        If ProcessCount = 92 Then Return MyProcess93
+        If ProcessCount = 93 Then Return MyProcess94
+        If ProcessCount = 94 Then Return MyProcess95
+        If ProcessCount = 95 Then Return MyProcess96
+        If ProcessCount = 96 Then Return MyProcess97
+        If ProcessCount = 97 Then Return MyProcess98
+        If ProcessCount = 98 Then Return MyProcess99
+        If ProcessCount = 99 Then Return MyProcess100
+
+
+
         Return Nothing
 
     End Function
@@ -1791,7 +2114,7 @@ Public Class Form1
         Dim myProcess As Process = GetNewProcess()
 
         If myProcess Is Nothing Then
-            Print("Exceeded max number of processes: could not start " + RegionClass.RegionName(n))
+            Print("Exceeded max number of processes (100): could not start " + RegionClass.RegionName(n))
             Return False
         End If
 
@@ -1846,7 +2169,7 @@ Public Class Form1
                     RegionClass.ShuttingDown(num) = False
                 Next
 
-                Thread.Sleep(1500)
+                Thread.Sleep(2000)
 
                 SetWindowText(myProcess.MainWindowHandle, RegionClass.GroupName(n))
                 Return True
@@ -1958,7 +2281,6 @@ Public Class Form1
             command.Replace("%", "{%}")
             command.Replace("(", "{(}")
             command.Replace(")", "{)}")
-            '!!!
 
             AppActivate(ProcessID)
 
@@ -2183,7 +2505,6 @@ Public Class Form1
                 If thing.Length Then
                     thing = thing.Replace("\", "/")    ' because Opensim uses unix-like slashes, that's why
 
-
                     Dim Group = RegionClass.GroupName(n)
                     For Each Y In RegionClass.RegionListByGroupNum(Group)
 
@@ -2195,7 +2516,7 @@ Public Class Form1
                         ConsoleCommand(RegionClass.ProcessID(Y), "alert New content Is loading..{ENTER}")
                         ConsoleCommand(RegionClass.ProcessID(Y), "load oar --force-terrain --force-parcels " + """" + thing + """" + "{ENTER}")
                         ConsoleCommand(RegionClass.ProcessID(Y), "alert New content just loaded." + "{ENTER}")
-                        Me.Focus()
+                        Application.DoEvents()
                     Next
                 End If
             End If
@@ -2224,7 +2545,6 @@ Public Class Form1
 
         Dim n As Integer = 0
         Dim L As New List(Of String)
-        ' L.Add("Xyzzy")
 
         For Each X In RegionClass.RegionNumbers
             If RegionClass.Booted(n) Then
@@ -2393,7 +2713,7 @@ Public Class Form1
                     ConsoleCommand(RegionClass.ProcessID(Y), "alert New content Is loading ...{ENTER}")
                     ConsoleCommand(RegionClass.ProcessID(Y), "load oar --force-terrain --force-parcels " + """" + thing + """" + "{ENTER}")
                     ConsoleCommand(RegionClass.ProcessID(Y), "alert New content just loaded. {ENTER}")
-
+                    Application.DoEvents()
                 Catch ex As Exception
                     Log("Error: " + ex.Message)
                 End Try
@@ -2428,7 +2748,7 @@ Public Class Form1
         Dim user = InputBox("User name that will get this IAR?")
         Dim password = InputBox("Password for user " + user + "?")
         If user.Length And password.Length Then
-            For Each Y In RegionClass.RegionListByGroupNum(RegionClass.GroupName(num))   ' a booted region,'s grroup            
+            For Each Y In RegionClass.RegionListByGroupNum(RegionClass.GroupName(num))   ' a booted region's group            
                 ConsoleCommand(RegionClass.ProcessID(Y), "load iar --merge " + user + " /Objects " + password + " " + """" + thing + """" + "{ENTER}")
                 ConsoleCommand(RegionClass.ProcessID(Y), "alert IAR content Is loaded{ENTER}")
             Next
@@ -3208,10 +3528,12 @@ Public Class Form1
 
         ' Mysql was not running, so lets start it up.
         Dim pi As ProcessStartInfo = New ProcessStartInfo()
+
         pi.Arguments = "--defaults-file=" + """" + gCurSlashDir + "/OutworldzFiles/mysql/my.ini" + """"
         pi.WindowStyle = ProcessWindowStyle.Hidden
         pi.FileName = """" + MyFolder & "\OutworldzFiles\mysql\bin\mysqld.exe" + """"
         pMySql.StartInfo = pi
+        pMySql.EnableRaisingEvents = True
         pMySql.Start()
 
         ' wait for MySql to come up
@@ -3479,44 +3801,49 @@ Public Class Form1
 
             Debug.Print("Region:Clicked region " & sender.Text)
 
+            If RegionClass.AvatarCount(num) Then
+                Dim response = MsgBox("That region has people in it. Are you sure you want to stop it?", vbYesNo)
+                If response = vbNo Then Return
+            End If
+
             ' Running, stop it
             If RegionClass.RegionEnabled(num) And (RegionClass.Booted(num) Or RegionClass.WarmingUp(num)) Then
 
-                ' if enabled and running, even partly up, stop it.
-                sender.Checked = False
-                If Running Then
-                    Try
-                        ConsoleCommand(RegionClass.ProcessID(num), "quit{ENTER}")
-                        Me.Focus()
+                    ' if enabled and running, even partly up, stop it.
+                    sender.Checked = False
+                    If Running Then
+                        Try
+                            ConsoleCommand(RegionClass.ProcessID(num), "quit{ENTER}")
+                            Me.Focus()
 
-                        RegionClass.RegionEnabled(num) = False
-                        RegionClass.Booted(num) = False
-                        RegionClass.WarmingUp(num) = False
-                        RegionClass.ShuttingDown(num) = True
+                            RegionClass.RegionEnabled(num) = False
+                            RegionClass.Booted(num) = False
+                            RegionClass.WarmingUp(num) = False
+                            RegionClass.ShuttingDown(num) = True
 
-                        MySetting.LoadOtherIni(RegionClass.RegionPath(num), ";")
-                        MySetting.SetOtherIni(sender.Text, "Enabled", "false")
-                        MySetting.SaveOtherINI()
+                            MySetting.LoadOtherIni(RegionClass.RegionPath(num), ";")
+                            MySetting.SetOtherIni(sender.Text, "Enabled", "false")
+                            MySetting.SaveOtherINI()
 
-                        Debug.Print("Region:Stopped Region " + RegionClass.RegionName(num))
-                    Catch ex As Exception
-                        Debug.Print("Region:Could not stop Opensim")
-                    End Try
+                            Debug.Print("Region:Stopped Region " + RegionClass.RegionName(num))
+                        Catch ex As Exception
+                            Debug.Print("Region:Could not stop Opensim")
+                        End Try
+                    End If
+
+                ElseIf Not (RegionClass.Booted(num) Or RegionClass.WarmingUp(num) Or RegionClass.ShuttingDown(num)) Then
+                    ' it was stopped, and disabled, so we toggle the enable, and start up
+                    sender.Checked = True
+
+                    ' and region file on disk
+                    MySetting.LoadOtherIni(RegionClass.RegionPath(num), ";")
+                    MySetting.SetOtherIni(sender.Text, "Enabled", "true")
+                    MySetting.SaveOtherINI()
+
+                    Boot(RegionClass.RegionName(num))
+                    Debug.Print("Region:Started Region " + RegionClass.RegionName(num))
                 End If
-
-            ElseIf Not (RegionClass.Booted(num) Or RegionClass.WarmingUp(num) Or RegionClass.ShuttingDown(num)) Then
-                ' it was stopped, and disabled, so we toggle the enable, and start up
-                sender.Checked = True
-
-                ' and region file on disk
-                MySetting.LoadOtherIni(RegionClass.RegionPath(num), ";")
-                MySetting.SetOtherIni(sender.Text, "Enabled", "true")
-                MySetting.SaveOtherINI()
-
-                Boot(RegionClass.RegionName(num))
-                Debug.Print("Region:Started Region " + RegionClass.RegionName(num))
             End If
-        End If
 
     End Sub
 
