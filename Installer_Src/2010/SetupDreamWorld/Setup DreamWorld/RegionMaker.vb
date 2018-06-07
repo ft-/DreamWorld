@@ -8,6 +8,7 @@ Public Class RegionMaker
     Public RegionList As New ArrayList()
     Private initted As Boolean = False
     Private Shared FInstance As RegionMaker = Nothing
+    Dim Backup As New ArrayList()
 
     Public Shared ReadOnly Property Instance() As RegionMaker
         Get
@@ -365,7 +366,19 @@ Public Class RegionMaker
         Return -1
 
     End Function
+    Public Function FindBackupByName(Name As String) As Integer
 
+        Dim i As Integer = 0
+        For Each obj As Region_data In Backup
+            If Name = obj._RegionName Then
+                ' Debug.Print("Current Backup is " + obj._RegionName)
+                Return i
+            End If
+            i = i + 1
+        Next
+        Return -1
+
+    End Function
     Public Function CreateRegion(name As String) As Integer
 
         ' Debug.Print("Create Region " + name)
@@ -390,8 +403,8 @@ Public Class RegionMaker
         r._MaxPrims = 45000
         r._MaxAgents = 100
 
-        RegionList.Insert(RegionList.Count, r)
-        'RegionList.Add(r)
+        'RegionList.Insert(RegionList.Count, r)
+        RegionList.Add(r)
         RegionDump()
         Return RegionList.Count - 1
 
@@ -400,7 +413,7 @@ Public Class RegionMaker
 
     Public Sub GetAllRegions()
 
-        Dim Backup As New ArrayList()
+        Backup.Clear()
 
         For Each thing As Region_data In RegionList
             Backup.Add(thing)
@@ -475,14 +488,20 @@ Public Class RegionMaker
                         CoordY(CheckN(n)) = parts(1)
 
                         If initted Then
-                            ' Backups of transient data 
-                            Try ' 6 temp vars
-                                AvatarCount(CheckN(n)) = Backup(CheckN(n))._AvatarCount
-                                ProcessID(CheckN(n)) = Backup(CheckN(n))._ProcessID
-                                Booted(CheckN(n)) = Backup(CheckN(n))._Ready
-                                WarmingUp(CheckN(n)) = Backup(CheckN(n))._WarmingUp
-                                ShuttingDown(CheckN(n)) = Backup(CheckN(n))._ShuttingDown
-                                Timer(CheckN(n)) = Backup(CheckN(n))._Timer
+
+                            ' restore backups of transient data 
+                            Try ' 6 temp vars from backup
+                                Dim o = FindBackupByName(fName)
+
+                                If o >= 0 Then
+                                    AvatarCount(CheckN(n)) = Backup(CheckN(o))._AvatarCount
+                                    ProcessID(CheckN(n)) = Backup(CheckN(o))._ProcessID
+                                    Booted(CheckN(n)) = Backup(CheckN(o))._Ready
+                                    WarmingUp(CheckN(n)) = Backup(CheckN(o))._WarmingUp
+                                    ShuttingDown(CheckN(n)) = Backup(CheckN(o))._ShuttingDown
+                                    Timer(CheckN(n)) = Backup(CheckN(o))._Timer
+                                End If
+
                             Catch
                             End Try
 
