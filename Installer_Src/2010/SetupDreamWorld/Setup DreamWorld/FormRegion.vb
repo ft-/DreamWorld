@@ -43,7 +43,7 @@ Public Class FormRegion
             SizeY.Text = 256
             CoordX.Text = RegionClass.LargestX() + 4
             CoordY.Text = RegionClass.LargestY() + 0
-            RegionPort.Text = RegionClass.LargestPort()
+            RegionPort.Text = RegionClass.LargestPort() + 1
             EnabledCheckBox.Checked = True
             RadioButton1.Checked = True
             NonphysicalPrimMax.Text = 1024
