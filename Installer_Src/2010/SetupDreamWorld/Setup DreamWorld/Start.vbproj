@@ -446,6 +446,8 @@
     <None Include="Resources\water.jpg" />
     <None Include="Resources\fairy.jpg" />
     <None Include="Resources\blankbox.jpg" />
+    <None Include="Resources\offline.jpg" />
+    <None Include="Resources\OfflineMap.jpg" />
     <Content Include="Resources\wp_habitat.gif" />
     <Content Include="Resources\wp_Inside_in_shadows.gif" />
     <Content Include="Resources\wp_Mooferd.gif" />

@@ -14,7 +14,7 @@ Public Class RegionMaker
 
     Public Sub DebugGroup()
         For Each pair In Grouplist
-            Debug.Print("name: {0}, Value: {1}", pair.Key, pair.Value)
+            Debug.Print("Group name: {0}, httpport: {1}", pair.Key, pair.Value)
         Next
     End Sub
     Public Property GroupPort(index As Integer) As Integer
@@ -34,7 +34,7 @@ Public Class RegionMaker
                 Grouplist.Add(RegionName, Value)
             End If
 
-            DebugGroup()
+            'DebugGroup
         End Set
     End Property
 

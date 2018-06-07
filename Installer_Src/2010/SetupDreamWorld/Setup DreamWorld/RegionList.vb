@@ -132,72 +132,75 @@ Public Class RegionList
         Dim imageList1 As New ImageList
         Dim Num As Integer = 0
 
-        Dim L As New List(Of String)
+        'Dim L As New List(Of String)
+
+        ' have to get maps by http port + region UUID, not region port + uuid
+        RegionClass.DebugGroup() ' show the list of groups and http ports.
 
         For Each X In RegionClass.RegionNumbers
 
             Application.DoEvents()
 
-            If Not L.Contains(RegionClass.RegionName(X)) Then
+            'If Not L.Contains(RegionClass.RegionName(X)) Then ' ????
 
-                L.Add(RegionClass.RegionName(X))
+            'L.Add(RegionClass.RegionName(X))
 
-                ' If RegionClass.RegionName(X) = "Deliverance" Then
-                '   Debug.Print("Deliverance")
-                ' End If
+            ' If RegionClass.RegionName(X) = "Deliverance" Then
+            '   Debug.Print("Deliverance")
+            ' End If
 
-                Dim Letter As String = ""
-                If RegionClass.WarmingUp(X) Then
-                    Letter = "Booting"
-                    Num = 0
-                ElseIf RegionClass.ShuttingDown(X) Then
-                    Letter = "Shutting Down"
-                    Num = 1
-                ElseIf RegionClass.Booted(X) Then
-                    Letter = "Running"
-                    Num = 2
-                ElseIf Not RegionClass.ProcessID(X) And RegionClass.ShuttingDown(X) Then
-                    Letter = "Exiting"
-                    Num = 3
-                ElseIf Not RegionClass.RegionEnabled(X) Then
-                    Letter = "Disabled"
-                    Num = 4
-                ElseIf RegionClass.RegionEnabled(X) Then
-                    Letter = "Stopped"
-                    Num = 5
-                Else
-                    Num = 5
-                End If
-
-                ' Create  items and subitems for each item.
-                Dim item1 As New ListViewItem(RegionClass.RegionName(X), Num)
-                ' Place a check mark next to the item.
-                item1.Checked = RegionClass.RegionEnabled(X)
-                item1.SubItems.Add(RegionClass.GroupName(X).ToString)
-                item1.SubItems.Add(RegionClass.AvatarCount(X).ToString)
-
-                item1.SubItems.Add(Letter)
-                ListView1.Items.AddRange(New ListViewItem() {item1})
-
-                If TheView = 2 Then
-                    If RegionClass.Booted(X) Then
-                        Dim img As String = "http://127.0.0.1:" + RegionClass.GroupPort(X).ToString + "/" + "index.php?method=regionImage" + RegionClass.UUID(X).Replace("-", "")
-                        Debug.Print(img)
-                        RegionClass.DebugGroup()
-                        Dim bmp As Image = LoadImage(img)
-                        If bmp Is Nothing Then
-                            imageListLarge.Images.Add(My.Resources.ResourceManager.GetObject("water"))
-                        Else
-                            imageListLarge.Images.Add(bmp)
-                        End If
-                        Num = X
-                    Else
-                        imageListLarge.Images.Add(My.Resources.ResourceManager.GetObject("water"))
-                        Num = X
-                    End If
-                End If
-
+            Dim Letter As String = ""
+            If RegionClass.WarmingUp(X) Then
+                Letter = "Booting"
+                Num = 0
+            ElseIf RegionClass.ShuttingDown(X) Then
+                Letter = "Shutting Down"
+                Num = 1
+            ElseIf RegionClass.Booted(X) Then
+                Letter = "Running"
+                Num = 2
+            ElseIf Not RegionClass.ProcessID(X) And RegionClass.ShuttingDown(X) Then
+                Letter = "Exiting"
+                Num = 3
+            ElseIf Not RegionClass.RegionEnabled(X) Then
+                Letter = "Disabled"
+                Num = 4
+            ElseIf RegionClass.RegionEnabled(X) Then
+                Letter = "Stopped"
+                Num = 5
+            Else
+                Num = 5
             End If
+
+            ' Create  items and subitems for each item.
+            Dim item1 As New ListViewItem(RegionClass.RegionName(X), Num)
+            ' Place a check mark next to the item.
+            item1.Checked = RegionClass.RegionEnabled(X)
+            item1.SubItems.Add(RegionClass.GroupName(X).ToString)
+            item1.SubItems.Add(RegionClass.AvatarCount(X).ToString)
+
+            item1.SubItems.Add(Letter)
+            ListView1.Items.AddRange(New ListViewItem() {item1})
+
+            If TheView = 2 Then
+                If RegionClass.Booted(X) Then
+                    Dim img As String = "http://127.0.0.1:" + RegionClass.GroupPort(X).ToString + "/" + "index.php?method=regionImage" + RegionClass.UUID(X).Replace("-", "")
+                    Debug.Print(img)
+
+                    Dim bmp As Image = LoadImage(img)
+                    If bmp Is Nothing Then
+                        imageListLarge.Images.Add(My.Resources.ResourceManager.GetObject("water"))
+                    Else
+                        imageListLarge.Images.Add(bmp)
+
+                    End If
+                Else
+                    imageListLarge.Images.Add(My.Resources.ResourceManager.GetObject("OfflineMap"))
+                End If
+                Num = X
+            End If
+
+            'End If
 
         Next
 
@@ -221,6 +224,10 @@ Public Class RegionList
             Dim response As System.Net.WebResponse = request.GetResponse()
             Dim responseStream As System.IO.Stream = response.GetResponseStream()
             bmp = New Bitmap(responseStream)
+
+            'Dim s = bmp.Size
+            'Debug.Print(s.Width.ToString + ":" + s.Height.ToString)
+
             responseStream.Dispose()
         Catch ex As Exception
             Form1.Log("Maps: " + ex.Message + ":" + url)
