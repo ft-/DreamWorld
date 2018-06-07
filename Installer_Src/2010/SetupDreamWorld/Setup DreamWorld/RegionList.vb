@@ -209,6 +209,7 @@ Public Class RegionList
         ListView1.EndUpdate()
         writetodisk = True
         Timer1.Interval = 30000
+        Application.DoEvents()
 
     End Sub 'listView1
 
@@ -348,7 +349,7 @@ Public Class RegionList
             ListView1.Show()
             ListView1.CheckBoxes = False
             ListView1.View = View.LargeIcon
-        ElseIf TheView = 3 Then
+        ElseIf TheView = 2 Then
             ListView1.CheckBoxes = True
             ListView1.View = View.Details
         End If
