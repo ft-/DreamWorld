@@ -6,9 +6,37 @@ Public Class RegionMaker
 #Region "Declarations"
 
     Public RegionList As New ArrayList()
+    Public Grouplist As New Dictionary(Of String, Integer)
+
     Private initted As Boolean = False
     Private Shared FInstance As RegionMaker = Nothing
     Dim Backup As New ArrayList()
+
+    Public Sub DebugGroup()
+        For Each pair In Grouplist
+            Debug.Print("name: {0}, Value: {1}", pair.Key, pair.Value)
+        Next
+    End Sub
+    Public Property GroupPort(index As Integer) As Integer
+        Get
+            Dim RegionName = GroupName(index)
+            If Grouplist.ContainsKey(RegionName) Then
+                Return Grouplist.Item(RegionName)
+            End If
+            Return 0
+        End Get
+        Set(ByVal Value As Integer)
+            Dim RegionName = GroupName(index)
+            If Grouplist.ContainsKey(RegionName) Then
+                Grouplist.Remove(RegionName)
+                Grouplist.Add(RegionName, Value)
+            Else
+                Grouplist.Add(RegionName, Value)
+            End If
+
+            DebugGroup()
+        End Set
+    End Property
 
     Public Shared ReadOnly Property Instance() As RegionMaker
         Get

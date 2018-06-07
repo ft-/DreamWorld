@@ -181,8 +181,9 @@ Public Class RegionList
 
                 If TheView = 2 Then
                     If RegionClass.Booted(X) Then
-                        Dim img As String = "http://127.0.0.1:" + RegionClass.RegionPort(X).ToString + "/" + "index.php?method=regionImage" + RegionClass.UUID(X).Replace("-", "")
+                        Dim img As String = "http://127.0.0.1:" + RegionClass.GroupPort(X).ToString + "/" + "index.php?method=regionImage" + RegionClass.UUID(X).Replace("-", "")
                         Debug.Print(img)
+                        RegionClass.DebugGroup()
                         Dim bmp As Image = LoadImage(img)
                         If bmp Is Nothing Then
                             imageListLarge.Images.Add(My.Resources.ResourceManager.GetObject("water"))
@@ -221,7 +222,8 @@ Public Class RegionList
             Dim responseStream As System.IO.Stream = response.GetResponseStream()
             bmp = New Bitmap(responseStream)
             responseStream.Dispose()
-        Catch
+        Catch ex As Exception
+            Form1.Log("Maps: " + ex.Message + ":" + url)
         End Try
 
         Return bmp
@@ -293,9 +295,7 @@ Public Class RegionList
 
     End Sub
 
-    ' Handles the ItemChecked event. The method uses the CurrentValue property 
-    ' of the ItemCheckEventArgs to retrieve and tally the price of the menu 
-    ' items selected.  
+
     Private Sub ListView1_ItemCheck1(ByVal sender As Object, ByVal e As System.Windows.Forms.ItemCheckEventArgs) Handles ListView1.ItemCheck
 
         Dim Item As ListViewItem = ListView1.Items.Item(e.Index)
@@ -308,7 +308,7 @@ Public Class RegionList
                 Form1.MySetting.LoadOtherIni(RegionClass.RegionPath(n), ";")
                 Form1.MySetting.SetOtherIni(RegionClass.RegionName(n), "Enabled", "true")
                 Form1.MySetting.SaveOtherINI()
-                RegionClass.ProcessID(n) = 0
+                'RegionClass.ProcessID(n) = 0
                 Application.DoEvents()
             ElseIf (e.CurrentValue = CheckState.Checked) Then
                 RegionClass.RegionEnabled(n) = False
@@ -340,18 +340,22 @@ Public Class RegionList
 
         While Not writetodisk
             Form1.Sleep(500)
+            Application.DoEvents()
         End While
 
         If TheView = 0 Then
             ListView1.CheckBoxes = False
             ListView1.View = View.List
+            Timer1.Interval = 30000
         ElseIf TheView = 1 Then
             ListView1.Show()
             ListView1.CheckBoxes = False
             ListView1.View = View.LargeIcon
+            Timer1.Stop()
         ElseIf TheView = 2 Then
             ListView1.CheckBoxes = True
             ListView1.View = View.Details
+            Timer1.Interval = 30000
         End If
         TheView = TheView + 1
         If TheView > 2 Then TheView = 0
