@@ -286,7 +286,7 @@ Public Class RegionMaker
 
     Private Function CheckN(n As Integer) As Integer
 
-        If n >= RegionList.Count Or n < 0 Then
+        If n > RegionList.Count Or n < 0 Then
             Form1.Log("Error: Bad N in Region List " + n.ToString)
             Return 0
         End If
