@@ -73,7 +73,7 @@ Public Class NetServer
             Dim stream As NetworkStream = client.GetStream() ' Get a stream object for reading and writing
             Dim Response As String = ""
             If stream.CanRead Then
-                Dim myReadBuffer(1024) As Byte
+                Dim myReadBuffer(8192) As Byte
                 Dim myCompleteMessage As StringBuilder = New StringBuilder()
                 Dim numberOfBytesRead As Integer = 0
 
@@ -88,7 +88,7 @@ Public Class NetServer
                 Loop While stream.DataAvailable
 
                 ' Print out the received message to the console.
-                Log("Received:" + myCompleteMessage.ToString())
+                ' Log("Received:" + myCompleteMessage.ToString())
                 Response = RegionClass.ParsePost(myCompleteMessage.ToString())
             Else
                 Log("Error:Cannot read from this NetworkStream.")

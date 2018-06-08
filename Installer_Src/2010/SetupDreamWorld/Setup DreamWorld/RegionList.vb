@@ -93,7 +93,7 @@ Public Class RegionList
         imageListSmall.Images.Add(My.Resources.ResourceManager.GetObject("media_stop"))  ' 6 
 
         LoadMyListView()
-
+        ListView1.Show()
         Timer1.Interval = 30000
         Timer1.Start() 'Timer starts functioning
 
@@ -189,7 +189,7 @@ Public Class RegionList
 
                     Dim bmp As Image = LoadImage(img)
                     If bmp Is Nothing Then
-                        imageListLarge.Images.Add(My.Resources.ResourceManager.GetObject("water"))
+                        imageListLarge.Images.Add(My.Resources.ResourceManager.GetObject("OfflineMap"))
                     Else
                         imageListLarge.Images.Add(bmp)
 
@@ -315,17 +315,16 @@ Public Class RegionList
                 Form1.MySetting.LoadOtherIni(RegionClass.RegionPath(n), ";")
                 Form1.MySetting.SetOtherIni(RegionClass.RegionName(n), "Enabled", "true")
                 Form1.MySetting.SaveOtherINI()
-                'RegionClass.ProcessID(n) = 0
-                Application.DoEvents()
             ElseIf (e.CurrentValue = CheckState.Checked) Then
                 RegionClass.RegionEnabled(n) = False
                 ' and region file on disk
                 Form1.MySetting.LoadOtherIni(RegionClass.RegionPath(n), ";")
                 Form1.MySetting.SetOtherIni(RegionClass.RegionName(n), "Enabled", "false")
                 Form1.MySetting.SaveOtherINI()
-                Application.DoEvents()
             End If
         End If
+        Application.DoEvents()
+
         Timer1.Interval = 2000
 
     End Sub
@@ -349,13 +348,12 @@ Public Class RegionList
             Form1.Sleep(500)
             Application.DoEvents()
         End While
-
+        ListView1.Show()
         If TheView = 0 Then
             ListView1.CheckBoxes = False
             ListView1.View = View.List
             Timer1.Interval = 30000
         ElseIf TheView = 1 Then
-            ListView1.Show()
             ListView1.CheckBoxes = False
             ListView1.View = View.LargeIcon
             Timer1.Stop()

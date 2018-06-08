@@ -43,15 +43,15 @@
 [Const]
 
 ; Automatically changed by Dreamworld - do not change this
-http_listener_port=8006
+http_listener_port=9017
 
 ; Automatically changed by Dreamworld - do not change this
 ;# used by the one-exe-per-instance logic. This becomes the folder for the regions file.
-RegionFolderName=
+RegionFolderName=Welcome
 
 ; Automatically changed by Dreamworld - do not change this
 ;# {BaseURL} {} {BaseURL} {"http://example.com","http://127.0.0.1"} "http://127.0.0.1"
-BaseURL=http://10.6.1.103
+BaseURL=http://fred.outworldz.net
 
 ; Automatically changed by Dreamworld - do not change this
 ;# {PublicPort} {} {PublicPort} {8002} "8002"
@@ -62,7 +62,7 @@ PublicPort=8002
 PrivatePort=8003
 
 ;# so localhost can be changed if necessary
-PrivURL=http://10.6.1.103
+PrivURL=http://192.168.2.133
 
 ; Automatically changed by Dreamworld - do not change this
 ;# Grid Name for Wifi to show
@@ -409,7 +409,7 @@ RenderMeshes=false
 ;# {allow_grid_gods} {} {Allow grid gods?} {true false} false
 ;; This allows users with a UserLevel of 200 or more to assume god
 ;; powers in the regions in this simulator.
-allow_grid_gods=false
+allow_grid_gods=true
 
 ;; This allows some control over permissions
 ;; please note that this still doesn't duplicate SL, and is not intended to
@@ -465,7 +465,7 @@ enabled=true
 ;# {internal_object_host} {[Startup]emailmodule:DefaultEmailModule enabled:true} {Host name to treat as internal (object to object) email?} {} lsl.opensim.local
 ; internal_object_host = lsl.opensim.local
 ;# {host_domain_header_from} {[Startup]emailmodule:DefaultEmailModule enabled:true} {From address to use in the sent email header?} {} 127.0.0.1
-host_domain_header_from=
+host_domain_header_from=fred.outworldz.net
 
 ;# {email_pause_time} {[Startup]emailmodule:DefaultEmailModule enabled:true} {Period in seconds to delay after an email is sent.} {} 20
 ; email_pause_time = 20
@@ -982,7 +982,7 @@ Include-osslEnable="config-include/osslEnable.ini"
 ;
 ; For this to work you need to obtain an admin account from Vivox
 ; that allows you to create voice accounts and region channels.
-enabled=true
+enabled=false
 
 ; vivox voice server
 vivox_server=www.osp.vivox.com
@@ -991,7 +991,7 @@ vivox_server=www.osp.vivox.com
 vivox_sip_uri=osp.vivox.com
 
 ; vivox admin user name
-vivox_admin_user=someusername?
+vivox_admin_user=someusername
 
 ; vivox admin password
 vivox_admin_password=somepassword
@@ -1298,10 +1298,10 @@ Enabled=false
 
 ; Enable this to generate classic particle clouds above the sim.
 ; default is disabled - turn it on here
-enabled=false
+enabled=true
 
 ; Density of cloud cover 0.0 to 1.0 Defult 0.5
-density=0.5
+density=0.8
 
 ; update interval for the cloud cover data returned by llCloud().
 ; default is 1000
