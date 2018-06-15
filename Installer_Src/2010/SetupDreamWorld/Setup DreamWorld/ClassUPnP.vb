@@ -294,7 +294,7 @@ Public Class UPnp
                     End If
                     Log(String.Format("Port: {0}", Convert.ToString(mapping.InternalPort)))
                     Log(String.Format("Protocol: {0}", Convert.ToString(mapping.Protocol)))
-                    Log(String.Format("ExternalIPAddress: {0}", Convert.ToString(mapping.ExternalIPAddress)))
+                    Log(String.Format("External IPAddress: {0}", Convert.ToString(mapping.ExternalIPAddress)))
                     Log("--------------------------------------")
                 Next
             End If

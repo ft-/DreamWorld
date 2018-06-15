@@ -70,7 +70,7 @@ Partial Class FormRegion
         Me.RegionPort.Name = "RegionPort"
         Me.RegionPort.Size = New System.Drawing.Size(52, 22)
         Me.RegionPort.TabIndex = 10
-        Me.ToolTip1.SetToolTip(Me.RegionPort, "The UDP port the region will operate on. Must be uinique")
+        Me.ToolTip1.SetToolTip(Me.RegionPort, "The UDP port the region will operate on. Must be unique")
         '
         'CoordY
         '
@@ -97,7 +97,7 @@ Partial Class FormRegion
         Me.RegionName.Name = "RegionName"
         Me.RegionName.Size = New System.Drawing.Size(305, 22)
         Me.RegionName.TabIndex = 1
-        Me.ToolTip1.SetToolTip(Me.RegionName, "Alpa-Numeric plus Spaces")
+        Me.ToolTip1.SetToolTip(Me.RegionName, "Alpha-Numeric plus Spaces")
         '
         'RadioButton4
         '
@@ -187,7 +187,7 @@ Partial Class FormRegion
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(138, 17)
         Me.Label5.TabIndex = 30
-        Me.Label5.Text = "NonphysicalPrimMax"
+        Me.Label5.Text = "Nonphysical Prim Max"
         Me.ToolTip1.SetToolTip(Me.Label5, "You cannot make a regular prim bigger than this.")
         '
         'Label9
@@ -198,7 +198,7 @@ Partial Class FormRegion
         Me.Label9.Name = "Label9"
         Me.Label9.Size = New System.Drawing.Size(113, 17)
         Me.Label9.TabIndex = 31
-        Me.Label9.Text = "PhysicalPrimMax"
+        Me.Label9.Text = "Physical Prim Max"
         Me.ToolTip1.SetToolTip(Me.Label9, "You cannot make a physical prim bigger than this.")
         '
         'PhysicalPrimMax
@@ -218,8 +218,8 @@ Partial Class FormRegion
         Me.Label10.Name = "Label10"
         Me.Label10.Size = New System.Drawing.Size(102, 17)
         Me.Label10.TabIndex = 34
-        Me.Label10.Text = "ClampPrimSize"
-        Me.ToolTip1.SetToolTip(Me.Label10, "ClampPrimSize option to ensure no prim can exceed the set size.")
+        Me.Label10.Text = "Clamp Prim Size"
+        Me.ToolTip1.SetToolTip(Me.Label10, "Clamp Prim Size is an option to ensure no prim can exceed the set size.")
         '
         'Label11
         '
@@ -229,9 +229,9 @@ Partial Class FormRegion
         Me.Label11.Name = "Label11"
         Me.Label11.Size = New System.Drawing.Size(68, 17)
         Me.Label11.TabIndex = 36
-        Me.Label11.Text = "MaxPrims"
-        Me.ToolTip1.SetToolTip(Me.Label11, "Not what you think it is.  Only used to tell scripts the max size allowed. Id not" &
-        " enforced by Opensim.  Viewer stop at 45,000, Opensim does not!")
+        Me.Label11.Text = "Max Prims"
+        Me.ToolTip1.SetToolTip(Me.Label11, "Not what you think it is.  Only used to tell scripts the max size allowed. Is not" &
+        " enforced by Opensim.  Viewer stops counting at 45,000, Opensim does not!")
         '
         'MaxPrims
         '
@@ -260,7 +260,7 @@ Partial Class FormRegion
         Me.Label12.Name = "Label12"
         Me.Label12.Size = New System.Drawing.Size(77, 17)
         Me.Label12.TabIndex = 38
-        Me.Label12.Text = "MaxAgents"
+        Me.Label12.Text = "Max Agents"
         Me.ToolTip1.SetToolTip(Me.Label12, "Clamps how many Avatars + NPC's can be in a sim before the region is shown as Ful" &
         "l.   The actual value is set in Estate Settings in the viewer.")
         '
@@ -272,7 +272,7 @@ Partial Class FormRegion
         Me.ClampPrimSize.Name = "ClampPrimSize"
         Me.ClampPrimSize.Size = New System.Drawing.Size(18, 17)
         Me.ClampPrimSize.TabIndex = 39
-        Me.ToolTip1.SetToolTip(Me.ClampPrimSize, "ClampPrimSize option to ensure no prim can exceed the set size..")
+        Me.ToolTip1.SetToolTip(Me.ClampPrimSize, "Clamp Prim Size is an option to ensure no prim can exceed the set size..")
         Me.ClampPrimSize.UseVisualStyleBackColor = True
         '
         'Advanced

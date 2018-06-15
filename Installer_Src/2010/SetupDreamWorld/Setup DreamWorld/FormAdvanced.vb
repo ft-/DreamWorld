@@ -212,7 +212,7 @@ Public Class AdvancedForm
         Dim openFileDialog1 As FolderBrowserDialog = New FolderBrowserDialog
 
         openFileDialog1.ShowNewFolderButton = True
-        openFileDialog1.Description = "Pick folder for backups"
+        openFileDialog1.Description = My.Resources.PickFolderString
         Dim UserClickedOK As Boolean = openFileDialog1.ShowDialog
 
         ' Process input if the user clicked OK.

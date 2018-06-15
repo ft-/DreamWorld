@@ -291,7 +291,7 @@ Partial Class Expert
         Me.SplashPage.Name = "SplashPage"
         Me.SplashPage.Size = New System.Drawing.Size(177, 20)
         Me.SplashPage.TabIndex = 45
-        Me.ToolTip1.SetToolTip(Me.SplashPage, "The web page that appears iwhen you log in to this grid")
+        Me.ToolTip1.SetToolTip(Me.SplashPage, "The web page that appears when you log in to this grid")
         '
         'GroupBox4
         '
@@ -478,7 +478,7 @@ Partial Class Expert
         Me.PictureBox8.Size = New System.Drawing.Size(30, 34)
         Me.PictureBox8.TabIndex = 1858
         Me.PictureBox8.TabStop = False
-        Me.ToolTip1.SetToolTip(Me.PictureBox8, "If set, you get 0% to 100% clouds on your sims")
+        Me.ToolTip1.SetToolTip(Me.PictureBox8, "For singularity viewers. If set, you get 0% to 100% clouds on your sims")
         '
         'Clouds
         '
@@ -488,7 +488,7 @@ Partial Class Expert
         Me.Clouds.Size = New System.Drawing.Size(59, 17)
         Me.Clouds.TabIndex = 21
         Me.Clouds.Text = "Enable"
-        Me.ToolTip1.SetToolTip(Me.Clouds, "The original Sl clouds")
+        Me.ToolTip1.SetToolTip(Me.Clouds, "The original Second Life clouds")
         Me.Clouds.UseVisualStyleBackColor = True
         '
         'GroupBox1
@@ -539,7 +539,7 @@ Partial Class Expert
         Me.PhysicsubODE.TabIndex = 35
         Me.PhysicsubODE.TabStop = True
         Me.PhysicsubODE.Text = "Ubit Open Dynamic Engine"
-        Me.ToolTip1.SetToolTip(Me.PhysicsubODE, "A more-SL-like physics engine with more compatible vehicles and  sim crossings.")
+        Me.ToolTip1.SetToolTip(Me.PhysicsubODE, "A more-SL-like physics engine with more compatible vehicles and sim crossings.")
         Me.PhysicsubODE.UseVisualStyleBackColor = True
         '
         'PhysicsBullet
@@ -696,8 +696,8 @@ Partial Class Expert
         Me.AutoLoadCheckbox.Size = New System.Drawing.Size(59, 17)
         Me.AutoLoadCheckbox.TabIndex = 21
         Me.AutoLoadCheckbox.Text = "Enable"
-        Me.ToolTip1.SetToolTip(Me.AutoLoadCheckbox, "Click to enable Autoloading of Sims on Teleport requests. All sims except the Wel" &
-        "come region will be shut down if no one is in world.")
+        Me.ToolTip1.SetToolTip(Me.AutoLoadCheckbox, "Click to enable Auto loading of Sims on Teleport requests. All sims except the We" &
+        "lcome region will be shut down if no one is in world.")
         Me.AutoLoadCheckbox.UseVisualStyleBackColor = True
         '
         'AdminFirst
@@ -761,11 +761,11 @@ Partial Class Expert
         Me.GDPRCheckBox.AutoSize = True
         Me.GDPRCheckBox.Location = New System.Drawing.Point(18, 19)
         Me.GDPRCheckBox.Name = "GDPRCheckBox"
-        Me.GDPRCheckBox.Size = New System.Drawing.Size(231, 17)
+        Me.GDPRCheckBox.Size = New System.Drawing.Size(230, 17)
         Me.GDPRCheckBox.TabIndex = 1863
-        Me.GDPRCheckBox.Text = "Puiblish Info in directory on Outworldz.com?"
+        Me.GDPRCheckBox.Text = "Publish Grid in directory on Outworldz.com?"
         Me.ToolTip1.SetToolTip(Me.GDPRCheckBox, "Displays your grid information publicly on Hyperica.com. Click to agree to expose" &
-        " this information to the public. on wwwOutworldz.com/hyperica and in-world on te" &
+        " this information to the public on www.Outworldz.com/hyperica and in-world on te" &
         "leports.  The URL and photo are listed.")
         Me.GDPRCheckBox.UseVisualStyleBackColor = True
         '
@@ -856,7 +856,7 @@ Partial Class Expert
         Me.AutoStart.Size = New System.Drawing.Size(243, 70)
         Me.AutoStart.TabIndex = 44
         Me.AutoStart.TabStop = False
-        Me.AutoStart.Text = "AutoStart and Start on Boot"
+        Me.AutoStart.Text = "Auto Start and Start on Boot"
         '
         'Label13
         '
@@ -872,9 +872,9 @@ Partial Class Expert
         Me.Label6.AutoSize = True
         Me.Label6.Location = New System.Drawing.Point(118, 20)
         Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(96, 13)
+        Me.Label6.Size = New System.Drawing.Size(84, 13)
         Me.Label6.TabIndex = 23
-        Me.Label6.Text = "Run on PC Bootup"
+        Me.Label6.Text = "Run on PC Boot"
         '
         'BootStart
         '
@@ -904,7 +904,7 @@ Partial Class Expert
         Me.GroupBox5.Size = New System.Drawing.Size(189, 48)
         Me.GroupBox5.TabIndex = 55
         Me.GroupBox5.TabStop = False
-        Me.GroupBox5.Text = "AutoLoad on Teleport"
+        Me.GroupBox5.Text = "Auto Load on Teleport"
         Me.GroupBox5.Visible = False
         '
         'AdminPassword

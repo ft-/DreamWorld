@@ -39,7 +39,7 @@ Public Class DNSName
             Try
                 Checkname = client.DownloadString("http://outworldz.net/getnewname.plx/?GridName=" + TextBox1.Text + "&r=" + Random())
             Catch ex As Exception
-                Form1.Log("Cannot check the DNS Name, no connection to the Internet or Outworldz.com is down. " + ex.Message)
+                Form1.Log("Cannot check the DNS Name, no connection to the Internet or www.Outworldz.com is down. " + ex.Message)
             End Try
             If (Checkname = TextBox1.Text) Then
                 TextBox1.Text = Checkname
@@ -50,7 +50,7 @@ Public Class DNSName
     Private Sub SaveButton_Click(sender As Object, e As EventArgs) Handles SaveButton.Click
 
         If TextBox1.Text <> String.Empty Then
-            Dim client As New System.Net.WebClient
+
 
             NextNameButton.Text = "Saving..."
 

@@ -28,11 +28,10 @@ Public Class FormRegion
 
     Public Sub Init(Name As String)
 
-        Me.Focus()
-
         Me.Size = New System.Drawing.Size(275, 335)
         Advanced.Visible = False
         Big = True
+        Me.Focus()
 
         RegionClass = RegionMaker.Instance
         If Name = "" Then
@@ -63,14 +62,14 @@ Public Class FormRegion
             Me.Text = Name ' on screen
             RegionName.Text = RegionClass.RegionName(n) ' on form
             UUID.Text = RegionClass.UUID(n)   ' on screen
-            NonphysicalPrimMax.Text = RegionClass.NonphysicalPrimMax(n)
+            NonphysicalPrimMax.Text = RegionClass.NonPhysicalPrimMax(n)
             PhysicalPrimMax.Text = RegionClass.PhysicalPrimMax(n)
             ClampPrimSize.Checked = RegionClass.ClampPrimSize(n)
             MaxPrims.Text = RegionClass.MaxPrims(n)
             MaxAgents.Text = RegionClass.MaxAgents(n)
 
             Me.Show() ' time to show the results
-            Me.Focus()
+            Me.Activate()
             Application.DoEvents()
 
             ' Size buttons
@@ -164,31 +163,30 @@ Public Class FormRegion
 
         ' global coords
         If Convert.ToInt16(CoordX.Text) = 0 Then
-            Message = "Region CoordX cannot be zero"
+            Message = "Region Coordinate X cannot be zero"
+            Form1.Log(Message)
+            Return Message
+        ElseIf Convert.ToInt16(CoordX.Text) > 65536 Then
+            Message = "Region Coordinate X is too large"
             Form1.Log(Message)
             Return Message
         End If
-        If Convert.ToInt16(CoordX.Text) > 65536 Then
-            Message = "Region CoordX is too large"
-            Form1.Log(Message)
-            Return Message
-        End If
+
         If Convert.ToInt16(CoordY.Text) = 0 Then
             Message = "Region CoordY cannot be zero"
             Form1.Log(Message)
             Return Message
-        End If
-        If Convert.ToInt16(CoordY.Text) > 65536 Then
+        ElseIf Convert.ToInt16(CoordY.Text) > 65536 Then
             Message = "Region CoordY is too large"
             Form1.Log(Message)
             Return Message
         End If
+
         If Convert.ToInt16(RegionPort.Text) = 0 Then
             Message = "Region Port cannot be zero or undefined"
             Form1.Log(Message)
             Return Message
         End If
-
 
         Dim aresult As Guid
         If Not Guid.TryParse(UUID.Text, aresult) Then

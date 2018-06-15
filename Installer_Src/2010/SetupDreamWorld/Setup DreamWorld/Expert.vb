@@ -430,7 +430,7 @@ Public Class Expert
                     Form1.MySetting.Autostart = True
                     Form1.MySetting.SaveMyINI()
                 Catch ex As Exception
-                    Form1.Log("Error:ProcessTask failed to launch:" + ex.Message)
+                    Form1.Log("Error:Process Task failed to launch:" + ex.Message)
                 End Try
             Else
                 pi.Arguments = "/Delete /TN DreamGrid"
@@ -438,7 +438,7 @@ Public Class Expert
                 Try
                     ProcessTask.Start()
                 Catch ex As Exception
-                    Form1.Log("Error:ProcessTask Delete failed to launch:" + ex.Message)
+                    Form1.Log("Error:Process Task Delete failed to launch:" + ex.Message)
                 End Try
 
             End If

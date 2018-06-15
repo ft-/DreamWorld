@@ -200,7 +200,7 @@ Partial Class Form1
         Me.ShowHyperGridAddressToolStripMenuItem.Name = "ShowHyperGridAddressToolStripMenuItem"
         Me.ShowHyperGridAddressToolStripMenuItem.Size = New System.Drawing.Size(214, 26)
         Me.ShowHyperGridAddressToolStripMenuItem.Text = "Show HyperGrid Address"
-        Me.ShowHyperGridAddressToolStripMenuItem.ToolTipText = "You can give this address out to oepple and they can visit your grid"
+        Me.ShowHyperGridAddressToolStripMenuItem.ToolTipText = "You can give this address out to people and they can visit your grid"
         '
         'ToolStripSeparator1
         '
@@ -319,7 +319,7 @@ Partial Class Form1
         Me.ClothingInventoryToolStripMenuItem.Name = "ClothingInventoryToolStripMenuItem"
         Me.ClothingInventoryToolStripMenuItem.Size = New System.Drawing.Size(224, 26)
         Me.ClothingInventoryToolStripMenuItem.Text = "Load Free Avatar Parts"
-        Me.ClothingInventoryToolStripMenuItem.ToolTipText = "IAR files are baclups of inventory items"
+        Me.ClothingInventoryToolStripMenuItem.ToolTipText = "IAR files are backups of inventory items"
         '
         'MoreContentToolStripMenuItem
         '

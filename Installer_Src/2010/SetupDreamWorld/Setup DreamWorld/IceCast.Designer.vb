@@ -190,7 +190,7 @@ Partial Class Icecast
         Me.Margin = New System.Windows.Forms.Padding(4)
         Me.Name = "Icecast"
         Me.Text = "IceCast"
-        Me.ToolTip1.SetToolTip(Me, "Click for help on setting up Shouitcast")
+        Me.ToolTip1.SetToolTip(Me, "Click for help on setting up Shoutcast")
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()

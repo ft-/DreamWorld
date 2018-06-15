@@ -50,10 +50,10 @@ Public Class Form1
     ' Processes
     Dim pMySqlDiag As Process = New Process()
     Dim ProcessUpnp As Process = New Process()
-    Public Shared ActualForm As AdvancedForm
+    Private Shared ActualForm As AdvancedForm
 
     ' with events
-    Private WithEvents pMySql As Process = New Process()
+    Private WithEvents ProcessMySql As Process = New Process()
     Public Event Exited As EventHandler
 
     Dim Data As IniParser.Model.IniData
@@ -98,7 +98,7 @@ Public Class Form1
     Dim RegionHandles(REGIONMAX) As Boolean
     Dim gStopping As Boolean = False
     Dim Timertick As Integer        ' counts the seconds uintil wallpaper changes
-    Public Shared MysqlConn As Mysql    ' object lets us query Mysql database
+    Private Shared MysqlConn As Mysql    ' object lets us query Mysql database
     Private Diagsrunning As Boolean = False
     Dim gDNSSTimer As Integer = 0
     Dim gUseIcons As Boolean = True
@@ -810,7 +810,7 @@ Public Class Form1
                 My.Computer.FileSystem.RenameFile(prefix + "bin\Robust.HG.ini", "Robust.HG.ini.bak")
                 My.Computer.FileSystem.RenameFile(prefix + "bin\Robust.tmp", "Robust.HG.ini")
             Catch ex As Exception
-                Log("Error:SetDefault sims could not rename the file:" + ex.Message)
+                Log("Error:Set Default sims could not rename the file:" + ex.Message)
                 My.Computer.FileSystem.RenameFile(prefix + "bin\Robust.HG.ini.bak", "Robust.HG.ini")
             End Try
 
@@ -1009,10 +1009,10 @@ Public Class Form1
 
         ' Autobackup
         If MySetting.AutoBackup Then
-            Log("Info:Autobackup is On")
+            Log("Info:Auto backup is On")
             MySetting.SetOtherIni("AutoBackupModule", "AutoBackup", "true")
         Else
-            Log("Info:Autobackup is Off")
+            Log("Info:Auto backup is Off")
             MySetting.SetOtherIni("AutoBackupModule", "AutoBackup", "false")
         End If
 
@@ -1498,6 +1498,8 @@ Public Class Form1
 
         PortTests()
 
+        RegionClass.CheckDupPorts()
+
         Try
             ' Boot them up
             Dim n = 0
@@ -1535,7 +1537,7 @@ Public Class Form1
         End If
 
     End Sub
-    Private Sub Mysql_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles pMySql.Exited
+    Private Sub Mysql_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles ProcessMySql.Exited
 
         If exiting Then Return
         Dim yesno = MsgBox("Mysql exited. Do you want to see the error log file?", vbYesNo, "Error")
@@ -2285,11 +2287,11 @@ Public Class Form1
 
         Try
             'plus sign(+), caret(^), percent sign (%), tilde (~), And parentheses ()
-            command.Replace("+", "{+}")
-            command.Replace("^", "{^}")
-            command.Replace("%", "{%}")
-            command.Replace("(", "{(}")
-            command.Replace(")", "{)}")
+            command = command.Replace("+", "{+}")
+            command = command.Replace("^", "{^}")
+            command = command.Replace("%", "{%}")
+            command = command.Replace("(", "{(}")
+            command = command.Replace(")", "{)}")
 
             AppActivate(ProcessID)
 
@@ -2772,7 +2774,7 @@ Public Class Form1
 
         Dim files() As String = e.Data.GetData(DataFormats.FileDrop)
         For Each pathname As String In files
-            pathname.Replace("\", "/")
+            pathname = pathname.Replace("\", "/")
             Dim extension = Path.GetExtension(pathname)
             extension = Mid(extension, 2, 5)
             If extension.ToLower = "iar" Then
@@ -2798,7 +2800,7 @@ Public Class Form1
 
         Dim files() As String = e.Data.GetData(DataFormats.FileDrop)
         For Each pathname As String In files
-            pathname.Replace("\", "/")
+            pathname = pathname.Replace("\", "/")
             Dim extension = Path.GetExtension(pathname)
             extension = Mid(extension, 2, 5)
             If extension.ToLower = "iar" Then
@@ -2843,7 +2845,7 @@ Public Class Form1
                 Log("Info:" + line)
                 Dim OarMenu As New ToolStripMenuItem
                 OarMenu.Text = line
-                OarMenu.ToolTipText = "Cick to load this content"
+                OarMenu.ToolTipText = "Click to load this content"
                 OarMenu.DisplayStyle = ToolStripItemDisplayStyle.Text
                 AddHandler OarMenu.Click, New EventHandler(AddressOf OarClick)
                 IslandToolStripMenuItem.Visible = True
@@ -2992,7 +2994,7 @@ Public Class Form1
         Try
             Update = client.DownloadString(Domain + "/Outworldz_Installer/UpdateGrid.plx?Ver=" + Str(MyVersion) + Data)
         Catch ex As Exception
-            Log("Dang:The Outworld web site is down")
+            Log("Dang:The Outworldz web site is down")
         End Try
         If (Update = "") Then Update = "0"
 
@@ -3160,7 +3162,7 @@ Public Class Form1
 
             Dim Data As String = GetPostData()
             Dim Url = Domain + "/cgi/probetest.plx?IP=" + MySetting.PublicIP + "&Port=" + MySetting.DiagnosticPort + Data
-            Log(Url)
+            'Log(Url)
             isPortOpen = client.DownloadString(Url)
         Catch ex As Exception
             Log("Dang:The Outworldz web site cannot find a path back")
@@ -3267,7 +3269,7 @@ Public Class Form1
             Return True
         End If
 
-        Log("Local ip seems to be " + MyUPnpMap.LocalIP)
+        Log("Local IP seems to be " + MyUPnpMap.LocalIP)
         Print("Puny human is instructed to wait while I check out the router ...")
         Try
 
@@ -3519,7 +3521,7 @@ Public Class Form1
         Try
             My.Computer.FileSystem.DeleteFile(testProgram)
         Catch ex As Exception
-            Log("DeleteFile: " + ex.Message)
+            Log("Delete File: " + ex.Message)
         End Try
         Try
             Using outputFile As New StreamWriter(testProgram, True)
@@ -3527,7 +3529,7 @@ Public Class Form1
                                      + "mysqld.exe --defaults-file=" + """" + gCurSlashDir + "/OutworldzFiles/mysql/my.ini" + """")
             End Using
         Catch ex As Exception
-            Log("Error:StartManually" + ex.Message)
+            Log("Error:Start Manually" + ex.Message)
         End Try
 
 	CreateService()
@@ -3541,9 +3543,9 @@ Public Class Form1
         pi.Arguments = "--defaults-file=" + """" + gCurSlashDir + "/OutworldzFiles/mysql/my.ini" + """"
         pi.WindowStyle = ProcessWindowStyle.Hidden
         pi.FileName = """" + MyFolder & "\OutworldzFiles\mysql\bin\mysqld.exe" + """"
-        pMySql.StartInfo = pi
-        pMySql.EnableRaisingEvents = True
-        pMySql.Start()
+        ProcessMySql.StartInfo = pi
+        ProcessMySql.EnableRaisingEvents = True
+        ProcessMySql.Start()
 
         ' wait for MySql to come up
         While Not MysqlOk And Running
@@ -3583,7 +3585,7 @@ Public Class Form1
         Try
             My.Computer.FileSystem.DeleteFile(testProgram)
         Catch ex As Exception
-            Log("DeleteFile: " + ex.Message)
+            Log("Delete File: " + ex.Message)
         End Try
         Try
             Using outputFile As New StreamWriter(testProgram, True)
@@ -3591,7 +3593,7 @@ Public Class Form1
                 "mysqld.exe --install Mysql --defaults-file=" + """" + gCurSlashDir + "/OutworldzFiles/mysql/my.ini" + """")
             End Using
         Catch ex As Exception
-            Log("Error:InstallAsAService" + ex.Message)
+            Log("Error:Install As A Service" + ex.Message)
         End Try
 
     End Sub
@@ -3636,14 +3638,14 @@ Public Class Form1
             p.WaitForExit()
             p.Close()
         Catch ex As Exception
-            Log("Error:mysqladmin failed to stop mysql:" + ex.Message)
+            Log("Error: mysqladmin failed to stop mysql:" + ex.Message)
         End Try
 
         Dim Mysql = CheckPort("127.0.0.1", MySetting.MySqlPort)
         If Mysql Then
             Sleep(4000)
             Try
-                pMySql.Close()
+                ProcessMySql.Close()
             Catch ex2 As Exception
                 Log("Error:Process pMySql.Close() " + ex2.Message)
             End Try
@@ -3672,9 +3674,8 @@ Public Class Form1
         Dim client As New System.Net.WebClient
         Dim Checkname As String = String.Empty
 
-
         Try
-            Checkname = client.DownloadString("http://outworldz.net/dns.plx/?GridName=" + MySetting.DNSName + "&r=" + Random())
+            Checkname = client.DownloadString("http://outworldz.net/dns.plx?GridName=" + MySetting.DNSName + "&r=" + Random())
         Catch ex As Exception
             Log("Warn:Cannot check the DNS Name" + ex.Message)
             Return False
@@ -3780,6 +3781,7 @@ Public Class Form1
         If RegionList.InstanceExists = False Then
             Dim RegionForm As New RegionList
             RegionForm.Show()
+            RegionForm.Activate()
         End If
 
     End Sub

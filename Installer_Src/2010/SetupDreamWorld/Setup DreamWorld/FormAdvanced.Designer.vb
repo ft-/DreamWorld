@@ -137,7 +137,7 @@ Partial Class AdvancedForm
         Me.MapGood.TabIndex = 34
         Me.MapGood.TabStop = True
         Me.MapGood.Text = "Good (Warp3D)"
-        Me.ToolTip1.SetToolTip(Me.MapGood, "Fast and simple map usng Warp3DImageModule")
+        Me.ToolTip1.SetToolTip(Me.MapGood, "Fast and simple map using Warp3DImageModule")
         Me.MapGood.UseVisualStyleBackColor = True
         '
         'PersonalityHelp
@@ -184,7 +184,8 @@ Partial Class AdvancedForm
         Me.AutoBackupKeepFilesForDays.Name = "AutoBackupKeepFilesForDays"
         Me.AutoBackupKeepFilesForDays.Size = New System.Drawing.Size(47, 22)
         Me.AutoBackupKeepFilesForDays.TabIndex = 3
-        Me.ToolTip1.SetToolTip(Me.AutoBackupKeepFilesForDays, "Backaups older than this number will be deleted")
+        Me.ToolTip1.SetToolTip(Me.AutoBackupKeepFilesForDays, My.Resources.OldBackupString)
+
         '
         'AutoBackupInterval
         '
@@ -195,7 +196,7 @@ Partial Class AdvancedForm
         Me.AutoBackupInterval.Name = "AutoBackupInterval"
         Me.AutoBackupInterval.Size = New System.Drawing.Size(121, 24)
         Me.AutoBackupInterval.TabIndex = 2
-        Me.ToolTip1.SetToolTip(Me.AutoBackupInterval, "The sim nust run this long and it will back up")
+        Me.ToolTip1.SetToolTip(Me.AutoBackupInterval, "The sim must run this long and then it will back up")
         '
         'AutoBackup
         '
