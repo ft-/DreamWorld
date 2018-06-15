@@ -4,7 +4,7 @@ Imports System.IO
 
 Public Class RegionList
 
-    Dim writetodisk As Boolean
+    Dim ViewBusy As Boolean
     Dim TheView As Integer = 0
     Private Shared FormExists As Boolean = False
     Dim pixels As Integer = 70
@@ -26,7 +26,7 @@ Public Class RegionList
 
     Private Sub Panel1_MouseWheel(sender As Object, e As System.Windows.Forms.MouseEventArgs) Handles ListView1.MouseWheel
 
-        If TheView = 2 Then
+        If TheView = 2 And ViewBusy Then
             ' Update the drawing based upon the mouse wheel scrolling.
             Dim numberOfTextLinesToMove As Integer = CInt(e.Delta * SystemInformation.MouseWheelScrollLines / 120)
 
@@ -105,14 +105,13 @@ Public Class RegionList
     End Sub
 
     Private Sub Timer1_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Timer1.Tick
-
         LoadMyListView()
         Timer1.Interval = 30000
     End Sub
 
     Private Sub LoadMyListView()
 
-        writetodisk = False
+        ViewBusy = False
 
         ListView1.BeginUpdate()
 
@@ -129,7 +128,6 @@ Public Class RegionList
         ListView1.Columns.Add("Agents", 60, HorizontalAlignment.Center)
         ListView1.Columns.Add("Status", 60, HorizontalAlignment.Center)
 
-        Dim imageList1 As New ImageList
         Dim Num As Integer = 0
 
         'Dim L As New List(Of String)
@@ -211,7 +209,8 @@ Public Class RegionList
         Me.ListView1.TabIndex = 0
 
         ListView1.EndUpdate()
-        writetodisk = True
+        ListView1.Show()
+        ViewBusy = True
         Timer1.Interval = 30000
         Application.DoEvents()
 
@@ -251,19 +250,29 @@ Public Class RegionList
 
         For Each item In regions
             Dim RegionName = item.SubItems(0).Text
+            Dim checked As Boolean = item.Checked
             Debug.Print("Clicked row " + RegionName)
-            StartStopEdit(RegionClass.FindRegionByName(RegionName))
+            StartStopEdit(checked, RegionClass.FindRegionByName(RegionName))
         Next
 
+
     End Sub
-    Private Sub StartStopEdit(n As Integer)
+    Private Sub StartStopEdit(checked As Boolean, n As Integer)
 
         ' stop it, start it, or edit it
-        If RegionClass.ShuttingDown(n) Then
-            RegionClass.ShuttingDown(n) = False
+        ' If RegionClass.ShuttingDown(n) Then
+        ' RegionClass.ShuttingDown(n) = False
+        ' End If
+
+        If Not checked Then
+            Dim ActualForm As New FormRegion
+            ActualForm.Init(RegionClass.RegionName(n))
+            ActualForm.Activate()
+            ActualForm.Visible = True
+            Return
         End If
 
-        If RegionClass.RegionEnabled(n) And (RegionClass.Booted(n) Or RegionClass.WarmingUp(n)) Then
+        If checked And (RegionClass.Booted(n) Or RegionClass.WarmingUp(n)) Then
             ' if enabled and running, even partly up, stop it.
             Try
 
@@ -278,37 +287,24 @@ Public Class RegionList
             Catch ex As Exception
                 Form1.Log("Region:Could not stop " + RegionClass.RegionName(n))
             End Try
-            Me.Focus()
 
-        ElseIf RegionClass.RegionEnabled(n) And Not (RegionClass.Booted(n) Or RegionClass.WarmingUp(n) Or RegionClass.ShuttingDown(n)) Then
+        ElseIf checked And Not (RegionClass.Booted(n) Or RegionClass.WarmingUp(n) Or RegionClass.ShuttingDown(n)) Then
             ' it was stopped, and disabled, so we start up
             If Not Form1.StartMySQL() Then Return
             Form1.Start_Robust()
             Form1.CopyOpensimProto()
             Form1.Boot(RegionClass.RegionName(n))
             Debug.Print("Region:Started Region " + RegionClass.RegionName(n))
-        Else
-            Try
-                Dim ActualForm As New FormRegion
-                ActualForm.Init(RegionClass.RegionName(n))
-                ActualForm.Activate()
-                ActualForm.Visible = True
-            Catch ex As Exception
-                Form1.Log("Info:" + ex.Message)
-            End Try
-
         End If
-        Timer1.Interval = 5000
-
+        Me.Focus()
     End Sub
-
 
     Private Sub ListView1_ItemCheck1(ByVal sender As Object, ByVal e As System.Windows.Forms.ItemCheckEventArgs) Handles ListView1.ItemCheck
 
         Dim Item As ListViewItem = ListView1.Items.Item(e.Index)
         Dim n As Integer = RegionClass.FindRegionByName(Item.Text)
 
-        If writetodisk Then
+        If ViewBusy Then
             If (e.CurrentValue = CheckState.Unchecked) Then
                 RegionClass.RegionEnabled(n) = True
                 ' and region file on disk
@@ -324,8 +320,6 @@ Public Class RegionList
             End If
         End If
         Application.DoEvents()
-
-        Timer1.Interval = 2000
 
     End Sub
 
@@ -344,11 +338,13 @@ Public Class RegionList
 
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles ViewButton.Click
 
-        While Not writetodisk
-            Form1.Sleep(500)
+        ' It may be busy refreshing so lets wait
+        While Not ViewBusy
+            Form1.Sleep(100)
             Application.DoEvents()
         End While
-        ListView1.Show()
+
+
         If TheView = 0 Then
             ListView1.CheckBoxes = False
             ListView1.View = View.List
@@ -407,7 +403,7 @@ Public Class RegionList
         Dim dir = Form1.prefix
 
         For Each pathname As String In files
-            pathname.Replace("\", "/")
+            pathname = pathname.Replace("\", "/")
             Dim extension = Path.GetExtension(pathname)
             extension = Mid(extension, 2, 5)
             If extension.ToLower = "ini" Then
