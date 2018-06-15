@@ -1,4 +1,5 @@
-﻿Imports System.IO
+﻿Using System.Text;
+Imports System.IO
 Imports Newtonsoft.Json
 
 Public Class RegionMaker
@@ -11,6 +12,7 @@ Public Class RegionMaker
     Private initted As Boolean = False
     Private Shared FInstance As RegionMaker = Nothing
     Dim Backup As New ArrayList()
+    Dim json As JSON_result
 
     Public Sub DebugGroup()
         For Each pair In Grouplist
@@ -311,6 +313,37 @@ Public Class RegionMaker
 #End Region
 
 #Region "Functions"
+
+    Public Function CheckDupPorts() As Boolean
+
+        Dim Portlist As New Dictionary(Of Integer, String)
+        For Each r As Region_data In RegionList
+            Dim port As Integer = r._RegionPort
+            Dim name As String = r._RegionName
+            Try
+                Portlist.Add(port, name)
+            Catch ex As Exception
+
+                Dim msg As String
+
+
+                msg = "ŐŐps!, I see a hole in your pants. I mean, an overlap in your ports. " + vbCrLf _
+                        + "Region " + name + ":" + r._RegionPort + " is already in use." + vbCrLf _
+                        + "Region " + r._RegionName + " overlaps it." _
+                        + "Want Me To fix it?"
+
+                Dim response = MsgBox(Msg, vbYesNo)
+                If response = vbYes Then
+                    Dim newport = Form1.RegionClass.LargestPort + 1
+                    Portlist.Add(newport, name)
+                    r._RegionPort = newport
+                End If
+            End Try
+
+        Next
+
+
+    End Function
 
     Private Function CheckN(n As Integer) As Integer
 
@@ -683,7 +716,7 @@ Public Class RegionMaker
             Dim first As Integer = POST.IndexOf("{")
             Dim last As Integer = POST.LastIndexOf("}")
             Dim rawJSON = POST.Substring(first, last - first + 1)
-            Dim json As JSON_result
+
             Try
                 json = JsonConvert.DeserializeObject(Of JSON_result)(rawJSON)
             Catch ex As Exception
