@@ -407,7 +407,7 @@ Public Class Form1
     Private Sub StartButton_Click(sender As System.Object, e As System.EventArgs) Handles StartButton.Click
 
         Startup()
-
+        Print("")
     End Sub
 
     Private Sub Startup()
@@ -873,7 +873,7 @@ Public Class Form1
         MySetting.SetOtherIni("Const", "GridName", MySetting.SimName)
         MySetting.SetOtherIni("Const", "BaseURL", "http://" + MySetting.PublicIP)
         MySetting.SetOtherIni("Const", "PublicPort", MySetting.HttpPort) ' 8002
-        MySetting.SetOtherIni("Const", "PrivatePort", MySetting.PrivatePort) ' 8003
+        MySetting.SetOtherIni("Const", "PrivatePort", MySetting.PrivatePort) ' \
         MySetting.SetOtherIni("Const", "http_listener_port", MySetting.HttpPort)
         MySetting.SetOtherIni("GridInfoService", "welcome", MySetting.SplashPage)
 
@@ -1496,9 +1496,9 @@ Public Class Form1
 
         If Running = False Then Return True
 
-        PortTests()
-
         RegionClass.CheckDupPorts()
+
+        PortTests()
 
         Try
             ' Boot them up
@@ -3061,7 +3061,7 @@ Public Class Form1
             MySetting.SaveMyINI()
 
             If MySetting.DNSName.ToLower.Contains("outworldz.net") Then
-                Print("Checking DNS")
+                Print("Checking DNS address " + MySetting.DNSName)
             End If
 
             If RegisterDNS() Then
@@ -3303,10 +3303,6 @@ Public Class Form1
             MyUPnpMap.Add(MyUPnpMap.LocalIP, Convert.ToInt16(MySetting.HttpPort), UPnp.Protocol.UDP, "Opensim UDP Grid " + MySetting.HttpPort)
             PrintFast("Grid Port is set to " + MySetting.HttpPort)
             BumpProgress10()
-
-            '8004-whatever
-
-            ' !!!regions = regions.OrderBy(Function(x) x.RegionPort).ToList()
 
             For Each X In RegionClass.RegionNumbers
                 Dim R As Int16 = RegionClass.RegionPort(X)

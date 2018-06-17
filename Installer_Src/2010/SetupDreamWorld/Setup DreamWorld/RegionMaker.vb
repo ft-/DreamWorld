@@ -1,4 +1,4 @@
-﻿Using System.Text;
+﻿
 Imports System.IO
 Imports Newtonsoft.Json
 
@@ -328,15 +328,16 @@ Public Class RegionMaker
 
 
                 msg = "ŐŐps!, I see a hole in your pants. I mean, an overlap in your ports. " + vbCrLf _
-                        + "Region " + name + ":" + r._RegionPort + " is already in use." + vbCrLf _
-                        + "Region " + r._RegionName + " overlaps it." _
-                        + "Want Me To fix it?"
+                        + "Region " + Portlist.Item(r._RegionPort) + ":" + r._RegionPort.ToString + " is already in use." + vbCrLf _
+                        + "Region " + name + " overlaps it." + vbCrLf _
+                        + "Want me to fix it?"
 
                 Dim response = MsgBox(Msg, vbYesNo)
                 If response = vbYes Then
                     Dim newport = Form1.RegionClass.LargestPort + 1
                     Portlist.Add(newport, name)
                     r._RegionPort = newport
+                    WriteRegionObject(name)
                 End If
             End Try
 
@@ -442,6 +443,9 @@ Public Class RegionMaker
     End Function
     Public Function CreateRegion(name As String) As Integer
 
+        If RegionList.Contains(name) Then
+            Return RegionList.Count - 1
+        End If
         ' Debug.Print("Create Region " + name)
         Dim r As New Region_data
         r._RegionName = name
@@ -451,7 +455,7 @@ Public Class RegionMaker
         r._SizeY = 256
         r._CoordX = LargestX() + 4
         r._CoordY = LargestY() + 0
-        r._RegionPort = LargestPort() + 1 '8004 + 1
+        r._RegionPort = LargestPort() + 1 '8003 + 1
         r._ProcessID = 0
         r._AvatarCount = 0
         r._Ready = False
@@ -465,6 +469,7 @@ Public Class RegionMaker
         r._MaxAgents = 100
 
         'RegionList.Insert(RegionList.Count, r)
+
         RegionList.Add(r)
         RegionDump()
         Return RegionList.Count - 1
@@ -600,25 +605,35 @@ Public Class RegionMaker
 
         End If
 
-        File.Copy(Form1.prefix & "bin\Regions.proto", fname, True)
+        Dim proto = "; * Regions configuration file; " + vbCrLf _
+        + "; Automatically changed and read by Dreamworld. Edits are allowed" + vbCrLf _
+        + "; Rule1: The File name must match the [RegionName]" + vbCrLf _
+        + "; Rule2: Only one region per INI file." + vbCrLf _
+        + ";" + vbCrLf _
+        + "[" + name + "]" + vbCrLf _
+        + "RegionUUID = " + UUID(CheckN(n)) + vbCrLf _
+        + "Location = " + CoordX(CheckN(n)).ToString & "," & CoordY(CheckN(n)).ToString + vbCrLf _
+        + "InternalAddress = 0.0.0.0" + vbCrLf _
+        + "InternalPort = " + RegionPort(CheckN(n)).ToString + vbCrLf _
+        + "AllowAlternatePorts = False" + vbCrLf _
+        + "ExternalHostName = " + Form1.MySetting.DNSName + vbCrLf _
+        + "SizeX = " + SizeX(CheckN(n)).ToString + vbCrLf _
+        + "SizeY = " + SizeY(CheckN(n)).ToString + vbCrLf _
+        + "Enabled = " + RegionEnabled(n).ToString + vbCrLf _
+        + "NonPhysicalPrimMax = " + NonPhysicalPrimMax(CheckN(n)).ToString + vbCrLf _
+        + "PhysicalPrimMax = " + PhysicalPrimMax(CheckN(n)).ToString + vbCrLf _
+        + "ClampPrimSize = " + ClampPrimSize(CheckN(n)).ToString + vbCrLf _
+        + "MaxPrims = " + MaxPrims(CheckN(n)).ToString + vbCrLf _
+        + "MaxAgents = " + MaxAgents(CheckN(n)).ToString + vbCrLf
 
-        Form1.MySetting.LoadOtherIni(fname, ";")
-        Form1.MySetting.SetOtherIni(name, "RegionUUID", UUID(CheckN(n)))
-        Form1.MySetting.SetOtherIni(name, "Location", CoordX(CheckN(n)) & "," & CoordY(CheckN(n)))
-        Form1.MySetting.SetOtherIni(name, "InternalPort", RegionPort(CheckN(n)))
-        Form1.MySetting.SetOtherIni(name, "ExternalHostName", Form1.MySetting.PublicIP)
-        Form1.MySetting.SetOtherIni(name, "SizeX", SizeX(CheckN(n)))
-        Form1.MySetting.SetOtherIni(name, "SizeY", SizeY(CheckN(n)))
+        My.Computer.FileSystem.DeleteFile(fname)
+        Using outputFile As New StreamWriter(fname, True)
+            outputFile.WriteLine(proto)
+        End Using
 
-        ' extended props V2.1
+        'File.Copy(Form1.prefix & "bin\Regions.proto", fname, True)
 
-        Form1.MySetting.SetOtherIni(name, "NonPhysicalPrimMax", NonPhysicalPrimMax(CheckN(n)))
-        Form1.MySetting.SetOtherIni(name, "PhysicalPrimMax", PhysicalPrimMax(CheckN(n)))
-        Form1.MySetting.SetOtherIni(name, "ClampPrimSize", Convert.ToString(ClampPrimSize(CheckN(n))))
-        Form1.MySetting.SetOtherIni(name, "MaxPrims", MaxPrims(CheckN(n)))
-        Form1.MySetting.SetOtherIni(name, "MaxAgents", MaxAgents(CheckN(n)))
 
-        Form1.MySetting.SaveMyINI()
 
     End Sub
 
@@ -650,13 +665,31 @@ Public Class RegionMaker
     Public Function LargestPort() As Integer
 
         ' locate largest port
-        Dim Max As Integer
+        Dim Max As Integer = 0
+        Dim Portlist As New Dictionary(Of Integer, String)
+
         Dim counter As Integer = 0
         For Each obj As Region_data In RegionList
-            Dim val = obj._RegionPort
-            If val > Max Then Max = val
+            Try
+                Portlist.Add(obj._RegionPort, obj._RegionName)
+            Catch
+            End Try
         Next
-        If Max = 0 Then Max = Form1.MySetting.PrivatePort
+
+        If Portlist.Count = 0 Then
+            Return 0
+        End If
+
+        For Each thing In Portlist
+            If thing.Key > Max Then
+                Max = thing.Key ' max is always the current value
+            End If
+
+            If Not Portlist.ContainsKey(Max + 1) Then
+                Return Max  ' Found a blank spot at Max + 1 so return Max
+            End If
+        Next
+
         Return Max
 
     End Function
@@ -732,12 +765,7 @@ Public Class RegionMaker
                     Return ""
                 End If
 
-                If RegionEnabled(CheckN(n)) = False Then
-                    RegionEnabled(CheckN(n)) = True
-                    Form1.MySetting.LoadOtherIni(RegionPath(CheckN(n)), ";")
-                    Form1.MySetting.SetOtherIni(json.region_name, "Enabled", "true")
-                    Form1.MySetting.SaveMyINI()
-                End If
+                RegionEnabled(CheckN(n)) = True
 
                 Booted(CheckN(n)) = True
                 WarmingUp(CheckN(n)) = False
