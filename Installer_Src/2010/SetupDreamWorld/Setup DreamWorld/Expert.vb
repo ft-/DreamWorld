@@ -10,6 +10,7 @@ Public Class Expert
 
     Private Sub Loaded(sender As Object, e As EventArgs) Handles Me.Load
 
+        GDPRCheckBox.Checked = Form1.MySetting.GDPR()
         AutoStartCheckbox.Checked = Form1.MySetting.Autostart
         AutoLoadCheckbox.Checked = Form1.MySetting.AutoLoad
         BootStart.Checked = Form1.MySetting.BootStart
