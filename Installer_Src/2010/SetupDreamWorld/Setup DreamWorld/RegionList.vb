@@ -272,7 +272,7 @@ Public Class RegionList
             Return
         End If
 
-        If checked And (RegionClass.Booted(n) Or RegionClass.WarmingUp(n)) Then
+        If checked And (RegionClass.Booted(n) Or RegionClass.WarmingUp(n)) Or RegionClass.ShuttingDown(n) Then
             ' if enabled and running, even partly up, stop it.
             Try
 
@@ -295,6 +295,7 @@ Public Class RegionList
             Form1.CopyOpensimProto()
             Form1.Boot(RegionClass.RegionName(n))
             Debug.Print("Region:Started Region " + RegionClass.RegionName(n))
+
         End If
         Me.Focus()
     End Sub
