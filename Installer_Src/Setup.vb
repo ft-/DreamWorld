@@ -3458,6 +3458,7 @@ Public Class Form1
                     pi.FileName = MyFolder & "\OutworldzFiles\mysql\bin\RestoreMysql.bat"
                     pMySqlRestore.StartInfo = pi
                     pMySqlRestore.Start()
+                    Print("")
                 End If
             Else
                 Print("Restore cancelled")
