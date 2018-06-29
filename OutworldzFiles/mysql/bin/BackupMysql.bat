@@ -8,14 +8,15 @@ set "HH=%dt:~8,2%" & set "Min=%dt:~10,2%" & set "Sec=%dt:~12,2%"
 set "fullstamp=%YYYY%-%MM%-%DD%_%HH%-%Min%-%Sec%"
 
 xcopy /s /i ..\..\Opensim\bin\Regions ..\..\Autobackup\Regions\Regions_%fullstamp%
-
-mysqldump.exe --opt --add-drop-database -uroot --verbose  Robust > ..\..\Autobackup\MySQL\Robust_%fullstamp%.sql
+echo use Robust; > ..\..\Autobackup\MySQL\Robust_%fullstamp%.sql
+mysqldump.exe --opt --add-drop-database -uroot --verbose  Robust >> ..\..\Autobackup\MySQL\Robust_%fullstamp%.sql
 IF ERRORLEVEL 0 GOTO Label1
 @ECHO Something went wrong, your backup of Robust database  failed
 GOTO End
 
 :Label1
-mysqldump.exe --opt --add-drop-database -uroot --verbose  Opensim  > ..\..\Autobackup\MySQL\Opensim_%fullstamp%.sql
+echo use Opensim; > ..\..\Autobackup\MySQL\Opensim_%fullstamp%.sql
+mysqldump.exe --opt --add-drop-database -uroot --verbose  Opensim  >> ..\..\Autobackup\MySQL\Opensim_%fullstamp%.sql
 
 IF ERRORLEVEL 0 GOTO Label0
 @ECHO Something went wrong, your backup of Opensim database failed
