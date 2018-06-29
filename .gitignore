@@ -13,7 +13,6 @@ OpenSim.log
 Init.txt
 Outworldz.log
 Http.log
-OutworldzFiles/Autobackup/*
 OutworldzFiles/opensim/bin/assetcache/*
 OutworldzFiles/opensim/bin/maptiles/*
 OutworldzFiles/opensim/bin/DataSnapshot/*
