@@ -3529,7 +3529,7 @@ Public Class Form1
             Log("Error:Start Manually" + ex.Message)
         End Try
 
-	CreateService()
+        CreateService()
 
 
         BumpProgress(5)
@@ -3586,7 +3586,7 @@ Public Class Form1
         End Try
         Try
             Using outputFile As New StreamWriter(testProgram, True)
-                outputFile.WriteLine("@REM Program to run Mysql as a Service" + vbcrlf +
+                outputFile.WriteLine("@REM Program to run Mysql as a Service" + vbCrLf +
                 "mysqld.exe --install Mysql --defaults-file=" + """" + gCurSlashDir + "/OutworldzFiles/mysql/my.ini" + """")
             End Using
         Catch ex As Exception
@@ -3817,41 +3817,41 @@ Public Class Form1
             ' Running, stop it
             If RegionClass.RegionEnabled(num) And (RegionClass.Booted(num) Or RegionClass.WarmingUp(num)) Then
 
-                    ' if enabled and running, even partly up, stop it.
-                    sender.Checked = False
-                    If Running Then
-                        Try
-                            ConsoleCommand(RegionClass.ProcessID(num), "quit{ENTER}")
-                            Me.Focus()
+                ' if enabled and running, even partly up, stop it.
+                sender.Checked = False
+                If Running Then
+                    Try
+                        ConsoleCommand(RegionClass.ProcessID(num), "quit{ENTER}")
+                        Me.Focus()
 
-                            RegionClass.RegionEnabled(num) = False
-                            RegionClass.Booted(num) = False
-                            RegionClass.WarmingUp(num) = False
-                            RegionClass.ShuttingDown(num) = True
+                        RegionClass.RegionEnabled(num) = False
+                        RegionClass.Booted(num) = False
+                        RegionClass.WarmingUp(num) = False
+                        RegionClass.ShuttingDown(num) = True
 
-                            MySetting.LoadOtherIni(RegionClass.RegionPath(num), ";")
-                            MySetting.SetOtherIni(sender.Text, "Enabled", "false")
-                            MySetting.SaveOtherINI()
+                        MySetting.LoadOtherIni(RegionClass.RegionPath(num), ";")
+                        MySetting.SetOtherIni(sender.Text, "Enabled", "false")
+                        MySetting.SaveOtherINI()
 
-                            Debug.Print("Region:Stopped Region " + RegionClass.RegionName(num))
-                        Catch ex As Exception
-                            Debug.Print("Region:Could not stop Opensim")
-                        End Try
-                    End If
-
-                ElseIf Not (RegionClass.Booted(num) Or RegionClass.WarmingUp(num) Or RegionClass.ShuttingDown(num)) Then
-                    ' it was stopped, and disabled, so we toggle the enable, and start up
-                    sender.Checked = True
-
-                    ' and region file on disk
-                    MySetting.LoadOtherIni(RegionClass.RegionPath(num), ";")
-                    MySetting.SetOtherIni(sender.Text, "Enabled", "true")
-                    MySetting.SaveOtherINI()
-
-                    Boot(RegionClass.RegionName(num))
-                    Debug.Print("Region:Started Region " + RegionClass.RegionName(num))
+                        Debug.Print("Region:Stopped Region " + RegionClass.RegionName(num))
+                    Catch ex As Exception
+                        Debug.Print("Region:Could not stop Opensim")
+                    End Try
                 End If
+
+            ElseIf Not (RegionClass.Booted(num) Or RegionClass.WarmingUp(num) Or RegionClass.ShuttingDown(num)) Then
+                ' it was stopped, and disabled, so we toggle the enable, and start up
+                sender.Checked = True
+
+                ' and region file on disk
+                MySetting.LoadOtherIni(RegionClass.RegionPath(num), ";")
+                MySetting.SetOtherIni(sender.Text, "Enabled", "true")
+                MySetting.SaveOtherINI()
+
+                Boot(RegionClass.RegionName(num))
+                Debug.Print("Region:Started Region " + RegionClass.RegionName(num))
             End If
+        End If
 
     End Sub
 
