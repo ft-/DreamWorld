@@ -125,6 +125,10 @@
       <HintPath>..\packages\ini-parser.2.5.2\lib\net20\INIFileParser.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="LiveSwitch.TextControl, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\LiveSwitch.TextControl.exe</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="MySql.Data, Version=6.10.7.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <HintPath>..\packages\MySql.Data.6.10.7\lib\net452\MySql.Data.dll</HintPath>
@@ -145,6 +149,7 @@
     <Reference Include="System.Drawing.Design" />
     <Reference Include="System.Management" />
     <Reference Include="System.Transactions" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
@@ -248,6 +253,12 @@
     <Compile Include="IceCast.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="TosForm.designer.vb">
+      <DependentUpon>TosForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="TosForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="UploadImage.vb" />
   </ItemGroup>
   <ItemGroup>
@@ -289,6 +300,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="IceCast.resx">
       <DependentUpon>IceCast.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TosForm.resx">
+      <DependentUpon>TosForm.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -444,6 +458,7 @@
     <None Include="Resources\blankbox.jpg" />
     <None Include="Resources\offline.jpg" />
     <None Include="Resources\OfflineMap.jpg" />
+    <None Include="Logo.jpg" />
     <Content Include="Resources\wp_habitat.gif" />
     <Content Include="Resources\wp_Inside_in_shadows.gif" />
     <Content Include="Resources\wp_Mooferd.gif" />

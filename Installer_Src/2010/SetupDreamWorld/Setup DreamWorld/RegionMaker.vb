@@ -314,7 +314,7 @@ Public Class RegionMaker
 
 #Region "Functions"
 
-    Public Function CheckDupPorts() As Boolean
+    Public Sub CheckDupPorts()
 
         Dim Portlist As New Dictionary(Of Integer, String)
         For Each r As Region_data In RegionList
@@ -326,13 +326,12 @@ Public Class RegionMaker
 
                 Dim msg As String
 
-
                 msg = "ŐŐps!, I see a hole in your pants. I mean, an overlap in your ports. " + vbCrLf _
                         + "Region " + Portlist.Item(r._RegionPort) + ":" + r._RegionPort.ToString + " is already in use." + vbCrLf _
                         + "Region " + name + " overlaps it." + vbCrLf _
                         + "Want me to fix it?"
 
-                Dim response = MsgBox(Msg, vbYesNo)
+                Dim response = MsgBox(msg, vbYesNo)
                 If response = vbYes Then
                     Dim newport = Form1.RegionClass.LargestPort + 1
                     Portlist.Add(newport, name)
@@ -344,7 +343,7 @@ Public Class RegionMaker
         Next
 
 
-    End Function
+    End Sub
 
     Private Function CheckN(n As Integer) As Integer
 
