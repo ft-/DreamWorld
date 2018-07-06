@@ -91,7 +91,7 @@ Public Class TosForm
             outputFile.WriteLine(Editor1.BodyHtml)
         End Using
 
-        Using outputFile As New StreamWriter(Form1.MyFolder + "\Outworldzfiles\opensim\bin\WifiPages\termsofservice.html")
+        Using outputFile As New StreamWriter(Form1.MyFolder + "\Outworldzfiles\opensim\bin\WifiPages\tos.html")
             outputFile.WriteLine(Editor1.BodyHtml)
         End Using
     End Sub

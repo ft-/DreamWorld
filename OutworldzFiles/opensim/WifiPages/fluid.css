@@ -39,6 +39,9 @@ p.textlogo {
   white-space:nowrap;
 }
 
+h5 {
+text-align:left;
+}
 #slogan {
   text-align:left;
   padding-left:9em;
