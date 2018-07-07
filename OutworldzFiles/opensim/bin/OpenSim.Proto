@@ -43,7 +43,7 @@
 [Const]
 
 ; Automatically changed by Dreamworld - do not change this
-http_listener_port=9017
+http_listener_port=8004
 
 ; Automatically changed by Dreamworld - do not change this
 ;# used by the one-exe-per-instance logic. This becomes the folder for the regions file.
@@ -51,7 +51,7 @@ RegionFolderName=Welcome
 
 ; Automatically changed by Dreamworld - do not change this
 ;# {BaseURL} {} {BaseURL} {"http://example.com","http://127.0.0.1"} "http://127.0.0.1"
-BaseURL=http://Thareg.Outworldz.net
+BaseURL=http://Fred.Outworldz.net
 
 ; Automatically changed by Dreamworld - do not change this
 ;# {PublicPort} {} {PublicPort} {8002} "8002"
@@ -62,11 +62,11 @@ PublicPort=8002
 PrivatePort=8003
 
 ;# so localhost can be changed if necessary
-PrivURL=http://192.168.2.100
+PrivURL=http://192.168.2.154
 
 ; Automatically changed by Dreamworld - do not change this
 ;# Grid Name for Wifi to show
-GridName=DreamGrid
+GridName=Fred's World
 
 ; Automatically changed by Dreamworld - do not change this
 ;# Dreamworld runs a listener on this port to run diagnostics. Dreamgrid listens for regions LOGINS enabled
@@ -409,13 +409,13 @@ RenderMeshes=false
 ;# {allow_grid_gods} {} {Allow grid gods?} {true false} false
 ;; This allows users with a UserLevel of 200 or more to assume god
 ;; powers in the regions in this simulator.
-allow_grid_gods=false
+allow_grid_gods=true
 
 ;; This allows some control over permissions
 ;; please note that this still doesn't duplicate SL, and is not intended to
 ;# {region_owner_is_god} {} {Allow region owner gods} {true false} true
 ;; Allow region owners to assume god powers in their regions
-region_owner_is_god=false
+region_owner_is_god=true
 
 ;# {region_manager_is_god} {} {Allow region manager gods} {true false} false
 ;; Allow region managers to assume god powers in regions they manage
@@ -465,7 +465,7 @@ enabled=true
 ;# {internal_object_host} {[Startup]emailmodule:DefaultEmailModule enabled:true} {Host name to treat as internal (object to object) email?} {} lsl.opensim.local
 ; internal_object_host = lsl.opensim.local
 ;# {host_domain_header_from} {[Startup]emailmodule:DefaultEmailModule enabled:true} {From address to use in the sent email header?} {} 127.0.0.1
-host_domain_header_from=Thareg.Outworldz.net
+host_domain_header_from=Fred.Outworldz.net
 
 ;# {email_pause_time} {[Startup]emailmodule:DefaultEmailModule enabled:true} {Period in seconds to delay after an email is sent.} {} 20
 ; email_pause_time = 20
@@ -799,12 +799,14 @@ enable_windlight=true
 ;; searchable data.
 ;; If false, no data will be exposed, DataSnapshot module will be off,
 ;; and you can ignore the rest of these search-related configs.
-; index_sims = false
+index_sims=true
+
 ;# {data_exposure} {index_sims:true} {How much data should be exposed?} {minimum all} minimum
 ;; The variable data_exposure controls what the regions expose:
 ;;    minimum: exposes only things explicitly marked for search
 ;;    all: exposes everything
-; data_exposure = minimum
+data_exposure=all
+
 ;# {gridname} {index_sims:true} {Enter the name fo your grid} {} OSGrid
 ;; If search is on, change this to your grid name; will be ignored for
 ;; standalones
@@ -818,7 +820,8 @@ gridname="${Const|GridName}"
 ; default_snapshot_period = 1200
 ;; This will be created in bin, if it doesn't exist already. It will hold
 ;; the data snapshots.
-; snapshot_cache_directory = "DataSnapshot"
+snapshot_cache_directory="DataSnapshot"
+
 ;; [Supported, but obsolete]
 ;# {data_services} {index_sims:true} {Data service URLs to register with?} {} http://metaverseink.com/cgi-bin/register.py
 ; This semicolon-separated string serves to notify specific data services
@@ -827,20 +830,21 @@ gridname="${Const|GridName}"
 ; data_services="http://metaverseink.com/cgi-bin/register.py"
 ;; New way of specifying data services, one per service
 ;DATA_SRV_MISearch = "http://metaverseink.com/cgi-bin/register.py"
-
+DATA_SRV_MISearch=http://hyperica.com/Search/register.php
+data_services=http://hyperica.com/Search/register.php
+indexsims=true
 
 [Search]
-Module = "OpenSimSearch";	//This line is optional and shows the default.
+Module="OpenSimSearch";	//This line is optional and shows the default.
 
 ;///////////////////////////////////////////////////////////////////////////
 ;// The SearchURL is important. It must be correct or search won't work.  //
 ;//                                                                       //
 ;// Change the URL to point to the query.php file on your own web server  //
-SearchURL = http://hyperica.com/Search/query.php
+SearchURL=http://hyperica.com/Search/query.php
+
 ;//                                                                       //
 ;///////////////////////////////////////////////////////////////////////////
-  
-  
 [Economy]
 
 ;# {SellEnabled} {} {Enable selling for 0?} {true false} true
