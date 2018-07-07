@@ -521,7 +521,7 @@ Public Class Form1
         StopIcecast()
 
         Dim n As Integer = RegionClass.RegionCount()
-        Debug.Print("N=" + n.ToString())
+        Diagnostics.Debug.Print("N=" + n.ToString())
 
 
         Dim counter = REGIONMAX
@@ -1178,10 +1178,10 @@ Public Class Form1
         ' COPY OPENSIM.INI prototype to all region folders and set the Sim Name
 
         For Each X As Integer In RegionClass.RegionNumbers
-            Debug.Print("Count: " + X.ToString)
+            Diagnostics.Debug.Print("Count: " + X.ToString)
             Dim regionName = RegionClass.RegionName(X)
             Dim pathname = RegionClass.IniPath(X)
-            Debug.Print(regionName)
+            Diagnostics.Debug.Print(regionName)
 
             Try
                 MySetting.LoadOtherIni(prefix + "bin\Opensim.proto", ";")
@@ -1519,7 +1519,7 @@ Public Class Form1
                 n = n + 1
             Next
         Catch ex As Exception
-            Debug.Print(ex.Message)
+            Diagnostics.Debug.Print(ex.Message)
             Print("Unable to boot some regions")
         End Try
 
@@ -2257,7 +2257,7 @@ Public Class Form1
         Try
             Using outputFile As New StreamWriter(MyFolder & "\OutworldzFiles\Outworldz.log", True)
                 outputFile.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + message)
-                Debug.Print(message)
+                Diagnostics.Debug.Print(message)
             End Using
         Catch
         End Try
@@ -3814,7 +3814,7 @@ Public Class Form1
 
         Else ' had to be a region that was clicked
 
-            Debug.Print("Region:Clicked region " & sender.Text)
+            Diagnostics.Debug.Print("Region:Clicked region " & sender.Text)
 
             If RegionClass.AvatarCount(num) Then
                 Dim response = MsgBox("That region has people in it. Are you sure you want to stop it?", vbYesNo)
@@ -3840,9 +3840,9 @@ Public Class Form1
                         MySetting.SetOtherIni(sender.Text, "Enabled", "false")
                         MySetting.SaveOtherINI()
 
-                        Debug.Print("Region:Stopped Region " + RegionClass.RegionName(num))
+                        Diagnostics.Debug.Print("Region:Stopped Region " + RegionClass.RegionName(num))
                     Catch ex As Exception
-                        Debug.Print("Region:Could not stop Opensim")
+                        Diagnostics.Debug.Print("Region:Could not stop Opensim")
                     End Try
                 End If
 
@@ -3856,7 +3856,7 @@ Public Class Form1
                 MySetting.SaveOtherINI()
 
                 Boot(RegionClass.RegionName(num))
-                Debug.Print("Region:Started Region " + RegionClass.RegionName(num))
+                Diagnostics.Debug.Print("Region:Started Region " + RegionClass.RegionName(num))
             End If
         End If
 
@@ -3883,7 +3883,7 @@ Public Class Form1
                 ' if enabled and running, stopit
                 If RegionClass.AvatarCount(X) = 0 Then
                     If Running And RegionClass.RegionEnabled(X) And RegionClass.Booted(X) Then
-                        Debug.Print("AutoLoad is shutting down " + RegionClass.RegionName(X))
+                        Diagnostics.Debug.Print("AutoLoad is shutting down " + RegionClass.RegionName(X))
                         ConsoleCommand(RegionClass.ProcessID(X), "quit{ENTER}")
                         Me.Focus()
                         RegionClass.Booted(X) = False
@@ -3916,6 +3916,55 @@ Public Class Form1
 
     End Sub
 
+    Private Sub SendAlertToAllUsersToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles SendAlertToAllUsersToolStripMenuItem.Click
+
+        Dim Message = InputBox("What do you want to say to everyone online?")
+        If Message.Length Then
+            For Each X As Integer In RegionClass.RegionNumbers
+                If RegionClass.AvatarCount(X) > 0 Then
+                    ConsoleCommand(RegionClass.ProcessID(X), "change region  " + RegionClass.RegionName(X) + "{ENTER}")
+                    ConsoleCommand(RegionClass.ProcessID(X), "alert " + Message + "{ENTER}")
+                End If
+                Application.DoEvents()
+            Next
+        End If
+
+    End Sub
+
+
+
+
+    Private Sub SendMsg(msg As String)
+
+        For Each X As Integer In RegionClass.RegionNumbers
+            If RegionClass.Booted(X) Then
+                ConsoleCommand(RegionClass.ProcessID(X), "set log level " + msg + "{ENTER}")
+            End If
+            Application.DoEvents()
+        Next
+
+    End Sub
+    Private Sub AllToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles All.Click
+        SendMsg("all")
+    End Sub
+    Private Sub Info_Click(sender As Object, e As EventArgs) Handles Info.Click
+        SendMsg("info")
+    End Sub
+    Private Sub debug_Click(sender As Object, e As EventArgs) Handles Debug.Click
+        SendMsg("debug")
+    End Sub
+    Private Sub Warn_Click(sender As Object, e As EventArgs) Handles Warn.Click
+        SendMsg("warn")
+    End Sub
+    Private Sub ErrorToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ErrorToolStripMenuItem.Click
+        SendMsg("error")
+    End Sub
+    Private Sub Fatal1_Click(sender As Object, e As EventArgs) Handles Fatal1.Click
+        SendMsg("fatal")
+    End Sub
+    Private Sub Off1_Click(sender As Object, e As EventArgs) Handles Off1.Click
+        SendMsg("off")
+    End Sub
 
 
 
