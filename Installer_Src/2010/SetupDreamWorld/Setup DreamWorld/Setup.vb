@@ -251,7 +251,7 @@ Public Class Form1
 
         MyFolder = My.Application.Info.DirectoryPath
 
-        If MyFolder.Contains("Setup DreamWorld\bin") Then
+        If MyFolder.Contains("Source") Then
             ' for debugging when compiling
             gDebug = False ' set to true to fail all kinds of tests :-)
             MyFolder = DebugPath ' for testing, as the compiler buries itself in ../../../debug
@@ -3720,9 +3720,9 @@ Public Class Form1
 
         Try
             Checkname = client.DownloadString("http://outworldz.net/dns.plx/?GridName=" + name _
-                                              + "&MachineID=" + MySetting.MachineID _
-                                              + "&Port=" + MySetting.HttpPort _
-                                              + "&Public=" + MySetting.GDPR _
+                                              + "&MachineID=" + MySetting.MachineID.ToString _
+                                              + "&Port=" + MySetting.HttpPort.ToString _
+                                              + "&Public=" + MySetting.GDPR.ToString _
                                               + "&r=" + Random())
         Catch ex As Exception
             Log("Warn: Cannot check the DNS Name" + ex.Message)
