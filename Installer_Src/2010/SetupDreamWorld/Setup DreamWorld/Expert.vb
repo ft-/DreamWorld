@@ -504,7 +504,7 @@ Public Class Expert
     End Sub
 
     Private Sub GridNameHelp_Click(sender As Object, e As EventArgs) Handles GridNameHelp.Click
-        Dim webAddress As String = Form1.Domain + "/Outworldz_installer/technical.htm#Grid"
+        Dim webAddress As String = "http://www.hyperica.com"
         Process.Start(webAddress)
     End Sub
 
