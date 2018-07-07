@@ -104,7 +104,7 @@
     <ApplicationManifest>app1.manifest</ApplicationManifest>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>cubes.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\cubes_blue.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>false</SignAssembly>
@@ -458,6 +458,8 @@
     <None Include="Resources\blankbox.jpg" />
     <None Include="Resources\offline.jpg" />
     <None Include="Resources\OfflineMap.jpg" />
+    <Content Include="cubes_blue.ico" />
+    <None Include="Resources\cubes_blue.ico" />
     <Content Include="Resources\wp_habitat.gif" />
     <Content Include="Resources\wp_Inside_in_shadows.gif" />
     <Content Include="Resources\wp_Mooferd.gif" />

@@ -1,1 +1,3 @@
 show regions
+create user Test User
+quit

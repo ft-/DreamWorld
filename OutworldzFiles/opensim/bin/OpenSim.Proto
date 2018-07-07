@@ -51,7 +51,7 @@ RegionFolderName=Welcome
 
 ; Automatically changed by Dreamworld - do not change this
 ;# {BaseURL} {} {BaseURL} {"http://example.com","http://127.0.0.1"} "http://127.0.0.1"
-BaseURL=http://fred.outworldz.net
+BaseURL=http://Thareg.Outworldz.net
 
 ; Automatically changed by Dreamworld - do not change this
 ;# {PublicPort} {} {PublicPort} {8002} "8002"
@@ -62,11 +62,11 @@ PublicPort=8002
 PrivatePort=8003
 
 ;# so localhost can be changed if necessary
-PrivURL=http://192.168.2.133
+PrivURL=http://192.168.2.100
 
 ; Automatically changed by Dreamworld - do not change this
 ;# Grid Name for Wifi to show
-GridName=DreamWorld
+GridName=DreamGrid
 
 ; Automatically changed by Dreamworld - do not change this
 ;# Dreamworld runs a listener on this port to run diagnostics. Dreamgrid listens for regions LOGINS enabled
@@ -409,7 +409,7 @@ RenderMeshes=false
 ;# {allow_grid_gods} {} {Allow grid gods?} {true false} false
 ;; This allows users with a UserLevel of 200 or more to assume god
 ;; powers in the regions in this simulator.
-allow_grid_gods=true
+allow_grid_gods=false
 
 ;; This allows some control over permissions
 ;; please note that this still doesn't duplicate SL, and is not intended to
@@ -465,7 +465,7 @@ enabled=true
 ;# {internal_object_host} {[Startup]emailmodule:DefaultEmailModule enabled:true} {Host name to treat as internal (object to object) email?} {} lsl.opensim.local
 ; internal_object_host = lsl.opensim.local
 ;# {host_domain_header_from} {[Startup]emailmodule:DefaultEmailModule enabled:true} {From address to use in the sent email header?} {} 127.0.0.1
-host_domain_header_from=fred.outworldz.net
+host_domain_header_from=Thareg.Outworldz.net
 
 ;# {email_pause_time} {[Startup]emailmodule:DefaultEmailModule enabled:true} {Period in seconds to delay after an email is sent.} {} 20
 ; email_pause_time = 20
@@ -827,6 +827,20 @@ gridname="${Const|GridName}"
 ; data_services="http://metaverseink.com/cgi-bin/register.py"
 ;; New way of specifying data services, one per service
 ;DATA_SRV_MISearch = "http://metaverseink.com/cgi-bin/register.py"
+
+
+[Search]
+Module = "OpenSimSearch";	//This line is optional and shows the default.
+
+;///////////////////////////////////////////////////////////////////////////
+;// The SearchURL is important. It must be correct or search won't work.  //
+;//                                                                       //
+;// Change the URL to point to the query.php file on your own web server  //
+SearchURL = http://hyperica.com/Search/query.php
+;//                                                                       //
+;///////////////////////////////////////////////////////////////////////////
+  
+  
 [Economy]
 
 ;# {SellEnabled} {} {Enable selling for 0?} {true false} true
@@ -1265,7 +1279,7 @@ AutoBackupThreshold=1
 AutoBackupSkipAssets=false
 AutoBackupKeepFilesForDays=30
 AutoBackupNaming=Time
-AutoBackupDir=C:/Opensim/Outworldz DreamGrid Source/OutworldzFiles/Autobackup/
+AutoBackupDir=E:/Opensim/Outworldz DreamGrid Source/OutworldzFiles/Autobackup/
 
 [CameraOnlyModeModule]
 
@@ -1298,10 +1312,10 @@ Enabled=false
 
 ; Enable this to generate classic particle clouds above the sim.
 ; default is disabled - turn it on here
-enabled=true
+enabled=false
 
 ; Density of cloud cover 0.0 to 1.0 Defult 0.5
-density=0.8
+density=0.5
 
 ; update interval for the cloud cover data returned by llCloud().
 ; default is 1000
