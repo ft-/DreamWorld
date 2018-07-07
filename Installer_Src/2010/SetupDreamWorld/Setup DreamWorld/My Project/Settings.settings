@@ -209,9 +209,6 @@
     <Setting Name="PublicPort" Type="System.String" Scope="User">
       <Value Profile="(Default)">8001</Value>
     </Setting>
-    <Setting Name="SimName" Type="System.String" Scope="User">
-      <Value Profile="(Default)">DreamWorld</Value>
-    </Setting>
     <Setting Name="MySqlPort" Type="System.String" Scope="User">
       <Value Profile="(Default)">3309</Value>
     </Setting>
@@ -244,6 +241,9 @@
     </Setting>
     <Setting Name="UPnPEnabled" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="SimName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">DreamGrid</Value>
     </Setting>
   </Settings>
 </SettingsFile>
