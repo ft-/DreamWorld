@@ -13,7 +13,7 @@ Public Class TosForm
 
         'Load file MyFolder + "TOS.txt"
         Dim reader As System.IO.StreamReader
-        reader = System.IO.File.OpenText(Form1.MyFolder + "\Outworldzfiles\tos.html")
+        reader = System.IO.File.OpenText(Form1.MyFolder + "\tos.html")
         'now loop through each line
         Dim HTML As String = ""
         While reader.Peek <> -1
@@ -87,7 +87,7 @@ Public Class TosForm
 
     Private Sub SaveButton_Click(sender As Object, e As EventArgs) Handles SaveButton.Click
 
-        Using outputFile As New StreamWriter(Form1.MyFolder + "\Outworldzfiles\tos.html")
+        Using outputFile As New StreamWriter(Form1.MyFolder + "\tos.html")
             outputFile.WriteLine(Editor1.BodyHtml)
         End Using
 
