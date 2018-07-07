@@ -167,7 +167,7 @@ Partial Class AdvancedForm
         Me.ChatSpeed.Name = "ChatSpeed"
         Me.ChatSpeed.Size = New System.Drawing.Size(113, 21)
         Me.ChatSpeed.TabIndex = 8
-        Me.ToolTip1.SetToolTip(Me.ChatSpeed, "The speed the sleepy chat occurs at.  ")
+        Me.ToolTip1.SetToolTip(Me.ChatSpeed, "The sleepy fairy chats at this rate.  ")
         '
         'AutoBackupHelp
         '

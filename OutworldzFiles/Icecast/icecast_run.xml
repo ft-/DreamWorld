@@ -1,7 +1,7 @@
 <icecast>
-<hostname></hostname>
+<hostname>fred.outworldz.net</hostname>
 <location>DreamWorld</location>
-<admin></admin>
+<admin>fred@outworldz.com</admin>
 <shoutcast-mount>/stream</shoutcast-mount>
 <listen-socket>
     <port>8080</port>
@@ -21,7 +21,7 @@
     <burst-size>65535</burst-size>
 </limits>
 <authentication>
-<source-password>A password</source-password>
+<source-password>123</source-password>
 <relay-password>A password</relay-password>
 <admin-user>admin</admin-user>
 <admin-password>123</admin-password>

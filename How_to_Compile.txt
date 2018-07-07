@@ -12,13 +12,13 @@ It also has a copy of Opensim 0.9.0 Dev that can be enabled with a menu item.
 
 LAUNCHING MANUALLY
 
-It's standard D2 Opensim with lots of small tweaks, so it starts the standard things - MySql, then Opensim.
+It's standard Opensim with lots of small tweaks, so it starts the standard things - MySql, then Opensim.
 
 After OpenSim has fully started, use your favourite viewer with the following grid and login information:
 
 login URI: http://127.0.0.1:8002/
 
-0.8.2.1 has a Wifi Interface:
+It has a Diva Canto Wifi Interface:
 Admin User for Wifi that can administer accounts using the web interface is:
 login URI: http://127.0.0.1:8002/
 User First Name: Wifi
@@ -52,7 +52,6 @@ runprebuild.bat
 compile.bat
 cd bin
 mautil -reg . reg-update 
-
   
 Updates: The system has a built in updater that it fetches from the Outworldz web site.   This is how the updater can be updated.  The updater, in turn, fetches a zip file that has the changes in it.
 
@@ -62,13 +61,10 @@ The database will grow and grow!   So before you make any changes, you should ma
 
 Blank DB:  If you wish to start over with the database being empty, delete all the files (not the folders!) in mysql/data.  Delete all the files in mysql\data\opensim. Leave the empty folder. I always keep '.keep' to prevent git from deleting the empty folder.
 
-Compiliation:  You need to use Microsoft Visual Basic 2015.  Navigate to \Installer-Src\2010\SetupDreamWorld and open the Solution "Setup DreamWorld.sln"
+Compiliation:  You need to use Microsoft Visual Studio 2015 or 2015.  Navigate to \Installer-Src\2010\SetupDreamWorld and open the Solution "Setup DreamWorld.sln"
 
-Navigate to Debug->Build Start. The app should compile.   Navigate to "Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\bin\Release" and copy Start.exe  to \DreamworldFiles to be ready for production.   
+Navigate to Debug->Build Start. The app should compile.   Navigate to "Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\bin\Release" and copy Start.exe and other DLL's it compile to \DreamworldFiles to be ready for production.   
 
-Command line:
-
-Running it with a start parameter of '-debug' will force the compiler to run out of  the folder "\Opensim" to aid in debugging
 
 fred@mitsi.com
 ~ Ferd/Fred
