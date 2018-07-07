@@ -11,7 +11,7 @@ Imports System.Runtime.InteropServices
 
 <Assembly: AssemblyTitle("DreamGrid")>
 <Assembly: AssemblyDescription("Virtual World installer for Opensimulator")>
-<Assembly: AssemblyCompany("Outworldz.com")>
+<Assembly: AssemblyCompany("Outworldz, LLC.")>
 <Assembly: AssemblyProduct("DreamGrid")>
 <Assembly: AssemblyCopyright("Copyright © 2013")>
 <Assembly: AssemblyTrademark("")>
