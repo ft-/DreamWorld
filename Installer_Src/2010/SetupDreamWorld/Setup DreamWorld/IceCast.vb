@@ -65,7 +65,7 @@ Public Class Icecast
         Dim icecast As String = "<icecast>" + vbCrLf +
                            "<hostname>" + Form1.MySetting.DNSName + "</hostname>" + vbCrLf +
                             "<location>" + Form1.MySetting.SimName + "</location>" + vbCrLf +
-                            "<admin>" + "</admin>" + vbCrLf +
+                            "<admin>" + Form1.MySetting.AdminEmail + "</admin>" + vbCrLf +
                             "<shoutcast-mount>/stream</shoutcast-mount>" + vbCrLf +
                             "<listen-socket>" + vbCrLf +
                             "    <port>" + Form1.MySetting.SC_PortBase.ToString() + "</port>" + vbCrLf +
