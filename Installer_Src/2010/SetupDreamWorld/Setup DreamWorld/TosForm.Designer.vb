@@ -131,6 +131,7 @@ Partial Class TosForm
         Me.Controls.Add(Me.TOSEnable)
         Me.Controls.Add(Me.ShowToLocalUsersCheckbox)
         Me.Controls.Add(Me.ShowToHGUsersCheckbox)
+        Me.MaximizeBox = False
         Me.Name = "TosForm"
         Me.Text = "Terms of Service"
         Me.ResumeLayout(False)
