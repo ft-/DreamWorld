@@ -883,6 +883,13 @@ Public Class Form1
         ' Opensim.ini
         MySetting.LoadOtherIni(prefix + "bin\Opensim.proto", ";")
 
+        If MySetting.GDPR Then
+            MySetting.SetOtherIni("DataSnapshot", "indexsims", "true")
+        Else
+            MySetting.SetOtherIni("DataSnapshot", "indexsims", "false")
+        End If
+
+
         If MySetting.GloebitsEnable Then
             MySetting.SetOtherIni("Startup", "economymodule", "Gloebit")
         Else
@@ -1379,12 +1386,12 @@ Public Class Form1
         End If
 
         Try
-            My.Computer.FileSystem.DeleteFile(MyFolder + "\Icecast\log\access.log")
+            My.Computer.FileSystem.DeleteFile(MyFolder + "\Outworldzfiles\Icecast\log\access.log")
         Catch ex As Exception
         End Try
 
         Try
-            My.Computer.FileSystem.DeleteFile(MyFolder + "\Icecast\log\error.log")
+            My.Computer.FileSystem.DeleteFile(MyFolder + "\Outworldzfiles\Icecast\log\error.log")
         Catch ex As Exception
         End Try
 
@@ -1394,12 +1401,12 @@ Public Class Form1
         Try
             IcecastProcess.EnableRaisingEvents = True
             IcecastProcess.StartInfo.UseShellExecute = True ' so we can redirect streams
-            IcecastProcess.StartInfo.FileName = MyFolder + "\icecast\bin\icecast.exe"
+            IcecastProcess.StartInfo.FileName = MyFolder + "\Outworldzfiles\icecast\bin\icecast.exe"
 
             '.\bin\icecast.exe -c .\icecast.xml
 
             IcecastProcess.StartInfo.CreateNoWindow = False
-            IcecastProcess.StartInfo.WorkingDirectory = MyFolder + "\icecast"
+            IcecastProcess.StartInfo.WorkingDirectory = MyFolder + "\Outworldzfiles\icecast"
 
             If MySetting.SC_Show Then
                 IcecastProcess.StartInfo.WindowStyle = ProcessWindowStyle.Normal
@@ -1551,7 +1558,7 @@ Public Class Form1
         If exiting Then Return
         Dim yesno = MsgBox("Icecast quit. Do you want to see the error log file?", vbYesNo, "Error")
         If (yesno = vbYes) Then
-            Dim IceCastLog As String = MyFolder + "\Icecast\log\error.log"
+            Dim IceCastLog As String = MyFolder + "\Outworldzfiles\Icecast\log\error.log"
             System.Diagnostics.Process.Start("notepad.exe", IceCastLog)
         End If
 

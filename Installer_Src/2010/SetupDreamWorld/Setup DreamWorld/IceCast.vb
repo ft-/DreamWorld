@@ -108,7 +108,7 @@ Public Class Icecast
                               "</logging>" + vbCrLf +
                           "</icecast>" + vbCrLf
 
-        Using outputFile As New StreamWriter(Form1.MyFolder + "\Icecast\icecast_run.xml")
+        Using outputFile As New StreamWriter(Form1.MyFolder + "\Outworldzfiles\Icecast\icecast_run.xml")
             outputFile.WriteLine(icecast)
         End Using
 
