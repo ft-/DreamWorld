@@ -1,6 +1,6 @@
 
-my $type  = '-V2.15';# '-Beta-V1.5';
-my $dir = "C:\\Opensim\\Outworldz Source";
+my $type  = '-V2.2';# '-Beta-V1.5';
+my $dir = "E:\\Opensim\\Outworldz Dreamgrid Source";
 
 chdir ($dir);
 
@@ -43,7 +43,7 @@ unlink "$dir/OutworldzFiles/Opensim/bin/LocalUserStatistics.db" ;
 
 #Setting
 unlink "$dir/Outworldzfiles/Settings.ini" ;
-if (!copy ("$dir/Outworldzfiles/Settings.bak", "$dir/Outworldzfiles/Settings.ini"))  {die $!;}
+
 
 #logs
 unlink "$dir/OutworldzFiles/Diagnostics.log" ;
@@ -77,10 +77,10 @@ unlink	"$dir/OutworldzFiles/mysql/data/ibdata1" || die;
 chdir ($dir);
 # SIGN FIRST
 
-#if (!copy ("$dir/Signed_Binaries/Start.exe", $dir))  {die $!;}
 
 
-print "Processing Main Zip\n";
+print "Process Main Zip?\n";
+<STDIN>;
 
 my @files =   `cmd /c dir /b `;
 
