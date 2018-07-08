@@ -44,6 +44,9 @@ Partial Class Form1
         Me.ShowHyperGridAddressToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
         Me.ConsoleCOmmandsToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.LoopBackToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator()
         Me.CommonConsoleCommandsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.SendAlertToAllUsersToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.DebugToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -55,9 +58,7 @@ Partial Class Form1
         Me.Fatal1 = New System.Windows.Forms.ToolStripMenuItem()
         Me.Off1 = New System.Windows.Forms.ToolStripMenuItem()
         Me.ViewWebUI = New System.Windows.Forms.ToolStripMenuItem()
-        Me.LoopBackToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator()
+        Me.ViewIcecastWebPageToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.CHeckForUpdatesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.CheckDatabaseToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ClearCachesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -92,6 +93,16 @@ Partial Class Form1
         Me.LogButton = New System.Windows.Forms.Button()
         Me.IgnoreButton = New System.Windows.Forms.Button()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.RestartOneRegionToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.RestartTheInstanceToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.RestartRegionToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ScriptsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ScriptsStopToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ScriptsStartToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ScriptsSuspendToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ScriptsResumeToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.AllUsersAllSimsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.JustOneRegionToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuStrip1.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -199,7 +210,7 @@ Partial Class Form1
         '
         'HelpToolStripMenuItem
         '
-        Me.HelpToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ShowHyperGridAddressToolStripMenuItem, Me.ToolStripSeparator1, Me.ConsoleCOmmandsToolStripMenuItem1, Me.CommonConsoleCommandsToolStripMenuItem, Me.ViewWebUI, Me.LoopBackToolStripMenuItem, Me.ToolStripMenuItem1, Me.ToolStripSeparator2, Me.CHeckForUpdatesToolStripMenuItem, Me.CheckDatabaseToolStripMenuItem, Me.ClearCachesToolStripMenuItem, Me.DiagnosticsToolStripMenuItem, Me.ToolStripMenuItem2, Me.mnuAbout})
+        Me.HelpToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ShowHyperGridAddressToolStripMenuItem, Me.ToolStripSeparator1, Me.ConsoleCOmmandsToolStripMenuItem1, Me.LoopBackToolStripMenuItem, Me.ToolStripMenuItem1, Me.ToolStripSeparator2, Me.CommonConsoleCommandsToolStripMenuItem, Me.ViewWebUI, Me.ViewIcecastWebPageToolStripMenuItem, Me.CHeckForUpdatesToolStripMenuItem, Me.CheckDatabaseToolStripMenuItem, Me.ClearCachesToolStripMenuItem, Me.DiagnosticsToolStripMenuItem, Me.ToolStripMenuItem2, Me.mnuAbout})
         Me.HelpToolStripMenuItem.Name = "HelpToolStripMenuItem"
         Me.HelpToolStripMenuItem.Size = New System.Drawing.Size(44, 20)
         Me.HelpToolStripMenuItem.Text = "Help"
@@ -222,78 +233,7 @@ Partial Class Form1
         Me.ConsoleCOmmandsToolStripMenuItem1.Image = Global.Outworldz.My.Resources.Resources.document_view
         Me.ConsoleCOmmandsToolStripMenuItem1.Name = "ConsoleCOmmandsToolStripMenuItem1"
         Me.ConsoleCOmmandsToolStripMenuItem1.Size = New System.Drawing.Size(240, 26)
-        Me.ConsoleCOmmandsToolStripMenuItem1.Text = "View Console Commands"
-        '
-        'CommonConsoleCommandsToolStripMenuItem
-        '
-        Me.CommonConsoleCommandsToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.SendAlertToAllUsersToolStripMenuItem, Me.DebugToolStripMenuItem})
-        Me.CommonConsoleCommandsToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.box_new
-        Me.CommonConsoleCommandsToolStripMenuItem.Name = "CommonConsoleCommandsToolStripMenuItem"
-        Me.CommonConsoleCommandsToolStripMenuItem.Size = New System.Drawing.Size(240, 26)
-        Me.CommonConsoleCommandsToolStripMenuItem.Text = "Common Console Commands"
-        '
-        'SendAlertToAllUsersToolStripMenuItem
-        '
-        Me.SendAlertToAllUsersToolStripMenuItem.Name = "SendAlertToAllUsersToolStripMenuItem"
-        Me.SendAlertToAllUsersToolStripMenuItem.Size = New System.Drawing.Size(189, 22)
-        Me.SendAlertToAllUsersToolStripMenuItem.Text = "Send Alert to All users"
-        '
-        'DebugToolStripMenuItem
-        '
-        Me.DebugToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.All, Me.Debug, Me.Info, Me.Warn, Me.ErrorToolStripMenuItem, Me.Fatal1, Me.Off1})
-        Me.DebugToolStripMenuItem.Name = "DebugToolStripMenuItem"
-        Me.DebugToolStripMenuItem.Size = New System.Drawing.Size(189, 22)
-        Me.DebugToolStripMenuItem.Text = "Set Debug Level"
-        '
-        'All
-        '
-        Me.All.Name = "All"
-        Me.All.Size = New System.Drawing.Size(152, 22)
-        Me.All.Text = "All"
-        '
-        'Debug
-        '
-        Me.Debug.Name = "Debug"
-        Me.Debug.Size = New System.Drawing.Size(152, 22)
-        Me.Debug.Text = "Debug"
-        '
-        'Info
-        '
-        Me.Info.Name = "Info"
-        Me.Info.Size = New System.Drawing.Size(152, 22)
-        Me.Info.Text = "Info"
-        '
-        'Warn
-        '
-        Me.Warn.Name = "Warn"
-        Me.Warn.Size = New System.Drawing.Size(152, 22)
-        Me.Warn.Text = "Warn"
-        '
-        'ErrorToolStripMenuItem
-        '
-        Me.ErrorToolStripMenuItem.Name = "ErrorToolStripMenuItem"
-        Me.ErrorToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
-        Me.ErrorToolStripMenuItem.Text = "Error"
-        '
-        'Fatal1
-        '
-        Me.Fatal1.Name = "Fatal1"
-        Me.Fatal1.Size = New System.Drawing.Size(152, 22)
-        Me.Fatal1.Text = "Fatal"
-        '
-        'Off1
-        '
-        Me.Off1.Name = "Off1"
-        Me.Off1.Size = New System.Drawing.Size(152, 22)
-        Me.Off1.Text = "Off"
-        '
-        'ViewWebUI
-        '
-        Me.ViewWebUI.Image = Global.Outworldz.My.Resources.Resources.document_view
-        Me.ViewWebUI.Name = "ViewWebUI"
-        Me.ViewWebUI.Size = New System.Drawing.Size(240, 26)
-        Me.ViewWebUI.Text = "View Web Interface"
-        Me.ViewWebUI.ToolTipText = "The WIfi Interface can be used to add new users"
+        Me.ConsoleCOmmandsToolStripMenuItem1.Text = "Help on Console Commands"
         '
         'LoopBackToolStripMenuItem
         '
@@ -315,6 +255,85 @@ Partial Class Form1
         '
         Me.ToolStripSeparator2.Name = "ToolStripSeparator2"
         Me.ToolStripSeparator2.Size = New System.Drawing.Size(237, 6)
+        '
+        'CommonConsoleCommandsToolStripMenuItem
+        '
+        Me.CommonConsoleCommandsToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.SendAlertToAllUsersToolStripMenuItem, Me.DebugToolStripMenuItem, Me.RestartRegionToolStripMenuItem, Me.ScriptsToolStripMenuItem})
+        Me.CommonConsoleCommandsToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.box_new
+        Me.CommonConsoleCommandsToolStripMenuItem.Name = "CommonConsoleCommandsToolStripMenuItem"
+        Me.CommonConsoleCommandsToolStripMenuItem.Size = New System.Drawing.Size(240, 26)
+        Me.CommonConsoleCommandsToolStripMenuItem.Text = "Common Console Commands"
+        '
+        'SendAlertToAllUsersToolStripMenuItem
+        '
+        Me.SendAlertToAllUsersToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AllUsersAllSimsToolStripMenuItem, Me.JustOneRegionToolStripMenuItem})
+        Me.SendAlertToAllUsersToolStripMenuItem.Name = "SendAlertToAllUsersToolStripMenuItem"
+        Me.SendAlertToAllUsersToolStripMenuItem.Size = New System.Drawing.Size(177, 22)
+        Me.SendAlertToAllUsersToolStripMenuItem.Text = "Send Alert Message"
+        '
+        'DebugToolStripMenuItem
+        '
+        Me.DebugToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.All, Me.Debug, Me.Info, Me.Warn, Me.ErrorToolStripMenuItem, Me.Fatal1, Me.Off1})
+        Me.DebugToolStripMenuItem.Name = "DebugToolStripMenuItem"
+        Me.DebugToolStripMenuItem.Size = New System.Drawing.Size(189, 22)
+        Me.DebugToolStripMenuItem.Text = "Set Debug Level"
+        '
+        'All
+        '
+        Me.All.Name = "All"
+        Me.All.Size = New System.Drawing.Size(109, 22)
+        Me.All.Text = "All"
+        '
+        'Debug
+        '
+        Me.Debug.Name = "Debug"
+        Me.Debug.Size = New System.Drawing.Size(109, 22)
+        Me.Debug.Text = "Debug"
+        '
+        'Info
+        '
+        Me.Info.Name = "Info"
+        Me.Info.Size = New System.Drawing.Size(109, 22)
+        Me.Info.Text = "Info"
+        '
+        'Warn
+        '
+        Me.Warn.Name = "Warn"
+        Me.Warn.Size = New System.Drawing.Size(109, 22)
+        Me.Warn.Text = "Warn"
+        '
+        'ErrorToolStripMenuItem
+        '
+        Me.ErrorToolStripMenuItem.Name = "ErrorToolStripMenuItem"
+        Me.ErrorToolStripMenuItem.Size = New System.Drawing.Size(109, 22)
+        Me.ErrorToolStripMenuItem.Text = "Error"
+        '
+        'Fatal1
+        '
+        Me.Fatal1.Name = "Fatal1"
+        Me.Fatal1.Size = New System.Drawing.Size(109, 22)
+        Me.Fatal1.Text = "Fatal"
+        '
+        'Off1
+        '
+        Me.Off1.Name = "Off1"
+        Me.Off1.Size = New System.Drawing.Size(109, 22)
+        Me.Off1.Text = "Off"
+        '
+        'ViewWebUI
+        '
+        Me.ViewWebUI.Image = Global.Outworldz.My.Resources.Resources.document_view
+        Me.ViewWebUI.Name = "ViewWebUI"
+        Me.ViewWebUI.Size = New System.Drawing.Size(240, 26)
+        Me.ViewWebUI.Text = "View Web Interface"
+        Me.ViewWebUI.ToolTipText = "The WIfi Interface can be used to add new users"
+        '
+        'ViewIcecastWebPageToolStripMenuItem
+        '
+        Me.ViewIcecastWebPageToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.cube_blue
+        Me.ViewIcecastWebPageToolStripMenuItem.Name = "ViewIcecastWebPageToolStripMenuItem"
+        Me.ViewIcecastWebPageToolStripMenuItem.Size = New System.Drawing.Size(240, 26)
+        Me.ViewIcecastWebPageToolStripMenuItem.Text = "View Icecast Web Page"
         '
         'CHeckForUpdatesToolStripMenuItem
         '
@@ -578,6 +597,68 @@ Partial Class Form1
         Me.PictureBox1.TabIndex = 27
         Me.PictureBox1.TabStop = False
         '
+        'RestartOneRegionToolStripMenuItem
+        '
+        Me.RestartOneRegionToolStripMenuItem.Name = "RestartOneRegionToolStripMenuItem"
+        Me.RestartOneRegionToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.RestartOneRegionToolStripMenuItem.Text = "Restart one region"
+        '
+        'RestartTheInstanceToolStripMenuItem
+        '
+        Me.RestartTheInstanceToolStripMenuItem.Name = "RestartTheInstanceToolStripMenuItem"
+        Me.RestartTheInstanceToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.RestartTheInstanceToolStripMenuItem.Text = "Restart one instance"
+        '
+        'RestartRegionToolStripMenuItem
+        '
+        Me.RestartRegionToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.RestartOneRegionToolStripMenuItem, Me.RestartTheInstanceToolStripMenuItem})
+        Me.RestartRegionToolStripMenuItem.Name = "RestartRegionToolStripMenuItem"
+        Me.RestartRegionToolStripMenuItem.Size = New System.Drawing.Size(189, 22)
+        Me.RestartRegionToolStripMenuItem.Text = "Restart Region"
+        '
+        'ScriptsToolStripMenuItem
+        '
+        Me.ScriptsToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ScriptsStopToolStripMenuItem, Me.ScriptsStartToolStripMenuItem, Me.ScriptsSuspendToolStripMenuItem, Me.ScriptsResumeToolStripMenuItem})
+        Me.ScriptsToolStripMenuItem.Name = "ScriptsToolStripMenuItem"
+        Me.ScriptsToolStripMenuItem.Size = New System.Drawing.Size(189, 22)
+        Me.ScriptsToolStripMenuItem.Text = "Scripts"
+        '
+        'ScriptsStopToolStripMenuItem
+        '
+        Me.ScriptsStopToolStripMenuItem.Name = "ScriptsStopToolStripMenuItem"
+        Me.ScriptsStopToolStripMenuItem.Size = New System.Drawing.Size(157, 22)
+        Me.ScriptsStopToolStripMenuItem.Text = "Scripts Stop"
+        '
+        'ScriptsStartToolStripMenuItem
+        '
+        Me.ScriptsStartToolStripMenuItem.Name = "ScriptsStartToolStripMenuItem"
+        Me.ScriptsStartToolStripMenuItem.Size = New System.Drawing.Size(157, 22)
+        Me.ScriptsStartToolStripMenuItem.Text = "Scripts Start"
+        '
+        'ScriptsSuspendToolStripMenuItem
+        '
+        Me.ScriptsSuspendToolStripMenuItem.Name = "ScriptsSuspendToolStripMenuItem"
+        Me.ScriptsSuspendToolStripMenuItem.Size = New System.Drawing.Size(157, 22)
+        Me.ScriptsSuspendToolStripMenuItem.Text = "Scripts Suspend"
+        '
+        'ScriptsResumeToolStripMenuItem
+        '
+        Me.ScriptsResumeToolStripMenuItem.Name = "ScriptsResumeToolStripMenuItem"
+        Me.ScriptsResumeToolStripMenuItem.Size = New System.Drawing.Size(157, 22)
+        Me.ScriptsResumeToolStripMenuItem.Text = "Scripts Resume"
+        '
+        'AllUsersAllSimsToolStripMenuItem
+        '
+        Me.AllUsersAllSimsToolStripMenuItem.Name = "AllUsersAllSimsToolStripMenuItem"
+        Me.AllUsersAllSimsToolStripMenuItem.Size = New System.Drawing.Size(167, 22)
+        Me.AllUsersAllSimsToolStripMenuItem.Text = "All Users, All Sims"
+        '
+        'JustOneRegionToolStripMenuItem
+        '
+        Me.JustOneRegionToolStripMenuItem.Name = "JustOneRegionToolStripMenuItem"
+        Me.JustOneRegionToolStripMenuItem.Size = New System.Drawing.Size(167, 22)
+        Me.JustOneRegionToolStripMenuItem.Text = "Just one region"
+        '
         'Form1
         '
         Me.AllowDrop = True
@@ -692,4 +773,15 @@ Partial Class Form1
     Friend WithEvents ErrorToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents Fatal1 As ToolStripMenuItem
     Friend WithEvents Off1 As ToolStripMenuItem
+    Friend WithEvents ViewIcecastWebPageToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents RestartRegionToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents RestartOneRegionToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents RestartTheInstanceToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents ScriptsToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents ScriptsStopToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents ScriptsStartToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents ScriptsSuspendToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents ScriptsResumeToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents AllUsersAllSimsToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents JustOneRegionToolStripMenuItem As ToolStripMenuItem
 End Class
