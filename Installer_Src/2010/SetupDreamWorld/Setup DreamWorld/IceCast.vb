@@ -1,5 +1,5 @@
 ﻿Imports System.IO
-
+Imports System.Text.RegularExpressions
 
 Public Class Icecast
 
@@ -62,9 +62,12 @@ Public Class Icecast
 
         Form1.MySetting.SaveMyINI()
 
+        Dim rgx As New Regex("[^a-zA-Z0-9 ]")
+        Dim name As String = rgx.Replace(Form1.MySetting.SimName, "")
+
         Dim icecast As String = "<icecast>" + vbCrLf +
                            "<hostname>" + Form1.MySetting.DNSName + "</hostname>" + vbCrLf +
-                            "<location>" + Form1.MySetting.SimName + "</location>" + vbCrLf +
+                            "<location>" + name + "</location>" + vbCrLf +
                             "<admin>" + Form1.MySetting.AdminEmail + "</admin>" + vbCrLf +
                             "<shoutcast-mount>/stream</shoutcast-mount>" + vbCrLf +
                             "<listen-socket>" + vbCrLf +
@@ -76,7 +79,7 @@ Public Class Icecast
                             "</listen-socket>" + vbCrLf +
                              "<limits>" + vbCrLf +
                               "   <clients>20</clients>" + vbCrLf +
-                              "    <sources>2</sources>" + vbCrLf +
+                              "    <sources>4</sources>" + vbCrLf +
                               "    <queue-size>524288</queue-size>" + vbCrLf +
                               "     <client-timeout>30</client-timeout>" + vbCrLf +
                               "    <header-timeout>15</header-timeout>" + vbCrLf +
@@ -117,7 +120,7 @@ Public Class Icecast
     Private Sub LoadURL_Click(sender As Object, e As EventArgs) Handles LoadURL.Click
         If Form1.Running Then
             Dim webAddress As String = "http://" + Form1.MySetting.PublicIP + ":" + ShoutcastPort.Text
-            Form1.Print("Shoutcast lets you stream music into your sim. The address will be " + webAddress)
+            Form1.Print("Icecast lets you stream music into your sim. The address will be " + webAddress)
             Process.Start(webAddress)
         ElseIf Form1.MySetting.SC_Enable = False Then
             Form1.Print("Shoutcast is not Enabled.")
