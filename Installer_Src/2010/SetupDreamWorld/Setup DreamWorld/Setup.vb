@@ -1401,10 +1401,7 @@ Public Class Form1
         Try
             IcecastProcess.EnableRaisingEvents = True
             IcecastProcess.StartInfo.UseShellExecute = True ' so we can redirect streams
-            IcecastProcess.StartInfo.FileName = MyFolder + "\Outworldzfiles\icecast\bin\icecast.exe"
-
-            '.\bin\icecast.exe -c .\icecast.xml
-
+            IcecastProcess.StartInfo.FileName = MyFolder + "\Outworldzfiles\icecast\icecast.bat"
             IcecastProcess.StartInfo.CreateNoWindow = False
             IcecastProcess.StartInfo.WorkingDirectory = MyFolder + "\Outworldzfiles\icecast"
 
@@ -1414,11 +1411,11 @@ Public Class Form1
                 IcecastProcess.StartInfo.WindowStyle = ProcessWindowStyle.Minimized
             End If
 
-            IcecastProcess.StartInfo.Arguments = "-c .\icecast_run.xml" + """"
+            'IcecastProcess.StartInfo.Arguments = "-c .\icecast_run.xml"
             IcecastProcess.Start()
             gIcecastProcID = IcecastProcess.Id
 
-            Thread.Sleep(1000)
+            Thread.Sleep(2000)
             SetWindowText(IcecastProcess.MainWindowHandle, "Icecast")
 
         Catch ex As Exception
@@ -3475,11 +3472,6 @@ Public Class Form1
 
     Private Sub BackupDatabaseToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles BackupDatabaseToolStripMenuItem.Click
 
-        If Running Then
-            Print("Cannot backup safely when Opensim is running. Click [Stop] and try again.")
-            Return
-        End If
-
         If Not StartMySQL() Then Return
 
         Print("Starting a slow but extensive Database Backup => Autobackup folder")
@@ -3918,23 +3910,12 @@ Public Class Form1
 
     Private Sub SendAlertToAllUsersToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles SendAlertToAllUsersToolStripMenuItem.Click
 
-        Dim Message = InputBox("What do you want to say to everyone online?")
-        If Message.Length Then
-            For Each X As Integer In RegionClass.RegionNumbers
-                If RegionClass.AvatarCount(X) > 0 Then
-                    ConsoleCommand(RegionClass.ProcessID(X), "change region  " + RegionClass.RegionName(X) + "{ENTER}")
-                    ConsoleCommand(RegionClass.ProcessID(X), "alert " + Message + "{ENTER}")
-                End If
-                Application.DoEvents()
-            Next
-        End If
 
     End Sub
 
-
-
-
     Private Sub SendMsg(msg As String)
+
+        If Not Running Then Print ("Opensim is not running")
 
         For Each X As Integer In RegionClass.RegionNumbers
             If RegionClass.Booted(X) Then
@@ -3966,6 +3947,96 @@ Public Class Form1
         SendMsg("off")
     End Sub
 
+    Private Sub ViewIcecastWebPageToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ViewIcecastWebPageToolStripMenuItem.Click
+        If Running Then
+            Dim webAddress As String = "http://" + MySetting.PublicIP + ":" + MySetting.SC_PortBase.ToString
+            Print("Icecast lets you stream music into your sim. The Music URL is " + webAddress + "/stream")
+            Process.Start(webAddress)
+        ElseIf MySetting.SC_Enable = False Then
+            Print("Shoutcast is not Enabled.")
+        Else
+            Print("Opensim is not running. Click Start to boot the system.")
+        End If
+    End Sub
+
+    Private Sub RestartOneRegionToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles RestartOneRegionToolStripMenuItem.Click
+
+        Dim name = ChooseRegion(True)
+        Dim X = RegionClass.FindRegionByName(name)
+        If X > -1 Then
+            ConsoleCommand(RegionClass.ProcessID(X), "change region " + name + "{ENTER}")
+            ConsoleCommand(RegionClass.ProcessID(X), "restart region " + name + "{ENTER}")
+        End If
+
+    End Sub
+
+    Private Sub RestartTheInstanceToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles RestartTheInstanceToolStripMenuItem.Click
+
+        Dim name = ChooseRegion(True)
+        Dim X = RegionClass.FindRegionByName(name)
+        If X > -1 Then
+            ConsoleCommand(RegionClass.ProcessID(X), "restart{ENTER}")
+        End If
+
+    End Sub
+    Private Sub SendScriptCmd(cmd As String)
+
+        Dim rname = ChooseRegion(True)
+        Dim X = RegionClass.FindRegionByName(Name)
+        If X > -1 Then
+            ConsoleCommand(RegionClass.ProcessID(X), "change region " + rname + "{ENTER}")
+            ConsoleCommand(RegionClass.ProcessID(X), cmd + "{ENTER}")
+        End If
+
+    End Sub
+    Private Sub ScriptsStopToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ScriptsStopToolStripMenuItem.Click
+        SendScriptCmd("scripts stop")
+    End Sub
+
+    Private Sub ScriptsStartToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ScriptsStartToolStripMenuItem.Click
+        SendScriptCmd("scripts start")
+    End Sub
+
+    Private Sub ScriptsSuspendToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ScriptsSuspendToolStripMenuItem.Click
+        SendScriptCmd("scripts suspend")
+    End Sub
+
+    Private Sub ScriptsResumeToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ScriptsResumeToolStripMenuItem.Click
+        SendScriptCmd("scripts resume")
+    End Sub
+
+    Private Sub AllUsersAllSimsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AllUsersAllSimsToolStripMenuItem.Click
+
+        Dim rname = ChooseRegion(True)
+        If rname.Length Then
+            Dim Message = InputBox("What do you want to say to this region?")
+            Dim X = RegionClass.FindRegionByName(rname)
+            ConsoleCommand(RegionClass.ProcessID(X), "change region  " + RegionClass.RegionName(X) + "{ENTER}")
+            ConsoleCommand(RegionClass.ProcessID(X), "alert " + Message + "{ENTER}")
+        End If
+
+    End Sub
+
+    Private Sub JustOneRegionToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles JustOneRegionToolStripMenuItem.Click
+
+        Dim HowManyAreOnline As Integer = 0
+        Dim Message = InputBox("What do you want to say to everyone online?")
+        If Message.Length Then
+            For Each X As Integer In RegionClass.RegionNumbers
+                If RegionClass.AvatarCount(X) > 0 Then
+                    HowManyAreOnline = HowManyAreOnline + 1
+                    ConsoleCommand(RegionClass.ProcessID(X), "change region  " + RegionClass.RegionName(X) + "{ENTER}")
+                    ConsoleCommand(RegionClass.ProcessID(X), "alert " + Message + "{ENTER}")
+                End If
+                Application.DoEvents()
+            Next
+            If HowManyAreOnline = 0 Then
+                Print("Nobody is online")
+            Else
+                Print("Message sent to " + HowManyAreOnline.ToString() + " regions")
+            End If
+        End If
+    End Sub
 
 
 #End Region
