@@ -805,7 +805,7 @@ index_sims=true
 ;; The variable data_exposure controls what the regions expose:
 ;;    minimum: exposes only things explicitly marked for search
 ;;    all: exposes everything
-data_exposure=all
+data_exposure=minimum
 
 ;# {gridname} {index_sims:true} {Enter the name fo your grid} {} OSGrid
 ;; If search is on, change this to your grid name; will be ignored for
