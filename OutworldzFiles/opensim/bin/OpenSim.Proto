@@ -78,7 +78,6 @@ DiagnosticsPort=8001
 ; Auto restart by Fly Man
 regionrestart=AutoRestart
 
-
 ;# {ConsolePrompt} {} {ConsolePrompt} {} "Region (\R) "
 ;; Console prompt
 ;; Certain special characters can be used to customize the prompt
@@ -839,7 +838,7 @@ data_services=http://hyperica.com/Search/register.php
 indexsims=true
 
 [Search]
-Module="OpenSimSearch";	//This line is optional and shows the default.
+Module=OpenSimSearch
 
 ;///////////////////////////////////////////////////////////////////////////
 ;// The SearchURL is important. It must be correct or search won't work.  //
@@ -1322,21 +1321,15 @@ Enabled=false
 ; default is disabled - turn it on here
 enabled=false
 
-; Density of cloud cover 0.0 to 1.0 Defult 0.5
+; Density of cloud cover 0.0 to 1.0 Default 0.5
 density=0.5
 
 ; update interval for the cloud cover data returned by llCloud().
 ; default is 1000
 cloud_update_rate=1000
 
-
 ;; Flyman gave us an Auto restart module.
-
 [AutoRestart]
 RegionShutDown=false
 Time=2
-DisableRegions=Welcome
-
-[Search]
-Module = "OpenSimSearch"
-  
+DisableRegions=Junk
