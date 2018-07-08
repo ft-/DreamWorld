@@ -453,15 +453,12 @@ Public Class Expert
 
         Dim isAdmin As Boolean
         Try
-
             Dim user As WindowsIdentity = WindowsIdentity.GetCurrent()
             Dim principal As WindowsPrincipal = New WindowsPrincipal(user)
             isAdmin = principal.IsInRole(WindowsBuiltInRole.Administrator)
 
         Catch ex As Exception
-
             isAdmin = False
-
         End Try
         Return isAdmin
 
@@ -500,7 +497,7 @@ Public Class Expert
 
     Private Sub GDPRCheckBox_CheckedChanged(sender As Object, e As EventArgs) Handles GDPRCheckBox.CheckedChanged
         Form1.MySetting.GDPR() = GDPRCheckBox.Checked
-        My.Settings.Save()
+        Form1.MySetting.SaveMyINI()
     End Sub
 
     Private Sub GridNameHelp_Click(sender As Object, e As EventArgs) Handles GridNameHelp.Click
@@ -535,6 +532,19 @@ Public Class Expert
             End If
         End If
     End Sub
+
+    Private Sub SuitcaseCheckbox_CheckedChanged_3(sender As Object, e As EventArgs) Handles SuitcaseCheckbox.CheckedChanged
+
+        Form1.MySetting.Suitcase() = SuitcaseCheckbox.Checked
+        Form1.MySetting.SaveMyINI()
+
+        If Not SuitcaseCheckbox.Checked Then
+            MsgBox("Disabling the Inventory Suitcase exposes all your inventory to other grids. ")
+        End If
+
+    End Sub
+
+
 
 #End Region
 

@@ -160,6 +160,13 @@ Public Class MySettings
             SaveMyINI()
         End Try
 
+        Try
+            Dim x = Suitcase()
+        Catch ex As Exception
+            Suitcase() = True
+            SaveMyINI()
+        End Try
+
 
         ' check for default
         If (SmtpHost() = "") Then SmtpHost() = "smtp.gmail.com"
@@ -222,6 +229,8 @@ Public Class MySettings
         Try
             Data = parser.ReadFile(arg, System.Text.Encoding.ASCII)
         Catch ex As Exception
+            Form1.Log(ex.Message)
+            MsgBox("Error reading INI file:" + ex.Message)
         End Try
         INI = arg
     End Sub
@@ -296,6 +305,17 @@ Public Class MySettings
 #End Region
 
 #Region "Properties"
+
+    Public Property Suitcase() As Boolean
+        Get
+            Return CType(GetMySetting("Suitcase"), Boolean)
+        End Get
+        Set
+            SetMySetting("Suitcase", Value)
+        End Set
+    End Property
+
+
     Public Property GDPR() As Boolean
         Get
             Return CType(GetMySetting("GDPR"), Boolean)

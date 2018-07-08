@@ -25,6 +25,7 @@ Partial Class Expert
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Expert))
         Me.GroupBox3 = New System.Windows.Forms.GroupBox()
+        Me.SuitcaseCheckbox = New System.Windows.Forms.CheckBox()
         Me.EnableHypergrid = New System.Windows.Forms.CheckBox()
         Me.PictureBox7 = New System.Windows.Forms.PictureBox()
         Me.PictureBox6 = New System.Windows.Forms.PictureBox()
@@ -144,6 +145,7 @@ Partial Class Expert
         '
         'GroupBox3
         '
+        Me.GroupBox3.Controls.Add(Me.SuitcaseCheckbox)
         Me.GroupBox3.Controls.Add(Me.EnableHypergrid)
         Me.GroupBox3.Controls.Add(Me.PictureBox7)
         Me.GroupBox3.Controls.Add(Me.PictureBox6)
@@ -160,10 +162,22 @@ Partial Class Expert
         Me.GroupBox3.Controls.Add(Me.SplashPage)
         Me.GroupBox3.Location = New System.Drawing.Point(12, 12)
         Me.GroupBox3.Name = "GroupBox3"
-        Me.GroupBox3.Size = New System.Drawing.Size(192, 345)
+        Me.GroupBox3.Size = New System.Drawing.Size(192, 325)
         Me.GroupBox3.TabIndex = 49
         Me.GroupBox3.TabStop = False
         Me.GroupBox3.Text = "Grid"
+        '
+        'SuitcaseCheckbox
+        '
+        Me.SuitcaseCheckbox.AutoSize = True
+        Me.SuitcaseCheckbox.Location = New System.Drawing.Point(18, 54)
+        Me.SuitcaseCheckbox.Name = "SuitcaseCheckbox"
+        Me.SuitcaseCheckbox.Size = New System.Drawing.Size(150, 17)
+        Me.SuitcaseCheckbox.TabIndex = 1866
+        Me.SuitcaseCheckbox.Text = "Enable Inventory Suitcase"
+        Me.ToolTip1.SetToolTip(Me.SuitcaseCheckbox, "By clicking this yoiu agree to  send data to Hyperica.com for items you have mark" &
+        "ed as 'Show in Search'")
+        Me.SuitcaseCheckbox.UseVisualStyleBackColor = True
         '
         'EnableHypergrid
         '
@@ -179,7 +193,7 @@ Partial Class Expert
         'PictureBox7
         '
         Me.PictureBox7.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.PictureBox7.Location = New System.Drawing.Point(148, 273)
+        Me.PictureBox7.Location = New System.Drawing.Point(151, 254)
         Me.PictureBox7.Name = "PictureBox7"
         Me.PictureBox7.Size = New System.Drawing.Size(30, 34)
         Me.PictureBox7.TabIndex = 1865
@@ -189,7 +203,7 @@ Partial Class Expert
         'PictureBox6
         '
         Me.PictureBox6.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.PictureBox6.Location = New System.Drawing.Point(134, 184)
+        Me.PictureBox6.Location = New System.Drawing.Point(152, 199)
         Me.PictureBox6.Name = "PictureBox6"
         Me.PictureBox6.Size = New System.Drawing.Size(30, 34)
         Me.PictureBox6.TabIndex = 1864
@@ -199,7 +213,7 @@ Partial Class Expert
         'PictureBox5
         '
         Me.PictureBox5.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.PictureBox5.Location = New System.Drawing.Point(112, 128)
+        Me.PictureBox5.Location = New System.Drawing.Point(114, 156)
         Me.PictureBox5.Name = "PictureBox5"
         Me.PictureBox5.Size = New System.Drawing.Size(30, 34)
         Me.PictureBox5.TabIndex = 1860
@@ -209,7 +223,7 @@ Partial Class Expert
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(4, 136)
+        Me.Label1.Location = New System.Drawing.Point(11, 164)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(93, 13)
         Me.Label1.TabIndex = 1863
@@ -217,7 +231,7 @@ Partial Class Expert
         '
         'UniqueId
         '
-        Me.UniqueId.Location = New System.Drawing.Point(5, 152)
+        Me.UniqueId.Location = New System.Drawing.Point(12, 180)
         Me.UniqueId.Name = "UniqueId"
         Me.UniqueId.Size = New System.Drawing.Size(101, 20)
         Me.UniqueId.TabIndex = 1862
@@ -225,7 +239,7 @@ Partial Class Expert
         '
         'DNSButton
         '
-        Me.DNSButton.Location = New System.Drawing.Point(8, 59)
+        Me.DNSButton.Location = New System.Drawing.Point(11, 96)
         Me.DNSButton.Name = "DNSButton"
         Me.DNSButton.Size = New System.Drawing.Size(170, 23)
         Me.DNSButton.TabIndex = 1861
@@ -244,7 +258,7 @@ Partial Class Expert
         '
         'TestButton1
         '
-        Me.TestButton1.Location = New System.Drawing.Point(8, 90)
+        Me.TestButton1.Location = New System.Drawing.Point(11, 125)
         Me.TestButton1.Name = "TestButton1"
         Me.TestButton1.Size = New System.Drawing.Size(75, 23)
         Me.TestButton1.TabIndex = 33
@@ -254,7 +268,7 @@ Partial Class Expert
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(2, 207)
+        Me.Label2.Location = New System.Drawing.Point(9, 213)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(126, 13)
         Me.Label2.TabIndex = 26
@@ -270,7 +284,7 @@ Partial Class Expert
         '
         'GridName
         '
-        Me.GridName.Location = New System.Drawing.Point(5, 225)
+        Me.GridName.Location = New System.Drawing.Point(12, 231)
         Me.GridName.Name = "GridName"
         Me.GridName.Size = New System.Drawing.Size(173, 20)
         Me.GridName.TabIndex = 10
@@ -279,7 +293,7 @@ Partial Class Expert
         'Label19
         '
         Me.Label19.AutoSize = True
-        Me.Label19.Location = New System.Drawing.Point(6, 293)
+        Me.Label19.Location = New System.Drawing.Point(9, 274)
         Me.Label19.Name = "Label19"
         Me.Label19.Size = New System.Drawing.Size(139, 13)
         Me.Label19.TabIndex = 46
@@ -287,7 +301,7 @@ Partial Class Expert
         '
         'SplashPage
         '
-        Me.SplashPage.Location = New System.Drawing.Point(5, 317)
+        Me.SplashPage.Location = New System.Drawing.Point(9, 292)
         Me.SplashPage.Name = "SplashPage"
         Me.SplashPage.Size = New System.Drawing.Size(177, 20)
         Me.SplashPage.TabIndex = 45
@@ -321,7 +335,7 @@ Partial Class Expert
         'GodHelp
         '
         Me.GodHelp.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.GodHelp.Location = New System.Drawing.Point(134, 6)
+        Me.GodHelp.Location = New System.Drawing.Point(117, 19)
         Me.GodHelp.Name = "GodHelp"
         Me.GodHelp.Size = New System.Drawing.Size(30, 34)
         Me.GodHelp.TabIndex = 1857
@@ -446,7 +460,7 @@ Partial Class Expert
         Me.GroupBox7.Controls.Add(Me.Clouds)
         Me.GroupBox7.Location = New System.Drawing.Point(225, 286)
         Me.GroupBox7.Name = "GroupBox7"
-        Me.GroupBox7.Size = New System.Drawing.Size(189, 71)
+        Me.GroupBox7.Size = New System.Drawing.Size(189, 56)
         Me.GroupBox7.TabIndex = 43
         Me.GroupBox7.TabStop = False
         Me.GroupBox7.Text = "Clouds"
@@ -464,7 +478,7 @@ Partial Class Expert
         Me.DomainUpDown1.Items.Add("20%")
         Me.DomainUpDown1.Items.Add("10%")
         Me.DomainUpDown1.Items.Add("0%")
-        Me.DomainUpDown1.Location = New System.Drawing.Point(15, 45)
+        Me.DomainUpDown1.Location = New System.Drawing.Point(77, 18)
         Me.DomainUpDown1.Name = "DomainUpDown1"
         Me.DomainUpDown1.Size = New System.Drawing.Size(66, 20)
         Me.DomainUpDown1.TabIndex = 1859
@@ -473,7 +487,7 @@ Partial Class Expert
         'PictureBox8
         '
         Me.PictureBox8.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.PictureBox8.Location = New System.Drawing.Point(87, 11)
+        Me.PictureBox8.Location = New System.Drawing.Point(150, 8)
         Me.PictureBox8.Name = "PictureBox8"
         Me.PictureBox8.Size = New System.Drawing.Size(30, 34)
         Me.PictureBox8.TabIndex = 1858
@@ -759,11 +773,11 @@ Partial Class Expert
         'GDPRCheckBox
         '
         Me.GDPRCheckBox.AutoSize = True
-        Me.GDPRCheckBox.Location = New System.Drawing.Point(18, 19)
+        Me.GDPRCheckBox.Location = New System.Drawing.Point(6, 19)
         Me.GDPRCheckBox.Name = "GDPRCheckBox"
-        Me.GDPRCheckBox.Size = New System.Drawing.Size(230, 17)
+        Me.GDPRCheckBox.Size = New System.Drawing.Size(162, 17)
         Me.GDPRCheckBox.TabIndex = 1863
-        Me.GDPRCheckBox.Text = "Publish Grid in directory on Outworldz.com?"
+        Me.GDPRCheckBox.Text = "Publish Grid to Hyperica.com"
         Me.ToolTip1.SetToolTip(Me.GDPRCheckBox, "Displays your grid information publicly on Hyperica.com. Click to agree to expose" &
         " this information to the public on www.Outworldz.com/hyperica and in-world on te" &
         "leports.  The URL and photo are listed.")
@@ -772,7 +786,7 @@ Partial Class Expert
         'GridNameHelp
         '
         Me.GridNameHelp.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.GridNameHelp.Location = New System.Drawing.Point(255, 12)
+        Me.GridNameHelp.Location = New System.Drawing.Point(174, 12)
         Me.GridNameHelp.Name = "GridNameHelp"
         Me.GridNameHelp.Size = New System.Drawing.Size(28, 27)
         Me.GridNameHelp.TabIndex = 1865
@@ -1068,9 +1082,9 @@ Partial Class Expert
         Me.GroupBox11.Controls.Add(Me.GridNameHelp)
         Me.GroupBox11.Controls.Add(Me.GDPRCheckBox)
         Me.GroupBox11.Controls.Add(Me.PictureBox9)
-        Me.GroupBox11.Location = New System.Drawing.Point(12, 387)
+        Me.GroupBox11.Location = New System.Drawing.Point(12, 343)
         Me.GroupBox11.Name = "GroupBox11"
-        Me.GroupBox11.Size = New System.Drawing.Size(415, 146)
+        Me.GroupBox11.Size = New System.Drawing.Size(207, 178)
         Me.GroupBox11.TabIndex = 1865
         Me.GroupBox11.TabStop = False
         Me.GroupBox11.Text = "Public Photo"
@@ -1225,4 +1239,5 @@ Partial Class Expert
     Friend WithEvents PictureBox9 As PictureBox
     Friend WithEvents GroupBox11 As GroupBox
     Friend WithEvents GridNameHelp As PictureBox
+    Friend WithEvents SuitcaseCheckbox As CheckBox
 End Class

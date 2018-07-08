@@ -34,7 +34,7 @@ Public Class Form1
 
 #Region "Declarations"
 
-    Dim MyVersion As String = "2.17"
+    Dim MyVersion As String = "2.2"
     Dim DebugPath As String = "E:\Opensim\Outworldz DreamGrid Source"  ' no slash at end
     Public Domain As String = "http://www.outworldz.com"
     Public prefix As String ' Holds path to Opensim folder
@@ -840,8 +840,6 @@ Public Class Form1
 
         SetDefaultSims()
         ''''''''''''''''''''''''''''''''''''''''''''''''
-        ' Robust 
-        ' Grid regions need GridDBName
 
 
         MySetting.LoadOtherIni(prefix + "bin\config-include\Gridcommon.ini", ";")
@@ -876,6 +874,12 @@ Public Class Form1
         MySetting.SetOtherIni("Const", "PrivatePort", MySetting.PrivatePort) ' \
         MySetting.SetOtherIni("Const", "http_listener_port", MySetting.HttpPort)
         MySetting.SetOtherIni("GridInfoService", "welcome", MySetting.SplashPage)
+
+        If MySetting.Suitcase() Then
+            MySetting.SetOtherIni("HGInventoryService", "LocalServiceModule", "OpenSim.Services.HypergridService.dll:HGSuitcaseInventoryService")
+        Else
+            MySetting.SetOtherIni("HGInventoryService", "LocalServiceModule", "OpenSim.Services.HypergridService.dll:HGInventoryService")
+        End If
 
         MySetting.SaveOtherINI()
 
