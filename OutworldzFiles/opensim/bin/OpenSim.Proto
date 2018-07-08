@@ -1329,7 +1329,8 @@ density=0.5
 cloud_update_rate=1000
 
 ;; Flyman gave us an Auto restart module.
-[AutoRestart]
-RegionShutDown=false
-Time=2
-DisableRegions=Junk
+;[AutoRestart]
+;RegionShutDown=false
+;Time=2
+;DisableRegions=Junk
+
