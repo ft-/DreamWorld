@@ -61,7 +61,9 @@ The database will grow and grow!   So before you make any changes, you should ma
 
 Blank DB:  If you wish to start over with the database being empty, delete all the files (not the folders!) in mysql/data.  Delete all the files in mysql\data\opensim. Leave the empty folder. I always keep '.keep' to prevent git from deleting the empty folder.
 
-Compiliation:  You need to use Microsoft Visual Studio 2015 or 2015.  Navigate to \Installer-Src\2010\SetupDreamWorld and open the Solution "Setup DreamWorld.sln"
+Compiliation:  You need to use Microsoft Visual Studio 2015 or 2015.  Navigate to \Installer-Src\2010\SetupDreamWorld and open the Solution "Setup DreamWorld.sln".
+
+To compile and run opensim, you can use Visual Studio or command line.   For VS, Navigate to Outworldz Dreamgrid Source\OutworldzFiles\Opensim. Open Opensim.sln in Visual Studio.  In the Opensim->Debug menu, add "-inidirectory=Regions/Welcome" to the command line arguments. Then set it to Debug mode and it will compile and run opensim
 
 Navigate to Debug->Build Start. The app should compile.   Navigate to "Installer-Src\2010\SetupDreamWorld\Setup DreamWorld\bin\Release" and copy Start.exe and other DLL's it compile to \DreamworldFiles to be ready for production.   
 
