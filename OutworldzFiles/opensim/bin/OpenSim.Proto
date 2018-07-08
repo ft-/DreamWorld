@@ -75,6 +75,10 @@ DiagnosticsPort=8001
 
 [Startup]
 
+; Auto restart by Fly Man
+regionrestart=AutoRestart
+
+
 ;# {ConsolePrompt} {} {ConsolePrompt} {} "Region (\R) "
 ;; Console prompt
 ;; Certain special characters can be used to customize the prompt
@@ -1324,3 +1328,15 @@ density=0.5
 ; update interval for the cloud cover data returned by llCloud().
 ; default is 1000
 cloud_update_rate=1000
+
+
+;; Flyman gave us an Auto restart module.
+
+[AutoRestart]
+RegionShutDown=false
+Time=2
+DisableRegions=Welcome
+
+[Search]
+Module = "OpenSimSearch"
+  

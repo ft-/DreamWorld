@@ -3960,7 +3960,10 @@ Public Class Form1
     End Sub
 
     Private Sub RestartOneRegionToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles RestartOneRegionToolStripMenuItem.Click
-
+        If Not Running Then
+            Print("Opensim is not running")
+            Return
+        End If
         Dim name = ChooseRegion(True)
         Dim X = RegionClass.FindRegionByName(name)
         If X > -1 Then
@@ -3971,7 +3974,10 @@ Public Class Form1
     End Sub
 
     Private Sub RestartTheInstanceToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles RestartTheInstanceToolStripMenuItem.Click
-
+        If Not Running Then
+            Print("Opensim is not running")
+            Return
+        End If
         Dim name = ChooseRegion(True)
         Dim X = RegionClass.FindRegionByName(name)
         If X > -1 Then
@@ -3980,9 +3986,12 @@ Public Class Form1
 
     End Sub
     Private Sub SendScriptCmd(cmd As String)
-
+        If Not Running Then
+            Print("Opensim is not running")
+            Return
+        End If
         Dim rname = ChooseRegion(True)
-        Dim X = RegionClass.FindRegionByName(Name)
+        Dim X = RegionClass.FindRegionByName(rname)
         If X > -1 Then
             ConsoleCommand(RegionClass.ProcessID(X), "change region " + rname + "{ENTER}")
             ConsoleCommand(RegionClass.ProcessID(X), cmd + "{ENTER}")
@@ -4007,6 +4016,10 @@ Public Class Form1
 
     Private Sub AllUsersAllSimsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AllUsersAllSimsToolStripMenuItem.Click
 
+        If Not Running Then
+            Print("Opensim is not running")
+            Return
+        End If
         Dim rname = ChooseRegion(True)
         If rname.Length Then
             Dim Message = InputBox("What do you want to say to this region?")
@@ -4018,6 +4031,11 @@ Public Class Form1
     End Sub
 
     Private Sub JustOneRegionToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles JustOneRegionToolStripMenuItem.Click
+
+        If Not Running Then
+            Print("Opensim is not running")
+            Return
+        End If
 
         Dim HowManyAreOnline As Integer = 0
         Dim Message = InputBox("What do you want to say to everyone online?")
@@ -4035,6 +4053,21 @@ Public Class Form1
             Else
                 Print("Message sent to " + HowManyAreOnline.ToString() + " regions")
             End If
+        End If
+    End Sub
+
+    Private Sub AddUserToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AddUserToolStripMenuItem.Click
+        RobustCommand("add user{ENTER}")
+    End Sub
+
+    Private Sub ChangePasswordToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ChangePasswordToolStripMenuItem.Click
+        RobustCommand("reset user password{ENTER}")
+    End Sub
+
+    Private Sub ShowUserDetailsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ShowUserDetailsToolStripMenuItem.Click
+        Dim person = InputBox("Enter the first and last name of the user:")
+        If person.Length Then
+            RobustCommand("show account " + person + "{ENTER}")
         End If
     End Sub
 

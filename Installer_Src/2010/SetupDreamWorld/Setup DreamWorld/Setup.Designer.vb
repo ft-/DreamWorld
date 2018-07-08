@@ -103,6 +103,10 @@ Partial Class Form1
         Me.ScriptsResumeToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.AllUsersAllSimsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.JustOneRegionToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.UsersToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.AddUserToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ChangePasswordToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ShowUserDetailsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuStrip1.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -258,7 +262,7 @@ Partial Class Form1
         '
         'CommonConsoleCommandsToolStripMenuItem
         '
-        Me.CommonConsoleCommandsToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.SendAlertToAllUsersToolStripMenuItem, Me.DebugToolStripMenuItem, Me.RestartRegionToolStripMenuItem, Me.ScriptsToolStripMenuItem})
+        Me.CommonConsoleCommandsToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.UsersToolStripMenuItem, Me.SendAlertToAllUsersToolStripMenuItem, Me.DebugToolStripMenuItem, Me.RestartRegionToolStripMenuItem, Me.ScriptsToolStripMenuItem})
         Me.CommonConsoleCommandsToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.box_new
         Me.CommonConsoleCommandsToolStripMenuItem.Name = "CommonConsoleCommandsToolStripMenuItem"
         Me.CommonConsoleCommandsToolStripMenuItem.Size = New System.Drawing.Size(240, 26)
@@ -659,6 +663,31 @@ Partial Class Form1
         Me.JustOneRegionToolStripMenuItem.Size = New System.Drawing.Size(167, 22)
         Me.JustOneRegionToolStripMenuItem.Text = "Just one region"
         '
+        'UsersToolStripMenuItem
+        '
+        Me.UsersToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AddUserToolStripMenuItem, Me.ChangePasswordToolStripMenuItem, Me.ShowUserDetailsToolStripMenuItem})
+        Me.UsersToolStripMenuItem.Name = "UsersToolStripMenuItem"
+        Me.UsersToolStripMenuItem.Size = New System.Drawing.Size(177, 22)
+        Me.UsersToolStripMenuItem.Text = "Users"
+        '
+        'AddUserToolStripMenuItem
+        '
+        Me.AddUserToolStripMenuItem.Name = "AddUserToolStripMenuItem"
+        Me.AddUserToolStripMenuItem.Size = New System.Drawing.Size(168, 22)
+        Me.AddUserToolStripMenuItem.Text = "Add User"
+        '
+        'ChangePasswordToolStripMenuItem
+        '
+        Me.ChangePasswordToolStripMenuItem.Name = "ChangePasswordToolStripMenuItem"
+        Me.ChangePasswordToolStripMenuItem.Size = New System.Drawing.Size(168, 22)
+        Me.ChangePasswordToolStripMenuItem.Text = "Change Password"
+        '
+        'ShowUserDetailsToolStripMenuItem
+        '
+        Me.ShowUserDetailsToolStripMenuItem.Name = "ShowUserDetailsToolStripMenuItem"
+        Me.ShowUserDetailsToolStripMenuItem.Size = New System.Drawing.Size(168, 22)
+        Me.ShowUserDetailsToolStripMenuItem.Text = "Show User Details"
+        '
         'Form1
         '
         Me.AllowDrop = True
@@ -784,4 +813,8 @@ Partial Class Form1
     Friend WithEvents ScriptsResumeToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents AllUsersAllSimsToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents JustOneRegionToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents UsersToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents AddUserToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents ChangePasswordToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents ShowUserDetailsToolStripMenuItem As ToolStripMenuItem
 End Class
