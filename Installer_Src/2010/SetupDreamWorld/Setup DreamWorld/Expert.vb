@@ -82,6 +82,8 @@ Public Class Expert
 
         uPnPEnabled.Checked = Form1.MySetting.UPnPEnabled
 
+        SuitcaseCheckbox.Checked = Form1.MySetting.Suitcase
+
         Try
             PictureBox9.Image = Bitmap.FromFile(Form1.MyFolder & "\OutworldzFiles\Photo.png")
         Catch

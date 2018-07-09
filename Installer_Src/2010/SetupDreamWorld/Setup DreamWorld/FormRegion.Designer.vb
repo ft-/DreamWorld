@@ -65,47 +65,42 @@ Partial Class FormRegion
         '
         'RegionPort
         '
-        Me.RegionPort.Location = New System.Drawing.Point(129, 48)
-        Me.RegionPort.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.RegionPort.Location = New System.Drawing.Point(97, 39)
         Me.RegionPort.Name = "RegionPort"
-        Me.RegionPort.Size = New System.Drawing.Size(52, 22)
+        Me.RegionPort.Size = New System.Drawing.Size(40, 20)
         Me.RegionPort.TabIndex = 10
         Me.ToolTip1.SetToolTip(Me.RegionPort, "The UDP port the region will operate on. Must be unique")
         '
         'CoordY
         '
-        Me.CoordY.Location = New System.Drawing.Point(217, 16)
-        Me.CoordY.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.CoordY.Location = New System.Drawing.Point(163, 13)
         Me.CoordY.Name = "CoordY"
-        Me.CoordY.Size = New System.Drawing.Size(49, 22)
+        Me.CoordY.Size = New System.Drawing.Size(38, 20)
         Me.CoordY.TabIndex = 9
         Me.ToolTip1.SetToolTip(Me.CoordY, "The Up-Down position on the world map")
         '
         'CoordX
         '
-        Me.CoordX.Location = New System.Drawing.Point(129, 16)
-        Me.CoordX.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.CoordX.Location = New System.Drawing.Point(97, 13)
         Me.CoordX.Name = "CoordX"
-        Me.CoordX.Size = New System.Drawing.Size(52, 22)
+        Me.CoordX.Size = New System.Drawing.Size(40, 20)
         Me.CoordX.TabIndex = 8
         Me.ToolTip1.SetToolTip(Me.CoordX, "The L-R position on the world map")
         '
         'RegionName
         '
-        Me.RegionName.Location = New System.Drawing.Point(19, 44)
-        Me.RegionName.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.RegionName.Location = New System.Drawing.Point(14, 36)
         Me.RegionName.Name = "RegionName"
-        Me.RegionName.Size = New System.Drawing.Size(305, 22)
+        Me.RegionName.Size = New System.Drawing.Size(230, 20)
         Me.RegionName.TabIndex = 1
         Me.ToolTip1.SetToolTip(Me.RegionName, "Alpha-Numeric plus Spaces")
         '
         'RadioButton4
         '
         Me.RadioButton4.AutoSize = True
-        Me.RadioButton4.Location = New System.Drawing.Point(27, 105)
-        Me.RadioButton4.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.RadioButton4.Location = New System.Drawing.Point(20, 85)
         Me.RadioButton4.Name = "RadioButton4"
-        Me.RadioButton4.Size = New System.Drawing.Size(62, 21)
+        Me.RadioButton4.Size = New System.Drawing.Size(50, 17)
         Me.RadioButton4.TabIndex = 5
         Me.RadioButton4.TabStop = True
         Me.RadioButton4.Text = "4 X 4"
@@ -115,10 +110,9 @@ Partial Class FormRegion
         'RadioButton3
         '
         Me.RadioButton3.AutoSize = True
-        Me.RadioButton3.Location = New System.Drawing.Point(27, 76)
-        Me.RadioButton3.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.RadioButton3.Location = New System.Drawing.Point(20, 62)
         Me.RadioButton3.Name = "RadioButton3"
-        Me.RadioButton3.Size = New System.Drawing.Size(62, 21)
+        Me.RadioButton3.Size = New System.Drawing.Size(50, 17)
         Me.RadioButton3.TabIndex = 4
         Me.RadioButton3.TabStop = True
         Me.RadioButton3.Text = "3 X 3"
@@ -128,10 +122,9 @@ Partial Class FormRegion
         'RadioButton2
         '
         Me.RadioButton2.AutoSize = True
-        Me.RadioButton2.Location = New System.Drawing.Point(27, 48)
-        Me.RadioButton2.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.RadioButton2.Location = New System.Drawing.Point(20, 39)
         Me.RadioButton2.Name = "RadioButton2"
-        Me.RadioButton2.Size = New System.Drawing.Size(62, 21)
+        Me.RadioButton2.Size = New System.Drawing.Size(50, 17)
         Me.RadioButton2.TabIndex = 3
         Me.RadioButton2.TabStop = True
         Me.RadioButton2.Text = "2 X 2"
@@ -141,10 +134,9 @@ Partial Class FormRegion
         'RadioButton1
         '
         Me.RadioButton1.AutoSize = True
-        Me.RadioButton1.Location = New System.Drawing.Point(27, 20)
-        Me.RadioButton1.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.RadioButton1.Location = New System.Drawing.Point(20, 16)
         Me.RadioButton1.Name = "RadioButton1"
-        Me.RadioButton1.Size = New System.Drawing.Size(62, 21)
+        Me.RadioButton1.Size = New System.Drawing.Size(50, 17)
         Me.RadioButton1.TabIndex = 2
         Me.RadioButton1.TabStop = True
         Me.RadioButton1.Text = "1 X 1"
@@ -153,28 +145,25 @@ Partial Class FormRegion
         '
         'SizeY
         '
-        Me.SizeY.Location = New System.Drawing.Point(224, 54)
-        Me.SizeY.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.SizeY.Location = New System.Drawing.Point(168, 44)
         Me.SizeY.Name = "SizeY"
-        Me.SizeY.Size = New System.Drawing.Size(56, 22)
+        Me.SizeY.Size = New System.Drawing.Size(43, 20)
         Me.SizeY.TabIndex = 7
         Me.ToolTip1.SetToolTip(Me.SizeY, "Must be the same as X")
         '
         'SizeX
         '
-        Me.SizeX.Location = New System.Drawing.Point(224, 23)
-        Me.SizeX.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.SizeX.Location = New System.Drawing.Point(168, 19)
         Me.SizeX.Name = "SizeX"
-        Me.SizeX.Size = New System.Drawing.Size(56, 22)
+        Me.SizeX.Size = New System.Drawing.Size(43, 20)
         Me.SizeX.TabIndex = 6
         Me.ToolTip1.SetToolTip(Me.SizeX, "Must be the same as Y")
         '
         'MaxAgents
         '
-        Me.MaxAgents.Location = New System.Drawing.Point(195, 261)
-        Me.MaxAgents.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.MaxAgents.Location = New System.Drawing.Point(146, 212)
         Me.MaxAgents.Name = "MaxAgents"
-        Me.MaxAgents.Size = New System.Drawing.Size(52, 22)
+        Me.MaxAgents.Size = New System.Drawing.Size(40, 20)
         Me.MaxAgents.TabIndex = 23
         Me.ToolTip1.SetToolTip(Me.MaxAgents, "Clamps how many Avatars + NPC's can be in a sim before the region is shown as Ful" &
         "l.   The actual value is set in Estate Settings in the viewer.")
@@ -182,10 +171,9 @@ Partial Class FormRegion
         'Label5
         '
         Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(43, 140)
-        Me.Label5.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label5.Location = New System.Drawing.Point(32, 114)
         Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(138, 17)
+        Me.Label5.Size = New System.Drawing.Size(111, 13)
         Me.Label5.TabIndex = 30
         Me.Label5.Text = "Nonphysical Prim Max"
         Me.ToolTip1.SetToolTip(Me.Label5, "You cannot make a regular prim bigger than this.")
@@ -193,30 +181,27 @@ Partial Class FormRegion
         'Label9
         '
         Me.Label9.AutoSize = True
-        Me.Label9.Location = New System.Drawing.Point(80, 169)
-        Me.Label9.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label9.Location = New System.Drawing.Point(60, 137)
         Me.Label9.Name = "Label9"
-        Me.Label9.Size = New System.Drawing.Size(113, 17)
+        Me.Label9.Size = New System.Drawing.Size(92, 13)
         Me.Label9.TabIndex = 31
         Me.Label9.Text = "Physical Prim Max"
         Me.ToolTip1.SetToolTip(Me.Label9, "You cannot make a physical prim bigger than this.")
         '
         'PhysicalPrimMax
         '
-        Me.PhysicalPrimMax.Location = New System.Drawing.Point(195, 165)
-        Me.PhysicalPrimMax.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.PhysicalPrimMax.Location = New System.Drawing.Point(146, 134)
         Me.PhysicalPrimMax.Name = "PhysicalPrimMax"
-        Me.PhysicalPrimMax.Size = New System.Drawing.Size(52, 22)
+        Me.PhysicalPrimMax.Size = New System.Drawing.Size(40, 20)
         Me.PhysicalPrimMax.TabIndex = 32
         Me.ToolTip1.SetToolTip(Me.PhysicalPrimMax, "You cannot make a physical prim bigger than this.")
         '
         'Label10
         '
         Me.Label10.AutoSize = True
-        Me.Label10.Location = New System.Drawing.Point(81, 201)
-        Me.Label10.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label10.Location = New System.Drawing.Point(61, 163)
         Me.Label10.Name = "Label10"
-        Me.Label10.Size = New System.Drawing.Size(102, 17)
+        Me.Label10.Size = New System.Drawing.Size(82, 13)
         Me.Label10.TabIndex = 34
         Me.Label10.Text = "Clamp Prim Size"
         Me.ToolTip1.SetToolTip(Me.Label10, "Clamp Prim Size is an option to ensure no prim can exceed the set size.")
@@ -224,10 +209,9 @@ Partial Class FormRegion
         'Label11
         '
         Me.Label11.AutoSize = True
-        Me.Label11.Location = New System.Drawing.Point(113, 233)
-        Me.Label11.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label11.Location = New System.Drawing.Point(85, 189)
         Me.Label11.Name = "Label11"
-        Me.Label11.Size = New System.Drawing.Size(68, 17)
+        Me.Label11.Size = New System.Drawing.Size(55, 13)
         Me.Label11.TabIndex = 36
         Me.Label11.Text = "Max Prims"
         Me.ToolTip1.SetToolTip(Me.Label11, "Not what you think it is.  Only used to tell scripts the max size allowed. Is not" &
@@ -235,30 +219,27 @@ Partial Class FormRegion
         '
         'MaxPrims
         '
-        Me.MaxPrims.Location = New System.Drawing.Point(195, 229)
-        Me.MaxPrims.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.MaxPrims.Location = New System.Drawing.Point(146, 186)
         Me.MaxPrims.Name = "MaxPrims"
-        Me.MaxPrims.Size = New System.Drawing.Size(52, 22)
+        Me.MaxPrims.Size = New System.Drawing.Size(40, 20)
         Me.MaxPrims.TabIndex = 35
         Me.ToolTip1.SetToolTip(Me.MaxPrims, "Not what you think it is.  Only used to tell scripts the max size allowed. Id not" &
         " enforced by Opensim.  Viewer stop at 45,000, Opensim does not!")
         '
         'NonphysicalPrimMax
         '
-        Me.NonphysicalPrimMax.Location = New System.Drawing.Point(195, 132)
-        Me.NonphysicalPrimMax.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.NonphysicalPrimMax.Location = New System.Drawing.Point(146, 107)
         Me.NonphysicalPrimMax.Name = "NonphysicalPrimMax"
-        Me.NonphysicalPrimMax.Size = New System.Drawing.Size(52, 22)
+        Me.NonphysicalPrimMax.Size = New System.Drawing.Size(40, 20)
         Me.NonphysicalPrimMax.TabIndex = 37
         Me.ToolTip1.SetToolTip(Me.NonphysicalPrimMax, "You cannot make a regular prim bigger than this.")
         '
         'Label12
         '
         Me.Label12.AutoSize = True
-        Me.Label12.Location = New System.Drawing.Point(103, 265)
-        Me.Label12.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label12.Location = New System.Drawing.Point(77, 215)
         Me.Label12.Name = "Label12"
-        Me.Label12.Size = New System.Drawing.Size(77, 17)
+        Me.Label12.Size = New System.Drawing.Size(63, 13)
         Me.Label12.TabIndex = 38
         Me.Label12.Text = "Max Agents"
         Me.ToolTip1.SetToolTip(Me.Label12, "Clamps how many Avatars + NPC's can be in a sim before the region is shown as Ful" &
@@ -267,10 +248,9 @@ Partial Class FormRegion
         'ClampPrimSize
         '
         Me.ClampPrimSize.AutoSize = True
-        Me.ClampPrimSize.Location = New System.Drawing.Point(195, 201)
-        Me.ClampPrimSize.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.ClampPrimSize.Location = New System.Drawing.Point(146, 163)
         Me.ClampPrimSize.Name = "ClampPrimSize"
-        Me.ClampPrimSize.Size = New System.Drawing.Size(18, 17)
+        Me.ClampPrimSize.Size = New System.Drawing.Size(15, 14)
         Me.ClampPrimSize.TabIndex = 39
         Me.ToolTip1.SetToolTip(Me.ClampPrimSize, "Clamp Prim Size is an option to ensure no prim can exceed the set size..")
         Me.ClampPrimSize.UseVisualStyleBackColor = True
@@ -295,11 +275,9 @@ Partial Class FormRegion
         Me.Advanced.Controls.Add(Me.Label21)
         Me.Advanced.Controls.Add(Me.CoordY)
         Me.Advanced.Controls.Add(Me.CoordX)
-        Me.Advanced.Location = New System.Drawing.Point(20, 298)
-        Me.Advanced.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Advanced.Location = New System.Drawing.Point(15, 242)
         Me.Advanced.Name = "Advanced"
-        Me.Advanced.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
-        Me.Advanced.Size = New System.Drawing.Size(307, 297)
+        Me.Advanced.Size = New System.Drawing.Size(230, 241)
         Me.Advanced.TabIndex = 26
         Me.Advanced.TabStop = False
         Me.Advanced.Text = "Advanced"
@@ -307,59 +285,53 @@ Partial Class FormRegion
         'Label6
         '
         Me.Label6.AutoSize = True
-        Me.Label6.Location = New System.Drawing.Point(8, 80)
-        Me.Label6.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label6.Location = New System.Drawing.Point(6, 65)
         Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(41, 17)
+        Me.Label6.Size = New System.Drawing.Size(34, 13)
         Me.Label6.TabIndex = 22
         Me.Label6.Text = "UUID"
         '
         'Label4
         '
         Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(8, 20)
-        Me.Label4.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label4.Location = New System.Drawing.Point(6, 16)
         Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(101, 17)
+        Me.Label4.Size = New System.Drawing.Size(77, 13)
         Me.Label4.TabIndex = 16
         Me.Label4.Text = "Map Coords: X"
         '
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(191, 20)
-        Me.Label1.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label1.Location = New System.Drawing.Point(143, 16)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(17, 17)
+        Me.Label1.Size = New System.Drawing.Size(14, 13)
         Me.Label1.TabIndex = 17
         Me.Label1.Text = "Y"
         '
         'UUID
         '
-        Me.UUID.Location = New System.Drawing.Point(12, 100)
-        Me.UUID.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.UUID.Location = New System.Drawing.Point(9, 81)
         Me.UUID.Name = "UUID"
-        Me.UUID.Size = New System.Drawing.Size(285, 22)
+        Me.UUID.Size = New System.Drawing.Size(215, 20)
         Me.UUID.TabIndex = 11
         Me.UUID.Text = "ae823f8a-edcc-4351-b797-0e10711312a8"
         '
         'Label21
         '
         Me.Label21.AutoSize = True
-        Me.Label21.Location = New System.Drawing.Point(7, 52)
-        Me.Label21.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label21.Location = New System.Drawing.Point(5, 42)
         Me.Label21.Name = "Label21"
-        Me.Label21.Size = New System.Drawing.Size(83, 17)
+        Me.Label21.Size = New System.Drawing.Size(63, 13)
         Me.Label21.TabIndex = 19
         Me.Label21.Text = "Region Port"
         '
         'Label8
         '
         Me.Label8.AutoSize = True
-        Me.Label8.Location = New System.Drawing.Point(15, 25)
-        Me.Label8.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label8.Location = New System.Drawing.Point(11, 20)
         Me.Label8.Name = "Label8"
-        Me.Label8.Size = New System.Drawing.Size(98, 17)
+        Me.Label8.Size = New System.Drawing.Size(75, 13)
         Me.Label8.TabIndex = 25
         Me.Label8.Text = "Region Name:"
         '
@@ -374,11 +346,9 @@ Partial Class FormRegion
         Me.GroupBox2.Controls.Add(Me.Label2)
         Me.GroupBox2.Controls.Add(Me.SizeY)
         Me.GroupBox2.Controls.Add(Me.SizeX)
-        Me.GroupBox2.Location = New System.Drawing.Point(19, 107)
-        Me.GroupBox2.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.GroupBox2.Location = New System.Drawing.Point(14, 87)
         Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
-        Me.GroupBox2.Size = New System.Drawing.Size(303, 140)
+        Me.GroupBox2.Size = New System.Drawing.Size(227, 114)
         Me.GroupBox2.TabIndex = 23
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Sim Size"
@@ -386,49 +356,44 @@ Partial Class FormRegion
         'Label7
         '
         Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(139, 32)
-        Me.Label7.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label7.Location = New System.Drawing.Point(104, 26)
         Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(28, 17)
+        Me.Label7.Size = New System.Drawing.Size(21, 13)
         Me.Label7.TabIndex = 9
         Me.Label7.Text = "Or:"
         '
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(197, 58)
-        Me.Label3.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label3.Location = New System.Drawing.Point(148, 47)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(17, 17)
+        Me.Label3.Size = New System.Drawing.Size(14, 13)
         Me.Label3.TabIndex = 3
         Me.Label3.Text = "Y"
         '
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(197, 32)
-        Me.Label2.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label2.Location = New System.Drawing.Point(148, 26)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(17, 17)
+        Me.Label2.Size = New System.Drawing.Size(14, 13)
         Me.Label2.TabIndex = 2
         Me.Label2.Text = "X"
         '
         'Button1
         '
-        Me.Button1.Location = New System.Drawing.Point(124, 255)
-        Me.Button1.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Button1.Location = New System.Drawing.Point(93, 207)
         Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(79, 28)
+        Me.Button1.Size = New System.Drawing.Size(59, 23)
         Me.Button1.TabIndex = 27
         Me.Button1.Text = "Save"
         Me.Button1.UseVisualStyleBackColor = True
         '
         'DeleteButton
         '
-        Me.DeleteButton.Location = New System.Drawing.Point(225, 255)
-        Me.DeleteButton.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.DeleteButton.Location = New System.Drawing.Point(169, 207)
         Me.DeleteButton.Name = "DeleteButton"
-        Me.DeleteButton.Size = New System.Drawing.Size(100, 28)
+        Me.DeleteButton.Size = New System.Drawing.Size(75, 23)
         Me.DeleteButton.TabIndex = 28
         Me.DeleteButton.Text = "Delete"
         Me.DeleteButton.UseVisualStyleBackColor = True
@@ -436,30 +401,28 @@ Partial Class FormRegion
         'EnabledCheckBox
         '
         Me.EnabledCheckBox.AutoSize = True
-        Me.EnabledCheckBox.Location = New System.Drawing.Point(31, 79)
-        Me.EnabledCheckBox.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.EnabledCheckBox.Location = New System.Drawing.Point(23, 64)
         Me.EnabledCheckBox.Name = "EnabledCheckBox"
-        Me.EnabledCheckBox.Size = New System.Drawing.Size(82, 21)
+        Me.EnabledCheckBox.Size = New System.Drawing.Size(65, 17)
         Me.EnabledCheckBox.TabIndex = 29
         Me.EnabledCheckBox.Text = "Enabled"
         Me.EnabledCheckBox.UseVisualStyleBackColor = True
         '
         'Button2
         '
-        Me.Button2.Location = New System.Drawing.Point(19, 255)
-        Me.Button2.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Button2.Location = New System.Drawing.Point(14, 207)
         Me.Button2.Name = "Button2"
-        Me.Button2.Size = New System.Drawing.Size(92, 28)
+        Me.Button2.Size = New System.Drawing.Size(69, 23)
         Me.Button2.TabIndex = 30
         Me.Button2.Text = "More"
         Me.Button2.UseVisualStyleBackColor = True
         '
         'FormRegion
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.SystemColors.Control
-        Me.ClientSize = New System.Drawing.Size(345, 610)
+        Me.ClientSize = New System.Drawing.Size(259, 496)
         Me.Controls.Add(Me.Button2)
         Me.Controls.Add(Me.EnabledCheckBox)
         Me.Controls.Add(Me.DeleteButton)
@@ -469,7 +432,6 @@ Partial Class FormRegion
         Me.Controls.Add(Me.Label8)
         Me.Controls.Add(Me.GroupBox2)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow
-        Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.Name = "FormRegion"
         Me.Text = "Region"
         Me.Advanced.ResumeLayout(False)

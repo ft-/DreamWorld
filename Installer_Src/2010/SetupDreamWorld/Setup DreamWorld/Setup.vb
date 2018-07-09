@@ -878,7 +878,7 @@ Public Class Form1
         If MySetting.Suitcase() Then
             MySetting.SetOtherIni("HGInventoryService", "LocalServiceModule", "OpenSim.Services.HypergridService.dll:HGSuitcaseInventoryService")
         Else
-            MySetting.SetOtherIni("HGInventoryService", "LocalServiceModule", "OpenSim.Services.HypergridService.dll:HGInventoryService")
+            MySetting.SetOtherIni("HGInventoryService", "LocalServiceModule", "OpenSim.Services.HypergridService.dll:XInventoryService")
         End If
 
         MySetting.SaveOtherINI()
@@ -3069,7 +3069,7 @@ Public Class Form1
             MySetting.SaveMyINI()
 
             If MySetting.DNSName.ToLower.Contains("outworldz.net") Then
-                Print("Checking DNS address " + MySetting.DNSName)
+                Print("Registering DynDNS address " + MySetting.DNSName)
             End If
 
             If RegisterDNS() Then
@@ -3732,6 +3732,9 @@ Public Class Form1
         End Try
         If Checkname = "NEW" Or Checkname = "UPDATED" Then
             Return name
+        End If
+        If Checkname = "NAK" Then
+            MsgBox("Dynamic DNS Name already in use. Maybe you are using the wrong password?")
         End If
         Return ""
 

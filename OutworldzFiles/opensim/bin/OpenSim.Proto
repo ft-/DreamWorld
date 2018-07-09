@@ -62,11 +62,11 @@ PublicPort=8002
 PrivatePort=8003
 
 ;# so localhost can be changed if necessary
-PrivURL=http://192.168.2.154
+PrivURL=http://192.168.2.100
 
 ; Automatically changed by Dreamworld - do not change this
 ;# Grid Name for Wifi to show
-GridName=Fred's World
+GridName=DreamGrid
 
 ; Automatically changed by Dreamworld - do not change this
 ;# Dreamworld runs a listener on this port to run diagnostics. Dreamgrid listens for regions LOGINS enabled
@@ -412,13 +412,13 @@ RenderMeshes=false
 ;# {allow_grid_gods} {} {Allow grid gods?} {true false} false
 ;; This allows users with a UserLevel of 200 or more to assume god
 ;; powers in the regions in this simulator.
-allow_grid_gods=true
+allow_grid_gods=false
 
 ;; This allows some control over permissions
 ;; please note that this still doesn't duplicate SL, and is not intended to
 ;# {region_owner_is_god} {} {Allow region owner gods} {true false} true
 ;; Allow region owners to assume god powers in their regions
-region_owner_is_god=true
+region_owner_is_god=false
 
 ;# {region_manager_is_god} {} {Allow region manager gods} {true false} false
 ;; Allow region managers to assume god powers in regions they manage
@@ -835,7 +835,7 @@ snapshot_cache_directory="DataSnapshot"
 ;DATA_SRV_MISearch = "http://metaverseink.com/cgi-bin/register.py"
 DATA_SRV_MISearch=http://hyperica.com/Search/register.php
 data_services=http://hyperica.com/Search/register.php
-indexsims=true
+indexsims=false
 
 [Search]
 Module=OpenSimSearch
@@ -1327,10 +1327,3 @@ density=0.5
 ; update interval for the cloud cover data returned by llCloud().
 ; default is 1000
 cloud_update_rate=1000
-
-;; Flyman gave us an Auto restart module.
-;[AutoRestart]
-;RegionShutDown=false
-;Time=2
-;DisableRegions=Junk
-

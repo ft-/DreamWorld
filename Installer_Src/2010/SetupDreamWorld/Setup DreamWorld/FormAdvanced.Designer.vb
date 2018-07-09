@@ -59,6 +59,7 @@ Partial Class AdvancedForm
         Me.AddRegion = New System.Windows.Forms.Button()
         Me.RegionButton = New System.Windows.Forms.Button()
         Me.Shoutcast = New System.Windows.Forms.Button()
+        Me.GroupBox8 = New System.Windows.Forms.GroupBox()
         CType(Me.MapHelp, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PersonalityHelp, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.AutoBackupHelp, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -68,6 +69,7 @@ Partial Class AdvancedForm
         Me.GroupBox5.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
+        Me.GroupBox8.SuspendLayout()
         Me.SuspendLayout()
         '
         'MapHelp
@@ -242,7 +244,7 @@ Partial Class AdvancedForm
         '
         'TOSButton
         '
-        Me.TOSButton.Location = New System.Drawing.Point(465, 240)
+        Me.TOSButton.Location = New System.Drawing.Point(25, 101)
         Me.TOSButton.Name = "TOSButton"
         Me.TOSButton.Size = New System.Drawing.Size(145, 23)
         Me.TOSButton.TabIndex = 1869
@@ -252,7 +254,7 @@ Partial Class AdvancedForm
         '
         'GloebitsButton
         '
-        Me.GloebitsButton.Location = New System.Drawing.Point(467, 150)
+        Me.GloebitsButton.Location = New System.Drawing.Point(25, 19)
         Me.GloebitsButton.Name = "GloebitsButton"
         Me.GloebitsButton.Size = New System.Drawing.Size(143, 23)
         Me.GloebitsButton.TabIndex = 1867
@@ -261,7 +263,7 @@ Partial Class AdvancedForm
         '
         'ExpertButton1
         '
-        Me.ExpertButton1.Location = New System.Drawing.Point(467, 269)
+        Me.ExpertButton1.Location = New System.Drawing.Point(25, 130)
         Me.ExpertButton1.Name = "ExpertButton1"
         Me.ExpertButton1.Size = New System.Drawing.Size(143, 23)
         Me.ExpertButton1.TabIndex = 1866
@@ -318,7 +320,7 @@ Partial Class AdvancedForm
         '
         'VoiceButton1
         '
-        Me.VoiceButton1.Location = New System.Drawing.Point(467, 179)
+        Me.VoiceButton1.Location = New System.Drawing.Point(25, 72)
         Me.VoiceButton1.Name = "VoiceButton1"
         Me.VoiceButton1.Size = New System.Drawing.Size(143, 23)
         Me.VoiceButton1.TabIndex = 1864
@@ -419,25 +421,35 @@ Partial Class AdvancedForm
         '
         'Shoutcast
         '
-        Me.Shoutcast.Location = New System.Drawing.Point(467, 208)
+        Me.Shoutcast.Location = New System.Drawing.Point(25, 45)
         Me.Shoutcast.Name = "Shoutcast"
         Me.Shoutcast.Size = New System.Drawing.Size(143, 23)
         Me.Shoutcast.TabIndex = 1868
         Me.Shoutcast.Text = "Icecast Setup"
         Me.Shoutcast.UseVisualStyleBackColor = True
         '
+        'GroupBox8
+        '
+        Me.GroupBox8.Controls.Add(Me.GloebitsButton)
+        Me.GroupBox8.Controls.Add(Me.ExpertButton1)
+        Me.GroupBox8.Controls.Add(Me.TOSButton)
+        Me.GroupBox8.Controls.Add(Me.VoiceButton1)
+        Me.GroupBox8.Controls.Add(Me.Shoutcast)
+        Me.GroupBox8.Location = New System.Drawing.Point(462, 150)
+        Me.GroupBox8.Name = "GroupBox8"
+        Me.GroupBox8.Size = New System.Drawing.Size(192, 172)
+        Me.GroupBox8.TabIndex = 1870
+        Me.GroupBox8.TabStop = False
+        Me.GroupBox8.Text = "Settings"
+        '
         'AdvancedForm
         '
         Me.AutoSize = True
         Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-        Me.ClientSize = New System.Drawing.Size(672, 305)
-        Me.Controls.Add(Me.TOSButton)
-        Me.Controls.Add(Me.Shoutcast)
-        Me.Controls.Add(Me.GloebitsButton)
-        Me.Controls.Add(Me.ExpertButton1)
+        Me.ClientSize = New System.Drawing.Size(672, 327)
+        Me.Controls.Add(Me.GroupBox8)
         Me.Controls.Add(Me.MapBox)
         Me.Controls.Add(Me.GroupBox5)
-        Me.Controls.Add(Me.VoiceButton1)
         Me.Controls.Add(Me.GroupBox3)
         Me.Controls.Add(Me.GroupBox2)
         Me.MaximizeBox = False
@@ -457,6 +469,7 @@ Partial Class AdvancedForm
         Me.GroupBox3.PerformLayout()
         Me.GroupBox2.ResumeLayout(False)
         Me.GroupBox2.PerformLayout()
+        Me.GroupBox8.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
@@ -495,4 +508,5 @@ Partial Class AdvancedForm
     Friend WithEvents RegionHelp As PictureBox
     Friend WithEvents Shoutcast As Button
     Friend WithEvents TOSButton As Button
+    Friend WithEvents GroupBox8 As GroupBox
 End Class

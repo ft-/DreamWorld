@@ -1106,6 +1106,7 @@ Partial Class Expert
         Me.Controls.Add(Me.GroupBox2)
         Me.Controls.Add(Me.GroupBox7)
         Me.Controls.Add(Me.GroupBox1)
+        Me.MaximizeBox = False
         Me.Name = "Expert"
         Me.Text = "Expert"
         Me.GroupBox3.ResumeLayout(False)
