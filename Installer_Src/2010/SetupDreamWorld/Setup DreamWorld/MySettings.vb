@@ -167,6 +167,12 @@ Public Class MySettings
             SaveMyINI()
         End Try
 
+        Try
+            Dim x = Primlimits()
+        Catch ex As Exception
+            Primlimits() = False
+            SaveMyINI()
+        End Try
 
         ' check for default
         If (SmtpHost() = "") Then SmtpHost() = "smtp.gmail.com"
@@ -305,6 +311,16 @@ Public Class MySettings
 #End Region
 
 #Region "Properties"
+
+    Public Property Primlimits() As Boolean
+        Get
+            Return CType(GetMySetting("Primlimits"), Boolean)
+        End Get
+        Set
+            SetMySetting("Primlimits", Value)
+        End Set
+    End Property
+
 
     Public Property Suitcase() As Boolean
         Get

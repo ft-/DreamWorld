@@ -306,7 +306,8 @@ Stats_URI="jsonSimStats"
 ; Enable fetch of StatsManager registered stats. Fetch is query which can optionally
 ; specify category, container and stat to fetch. If not selected, returns all of that type.
 ; http://simulatorHTTPport/ManagedStats/?cat=Category&cont=Container&stat=Statistic
-; ManagedStatsRemoteFetchURI = "ManagedStats"
+ManagedStatsRemoteFetchURI="ManagedStats"
+
 ;# economy module
 economymodule=
 
@@ -400,7 +401,8 @@ RenderMeshes=false
 ;# {permissionmodules} {} {Permission modules to use (may specify multiple modules, separated by comma} {} DefaultPermissionsModule
 ;; Permission modules to use, separated by comma.
 ;; Possible modules are DefaultPermissionsModule, PrimLimitsModule
-; permissionmodules = DefaultPermissionsModule
+permissionmodules=DefaultPermissionsModule, PrimLimitsModule
+
 ;# {serverside_object_permissions} {permissionmodules:DefaultPermissionsModule} {Activate permission handling by the sim?} {true false} true
 ;; These are the parameters for the default permissions module
 ;;
@@ -412,13 +414,13 @@ RenderMeshes=false
 ;# {allow_grid_gods} {} {Allow grid gods?} {true false} false
 ;; This allows users with a UserLevel of 200 or more to assume god
 ;; powers in the regions in this simulator.
-allow_grid_gods=false
+allow_grid_gods=true
 
 ;; This allows some control over permissions
 ;; please note that this still doesn't duplicate SL, and is not intended to
 ;# {region_owner_is_god} {} {Allow region owner gods} {true false} true
 ;; Allow region owners to assume god powers in their regions
-region_owner_is_god=false
+region_owner_is_god=true
 
 ;# {region_manager_is_god} {} {Allow region manager gods} {true false} false
 ;; Allow region managers to assume god powers in regions they manage
@@ -1319,7 +1321,7 @@ Enabled=false
 
 ; Enable this to generate classic particle clouds above the sim.
 ; default is disabled - turn it on here
-enabled=false
+enabled=true
 
 ; Density of cloud cover 0.0 to 1.0 Default 0.5
 density=0.5

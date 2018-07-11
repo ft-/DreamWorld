@@ -10,6 +10,7 @@ Public Class Expert
 
     Private Sub Loaded(sender As Object, e As EventArgs) Handles Me.Load
 
+        EnableMaxPrims.Checked = Form1.MySetting.Primlimits()
         GDPRCheckBox.Checked = Form1.MySetting.GDPR()
         AutoStartCheckbox.Checked = Form1.MySetting.Autostart
         AutoLoadCheckbox.Checked = Form1.MySetting.AutoLoad
@@ -543,6 +544,13 @@ Public Class Expert
         If Not SuitcaseCheckbox.Checked Then
             MsgBox("Disabling the Inventory Suitcase exposes all your inventory to other grids. ")
         End If
+
+    End Sub
+
+    Private Sub EnableMaxPrims_CheckedChanged(sender As Object, e As EventArgs) Handles EnableMaxPrims.CheckedChanged
+
+        Form1.MySetting.Primlimits() = EnableMaxPrims.Checked
+        Form1.MySetting.SaveMyINI()
 
     End Sub
 

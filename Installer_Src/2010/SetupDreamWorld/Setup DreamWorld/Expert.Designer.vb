@@ -117,6 +117,8 @@ Partial Class Expert
         Me.GmailUsername = New System.Windows.Forms.TextBox()
         Me.PictureBox9 = New System.Windows.Forms.PictureBox()
         Me.GroupBox11 = New System.Windows.Forms.GroupBox()
+        Me.LimitsBox = New System.Windows.Forms.GroupBox()
+        Me.EnableMaxPrims = New System.Windows.Forms.CheckBox()
         Me.GroupBox3.SuspendLayout()
         CType(Me.PictureBox7, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox6, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -141,6 +143,7 @@ Partial Class Expert
         Me.GroupBox6.SuspendLayout()
         CType(Me.PictureBox9, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox11.SuspendLayout()
+        Me.LimitsBox.SuspendLayout()
         Me.SuspendLayout()
         '
         'GroupBox3
@@ -1089,11 +1092,33 @@ Partial Class Expert
         Me.GroupBox11.TabStop = False
         Me.GroupBox11.Text = "Public Photo"
         '
+        'LimitsBox
+        '
+        Me.LimitsBox.Controls.Add(Me.EnableMaxPrims)
+        Me.LimitsBox.Location = New System.Drawing.Point(225, 348)
+        Me.LimitsBox.Name = "LimitsBox"
+        Me.LimitsBox.Size = New System.Drawing.Size(189, 56)
+        Me.LimitsBox.TabIndex = 1860
+        Me.LimitsBox.TabStop = False
+        Me.LimitsBox.Text = "Prim Limits"
+        '
+        'EnableMaxPrims
+        '
+        Me.EnableMaxPrims.AutoSize = True
+        Me.EnableMaxPrims.Location = New System.Drawing.Point(12, 19)
+        Me.EnableMaxPrims.Name = "EnableMaxPrims"
+        Me.EnableMaxPrims.Size = New System.Drawing.Size(144, 17)
+        Me.EnableMaxPrims.TabIndex = 21
+        Me.EnableMaxPrims.Text = "Enable MAXPRIMS limits"
+        Me.ToolTip1.SetToolTip(Me.EnableMaxPrims, "The original Second Life clouds")
+        Me.EnableMaxPrims.UseVisualStyleBackColor = True
+        '
         'Expert
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(900, 547)
+        Me.Controls.Add(Me.LimitsBox)
         Me.Controls.Add(Me.GroupBox11)
         Me.Controls.Add(Me.GroupBox6)
         Me.Controls.Add(Me.GroupBox5)
@@ -1145,6 +1170,8 @@ Partial Class Expert
         CType(Me.PictureBox9, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox11.ResumeLayout(False)
         Me.GroupBox11.PerformLayout()
+        Me.LimitsBox.ResumeLayout(False)
+        Me.LimitsBox.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -1241,4 +1268,6 @@ Partial Class Expert
     Friend WithEvents GroupBox11 As GroupBox
     Friend WithEvents GridNameHelp As PictureBox
     Friend WithEvents SuitcaseCheckbox As CheckBox
+    Friend WithEvents LimitsBox As GroupBox
+    Friend WithEvents EnableMaxPrims As CheckBox
 End Class

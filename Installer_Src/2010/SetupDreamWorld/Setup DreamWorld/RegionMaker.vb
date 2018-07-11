@@ -582,6 +582,7 @@ Public Class RegionMaker
                 End Try
             Next
         Next
+
         initted = True
     End Sub
 

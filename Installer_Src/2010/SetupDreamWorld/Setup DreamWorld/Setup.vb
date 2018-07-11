@@ -271,7 +271,6 @@ Public Class Form1
         Randomize()
         MySetting.Machine() = Random()  ' a random machine ID may be generated.  Happens only once
 
-
         'hide progress
         ProgressBar1.Visible = True
         ProgressBar1.Minimum = 0
@@ -886,6 +885,14 @@ Public Class Form1
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
         ' Opensim.ini
         MySetting.LoadOtherIni(prefix + "bin\Opensim.proto", ";")
+
+        If MySetting.Primlimits Then
+            MySetting.SetOtherIni("Permissions", "permissionmodules", "DefaultPermissionsModule, PrimLimitsModule")
+        Else
+            MySetting.SetOtherIni("Permissions", "permissionmodules", "DefaultPermissionsModule")
+        End If
+
+
 
         If MySetting.GDPR Then
             MySetting.SetOtherIni("DataSnapshot", "indexsims", "true")
@@ -1985,13 +1992,12 @@ Public Class Form1
             End If
         End If
 
-        For Each num In RegionClass.RegionListByGroupNum(RegionClass.GroupName(n))
-            Log(RegionClass.RegionName(n) + " Exited")
-            RegionClass.Booted(num) = False
-            RegionClass.WarmingUp(num) = False
-            RegionClass.ShuttingDown(num) = False
-            RegionClass.ProcessID(num) = 0
-        Next
+        Log(RegionClass.RegionName(n) + " Exited")
+        RegionClass.Booted(n) = False
+        RegionClass.WarmingUp(n) = False
+        RegionClass.ShuttingDown(n) = False
+        RegionClass.ProcessID(n) = 0
+
 
     End Sub
 
@@ -2191,6 +2197,7 @@ Public Class Form1
                 Thread.Sleep(2000)
 
                 SetWindowText(myProcess.MainWindowHandle, RegionClass.GroupName(n))
+
                 Return True
             End If
 
@@ -2410,6 +2417,10 @@ Public Class Form1
 
         If gDNSSTimer Mod 3600 = 0 Then
             RegisterDNS()
+        End If
+
+        If gDNSSTimer Mod 60 = 0 Then
+            LoadRegionsStatsBar()   ' fill in menu once a minute
         End If
 
         gDNSSTimer = gDNSSTimer + 1
@@ -3779,6 +3790,44 @@ Public Class Form1
 
 #Region "Regions"
 
+    Public Sub LoadRegionsStatsBar()
+
+        SimulatorStatsToolStripMenuItem.DropDownItems.Clear()
+        SimulatorStatsToolStripMenuItem.Visible = False
+
+        If RegionClass Is Nothing Then Return
+
+        For Each RegionNum In RegionClass.RegionNumbers
+
+            Dim Menu As New ToolStripMenuItem
+            Menu.Text = RegionClass.RegionName(RegionNum)
+            Menu.ToolTipText = "Click to view stats on " + RegionClass.RegionName(RegionNum)
+            Menu.DisplayStyle = ToolStripItemDisplayStyle.Text
+            If RegionClass.Booted(RegionNum) Then
+                Menu.Enabled = True
+            Else
+                Menu.Enabled = False
+            End If
+
+            AddHandler Menu.Click, New EventHandler(AddressOf Statmenu)
+            SimulatorStatsToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {Menu})
+            SimulatorStatsToolStripMenuItem.Visible = True
+
+        Next
+    End Sub
+
+
+    Private Sub Statmenu(sender As Object, e As EventArgs)
+        If (Running) Then
+            Dim regionnum = RegionClass.FindRegionByName(sender.text)
+            Dim port As String = RegionClass.RegionPort(regionnum).ToString
+            Dim webAddress As String = "http://localhost:" + port + "/bin/data/sim.html?port=" + port
+            Process.Start(webAddress)
+        Else
+            Print("Opensim is not running. Cannot open the Web Interface.")
+        End If
+    End Sub
+
     Private Sub RegionsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles RegionsToolStripMenuItem.Click
 
         If RegionList.InstanceExists = False Then
@@ -4077,6 +4126,8 @@ Public Class Form1
             RobustCommand("show account " + person + "{ENTER}")
         End If
     End Sub
+
+
 
 
 #End Region
