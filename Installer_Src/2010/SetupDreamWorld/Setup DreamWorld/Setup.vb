@@ -2154,16 +2154,13 @@ Public Class Form1
             myProcess.StartInfo.FileName = """" + prefix + "bin\OpenSim.exe" + """"
             myProcess.StartInfo.CreateNoWindow = False
 
-            Dim ConsoleCmd As String
             If mnuShow.Checked Then
                 myProcess.StartInfo.WindowStyle = ProcessWindowStyle.Normal
-                ConsoleCmd = ""
             Else
                 myProcess.StartInfo.WindowStyle = ProcessWindowStyle.Minimized
-                ConsoleCmd = "  -console=rest"
             End If
 
-            myProcess.StartInfo.Arguments = " -inidirectory=" & """" & "./Regions/" & RegionClass.GroupName(n) + """" + ConsoleCmd
+            myProcess.StartInfo.Arguments = " -inidirectory=" & """" & "./Regions/" & RegionClass.GroupName(n) + """"
 
             Try
                 My.Computer.FileSystem.DeleteFile(prefix + "bin\Regions\" & RegionClass.GroupName(n) & "\Opensim.log")
