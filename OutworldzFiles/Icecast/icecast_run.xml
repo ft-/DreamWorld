@@ -1,7 +1,7 @@
 <icecast>
-<hostname>fred.outworldz.net</hostname>
-<location>DreamWorld</location>
-<admin>fred@outworldz.com</admin>
+<hostname>Fred.Outworldz.net</hostname>
+<location>DreamGrid</location>
+<admin>email@somewhere.com</admin>
 <shoutcast-mount>/stream</shoutcast-mount>
 <listen-socket>
     <port>8080</port>
@@ -12,7 +12,7 @@
 </listen-socket>
 <limits>
    <clients>20</clients>
-    <sources>2</sources>
+    <sources>4</sources>
     <queue-size>524288</queue-size>
      <client-timeout>30</client-timeout>
     <header-timeout>15</header-timeout>
@@ -21,10 +21,10 @@
     <burst-size>65535</burst-size>
 </limits>
 <authentication>
-<source-password>123</source-password>
+<source-password>A password</source-password>
 <relay-password>A password</relay-password>
 <admin-user>admin</admin-user>
-<admin-password>123</admin-password>
+<admin-password></admin-password>
 </authentication>
 <http-headers>
     <header name="Access-Control-Allow-Origin" value="*"/>

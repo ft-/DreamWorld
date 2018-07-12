@@ -74,7 +74,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>TO1zDtBsVsNqC9p4x/0pdLLcZlGaTvPaFg/oYkIlw0U=</dsig:DigestValue>
+        <dsig:DigestValue>YGZ8Mj99YByYi7F6Yg9FUit0BQF+FQdXIVExqHnVKxw=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -115,14 +115,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Start.exe" size="30145144">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Start.exe" size="30162040">
       <assemblyIdentity name="Start" version="2.0.1.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>nbt5YUS5vCMfjb/ASNlMn+8xnXRs9I7ISD04qd0vRs0=</dsig:DigestValue>
+        <dsig:DigestValue>NnTKT7ZVBiNVBCbkgmgb+bj9wa5IklZis02viNa6/AY=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -216,13 +216,13 @@
       <dsig:DigestValue>Djaf0Dwe1IybX0ipMG50tWxdFoc9mvZUP1UB6Oir/Tk=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="Start.exe.config" size="10451">
+  <file name="Start.exe.config" size="10450">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>XQxQ7gXrs05jzxcUdDTubK9DrLXz4aehZnNuDXh1v+M=</dsig:DigestValue>
+      <dsig:DigestValue>3ht0XSKXTIzyA6Xi0G1oIHuVoOI2EruecYb6M/tLhjM=</dsig:DigestValue>
     </hash>
   </file>
   <compatibility xmlns="urn:schemas-microsoft-com:compatibility.v1">
