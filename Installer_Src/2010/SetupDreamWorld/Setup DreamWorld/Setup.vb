@@ -2147,19 +2147,23 @@ Public Class Form1
 
         Try
             myProcess.EnableRaisingEvents = True
-            myProcess.StartInfo.UseShellExecute = False ' so we can redirect streams
+            myProcess.StartInfo.UseShellExecute = True ' so we can redirect streams
             myProcess.StartInfo.WorkingDirectory = prefix + "bin"
 
             Dim permanent = True
             myProcess.StartInfo.FileName = """" + prefix + "bin\OpenSim.exe" + """"
             myProcess.StartInfo.CreateNoWindow = False
-            myProcess.StartInfo.Arguments = " -inidirectory=" & """" & "./Regions/" & RegionClass.GroupName(n) + """"
 
+            Dim ConsoleCmd As String
             If mnuShow.Checked Then
                 myProcess.StartInfo.WindowStyle = ProcessWindowStyle.Normal
+                ConsoleCmd = ""
             Else
                 myProcess.StartInfo.WindowStyle = ProcessWindowStyle.Minimized
+                ConsoleCmd = "  -console=rest"
             End If
+
+            myProcess.StartInfo.Arguments = " -inidirectory=" & """" & "./Regions/" & RegionClass.GroupName(n) + """" + ConsoleCmd
 
             Try
                 My.Computer.FileSystem.DeleteFile(prefix + "bin\Regions\" & RegionClass.GroupName(n) & "\Opensim.log")
@@ -3080,7 +3084,7 @@ Public Class Form1
             MySetting.SaveMyINI()
 
             If MySetting.DNSName.ToLower.Contains("outworldz.net") Then
-                Print("Registering DynDNS address " + MySetting.DNSName)
+                Print("Registering DynDNS address http://" + MySetting.DNSName + ":" + MySetting.HttpPort)
             End If
 
             If RegisterDNS() Then
