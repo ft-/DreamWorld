@@ -10,3 +10,22 @@ rolled up quit
 quit
 quit
 quit
+create user Test User 123
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+quit
+reset user password Wifi Admin qKy*fj
+reset user password Wifi Admin qKy*fj
+reset user password Wifi Admin qKy*fj
+qKy*fjreset user password Wifi Admin 1234
+reset user password Wifi Admin 1234
+reset user password Wifi Admin 1234
+quit
+quit
+quit
+quit

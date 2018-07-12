@@ -60,10 +60,10 @@ say ("Start Mysql and wait for it to come up:");
 
 chdir(qq!$dir/OutworldzFiles/mysql/bin/!);
 
-print `mysqlcheck.exe --port 3306 -u root -r mysql`;
-print `mysqlcheck.exe --port 3306 -u root -r opensim`;
-print `mysqlcheck.exe --port 3306 -u root -r robust`;
-print `mysqladmin.exe --port 3306 -u root shutdown`;
+print `mysqlcheck.exe --port 3309 -u root -r mysql`;
+print `mysqlcheck.exe --port 3309 -u root -r opensim`;
+print `mysqlcheck.exe --port 3309 -u root -r robust`;
+print `mysqladmin.exe --port 3309 -u root shutdown`;
 
 
 #mysql
@@ -100,7 +100,6 @@ say("Adding folders");
 
 Process ("../7z.exe -tzip a ..\\Zips\\DreamGrid$type.zip Licenses_to_Content");
 Process ("../7z.exe -tzip a ..\\Zips\\DreamGrid$type.zip OutworldzFiles");
-Process ("../7z.exe -tzip a ..\\Zips\\DreamGrid$type.zip Icecast");
 
 		
 say("Updater Build");

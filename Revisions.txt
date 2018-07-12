@@ -1,0 +1,25 @@
+
+DreamGrid-V2.2 2018-07-11
+
+Opensim 0.9.0.1 (Released).
+
+► Suitcase or No Suitcase?    A suitcae protects your inventory from rogue grids.  But its a pain to use.  Now you can disable the suitcase and rez objects from anywhere in your inventory while onforegign grids.
+► Prim limits:  Opensim can enforce a prim limit.  Landlords can enable it to enforce MAXPRIMS on each parcel.
+► Editable TOS and Home page image
+► DataSnapshot can be enabled for any prims marked as "show in Search"
+► Exposed more SMTP email server settings than just Gmail.
+► Upload an image and description to Hyperica.com's Hypergrid list.
+► You can add a region and immediately start it. Or delete a region and nothing will break.
+► Clicking a region prompts you to start/stop. 
+► Stopping a region with avatars in it gives you a warning and a chance to cancel. You can kill them, anyway (evil laugh) by clicking Yes.
+► Backups are split into robust and opensim.sql files for file size reasons.  
+► Show lots of stats about any region.
+► Show web stats on localhost
+► Auto-repair of port conflicts.
+► 100 sim support
+► Includes Opensim Source code
+► HTML editor  for Tos
+► Hyperica Search links
+► Changed the icon
+
+

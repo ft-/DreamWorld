@@ -489,15 +489,25 @@ SMTP_SERVER_LOGIN=Gmail for notification
 SMTP_SERVER_PASSWORD=Gmail password
 
 [Network]
+'must be started with parameter "-console=rest". Furthermore, the configuration options
 
+;
+ConsoleAllowedOrigin=${Const|BaseURL}:${Const|PublicPort}
+
+;
 ;# {ConsoleUser} {} {User name for console account} {}
 ;; Configure the remote console user here. This will not actually be used
 ;; unless you use -console=rest at startup.
-; ConsoleUser = "Test"
+ConsoleUser="Wifi Admin"
+
 ;# {ConsolePass} {} {Password for console account} {}
-; ConsolePass = "secret"
+ConsolePass="secret"
+
 ;# {console_port} {} {Port for console connections} {} 0
-; console_port = 0
+console_port=0
+
+;
+;
 ;# {http_listener_port} {} {TCP Port for this simulator to listen on? (This must be unique to the simulator!)} {} 9000
 ;; Simulator HTTP port. This is not the region port, but the port the
 ;; entire simulator listens on. This port uses the TCP protocol, while
@@ -670,7 +680,7 @@ OfflineMessageModule="Offline Message Module V2"
 ;# {OfflineMessageURL} {OfflineMessageModule:OfflineMessageModule Offline Message Module V2:Offline Message Module V2} {URL of offline messaging service} {}
 ;; URL of web service for offline message storage. Leave it commented if your service is local to the sim.
 ; OfflineMessageURL = ${Const|BaseURL}/Offline.php
-;OfflineMessageURL = ${Const|BaseURL}:${Const|PublicPort}
+; OfflineMessageURL = ${Const|BaseURL}:${Const|PublicPort}
 ;# {StorageProvider} {Offline Message Module V2:Offline Message Module V2} {DLL that provides the storage interface} {OpenSim.Data.MySQL.dll}
 ;; For standalones, this is the storage dll.
 ; StorageProvider = OpenSim.Data.MySQL.dll
@@ -832,12 +842,10 @@ snapshot_cache_directory="DataSnapshot"
 ; This semicolon-separated string serves to notify specific data services
 ; about the existence of this sim. Uncomment if you want to index your
 ; data with this and/or other search providers.
-; data_services="http://metaverseink.com/cgi-bin/register.py"
 ;; New way of specifying data services, one per service
-;DATA_SRV_MISearch = "http://metaverseink.com/cgi-bin/register.py"
 DATA_SRV_MISearch=http://hyperica.com/Search/register.php
 data_services=http://hyperica.com/Search/register.php
-indexsims=false
+indexsims=true
 
 [Search]
 Module=OpenSimSearch
