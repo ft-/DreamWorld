@@ -877,7 +877,7 @@ Public Class Form1
         If MySetting.Suitcase() Then
             MySetting.SetOtherIni("HGInventoryService", "LocalServiceModule", "OpenSim.Services.HypergridService.dll:HGSuitcaseInventoryService")
         Else
-            MySetting.SetOtherIni("HGInventoryService", "LocalServiceModule", "OpenSim.Services.HypergridService.dll:XInventoryService")
+            MySetting.SetOtherIni("HGInventoryService", "LocalServiceModule", "OpenSim.Services.HypergridService.dll:HGInventoryService")
         End If
 
         MySetting.SaveOtherINI()
