@@ -170,16 +170,6 @@ Public Class RegionList
                 Num = 5
             End If
 
-            ' Create  items and subitems for each item.
-            Dim item1 As New ListViewItem(RegionClass.RegionName(X), Num)
-            ' Place a check mark next to the item.
-            item1.Checked = RegionClass.RegionEnabled(X)
-            item1.SubItems.Add(RegionClass.GroupName(X).ToString)
-            item1.SubItems.Add(RegionClass.AvatarCount(X).ToString)
-
-            item1.SubItems.Add(Letter)
-            ListView1.Items.AddRange(New ListViewItem() {item1})
-
             If TheView = 2 Then
                 If RegionClass.Booted(X) Then
                     Dim img As String = "http://127.0.0.1:" + RegionClass.GroupPort(X).ToString + "/" + "index.php?method=regionImage" + RegionClass.UUID(X).Replace("-", "")
@@ -198,7 +188,16 @@ Public Class RegionList
                 Num = X
             End If
 
-            'End If
+            ' Create  items and subitems for each item.
+            Dim item1 As New ListViewItem(RegionClass.RegionName(X), Num)
+            ' Place a check mark next to the item.
+            item1.Checked = RegionClass.RegionEnabled(X)
+            item1.SubItems.Add(RegionClass.GroupName(X).ToString)
+            item1.SubItems.Add(RegionClass.AvatarCount(X).ToString)
+
+            item1.SubItems.Add(Letter)
+            ListView1.Items.AddRange(New ListViewItem() {item1})
+
 
         Next
 
