@@ -626,7 +626,10 @@ Public Class RegionMaker
         + "MaxPrims = " + MaxPrims(CheckN(n)).ToString + vbCrLf _
         + "MaxAgents = " + MaxAgents(CheckN(n)).ToString + vbCrLf
 
-        My.Computer.FileSystem.DeleteFile(fname)
+        Try
+            My.Computer.FileSystem.DeleteFile(fname)
+        Catch
+        End Try
         Using outputFile As New StreamWriter(fname, True)
             outputFile.WriteLine(proto)
         End Using

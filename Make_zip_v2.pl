@@ -1,5 +1,5 @@
 
-my $type  = '-V2.2';# '-Beta-V1.5';
+my $type  = '-V2.21';# '-Beta-V1.5';
 my $dir = "E:\\Opensim\\Outworldz Dreamgrid Source";
 
 chdir ($dir);
@@ -8,6 +8,7 @@ chdir ($dir);
 use File::Copy;
 use File::Path;
 use 5.010;
+
 
 my @deletions = (
 				 "$dir/OutworldzFiles/AutoBackup",
@@ -34,6 +35,7 @@ foreach my $path ( @deletions) {
 #clean up opensim
 unlink "$dir/OutworldzFiles/Opensim/bin/Opensim.log" ;
 unlink "$dir/OutworldzFiles/Opensim/bin/Opensimstats.log" ;
+unlink "$dir/OutworldzFiles/Photo.png";
 unlink "$dir/Icecast/error.log" ;
 unlink "$dir/Icecast/access.log" ;
 
@@ -55,6 +57,11 @@ unlink "$dir/OutworldzFiles/http.log" ;
 unlink "../Zips/DreamGrid$type.zip" ;
 unlink "../Zips/Outworldz-Update$type.zip" ;
 
+
+unlink	"$dir/OutworldzFiles/mysql/data/ib_logfile0" || die;
+unlink	"$dir/OutworldzFiles/mysql/data/ib_logfile1" || die;
+unlink	"$dir/OutworldzFiles/mysql/data/ibdata1" || die;
+
 say ("Start Mysql and wait for it to come up:");
 <STDIN>;
 
@@ -69,9 +76,6 @@ print `mysqladmin.exe --port 3309 -u root shutdown`;
 #mysql
 unlink "$dir/OutworldzFiles/mysql/data/Alienware.err" ;
 unlink "$dir/OutworldzFiles/mysql/data/Alienware.pid" ;
-unlink	"$dir/OutworldzFiles/mysql/data/ib_logfile0" || die;
-unlink	"$dir/OutworldzFiles/mysql/data/ib_logfile1" || die;
-unlink	"$dir/OutworldzFiles/mysql/data/ibdata1" || die;
 
 
 chdir ($dir);
@@ -116,7 +120,10 @@ Process ("../7z.exe -tzip d ..\\Zips\\DreamGrid-Update$type.zip Outworldzfiles\\
 Process ("../7z.exe -tzip d ..\\Zips\\DreamGrid-Update$type.zip DotNetZip.dll ");
 
 #####################
-print "Server Copy\n";
+print "Server Copy?\n";
+<stdin>;
+
+x:
 
 # Ready to move it all
 unlink "y:/Inetpub/Secondlife/Outworldz_Installer/Grid/DreamGrid$type.zip";
