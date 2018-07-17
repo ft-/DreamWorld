@@ -12,8 +12,10 @@ Imports System.Threading
 
 Public Class Update
 
-    Dim Version As String = "2.0"
-    Dim Type As String = "UpdateGrid"  ' possible server-side choices are "Update", "Update-Grid" and "Installer"
+    Dim BLKSIZE As Integer = 32767
+
+    Dim Version As String = "2.21"
+    Dim Type As String = "UpdateGrid"  ' possible server-side choices are "Update", "UpdateGrid" and "Installer"
     'Dim Type As String = "Update"  
     'Dim Type As String = "Install"  
 
@@ -44,7 +46,7 @@ Public Class Update
         If arguments.Length > 1 Then
             ' for debugging when compiling
             If arguments(1) = "-debug" Then
-                MyFolder = "\Opensim\Outworldz-Test" ' for testing, as the compiler buries itself in ../../../debug
+                MyFolder = "C:\Opensim\Outworldz 2.15 to 2.2" ' for testing, as the compiler buries itself in ../../../debug
                 ChDir(MyFolder)
             End If
         End If
@@ -155,7 +157,7 @@ Public Class Update
             End If
             speedtimer.Start()
 
-            Dim readBytes(4096) As Byte
+            Dim readBytes(BLKSIZE) As Byte
             Dim bytesread As Integer = theResponse.GetResponseStream.Read(readBytes, 0, 4096)
 
             nRead += bytesread
@@ -173,7 +175,7 @@ Public Class Update
             speedtimer.Stop()
 
             readings += 1
-            If readings >= 50 Then 'For increase precision, the speed it's calculated only every fifty cycles
+            If readings >= 100 Then 'For increase precision, the speed it's calculated only every 100 cycles
                 currentspeed = bytesread / (speedtimer.ElapsedMilliseconds / 1000)
                 speedtimer.Reset()
                 readings = 0
