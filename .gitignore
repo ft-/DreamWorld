@@ -1,5 +1,4 @@
 *.pid
-
 Outworldzfiles\Photo.png
 UDProxy
 /Signed_Binaries/*
@@ -24,7 +23,6 @@ OutworldzFiles/opensim/bin/bakes/*
 Outworldzfiles/opensim/bin/Robust.HG.ini.bak
 Outworldzfiles/Settings.ini
 Outworldzfiles/Settings.bak
-OutworldzFiles/opensim/bin/bakes/*
 
 Thumbs.db
 .vs/*
