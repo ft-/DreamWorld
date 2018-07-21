@@ -5,7 +5,7 @@ var updater = Class.create({
 		this.file = file;
 		new PeriodicalExecuter(this.getUpdate.bind(this), this.interval);
 	},
-	 
+	
 	getUpdate: function() {
 		var oOptions = {
 			method: "POST",

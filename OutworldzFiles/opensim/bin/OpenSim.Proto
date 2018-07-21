@@ -43,7 +43,7 @@
 [Const]
 
 ; Automatically changed by Dreamworld - do not change this
-http_listener_port=8004
+http_listener_port=9204
 
 ; Automatically changed by Dreamworld - do not change this
 ;# used by the one-exe-per-instance logic. This becomes the folder for the regions file.
@@ -51,27 +51,27 @@ RegionFolderName=Welcome
 
 ; Automatically changed by Dreamworld - do not change this
 ;# {BaseURL} {} {BaseURL} {"http://example.com","http://127.0.0.1"} "http://127.0.0.1"
-BaseURL=http://192.168.2.155
+BaseURL=http://Mach.Outworldz.net
 
 ; Automatically changed by Dreamworld - do not change this
 ;# {PublicPort} {} {PublicPort} {8002} "8002"
-PublicPort=8002
+PublicPort=9200
 
 ; Automatically changed by Dreamworld - do not change this
 ;# {PrivatePort} {} {PrivatePort} {8003} "8003"
-PrivatePort=8003
+PrivatePort=9203
 
 ;# so localhost can be changed if necessary
-PrivURL=http://192.168.2.155
+PrivURL=http://192.168.2.3
 
 ; Automatically changed by Dreamworld - do not change this
 ;# Grid Name for Wifi to show
-GridName=DreamGrid
+GridName=Mach
 
 ; Automatically changed by Dreamworld - do not change this
 ;# Dreamworld runs a listener on this port to run diagnostics. Dreamgrid listens for regions LOGINS enabled
 ;# {DiagnosticsPort} {} {DiagnosticsPort} {8001} "8001"
-DiagnosticsPort=8001
+DiagnosticsPort=9201
 
 [Startup]
 
@@ -309,7 +309,7 @@ Stats_URI="jsonSimStats"
 ManagedStatsRemoteFetchURI="ManagedStats"
 
 ;# economy module
-economymodule=
+economymodule=Gloebit
 
 [RegionReady]
 
@@ -401,7 +401,7 @@ RenderMeshes=false
 ;# {permissionmodules} {} {Permission modules to use (may specify multiple modules, separated by comma} {} DefaultPermissionsModule
 ;; Permission modules to use, separated by comma.
 ;; Possible modules are DefaultPermissionsModule, PrimLimitsModule
-permissionmodules=DefaultPermissionsModule
+permissionmodules=DefaultPermissionsModule, PrimLimitsModule
 
 ;# {serverside_object_permissions} {permissionmodules:DefaultPermissionsModule} {Activate permission handling by the sim?} {true false} true
 ;; These are the parameters for the default permissions module
@@ -414,13 +414,13 @@ permissionmodules=DefaultPermissionsModule
 ;# {allow_grid_gods} {} {Allow grid gods?} {true false} false
 ;; This allows users with a UserLevel of 200 or more to assume god
 ;; powers in the regions in this simulator.
-allow_grid_gods=false
+allow_grid_gods=true
 
 ;; This allows some control over permissions
 ;; please note that this still doesn't duplicate SL, and is not intended to
 ;# {region_owner_is_god} {} {Allow region owner gods} {true false} true
 ;; Allow region owners to assume god powers in their regions
-region_owner_is_god=false
+region_owner_is_god=true
 
 ;# {region_manager_is_god} {} {Allow region manager gods} {true false} false
 ;; Allow region managers to assume god powers in regions they manage
@@ -470,7 +470,7 @@ enabled=true
 ;# {internal_object_host} {[Startup]emailmodule:DefaultEmailModule enabled:true} {Host name to treat as internal (object to object) email?} {} lsl.opensim.local
 ; internal_object_host = lsl.opensim.local
 ;# {host_domain_header_from} {[Startup]emailmodule:DefaultEmailModule enabled:true} {From address to use in the sent email header?} {} 127.0.0.1
-host_domain_header_from=Adwulind.Outworldz.net
+host_domain_header_from=Mach.Outworldz.net
 
 ;# {email_pause_time} {[Startup]emailmodule:DefaultEmailModule enabled:true} {Period in seconds to delay after an email is sent.} {} 20
 ; email_pause_time = 20
@@ -845,7 +845,7 @@ snapshot_cache_directory="DataSnapshot"
 ;; New way of specifying data services, one per service
 DATA_SRV_MISearch=http://hyperica.com/Search/register.php
 data_services=http://hyperica.com/Search/register.php
-indexsims=false
+indexsims=true
 
 [Search]
 Module=OpenSimSearch
@@ -1296,7 +1296,7 @@ AutoBackupThreshold=1
 AutoBackupSkipAssets=false
 AutoBackupKeepFilesForDays=30
 AutoBackupNaming=Time
-AutoBackupDir=E:/Opensim/Outworldz DreamGrid Source/OutworldzFiles/Autobackup/
+AutoBackupDir=/Opensim/Outworldz DreamGrid Source/OutworldzFiles/Autobackup/
 
 [CameraOnlyModeModule]
 
@@ -1329,7 +1329,7 @@ Enabled=false
 
 ; Enable this to generate classic particle clouds above the sim.
 ; default is disabled - turn it on here
-enabled=false
+enabled=true
 
 ; Density of cloud cover 0.0 to 1.0 Default 0.5
 density=0.5
