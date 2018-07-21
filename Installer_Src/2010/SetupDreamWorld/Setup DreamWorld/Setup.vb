@@ -4005,7 +4005,7 @@ Public Class Form1
     End Sub
 
     Private Sub ViewIcecastWebPageToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ViewIcecastWebPageToolStripMenuItem.Click
-        If Running Then
+        If Running And MySetting.SC_Enable Then
             Dim webAddress As String = "http://" + MySetting.PublicIP + ":" + MySetting.SC_PortBase.ToString
             Print("Icecast lets you stream music into your sim. The Music URL is " + webAddress + "/stream")
             Process.Start(webAddress)
