@@ -34,9 +34,9 @@ Public Class Form1
 
 #Region "Declarations"
 
-    Dim MyVersion As String = "2.21"
-    Dim DebugPath As String = "E:\Opensim\Outworldz DreamGrid Source"  ' no slash at end
-    Public Domain As String = "http://www.outworldz.com"
+    Dim MyVersion As String = "2.22"
+    Dim DebugPath As String = "\Opensim\Outworldz DreamGrid Source"  ' no slash at end
+    Public Domain As String = "https://www.outworldz.com"
     Public prefix As String ' Holds path to Opensim folder
 
     Dim REGIONMAX As Integer = 100
