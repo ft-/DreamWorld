@@ -120,15 +120,15 @@ PIDFile="./Regions/${Const|RegionFolderName}/PID.pid"
 ; Set path to directory for addin registry if you want addins outside of bin.
 ; Information about the registered repositories and installed plugins will
 ; be stored here. The OpenSim.exe process must have R/W access to the location.
-RegistryLocation = "../addins-registry"
-;RegistryLocation="."
+;RegistryLocation="../addins-registry"
+RegistryLocation="."
 
 ;# {ConfigDirectory} {} {Set path to directory for modular ini files} {}
 ; Used by region module addins. You can set this to outside bin, so that addin
 ; configurations will survive updates. The OpenSim.exe process must have R/W access
 ; to the location.
-ConfigDirectory = "../addins-config"
-;ConfigDirectory="."
+;ConfigDirectory="../addins-config"
+ConfigDirectory="."
 
 ;# {region_info_source} {} {Where to load region from?} {filesystem web} filesystem
 ;; Determine where OpenSimulator looks for the files which tell it
@@ -483,10 +483,10 @@ SMTP_SERVER_HOSTNAME=smtp.gmail.com
 SMTP_SERVER_PORT=587
 
 ;# {SMTP_SERVER_LOGIN} {[Startup]emailmodule:DefaultEmailModule enabled:true} {SMTP server user name?} {}
-SMTP_SERVER_LOGIN=Gmail for notification
+SMTP_SERVER_LOGIN=fred.beckhusen@gmail.com
 
 ;# {SMTP_SERVER_PASSWORD} {[Startup]emailmodule:DefaultEmailModule enabled:true} {SMTP server password} {}
-SMTP_SERVER_PASSWORD=Gmail password
+SMTP_SERVER_PASSWORD=4a<$moreG
 
 [Network]
 'must be started with parameter "-console=rest". Furthermore, the configuration options
@@ -1320,10 +1320,6 @@ enabled=false
 enabled=True
 
 ;
-;Include-Wifi = "Wifi.ini"
-[AutoLoadTeleport]
-Enabled=false
-
 ;; Thankxx to a tip from Jeremy Westfall!
 [Cloud]
 

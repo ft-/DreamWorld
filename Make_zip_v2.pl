@@ -1,9 +1,13 @@
 
-my $type  = '-V2.21';# '-Beta-V1.5';
-my $dir = "E:\\Opensim\\Outworldz Dreamgrid Source";
+my $type  = '-V2.23';# '-Beta-V1.5';
+my $dir = "C:/Opensim/Outworldz Dreamgrid Source";
 
 chdir ($dir);
+use Cwd;
+my $curdir =getcwd;
 
+print $curdir . ' ' .  $type . "\n";
+die if $curdir ne $dir ;
 
 use File::Copy;
 use File::Path;
@@ -58,14 +62,16 @@ unlink "../Zips/DreamGrid$type.zip" ;
 unlink "../Zips/Outworldz-Update$type.zip" ;
 
 
+# mysql
+chdir(qq!$dir/OutworldzFiles/mysql/bin/!);
+print `mysqladmin.exe --port 3309 -u root shutdown`;
+
 unlink	"$dir/OutworldzFiles/mysql/data/ib_logfile0" || die;
 unlink	"$dir/OutworldzFiles/mysql/data/ib_logfile1" || die;
 unlink	"$dir/OutworldzFiles/mysql/data/ibdata1" || die;
 
 say ("Start Mysql and wait for it to come up:");
-<STDIN>;
-
-chdir(qq!$dir/OutworldzFiles/mysql/bin/!);
+ <STDIN>;
 
 print `mysqlcheck.exe --port 3309 -u root -r mysql`;
 print `mysqlcheck.exe --port 3309 -u root -r opensim`;
@@ -74,14 +80,15 @@ print `mysqladmin.exe --port 3309 -u root shutdown`;
 
 
 #mysql
+unlink "$dir/OutworldzFiles/mysql/data/Mach.err" ;
+unlink "$dir/OutworldzFiles/mysql/data/Mach.pid" ;
+
 unlink "$dir/OutworldzFiles/mysql/data/Alienware.err" ;
 unlink "$dir/OutworldzFiles/mysql/data/Alienware.pid" ;
 
-
 chdir ($dir);
-# SIGN FIRST
 
-
+print " SIGN FIRST! \n";
 
 print "Process Main Zip?\n";
 <STDIN>;
@@ -123,20 +130,23 @@ Process ("../7z.exe -tzip d ..\\Zips\\DreamGrid-Update$type.zip DotNetZip.dll ")
 print "Server Copy?\n";
 <stdin>;
 
-x:
-
 # Ready to move it all
 unlink "y:/Inetpub/Secondlife/Outworldz_Installer/Grid/DreamGrid$type.zip";
 if (!copy ("../Zips/DreamGrid$type.zip", "y:/Inetpub/Secondlife/Outworldz_Installer/Grid/DreamGrid$type.zip"))  {die $!;}
-unlink "y:/Inetpub/Secondlife/Outworldz_Installer/Grid/DreamGrid.zip";
-if (!copy ("../Zips/DreamGrid$type.zip", "y:/Inetpub/Secondlife/Outworldz_Installer/Grid/DreamGrid.zip"))  {die $!;}
 
 #web server
 print "Server Copy Update\n";
 unlink "y:/Inetpub/Secondlife/Outworldz_Installer/Grid/DreamGrid-Update$type.zip";
 if (!copy ("../Zips/DreamGrid-Update$type.zip", "y:/Inetpub/Secondlife/Outworldz_Installer/Grid/DreamGrid-Update$type.zip"))  {die $!;}
+
+print "Server Publish?\n";
+<stdin>;
+
+unlink "y:/Inetpub/Secondlife/Outworldz_Installer/Grid/DreamGrid.zip";
+if (!copy ("../Zips/DreamGrid$type.zip", "y:/Inetpub/Secondlife/Outworldz_Installer/Grid/DreamGrid.zip"))  {die $!;}
 unlink "y:/Inetpub/Secondlife/Outworldz_Installer/Grid/DreamGrid-Update.zip";
 if (!copy ("../Zips/DreamGrid-Update$type.zip", "y:/Inetpub/Secondlife/Outworldz_Installer/Grid/DreamGrid-Update.zip"))  {die $!;}
+
 
 # lastly revisions file
 if (!copy ('Revisions.txt', 'y:/Inetpub/Secondlife/Outworldz_Installer/Revisions.txt'))  {die $!;}
