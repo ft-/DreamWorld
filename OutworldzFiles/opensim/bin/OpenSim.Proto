@@ -66,7 +66,7 @@ PrivURL=http://192.168.2.3
 
 ; Automatically changed by Dreamworld - do not change this
 ;# Grid Name for Wifi to show
-GridName=Mach
+GridName=DreamGrid
 
 ; Automatically changed by Dreamworld - do not change this
 ;# Dreamworld runs a listener on this port to run diagnostics. Dreamgrid listens for regions LOGINS enabled
@@ -401,7 +401,7 @@ RenderMeshes=false
 ;# {permissionmodules} {} {Permission modules to use (may specify multiple modules, separated by comma} {} DefaultPermissionsModule
 ;; Permission modules to use, separated by comma.
 ;; Possible modules are DefaultPermissionsModule, PrimLimitsModule
-permissionmodules=DefaultPermissionsModule, PrimLimitsModule
+permissionmodules=DefaultPermissionsModule
 
 ;# {serverside_object_permissions} {permissionmodules:DefaultPermissionsModule} {Activate permission handling by the sim?} {true false} true
 ;; These are the parameters for the default permissions module
@@ -420,7 +420,7 @@ allow_grid_gods=true
 ;; please note that this still doesn't duplicate SL, and is not intended to
 ;# {region_owner_is_god} {} {Allow region owner gods} {true false} true
 ;; Allow region owners to assume god powers in their regions
-region_owner_is_god=true
+region_owner_is_god=false
 
 ;# {region_manager_is_god} {} {Allow region manager gods} {true false} false
 ;; Allow region managers to assume god powers in regions they manage
@@ -483,10 +483,10 @@ SMTP_SERVER_HOSTNAME=smtp.gmail.com
 SMTP_SERVER_PORT=587
 
 ;# {SMTP_SERVER_LOGIN} {[Startup]emailmodule:DefaultEmailModule enabled:true} {SMTP server user name?} {}
-SMTP_SERVER_LOGIN=fred.beckhusen@gmail.com
+SMTP_SERVER_LOGIN=Gmail for notification
 
 ;# {SMTP_SERVER_PASSWORD} {[Startup]emailmodule:DefaultEmailModule enabled:true} {SMTP server password} {}
-SMTP_SERVER_PASSWORD=4a<$moreG
+SMTP_SERVER_PASSWORD=Gmail password
 
 [Network]
 'must be started with parameter "-console=rest". Furthermore, the configuration options
@@ -845,7 +845,7 @@ snapshot_cache_directory="DataSnapshot"
 ;; New way of specifying data services, one per service
 DATA_SRV_MISearch=http://hyperica.com/Search/register.php
 data_services=http://hyperica.com/Search/register.php
-indexsims=true
+indexsims=false
 
 [Search]
 Module=OpenSimSearch
@@ -1325,7 +1325,7 @@ enabled=True
 
 ; Enable this to generate classic particle clouds above the sim.
 ; default is disabled - turn it on here
-enabled=true
+enabled=false
 
 ; Density of cloud cover 0.0 to 1.0 Default 0.5
 density=0.5

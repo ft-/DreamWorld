@@ -1172,19 +1172,21 @@ Public Class Form1
         MySetting.SetOtherIni("Gloebit", "GLBOwnerName", MySetting.GLBOwnerName)
         MySetting.SetOtherIni("Gloebit", "GLBOwnerEmail", MySetting.GLBOwnerEmail)
 
-        'Dim ConnectionString = "Data Source=" + MySetting.RobustServer _
-        '    + ";Database=" + MySetting.RobustMySqlName _
-        '    + ";Port=" + MySetting.MySqlPort _
-        '    + ";User ID=" + MySetting.RobustMySqlUsername _
-        '    + ";Password=" + MySetting.RobustMySqlPassword _
-        '    + ";Old Guids=True;Allow Zero Datetime=True;"
+        Dim ConnectionString = """" + "Data Source = " + MySetting.RobustServer _
+            + ";Database=" + MySetting.RobustMySqlName _
+            + ";Port=" + MySetting.MySqlPort _
+            + ";User ID=" + MySetting.RobustMySqlUsername _
+            + ";Password=" + MySetting.RobustMySqlPassword _
+            + """"
 
 
-        Dim ConnectionString = "Data Source=" + "127.0.0.1" _
-             + ";Database=" + MySetting.RegionDBName _
-             + ";Port=" + MySetting.MySqlPort _
-             + ";User ID=" + MySetting.RegionDBUsername _
-             + ";Password=" + MySetting.RegionDbPassword
+        ' for standalones
+        '       ConnectionString = "Data Source=" + "127.0.0.1" _
+        '           + ";Database=" + MySetting.RegionDBName _
+        '          + ";Port=" + MySetting.MySqlPort _
+        '         + ";User ID=" + MySetting.RegionDBUsername _
+        '        + ";Password=" + MySetting.RegionDbPassword _
+        '       + ";Guids=True;Allow Zero Datetime=True;"
 
 
         MySetting.SetOtherIni("Gloebit", "GLBSpecificConnectionString", ConnectionString)
@@ -1210,9 +1212,9 @@ Public Class Form1
         ' Wifi Section
 
         If (MySetting.WifiEnabled) Then
-            MySetting.SetOtherIni("WifiService", "Enabled", "true")
+            MySetting.SetOtherIni("WifiService", "Enabled", "True")
         Else
-            MySetting.SetOtherIni("WifiService", "Enabled", "false")
+            MySetting.SetOtherIni("WifiService", "Enabled", "False")
         End If
 
         MySetting.SetOtherIni("WifiService", "GridName", MySetting.SimName)
