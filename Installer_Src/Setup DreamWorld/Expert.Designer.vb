@@ -1112,8 +1112,8 @@ Partial Class Expert
         Me.AutoRestartBox.Name = "AutoRestartBox"
         Me.AutoRestartBox.Size = New System.Drawing.Size(65, 20)
         Me.AutoRestartBox.TabIndex = 1861
-        Me.ToolTip1.SetToolTip(Me.AutoRestartBox, "Minutes to restart: default 1440 (1 day).  Set to to disable auto restart of regi" &
-        "ons")
+        Me.ToolTip1.SetToolTip(Me.AutoRestartBox, "Minutes to Autorestart: default 240 (4 hour).  Set to to disable auto restart of " &
+        "region")
         '
         'PictureBox10
         '

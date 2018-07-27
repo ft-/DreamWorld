@@ -115,14 +115,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Start.exe" size="30158848">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Start.exe" size="30159360">
       <assemblyIdentity name="Start" version="2.0.1.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>c+J9FEXh2X0HrX35hopRxyY46t2KyxOEGRxy8tgAL+Y=</dsig:DigestValue>
+        <dsig:DigestValue>bw355sG6/X3Qc+X+2OVEWRL5cc412cmWexHmByLWxk0=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

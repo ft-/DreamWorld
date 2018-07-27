@@ -43,7 +43,7 @@
 [Const]
 
 ; Automatically changed by Dreamworld - do not change this
-http_listener_port=9204
+http_listener_port=8004
 
 ; Automatically changed by Dreamworld - do not change this
 ;# used by the one-exe-per-instance logic. This becomes the folder for the regions file.
@@ -55,23 +55,23 @@ BaseURL=http://Mach.Outworldz.net
 
 ; Automatically changed by Dreamworld - do not change this
 ;# {PublicPort} {} {PublicPort} {8002} "8002"
-PublicPort=9200
+PublicPort=8002
 
 ; Automatically changed by Dreamworld - do not change this
 ;# {PrivatePort} {} {PrivatePort} {8003} "8003"
-PrivatePort=9203
+PrivatePort=8003
 
 ;# so localhost can be changed if necessary
 PrivURL=http://192.168.2.3
 
 ; Automatically changed by Dreamworld - do not change this
 ;# Grid Name for Wifi to show
-GridName=DreamGrid
+GridName=Mach
 
 ; Automatically changed by Dreamworld - do not change this
 ;# Dreamworld runs a listener on this port to run diagnostics. Dreamgrid listens for regions LOGINS enabled
 ;# {DiagnosticsPort} {} {DiagnosticsPort} {8001} "8001"
-DiagnosticsPort=9201
+DiagnosticsPort=8001
 
 [Startup]
 
@@ -309,7 +309,7 @@ Stats_URI="jsonSimStats"
 ManagedStatsRemoteFetchURI="ManagedStats"
 
 ;# economy module
-economymodule=Gloebit
+economymodule=
 
 [RegionReady]
 
@@ -401,7 +401,7 @@ RenderMeshes=false
 ;# {permissionmodules} {} {Permission modules to use (may specify multiple modules, separated by comma} {} DefaultPermissionsModule
 ;; Permission modules to use, separated by comma.
 ;; Possible modules are DefaultPermissionsModule, PrimLimitsModule
-permissionmodules=DefaultPermissionsModule
+permissionmodules=DefaultPermissionsModule, PrimLimitsModule
 
 ;# {serverside_object_permissions} {permissionmodules:DefaultPermissionsModule} {Activate permission handling by the sim?} {true false} true
 ;; These are the parameters for the default permissions module
@@ -414,7 +414,7 @@ permissionmodules=DefaultPermissionsModule
 ;# {allow_grid_gods} {} {Allow grid gods?} {true false} false
 ;; This allows users with a UserLevel of 200 or more to assume god
 ;; powers in the regions in this simulator.
-allow_grid_gods=true
+allow_grid_gods=false
 
 ;; This allows some control over permissions
 ;; please note that this still doesn't duplicate SL, and is not intended to
@@ -845,7 +845,7 @@ snapshot_cache_directory="DataSnapshot"
 ;; New way of specifying data services, one per service
 DATA_SRV_MISearch=http://hyperica.com/Search/register.php
 data_services=http://hyperica.com/Search/register.php
-indexsims=false
+indexsims=true
 
 [Search]
 Module=OpenSimSearch
@@ -1333,3 +1333,15 @@ density=0.5
 ; update interval for the cloud cover data returned by llCloud().
 ; default is 1000
 cloud_update_rate=1000
+
+; many thanks to Johan Neddings for this module:
+[AutoRestart]
+RegionShutDown=false
+Time=1
+
+; ##
+; ## SERVER RELEASE NOTES by Johan Neddings
+; ##
+[ServerReleaseNotesURL]
+enabled=true
+ServerReleaseNotesURL="https://www.outworldz.com/outworldz_installer/revisions.txt"

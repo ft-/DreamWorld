@@ -205,7 +205,7 @@ Public Class MySettings
         Try
             Dim x = AutoRestartInterval()
         Catch ex As Exception
-            AutoRestartInterval() = 60 * 23   ' default = 1 day
+            AutoRestartInterval() = 60 * 4   ' default = 4 hours
             SaveMyINI()
         End Try
 
@@ -348,7 +348,7 @@ Public Class MySettings
 #Region "Properties"
     Public Property AutoRestartInterval() As Integer
         Get
-            Return CType(GetMySetting("AutoRestartInterval"), Boolean)
+            Return CType(GetMySetting("AutoRestartInterval"), Integer)
         End Get
         Set
             SetMySetting("AutoRestartInterval", Value)

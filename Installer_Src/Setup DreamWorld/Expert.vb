@@ -10,6 +10,8 @@ Public Class Expert
 
     Private Sub Loaded(sender As Object, e As EventArgs) Handles Me.Load
 
+
+        AutoRestartBox.Text = Form1.MySetting.AutoRestartInterval.ToString
         EnableMaxPrims.Checked = Form1.MySetting.Primlimits()
         GDPRCheckBox.Checked = Form1.MySetting.GDPR()
         AutoStartCheckbox.Checked = Form1.MySetting.Autostart
