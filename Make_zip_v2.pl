@@ -1,5 +1,5 @@
 
-my $type  = '-V2.23';# '-Beta-V1.5';
+my $type  = '-V2.25';# '-Beta-V1.5';
 my $dir = "C:/Opensim/Outworldz Dreamgrid Source";
 
 chdir ($dir);
@@ -120,8 +120,12 @@ say("Drop mysql files from update");
 # now delete the mysql from the UPDATE
 Process ("../7z.exe -tzip d ..\\Zips\\DreamGrid-Update$type.zip Outworldzfiles\\mysql\\data\\ -r ");
 
-say ("Dropping Setting.ini from updater");
+say ("Dropping Setting.ini from update");
 Process ("../7z.exe -tzip d ..\\Zips\\DreamGrid-Update$type.zip Outworldzfiles\\Settings.ini -r ");
+
+say ("Dropping Perl  from both");
+Process ("../7z.exe -tzip d ..\\Zips\\DreamGrid-Update$type.zip Make_zip_v2.pl -r ");
+Process ("../7z.exe -tzip d ..\\Zips\\DreamGrid-$type.zip Make_zip_v2.pl -r ");
 
 # del Dot net because we cannot overwrite an open file
 Process ("../7z.exe -tzip d ..\\Zips\\DreamGrid-Update$type.zip DotNetZip.dll ");
