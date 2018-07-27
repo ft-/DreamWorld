@@ -14,7 +14,7 @@ Public Class Update
 
     Dim BLKSIZE As Integer = 32767
 
-    Dim Version As String = "2.21"
+    Dim Version As String = "2.25"
     Dim Type As String = "UpdateGrid"  ' possible server-side choices are "Update", "UpdateGrid" and "Installer"
     'Dim Type As String = "Update"  
     'Dim Type As String = "Install"  
@@ -22,6 +22,7 @@ Public Class Update
     Dim gCurDir = Nothing   ' Holds the current folder that we are running in
     Dim gFileName As String = Nothing
     Dim whereToSave As String = Nothing 'Where the program save the file
+    Dim gshortfilename = Nothing    ' the short name
 
     Delegate Sub ChangeTextsSafe(ByVal length As Long, ByVal position As Integer, ByVal percent As Integer, ByVal speed As Double)
     Delegate Sub DownloadCompleteSafe(ByVal cancelled As Boolean)
@@ -46,7 +47,7 @@ Public Class Update
         If arguments.Length > 1 Then
             ' for debugging when compiling
             If arguments(1) = "-debug" Then
-                MyFolder = "C:\Opensim\Outworldz 2.15 to 2.2" ' for testing, as the compiler buries itself in ../../../debug
+                MyFolder = "C:\Users\Fred\Desktop\Dreamgrid" ' for testing, as the compiler buries itself in ../../../debug
                 ChDir(MyFolder)
             End If
         End If
@@ -59,17 +60,23 @@ Public Class Update
 
         StopMYSQL()
 
-        Dim filename = Nothing
+
         Try
             Dim client As New System.Net.WebClient
-            filename = client.DownloadString("http://www.outworldz.com/Outworldz_Installer/GetUpdate.plx?t=" + Type + "&r= " + Random())
+            gshortfilename = client.DownloadString("http://www.outworldz.com/Outworldz_Installer/GetUpdate.plx?t=" + Type + "&r= " + Random())
         Catch ex As Exception
             Label1.Text = "Drat!  The Outworldz web site won't talk to me.  No " + Type + "file found"
 
         End Try
 
-        gFileName = "http://www.outworldz.com/Outworldz_Installer/Grid/" + filename
-        If filename.length Then
+        If arguments.Length > 1 Then
+            If arguments(1) = "-debug" Then
+                gshortfilename = "DreamGrid-Update-V2.25.zip"
+            End If
+        End If
+
+        gFileName = "https://www.outworldz.com/Outworldz_Installer/Grid/" + gshortfilename
+        If gshortfilename.length Then
             BackgroundWorker1.RunWorkerAsync() 'Start download
         Else
             Label1.Text = "Drat!  The Outworldz web site won't talk to me.  No " + Type + "file found"
@@ -83,23 +90,16 @@ Public Class Update
 
     Public Sub ChangeTexts(ByVal length As Long, ByVal position As Integer, ByVal percent As Integer, ByVal speed As Double)
 
-        Try
-            Label1.Text = "Downloading Update, please wait..."
-            'Label3.Text = "File Size: " & Math.Round((length / 1024), 2) & " KB"
-            Label2.Text = "Downloaded " & Math.Round((position / 1024), 2) & " KB of " & Math.Round((length / 1024), 2) & "KB "
+        Label1.Text = "Downloading " + gshortfilename + ", please wait..."
+        'Label3.Text = "File Size: " & Math.Round((length / 1024), 2) & " KB"
+        Label2.Text = "Downloaded " & Math.Round((position / 1024), 2) & " KB of " & Math.Round((length / 1024), 2) & "KB "
 
-            Application.DoEvents()
-            If speed = -1 Then
-                Label3.Text = "Speed: calculating..."
-            Else
-                Label3.Text = "Speed: " & Math.Round((speed / 1024), 2) & " KB/s"
-            End If
+        If speed = -1 Then
+            Label3.Text = "Speed: calculating..."
+        Else
+            Label3.Text = "Speed: " & Math.Round((speed / 1024), 2) & " KB/s"
+        End If
 
-            Application.DoEvents()
-        Catch ex As Exception
-            MsgBox("Exception: " + ex.Message)
-            Log("Exception: " + ex.Message)
-        End Try
     End Sub
 
     Private Sub BackgroundWorker1_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles BackgroundWorker1.DoWork
@@ -158,7 +158,7 @@ Public Class Update
             speedtimer.Start()
 
             Dim readBytes(BLKSIZE) As Byte
-            Dim bytesread As Integer = theResponse.GetResponseStream.Read(readBytes, 0, 4096)
+            Dim bytesread As Integer = theResponse.GetResponseStream.Read(readBytes, 0, BLKSIZE)
 
             nRead += bytesread
             Dim percent As Short = nRead / length
@@ -197,13 +197,14 @@ Public Class Update
             Exit Sub
         End If
 
+        Log("Launching Install Thread")
         Dim completeDelegate As New DownloadCompleteSafe(AddressOf DownloadComplete)
         Invoke(completeDelegate, False)
 
     End Sub
 
     Public Sub DownloadComplete(ByVal cancelled As Boolean)
-        Log("Prepping for install")
+
         btnCancel.Visible = False
         If cancelled Then
             Log("Aborted")
@@ -212,7 +213,8 @@ Public Class Update
             Label3.Text = ""
             End
         Else
-            Thread.Sleep(1000)
+            Log("Download Complete")
+            Thread.Sleep(5000)
             Label1.Text = ""
             Label2.Text = ""
             Label3.Text = ""
@@ -223,11 +225,14 @@ Public Class Update
                 Using zip As ZipFile = ZipFile.Read(MyFolder + "\tmp.zip")
                     Debug.Print("Received " + Str(zip.Entries.Count) + " files. Extracting to disk.")
                     Log("Received " + Str(zip.Entries.Count) + " files. Extracting to disk.")
+
+                    My.Computer.FileSystem.DeleteDirectory(MyFolder + "\Outworldzfiles\opensim\bin\addin-db-002", FileIO.DeleteDirectoryOption.DeleteAllContents)
+
                     For Each ZipEntry In zip
                         Application.DoEvents()
                         ctr = ctr + 1
                         Label1.Text = "Extracting " + Path.GetFileName(ZipEntry.FileName)
-                        Log("Extracting " + Path.GetFileName(ZipEntry.FileName))
+                        'Log("Extracting " + Path.GetFileName(ZipEntry.FileName))
                         ZipEntry.Extract(MyFolder, Ionic.Zip.ExtractExistingFileAction.OverwriteSilently)
                     Next
                 End Using

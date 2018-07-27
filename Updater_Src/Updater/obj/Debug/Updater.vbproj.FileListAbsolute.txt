@@ -113,10 +113,7 @@ C:\Opensim\Outworldz Dreamgrid Source\Updater_Src\Updater\bin\Debug\UpdateGrid.e
 C:\Opensim\Outworldz Dreamgrid Source\Updater_Src\Updater\bin\Debug\UpdateGrid.pdb
 C:\Opensim\Outworldz Dreamgrid Source\Updater_Src\Updater\bin\Debug\UpdateGrid.xml
 C:\Opensim\Outworldz Dreamgrid Source\Updater_Src\Updater\bin\Debug\DotNetZip.dll
-C:\Opensim\Outworldz Dreamgrid Source\Updater_Src\Updater\bin\Debug\System.Net.Http.dll
 C:\Opensim\Outworldz Dreamgrid Source\Updater_Src\Updater\bin\Debug\DotNetZip.xml
-C:\Opensim\Outworldz Dreamgrid Source\Updater_Src\Updater\bin\Debug\System.Net.Http.xml
-C:\Opensim\Outworldz Dreamgrid Source\Updater_Src\Updater\obj\Debug\Updater.vbprojResolveAssemblyReference.cache
 C:\Opensim\Outworldz Dreamgrid Source\Updater_Src\Updater\obj\Debug\Outworldz.Update.resources
 C:\Opensim\Outworldz Dreamgrid Source\Updater_Src\Updater\obj\Debug\Outworldz.Resources.resources
 C:\Opensim\Outworldz Dreamgrid Source\Updater_Src\Updater\obj\Debug\Updater.vbproj.GenerateResource.Cache
