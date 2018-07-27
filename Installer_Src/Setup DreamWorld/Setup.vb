@@ -34,7 +34,7 @@ Public Class Form1
 
 #Region "Declarations"
 
-    Dim MyVersion As String = "2.23"
+    Dim MyVersion As String = "2.25"
     Dim DebugPath As String = "\Opensim\Outworldz DreamGrid Source"  ' no slash at end
     Public Domain As String = "https://www.outworldz.com"
     Public prefix As String ' Holds path to Opensim folder
@@ -912,6 +912,8 @@ Public Class Form1
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
         ' Opensim.ini
         MySetting.LoadOtherIni(prefix + "bin\Opensim.proto", ";")
+
+        MySetting.SetOtherIni("AutoRestart", "Time", MySetting.AutoRestartInterval())
 
         If MySetting.Primlimits Then
             MySetting.SetOtherIni("Permissions", "permissionmodules", "DefaultPermissionsModule, PrimLimitsModule")
@@ -3847,7 +3849,6 @@ Public Class Form1
     End Sub
 
 #End Region
-
 
 #Region "Regions"
 

@@ -558,6 +558,16 @@ Public Class Expert
 
     End Sub
 
+    Private Sub AutoRestartBox_TextChanged(sender As Object, e As EventArgs) Handles AutoRestartBox.TextChanged
+
+        Try
+            Form1.MySetting.AutoRestartInterval = Convert.ToInt16(AutoRestartBox.Text)
+            Form1.MySetting.SaveMyINI()
+        Catch
+        End Try
+
+    End Sub
+
 
 
 #End Region

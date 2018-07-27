@@ -798,9 +798,9 @@ Public Class RegionMaker
             '"POST /TOS HTTP/1.1" & vbCrLf & "Host: mach.outworldz.net:9201" & vbCrLf & "Connection: keep-alive" & vbCrLf & "Content-Length: 102" & vbCrLf & "Cache-Control: max-age=0" & vbCrLf & "Upgrade-Insecure-Requests: 1" & vbCrLf & "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36" & vbCrLf & "Origin: http://mach.outworldz.net:9201" & vbCrLf & "Content-Type: application/x-www-form-urlencoded" & vbCrLf & "DNT: 1" & vbCrLf & "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8" & vbCrLf & "Referer: http://mach.outworldz.net:9200/wifi/termsofservice.html?uid=acb8fd92-c725-423f-b750-5fd971d73182&sid=40c5b80a-5377-4b97-820c-a0952782a701" & vbCrLf & "Accept-Encoding: gzip, deflate" & vbCrLf & "Accept-Language: en-US,en;q=0.9" & vbCrLf & vbCrLf & 
             '"action-accept=Accept&uid=acb8fd92-c725-423f-b750-5fd971d73182&sid=40c5b80a-5377-4b97-820c-a0952782a701"
 
-            If Not Form1.MySetting.StandAlone() Then
-                Return "<html><head></head><body>Error</html>"
-            End If
+            'If Not Form1.MySetting.StandAlone() Then
+            Return "<html><head></head><body>Error</html>"
+            'End If
 
             Dim uid As Guid
             Dim sid As Guid
@@ -824,7 +824,7 @@ Public Class RegionMaker
                 If match.Success And match2.Success Then
 
                     ' Unfinished has SQL injection - do not use. Meeds parameterization
-                    ' Only works in STandalone, anyway.
+                    ' Only works in Standalone, anyway.
                     ' Not implemented at all in Grid mode - the Diva DLL Diva is stubbed off.
                     Dim result As Integer = 1
 

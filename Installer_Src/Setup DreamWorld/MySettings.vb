@@ -202,6 +202,12 @@ Public Class MySettings
             SaveMyINI()
         End Try
 
+        Try
+            Dim x = AutoRestartInterval()
+        Catch ex As Exception
+            AutoRestartInterval() = 60 * 23   ' default = 1 day
+            SaveMyINI()
+        End Try
 
         ' check for default
         If (SmtpHost() = "") Then SmtpHost() = "smtp.gmail.com"
@@ -340,6 +346,14 @@ Public Class MySettings
 #End Region
 
 #Region "Properties"
+    Public Property AutoRestartInterval() As Integer
+        Get
+            Return CType(GetMySetting("AutoRestartInterval"), Boolean)
+        End Get
+        Set
+            SetMySetting("AutoRestartInterval", Value)
+        End Set
+    End Property
 
     Public Property StandAlone() As Boolean
         Get

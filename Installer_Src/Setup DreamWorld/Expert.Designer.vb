@@ -76,7 +76,6 @@ Partial Class Expert
         Me.RobustDBPassword = New System.Windows.Forms.TextBox()
         Me.RobustDBUsername = New System.Windows.Forms.TextBox()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.PictureBox3 = New System.Windows.Forms.PictureBox()
         Me.AutoLoadCheckbox = New System.Windows.Forms.CheckBox()
         Me.AdminFirst = New System.Windows.Forms.TextBox()
@@ -119,6 +118,9 @@ Partial Class Expert
         Me.PictureBox9 = New System.Windows.Forms.PictureBox()
         Me.GroupBox11 = New System.Windows.Forms.GroupBox()
         Me.LimitsBox = New System.Windows.Forms.GroupBox()
+        Me.AutoRestartBox = New System.Windows.Forms.TextBox()
+        Me.PictureBox10 = New System.Windows.Forms.PictureBox()
+        Me.Label25 = New System.Windows.Forms.Label()
         Me.GroupBox3.SuspendLayout()
         CType(Me.PictureBox7, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox6, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -132,7 +134,6 @@ Partial Class Expert
         CType(Me.PictureBox8, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox1.SuspendLayout()
         Me.GridGroup.SuspendLayout()
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox3, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox4, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.GridNameHelp, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -144,6 +145,7 @@ Partial Class Expert
         CType(Me.PictureBox9, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox11.SuspendLayout()
         Me.LimitsBox.SuspendLayout()
+        CType(Me.PictureBox10, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'GroupBox3
@@ -178,8 +180,7 @@ Partial Class Expert
         Me.SuitcaseCheckbox.Size = New System.Drawing.Size(150, 17)
         Me.SuitcaseCheckbox.TabIndex = 1866
         Me.SuitcaseCheckbox.Text = "Enable Inventory Suitcase"
-        Me.ToolTip1.SetToolTip(Me.SuitcaseCheckbox, "By clicking this yoiu agree to  send data to Hyperica.com for items you have mark" &
-        "ed as 'Show in Search'")
+        Me.ToolTip1.SetToolTip(Me.SuitcaseCheckbox, "Disbale the suitcase is less secure but easier to travel with")
         Me.SuitcaseCheckbox.UseVisualStyleBackColor = True
         '
         'EnableHypergrid
@@ -206,7 +207,7 @@ Partial Class Expert
         'PictureBox6
         '
         Me.PictureBox6.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.PictureBox6.Location = New System.Drawing.Point(152, 199)
+        Me.PictureBox6.Location = New System.Drawing.Point(151, 195)
         Me.PictureBox6.Name = "PictureBox6"
         Me.PictureBox6.Size = New System.Drawing.Size(30, 34)
         Me.PictureBox6.TabIndex = 1864
@@ -490,7 +491,7 @@ Partial Class Expert
         'PictureBox8
         '
         Me.PictureBox8.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.PictureBox8.Location = New System.Drawing.Point(150, 8)
+        Me.PictureBox8.Location = New System.Drawing.Point(149, 16)
         Me.PictureBox8.Name = "PictureBox8"
         Me.PictureBox8.Size = New System.Drawing.Size(30, 34)
         Me.PictureBox8.TabIndex = 1858
@@ -685,16 +686,6 @@ Partial Class Expert
         Me.RobustDBUsername.Size = New System.Drawing.Size(107, 20)
         Me.RobustDBUsername.TabIndex = 36
         '
-        'PictureBox1
-        '
-        Me.PictureBox1.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.PictureBox1.Location = New System.Drawing.Point(213, 0)
-        Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(30, 34)
-        Me.PictureBox1.TabIndex = 1858
-        Me.PictureBox1.TabStop = False
-        Me.ToolTip1.SetToolTip(Me.PictureBox1, "Right click Dreamgrid and start as Administrator to enable this.")
-        '
         'PictureBox3
         '
         Me.PictureBox3.Image = Global.Outworldz.My.Resources.Resources.about
@@ -766,7 +757,7 @@ Partial Class Expert
         'PictureBox4
         '
         Me.PictureBox4.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.PictureBox4.Location = New System.Drawing.Point(148, 4)
+        Me.PictureBox4.Location = New System.Drawing.Point(148, 12)
         Me.PictureBox4.Name = "PictureBox4"
         Me.PictureBox4.Size = New System.Drawing.Size(30, 34)
         Me.PictureBox4.TabIndex = 1858
@@ -874,14 +865,16 @@ Partial Class Expert
         '
         'AutoStart
         '
-        Me.AutoStart.Controls.Add(Me.PictureBox1)
+        Me.AutoStart.Controls.Add(Me.Label25)
+        Me.AutoStart.Controls.Add(Me.AutoRestartBox)
+        Me.AutoStart.Controls.Add(Me.PictureBox10)
         Me.AutoStart.Controls.Add(Me.Label13)
         Me.AutoStart.Controls.Add(Me.Label6)
         Me.AutoStart.Controls.Add(Me.BootStart)
         Me.AutoStart.Controls.Add(Me.AutoStartCheckbox)
         Me.AutoStart.Location = New System.Drawing.Point(639, 334)
         Me.AutoStart.Name = "AutoStart"
-        Me.AutoStart.Size = New System.Drawing.Size(243, 70)
+        Me.AutoStart.Size = New System.Drawing.Size(243, 118)
         Me.AutoStart.TabIndex = 44
         Me.AutoStart.TabStop = False
         Me.AutoStart.Text = "Auto Start and Start on Boot"
@@ -927,12 +920,12 @@ Partial Class Expert
         'GroupBox5
         '
         Me.GroupBox5.Controls.Add(Me.AutoLoadCheckbox)
-        Me.GroupBox5.Location = New System.Drawing.Point(639, 410)
+        Me.GroupBox5.Location = New System.Drawing.Point(225, 417)
         Me.GroupBox5.Name = "GroupBox5"
         Me.GroupBox5.Size = New System.Drawing.Size(189, 48)
         Me.GroupBox5.TabIndex = 55
         Me.GroupBox5.TabStop = False
-        Me.GroupBox5.Text = "Auto Load on Teleport"
+        Me.GroupBox5.Text = "Auto Boot on Teleport"
         Me.GroupBox5.Visible = False
         '
         'AdminPassword
@@ -1011,7 +1004,7 @@ Partial Class Expert
         Me.GroupBox6.Controls.Add(Me.GmailUsername)
         Me.GroupBox6.Location = New System.Drawing.Point(433, 329)
         Me.GroupBox6.Name = "GroupBox6"
-        Me.GroupBox6.Size = New System.Drawing.Size(200, 192)
+        Me.GroupBox6.Size = New System.Drawing.Size(200, 156)
         Me.GroupBox6.TabIndex = 1861
         Me.GroupBox6.TabStop = False
         Me.GroupBox6.Text = "SMTP Send Email Account"
@@ -1113,6 +1106,34 @@ Partial Class Expert
         Me.LimitsBox.TabStop = False
         Me.LimitsBox.Text = "Prim Limits"
         '
+        'AutoRestartBox
+        '
+        Me.AutoRestartBox.Location = New System.Drawing.Point(124, 80)
+        Me.AutoRestartBox.Name = "AutoRestartBox"
+        Me.AutoRestartBox.Size = New System.Drawing.Size(65, 20)
+        Me.AutoRestartBox.TabIndex = 1861
+        Me.ToolTip1.SetToolTip(Me.AutoRestartBox, "Minutes to restart: default 1440 (1 day).  Set to to disable auto restart of regi" &
+        "ons")
+        '
+        'PictureBox10
+        '
+        Me.PictureBox10.Image = Global.Outworldz.My.Resources.Resources.about
+        Me.PictureBox10.Location = New System.Drawing.Point(208, 19)
+        Me.PictureBox10.Name = "PictureBox10"
+        Me.PictureBox10.Size = New System.Drawing.Size(30, 34)
+        Me.PictureBox10.TabIndex = 1859
+        Me.PictureBox10.TabStop = False
+        Me.ToolTip1.SetToolTip(Me.PictureBox10, "Right click Dreamgrid and start as Administrator to enable this.")
+        '
+        'Label25
+        '
+        Me.Label25.AutoSize = True
+        Me.Label25.Location = New System.Drawing.Point(11, 83)
+        Me.Label25.Name = "Label25"
+        Me.Label25.Size = New System.Drawing.Size(104, 13)
+        Me.Label25.TabIndex = 1862
+        Me.Label25.Text = "Auto Restart Interval"
+        '
         'Expert
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1153,7 +1174,6 @@ Partial Class Expert
         Me.GroupBox1.PerformLayout()
         Me.GridGroup.ResumeLayout(False)
         Me.GridGroup.PerformLayout()
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox3, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox4, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.GridNameHelp, System.ComponentModel.ISupportInitialize).EndInit()
@@ -1172,6 +1192,7 @@ Partial Class Expert
         Me.GroupBox11.PerformLayout()
         Me.LimitsBox.ResumeLayout(False)
         Me.LimitsBox.PerformLayout()
+        CType(Me.PictureBox10, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -1231,7 +1252,6 @@ Partial Class Expert
     Friend WithEvents PictureBox5 As PictureBox
     Friend WithEvents PictureBox2 As PictureBox
     Friend WithEvents PictureBox3 As PictureBox
-    Friend WithEvents PictureBox1 As PictureBox
     Friend WithEvents PictureBox7 As PictureBox
     Friend WithEvents PictureBox6 As PictureBox
     Friend WithEvents EnableHypergrid As CheckBox
@@ -1270,4 +1290,7 @@ Partial Class Expert
     Friend WithEvents SuitcaseCheckbox As CheckBox
     Friend WithEvents LimitsBox As GroupBox
     Friend WithEvents EnableMaxPrims As CheckBox
+    Friend WithEvents Label25 As Label
+    Friend WithEvents AutoRestartBox As TextBox
+    Friend WithEvents PictureBox10 As PictureBox
 End Class
