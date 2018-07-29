@@ -66,7 +66,7 @@ PrivURL=http://192.168.2.3
 
 ; Automatically changed by Dreamworld - do not change this
 ;# Grid Name for Wifi to show
-GridName=Mach
+GridName=DreamGrid
 
 ; Automatically changed by Dreamworld - do not change this
 ;# Dreamworld runs a listener on this port to run diagnostics. Dreamgrid listens for regions LOGINS enabled
@@ -414,7 +414,7 @@ permissionmodules=DefaultPermissionsModule, PrimLimitsModule
 ;# {allow_grid_gods} {} {Allow grid gods?} {true false} false
 ;; This allows users with a UserLevel of 200 or more to assume god
 ;; powers in the regions in this simulator.
-allow_grid_gods=false
+allow_grid_gods=true
 
 ;; This allows some control over permissions
 ;; please note that this still doesn't duplicate SL, and is not intended to
@@ -639,6 +639,8 @@ Cap_GetDisplayNames="localhost"
 ;; provides a working default for the grid and setting here is
 ;; optional.
 ;SearchServerURI = "http://127.0.0.1:9000/"
+SearchServerURI="http://www.hyperica.com/opensimsearch/"
+
 ;# {DestinationGuideURI} {} {URL of the destination guide} {}
 ;;
 ;; This serves the same purpose as the DestinationGuideURI in the
@@ -1325,7 +1327,7 @@ enabled=True
 
 ; Enable this to generate classic particle clouds above the sim.
 ; default is disabled - turn it on here
-enabled=false
+enabled=true
 
 ; Density of cloud cover 0.0 to 1.0 Default 0.5
 density=0.5
@@ -1337,7 +1339,7 @@ cloud_update_rate=1000
 ; many thanks to Johan Neddings for this module:
 [AutoRestart]
 RegionShutDown=false
-Time=1
+Time=240
 
 ; ##
 ; ## SERVER RELEASE NOTES by Johan Neddings
@@ -1345,3 +1347,8 @@ Time=1
 [ServerReleaseNotesURL]
 enabled=true
 ServerReleaseNotesURL="https://www.outworldz.com/outworldz_installer/revisions.txt"
+
+[Modules]
+MIImageServiceModule=true
+LandServices="RemoteLandServicesConnector"
+LandServiceInConnector="true"
