@@ -570,6 +570,16 @@ Public Class Expert
 
     End Sub
 
+    Private Sub PictureBox5_Click_1(sender As Object, e As EventArgs) Handles PictureBox5.Click
+        Dim webAddress As String = Form1.Domain + "/Outworldz_installer/technical.htm#Grid"
+        Process.Start(webAddress)
+    End Sub
+
+    Private Sub PictureBox6_Click(sender As Object, e As EventArgs) Handles PictureBox6.Click
+        Dim webAddress As String = Form1.Domain + "/Outworldz_installer/technical.htm#Grid"
+        Process.Start(webAddress)
+    End Sub
+
 
 
 #End Region

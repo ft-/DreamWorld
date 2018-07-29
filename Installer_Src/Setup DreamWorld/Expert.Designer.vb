@@ -87,6 +87,8 @@ Partial Class Expert
         Me.GDPRCheckBox = New System.Windows.Forms.CheckBox()
         Me.GridNameHelp = New System.Windows.Forms.PictureBox()
         Me.EnableMaxPrims = New System.Windows.Forms.CheckBox()
+        Me.AutoRestartBox = New System.Windows.Forms.TextBox()
+        Me.PictureBox10 = New System.Windows.Forms.PictureBox()
         Me.RegionMySqlPassword = New System.Windows.Forms.TextBox()
         Me.Label21 = New System.Windows.Forms.Label()
         Me.RegionDBUsername = New System.Windows.Forms.TextBox()
@@ -95,6 +97,7 @@ Partial Class Expert
         Me.Label22 = New System.Windows.Forms.Label()
         Me.StandaloneGroup = New System.Windows.Forms.GroupBox()
         Me.AutoStart = New System.Windows.Forms.GroupBox()
+        Me.Label25 = New System.Windows.Forms.Label()
         Me.Label13 = New System.Windows.Forms.Label()
         Me.Label6 = New System.Windows.Forms.Label()
         Me.BootStart = New System.Windows.Forms.CheckBox()
@@ -118,9 +121,6 @@ Partial Class Expert
         Me.PictureBox9 = New System.Windows.Forms.PictureBox()
         Me.GroupBox11 = New System.Windows.Forms.GroupBox()
         Me.LimitsBox = New System.Windows.Forms.GroupBox()
-        Me.AutoRestartBox = New System.Windows.Forms.TextBox()
-        Me.PictureBox10 = New System.Windows.Forms.PictureBox()
-        Me.Label25 = New System.Windows.Forms.Label()
         Me.GroupBox3.SuspendLayout()
         CType(Me.PictureBox7, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox6, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -137,6 +137,7 @@ Partial Class Expert
         CType(Me.PictureBox3, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox4, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.GridNameHelp, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.PictureBox10, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.StandaloneGroup.SuspendLayout()
         Me.AutoStart.SuspendLayout()
         Me.GroupBox5.SuspendLayout()
@@ -145,7 +146,6 @@ Partial Class Expert
         CType(Me.PictureBox9, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox11.SuspendLayout()
         Me.LimitsBox.SuspendLayout()
-        CType(Me.PictureBox10, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'GroupBox3
@@ -785,7 +785,7 @@ Partial Class Expert
         Me.GridNameHelp.Size = New System.Drawing.Size(28, 27)
         Me.GridNameHelp.TabIndex = 1865
         Me.GridNameHelp.TabStop = False
-        Me.ToolTip1.SetToolTip(Me.GridNameHelp, "Click for Help on Grid Name")
+        Me.ToolTip1.SetToolTip(Me.GridNameHelp, "Click for Hyperica.com")
         '
         'EnableMaxPrims
         '
@@ -797,6 +797,25 @@ Partial Class Expert
         Me.EnableMaxPrims.Text = "Enable MAXPRIMS limits"
         Me.ToolTip1.SetToolTip(Me.EnableMaxPrims, "The original Second Life clouds")
         Me.EnableMaxPrims.UseVisualStyleBackColor = True
+        '
+        'AutoRestartBox
+        '
+        Me.AutoRestartBox.Location = New System.Drawing.Point(124, 80)
+        Me.AutoRestartBox.Name = "AutoRestartBox"
+        Me.AutoRestartBox.Size = New System.Drawing.Size(65, 20)
+        Me.AutoRestartBox.TabIndex = 1861
+        Me.ToolTip1.SetToolTip(Me.AutoRestartBox, "Minutes to Autorestart: default 240 (4 hour).  Set to to disable auto restart of " &
+        "region")
+        '
+        'PictureBox10
+        '
+        Me.PictureBox10.Image = Global.Outworldz.My.Resources.Resources.about
+        Me.PictureBox10.Location = New System.Drawing.Point(208, 19)
+        Me.PictureBox10.Name = "PictureBox10"
+        Me.PictureBox10.Size = New System.Drawing.Size(30, 34)
+        Me.PictureBox10.TabIndex = 1859
+        Me.PictureBox10.TabStop = False
+        Me.ToolTip1.SetToolTip(Me.PictureBox10, "Right click Dreamgrid and start as Administrator to enable this.")
         '
         'RegionMySqlPassword
         '
@@ -878,6 +897,15 @@ Partial Class Expert
         Me.AutoStart.TabIndex = 44
         Me.AutoStart.TabStop = False
         Me.AutoStart.Text = "Auto Start and Start on Boot"
+        '
+        'Label25
+        '
+        Me.Label25.AutoSize = True
+        Me.Label25.Location = New System.Drawing.Point(11, 83)
+        Me.Label25.Name = "Label25"
+        Me.Label25.Size = New System.Drawing.Size(104, 13)
+        Me.Label25.TabIndex = 1862
+        Me.Label25.Text = "Auto Restart Interval"
         '
         'Label13
         '
@@ -1106,34 +1134,6 @@ Partial Class Expert
         Me.LimitsBox.TabStop = False
         Me.LimitsBox.Text = "Prim Limits"
         '
-        'AutoRestartBox
-        '
-        Me.AutoRestartBox.Location = New System.Drawing.Point(124, 80)
-        Me.AutoRestartBox.Name = "AutoRestartBox"
-        Me.AutoRestartBox.Size = New System.Drawing.Size(65, 20)
-        Me.AutoRestartBox.TabIndex = 1861
-        Me.ToolTip1.SetToolTip(Me.AutoRestartBox, "Minutes to Autorestart: default 240 (4 hour).  Set to to disable auto restart of " &
-        "region")
-        '
-        'PictureBox10
-        '
-        Me.PictureBox10.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.PictureBox10.Location = New System.Drawing.Point(208, 19)
-        Me.PictureBox10.Name = "PictureBox10"
-        Me.PictureBox10.Size = New System.Drawing.Size(30, 34)
-        Me.PictureBox10.TabIndex = 1859
-        Me.PictureBox10.TabStop = False
-        Me.ToolTip1.SetToolTip(Me.PictureBox10, "Right click Dreamgrid and start as Administrator to enable this.")
-        '
-        'Label25
-        '
-        Me.Label25.AutoSize = True
-        Me.Label25.Location = New System.Drawing.Point(11, 83)
-        Me.Label25.Name = "Label25"
-        Me.Label25.Size = New System.Drawing.Size(104, 13)
-        Me.Label25.TabIndex = 1862
-        Me.Label25.Text = "Auto Restart Interval"
-        '
         'Expert
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1177,6 +1177,7 @@ Partial Class Expert
         CType(Me.PictureBox3, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox4, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.GridNameHelp, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.PictureBox10, System.ComponentModel.ISupportInitialize).EndInit()
         Me.StandaloneGroup.ResumeLayout(False)
         Me.StandaloneGroup.PerformLayout()
         Me.AutoStart.ResumeLayout(False)
@@ -1192,7 +1193,6 @@ Partial Class Expert
         Me.GroupBox11.PerformLayout()
         Me.LimitsBox.ResumeLayout(False)
         Me.LimitsBox.PerformLayout()
-        CType(Me.PictureBox10, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub

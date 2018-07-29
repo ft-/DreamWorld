@@ -1,7 +1,7 @@
 <icecast>
 <hostname>Mach.Outworldz.net</hostname>
-<location>Mach</location>
-<admin>fred@mitsi.com</admin>
+<location>DreamGrid</location>
+<admin>email@somewhere.com</admin>
 <shoutcast-mount>/stream</shoutcast-mount>
 <listen-socket>
     <port>8080</port>
@@ -21,10 +21,10 @@
     <burst-size>65535</burst-size>
 </limits>
 <authentication>
-<source-password>123</source-password>
-<relay-password>123</relay-password>
+<source-password>A password</source-password>
+<relay-password>A password</relay-password>
 <admin-user>admin</admin-user>
-<admin-password>123</admin-password>
+<admin-password></admin-password>
 </authentication>
 <http-headers>
     <header name="Access-Control-Allow-Origin" value="*"/>

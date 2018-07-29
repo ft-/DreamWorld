@@ -12,7 +12,7 @@ Imports System.Threading
 
 Public Class Update
 
-    Dim BLKSIZE As Integer = 32767
+    Dim BLKSIZE As Integer = 256000
 
     Dim Version As String = "2.25"
     Dim Type As String = "UpdateGrid"  ' possible server-side choices are "Update", "UpdateGrid" and "Installer"
