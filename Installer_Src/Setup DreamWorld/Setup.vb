@@ -574,6 +574,7 @@ Public Class Form1
                 For Each X In RegionClass.RegionNumbers
                     If RegionClass.ProcessID(X) Then
                         isRunning = True
+                        Log(RegionClass.RegionName(X) + " is still running")
                     End If
                     Application.DoEvents()
                 Next
@@ -921,11 +922,13 @@ Public Class Form1
         MySetting.SetOtherIni("DataSnapshot", "index_sims", MySetting.DataSnapshot())
         MySetting.SetOtherIni("AutoRestart", "Time", MySetting.AutoRestartInterval())
 
-        If MySetting.Primlimits Then
-            MySetting.SetOtherIni("Permissions", "permissionmodules", "DefaultPermissionsModule, PrimLimitsModule")
-        Else
-            MySetting.SetOtherIni("Permissions", "permissionmodules", "DefaultPermissionsModule")
-        End If
+        MySetting.SetOtherIni("PrimLimitsModule", "EnforcePrimLimits", MySetting.Primlimits)
+
+        ' If MySetting.Primlimits Then
+        'MySetting.SetOtherIni("Permissions", "permissionmodules", "DefaultPermissionsModule, PrimLimitsModule")
+        'Else
+        '   MySetting.SetOtherIni("Permissions", "permissionmodules", "DefaultPermissionsModule")
+        ' End If
 
 
 
@@ -3583,12 +3586,13 @@ Public Class Form1
         ' Check for MySql operation
         If Not MysqlOk Then
 
-            If MySetting.RobustServer() = '127.0.0.1' Then
+            If MySetting.RobustServer() = "127.0.0.1" Then
                 robustconnStr = "server=" + MySetting.RobustServer() _
                 + ";database=" + MySetting.RobustDataBaseName _
                 + ";port=" + MySetting.MySqlPort _
                 + ";user=" + MySetting.RobustUsername _
-                + ";password=" + MySetting.RobustPassword Then
+                + ";password=" + MySetting.RobustPassword
+
                 MysqlConn = New Mysql(robustconnStr)
 
             Else
