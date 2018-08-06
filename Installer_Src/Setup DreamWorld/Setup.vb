@@ -560,18 +560,18 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
         ' shows all windows during shutdown
         For Each X As Integer In RegionClass.RegionNumbers
             Dim pID = RegionClass.ProcessID(X)
-            Dim p = Process.GetProcessById(pID)
-            ShowWindow(p.MainWindowHandle, SHOW_WINDOW.SW_RESTORE)
+            Try
+                Dim p = Process.GetProcessById(pID)
+                ShowWindow(p.MainWindowHandle, SHOW_WINDOW.SW_RESTORE)
+            Catch
+            End Try
+
         Next
 
         ' show robust last
         ShowWindow(Process.GetProcessById(gRobustProcID).MainWindowHandle, SHOW_WINDOW.SW_RESTORE)
 
-        Dim counter = REGIONMAX
-        While counter
-            RegionHandles(counter) = False
-            counter = counter - 1
-        End While
+
 
         Dim ctr = 0
         For Each X As Integer In RegionClass.RegionNumbers
@@ -581,7 +581,7 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
                 RegionClass.Booted(ctr) = False
                 RegionClass.WarmingUp(ctr) = False
                 Print("Shutting down " + RegionClass.RegionName(ctr))
-                ConsoleCommand(PID, "quit{ENTER}")
+                ConsoleCommand(PID, "q{ENTER}")
             End If
             Application.DoEvents()
             ctr = ctr + 1
@@ -597,7 +597,7 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
                 Dim n2 As Integer = RegionClass.RegionCount()
                 'Debug.Print("N2=" + n2.ToString())
                 If n Then
-                    ProgressBar1.Value = n2 / n * 100
+                    ProgressBar1.Value = counter / 300 * 100
                     'Debug.Print("V=" + ProgressBar1.Value.ToString)
                 End If
                 Sleep(1000)
@@ -606,6 +606,10 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
                 Dim isRunning As Boolean = False
 
                 For Each X In RegionClass.RegionNumbers
+
+                    Dim Bool = RegionHandles(X)
+
+
                     If RegionClass.ProcessID(X) Then
                         isRunning = True
                         Log(RegionClass.RegionName(X) + " is still running")
@@ -616,6 +620,12 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
             End While
         End If
 
+        Dim counter = REGIONMAX
+        While counter
+            RegionHandles(counter) = False
+            counter = counter - 1
+        End While
+
         For Each X As Integer In RegionClass.RegionNumbers
             RegionClass.ShuttingDown(X) = False
             RegionClass.Booted(X) = False
@@ -623,7 +633,7 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
         Next
 
         If gRobustProcID Then
-            ConsoleCommand(gRobustProcID, "quit{ENTER}")
+            ConsoleCommand(gRobustProcID, "q{ENTER}")
             Me.Focus()
         End If
 
@@ -3981,7 +3991,7 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
         ' Handle robust clicking
         If sender.Text = "Robust" Then
             If gRobustProcID Then
-                ConsoleCommand(gRobustProcID, "quit{ENTER}")
+                ConsoleCommand(gRobustProcID, "q{ENTER}")
                 Me.Focus()
                 Log("Region:Stopped Robust")
                 sender.Checked = True
@@ -4011,7 +4021,7 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
                 sender.Checked = False
                 If Running Then
                     Try
-                        ConsoleCommand(RegionClass.ProcessID(num), "quit{ENTER}")
+                        ConsoleCommand(RegionClass.ProcessID(num), "q{ENTER}")
                         Me.Focus()
 
                         RegionClass.RegionEnabled(num) = False
@@ -4067,7 +4077,7 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
                 If RegionClass.AvatarCount(X) = 0 Then
                     If Running And RegionClass.RegionEnabled(X) And RegionClass.Booted(X) Then
                         Diagnostics.Debug.Print("AutoLoad is shutting down " + RegionClass.RegionName(X))
-                        ConsoleCommand(RegionClass.ProcessID(X), "quit{ENTER}")
+                        ConsoleCommand(RegionClass.ProcessID(X), "q{ENTER}")
                         Me.Focus()
                         RegionClass.Booted(X) = False
                         RegionClass.WarmingUp(X) = False

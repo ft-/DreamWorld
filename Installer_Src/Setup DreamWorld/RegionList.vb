@@ -270,21 +270,14 @@ Public Class RegionList
             ActualForm.Visible = True
             Return
         End If
-        If checked And (RegionClass.WarmingUp(n)) Or RegionClass.ShuttingDown(n) Then
-            For Each num In RegionClass.RegionListByGroupNum(RegionClass.GroupName(n))
-                RegionClass.Booted(num) = False
-                RegionClass.WarmingUp(num) = False
-                RegionClass.ShuttingDown(num) = False
-                RegionClass.ProcessID(n) = 0
-                Form1.Log("Aborting " + RegionClass.RegionName(n))
-            Next
-        End If
+
+
         If checked And (RegionClass.Booted(n) Or RegionClass.WarmingUp(n)) Or RegionClass.ShuttingDown(n) Then
             ' if enabled and running, even partly up, stop it.
             Try
 
                 For Each num In RegionClass.RegionListByGroupNum(RegionClass.GroupName(n))
-                    Form1.ConsoleCommand(RegionClass.ProcessID(num), "quit{ENTER}")
+                    Form1.ConsoleCommand(RegionClass.ProcessID(num), "q{ENTER}")
                     RegionClass.Booted(num) = False
                     RegionClass.WarmingUp(num) = False
                     RegionClass.ShuttingDown(num) = True
@@ -302,6 +295,18 @@ Public Class RegionList
             Form1.CopyOpensimProto()
             Form1.Boot(RegionClass.RegionName(n))
             Form1.Log("Starting " + RegionClass.RegionName(n))
+        End If
+
+        ' Do this last to avoid starting a region that was shutting down.
+
+        If checked And (RegionClass.WarmingUp(n)) Or RegionClass.ShuttingDown(n) Then
+            For Each num In RegionClass.RegionListByGroupNum(RegionClass.GroupName(n))
+                RegionClass.Booted(num) = False
+                RegionClass.WarmingUp(num) = False
+                RegionClass.ShuttingDown(num) = False
+                RegionClass.ProcessID(n) = 0
+                Form1.Log("Aborting " + RegionClass.RegionName(n))
+            Next
         End If
         Me.Focus()
     End Sub
