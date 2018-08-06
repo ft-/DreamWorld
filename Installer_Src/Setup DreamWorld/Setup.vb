@@ -557,14 +557,18 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
         Dim n As Integer = RegionClass.RegionCount()
         Diagnostics.Debug.Print("N=" + n.ToString())
 
+        Dim TotalRunningRegions As Integer
         ' shows all windows during shutdown
         For Each X As Integer In RegionClass.RegionNumbers
-            Dim pID = RegionClass.ProcessID(X)
-            Try
-                Dim p = Process.GetProcessById(pID)
-                ShowWindow(p.MainWindowHandle, SHOW_WINDOW.SW_RESTORE)
-            Catch
-            End Try
+            If RegionClass.RegionEnabled(X) Then
+                TotalRunningRegions = TotalRunningRegions + 1
+                Dim pID = RegionClass.ProcessID(X)
+                Try
+                    Dim p = Process.GetProcessById(pID)
+                    ShowWindow(p.MainWindowHandle, SHOW_WINDOW.SW_RESTORE)
+                Catch
+                End Try
+            End If
 
         Next
 
@@ -586,41 +590,39 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
             Application.DoEvents()
             ctr = ctr + 1
         Next
+        Dim counter = 300 ' 5 minutes to quit all regions
 
         ' only wait if the port 8001 is working
         If gUseIcons Then
             Print("Waiting for all regions to exit")
 
-            counter = 300 ' 5 minutes to quit all regions
+
             While (counter)
                 ' decrement progress bar according to the ratio of what we had / what we have now
-                Dim n2 As Integer = RegionClass.RegionCount()
-                'Debug.Print("N2=" + n2.ToString())
-                If n Then
-                    ProgressBar1.Value = counter / 300 * 100
-                    'Debug.Print("V=" + ProgressBar1.Value.ToString)
-                End If
+
                 Sleep(1000)
 
                 counter = counter - 1
                 Dim isRunning As Boolean = False
 
                 For Each X In RegionClass.RegionNumbers
-
-                    Dim Bool = RegionHandles(X)
-
-
                     If RegionClass.ProcessID(X) Then
-                        isRunning = True
+                        isRunning = isRunning + 1
                         Log(RegionClass.RegionName(X) + " is still running")
                     End If
                     Application.DoEvents()
                 Next
                 If Not isRunning Then counter = 0
+
+
+                ProgressBar1.Value = isRunning / TotalRunningRegions * 100
+                Diagnostics.Debug.Print("V=" + ProgressBar1.Value.ToString)
+
+
             End While
         End If
 
-        Dim counter = REGIONMAX
+        counter = REGIONMAX
         While counter
             RegionHandles(counter) = False
             counter = counter - 1
