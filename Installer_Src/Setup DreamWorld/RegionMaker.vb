@@ -786,7 +786,7 @@ Public Class RegionMaker
 
                 Booted(CheckN(n)) = False
                 WarmingUp(CheckN(n)) = False
-                ShuttingDown(CheckN(n)) = False
+                ShuttingDown(CheckN(n)) = True
 
             End If
         ElseIf POST.Contains("UUID") Then
