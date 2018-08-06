@@ -746,7 +746,7 @@ Public Class RegionMaker
 
 
         If (POST.Contains("alert")) Then
-            Debug.Print(POST)
+            'Debug.Print(POST)
             ' This search returns the substring between two strings, so 
             ' the first index Is moved to the character just after the first string.
             POST = Uri.UnescapeDataString(POST)
@@ -762,7 +762,7 @@ Public Class RegionMaker
             End Try
 
             If json.login = "enabled" Then
-                Debug.Print("Region " & json.region_name & " is ready for logins")
+                'Debug.Print("Region " & json.region_name & " is ready for logins")
 
                 Dim n = FindRegionByName(json.region_name)
                 If n < 0 Then
@@ -777,7 +777,7 @@ Public Class RegionMaker
                 UUID(CheckN(n)) = json.region_id
 
             ElseIf json.login = "shutdown" Then
-                Debug.Print("Region " & json.region_name & " shut down")
+                'Debug.Print("Region " & json.region_name & " shut down")
 
                 Dim n = FindRegionByName(json.region_name)
                 If n < 0 Then

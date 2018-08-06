@@ -2103,11 +2103,16 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
             End If
         End If
 
-        Log(RegionClass.RegionName(n) + " Exited")
-        RegionClass.Booted(n) = False
-        RegionClass.WarmingUp(n) = False
-        RegionClass.ShuttingDown(n) = False
-        RegionClass.ProcessID(n) = 0
+        Dim Groupname = RegionClass.GroupName(n)
+        Log(Groupname + " Exited")
+
+        For Each X In RegionClass.RegionListByGroupNum(Groupname)
+            Log(RegionClass.RegionName(X) + " Exited")
+            RegionClass.Booted(X) = False
+            RegionClass.WarmingUp(X) = False
+            RegionClass.ShuttingDown(X) = False
+            RegionClass.ProcessID(X) = 0
+        Next
 
     End Sub
 
@@ -2243,6 +2248,10 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
         If RegionClass.ProcessID(n) Or RegionClass.Booted(n) Or RegionClass.WarmingUp(n) Or RegionClass.ShuttingDown(n) Then
             Return True
         End If
+
+        Dim IsRunning = CheckPort("127.0.0.1", RegionClass.RegionPort(n))
+        If isRunning Then Return True
+
 
         Environment.SetEnvironmentVariable("OSIM_LOGPATH", prefix + "bin\Regions\" + RegionClass.GroupName(n))
 

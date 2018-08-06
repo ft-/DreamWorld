@@ -262,7 +262,7 @@ Public Class RegionList
         ' If RegionClass.ShuttingDown(n) Then
         ' RegionClass.ShuttingDown(n) = False
         ' End If
-
+        Form1.Log("Clicked " + RegionClass.RegionName(n))
         If Not checked Then
             Dim ActualForm As New FormRegion
             ActualForm.Init(RegionClass.RegionName(n))
@@ -270,12 +270,13 @@ Public Class RegionList
             ActualForm.Visible = True
             Return
         End If
-        If checked And (RegionClass.Booted(n) Or RegionClass.WarmingUp(n)) Or RegionClass.ShuttingDown(n) Then
+        If checked And (RegionClass.WarmingUp(n)) Or RegionClass.ShuttingDown(n) Then
             For Each num In RegionClass.RegionListByGroupNum(RegionClass.GroupName(n))
                 RegionClass.Booted(num) = False
                 RegionClass.WarmingUp(num) = False
                 RegionClass.ShuttingDown(num) = False
                 RegionClass.ProcessID(n) = 0
+                Form1.Log("Aborting " + RegionClass.RegionName(n))
             Next
         End If
         If checked And (RegionClass.Booted(n) Or RegionClass.WarmingUp(n)) Or RegionClass.ShuttingDown(n) Then
@@ -300,8 +301,7 @@ Public Class RegionList
             Form1.Start_Robust()
             Form1.CopyOpensimProto()
             Form1.Boot(RegionClass.RegionName(n))
-            Debug.Print("Region:Started Region " + RegionClass.RegionName(n))
-
+            Form1.Log("Starting " + RegionClass.RegionName(n))
         End If
         Me.Focus()
     End Sub
