@@ -603,7 +603,7 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
                 Sleep(1000)
 
                 counter = counter - 1
-                Dim isRunning As Boolean = False
+                Dim isRunning As Integer = 0
 
                 For Each X In RegionClass.RegionNumbers
                     If RegionClass.ProcessID(X) Then
@@ -2262,7 +2262,10 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
         End If
 
         Dim IsRunning = CheckPort("127.0.0.1", RegionClass.RegionPort(n))
-        If isRunning Then Return True
+        If IsRunning Then
+            Print(BootName + " is already running")
+            Return True
+        End If
 
 
         Environment.SetEnvironmentVariable("OSIM_LOGPATH", prefix + "bin\Regions\" + RegionClass.GroupName(n))
