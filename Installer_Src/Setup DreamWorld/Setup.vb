@@ -34,7 +34,7 @@ Public Class Form1
 
 #Region "Declarations"
 
-    Dim MyVersion As String = "2.25"
+    Dim MyVersion As String = "2.26"
     Dim DebugPath As String = "\Opensim\Outworldz DreamGrid Source"  ' no slash at end
     Public Domain As String = "https://www.outworldz.com"
     Public prefix As String ' Holds path to Opensim folder
@@ -478,21 +478,23 @@ Public Class Form1
         p = Me.Location
 
         Try
+            Log("Stopping Webserver")
             ws.StopWebServer()
         Catch
         End Try
 
         MySetting.MyX = p.X
         MySetting.MyY = p.Y
+        MySetting.SaveOtherINI()
 
         ProgressBar1.Value = 90
 
         Print("Hold fast to your dreams ...")
 
-        KillAll()
+        'KillAll()
         ProgressBar1.Value = 10
         Print("I'll tell you my next dream when I wake up.")
-        StopMysql()
+        'StopMysql()
         ProgressBar1.Value = 5
         Print("Zzzz...")
         ProgressBar1.Value = 0
@@ -1620,8 +1622,13 @@ Public Class Form1
         If exiting Then Return
         Dim yesno = MsgBox("Mysql exited. Do you want to see the error log file?", vbYesNo, "Error")
         If (yesno = vbYes) Then
-            Dim MysqlLog As String = MyFolder + "\OutworldzFiles\Opensim\bin\Robust.log"
-            System.Diagnostics.Process.Start("notepad.exe", MysqlLog)
+            Dim MysqlLog As String = MyFolder + "\OutworldzFiles\mysql\data"
+            Dim files() As String
+            files = Directory.GetFiles(MysqlLog, "*.err", SearchOption.TopDirectoryOnly)
+            For Each FileName As String In files
+                System.Diagnostics.Process.Start("notepad.exe", FileName)
+            Next
+
         End If
     End Sub
     Private Sub IceCast_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles IcecastProcess.Exited

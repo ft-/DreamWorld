@@ -19,7 +19,6 @@ my @deletions = (
 				 "$dir/OutworldzFiles/Opensim/bin/assetcache",
 				 "$dir/OutworldzFiles/Opensim/bin/j2kDecodeCache",
 				 "$dir/OutworldzFiles/Opensim/bin/MeshCache",
-				 "$dir/OutworldzFiles/Opensim/bin/autobackup",
 				 "$dir/OutworldzFiles/Opensim/bin/ScriptEngines",
 				 "$dir/OutworldzFiles/Opensim/bin/maptiles",
 				 "$dir/OutworldzFiles/Opensim/bin/Regions",
