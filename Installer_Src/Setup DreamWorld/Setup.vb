@@ -65,6 +65,10 @@ Public Class Form1
     Public gRobustProcID As Integer
     Private WithEvents RobustProcess As New Process()
 
+    ' Mysql
+    Dim MysqlOk As Boolean
+    Public robustconnStr As String
+
     Public Event RobustExited As EventHandler
     Private images As List(Of Image) = New List(Of Image) From {My.Resources.tangled, My.Resources.wp_habitat, My.Resources.wp_Mooferd,
                              My.Resources.wp_To_Piers_Anthony,
@@ -310,14 +314,6 @@ Public Class Form1
 
         Running = False ' true when opensim is running
         Me.Show()
-
-        Dim robustconnStr = "server=" + MySetting.RobustServer() _
-            + ";database=" + MySetting.RobustDataBaseName _
-            + ";port=" + MySetting.MySqlPort _
-            + ";user=" + MySetting.RobustUsername _
-            + ";password=" + MySetting.RobustPassword
-
-        MysqlConn = New Mysql(robustconnStr)
 
         RegionClass = RegionMaker.Instance(MysqlConn)
 
@@ -3585,9 +3581,25 @@ Public Class Form1
     Public Function StartMySQL() As Boolean
 
         ' Check for MySql operation
-        Dim MysqlOk As Boolean
+        If Not MysqlOk Then
 
-        MysqlOk = CheckMysql()
+            If MySetting.RobustServer() = '127.0.0.1' Then
+                robustconnStr = "server=" + MySetting.RobustServer() _
+                + ";database=" + MySetting.RobustDataBaseName _
+                + ";port=" + MySetting.MySqlPort _
+                + ";user=" + MySetting.RobustUsername _
+                + ";password=" + MySetting.RobustPassword Then
+                MysqlConn = New Mysql(robustconnStr)
+
+            Else
+                ' Use robust connection aka OsGrid to another machine on a port
+                '!!!
+
+            End If
+
+        End If
+
+            MysqlOk = CheckMysql()
         If MysqlOk Then Return True
         ' Start MySql in background.
 

@@ -63,14 +63,7 @@ Public Class TosForm
 
         Dim response = MsgBox("Clicking Yes will force all users to re-agree to the TOS on next login or visit.", vbYesNo)
         If response = vbYes Then
-
-            Dim robustconnStr = "server=" + Form1.MySetting.RobustServer() _
-            + ";database=" + Form1.MySetting.RobustDataBaseName _
-            + ";port=" + Form1.MySetting.MySqlPort _
-            + ";user=" + Form1.MySetting.RobustUsername _
-            + ";password=" + Form1.MySetting.RobustPassword
-
-            Dim m As New Mysql(robustconnStr)
+            Dim m As New Mysql(Form1.robustconnStr)
             If m.IsMySqlRunning() Is Nothing Then
                 MsgBox("MySql is not running, so I cannot save the re-validate data. Start Opensim or Mysql and try again.")
             Else
