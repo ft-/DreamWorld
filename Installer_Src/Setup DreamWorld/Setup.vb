@@ -28,6 +28,8 @@ Imports IWshRuntimeLibrary
 Imports IniParser
 Imports System.Threading
 Imports System.Runtime.InteropServices
+Imports System.Diagnostics
+
 
 
 Public Class Form1
@@ -119,6 +121,7 @@ Public Class Form1
     <DllImport("user32.dll")>
     Shared Function SetWindowText(ByVal hwnd As IntPtr, ByVal windowName As String) As Boolean
     End Function
+
 
 #End Region
 
@@ -516,6 +519,28 @@ Public Class Form1
         Print("")
     End Sub
 
+    Private Declare Function ShowWindow Lib "user32.dll" (
+ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
+
+    <Flags()>
+    Private Enum SHOW_WINDOW As Integer
+        SW_HIDE = 0
+        SW_SHOWNORMAL = 1
+        SW_NORMAL = 1
+        SW_SHOWMINIMIZED = 2
+        SW_SHOWMAXIMIZED = 3
+        SW_MAXIMIZE = 3
+        SW_SHOWNOACTIVATE = 4
+        SW_SHOW = 5
+        SW_MINIMIZE = 6
+        SW_SHOWMINNOACTIVE = 7
+        SW_SHOWNA = 8
+        SW_RESTORE = 9
+        SW_SHOWDEFAULT = 10
+        SW_FORCEMINIMIZE = 11
+        SW_MAX = 11
+    End Enum
+
     Private Sub KillAll()
 
         exiting = True ' force msgbox is anything exists
@@ -532,6 +557,15 @@ Public Class Form1
         Dim n As Integer = RegionClass.RegionCount()
         Diagnostics.Debug.Print("N=" + n.ToString())
 
+        ' shows all windows during shutdown
+        For Each X As Integer In RegionClass.RegionNumbers
+            Dim pID = RegionClass.ProcessID(X)
+            Dim p = Process.GetProcessById(pID)
+            ShowWindow(p.MainWindowHandle, SHOW_WINDOW.SW_RESTORE)
+        Next
+
+        ' show robust last
+        ShowWindow(Process.GetProcessById(gRobustProcID).MainWindowHandle, SHOW_WINDOW.SW_RESTORE)
 
         Dim counter = REGIONMAX
         While counter
@@ -2341,12 +2375,12 @@ Public Class Form1
     Public Sub Log(message As String)
 
         Try
-            Using outputFile As New StreamWriter(MyFolder & "\OutworldzFiles\Outworldz.log", True)
-                outputFile.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + message)
-                Diagnostics.Debug.Print(message)
-            End Using
-        Catch
-        End Try
+                Using outputFile As New StreamWriter(MyFolder & "\OutworldzFiles\Outworldz.log", True)
+                    outputFile.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + message)
+                    Diagnostics.Debug.Print(message)
+                End Using
+            Catch
+            End Try
 
     End Sub
 
