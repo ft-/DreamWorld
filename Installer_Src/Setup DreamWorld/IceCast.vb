@@ -60,7 +60,7 @@ Public Class Icecast
     End Sub
     Private Sub FormisClosed(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Closed
 
-        Form1.MySetting.SaveMyINI()
+        Form1.MySetting.SaveSettings()
 
         Dim rgx As New Regex("[^a-zA-Z0-9 ]")
         Dim name As String = rgx.Replace(Form1.MySetting.SimName, "")

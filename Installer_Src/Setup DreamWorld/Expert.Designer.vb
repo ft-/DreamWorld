@@ -121,6 +121,7 @@ Partial Class Expert
         Me.PictureBox9 = New System.Windows.Forms.PictureBox()
         Me.GroupBox11 = New System.Windows.Forms.GroupBox()
         Me.LimitsBox = New System.Windows.Forms.GroupBox()
+        Me.DataSnapshotCheckBox = New System.Windows.Forms.CheckBox()
         Me.GroupBox3.SuspendLayout()
         CType(Me.PictureBox7, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox6, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -1114,6 +1115,7 @@ Partial Class Expert
         '
         'GroupBox11
         '
+        Me.GroupBox11.Controls.Add(Me.DataSnapshotCheckBox)
         Me.GroupBox11.Controls.Add(Me.GridNameHelp)
         Me.GroupBox11.Controls.Add(Me.GDPRCheckBox)
         Me.GroupBox11.Controls.Add(Me.PictureBox9)
@@ -1133,6 +1135,17 @@ Partial Class Expert
         Me.LimitsBox.TabIndex = 1860
         Me.LimitsBox.TabStop = False
         Me.LimitsBox.Text = "Prim Limits"
+        '
+        'DataSnapshotCheckBox
+        '
+        Me.DataSnapshotCheckBox.AutoSize = True
+        Me.DataSnapshotCheckBox.Location = New System.Drawing.Point(14, 148)
+        Me.DataSnapshotCheckBox.Name = "DataSnapshotCheckBox"
+        Me.DataSnapshotCheckBox.Size = New System.Drawing.Size(176, 17)
+        Me.DataSnapshotCheckBox.TabIndex = 1866
+        Me.DataSnapshotCheckBox.Text = "Publish Items marked for search"
+        Me.ToolTip1.SetToolTip(Me.DataSnapshotCheckBox, "Publish Items marked as 'Show in Search' to Hyperica.com")
+        Me.DataSnapshotCheckBox.UseVisualStyleBackColor = True
         '
         'Expert
         '
@@ -1293,4 +1306,5 @@ Partial Class Expert
     Friend WithEvents Label25 As Label
     Friend WithEvents AutoRestartBox As TextBox
     Friend WithEvents PictureBox10 As PictureBox
+    Friend WithEvents DataSnapshotCheckBox As CheckBox
 End Class

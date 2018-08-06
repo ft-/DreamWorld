@@ -170,13 +170,13 @@
     <Setting Name="DiagnosticPort" Type="System.String" Scope="User">
       <Value Profile="(Default)">8001</Value>
     </Setting>
-    <Setting Name="RobustMySqlName" Type="System.String" Scope="User">
+    <Setting Name="RobustDataBaseName" Type="System.String" Scope="User">
       <Value Profile="(Default)">robust</Value>
     </Setting>
-    <Setting Name="RobustMySqlUsername" Type="System.String" Scope="User">
+    <Setting Name="RobustUsername" Type="System.String" Scope="User">
       <Value Profile="(Default)">robustuser</Value>
     </Setting>
-    <Setting Name="RobustMySqlPassword" Type="System.String" Scope="User">
+    <Setting Name="RobustPassword" Type="System.String" Scope="User">
       <Value Profile="(Default)">robustpassword</Value>
     </Setting>
     <Setting Name="Autostart" Type="System.Boolean" Scope="User">

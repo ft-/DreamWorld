@@ -97,10 +97,12 @@ Public Class MySettings
             RegionDBName() = My.Settings.RegionDBName
             RegionDbPassword() = My.Settings.RegionDbPassword
             RegionDBUsername() = My.Settings.RegionDBUsername
+
+            ' Robust
             RobustServer() = My.Settings.RobustServer
-            RobustMySqlPassword() = My.Settings.RobustMySqlPassword
-            RobustMySqlUsername() = My.Settings.RobustMySqlUsername
-            RobustMySqlName() = My.Settings.RobustMySqlName
+            RobustPassword() = My.Settings.RobustPassword
+            RobustUsername() = My.Settings.RobustUsername
+            RobustDataBaseName() = My.Settings.RobustDataBaseName
             RunOnce() = My.Settings.RunOnce
 
             SC_Enable() = False
@@ -143,77 +145,84 @@ Public Class MySettings
         Catch ex As Exception
             Clouds() = False
             Density() = 0.5
-            SaveMyINI()
+            SaveSettings()
         End Try
 
         Try
             Dim x = Allow_grid_gods()
         Catch ex As Exception
             Allow_grid_gods() = False
-            SaveMyINI()
+            SaveSettings()
         End Try
 
         Try
             Dim x = GDPR()
         Catch ex As Exception
             GDPR() = False
-            SaveMyINI()
+            SaveSettings()
         End Try
 
         Try
             Dim x = Suitcase()
         Catch ex As Exception
             Suitcase() = True
-            SaveMyINI()
+            SaveSettings()
         End Try
 
         Try
             Dim x = Primlimits()
         Catch ex As Exception
             Primlimits() = False
-            SaveMyINI()
+            SaveSettings()
         End Try
 
         Try
             Dim x = ShowToLocalUsers()
         Catch ex As Exception
             ShowToLocalUsers() = False
-            SaveMyINI()
+            SaveSettings()
         End Try
 
         Try
             Dim x = ShowToForeignUsers()
         Catch ex As Exception
             ShowToForeignUsers() = False
-            SaveMyINI()
+            SaveSettings()
         End Try
 
         Try
             Dim x = TOSEnabled()
         Catch ex As Exception
             TOSEnabled() = False
-            SaveMyINI()
+            SaveSettings()
         End Try
 
         Try
             Dim x = StandAlone()
         Catch ex As Exception
             StandAlone() = False
-            SaveMyINI()
+            SaveSettings()
         End Try
 
         Try
             Dim x = AutoRestartInterval()
         Catch ex As Exception
             AutoRestartInterval() = 60 * 4   ' default = 4 hours
-            SaveMyINI()
+            SaveSettings()
+        End Try
+
+        Try
+            Dim x = DataSnapshot()
+        Catch ex As Exception
+            DataSnapshot() = False
+            SaveSettings()
         End Try
 
         ' check for default
         If (SmtpHost() = "") Then SmtpHost() = "smtp.gmail.com"
         If (SmtpPort() = "") Then SmtpPort() = "587"
 
-        SaveMyINI()
+        SaveSettings()
 
 
     End Sub
@@ -305,7 +314,7 @@ Public Class MySettings
 
     End Sub
 
-    Public Sub SaveMyINI()
+    Public Sub SaveSettings()
 
         Try
             Myparser.WriteFile(myINI, MyData, System.Text.Encoding.ASCII)
@@ -317,12 +326,12 @@ Public Class MySettings
     End Sub
 
     Public Function Random() As String
-    
-	    Dim value As Integer = CInt(Int((600000000 * Rnd()) + 1))
+
+        Dim value As Integer = CInt(Int((600000000 * Rnd()) + 1))
         Random = System.Convert.ToString(value)
 
     End Function
-	
+
     Private Function Stripqq(input As String) As String
 
         Return Replace(input, """", "")
@@ -346,6 +355,14 @@ Public Class MySettings
 #End Region
 
 #Region "Properties"
+    Public Property DataSnapshot() As Boolean
+        Get
+            Return CType(GetMySetting("DataSnapshot"), Boolean)
+        End Get
+        Set
+            SetMySetting("DataSnapshot", Value)
+        End Set
+    End Property
     Public Property AutoRestartInterval() As Integer
         Get
             Return CType(GetMySetting("AutoRestartInterval"), Integer)
@@ -354,7 +371,6 @@ Public Class MySettings
             SetMySetting("AutoRestartInterval", Value)
         End Set
     End Property
-
     Public Property StandAlone() As Boolean
         Get
             Return CType(GetMySetting("StandAlone"), Boolean)
@@ -924,28 +940,28 @@ Public Class MySettings
             SetMySetting("DiagnosticPort", Value)
         End Set
     End Property
-    Public Property RobustMySqlName() As String
+    Public Property RobustDataBaseName() As String
         Get
-            Return CType(GetMySetting("RobustMySqlName"), String)
+            Return CType(GetMySetting("RobustDataBaseName"), String)
         End Get
         Set
-            SetMySetting("RobustMySqlName", Value)
+            SetMySetting("RobustDataBaseName", Value)
         End Set
     End Property
-    Public Property RobustMySqlUsername() As String
+    Public Property RobustUsername() As String
         Get
-            Return CType(GetMySetting("RobustMySqlUsername"), String)
+            Return CType(GetMySetting("RobustUsername"), String)
         End Get
         Set
-            SetMySetting("RobustMySqlUsername", Value)
+            SetMySetting("RobustUsername", Value)
         End Set
     End Property
-    Public Property RobustMySqlPassword() As String
+    Public Property RobustPassword() As String
         Get
-            Return CType(GetMySetting("RobustMySqlPassword"), String)
+            Return CType(GetMySetting("RobustPassword"), String)
         End Get
         Set
-            SetMySetting("RobustMySqlPassword", Value)
+            SetMySetting("RobustPassword", Value)
         End Set
     End Property
     Public Property SimName() As String

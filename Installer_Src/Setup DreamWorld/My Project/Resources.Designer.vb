@@ -22,7 +22,7 @@ Namespace My.Resources
     '''<summary>
     '''  A strongly-typed resource class, for looking up localized strings, etc.
     '''</summary>
-    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0"),  _
+    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0"),  _
      Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
      Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute(),  _
      Global.Microsoft.VisualBasic.HideModuleNameAttribute()>  _
@@ -387,24 +387,6 @@ Namespace My.Resources
             Get
                 Dim obj As Object = ResourceManager.GetObject("OfflineMap", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to &quot;Backups older than this number will be deleted&quot;.
-        '''</summary>
-        Friend ReadOnly Property OldBackupString() As String
-            Get
-                Return ResourceManager.GetString("OldBackupString", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to &quot;Pick folder for backups&quot;.
-        '''</summary>
-        Friend ReadOnly Property PickFolderString() As String
-            Get
-                Return ResourceManager.GetString("PickFolderString", resourceCulture)
             End Get
         End Property
         

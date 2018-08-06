@@ -311,7 +311,13 @@ Public Class Form1
         Running = False ' true when opensim is running
         Me.Show()
 
-        MysqlConn = New Mysql(MySetting.RobustMySqlName, MySetting.MySqlPort, MySetting.RobustMySqlUsername, MySetting.RobustMySqlPassword)
+        Dim robustconnStr = "server=" + MySetting.RobustServer() _
+            + ";database=" + MySetting.RobustDataBaseName _
+            + ";port=" + MySetting.MySqlPort _
+            + ";user=" + MySetting.RobustUsername _
+            + ";password=" + MySetting.RobustPassword
+
+        MysqlConn = New Mysql(robustconnStr)
 
         RegionClass = RegionMaker.Instance(MysqlConn)
 
@@ -441,7 +447,7 @@ Public Class Form1
             MsgBox("Please type 'create user<ret>' to make the system owner's account in the ROBUST console, and then answer any questions.", vbInformation, "Info")
             Sleep(10000)
             MySetting.RunOnce = True
-            MySetting.SaveMyINI()
+            MySetting.SaveSettings()
         End If
 
         If Not Start_Opensimulator() Then ' Launch the rockets
@@ -713,7 +719,7 @@ Public Class Form1
         mnuHide.Checked = False
 
         MySetting.ConsoleShow = mnuShow.Checked
-        MySetting.SaveMyINI()
+        MySetting.SaveSettings()
 
         If Running Then
             Print("The Opensimulator Console will be shown the next time the system is started.")
@@ -727,7 +733,7 @@ Public Class Form1
         mnuHide.Checked = True
 
         MySetting.ConsoleShow = mnuShow.Checked
-        MySetting.SaveMyINI()
+        MySetting.SaveSettings()
 
         If Running Then
             Print("The Opensimulator Console will not be shown. Change will occur when Opensim is restarted")
@@ -772,7 +778,7 @@ Public Class Form1
             ' save to disk
             DefaultName = RegionClass.RegionName(o)
             MySetting.WelcomeRegion = DefaultName
-            MySetting.SaveMyINI()
+            MySetting.SaveSettings()
 
             '(replace spaces with underscore)
             DefaultName = DefaultName.Replace(" ", "_")    ' because this is a screwy thing they did in the INI file
@@ -841,7 +847,7 @@ Public Class Form1
 
         Print("Saving all settings")
 
-        MySetting.SaveMyINI()
+        MySetting.SaveSettings()
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
         ' set the defaults in the INI for the viewer to use. Painful to do as it's a Left hand side edit 
 
@@ -882,10 +888,10 @@ Public Class Form1
 
         ConnectionString = """" _
             + "Data Source=" + MySetting.RobustServer _
-            + ";Database=" + MySetting.RobustMySqlName _
+            + ";Database=" + MySetting.RobustDataBaseName _
             + ";Port=" + MySetting.MySqlPort _
-            + ";User ID=" + MySetting.RobustMySqlUsername _
-            + ";Password=" + MySetting.RobustMySqlPassword _
+            + ";User ID=" + MySetting.RobustUsername _
+            + ";Password=" + MySetting.RobustPassword _
             + ";Old Guids=True;Allow Zero Datetime=True;" _
             + """"
 
@@ -915,6 +921,8 @@ Public Class Form1
         ' Opensim.ini
         MySetting.LoadOtherIni(prefix + "bin\Opensim.proto", ";")
 
+
+        MySetting.SetOtherIni("DataSnapshot", "index_sims", MySetting.DataSnapshot())
         MySetting.SetOtherIni("AutoRestart", "Time", MySetting.AutoRestartInterval())
 
         If MySetting.Primlimits Then
@@ -1177,10 +1185,10 @@ Public Class Form1
         MySetting.SetOtherIni("Gloebit", "GLBOwnerEmail", MySetting.GLBOwnerEmail)
 
         Dim ConnectionString = """" + "Data Source = " + MySetting.RobustServer _
-            + ";Database=" + MySetting.RobustMySqlName _
+            + ";Database=" + MySetting.RobustDataBaseName _
             + ";Port=" + MySetting.MySqlPort _
-            + ";User ID=" + MySetting.RobustMySqlUsername _
-            + ";Password=" + MySetting.RobustMySqlPassword _
+            + ";User ID=" + MySetting.RobustUsername _
+            + ";Password=" + MySetting.RobustPassword _
             + """"
 
 
@@ -1205,10 +1213,10 @@ Public Class Form1
 
         Dim ConnectionString = """" _
                 + "Data Source=" + "127.0.0.1" _
-                + ";Database=" + MySetting.RobustMySqlName _
+                + ";Database=" + MySetting.RobustDataBaseName _
                 + ";Port=" + MySetting.MySqlPort _
-                + ";User ID=" + MySetting.RobustMySqlUsername _
-                + ";Password=" + MySetting.RobustMySqlPassword _
+                + ";User ID=" + MySetting.RobustUsername _
+                + ";Password=" + MySetting.RobustPassword _
                 + """"
 
         MySetting.SetOtherIni("DatabaseService", "ConnectionString", ConnectionString)
@@ -3141,14 +3149,14 @@ Public Class Form1
             MySetting.PublicIP = MyUPnpMap.LocalIP
 #Enable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
 
-            MySetting.SaveMyINI()
+            MySetting.SaveSettings()
             Return False
         End If
 
         If MySetting.DNSName.Length Then
             BumpProgress10()
             MySetting.PublicIP = MySetting.DNSName
-            MySetting.SaveMyINI()
+            MySetting.SaveSettings()
 
             If MySetting.PublicIP.ToLower.Contains("outworldz.net") Then
                 Print("Registering DynDNS address http://" + MySetting.PublicIP + ":" + MySetting.HttpPort)
@@ -3167,7 +3175,7 @@ Public Class Form1
             BumpProgress10()
             Log("Info:Public IP=" + MySetting.PublicIP)
             MySetting.PublicIP = ip
-            MySetting.SaveMyINI()
+            MySetting.SaveSettings()
             Return True
 
         Catch ex As Exception
@@ -3177,7 +3185,7 @@ Public Class Form1
         End Try
 
         MySetting.PublicIP = "127.0.0.1"
-        MySetting.SaveMyINI()
+        MySetting.SaveSettings()
 
         BumpProgress10()
         Return False
@@ -3205,7 +3213,7 @@ Public Class Form1
         If result = "Test Completed" And Not gDebug Then
             Log("Passed:" + result)
             MySetting.LoopBackDiag = True
-            MySetting.SaveMyINI()
+            MySetting.SaveSettings()
         Else
             Log("Failed:" + result)
             Print("Router Loopback failed. See the Help section for 'Loopback' and how to enable it in Windows. Continuing...")
@@ -3215,7 +3223,7 @@ Public Class Form1
             MySetting.PublicIP = MyUPnpMap.LocalIP()
 #Enable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
 
-            MySetting.SaveMyINI()
+            MySetting.SaveSettings()
         End If
 
     End Sub
@@ -3264,7 +3272,7 @@ Public Class Form1
         If isPortOpen = "yes" And Not gDebug Then
             MySetting.PublicIP = MySetting.PublicIP
             Log("Public IP set to " + MySetting.PublicIP)
-            MySetting.SaveMyINI()
+            MySetting.SaveSettings()
             Return True
         Else
             Log("Failed:" + isPortOpen)
@@ -3273,7 +3281,7 @@ Public Class Form1
 #Disable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
             MySetting.PublicIP = MyUPnpMap.LocalIP() ' failed, so try the machine address
 #Enable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
-            MySetting.SaveMyINI()
+            MySetting.SaveSettings()
             Log("IP set to " + MySetting.PublicIP)
             Return False
         End If
@@ -3312,7 +3320,7 @@ Public Class Form1
             MsgBox("Diagnostics port " + MySetting.DiagnosticPort + " is not working or blocked by firewall or anti virus, icons disabled.", vbInformation, "Cannot HG")
             gUseIcons = False
             MySetting.DiagFailed = True
-            MySetting.SaveMyINI()
+            MySetting.SaveSettings()
         End If
 
     End Sub
@@ -3466,13 +3474,13 @@ Public Class Form1
             If OpenRouterPorts() Then ' open UPnp port
                 Log("UPnpOk")
                 MySetting.UPnpDiag = True
-                MySetting.SaveMyINI()
+                MySetting.SaveSettings()
                 BumpProgress10()
                 Return True
             Else
                 Log("UPnp: fail")
                 MySetting.UPnpDiag = False
-                MySetting.SaveMyINI()
+                MySetting.SaveSettings()
 
                 BumpProgress10()
                 Return False
@@ -3480,7 +3488,7 @@ Public Class Form1
         Catch e As Exception
             Log("Error: UPnp Exception: " + e.Message)
             MySetting.UPnpDiag = False
-            MySetting.SaveMyINI()
+            MySetting.SaveSettings()
             BumpProgress10()
             Return False
         End Try
@@ -3829,7 +3837,7 @@ Public Class Form1
                     BumpProgress10()
                     MySetting.DNSName = newname
                     MySetting.PublicIP = newname
-                    MySetting.SaveMyINI()
+                    MySetting.SaveSettings()
                     MsgBox("Your system's name has been set to " + newname + ". You can change the name in the Advanced menu at any time", vbInformation, "Info")
                 End If
             End If

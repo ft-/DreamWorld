@@ -30,21 +30,21 @@ Public Class TosForm
     Private Sub CheckBox2_CheckedChanged(sender As Object, e As EventArgs) Handles ShowToLocalUsersCheckbox.CheckedChanged
 
         Form1.MySetting.ShowToLocalUsers = ShowToLocalUsersCheckbox.Checked
-        Form1.MySetting.SaveOtherINI()
+        Form1.MySetting.SaveSettings()
 
     End Sub
 
     Private Sub ShowToHGUsersCheckbox_CheckedChanged(sender As Object, e As EventArgs) Handles ShowToHGUsersCheckbox.CheckedChanged
 
         Form1.MySetting.ShowToForeignUsers = ShowToHGUsersCheckbox.Checked
-        Form1.MySetting.SaveOtherINI()
+        Form1.MySetting.SaveSettings()
 
     End Sub
 
     Private Sub TOSEnable_CheckedChanged(sender As Object, e As EventArgs) Handles TOSEnable.CheckedChanged
 
         Form1.MySetting.TOSEnabled = TOSEnable.Checked
-        Form1.MySetting.SaveOtherINI()
+        Form1.MySetting.SaveSettings()
 
     End Sub
 
@@ -63,7 +63,14 @@ Public Class TosForm
 
         Dim response = MsgBox("Clicking Yes will force all users to re-agree to the TOS on next login or visit.", vbYesNo)
         If response = vbYes Then
-            Dim m As New Mysql(Form1.MySetting.RobustMySqlName, Form1.MySetting.MySqlPort, Form1.MySetting.RobustMySqlUsername, Form1.MySetting.RobustMySqlPassword)
+
+            Dim robustconnStr = "server=" + Form1.MySetting.RobustServer() _
+            + ";database=" + Form1.MySetting.RobustDataBaseName _
+            + ";port=" + Form1.MySetting.MySqlPort _
+            + ";user=" + Form1.MySetting.RobustUsername _
+            + ";password=" + Form1.MySetting.RobustPassword
+
+            Dim m As New Mysql(robustconnStr)
             If m.IsMySqlRunning() Is Nothing Then
                 MsgBox("MySql is not running, so I cannot save the re-validate data. Start Opensim or Mysql and try again.")
             Else

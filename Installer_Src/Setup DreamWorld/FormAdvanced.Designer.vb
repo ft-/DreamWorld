@@ -187,7 +187,7 @@ Partial Class AdvancedForm
         Me.AutoBackupKeepFilesForDays.Name = "AutoBackupKeepFilesForDays"
         Me.AutoBackupKeepFilesForDays.Size = New System.Drawing.Size(47, 20)
         Me.AutoBackupKeepFilesForDays.TabIndex = 3
-        Me.ToolTip1.SetToolTip(Me.AutoBackupKeepFilesForDays, Global.Outworldz.My.Resources.Resources.OldBackupString)
+        Me.ToolTip1.SetToolTip(Me.AutoBackupKeepFilesForDays, "Backups older than this number will be deleted")
         '
         'AutoBackupInterval
         '

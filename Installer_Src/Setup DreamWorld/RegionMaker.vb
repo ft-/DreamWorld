@@ -59,7 +59,7 @@ Public Class RegionMaker
             WriteRegionObject("Welcome")
             GetAllRegions()
             Form1.MySetting.WelcomeRegion = "Welcome"
-            Form1.MySetting.SaveMyINI()
+            Form1.MySetting.SaveSettings()
         End If
         RegionDump()
 
@@ -515,9 +515,9 @@ Public Class RegionMaker
 
                         ' must be after Createregion or port blows up
                         Form1.MySetting.LoadOtherIni(ini, ";")
+                        ' we do not save the above as we are making a new one.
 
                         Try
-
                             RegionEnabled(CheckN(n)) = Form1.MySetting.GetIni(fName, "Enabled")
                         Catch ex As Exception
                             RegionEnabled(CheckN(n)) = True
@@ -533,7 +533,6 @@ Public Class RegionMaker
                         Dim theStart = FolderPath(CheckN(n)).IndexOf("Regions\") + 8
                         theEnd = FolderPath(CheckN(n)).LastIndexOf("\")
                         GroupName(CheckN(n)) = FolderPath(CheckN(n)).Substring(theStart, theEnd - theStart)
-
 
                         UUID(CheckN(n)) = Form1.MySetting.GetIni(fName, "RegionUUID")
                         SizeX(CheckN(n)) = Convert.ToInt16(Form1.MySetting.GetIni(fName, "SizeX"))

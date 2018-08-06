@@ -7,15 +7,9 @@ Public Class Mysql
 
     Dim MysqlConn As MySqlConnection
 
-    Public Sub New(MySqlName As String, MySqlPort As String, MySqlUsername As String, MySqlPassword As String)
+    Public Sub New(connStr As String)
 
-        Dim robustconnStr = "server=" + "127.0.0.1" _
-            + ";database=" + MySqlName _
-            + ";port=" + MySqlPort _
-            + ";user=" + MySqlUsername _
-            + ";password=" + MySqlPassword
-
-        MysqlConn = New MySqlConnection(robustconnStr)
+        MysqlConn = New MySqlConnection(connStr)
 
     End Sub
     Public Function IsUserPresent(regionUUID As String) As Integer
