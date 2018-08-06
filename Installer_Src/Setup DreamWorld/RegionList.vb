@@ -270,7 +270,14 @@ Public Class RegionList
             ActualForm.Visible = True
             Return
         End If
-
+        If checked And (RegionClass.Booted(n) Or RegionClass.WarmingUp(n)) Or RegionClass.ShuttingDown(n) Then
+            For Each num In RegionClass.RegionListByGroupNum(RegionClass.GroupName(n))
+                RegionClass.Booted(num) = False
+                RegionClass.WarmingUp(num) = False
+                RegionClass.ShuttingDown(num) = False
+                RegionClass.ProcessID(n) = 0
+            Next
+        End If
         If checked And (RegionClass.Booted(n) Or RegionClass.WarmingUp(n)) Or RegionClass.ShuttingDown(n) Then
             ' if enabled and running, even partly up, stop it.
             Try

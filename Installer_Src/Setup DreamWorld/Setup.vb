@@ -3360,7 +3360,7 @@ Public Class Form1
         End If
 
         Log("Local IP seems to be " + MyUPnpMap.LocalIP)
-        Print("Puny human is instructed to wait while I check out the router ...")
+
         Try
 
             'Icecast 8080
