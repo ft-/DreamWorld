@@ -43,7 +43,7 @@
 [Const]
 
 ; Automatically changed by Dreamworld - do not change this
-http_listener_port=8004
+http_listener_port=9053
 
 ; Automatically changed by Dreamworld - do not change this
 ;# used by the one-exe-per-instance logic. This becomes the folder for the regions file.
@@ -62,7 +62,7 @@ PublicPort=8002
 PrivatePort=8003
 
 ;# so localhost can be changed if necessary
-PrivURL=http://192.168.2.3
+PrivURL=http://192.168.2.181
 
 ; Automatically changed by Dreamworld - do not change this
 ;# Grid Name for Wifi to show
@@ -309,7 +309,7 @@ Stats_URI="jsonSimStats"
 ManagedStatsRemoteFetchURI="ManagedStats"
 
 ;# economy module
-economymodule=
+economymodule=Gloebit
 
 [RegionReady]
 
@@ -396,12 +396,18 @@ TexturePrims=false
 ;; Attempt to render meshes and sculpties on the map
 RenderMeshes=false
 
+[PrimLimitsModule]
+
+;# {EnforcePrimLimits} {} {Enforce parcel prim limits} {true false} false
+;; Enable parcel prim limits.  Off by default to emulate pre-existing behavior.
+EnforcePrimLimits=False
+
 [Permissions]
 
 ;# {permissionmodules} {} {Permission modules to use (may specify multiple modules, separated by comma} {} DefaultPermissionsModule
 ;; Permission modules to use, separated by comma.
 ;; Possible modules are DefaultPermissionsModule, PrimLimitsModule
-permissionmodules=DefaultPermissionsModule, PrimLimitsModule
+permissionmodules=PrimLimitsModule
 
 ;# {serverside_object_permissions} {permissionmodules:DefaultPermissionsModule} {Activate permission handling by the sim?} {true false} true
 ;; These are the parameters for the default permissions module
@@ -816,7 +822,7 @@ enable_windlight=true
 ;; searchable data.
 ;; If false, no data will be exposed, DataSnapshot module will be off,
 ;; and you can ignore the rest of these search-related configs.
-index_sims=true
+index_sims=True
 
 ;# {data_exposure} {index_sims:true} {How much data should be exposed?} {minimum all} minimum
 ;; The variable data_exposure controls what the regions expose:
@@ -1143,7 +1149,8 @@ MessageOnlineUsersOnly=true
 ;; This section controls how state updates are prioritized for each client
 ;; Valid values are BestAvatarResponsiveness, Time, Distance,
 ;; SimpleAngularDistance, FrontBack
-; UpdatePrioritizationScheme = BestAvatarResponsiveness
+UpdatePrioritizationScheme=FrontBack
+
 ; TEST OPTION KEEP AS FALSE
 ; if true, don't send object updates if outside view range
 ; ObjectsCullingByDistance = false
@@ -1327,7 +1334,7 @@ enabled=True
 
 ; Enable this to generate classic particle clouds above the sim.
 ; default is disabled - turn it on here
-enabled=true
+enabled=false
 
 ; Density of cloud cover 0.0 to 1.0 Default 0.5
 density=0.5
