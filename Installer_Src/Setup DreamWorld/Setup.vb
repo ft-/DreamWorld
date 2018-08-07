@@ -36,7 +36,7 @@ Public Class Form1
 
 #Region "Declarations"
 
-    Dim MyVersion As String = "2.26"
+    Dim MyVersion As String = "2.27"
     Dim DebugPath As String = "\Opensim\Outworldz DreamGrid Source"  ' no slash at end
     Public Domain As String = "https://www.outworldz.com"
     Public prefix As String ' Holds path to Opensim folder
@@ -3648,7 +3648,8 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
                 + ";database=" + MySetting.RobustDataBaseName _
                 + ";port=" + MySetting.MySqlPort _
                 + ";user=" + MySetting.RobustUsername _
-                + ";password=" + MySetting.RobustPassword
+                + ";password=" + MySetting.RobustPassword _
+                + ";Old Guids=True;Allow Zero Datetime=True;"
 
                 MysqlConn = New Mysql(robustconnStr)
 
@@ -3660,8 +3661,9 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
 
         End If
 
-            MysqlOk = CheckMysql()
-        If MysqlOk Then Return True
+        Dim isRunning = CheckPort("127.0.0.1", MySetting.MySqlPort)
+
+        If isRunning Then Return True
         ' Start MySql in background.
 
         BumpProgress10()
