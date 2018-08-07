@@ -49,7 +49,7 @@ Partial Class RegionList
         Me.ListView1.Name = "ListView1"
         Me.ListView1.ShowItemToolTips = True
         Me.ListView1.Size = New System.Drawing.Size(395, 316)
-        Me.ListView1.TabIndex = 0
+        Me.ListView1.TabIndex = 5
         Me.ToolTip1.SetToolTip(Me.ListView1, "Regions may start/stop in groups, depending upon how your bin\Regions folder is o" &
         "rganized.")
         Me.ListView1.UseCompatibleStateImageBehavior = False
@@ -84,7 +84,7 @@ Partial Class RegionList
         Me.Addregion.Location = New System.Drawing.Point(154, 13)
         Me.Addregion.Name = "Addregion"
         Me.Addregion.Size = New System.Drawing.Size(57, 23)
-        Me.Addregion.TabIndex = 1859
+        Me.Addregion.TabIndex = 18593
         Me.Addregion.Text = "Add "
         Me.Addregion.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.Addregion.UseVisualStyleBackColor = True
@@ -95,7 +95,7 @@ Partial Class RegionList
         Me.AllNome.Location = New System.Drawing.Point(22, 43)
         Me.AllNome.Name = "AllNome"
         Me.AllNome.Size = New System.Drawing.Size(68, 17)
-        Me.AllNome.TabIndex = 1860
+        Me.AllNome.TabIndex = 4
         Me.AllNome.Text = "All/None"
         Me.AllNome.UseVisualStyleBackColor = True
         '

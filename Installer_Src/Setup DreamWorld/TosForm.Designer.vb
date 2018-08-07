@@ -40,7 +40,7 @@ Partial Class TosForm
         Me.ShowToHGUsersCheckbox.Location = New System.Drawing.Point(24, 81)
         Me.ShowToHGUsersCheckbox.Name = "ShowToHGUsersCheckbox"
         Me.ShowToHGUsersCheckbox.Size = New System.Drawing.Size(292, 17)
-        Me.ShowToHGUsersCheckbox.TabIndex = 1
+        Me.ShowToHGUsersCheckbox.TabIndex = 3
         Me.ShowToHGUsersCheckbox.Text = "Show TOS To Hypergrid Users on First Hypergrid Login?"
         Me.ShowToHGUsersCheckbox.UseVisualStyleBackColor = True
         Me.ShowToHGUsersCheckbox.Visible = False
@@ -62,7 +62,7 @@ Partial Class TosForm
         Me.TOSEnable.Location = New System.Drawing.Point(24, 35)
         Me.TOSEnable.Name = "TOSEnable"
         Me.TOSEnable.Size = New System.Drawing.Size(121, 17)
-        Me.TOSEnable.TabIndex = 3
+        Me.TOSEnable.TabIndex = 1
         Me.TOSEnable.Text = "Enable TOS module"
         Me.TOSEnable.UseVisualStyleBackColor = True
         Me.TOSEnable.Visible = False

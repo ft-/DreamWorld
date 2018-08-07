@@ -56,7 +56,7 @@ Partial Class Icecast
         Me.ShoutcastPassword.Location = New System.Drawing.Point(86, 132)
         Me.ShoutcastPassword.Name = "ShoutcastPassword"
         Me.ShoutcastPassword.Size = New System.Drawing.Size(100, 20)
-        Me.ShoutcastPassword.TabIndex = 1
+        Me.ShoutcastPassword.TabIndex = 5
         '
         'Label1
         '
@@ -86,7 +86,7 @@ Partial Class Icecast
         Me.GroupBox1.Size = New System.Drawing.Size(214, 201)
         Me.GroupBox1.TabIndex = 3
         Me.GroupBox1.TabStop = False
-        Me.GroupBox1.Text = "Shoutcast Server"
+        Me.GroupBox1.Text = "Icecast Server"
         '
         'Label4
         '
@@ -102,12 +102,12 @@ Partial Class Icecast
         Me.ShoutcastPort1.Location = New System.Drawing.Point(86, 86)
         Me.ShoutcastPort1.Name = "ShoutcastPort1"
         Me.ShoutcastPort1.Size = New System.Drawing.Size(52, 20)
-        Me.ShoutcastPort1.TabIndex = 1860
+        Me.ShoutcastPort1.TabIndex = 3
         '
         'PictureBox1
         '
         Me.PictureBox1.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.PictureBox1.Location = New System.Drawing.Point(144, 41)
+        Me.PictureBox1.Location = New System.Drawing.Point(132, 20)
         Me.PictureBox1.Name = "PictureBox1"
         Me.PictureBox1.Size = New System.Drawing.Size(40, 27)
         Me.PictureBox1.TabIndex = 1859
@@ -115,11 +115,11 @@ Partial Class Icecast
         '
         'LoadURL
         '
-        Me.LoadURL.Location = New System.Drawing.Point(86, 160)
-        Me.LoadURL.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.LoadURL.Location = New System.Drawing.Point(35, 167)
+        Me.LoadURL.Margin = New System.Windows.Forms.Padding(2)
         Me.LoadURL.Name = "LoadURL"
-        Me.LoadURL.Size = New System.Drawing.Size(99, 35)
-        Me.LoadURL.TabIndex = 8
+        Me.LoadURL.Size = New System.Drawing.Size(150, 29)
+        Me.LoadURL.TabIndex = 6
         Me.LoadURL.Text = "Admin Web Page"
         Me.LoadURL.UseVisualStyleBackColor = True
         '
@@ -129,7 +129,7 @@ Partial Class Icecast
         Me.SC_Show.Location = New System.Drawing.Point(30, 41)
         Me.SC_Show.Name = "SC_Show"
         Me.SC_Show.Size = New System.Drawing.Size(86, 17)
-        Me.SC_Show.TabIndex = 7
+        Me.SC_Show.TabIndex = 1
         Me.SC_Show.Text = "Show Status"
         Me.SC_Show.UseVisualStyleBackColor = True
         '
@@ -147,23 +147,23 @@ Partial Class Icecast
         Me.AdminPassword.Location = New System.Drawing.Point(86, 107)
         Me.AdminPassword.Name = "AdminPassword"
         Me.AdminPassword.Size = New System.Drawing.Size(100, 20)
-        Me.AdminPassword.TabIndex = 5
+        Me.AdminPassword.TabIndex = 4
         '
         'Label2
         '
         Me.Label2.AutoSize = True
         Me.Label2.Location = New System.Drawing.Point(32, 64)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(26, 13)
+        Me.Label2.Size = New System.Drawing.Size(32, 13)
         Me.Label2.TabIndex = 4
-        Me.Label2.Text = "Port"
+        Me.Label2.Text = "Port1"
         '
         'ShoutcastPort
         '
         Me.ShoutcastPort.Location = New System.Drawing.Point(86, 64)
         Me.ShoutcastPort.Name = "ShoutcastPort"
         Me.ShoutcastPort.Size = New System.Drawing.Size(52, 20)
-        Me.ShoutcastPort.TabIndex = 3
+        Me.ShoutcastPort.TabIndex = 2
         '
         'ToolTip1
         '

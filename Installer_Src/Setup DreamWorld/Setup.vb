@@ -575,8 +575,6 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
         ' show robust last
         ShowWindow(Process.GetProcessById(gRobustProcID).MainWindowHandle, SHOW_WINDOW.SW_RESTORE)
 
-
-
         Dim ctr = 0
         For Each X As Integer In RegionClass.RegionNumbers
             Dim PID As Integer = RegionClass.ProcessID(ctr)
@@ -615,9 +613,11 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
                 If Not isRunning Then counter = 0
 
 
-                ProgressBar1.Value = isRunning / TotalRunningRegions * 100
-                Diagnostics.Debug.Print("V=" + ProgressBar1.Value.ToString)
-
+                Dim v = isRunning / TotalRunningRegions * 100
+                If v >= 0 And v <= 100 Then
+                    ProgressBar1.Value = v
+                    Diagnostics.Debug.Print("V=" + ProgressBar1.Value.ToString)
+                End If
 
             End While
         End If
@@ -1234,16 +1234,16 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
             + ";Port=" + MySetting.MySqlPort _
             + ";User ID=" + MySetting.RobustUsername _
             + ";Password=" + MySetting.RobustPassword _
-            + """"
+             + ";Old Guids=True;Allow Zero Datetime=True;" + """"
 
 
         ' for standalones
-        '       ConnectionString = "Data Source=" + "127.0.0.1" _
+        'ConnectionString = """" + "Data Source=" + "127.0.0.1" _
         '           + ";Database=" + MySetting.RegionDBName _
         '          + ";Port=" + MySetting.MySqlPort _
         '         + ";User ID=" + MySetting.RegionDBUsername _
         '        + ";Password=" + MySetting.RegionDbPassword _
-        '       + ";Guids=True;Allow Zero Datetime=True;"
+        '       + ";Old Guids=True;Allow Zero Datetime=True;" + """"
 
 
         MySetting.SetOtherIni("Gloebit", "GLBSpecificConnectionString", ConnectionString)

@@ -80,7 +80,7 @@ Partial Class FormVoice
         Me.VivoxEnable.Location = New System.Drawing.Point(9, 51)
         Me.VivoxEnable.Name = "VivoxEnable"
         Me.VivoxEnable.Size = New System.Drawing.Size(59, 17)
-        Me.VivoxEnable.TabIndex = 3
+        Me.VivoxEnable.TabIndex = 1
         Me.VivoxEnable.Text = "Enable"
         Me.VivoxEnable.UseVisualStyleBackColor = True
         '
@@ -89,7 +89,7 @@ Partial Class FormVoice
         Me.VivoxPassword.Location = New System.Drawing.Point(109, 101)
         Me.VivoxPassword.Name = "VivoxPassword"
         Me.VivoxPassword.Size = New System.Drawing.Size(130, 20)
-        Me.VivoxPassword.TabIndex = 2
+        Me.VivoxPassword.TabIndex = 3
         Me.VivoxPassword.UseSystemPasswordChar = True
         '
         'VivoxUserName
@@ -97,7 +97,7 @@ Partial Class FormVoice
         Me.VivoxUserName.Location = New System.Drawing.Point(109, 76)
         Me.VivoxUserName.Name = "VivoxUserName"
         Me.VivoxUserName.Size = New System.Drawing.Size(130, 20)
-        Me.VivoxUserName.TabIndex = 1
+        Me.VivoxUserName.TabIndex = 2
         '
         'FormVoice
         '

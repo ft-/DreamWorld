@@ -89,7 +89,7 @@ Partial Class Gloebits
         Me.Button4.Location = New System.Drawing.Point(37, 12)
         Me.Button4.Name = "Button4"
         Me.Button4.Size = New System.Drawing.Size(374, 27)
-        Me.Button4.TabIndex = 1861
+        Me.Button4.TabIndex = 1
         Me.Button4.Text = "Click To Get a Free Gloebits Account So You Can Buy and Sell "
         Me.Button4.UseVisualStyleBackColor = True
         '
@@ -112,7 +112,7 @@ Partial Class Gloebits
         Me.OwnerNameTextbox.Location = New System.Drawing.Point(103, 19)
         Me.OwnerNameTextbox.Name = "OwnerNameTextbox"
         Me.OwnerNameTextbox.Size = New System.Drawing.Size(213, 20)
-        Me.OwnerNameTextbox.TabIndex = 9
+        Me.OwnerNameTextbox.TabIndex = 14
         '
         'Label4
         '
@@ -128,7 +128,7 @@ Partial Class Gloebits
         Me.ContactEmailTextBox.Location = New System.Drawing.Point(103, 45)
         Me.ContactEmailTextBox.Name = "ContactEmailTextBox"
         Me.ContactEmailTextBox.Size = New System.Drawing.Size(213, 20)
-        Me.ContactEmailTextBox.TabIndex = 11
+        Me.ContactEmailTextBox.TabIndex = 15
         '
         'GloebitsEnabled
         '
@@ -136,7 +136,7 @@ Partial Class Gloebits
         Me.GloebitsEnabled.Location = New System.Drawing.Point(103, 84)
         Me.GloebitsEnabled.Name = "GloebitsEnabled"
         Me.GloebitsEnabled.Size = New System.Drawing.Size(100, 17)
-        Me.GloebitsEnabled.TabIndex = 2
+        Me.GloebitsEnabled.TabIndex = 16
         Me.GloebitsEnabled.Text = "Enable Gloebits"
         Me.GloebitsEnabled.UseVisualStyleBackColor = True
         '
@@ -176,7 +176,7 @@ Partial Class Gloebits
         Me.ProductionButton.Location = New System.Drawing.Point(59, 23)
         Me.ProductionButton.Name = "ProductionButton"
         Me.ProductionButton.Size = New System.Drawing.Size(106, 17)
-        Me.ProductionButton.TabIndex = 19
+        Me.ProductionButton.TabIndex = 8
         Me.ProductionButton.TabStop = True
         Me.ProductionButton.Text = "Production Mode"
         Me.ProductionButton.UseVisualStyleBackColor = True
@@ -195,14 +195,14 @@ Partial Class Gloebits
         Me.ProdKeyTextBox.Location = New System.Drawing.Point(62, 150)
         Me.ProdKeyTextBox.Name = "ProdKeyTextBox"
         Me.ProdKeyTextBox.Size = New System.Drawing.Size(157, 20)
-        Me.ProdKeyTextBox.TabIndex = 18
+        Me.ProdKeyTextBox.TabIndex = 12
         '
         'ProdSecretTextBox
         '
         Me.ProdSecretTextBox.Location = New System.Drawing.Point(62, 181)
         Me.ProdSecretTextBox.Name = "ProdSecretTextBox"
         Me.ProdSecretTextBox.Size = New System.Drawing.Size(157, 20)
-        Me.ProdSecretTextBox.TabIndex = 19
+        Me.ProdSecretTextBox.TabIndex = 13
         '
         'Label13
         '
@@ -245,7 +245,7 @@ Partial Class Gloebits
         Me.ProductionCreateAppButton.Location = New System.Drawing.Point(59, 113)
         Me.ProductionCreateAppButton.Name = "ProductionCreateAppButton"
         Me.ProductionCreateAppButton.Size = New System.Drawing.Size(151, 27)
-        Me.ProductionCreateAppButton.TabIndex = 14
+        Me.ProductionCreateAppButton.TabIndex = 11
         Me.ProductionCreateAppButton.Text = "Create App and Get Keys"
         Me.ProductionCreateAppButton.UseVisualStyleBackColor = True
         '
@@ -254,7 +254,7 @@ Partial Class Gloebits
         Me.ProductionReqAppButton.Location = New System.Drawing.Point(57, 82)
         Me.ProductionReqAppButton.Name = "ProductionReqAppButton"
         Me.ProductionReqAppButton.Size = New System.Drawing.Size(151, 25)
-        Me.ProductionReqAppButton.TabIndex = 13
+        Me.ProductionReqAppButton.TabIndex = 10
         Me.ProductionReqAppButton.Text = "Request App Creation"
         Me.ProductionReqAppButton.UseVisualStyleBackColor = True
         '
@@ -272,7 +272,7 @@ Partial Class Gloebits
         Me.ProductionCreateButton.Location = New System.Drawing.Point(57, 49)
         Me.ProductionCreateButton.Name = "ProductionCreateButton"
         Me.ProductionCreateButton.Size = New System.Drawing.Size(151, 27)
-        Me.ProductionCreateButton.TabIndex = 7
+        Me.ProductionCreateButton.TabIndex = 9
         Me.ProductionCreateButton.Text = "Create Production Account"
         Me.ProductionCreateButton.UseVisualStyleBackColor = True
         '
@@ -303,7 +303,7 @@ Partial Class Gloebits
         Me.SandboxButton.Location = New System.Drawing.Point(56, 25)
         Me.SandboxButton.Name = "SandboxButton"
         Me.SandboxButton.Size = New System.Drawing.Size(97, 17)
-        Me.SandboxButton.TabIndex = 18
+        Me.SandboxButton.TabIndex = 2
         Me.SandboxButton.TabStop = True
         Me.SandboxButton.Text = "Sandbox Mode"
         Me.SandboxButton.UseVisualStyleBackColor = True
@@ -349,7 +349,7 @@ Partial Class Gloebits
         Me.SandBoxCreateAppButton.Location = New System.Drawing.Point(58, 115)
         Me.SandBoxCreateAppButton.Name = "SandBoxCreateAppButton"
         Me.SandBoxCreateAppButton.Size = New System.Drawing.Size(151, 27)
-        Me.SandBoxCreateAppButton.TabIndex = 14
+        Me.SandBoxCreateAppButton.TabIndex = 5
         Me.SandBoxCreateAppButton.Text = "Create App and Get Keys"
         Me.SandBoxCreateAppButton.UseVisualStyleBackColor = True
         '
@@ -358,14 +358,14 @@ Partial Class Gloebits
         Me.SandKeyTextBox.Location = New System.Drawing.Point(60, 147)
         Me.SandKeyTextBox.Name = "SandKeyTextBox"
         Me.SandKeyTextBox.Size = New System.Drawing.Size(157, 20)
-        Me.SandKeyTextBox.TabIndex = 3
+        Me.SandKeyTextBox.TabIndex = 6
         '
         'SandBoxReqAppButton
         '
         Me.SandBoxReqAppButton.Location = New System.Drawing.Point(56, 84)
         Me.SandBoxReqAppButton.Name = "SandBoxReqAppButton"
         Me.SandBoxReqAppButton.Size = New System.Drawing.Size(151, 25)
-        Me.SandBoxReqAppButton.TabIndex = 13
+        Me.SandBoxReqAppButton.TabIndex = 4
         Me.SandBoxReqAppButton.Text = "Request App Creation"
         Me.SandBoxReqAppButton.UseVisualStyleBackColor = True
         '
@@ -374,7 +374,7 @@ Partial Class Gloebits
         Me.SandSecretTextBox.Location = New System.Drawing.Point(60, 178)
         Me.SandSecretTextBox.Name = "SandSecretTextBox"
         Me.SandSecretTextBox.Size = New System.Drawing.Size(157, 20)
-        Me.SandSecretTextBox.TabIndex = 4
+        Me.SandSecretTextBox.TabIndex = 7
         '
         'Label3
         '
@@ -399,7 +399,7 @@ Partial Class Gloebits
         Me.SandBoxSignUpButton.Location = New System.Drawing.Point(56, 51)
         Me.SandBoxSignUpButton.Name = "SandBoxSignUpButton"
         Me.SandBoxSignUpButton.Size = New System.Drawing.Size(151, 27)
-        Me.SandBoxSignUpButton.TabIndex = 7
+        Me.SandBoxSignUpButton.TabIndex = 3
         Me.SandBoxSignUpButton.Text = "Create Sandbox Account"
         Me.SandBoxSignUpButton.UseVisualStyleBackColor = True
         '

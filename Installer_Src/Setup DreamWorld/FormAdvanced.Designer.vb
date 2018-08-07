@@ -88,7 +88,7 @@ Partial Class AdvancedForm
         Me.MapNone.Location = New System.Drawing.Point(6, 29)
         Me.MapNone.Name = "MapNone"
         Me.MapNone.Size = New System.Drawing.Size(51, 17)
-        Me.MapNone.TabIndex = 137
+        Me.MapNone.TabIndex = 7
         Me.MapNone.TabStop = True
         Me.MapNone.Text = "None"
         Me.ToolTip1.SetToolTip(Me.MapNone, "No Maps at all")
@@ -100,7 +100,7 @@ Partial Class AdvancedForm
         Me.MapSimple.Location = New System.Drawing.Point(6, 48)
         Me.MapSimple.Name = "MapSimple"
         Me.MapSimple.Size = New System.Drawing.Size(94, 17)
-        Me.MapSimple.TabIndex = 33
+        Me.MapSimple.TabIndex = 8
         Me.MapSimple.TabStop = True
         Me.MapSimple.Text = "Simple but fast"
         Me.ToolTip1.SetToolTip(Me.MapSimple, "Simple - ")
@@ -112,7 +112,7 @@ Partial Class AdvancedForm
         Me.MapBetter.Location = New System.Drawing.Point(7, 87)
         Me.MapBetter.Name = "MapBetter"
         Me.MapBetter.Size = New System.Drawing.Size(116, 17)
-        Me.MapBetter.TabIndex = 35
+        Me.MapBetter.TabIndex = 10
         Me.MapBetter.TabStop = True
         Me.MapBetter.Text = "Better (Prims, Slow)"
         Me.MapBetter.TextImageRelation = System.Windows.Forms.TextImageRelation.TextAboveImage
@@ -125,7 +125,7 @@ Partial Class AdvancedForm
         Me.MapBest.Location = New System.Drawing.Point(6, 109)
         Me.MapBest.Name = "MapBest"
         Me.MapBest.Size = New System.Drawing.Size(144, 17)
-        Me.MapBest.TabIndex = 136
+        Me.MapBest.TabIndex = 11
         Me.MapBest.TabStop = True
         Me.MapBest.Text = "Best (Prims +Mesh, Slow)"
         Me.ToolTip1.SetToolTip(Me.MapBest, "Slow, but has Prims and Mesh")
@@ -137,7 +137,7 @@ Partial Class AdvancedForm
         Me.MapGood.Location = New System.Drawing.Point(7, 67)
         Me.MapGood.Name = "MapGood"
         Me.MapGood.Size = New System.Drawing.Size(100, 17)
-        Me.MapGood.TabIndex = 34
+        Me.MapGood.TabIndex = 9
         Me.MapGood.TabStop = True
         Me.MapGood.Text = "Good (Warp3D)"
         Me.ToolTip1.SetToolTip(Me.MapGood, "Fast and simple map using Warp3DImageModule")
@@ -155,10 +155,10 @@ Partial Class AdvancedForm
         '
         'TimerInterval
         '
-        Me.TimerInterval.Location = New System.Drawing.Point(130, 68)
+        Me.TimerInterval.Location = New System.Drawing.Point(135, 48)
         Me.TimerInterval.Name = "TimerInterval"
         Me.TimerInterval.Size = New System.Drawing.Size(39, 20)
-        Me.TimerInterval.TabIndex = 9
+        Me.TimerInterval.TabIndex = 6
         Me.ToolTip1.SetToolTip(Me.TimerInterval, "The cycle time for the wall paper - in seconds. 0 = Off")
         '
         'ChatSpeed
@@ -168,7 +168,7 @@ Partial Class AdvancedForm
         Me.ChatSpeed.Location = New System.Drawing.Point(9, 21)
         Me.ChatSpeed.Name = "ChatSpeed"
         Me.ChatSpeed.Size = New System.Drawing.Size(113, 21)
-        Me.ChatSpeed.TabIndex = 8
+        Me.ChatSpeed.TabIndex = 5
         Me.ToolTip1.SetToolTip(Me.ChatSpeed, "The sleepy fairy chats at this rate.  ")
         '
         'AutoBackupHelp
@@ -229,7 +229,7 @@ Partial Class AdvancedForm
         Me.WelcomeBox1.Location = New System.Drawing.Point(4, 38)
         Me.WelcomeBox1.Name = "WelcomeBox1"
         Me.WelcomeBox1.Size = New System.Drawing.Size(148, 21)
-        Me.WelcomeBox1.TabIndex = 31
+        Me.WelcomeBox1.TabIndex = 12
         Me.ToolTip1.SetToolTip(Me.WelcomeBox1, "The first sim a visitor will arrive in")
         '
         'RegionHelp
@@ -244,29 +244,29 @@ Partial Class AdvancedForm
         '
         'TOSButton
         '
-        Me.TOSButton.Location = New System.Drawing.Point(25, 101)
+        Me.TOSButton.Location = New System.Drawing.Point(6, 101)
         Me.TOSButton.Name = "TOSButton"
         Me.TOSButton.Size = New System.Drawing.Size(145, 23)
-        Me.TOSButton.TabIndex = 1869
+        Me.TOSButton.TabIndex = 18
         Me.TOSButton.Text = "TOS Settings"
         Me.ToolTip1.SetToolTip(Me.TOSButton, "Click to set up your Terms of Service")
         Me.TOSButton.UseVisualStyleBackColor = True
         '
         'GloebitsButton
         '
-        Me.GloebitsButton.Location = New System.Drawing.Point(25, 19)
+        Me.GloebitsButton.Location = New System.Drawing.Point(6, 19)
         Me.GloebitsButton.Name = "GloebitsButton"
         Me.GloebitsButton.Size = New System.Drawing.Size(143, 23)
-        Me.GloebitsButton.TabIndex = 1867
+        Me.GloebitsButton.TabIndex = 15
         Me.GloebitsButton.Text = "Gloebits Currency Setup"
         Me.GloebitsButton.UseVisualStyleBackColor = True
         '
         'ExpertButton1
         '
-        Me.ExpertButton1.Location = New System.Drawing.Point(25, 130)
+        Me.ExpertButton1.Location = New System.Drawing.Point(6, 130)
         Me.ExpertButton1.Name = "ExpertButton1"
         Me.ExpertButton1.Size = New System.Drawing.Size(143, 23)
-        Me.ExpertButton1.TabIndex = 1866
+        Me.ExpertButton1.TabIndex = 19
         Me.ExpertButton1.Text = "Expert Settings"
         Me.ExpertButton1.UseVisualStyleBackColor = True
         '
@@ -320,10 +320,10 @@ Partial Class AdvancedForm
         '
         'VoiceButton1
         '
-        Me.VoiceButton1.Location = New System.Drawing.Point(25, 72)
+        Me.VoiceButton1.Location = New System.Drawing.Point(6, 72)
         Me.VoiceButton1.Name = "VoiceButton1"
         Me.VoiceButton1.Size = New System.Drawing.Size(143, 23)
-        Me.VoiceButton1.TabIndex = 1864
+        Me.VoiceButton1.TabIndex = 17
         Me.VoiceButton1.Text = "Voice Setup"
         Me.VoiceButton1.UseVisualStyleBackColor = True
         '
@@ -358,7 +358,7 @@ Partial Class AdvancedForm
         Me.BackupFolder.Location = New System.Drawing.Point(9, 133)
         Me.BackupFolder.Name = "BackupFolder"
         Me.BackupFolder.Size = New System.Drawing.Size(163, 20)
-        Me.BackupFolder.TabIndex = 15
+        Me.BackupFolder.TabIndex = 4
         '
         'Label9
         '
@@ -406,7 +406,7 @@ Partial Class AdvancedForm
         Me.AddRegion.Location = New System.Drawing.Point(4, 65)
         Me.AddRegion.Name = "AddRegion"
         Me.AddRegion.Size = New System.Drawing.Size(148, 23)
-        Me.AddRegion.TabIndex = 26
+        Me.AddRegion.TabIndex = 13
         Me.AddRegion.Text = "Add Region"
         Me.AddRegion.UseVisualStyleBackColor = True
         '
@@ -415,16 +415,16 @@ Partial Class AdvancedForm
         Me.RegionButton.Location = New System.Drawing.Point(4, 94)
         Me.RegionButton.Name = "RegionButton"
         Me.RegionButton.Size = New System.Drawing.Size(148, 23)
-        Me.RegionButton.TabIndex = 27
+        Me.RegionButton.TabIndex = 14
         Me.RegionButton.Text = "Configure Regions"
         Me.RegionButton.UseVisualStyleBackColor = True
         '
         'Shoutcast
         '
-        Me.Shoutcast.Location = New System.Drawing.Point(25, 45)
+        Me.Shoutcast.Location = New System.Drawing.Point(6, 45)
         Me.Shoutcast.Name = "Shoutcast"
         Me.Shoutcast.Size = New System.Drawing.Size(143, 23)
-        Me.Shoutcast.TabIndex = 1868
+        Me.Shoutcast.TabIndex = 16
         Me.Shoutcast.Text = "Icecast Setup"
         Me.Shoutcast.UseVisualStyleBackColor = True
         '
@@ -435,7 +435,7 @@ Partial Class AdvancedForm
         Me.GroupBox8.Controls.Add(Me.TOSButton)
         Me.GroupBox8.Controls.Add(Me.VoiceButton1)
         Me.GroupBox8.Controls.Add(Me.Shoutcast)
-        Me.GroupBox8.Location = New System.Drawing.Point(462, 150)
+        Me.GroupBox8.Location = New System.Drawing.Point(458, 150)
         Me.GroupBox8.Name = "GroupBox8"
         Me.GroupBox8.Size = New System.Drawing.Size(192, 172)
         Me.GroupBox8.TabIndex = 1870
