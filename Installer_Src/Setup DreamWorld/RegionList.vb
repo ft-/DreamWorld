@@ -268,6 +268,7 @@ Public Class RegionList
             ActualForm.Init(RegionClass.RegionName(n))
             ActualForm.Activate()
             ActualForm.Visible = True
+            ActualForm.Select()
             Return
         End If
 
@@ -308,7 +309,7 @@ Public Class RegionList
                 Form1.Log("Aborting " + RegionClass.RegionName(n))
             Next
         End If
-        Me.Focus()
+
     End Sub
 
     Private Sub ListView1_ItemCheck1(ByVal sender As Object, ByVal e As System.Windows.Forms.ItemCheckEventArgs) Handles ListView1.ItemCheck
