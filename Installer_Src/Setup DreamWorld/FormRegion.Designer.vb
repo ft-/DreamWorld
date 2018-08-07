@@ -68,7 +68,7 @@ Partial Class FormRegion
         Me.RegionPort.Location = New System.Drawing.Point(97, 39)
         Me.RegionPort.Name = "RegionPort"
         Me.RegionPort.Size = New System.Drawing.Size(40, 20)
-        Me.RegionPort.TabIndex = 10
+        Me.RegionPort.TabIndex = 14
         Me.ToolTip1.SetToolTip(Me.RegionPort, "The UDP port the region will operate on. Must be unique")
         '
         'CoordY
@@ -76,7 +76,7 @@ Partial Class FormRegion
         Me.CoordY.Location = New System.Drawing.Point(163, 13)
         Me.CoordY.Name = "CoordY"
         Me.CoordY.Size = New System.Drawing.Size(38, 20)
-        Me.CoordY.TabIndex = 9
+        Me.CoordY.TabIndex = 13
         Me.ToolTip1.SetToolTip(Me.CoordY, "The Up-Down position on the world map")
         '
         'CoordX
@@ -84,7 +84,7 @@ Partial Class FormRegion
         Me.CoordX.Location = New System.Drawing.Point(97, 13)
         Me.CoordX.Name = "CoordX"
         Me.CoordX.Size = New System.Drawing.Size(40, 20)
-        Me.CoordX.TabIndex = 8
+        Me.CoordX.TabIndex = 12
         Me.ToolTip1.SetToolTip(Me.CoordX, "The L-R position on the world map")
         '
         'RegionName
@@ -101,7 +101,7 @@ Partial Class FormRegion
         Me.RadioButton4.Location = New System.Drawing.Point(20, 85)
         Me.RadioButton4.Name = "RadioButton4"
         Me.RadioButton4.Size = New System.Drawing.Size(50, 17)
-        Me.RadioButton4.TabIndex = 5
+        Me.RadioButton4.TabIndex = 6
         Me.RadioButton4.TabStop = True
         Me.RadioButton4.Text = "4 X 4"
         Me.ToolTip1.SetToolTip(Me.RadioButton4, "1024 X 1024")
@@ -113,7 +113,7 @@ Partial Class FormRegion
         Me.RadioButton3.Location = New System.Drawing.Point(20, 62)
         Me.RadioButton3.Name = "RadioButton3"
         Me.RadioButton3.Size = New System.Drawing.Size(50, 17)
-        Me.RadioButton3.TabIndex = 4
+        Me.RadioButton3.TabIndex = 5
         Me.RadioButton3.TabStop = True
         Me.RadioButton3.Text = "3 X 3"
         Me.ToolTip1.SetToolTip(Me.RadioButton3, "768 X 768")
@@ -125,7 +125,7 @@ Partial Class FormRegion
         Me.RadioButton2.Location = New System.Drawing.Point(20, 39)
         Me.RadioButton2.Name = "RadioButton2"
         Me.RadioButton2.Size = New System.Drawing.Size(50, 17)
-        Me.RadioButton2.TabIndex = 3
+        Me.RadioButton2.TabIndex = 4
         Me.RadioButton2.TabStop = True
         Me.RadioButton2.Text = "2 X 2"
         Me.ToolTip1.SetToolTip(Me.RadioButton2, "512 X 512")
@@ -137,7 +137,7 @@ Partial Class FormRegion
         Me.RadioButton1.Location = New System.Drawing.Point(20, 16)
         Me.RadioButton1.Name = "RadioButton1"
         Me.RadioButton1.Size = New System.Drawing.Size(50, 17)
-        Me.RadioButton1.TabIndex = 2
+        Me.RadioButton1.TabIndex = 3
         Me.RadioButton1.TabStop = True
         Me.RadioButton1.Text = "1 X 1"
         Me.ToolTip1.SetToolTip(Me.RadioButton1, "256 X 256")
@@ -148,7 +148,7 @@ Partial Class FormRegion
         Me.SizeY.Location = New System.Drawing.Point(168, 44)
         Me.SizeY.Name = "SizeY"
         Me.SizeY.Size = New System.Drawing.Size(43, 20)
-        Me.SizeY.TabIndex = 7
+        Me.SizeY.TabIndex = 8
         Me.ToolTip1.SetToolTip(Me.SizeY, "Must be the same as X")
         '
         'SizeX
@@ -156,7 +156,7 @@ Partial Class FormRegion
         Me.SizeX.Location = New System.Drawing.Point(168, 19)
         Me.SizeX.Name = "SizeX"
         Me.SizeX.Size = New System.Drawing.Size(43, 20)
-        Me.SizeX.TabIndex = 6
+        Me.SizeX.TabIndex = 7
         Me.ToolTip1.SetToolTip(Me.SizeX, "Must be the same as Y")
         '
         'MaxAgents
@@ -164,7 +164,7 @@ Partial Class FormRegion
         Me.MaxAgents.Location = New System.Drawing.Point(146, 212)
         Me.MaxAgents.Name = "MaxAgents"
         Me.MaxAgents.Size = New System.Drawing.Size(40, 20)
-        Me.MaxAgents.TabIndex = 23
+        Me.MaxAgents.TabIndex = 20
         Me.ToolTip1.SetToolTip(Me.MaxAgents, "Clamps how many Avatars + NPC's can be in a sim before the region is shown as Ful" &
         "l.   The actual value is set in Estate Settings in the viewer.")
         '
@@ -193,7 +193,7 @@ Partial Class FormRegion
         Me.PhysicalPrimMax.Location = New System.Drawing.Point(146, 134)
         Me.PhysicalPrimMax.Name = "PhysicalPrimMax"
         Me.PhysicalPrimMax.Size = New System.Drawing.Size(40, 20)
-        Me.PhysicalPrimMax.TabIndex = 32
+        Me.PhysicalPrimMax.TabIndex = 17
         Me.ToolTip1.SetToolTip(Me.PhysicalPrimMax, "You cannot make a physical prim bigger than this.")
         '
         'Label10
@@ -222,7 +222,7 @@ Partial Class FormRegion
         Me.MaxPrims.Location = New System.Drawing.Point(146, 186)
         Me.MaxPrims.Name = "MaxPrims"
         Me.MaxPrims.Size = New System.Drawing.Size(40, 20)
-        Me.MaxPrims.TabIndex = 35
+        Me.MaxPrims.TabIndex = 19
         Me.ToolTip1.SetToolTip(Me.MaxPrims, "Not what you think it is.  Only used to tell scripts the max size allowed. Id not" &
         " enforced by Opensim.  Viewer stop at 45,000, Opensim does not!")
         '
@@ -231,7 +231,7 @@ Partial Class FormRegion
         Me.NonphysicalPrimMax.Location = New System.Drawing.Point(146, 107)
         Me.NonphysicalPrimMax.Name = "NonphysicalPrimMax"
         Me.NonphysicalPrimMax.Size = New System.Drawing.Size(40, 20)
-        Me.NonphysicalPrimMax.TabIndex = 37
+        Me.NonphysicalPrimMax.TabIndex = 16
         Me.ToolTip1.SetToolTip(Me.NonphysicalPrimMax, "You cannot make a regular prim bigger than this.")
         '
         'Label12
@@ -251,7 +251,7 @@ Partial Class FormRegion
         Me.ClampPrimSize.Location = New System.Drawing.Point(146, 163)
         Me.ClampPrimSize.Name = "ClampPrimSize"
         Me.ClampPrimSize.Size = New System.Drawing.Size(15, 14)
-        Me.ClampPrimSize.TabIndex = 39
+        Me.ClampPrimSize.TabIndex = 18
         Me.ToolTip1.SetToolTip(Me.ClampPrimSize, "Clamp Prim Size is an option to ensure no prim can exceed the set size..")
         Me.ClampPrimSize.UseVisualStyleBackColor = True
         '
@@ -314,7 +314,7 @@ Partial Class FormRegion
         Me.UUID.Location = New System.Drawing.Point(9, 81)
         Me.UUID.Name = "UUID"
         Me.UUID.Size = New System.Drawing.Size(215, 20)
-        Me.UUID.TabIndex = 11
+        Me.UUID.TabIndex = 15
         Me.UUID.Text = "ae823f8a-edcc-4351-b797-0e10711312a8"
         '
         'Label21
@@ -385,7 +385,7 @@ Partial Class FormRegion
         Me.Button1.Location = New System.Drawing.Point(93, 207)
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(59, 23)
-        Me.Button1.TabIndex = 27
+        Me.Button1.TabIndex = 10
         Me.Button1.Text = "Save"
         Me.Button1.UseVisualStyleBackColor = True
         '
@@ -394,7 +394,7 @@ Partial Class FormRegion
         Me.DeleteButton.Location = New System.Drawing.Point(169, 207)
         Me.DeleteButton.Name = "DeleteButton"
         Me.DeleteButton.Size = New System.Drawing.Size(75, 23)
-        Me.DeleteButton.TabIndex = 28
+        Me.DeleteButton.TabIndex = 11
         Me.DeleteButton.Text = "Delete"
         Me.DeleteButton.UseVisualStyleBackColor = True
         '
@@ -404,7 +404,7 @@ Partial Class FormRegion
         Me.EnabledCheckBox.Location = New System.Drawing.Point(23, 64)
         Me.EnabledCheckBox.Name = "EnabledCheckBox"
         Me.EnabledCheckBox.Size = New System.Drawing.Size(65, 17)
-        Me.EnabledCheckBox.TabIndex = 29
+        Me.EnabledCheckBox.TabIndex = 2
         Me.EnabledCheckBox.Text = "Enabled"
         Me.EnabledCheckBox.UseVisualStyleBackColor = True
         '
@@ -413,7 +413,7 @@ Partial Class FormRegion
         Me.Button2.Location = New System.Drawing.Point(14, 207)
         Me.Button2.Name = "Button2"
         Me.Button2.Size = New System.Drawing.Size(69, 23)
-        Me.Button2.TabIndex = 30
+        Me.Button2.TabIndex = 9
         Me.Button2.Text = "More"
         Me.Button2.UseVisualStyleBackColor = True
         '
