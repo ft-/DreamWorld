@@ -273,9 +273,11 @@ Public Class RegionList
         End If
 
 
-        If checked And (RegionClass.Booted(n) Or RegionClass.WarmingUp(n)) Or RegionClass.ShuttingDown(n) Then
+        If (RegionClass.Booted(n) Or RegionClass.WarmingUp(n)) Or RegionClass.ShuttingDown(n) Then
             ' if enabled and running, even partly up, stop it.
             Try
+                Dim V = MsgBox("Stop " + RegionClass.GroupName(n) + "?", vbYesNo)
+                If V = vbNo Then Return
 
                 For Each num In RegionClass.RegionListByGroupNum(RegionClass.GroupName(n))
                     Form1.ConsoleCommand(RegionClass.ProcessID(num), "q{ENTER}")
@@ -288,19 +290,27 @@ Public Class RegionList
             Catch ex As Exception
                 Form1.Log("Region:Could not stop " + RegionClass.RegionName(n))
             End Try
+            Timer1.Interval = 1000 ' force a refresh
+            Return
 
-        ElseIf checked And Not (RegionClass.Booted(n) Or RegionClass.WarmingUp(n) Or RegionClass.ShuttingDown(n)) Then
-            ' it was stopped, and disabled, so we start up
+        ElseIf Not (RegionClass.Booted(n) Or RegionClass.WarmingUp(n) Or RegionClass.ShuttingDown(n)) Then
+
+            Dim V = MsgBox("Start " + RegionClass.GroupName(n) + "?", vbYesNo)
+            If V = vbNo Then Return
+
+            ' it was stopped, and off, so we start up
             If Not Form1.StartMySQL() Then Return
             Form1.Start_Robust()
+            Form1.Log("Starting " + RegionClass.RegionName(n))
             Form1.CopyOpensimProto()
             Form1.Boot(RegionClass.RegionName(n))
-            Form1.Log("Starting " + RegionClass.RegionName(n))
+            Timer1.Interval = 5000 ' force a refresh
+            Return
         End If
 
         ' Do this last to avoid starting a region that was shutting down.
 
-        If checked And (RegionClass.WarmingUp(n)) Or RegionClass.ShuttingDown(n) Then
+        If RegionClass.WarmingUp(n) Or RegionClass.ShuttingDown(n) Then
             For Each num In RegionClass.RegionListByGroupNum(RegionClass.GroupName(n))
                 RegionClass.Booted(num) = False
                 RegionClass.WarmingUp(num) = False
@@ -308,6 +318,7 @@ Public Class RegionList
                 RegionClass.ProcessID(n) = 0
                 Form1.Log("Aborting " + RegionClass.RegionName(n))
             Next
+            Timer1.Interval = 1000 ' force a refresh
         End If
 
     End Sub
