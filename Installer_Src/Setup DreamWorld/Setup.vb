@@ -3778,7 +3778,6 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
 
     Private Sub StopMysql()
 
-        If Not MysqlOk Then Return
 
         Print("Stopping MySql")
 
@@ -3787,12 +3786,11 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
         Catch
         End Try
 
-
         Dim p As Process = New Process()
         Dim pi As ProcessStartInfo = New ProcessStartInfo()
         pi.Arguments = "-u root shutdown"
         pi.FileName = """" + MyFolder + "\OutworldzFiles\mysql\bin\mysqladmin.exe" + """"
-        pi.UseShellExecute = True ' so we can redirect streams ad minimize
+        pi.UseShellExecute = True ' so we can redirect streams and minimize
         pi.WindowStyle = ProcessWindowStyle.Minimized
         p.StartInfo = pi
 
