@@ -36,7 +36,7 @@ Public Class Form1
 
 #Region "Declarations"
 
-    Dim MyVersion As String = "2.27"
+    Dim MyVersion As String = "2.28"
     Dim DebugPath As String = "\Opensim\Outworldz DreamGrid Source"  ' no slash at end
     Public Domain As String = "https://www.outworldz.com"
     Public prefix As String ' Holds path to Opensim folder
@@ -499,7 +499,7 @@ Public Class Form1
         'KillAll()
         ProgressBar1.Value = 10
         Print("I'll tell you my next dream when I wake up.")
-        'StopMysql()
+        StopMysql()
         ProgressBar1.Value = 5
         Print("Zzzz...")
         ProgressBar1.Value = 0
@@ -920,7 +920,7 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
             + ";Port=" + MySetting.MySqlPort _
             + ";User ID=" + MySetting.RegionDBUsername _
             + ";Password=" + MySetting.RegionDbPassword _
-            + ";Old Guids=True;Allow Zero Datetime=True;" _
+            + ";Old Guids=true;Allow Zero Datetime=true;" _
             + """"
         MySetting.SetOtherIni("DatabaseService", "ConnectionString", ConnectionString)
         MySetting.SaveOtherINI()
@@ -935,7 +935,7 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
             + ";Port=" + MySetting.MySqlPort _
             + ";User ID=" + MySetting.RobustUsername _
             + ";Password=" + MySetting.RobustPassword _
-            + ";Old Guids=True;Allow Zero Datetime=True;" _
+            + ";Old Guids=true;Allow Zero Datetime=true;" _
             + """"
 
         MySetting.SetOtherIni("DatabaseService", "ConnectionString", ConnectionString)
@@ -1234,7 +1234,7 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
             + ";Port=" + MySetting.MySqlPort _
             + ";User ID=" + MySetting.RobustUsername _
             + ";Password=" + MySetting.RobustPassword _
-             + ";Old Guids=True;Allow Zero Datetime=True;" + """"
+             + ";Old Guids=true;Allow Zero Datetime=true;" + """"
 
 
         ' for standalones
@@ -1243,7 +1243,7 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
         '          + ";Port=" + MySetting.MySqlPort _
         '         + ";User ID=" + MySetting.RegionDBUsername _
         '        + ";Password=" + MySetting.RegionDbPassword _
-        '       + ";Old Guids=True;Allow Zero Datetime=True;" + """"
+        '       + ";Old Guids=true;Allow Zero Datetime=true;" + """"
 
 
         MySetting.SetOtherIni("Gloebit", "GLBSpecificConnectionString", ConnectionString)
@@ -3643,21 +3643,14 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
         ' Check for MySql operation
         If Not MysqlOk Then
 
-            If MySetting.RobustServer() = "127.0.0.1" Then
-                robustconnStr = "server=" + MySetting.RobustServer() _
+            robustconnStr = "server=" + MySetting.RobustServer() _
                 + ";database=" + MySetting.RobustDataBaseName _
                 + ";port=" + MySetting.MySqlPort _
                 + ";user=" + MySetting.RobustUsername _
                 + ";password=" + MySetting.RobustPassword _
-                + ";Old Guids=True;Allow Zero Datetime=True;"
+                + ";Old Guids=true;Allow Zero Datetime=true;"
 
-                MysqlConn = New Mysql(robustconnStr)
-
-            Else
-                ' Use robust connection aka OsGrid to another machine on a port
-                '!!!
-
-            End If
+            MysqlConn = New Mysql(robustconnStr)
 
         End If
 
@@ -3761,10 +3754,14 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
 
     End Sub
 
-
     Function CheckMysql() As Boolean
 
-        Dim version = MysqlConn.IsMySqlRunning()
+        Dim version As String = Nothing
+        Try
+            version = MysqlConn.IsMySqlRunning()
+        Catch
+            Log("Mysql was not running")
+        End Try
 
         If version Is Nothing Then
             Return False
@@ -3781,6 +3778,8 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
 
     Private Sub StopMysql()
 
+        If Not MysqlOk Then Return
+
         Print("Stopping MySql")
 
         Try
@@ -3793,8 +3792,10 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
         Dim pi As ProcessStartInfo = New ProcessStartInfo()
         pi.Arguments = "-u root shutdown"
         pi.FileName = """" + MyFolder + "\OutworldzFiles\mysql\bin\mysqladmin.exe" + """"
+        pi.UseShellExecute = True ' so we can redirect streams ad minimize
         pi.WindowStyle = ProcessWindowStyle.Minimized
         p.StartInfo = pi
+
         Try
             p.Start()
             Sleep(1)
