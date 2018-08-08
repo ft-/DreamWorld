@@ -1211,6 +1211,7 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
         'Gloebits.ini
         MySetting.LoadOtherIni(prefix + "bin\Gloebit.ini", ";")
         If MySetting.GloebitsEnable Then
+
             MySetting.SetOtherIni("Gloebit", "Enabled", "true")
         Else
             MySetting.SetOtherIni("Gloebit", "Enabled", "false")
@@ -1235,15 +1236,6 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
             + ";User ID=" + MySetting.RobustUsername _
             + ";Password=" + MySetting.RobustPassword _
              + ";Old Guids=true;Allow Zero Datetime=true;" + """"
-
-
-        ' for standalones
-        'ConnectionString = """" + "Data Source=" + "127.0.0.1" _
-        '           + ";Database=" + MySetting.RegionDBName _
-        '          + ";Port=" + MySetting.MySqlPort _
-        '         + ";User ID=" + MySetting.RegionDBUsername _
-        '        + ";Password=" + MySetting.RegionDbPassword _
-        '       + ";Old Guids=true;Allow Zero Datetime=true;" + """"
 
 
         MySetting.SetOtherIni("Gloebit", "GLBSpecificConnectionString", ConnectionString)
@@ -2284,7 +2276,6 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
             myProcess.StartInfo.UseShellExecute = True ' so we can redirect streams
             myProcess.StartInfo.WorkingDirectory = prefix + "bin"
 
-            Dim permanent = True
             myProcess.StartInfo.FileName = """" + prefix + "bin\OpenSim.exe" + """"
             myProcess.StartInfo.CreateNoWindow = False
 
@@ -3791,18 +3782,20 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
         pi.Arguments = "-u root shutdown"
         pi.FileName = """" + MyFolder + "\OutworldzFiles\mysql\bin\mysqladmin.exe" + """"
         pi.UseShellExecute = True ' so we can redirect streams and minimize
-        pi.WindowStyle = ProcessWindowStyle.Minimized
+        pi.WindowStyle = ProcessWindowStyle.Normal
         p.StartInfo = pi
 
         Try
             p.Start()
-            Sleep(1)
             p.WaitForExit()
             p.Close()
         Catch ex As Exception
             Log("Error: mysqladmin failed to stop mysql:" + ex.Message)
         End Try
 
+        Return
+
+        ' not good code.
         Dim Mysql = CheckPort("127.0.0.1", MySetting.MySqlPort)
         If Mysql Then
             Sleep(4000)
