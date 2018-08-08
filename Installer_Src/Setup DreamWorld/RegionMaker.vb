@@ -246,10 +246,14 @@ Public Class RegionMaker
     End Property
     Public Property RegionPort(n As Integer) As Integer
         Get
-            If RegionList(CheckN(n))._RegionPort <= Form1.MySetting.PrivatePort Then
-                RegionList(CheckN(n))._RegionPort = Form1.MySetting.PrivatePort + 1 ' 8004, by default
-            End If
-            Return RegionList(CheckN(n))._RegionPort
+            Try
+                If RegionList(CheckN(n))._RegionPort <= Form1.MySetting.PrivatePort Then
+                    RegionList(CheckN(n))._RegionPort = Form1.MySetting.PrivatePort + 1 ' 8004, by default
+                End If
+                Return RegionList(CheckN(n))._RegionPort
+            Catch
+            End Try
+            Return 0
         End Get
         Set(ByVal Value As Integer)
             RegionList(CheckN(n))._RegionPort = Value
