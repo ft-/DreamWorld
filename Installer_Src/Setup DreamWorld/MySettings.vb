@@ -942,26 +942,26 @@ Public Class MySettings
     End Property
     Public Property RobustDataBaseName() As String
         Get
-            Return CType(GetMySetting("RobustDataBaseName"), String)
+            Return CType(GetMySetting("RobustMySqlName"), String)
         End Get
         Set
-            SetMySetting("RobustDataBaseName", Value)
+            SetMySetting("RobustMySqlName", Value)
         End Set
     End Property
     Public Property RobustUsername() As String
         Get
-            Return CType(GetMySetting("RobustUsername"), String)
+            Return CType(GetMySetting("RobustMySqlUsername"), String)
         End Get
         Set
-            SetMySetting("RobustUsername", Value)
+            SetMySetting("RobustMySqlUsername", Value)
         End Set
     End Property
     Public Property RobustPassword() As String
         Get
-            Return CType(GetMySetting("RobustPassword"), String)
+            Return CType(GetMySetting("RobustMySqlPassword"), String)
         End Get
         Set
-            SetMySetting("RobustPassword", Value)
+            SetMySetting("RobustMySqlPassword", Value)
         End Set
     End Property
     Public Property SimName() As String
