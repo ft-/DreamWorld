@@ -1,6 +1,6 @@
 
-my $type  = '-V2.28';# '-Beta-V1.5';
-my $dir = "C:/Opensim/Outworldz Dreamgrid Source";
+my $type  = '-V2.31' ;  # '-Beta-V1.5';
+my $dir = "F:/Opensim/Outworldz Dreamgrid Source";
 
 chdir ($dir);
 use Cwd;
@@ -129,8 +129,7 @@ Process ("../7z.exe -tzip d ..\\Zips\\DreamGrid-$type.zip Make_zip_v2.pl -r ");
 Process ("../7z.exe -tzip d ..\\Zips\\DreamGrid-Update$type.zip DotNetZip.dll ");
 
 #####################
-print "Server Copy?\n";
-<stdin>;
+print "Server Copy\n";
 
 # Ready to move it all
 unlink "y:/Inetpub/Secondlife/Outworldz_Installer/Grid/DreamGrid$type.zip";
@@ -174,7 +173,7 @@ sub Process
 	
 	my $x = `$file`;
 	if ($x =~ /Everything is Ok/) {
-		print "Ok\n";
+		print "\n";
 	} else {
 		print "Fail: $x\n";
 		exit;

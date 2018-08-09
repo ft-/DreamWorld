@@ -36,7 +36,7 @@ Public Class Form1
 
 #Region "Declarations"
 
-    Dim MyVersion As String = "2.28"
+    Dim MyVersion As String = "2.31"
     Dim DebugPath As String = "\Opensim\Outworldz DreamGrid Source"  ' no slash at end
     Public Domain As String = "https://www.outworldz.com"
     Public prefix As String ' Holds path to Opensim folder
@@ -1254,6 +1254,7 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
                 + ";Port=" + MySetting.MySqlPort _
                 + ";User ID=" + MySetting.RobustUsername _
                 + ";Password=" + MySetting.RobustPassword _
+                + ";Old Guids=true;Allow Zero Datetime=true;" _
                 + """"
 
         MySetting.SetOtherIni("DatabaseService", "ConnectionString", ConnectionString)
