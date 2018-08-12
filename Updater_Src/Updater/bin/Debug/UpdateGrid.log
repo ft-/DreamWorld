@@ -1,0 +1,3 @@
+2018-07-27 09:22:46:Info:using mysqladmin to close db
+2018-07-27 09:22:46:Error:mysqladmin failed to stop mysql
+2018-07-27 09:22:46:Saving to C:\Opensim\Outworldz Dreamgrid Source\Updater_Src\Updater\bin\Debug\tmp.zip
