@@ -3772,7 +3772,6 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
 
     Private Sub StopMysql()
 
-
         Print("Stopping MySql")
 
         Try
@@ -3795,27 +3794,6 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
         Catch ex As Exception
             Log("Error: failed to stop MySQL:" + ex.Message)
         End Try
-
-        Return
-
-        ' not good code.
-        Dim Mysql = CheckPort("127.0.0.1", MySetting.MySqlPort)
-        If Mysql Then
-            Sleep(4000)
-            Try
-                ProcessMySql.Close()
-            Catch ex2 As Exception
-                Log("Error:Process pMySql.Close() " + ex2.Message)
-            End Try
-        End If
-
-        Return
-
-        ' no zapping any more, too dangerous
-        Mysql = CheckPort("127.0.0.1", MySetting.MySqlPort)
-        If Mysql Then
-            Zap("mysqld")
-        End If
 
     End Sub
 
