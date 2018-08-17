@@ -2422,6 +2422,13 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
 #Region "Subs"
     Public Sub ConsoleCommand(ProcessID As Integer, command As String)
 
+
+        Try
+            Dim p = Process.GetProcessById(ProcessID)
+            ShowWindow(p.MainWindowHandle, SHOW_WINDOW.SW_RESTORE)
+        Catch
+        End Try
+
         Try
             'plus sign(+), caret(^), percent sign (%), tilde (~), And parentheses ()
             command = command.Replace("+", "{+}")
