@@ -169,6 +169,7 @@
     <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GlobalSuppressions.vb" />
     <Compile Include="Setup.Designer.vb">
       <DependentUpon>Setup.vb</DependentUpon>
     </Compile>

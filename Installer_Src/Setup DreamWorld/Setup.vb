@@ -3515,13 +3515,13 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
 
         Try
             If OpenRouterPorts() Then ' open UPnp port
-                Log("UPnpOk")
+                Log("UPnP: Ok")
                 MySetting.UPnpDiag = True
                 MySetting.SaveSettings()
                 BumpProgress10()
                 Return True
             Else
-                Log("UPnp: fail")
+                Log("UPnP: fail")
                 MySetting.UPnpDiag = False
                 MySetting.SaveSettings()
 
@@ -3556,7 +3556,7 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
 
         ' Set filter options and filter index.
         openFileDialog1.InitialDirectory = BackupPath()
-        openFileDialog1.Filter = "MySqlDump (*.sql)|*.sql|All Files (*.*)|*.*"
+        openFileDialog1.Filter = "BackupFile (*.sql)|*.sql|All Files (*.*)|*.*"
         openFileDialog1.FilterIndex = 1
         openFileDialog1.Multiselect = False
 
@@ -3747,7 +3747,7 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
         Try
             version = MysqlConn.IsMySqlRunning()
         Catch
-            Log("Mysql was not running")
+            Log("MySQL was not running")
         End Try
 
         If version Is Nothing Then
@@ -3786,7 +3786,7 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
             p.WaitForExit()
             p.Close()
         Catch ex As Exception
-            Log("Error: mysqladmin failed to stop mysql:" + ex.Message)
+            Log("Error: failed to stop MySQL:" + ex.Message)
         End Try
 
         Return

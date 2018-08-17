@@ -165,7 +165,7 @@ Partial Class FormRegion
         Me.MaxAgents.Name = "MaxAgents"
         Me.MaxAgents.Size = New System.Drawing.Size(40, 20)
         Me.MaxAgents.TabIndex = 20
-        Me.ToolTip1.SetToolTip(Me.MaxAgents, "Clamps how many Avatars + NPC's can be in a sim before the region is shown as Ful" &
+        Me.ToolTip1.SetToolTip(Me.MaxAgents, "Clamps how many Avatars + NPC's can be in a region before the region is shown as Ful" &
         "l.   The actual value is set in Estate Settings in the viewer.")
         '
         'Label5

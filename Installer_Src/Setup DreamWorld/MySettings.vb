@@ -459,12 +459,13 @@ Public Class MySettings
             SetMySetting("Density", Value.ToString)
         End Set
     End Property
+    <CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1056:UriPropertiesShouldNotBeStrings")>
     Public Property PrivateURL() As String
         Get
-            Return CType(GetMySetting("PrivateURL"), String)
+            Return GetMySetting("PrivateURL")
         End Get
         Set
-            SetMySetting("PrivateURL", Value)
+            SetMySetting("PrivateURL", Value.ToString)
         End Set
     End Property
     Public Property ConsoleShow() As Boolean

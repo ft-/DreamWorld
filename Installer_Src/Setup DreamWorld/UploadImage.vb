@@ -114,7 +114,7 @@ Public Class UploadImage
         webResp = Nothing
     End Sub
 
-    Public Sub PostContent_UploadFile(ByVal url As String, ByVal file As String, ByVal params As Specialized.NameValueCollection)
+    Public Sub PostContent_UploadFile(ByVal url As Uri, ByVal file As String, ByVal params As Specialized.NameValueCollection)
         Dim req As Net.HttpWebRequest = CType(HttpWebRequest.Create(url), HttpWebRequest)
         req.Method = "POST"
         req.KeepAlive = True

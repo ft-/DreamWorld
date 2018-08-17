@@ -10,6 +10,7 @@ Public Class Expert
 
     Private Sub Loaded(sender As Object, e As EventArgs) Handles Me.Load
 
+        DataSnapshotCheckBox.Checked = Form1.MySetting.DataSnapshot()
 
         AutoRestartBox.Text = Form1.MySetting.AutoRestartInterval.ToString
         EnableMaxPrims.Checked = Form1.MySetting.Primlimits()
@@ -516,7 +517,8 @@ Public Class Expert
                 'params.Add("file", "Photo.png")
 
                 Dim Myupload As New UploadImage
-                Myupload.PostContent_UploadFile("https://www.outworldz.com/cgi/uploadphoto.plx", Form1.MyFolder & "\OutworldzFiles\Photo.png", params)
+                Dim URL = New Uri("https://www.outworldz.com/cgi/uploadphoto.plx")
+                Myupload.PostContent_UploadFile(URL, Form1.MyFolder & "\OutworldzFiles\Photo.png", params)
 
             End If
         End If

@@ -89,6 +89,7 @@ Partial Class Expert
         Me.EnableMaxPrims = New System.Windows.Forms.CheckBox()
         Me.AutoRestartBox = New System.Windows.Forms.TextBox()
         Me.PictureBox10 = New System.Windows.Forms.PictureBox()
+        Me.DataSnapshotCheckBox = New System.Windows.Forms.CheckBox()
         Me.RegionMySqlPassword = New System.Windows.Forms.TextBox()
         Me.Label21 = New System.Windows.Forms.Label()
         Me.RegionDBUsername = New System.Windows.Forms.TextBox()
@@ -121,7 +122,6 @@ Partial Class Expert
         Me.PictureBox9 = New System.Windows.Forms.PictureBox()
         Me.GroupBox11 = New System.Windows.Forms.GroupBox()
         Me.LimitsBox = New System.Windows.Forms.GroupBox()
-        Me.DataSnapshotCheckBox = New System.Windows.Forms.CheckBox()
         Me.GroupBox3.SuspendLayout()
         CType(Me.PictureBox7, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox6, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -803,7 +803,7 @@ Partial Class Expert
         '
         Me.AutoRestartBox.Location = New System.Drawing.Point(124, 80)
         Me.AutoRestartBox.Name = "AutoRestartBox"
-        Me.AutoRestartBox.Size = New System.Drawing.Size(65, 20)
+        Me.AutoRestartBox.Size = New System.Drawing.Size(57, 20)
         Me.AutoRestartBox.TabIndex = 1861
         Me.ToolTip1.SetToolTip(Me.AutoRestartBox, "Minutes to Autorestart: default 240 (4 hour).  Set to to disable auto restart of " &
         "region")
@@ -817,6 +817,17 @@ Partial Class Expert
         Me.PictureBox10.TabIndex = 1859
         Me.PictureBox10.TabStop = False
         Me.ToolTip1.SetToolTip(Me.PictureBox10, "Right click Dreamgrid and start as Administrator to enable this.")
+        '
+        'DataSnapshotCheckBox
+        '
+        Me.DataSnapshotCheckBox.AutoSize = True
+        Me.DataSnapshotCheckBox.Location = New System.Drawing.Point(14, 148)
+        Me.DataSnapshotCheckBox.Name = "DataSnapshotCheckBox"
+        Me.DataSnapshotCheckBox.Size = New System.Drawing.Size(176, 17)
+        Me.DataSnapshotCheckBox.TabIndex = 1866
+        Me.DataSnapshotCheckBox.Text = "Publish Items marked for search"
+        Me.ToolTip1.SetToolTip(Me.DataSnapshotCheckBox, "Publish Items marked as 'Show in Search' to Hyperica.com")
+        Me.DataSnapshotCheckBox.UseVisualStyleBackColor = True
         '
         'RegionMySqlPassword
         '
@@ -1135,17 +1146,6 @@ Partial Class Expert
         Me.LimitsBox.TabIndex = 1860
         Me.LimitsBox.TabStop = False
         Me.LimitsBox.Text = "Prim Limits"
-        '
-        'DataSnapshotCheckBox
-        '
-        Me.DataSnapshotCheckBox.AutoSize = True
-        Me.DataSnapshotCheckBox.Location = New System.Drawing.Point(14, 148)
-        Me.DataSnapshotCheckBox.Name = "DataSnapshotCheckBox"
-        Me.DataSnapshotCheckBox.Size = New System.Drawing.Size(176, 17)
-        Me.DataSnapshotCheckBox.TabIndex = 1866
-        Me.DataSnapshotCheckBox.Text = "Publish Items marked for search"
-        Me.ToolTip1.SetToolTip(Me.DataSnapshotCheckBox, "Publish Items marked as 'Show in Search' to Hyperica.com")
-        Me.DataSnapshotCheckBox.UseVisualStyleBackColor = True
         '
         'Expert
         '

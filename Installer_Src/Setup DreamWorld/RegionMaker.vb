@@ -20,6 +20,7 @@ Public Class RegionMaker
             Debug.Print("Group name: {0}, httpport: {1}", pair.Key, pair.Value)
         Next
     End Sub
+
     Public Property GroupPort(index As Integer) As Integer
         Get
             Dim RegionName = GroupName(index)
@@ -119,7 +120,6 @@ Public Class RegionMaker
             RegionList(CheckN(n))._MaxAgents = Value.ToString
         End Set
     End Property
-
     Public Property Timer(n As Integer) As Integer
         Get
             Return CType(RegionList(CheckN(n))._Timer, Integer)
@@ -187,7 +187,6 @@ Public Class RegionMaker
             RegionList(CheckN(n))._FolderPath = Value
         End Set
     End Property
-
     Public Property RegionEnabled(n As Integer) As Boolean
         Get
             Return CType(RegionList(CheckN(n))._RegionEnabled, Boolean)
@@ -433,6 +432,7 @@ Public Class RegionMaker
         Return -1
 
     End Function
+
     Public Function FindBackupByName(Name As String) As Integer
 
         Dim i As Integer = 0
@@ -446,6 +446,7 @@ Public Class RegionMaker
         Return -1
 
     End Function
+
     Public Function CreateRegion(name As String) As Integer
 
         If RegionList.Contains(name) Then
@@ -480,7 +481,6 @@ Public Class RegionMaker
         Return RegionList.Count - 1
 
     End Function
-
 
     Public Sub GetAllRegions()
 
@@ -702,10 +702,10 @@ Public Class RegionMaker
 
     End Function
 
-
 #End Region
 
 #Region "POST"
+
     Public Function ParsePost(POST As String) As String
         ' set Region.Booted to true if the POST from the region indicates it is online
         ' requires a section in Opensim.ini where [RegionReady] has this:
