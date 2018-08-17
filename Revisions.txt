@@ -1,5 +1,9 @@
-Annnouncing DreamGrid V2.31
+V2.31
 
+Explicit casts (warnings removed)
+DataSnapshotCheckBox was not showing check on form load 
+
+V2.30
 Made from OpenSimulator 0.9.1.dev.24df1086fa 05-24-2018 (same as OsGrid)
 
 Suitcase or No Suitcase? A suitcase protects your inventory from rogue grids. When you are on another grid, you can only access what is in your suitcase. You can now disable the suitcase and rez objects from anywhere in your inventory while on foreign grids.

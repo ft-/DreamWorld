@@ -19,7 +19,7 @@ Public Class Expert
         BootStart.Checked = Form1.MySetting.BootStart
 
         'Clouds
-        DomainUpDown1.SelectedIndex = (1 - Form1.MySetting.Density) * 10
+        DomainUpDown1.SelectedIndex = CType((1 - Form1.MySetting.Density) * 10, Integer)
         Clouds.Checked = Form1.MySetting.Clouds
 
         DNSName.Text = Form1.MySetting.DNSName
@@ -81,7 +81,7 @@ Public Class Expert
         RobustDbName.Text = Form1.MySetting.RobustDataBaseName
         RobustDBPassword.Text = Form1.MySetting.RobustPassword
         RobustDBUsername.Text = Form1.MySetting.RobustUsername
-        RobustDbPort.Text = Form1.MySetting.MySqlPort
+        RobustDbPort.Text = Form1.MySetting.MySqlPort.ToString
 
         uPnPEnabled.Checked = Form1.MySetting.UPnPEnabled
 
@@ -366,7 +366,7 @@ Public Class Expert
     End Sub
 
     Private Sub RobustDbPortTextbox_TextChanged(sender As Object, e As EventArgs) Handles RobustDbPort.TextChanged
-        Form1.MySetting.MySqlPort = RobustDbPort.Text
+        Form1.MySetting.MySqlPort = CType(RobustDbPort.Text, Integer)
         Form1.MySetting.SaveSettings()
     End Sub
 
@@ -462,10 +462,11 @@ Public Class Expert
     Private Sub DomainUpDown1_SelectedItemChanged(sender As Object, e As EventArgs) Handles DomainUpDown1.SelectedItemChanged
 
         If initted Then
-            Dim var = DomainUpDown1.SelectedIndex.ToString()
+            Dim var As Double = CType(DomainUpDown1.SelectedIndex, Double)
+
             If var = -1 Then var = 0.5
             var = (10 - var) / 10
-            Debug.Print(var)
+            Debug.Print(var.ToString)
 
             Form1.MySetting.Density = var
             Form1.MySetting.SaveSettings()

@@ -5,8 +5,8 @@ Public Class Icecast
 
     Private Sub SC_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 
-        ShoutcastPort.Text = Form1.MySetting.SC_PortBase
-        ShoutcastPort1.Text = Form1.MySetting.SC_PortBase1
+        ShoutcastPort.Text = Form1.MySetting.SC_PortBase.ToString
+        ShoutcastPort1.Text = Form1.MySetting.SC_PortBase1.ToString
         AdminPassword.Text = Form1.MySetting.SC_AdminPassword
         ShoutcastPassword.Text = Form1.MySetting.SC_Password
         ShoutcastEnable.Checked = Form1.MySetting.SC_Enable
@@ -20,7 +20,7 @@ Public Class Icecast
 
     Public Sub ShoutcastPort_TextChanged(sender As Object, e As EventArgs) Handles ShoutcastPort.TextChanged
 
-        Form1.MySetting.SC_PortBase = ShoutcastPort.Text
+        Form1.MySetting.SC_PortBase = CType(ShoutcastPort.Text, Integer)
 
     End Sub
 
@@ -136,6 +136,6 @@ Public Class Icecast
     End Sub
 
     Private Sub TextBox1_TextChanged(sender As Object, e As EventArgs) Handles ShoutcastPort1.TextChanged
-        Form1.MySetting.SC_PortBase1 = ShoutcastPort1.Text
+        Form1.MySetting.SC_PortBase1 = CType(ShoutcastPort1.Text, Integer)
     End Sub
 End Class

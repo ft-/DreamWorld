@@ -80,7 +80,7 @@ Public Class MySettings
 
             MapType() = My.Settings.MapType
 
-            MySqlPort() = My.Settings.MySqlPort
+            MySqlPort() = CType(My.Settings.MySqlPort, Integer)
             MyX() = My.Settings.MyX
             MyY() = My.Settings.MyY
 
@@ -89,7 +89,7 @@ Public Class MySettings
             PrivatePort() = My.Settings.PrivatePort
             PublicIP() = My.Settings.PublicIP
 
-            Allow_grid_gods() = My.Settings.allow_grid_gods
+            Allow_grid_gods() = CType(My.Settings.allow_grid_gods, Boolean)
             Region_owner_is_god() = My.Settings.region_owner_is_god
             Region_manager_is_god() = My.Settings.region_manager_is_god
 
@@ -207,7 +207,7 @@ Public Class MySettings
         Try
             Dim x = AutoRestartInterval()
         Catch ex As Exception
-            AutoRestartInterval() = 60 * 4   ' default = 4 hours
+            AutoRestartInterval() = 0
             SaveSettings()
         End Try
 
@@ -360,7 +360,7 @@ Public Class MySettings
             Return CType(GetMySetting("DataSnapshot"), Boolean)
         End Get
         Set
-            SetMySetting("DataSnapshot", Value)
+            SetMySetting("DataSnapshot", Value.ToString)
         End Set
     End Property
     Public Property AutoRestartInterval() As Integer
@@ -368,7 +368,7 @@ Public Class MySettings
             Return CType(GetMySetting("AutoRestartInterval"), Integer)
         End Get
         Set
-            SetMySetting("AutoRestartInterval", Value)
+            SetMySetting("AutoRestartInterval", Value.ToString)
         End Set
     End Property
     Public Property StandAlone() As Boolean
@@ -376,7 +376,7 @@ Public Class MySettings
             Return CType(GetMySetting("StandAlone"), Boolean)
         End Get
         Set
-            SetMySetting("StandAlone", Value)
+            SetMySetting("StandAlone", Value.ToString)
         End Set
     End Property
     Public Property ShowToLocalUsers() As Boolean
@@ -384,7 +384,7 @@ Public Class MySettings
             Return CType(GetMySetting("ShowToLocalUsers"), Boolean)
         End Get
         Set
-            SetMySetting("ShowToLocalUsers", Value)
+            SetMySetting("ShowToLocalUsers", Value.ToString)
         End Set
     End Property
     Public Property ShowToForeignUsers() As Boolean
@@ -392,7 +392,7 @@ Public Class MySettings
             Return CType(GetMySetting("ShowToForeignUsers"), Boolean)
         End Get
         Set
-            SetMySetting("ShowToForeignUsers", Value)
+            SetMySetting("ShowToForeignUsers", Value.ToString)
         End Set
     End Property
     Public Property TOSEnabled() As Boolean
@@ -400,7 +400,7 @@ Public Class MySettings
             Return CType(GetMySetting("TOSEnabled"), Boolean)
         End Get
         Set
-            SetMySetting("TOSEnabled", Value)
+            SetMySetting("TOSEnabled", Value.ToString)
         End Set
     End Property
     Public Property Primlimits() As Boolean
@@ -408,7 +408,7 @@ Public Class MySettings
             Return CType(GetMySetting("Primlimits"), Boolean)
         End Get
         Set
-            SetMySetting("Primlimits", Value)
+            SetMySetting("Primlimits", Value.ToString)
         End Set
     End Property
     Public Property Suitcase() As Boolean
@@ -416,7 +416,7 @@ Public Class MySettings
             Return CType(GetMySetting("Suitcase"), Boolean)
         End Get
         Set
-            SetMySetting("Suitcase", Value)
+            SetMySetting("Suitcase", Value.ToString)
         End Set
     End Property
     Public Property GDPR() As Boolean
@@ -424,7 +424,7 @@ Public Class MySettings
             Return CType(GetMySetting("GDPR"), Boolean)
         End Get
         Set
-            SetMySetting("GDPR", Value)
+            SetMySetting("GDPR", Value.ToString)
         End Set
     End Property
     Public Property SmtpHost() As String
@@ -448,15 +448,15 @@ Public Class MySettings
             Return CType(GetMySetting("Clouds"), Boolean)
         End Get
         Set
-            SetMySetting("Clouds", Value)
+            SetMySetting("Clouds", Value.ToString)
         End Set
     End Property
-    Public Property Density() As Single
+    Public Property Density() As Double
         Get
-            Return CType(GetMySetting("Density"), Single)
+            Return CType(GetMySetting("Density"), Double)
         End Get
         Set
-            SetMySetting("Density", Value)
+            SetMySetting("Density", Value.ToString)
         End Set
     End Property
     Public Property PrivateURL() As String
@@ -472,7 +472,7 @@ Public Class MySettings
             Return CType(GetMySetting("ConsoleShow"), Boolean)
         End Get
         Set
-            SetMySetting("ConsoleShow", Value)
+            SetMySetting("ConsoleShow", Value.ToString)
         End Set
     End Property
     Public Property AutoBackup() As Boolean
@@ -480,7 +480,7 @@ Public Class MySettings
             Return CType(GetMySetting("AutoBackup"), Boolean)
         End Get
         Set
-            SetMySetting("AutoBackup", Value)
+            SetMySetting("AutoBackup", Value.ToString)
         End Set
     End Property
     Public Property PublicIP() As String
@@ -544,7 +544,7 @@ Public Class MySettings
             Return CType(GetMySetting("KeepForDays"), Integer)
         End Get
         Set
-            SetMySetting("KeepForDays", Value)
+            SetMySetting("KeepForDays", Value.ToString)
         End Set
     End Property
     Public Property Password() As String
@@ -600,7 +600,7 @@ Public Class MySettings
             Return CType(GetMySetting("ChatTime"), Integer)
         End Get
         Set
-            SetMySetting("ChatTime", Value)
+            SetMySetting("ChatTime", Value.ToString)
         End Set
     End Property
     Public Property ViewerInstalled() As Boolean
@@ -608,7 +608,7 @@ Public Class MySettings
             Return CType(GetMySetting("ViewerInstalled"), Boolean)
         End Get
         Set
-            SetMySetting("ViewerInstalled", Value)
+            SetMySetting("ViewerInstalled", Value.ToString)
         End Set
     End Property
     Public Property ImageNum() As Integer
@@ -616,7 +616,7 @@ Public Class MySettings
             Return CType(GetMySetting("ImageNum"), Integer)
         End Get
         Set
-            SetMySetting("ImageNum", Value)
+            SetMySetting("ImageNum", Value.ToString)
         End Set
     End Property
     Public Property Allow_grid_gods() As Boolean
@@ -624,7 +624,7 @@ Public Class MySettings
             Return CType(GetMySetting("Allow_grid_gods"), Boolean)
         End Get
         Set
-            SetMySetting("Allow_grid_gods", Value)
+            SetMySetting("Allow_grid_gods", Value.ToString)
         End Set
     End Property
     Public Property Region_owner_is_god() As Boolean
@@ -632,7 +632,7 @@ Public Class MySettings
             Return CType(GetMySetting("Region_owner_is_god"), Boolean)
         End Get
         Set
-            SetMySetting("Region_owner_is_god", Value)
+            SetMySetting("Region_owner_is_god", Value.ToString)
         End Set
     End Property
     Public Property Region_manager_is_god() As Boolean
@@ -640,7 +640,7 @@ Public Class MySettings
             Return CType(GetMySetting("Region_manager_is_god"), Boolean)
         End Get
         Set
-            SetMySetting("Region_manager_is_god", Value)
+            SetMySetting("Region_manager_is_god", Value.ToString)
         End Set
     End Property
     Public Property TimerInterval() As Integer
@@ -648,7 +648,7 @@ Public Class MySettings
             Return CType(GetMySetting("TimerInterval"), Integer)
         End Get
         Set
-            SetMySetting("TimerInterval", Value)
+            SetMySetting("TimerInterval", Value.ToString)
         End Set
     End Property
     Public Property AccountConfirmationRequired() As Boolean
@@ -656,12 +656,12 @@ Public Class MySettings
             Return CType(GetMySetting("AccountConfirmationRequired"), Boolean)
         End Get
         Set
-            SetMySetting("AccountConfirmationRequired", Value)
+            SetMySetting("AccountConfirmationRequired", Value.ToString)
         End Set
     End Property
     Public Property SmtpUsername() As String
         Get
-            Return CType(GetMySetting("SmtpUsername"), String)
+            Return TryCast(GetMySetting("SmtpUsername"), String)
         End Get
         Set
             SetMySetting("SmtpUsername", Value)
@@ -669,7 +669,7 @@ Public Class MySettings
     End Property
     Public Property SmtpPassword() As String
         Get
-            Return CType(GetMySetting("SmtpPassword"), String)
+            Return TryCast(GetMySetting("SmtpPassword"), String)
         End Get
         Set
             SetMySetting("SmtpPassword", Value)
@@ -680,7 +680,7 @@ Public Class MySettings
             Return CType(GetMySetting("RanAllDiags"), Boolean)
         End Get
         Set
-            SetMySetting("RanAllDiags", Value)
+            SetMySetting("RanAllDiags", Value.ToString)
         End Set
     End Property
     Public Property SkipUpdateCheck() As Boolean
@@ -688,7 +688,7 @@ Public Class MySettings
             Return CType(GetMySetting("SkipUpdateCheck"), Boolean)
         End Get
         Set
-            SetMySetting("SkipUpdateCheck", Value)
+            SetMySetting("SkipUpdateCheck", Value.ToString)
         End Set
     End Property
     Public Property DiagFailed() As Boolean
@@ -696,12 +696,12 @@ Public Class MySettings
             Return CType(GetMySetting("DiagFailed"), Boolean)
         End Get
         Set
-            SetMySetting("DiagFailed", Value)
+            SetMySetting("DiagFailed", Value.ToString)
         End Set
     End Property
     Public Property DNSName() As String
         Get
-            Return CType(GetMySetting("DnsName"), String)
+            Return TryCast(GetMySetting("DnsName"), String)
         End Get
         Set
             SetMySetting("DnsName", Value)
@@ -709,7 +709,7 @@ Public Class MySettings
     End Property
     Public Property HttpPort() As String
         Get
-            Return CType(GetMySetting("HttpPort"), String)
+            Return TryCast(GetMySetting("HttpPort"), String)
         End Get
         Set
             SetMySetting("HttpPort", Value)
@@ -717,7 +717,7 @@ Public Class MySettings
     End Property
     Public Property MachineID() As String
         Get
-            Return CType(GetMySetting("MachineID"), String)
+            Return TryCast(GetMySetting("MachineID"), String)
         End Get
         Set
             SetMySetting("MachineID", Value)
@@ -728,7 +728,7 @@ Public Class MySettings
             Return CType(GetMySetting("LoopBackDiag"), Boolean)
         End Get
         Set
-            SetMySetting("LoopBackDiag", Value)
+            SetMySetting("LoopBackDiag", Value.ToString)
         End Set
     End Property
     Public Property UPnpDiag() As Boolean
@@ -736,12 +736,12 @@ Public Class MySettings
             Return CType(GetMySetting("UPnpDiag"), Boolean)
         End Get
         Set
-            SetMySetting("UPnpDiag", Value)
+            SetMySetting("UPnpDiag", Value.ToString)
         End Set
     End Property
     Public Property SplashPage() As String
         Get
-            Return CType(GetMySetting("SplashPage"), String)
+            Return TryCast(GetMySetting("SplashPage"), String)
         End Get
         Set
             SetMySetting("SplashPage", Value)
@@ -752,7 +752,7 @@ Public Class MySettings
             Return CType(GetMySetting("Physics"), Integer)
         End Get
         Set
-            SetMySetting("Physics", Value)
+            SetMySetting("Physics", Value.ToString)
         End Set
     End Property
     Public Property MyX() As Integer
@@ -760,7 +760,7 @@ Public Class MySettings
             Return CType(GetMySetting("MyX"), Integer)
         End Get
         Set
-            SetMySetting("MyX", Value)
+            SetMySetting("MyX", Value.ToString)
         End Set
     End Property
     Public Property MyY() As Integer
@@ -768,7 +768,7 @@ Public Class MySettings
             Return CType(GetMySetting("MyY"), Integer)
         End Get
         Set
-            SetMySetting("MyY", Value)
+            SetMySetting("MyY", Value.ToString)
         End Set
     End Property
     Public Property RobustServer() As String
@@ -776,7 +776,7 @@ Public Class MySettings
             Return CType(GetMySetting("RobustServer"), String)
         End Get
         Set
-            SetMySetting("RobustServer", Value)
+            SetMySetting("RobustServer", Value.ToString)
         End Set
     End Property
     Public Property VivoxEnabled() As Boolean
@@ -784,12 +784,12 @@ Public Class MySettings
             Return CType(GetMySetting("VivoxEnabled"), Boolean)
         End Get
         Set
-            SetMySetting("VivoxEnabled", Value)
+            SetMySetting("VivoxEnabled", Value.ToString)
         End Set
     End Property
     Public Property Vivox_UserName() As String
         Get
-            Return CType(GetMySetting("Vivox_username"), String)
+            Return TryCast(GetMySetting("Vivox_username"), String)
         End Get
         Set
             SetMySetting("Vivox_username", Value)
@@ -797,7 +797,7 @@ Public Class MySettings
     End Property
     Public Property Vivox_password() As String
         Get
-            Return CType(GetMySetting("Vivox_password"), String)
+            Return TryCast(GetMySetting("Vivox_password"), String)
         End Get
         Set
             SetMySetting("Vivox_password", Value)
@@ -805,7 +805,7 @@ Public Class MySettings
     End Property
     Public Property MapType() As String
         Get
-            Return CType(GetMySetting("MapType"), String)
+            Return TryCast(GetMySetting("MapType"), String)
         End Get
         Set
             SetMySetting("MapType", Value)
@@ -813,7 +813,7 @@ Public Class MySettings
     End Property
     Public Property BackupFolder() As String
         Get
-            Return CType(GetMySetting("BackupFolder"), String)
+            Return TryCast(GetMySetting("BackupFolder"), String)
         End Get
         Set
             SetMySetting("BackupFolder", Value)
@@ -821,7 +821,7 @@ Public Class MySettings
     End Property
     Public Property WelcomeRegion() As String
         Get
-            Return CType(GetMySetting("WelcomeRegion"), String)
+            Return TryCast(GetMySetting("WelcomeRegion"), String)
         End Get
         Set
             SetMySetting("WelcomeRegion", Value)
@@ -832,7 +832,7 @@ Public Class MySettings
             Return CType(GetMySetting("GloebitsEnable"), Boolean)
         End Get
         Set
-            SetMySetting("GloebitsEnable", Value)
+            SetMySetting("GloebitsEnable", Value.ToString)
         End Set
     End Property
     Public Property GloebitsMode() As Boolean
@@ -840,12 +840,12 @@ Public Class MySettings
             Return CType(GetMySetting("GloebitsMode"), Boolean)
         End Get
         Set
-            SetMySetting("GloebitsMode", Value)
+            SetMySetting("GloebitsMode", Value.ToString)
         End Set
     End Property
     Public Property GLSandKey() As String
         Get
-            Return CType(GetMySetting("GLSandKey"), String)
+            Return TryCast(GetMySetting("GLSandKey"), String)
         End Get
         Set
             SetMySetting("GLSandKey", Value)
@@ -854,7 +854,7 @@ Public Class MySettings
 
     Public Property GLSandSecret() As String
         Get
-            Return CType(GetMySetting("GLSandSecret"), String)
+            Return TryCast(GetMySetting("GLSandSecret"), String)
         End Get
         Set
             SetMySetting("GLSandSecret", Value)
@@ -862,7 +862,7 @@ Public Class MySettings
     End Property
     Public Property GLBOwnerEmail() As String
         Get
-            Return CType(GetMySetting("GLBOwnerEmail"), String)
+            Return TryCast(GetMySetting("GLBOwnerEmail"), String)
         End Get
         Set
             SetMySetting("GLBOwnerEmail", Value)
@@ -870,7 +870,7 @@ Public Class MySettings
     End Property
     Public Property GLBOwnerName() As String
         Get
-            Return CType(GetMySetting("GLBOwnerName"), String)
+            Return TryCast(GetMySetting("GLBOwnerName"), String)
         End Get
         Set
             SetMySetting("GLBOwnerName", Value)
@@ -878,23 +878,23 @@ Public Class MySettings
     End Property
     Public Property GLProdKey() As String
         Get
-            Return CType(GetMySetting("GLProdKey"), String)
+            Return TryCast(GetMySetting("GLProdKey"), String)
         End Get
         Set
             SetMySetting("GLProdKey", Value)
         End Set
     End Property
-    Public Property MySqlPort() As String
+    Public Property MySqlPort() As Integer
         Get
-            Return CType(GetMySetting("MySqlPort"), String)
+            Return CType(GetMySetting("MySqlPort"), Integer)
         End Get
         Set
-            SetMySetting("MySqlPort", Value)
+            SetMySetting("MySqlPort", Value.ToString)
         End Set
     End Property
     Public Property GLProdSecret() As String
         Get
-            Return CType(GetMySetting("GLProdSecret"), String)
+            Return TryCast(GetMySetting("GLProdSecret"), String)
         End Get
         Set
             SetMySetting("GLProdSecret", Value)
@@ -902,7 +902,7 @@ Public Class MySettings
     End Property
     Public Property RegionDbPassword() As String
         Get
-            Return CType(GetMySetting("RegionDbPassword"), String)
+            Return TryCast(GetMySetting("RegionDbPassword"), String)
         End Get
         Set
             SetMySetting("RegionDbPassword", Value)
@@ -910,7 +910,7 @@ Public Class MySettings
     End Property
     Public Property RegionDBUsername() As String
         Get
-            Return CType(GetMySetting("RegionDBUsername"), String)
+            Return TryCast(GetMySetting("RegionDBUsername"), String)
         End Get
         Set
             SetMySetting("RegionDBUsername", Value)
@@ -918,7 +918,7 @@ Public Class MySettings
     End Property
     Public Property RegionDBName() As String
         Get
-            Return CType(GetMySetting("RegionDBName"), String)
+            Return TryCast(GetMySetting("RegionDBName"), String)
         End Get
         Set
             SetMySetting("RegionDBName", Value)
@@ -929,12 +929,12 @@ Public Class MySettings
             Return CType(GetMySetting("WifiEnabled"), Boolean)
         End Get
         Set
-            SetMySetting("WifiEnabled", Value)
+            SetMySetting("WifiEnabled", Value.ToString)
         End Set
     End Property
     Public Property DiagnosticPort() As String
         Get
-            Return CType(GetMySetting("DiagnosticPort"), String)
+            Return TryCast(GetMySetting("DiagnosticPort"), String)
         End Get
         Set
             SetMySetting("DiagnosticPort", Value)
@@ -942,7 +942,7 @@ Public Class MySettings
     End Property
     Public Property RobustDataBaseName() As String
         Get
-            Return CType(GetMySetting("RobustMySqlName"), String)
+            Return TryCast(GetMySetting("RobustMySqlName"), String)
         End Get
         Set
             SetMySetting("RobustMySqlName", Value)
@@ -950,7 +950,7 @@ Public Class MySettings
     End Property
     Public Property RobustUsername() As String
         Get
-            Return CType(GetMySetting("RobustMySqlUsername"), String)
+            Return TryCast(GetMySetting("RobustMySqlUsername"), String)
         End Get
         Set
             SetMySetting("RobustMySqlUsername", Value)
@@ -958,7 +958,7 @@ Public Class MySettings
     End Property
     Public Property RobustPassword() As String
         Get
-            Return CType(GetMySetting("RobustMySqlPassword"), String)
+            Return TryCast(GetMySetting("RobustMySqlPassword"), String)
         End Get
         Set
             SetMySetting("RobustMySqlPassword", Value)
@@ -966,7 +966,7 @@ Public Class MySettings
     End Property
     Public Property SimName() As String
         Get
-            Return CType(GetMySetting("SimName"), String)
+            Return TryCast(GetMySetting("SimName"), String)
         End Get
         Set
             SetMySetting("SimName", Value)
@@ -977,7 +977,7 @@ Public Class MySettings
             Return CType(GetMySetting("UPnPEnabled"), Boolean)
         End Get
         Set
-            SetMySetting("UPnPEnabled", Value)
+            SetMySetting("UPnPEnabled", Value.ToString)
         End Set
     End Property
     Public Property Autostart() As Boolean
@@ -985,7 +985,7 @@ Public Class MySettings
             Return CType(GetMySetting("Autostart"), Boolean)
         End Get
         Set
-            SetMySetting("Autostart", Value)
+            SetMySetting("Autostart", Value.ToString)
         End Set
     End Property
     Public Property BootStart() As Boolean
@@ -993,7 +993,7 @@ Public Class MySettings
             Return CType(GetMySetting("BootStart"), Boolean)
         End Get
         Set
-            SetMySetting("BootStart", Value)
+            SetMySetting("BootStart", Value.ToString)
         End Set
     End Property
     Public Property EnableHypergrid() As Boolean
@@ -1001,7 +1001,7 @@ Public Class MySettings
             Return CType(GetMySetting("EnableHypergrid"), Boolean)
         End Get
         Set
-            SetMySetting("EnableHypergrid", Value)
+            SetMySetting("EnableHypergrid", Value.ToString)
         End Set
     End Property
     Public Property AutoLoad() As Boolean
@@ -1009,7 +1009,7 @@ Public Class MySettings
             Return CType(GetMySetting("AutoLoad"), Boolean)
         End Get
         Set
-            SetMySetting("AutoLoad", Value)
+            SetMySetting("AutoLoad", Value.ToString)
         End Set
     End Property
     Public Property RunOnce() As Boolean
@@ -1017,7 +1017,7 @@ Public Class MySettings
             Return CType(GetMySetting("RunOnce"), Boolean)
         End Get
         Set
-            SetMySetting("RunOnce", Value)
+            SetMySetting("RunOnce", Value.ToString)
         End Set
     End Property
     Public Property SC_Enable() As Boolean
@@ -1025,7 +1025,7 @@ Public Class MySettings
             Return CType(GetMySetting("SC_Enable"), Boolean)
         End Get
         Set
-            SetMySetting("SC_Enable", Value)
+            SetMySetting("SC_Enable", Value.ToString)
         End Set
     End Property
     Public Property SC_PortBase() As Integer
@@ -1033,7 +1033,7 @@ Public Class MySettings
             Return CType(GetMySetting("PortBase"), Integer)
         End Get
         Set
-            SetMySetting("PortBase", Value)
+            SetMySetting("PortBase", Value.ToString)
         End Set
     End Property
     Public Property SC_PortBase1() As Integer
@@ -1046,12 +1046,12 @@ Public Class MySettings
 
         End Get
         Set
-            SetMySetting("PortBase1", Value)
+            SetMySetting("PortBase1", Value.ToString)
         End Set
     End Property
     Public Property SC_Password() As String
         Get
-            Return CType(GetMySetting("SC_Password"), String)
+            Return TryCast(GetMySetting("SC_Password"), String)
         End Get
         Set
             SetMySetting("SC_Password", Value)
@@ -1059,7 +1059,7 @@ Public Class MySettings
     End Property
     Public Property SC_AdminPassword() As String
         Get
-            Return CType(GetMySetting("SC_AdminPassword"), String)
+            Return TryCast(GetMySetting("SC_AdminPassword"), String)
         End Get
         Set
             SetMySetting("SC_AdminPassword", Value)
@@ -1070,14 +1070,14 @@ Public Class MySettings
             Return CType(GetMySetting("SC_Show"), Boolean)
         End Get
         Set
-            SetMySetting("SC_Show", Value)
+            SetMySetting("SC_Show", Value.ToString)
         End Set
     End Property
 
     'Save a random machine ID - we don't want any data to be sent that's personal or identifiable,  but it needs to be unique
     Public Property Machine() As String
         Get
-            Return CType(GetMySetting("MachineID"), String)
+            Return TryCast(GetMySetting("MachineID"), String)
         End Get
         Set(ByVal Value As String)
             If (GetMySetting("MachineID") = "") Then

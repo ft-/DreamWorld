@@ -13,7 +13,7 @@ Public Class UploadImage
 
     Private Sub UploadComplete(ByVal Data As String)
         ' Your Upload Success Routine Goes here
-        If Data <> 1 Then
+        If Data <> "1" Then
             MsgBox("Upload Failed. Please try again later.")
         End If
 
@@ -90,9 +90,9 @@ Public Class UploadImage
         Dim webResp As HttpWebResponse
         Dim sData As String = String.Empty
         Try
-            webResp = r_State.Request.EndGetResponse(ar)
+            webResp = CType(r_State.Request.EndGetResponse(ar), HttpWebResponse)
         Catch wex As WebException
-            webResp = wex.Response
+            webResp = CType(wex.Response, HttpWebResponse)
         Catch ex As Exception
             sData = ex.Message
             webResp = Nothing
@@ -115,7 +115,7 @@ Public Class UploadImage
     End Sub
 
     Public Sub PostContent_UploadFile(ByVal url As String, ByVal file As String, ByVal params As Specialized.NameValueCollection)
-        Dim req As Net.HttpWebRequest = HttpWebRequest.Create(url)
+        Dim req As Net.HttpWebRequest = CType(HttpWebRequest.Create(url), HttpWebRequest)
         req.Method = "POST"
         req.KeepAlive = True
         req.ReadWriteTimeout = System.Threading.Timeout.Infinite

@@ -57,7 +57,7 @@ Public Class Mysql
     End Function
 
 
-    Private Function CheckPort(ServerAddress As String, Port As String) As Boolean
+    Private Function CheckPort(ServerAddress As String, Port As Integer) As Boolean
 
         Dim iPort As Integer = Convert.ToInt16(Port)
         Dim ClientSocket As New TcpClient

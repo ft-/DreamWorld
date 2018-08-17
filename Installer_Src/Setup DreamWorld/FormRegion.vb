@@ -5,12 +5,12 @@ Imports System.ComponentModel
 Public Class FormRegion
 
 #Region "Declarations"
-    Dim Big As Integer = False
+    Dim Big As Boolean = False
     Dim n As Integer
     Dim oldname As String = ""
     Dim initted As Boolean = False ' needed a flag to see if we are initted as the dialogs change on start.
     Dim changed As Boolean    ' true if we need to save a form
-    Dim isNew As Integer = False
+    Dim isNew As Boolean = False
     Dim RegionClass As RegionMaker
 
     Public Sub New()
@@ -38,18 +38,18 @@ Public Class FormRegion
             isNew = True
             RegionName.Text = Name
             UUID.Text = Guid.NewGuid().ToString
-            SizeX.Text = 256
-            SizeY.Text = 256
-            CoordX.Text = RegionClass.LargestX() + 4
-            CoordY.Text = RegionClass.LargestY() + 0
-            RegionPort.Text = RegionClass.LargestPort() + 1
+            SizeX.Text = 256.ToString
+            SizeY.Text = 256.ToString
+            CoordX.Text = (RegionClass.LargestX() + 4).ToString
+            CoordY.Text = (RegionClass.LargestY() + 0).ToString
+            RegionPort.Text = (RegionClass.LargestPort() + 1).ToString
             EnabledCheckBox.Checked = True
             RadioButton1.Checked = True
-            NonphysicalPrimMax.Text = 1024
-            PhysicalPrimMax.Text = 64
+            NonphysicalPrimMax.Text = 1024.ToString
+            PhysicalPrimMax.Text = 64.ToString
             ClampPrimSize.Checked = False
-            MaxPrims.Text = 45000
-            MaxAgents.Text = 100
+            MaxPrims.Text = 45000.ToString
+            MaxAgents.Text = 100.ToString
 
             n = RegionClass.CreateRegion("")
 
@@ -62,11 +62,11 @@ Public Class FormRegion
             Me.Text = Name ' on screen
             RegionName.Text = RegionClass.RegionName(n) ' on form
             UUID.Text = RegionClass.UUID(n)   ' on screen
-            NonphysicalPrimMax.Text = RegionClass.NonPhysicalPrimMax(n)
-            PhysicalPrimMax.Text = RegionClass.PhysicalPrimMax(n)
+            NonphysicalPrimMax.Text = RegionClass.NonPhysicalPrimMax(n).ToString
+            PhysicalPrimMax.Text = RegionClass.PhysicalPrimMax(n).ToString
             ClampPrimSize.Checked = RegionClass.ClampPrimSize(n)
-            MaxPrims.Text = RegionClass.MaxPrims(n)
-            MaxAgents.Text = RegionClass.MaxAgents(n)
+            MaxPrims.Text = RegionClass.MaxPrims(n).ToString
+            MaxAgents.Text = RegionClass.MaxAgents(n).ToString
 
             Me.Show() ' time to show the results
             Me.Activate()
@@ -112,16 +112,16 @@ Public Class FormRegion
 
             ' global coords
             If RegionClass.CoordX(n) <> 0 Then
-                CoordX.Text = RegionClass.CoordX(n)
+                CoordX.Text = RegionClass.CoordX(n).ToString
             End If
 
             If RegionClass.CoordY(n) <> 0 Then
-                CoordY.Text = RegionClass.CoordY(n)
+                CoordY.Text = RegionClass.CoordY(n).ToString
             End If
 
             ' and port
             If RegionClass.RegionPort(n) <> 0 Then
-                RegionPort.Text = RegionClass.RegionPort(n)
+                RegionPort.Text = RegionClass.RegionPort(n).ToString
             End If
         End If
         Me.Focus()
@@ -291,7 +291,7 @@ Public Class FormRegion
         Try
             ' Read the chosen sim name
             chosen = Chooseform.DataGridView.CurrentCell.Value.ToString()
-            If chosen.Length Then
+            If chosen.Length > 0 Then
                 Chooseform.Dispose()
             End If
         Catch ex As Exception
@@ -307,7 +307,7 @@ Public Class FormRegion
     Private Sub Coordy_TextChanged(sender As Object, e As EventArgs) Handles CoordY.TextChanged
         If initted And CoordY.Text <> "" Then
             Try
-                CoordY.Text = Convert.ToInt16(CoordY.Text)
+                CoordY.Text = CoordY.Text
             Catch
             End Try
             changed = True
@@ -319,7 +319,7 @@ Public Class FormRegion
 
         If initted And CoordX.Text <> "" Then
             Try
-                CoordX.Text = Convert.ToInt16(CoordX.Text)
+                CoordX.Text = CoordX.Text
             Catch
 
             End Try
@@ -332,7 +332,7 @@ Public Class FormRegion
 
         If initted Then
             Try
-                RegionPort.Text = Convert.ToInt16(RegionPort.Text)
+                RegionPort.Text = RegionPort.Text
             Catch
 
             End Try
@@ -356,8 +356,8 @@ Public Class FormRegion
     Private Sub RadioButton1_CheckedChanged(sender As Object, e As EventArgs) Handles RadioButton1.CheckedChanged
 
         If initted And RadioButton1.Checked Then
-            SizeX.Text = 256
-            SizeY.Text = 256
+            SizeX.Text = "256"
+            SizeY.Text = "256"
             changed = True
         End If
 
@@ -366,8 +366,8 @@ Public Class FormRegion
     Private Sub RadioButton2_CheckedChanged(sender As Object, e As EventArgs) Handles RadioButton2.CheckedChanged
 
         If initted And RadioButton2.Checked Then
-            SizeX.Text = 512
-            SizeY.Text = 512
+            SizeX.Text = "512"
+            SizeY.Text = "512"
             changed = True
         End If
 
@@ -376,8 +376,8 @@ Public Class FormRegion
     Private Sub RadioButton3_CheckedChanged(sender As Object, e As EventArgs) Handles RadioButton3.CheckedChanged
 
         If initted And RadioButton3.Checked Then
-            SizeX.Text = 768
-            SizeY.Text = 768
+            SizeX.Text = "768"
+            SizeY.Text = "768"
             changed = True
         End If
 
@@ -386,8 +386,8 @@ Public Class FormRegion
     Private Sub RadioButton4_CheckedChanged(sender As Object, e As EventArgs) Handles RadioButton4.CheckedChanged
 
         If initted And RadioButton4.Checked Then
-            SizeX.Text = 1024
-            SizeY.Text = 1024
+            SizeX.Text = "1024"
+            SizeY.Text = "1024"
             changed = True
         End If
 
@@ -416,7 +416,7 @@ Public Class FormRegion
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
 
         Dim message = RegionValidate()
-        If Len(message) Then
+        If Len(message) > 0 Then
             Dim v = MsgBox(message + vbCrLf + "Discard all changes and exit anyway?", vbYesNo, "Info")
             If v = vbYes Then
                 Me.Close()
@@ -439,7 +439,7 @@ Public Class FormRegion
             Dim v = MsgBox("Save changes?", vbYesNo, "Region Save")
             If v = vbYes Then
                 Dim message = RegionValidate()
-                If Len(message) Then
+                If Len(message) > 0 Then
                     v = MsgBox(message + vbCrLf + "Discard all changes and exit anyway?", vbYesNo, "Info")
                     If v = vbYes Then
                         Me.Close()
@@ -457,10 +457,10 @@ Public Class FormRegion
     Private Sub SizeX_Changed(sender As Object, e As EventArgs) Handles SizeX.LostFocus
 
         If initted And SizeX.Text <> "" Then
-            If Not IsPowerOf256(Convert.ToSingle(SizeX.Text)) Then
+            If Not IsPowerOf256(CType(SizeX.Text, Integer)) Then
                 MsgBox("Must be a multiple of 256: 256,512,768,1024,1280,1536,1792,2048,2304,2560, ..", vbInformation, "Size X,Y")
             Else
-                If SizeX.Text > 1024 Then
+                If CType(SizeX.Text, Double) > 1024 Then
                     RadioButton1.Checked = False
                     RadioButton2.Checked = False
                     RadioButton3.Checked = False

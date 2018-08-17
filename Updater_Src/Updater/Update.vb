@@ -119,8 +119,6 @@ Public Class Update
                     "1) File doesn't exist" & ControlChars.CrLf &
                     "2) Remote server error", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
 
-            Dim cancelDelegate As New DownloadCompleteSafe(AddressOf DownloadComplete)
-            Invoke(cancelDelegate, True)
 
             Exit Sub
         End Try
@@ -188,22 +186,23 @@ Public Class Update
         theResponse.GetResponseStream.Close()
         writeStream.Close()
 
+        Dim cancelled As Boolean = False
         If BackgroundWorker1.CancellationPending Then
             Log("Deleteing " + whereToSave)
             IO.File.Delete(whereToSave)
 
-            Dim cancelDelegate As New DownloadCompleteSafe(AddressOf DownloadComplete)
-            Invoke(cancelDelegate, True)
+            ' Dim cancelDelegate As New DownloadCompleteSafe(AddressOf DownloadComplete)
+            ' Invoke(cancelDelegate, True)
             Exit Sub
         End If
 
         Log("Launching Install Thread")
-        Dim completeDelegate As New DownloadCompleteSafe(AddressOf DownloadComplete)
-        Invoke(completeDelegate, False)
+        'Dim completeDelegate As New DownloadCompleteSafe(AddressOf DownloadComplete)
+        'Invoke(completeDelegate, False)
 
-    End Sub
+        'End Sub
 
-    Public Sub DownloadComplete(ByVal cancelled As Boolean)
+        'Public Sub DownloadComplete(ByVal cancelled As Boolean)
 
         btnCancel.Visible = False
         If cancelled Then

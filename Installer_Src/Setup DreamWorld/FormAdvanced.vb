@@ -14,12 +14,12 @@ Public Class AdvancedForm
 #Region "Functions"
 
     Private Sub Loaded(sender As Object, e As EventArgs) Handles Me.Load
-        AutoBackupKeepFilesForDays.Text = Form1.MySetting.KeepForDays
-        If Form1.MySetting.AutobackupInterval = 60 Then
+        AutoBackupKeepFilesForDays.Text = Form1.MySetting.KeepForDays.ToString
+        If CType(Form1.MySetting.AutobackupInterval, Double) = 60 Then
             AutoBackupInterval.SelectedIndex = 0
-        ElseIf Form1.MySetting.AutobackupInterval = 12 * 60 Then
+        ElseIf CType(Form1.MySetting.AutobackupInterval, Double) = 12 * 60 Then
             AutoBackupInterval.SelectedIndex = 1
-        ElseIf Form1.MySetting.AutobackupInterval = 24 * 60 Then
+        ElseIf CType(Form1.MySetting.AutobackupInterval, Double) = 24 * 60 Then
             AutoBackupInterval.SelectedIndex = 2
         Else
             AutoBackupInterval.SelectedIndex = 3
@@ -80,7 +80,7 @@ Public Class AdvancedForm
         If text = "12 Hour" Then Interval = 60 * 12
         If text = "Daily" Then Interval = 60 * 24
         If text = "Weekly" Then Interval = 60 * 24 * 7
-        Form1.MySetting.AutobackupInterval = Interval
+        Form1.MySetting.AutobackupInterval = Interval.ToString
         Form1.MySetting.SaveSettings()
     End Sub
 
@@ -212,12 +212,12 @@ Public Class AdvancedForm
 
         openFileDialog1.ShowNewFolderButton = True
         openFileDialog1.Description = "Pick folder for backups"
-        Dim UserClickedOK As Boolean = openFileDialog1.ShowDialog
+        Dim UserClickedOK As DialogResult = openFileDialog1.ShowDialog
 
         ' Process input if the user clicked OK.
-        If UserClickedOK = True Then
+        If UserClickedOK = DialogResult.OK Then
             Dim thing = openFileDialog1.SelectedPath
-            If thing.Length Then
+            If thing.Length > 0 Then
                 Form1.MySetting.BackupFolder = thing
                 Form1.MySetting.SaveSettings()
                 BackupFolder.Text = thing

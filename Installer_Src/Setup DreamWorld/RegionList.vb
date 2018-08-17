@@ -157,7 +157,7 @@ Public Class RegionList
             ElseIf RegionClass.Booted(X) Then
                 Letter = "Running"
                 Num = 2
-            ElseIf Not RegionClass.ProcessID(X) And RegionClass.ShuttingDown(X) Then
+            ElseIf Not CType(RegionClass.ProcessID(X), Boolean) And RegionClass.ShuttingDown(X) Then
                 Letter = "Exiting"
                 Num = 3
             ElseIf Not RegionClass.RegionEnabled(X) Then
@@ -412,7 +412,7 @@ Public Class RegionList
 
     Private Sub ListView1_DragDrop(sender As System.Object, e As System.Windows.Forms.DragEventArgs) Handles ListView1.DragDrop
 
-        Dim files() As String = e.Data.GetData(DataFormats.FileDrop)
+        Dim files() As String = CType(e.Data.GetData(DataFormats.FileDrop), String())
 
         Dim dirpathname = ""
         Dim yesNo As MsgBoxResult = MsgBox("New regions can can be combined with other regions in an existing DOS box (Yes), or run in their own Dos Box (No)", vbYesNo, "Grouping Regions")
@@ -428,7 +428,7 @@ Public Class RegionList
 
         For Each pathname As String In files
             pathname = pathname.Replace("\", "/")
-            Dim extension = Path.GetExtension(pathname)
+            Dim extension As String = Path.GetExtension(pathname)
             extension = Mid(extension, 2, 5)
             If extension.ToLower = "ini" Then
                 Dim filename = Path.GetFileNameWithoutExtension(pathname)
@@ -448,7 +448,11 @@ Public Class RegionList
                 File.Copy(pathname, dir & "bin\Regions\" + dirpathname + "\Region\" + filename + ".ini")
 
             Else
-                Print("Unrecognized file type:" + extension + ".  Drag and drop any Region.ini files to add them to the system")
+
+                ' !!! No idea why this triggers a warning
+#Disable Warning BC42016 ' Implicit conversion
+                Print("Unrecognized file type: " + extension + ".  Drag and drop any Region.ini files to add them to the system")
+#Enable Warning BC42016 ' Implicit conversion
             End If
         Next
         RegionClass.GetAllRegions()
@@ -468,7 +472,7 @@ Public Class RegionList
         Try
             ' Read the chosen GROUP name
             chosen = Chooseform.DataGridView.CurrentCell.Value.ToString()
-            If chosen.Length Then
+            If chosen.Length > 0 Then
                 Chooseform.Dispose()
             End If
         Catch ex As Exception
@@ -488,9 +492,9 @@ Public Class RegionList
 
         For Each X As ListViewItem In ListView1.Items
             If ItemsAreChecked Then
-                X.Checked = CheckState.Unchecked
+                X.Checked = CType(CheckState.Unchecked, Boolean)
             Else
-                X.Checked = CheckState.Checked
+                X.Checked = CType(CheckState.Checked, Boolean)
             End If
         Next
 

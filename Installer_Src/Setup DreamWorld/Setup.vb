@@ -45,7 +45,7 @@ Public Class Form1
     Public MyFolder As String   ' Holds the current folder that we are running in
     Dim gCurSlashDir As String '  holds the current directory info in Unix format
     Public isRunning As Boolean = False
-    Dim Arnd As Object = New Random()
+    Dim Arnd As Random = New Random()
     Public gChatTime As Integer
     Dim client As New System.Net.WebClient
     Public Shared MysqlConn As Mysql
@@ -112,7 +112,7 @@ Public Class Form1
     Public MySetting As New MySettings
     Dim exiting As Boolean = False
     ' Shoutcast
-    Dim gIcecastProcID As Boolean = False
+    Dim gIcecastProcID As Integer = 0
     Private WithEvents IcecastProcess As New Process()
 
     <CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA2101:SpecifyMarshalingForPInvokeStringArguments", MessageId:="1")>
@@ -326,13 +326,12 @@ Public Class Form1
 
         MyUPnpMap = New UPnp(MyFolder)
 
-#Disable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
+
         MySetting.PublicIP = MyUPnpMap.LocalIP
         MySetting.PrivateURL = MySetting.PublicIP
-#Enable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
 
         ' Set them back to the DNS name if there is one
-        If MySetting.DNSName.Length Then
+        If MySetting.DNSName.Length > 0 Then
             MySetting.PublicIP = MySetting.DNSName
         End If
 
@@ -353,7 +352,7 @@ Public Class Form1
         ws = NetServer.GetWebServer
         Log("Info:Starting Web Server ")
 
-        ws.StartServer(MyFolder, MySetting.PrivateURL, MySetting.DiagnosticPort)
+        ws.StartServer(MyFolder, MySetting.PrivateURL, CType(MySetting.DiagnosticPort, Integer))
 
         ' Run diagnostics, maybe
         If Not MySetting.RanAllDiags Or gDebug Then
@@ -578,7 +577,7 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
         Dim ctr = 0
         For Each X As Integer In RegionClass.RegionNumbers
             Dim PID As Integer = RegionClass.ProcessID(ctr)
-            If PID Then
+            If PID > 0 Then
                 RegionClass.ShuttingDown(ctr) = True
                 RegionClass.Booted(ctr) = False
                 RegionClass.WarmingUp(ctr) = False
@@ -595,7 +594,7 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
             Print("Waiting for all regions to exit")
 
 
-            While (counter)
+            While (counter > 0)
                 ' decrement progress bar according to the ratio of what we had / what we have now
 
                 Sleep(1000)
@@ -604,18 +603,17 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
                 Dim isRunning As Integer = 0
 
                 For Each X In RegionClass.RegionNumbers
-                    If RegionClass.ProcessID(X) Then
+                    If RegionClass.ProcessID(X) > 0 Then
                         isRunning = isRunning + 1
                         Log(RegionClass.RegionName(X) + " is still running")
                     End If
                     Application.DoEvents()
                 Next
-                If Not isRunning Then counter = 0
+                If isRunning > 0 Then counter = 0
 
-
-                Dim v = isRunning / TotalRunningRegions * 100
+                Dim v As Double = isRunning / TotalRunningRegions * 100
                 If v >= 0 And v <= 100 Then
-                    ProgressBar1.Value = v
+                    ProgressBar1.Value = CType(v, Integer)
                     Diagnostics.Debug.Print("V=" + ProgressBar1.Value.ToString)
                 End If
 
@@ -623,7 +621,7 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
         End If
 
         counter = REGIONMAX
-        While counter
+        While counter >= 0
             RegionHandles(counter) = False
             counter = counter - 1
         End While
@@ -634,7 +632,7 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
             RegionClass.WarmingUp(X) = False
         Next
 
-        If gRobustProcID Then
+        If gRobustProcID > 0 Then
             ConsoleCommand(gRobustProcID, "q{ENTER}")
             Me.Focus()
         End If
@@ -752,7 +750,7 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
         Buttons(StartButton)
         Print("Stopped")
         ProgressBar1.Value = 0
-        ProgressBar1.Visible = 0
+        ProgressBar1.Visible = False
     End Sub
 
     Private Sub ShowToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles mnuShow.Click
@@ -903,11 +901,11 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
         'Disable it as it is broken for now.
 
         'MySetting.SetOtherIni("TOSModule", "Enabled", MySetting.TOSEnabled)
-        MySetting.SetOtherIni("TOSModule", "Enabled", False)
+        MySetting.SetOtherIni("TOSModule", "Enabled", False.ToString)
         'MySetting.SetOtherIni("TOSModule", "Message", MySetting.TOSMessage)
         'MySetting.SetOtherIni("TOSModule", "Timeout", MySetting.TOSTimeout)
-        MySetting.SetOtherIni("TOSModule", "ShowToLocalUsers", MySetting.ShowToLocalUsers)
-        MySetting.SetOtherIni("TOSModule", "ShowToForeignUsers", MySetting.ShowToForeignUsers)
+        MySetting.SetOtherIni("TOSModule", "ShowToLocalUsers", MySetting.ShowToLocalUsers.ToString)
+        MySetting.SetOtherIni("TOSModule", "ShowToForeignUsers", MySetting.ShowToForeignUsers.ToString)
         MySetting.SetOtherIni("TOSModule", "TOS_URL", "http://" + MySetting.PublicIP + ":" + MySetting.HttpPort + "/wifi/termsofservice.html")
         MySetting.SaveOtherINI()
 
@@ -917,7 +915,7 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
         Dim ConnectionString = """" _
             + "Data Source=" + "127.0.0.1" _
             + ";Database=" + MySetting.RegionDBName _
-            + ";Port=" + MySetting.MySqlPort _
+            + ";Port=" + CType(MySetting.MySqlPort, String) _
             + ";User ID=" + MySetting.RegionDBUsername _
             + ";Password=" + MySetting.RegionDbPassword _
             + ";Old Guids=true;Allow Zero Datetime=true;" _
@@ -932,7 +930,7 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
         ConnectionString = """" _
             + "Data Source=" + MySetting.RobustServer _
             + ";Database=" + MySetting.RobustDataBaseName _
-            + ";Port=" + MySetting.MySqlPort _
+            + ";Port=" + CType(MySetting.MySqlPort, String) _
             + ";User ID=" + MySetting.RobustUsername _
             + ";Password=" + MySetting.RobustPassword _
             + ";Old Guids=true;Allow Zero Datetime=true;" _
@@ -965,18 +963,15 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
         MySetting.LoadOtherIni(prefix + "bin\Opensim.proto", ";")
 
 
-        MySetting.SetOtherIni("DataSnapshot", "index_sims", MySetting.DataSnapshot())
-        MySetting.SetOtherIni("AutoRestart", "Time", MySetting.AutoRestartInterval())
-
-        MySetting.SetOtherIni("PrimLimitsModule", "EnforcePrimLimits", MySetting.Primlimits)
+        MySetting.SetOtherIni("DataSnapshot", "index_sims", MySetting.DataSnapshot().ToString)
+        MySetting.SetOtherIni("AutoRestart", "Time", CType(MySetting.AutoRestartInterval(), String))
+        MySetting.SetOtherIni("PrimLimitsModule", "EnforcePrimLimits", CType(MySetting.Primlimits, String))
 
         ' If MySetting.Primlimits Then
         'MySetting.SetOtherIni("Permissions", "permissionmodules", "DefaultPermissionsModule, PrimLimitsModule")
         'Else
         '   MySetting.SetOtherIni("Permissions", "permissionmodules", "DefaultPermissionsModule")
         ' End If
-
-
 
         If MySetting.GDPR Then
             MySetting.SetOtherIni("DataSnapshot", "indexsims", "true")
@@ -1001,10 +996,10 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
         ' the old Clouds
         If MySetting.Clouds Then
             MySetting.SetOtherIni("Cloud", "enabled", "true")
-            MySetting.SetOtherIni("Cloud", "density", MySetting.Density)
+            MySetting.SetOtherIni("Cloud", "density", MySetting.Density.ToString)
         Else
             MySetting.SetOtherIni("Cloud", "enabled", "false")
-            MySetting.SetOtherIni("Cloud", "density", MySetting.Density)
+            MySetting.SetOtherIni("Cloud", "density", MySetting.Density.ToString)
         End If
 
         ' Gods
@@ -1119,7 +1114,7 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
         End If
 
         MySetting.SetOtherIni("AutoBackupModule", "AutoBackupInterval", MySetting.AutobackupInterval)
-        MySetting.SetOtherIni("AutoBackupModule", "AutoBackupKeepFilesForDays", MySetting.KeepForDays)
+        MySetting.SetOtherIni("AutoBackupModule", "AutoBackupKeepFilesForDays", MySetting.KeepForDays.ToString)
         MySetting.SetOtherIni("AutoBackupModule", "AutoBackupDir", BackupPath())
 
         ' Voice
@@ -1232,10 +1227,10 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
 
         Dim ConnectionString = """" + "Data Source = " + MySetting.RobustServer _
             + ";Database=" + MySetting.RobustDataBaseName _
-            + ";Port=" + MySetting.MySqlPort _
+            + ";Port=" + MySetting.MySqlPort.ToString _
             + ";User ID=" + MySetting.RobustUsername _
             + ";Password=" + MySetting.RobustPassword _
-             + ";Old Guids=true;Allow Zero Datetime=true;" + """"
+            + ";Old Guids=true;Allow Zero Datetime=true;" + """"
 
 
         MySetting.SetOtherIni("Gloebit", "GLBSpecificConnectionString", ConnectionString)
@@ -1251,7 +1246,7 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
         Dim ConnectionString = """" _
                 + "Data Source=" + "127.0.0.1" _
                 + ";Database=" + MySetting.RobustDataBaseName _
-                + ";Port=" + MySetting.MySqlPort _
+                + ";Port=" + MySetting.MySqlPort.ToString _
                 + ";User ID=" + MySetting.RobustUsername _
                 + ";Password=" + MySetting.RobustPassword _
                 + ";Old Guids=true;Allow Zero Datetime=true;" _
@@ -1310,7 +1305,7 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
                 MySetting.SetOtherIni("Const", "BaseURL", "http://" + MySetting.PublicIP)
                 MySetting.SetOtherIni("Const", "PrivURL", "http://" + MySetting.PrivateURL)
                 MySetting.SetOtherIni("Const", "PublicPort", MySetting.HttpPort) ' 8002
-                MySetting.SetOtherIni("Const", "http_listener_port", RegionClass.RegionPort(X)) ' varies with region
+                MySetting.SetOtherIni("Const", "http_listener_port", RegionClass.RegionPort(X).ToString) ' varies with region
                 Dim name = RegionClass.RegionName(X)
 
                 ' save the http listener port away for the group
@@ -1373,9 +1368,9 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
         If MySetting.DiagnosticPort = MySetting.HttpPort _
             Or MySetting.DiagnosticPort = MySetting.PrivatePort _
             Or MySetting.HttpPort = MySetting.PrivatePort Then
-            MySetting.DiagnosticPort = 8001
-            MySetting.HttpPort = 8002
-            MySetting.PrivatePort = 8003
+            MySetting.DiagnosticPort = "8001"
+            MySetting.HttpPort = "8002"
+            MySetting.PrivatePort = "8003"
 
             MsgBox("Port conflict detected. Sim Ports have been reset to the defaults", vbInformation, "Error")
         End If
@@ -1517,7 +1512,7 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
         Catch ex As Exception
         End Try
 
-        gIcecastProcID = Nothing
+        gIcecastProcID = 0
         Print("Starting Icecast")
 
         Try
@@ -2098,7 +2093,7 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
     Private Sub DoExit(ByVal sender As Object)
         ' Handle Opensim Exited
 
-        Dim n As Integer = RegionClass.FindRegionByProcessID(sender.Id)
+        Dim n As Integer = RegionClass.FindRegionByProcessID(CType(sender.Id, Integer))
         If n < 0 Then Return
 
         If RegionClass.WarmingUp(n) = True Then
@@ -2250,7 +2245,7 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
         Buttons(StopButton)
 
         Dim n = RegionClass.FindRegionByName(BootName)
-        If RegionClass.ProcessID(n) Or RegionClass.Booted(n) Or RegionClass.WarmingUp(n) Or RegionClass.ShuttingDown(n) Then
+        If RegionClass.ProcessID(n) > 0 Or RegionClass.Booted(n) Or RegionClass.WarmingUp(n) Or RegionClass.ShuttingDown(n) Then
             Return True
         End If
 
@@ -2313,7 +2308,7 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
             myProcess.Start()
             RegionClass.ProcessID(n) = myProcess.Id
 
-            If myProcess.Id Then
+            If myProcess.Id > 0 Then
 
                 For Each num In RegionClass.RegionListByGroupNum(RegionClass.GroupName(n))
                     RegionClass.WarmingUp(num) = True
@@ -2506,9 +2501,9 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
 
         Dim sleeptime = value / 10  ' now in tenths
         Dim counter = 10
-        While counter
+        While counter > 0
             Application.DoEvents()
-            Thread.Sleep(sleeptime)
+            Thread.Sleep(CType(sleeptime, Integer))
             counter = counter - 1
         End While
 
@@ -2609,7 +2604,7 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
 
 
             Dim Message, title, defaultValue As String
-            Dim myValue As Object
+            Dim myValue As String
             ' Set prompt.
             Message = "Enter a name for your backup:"
             title = "Backup to OAR"
@@ -2653,13 +2648,13 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
             openFileDialog1.Multiselect = False
 
             ' Call the ShowDialog method to show the dialogbox.
-            Dim UserClickedOK As Boolean = openFileDialog1.ShowDialog
+            Dim UserClickedOK As DialogResult = openFileDialog1.ShowDialog
 
             ' Process input if the user clicked OK.
-            If UserClickedOK = True Then
+            If UserClickedOK = DialogResult.OK Then
                 Dim backMeUp = MsgBox("Make a backup first and then load the new content?", vbYesNo, "Backup?")
                 Dim thing = openFileDialog1.FileName
-                If thing.Length Then
+                If thing.Length > 0 Then
                     thing = thing.Replace("\", "/")    ' because Opensim uses unix-like slashes, that's why
 
                     Dim Group = RegionClass.GroupName(n)
@@ -2738,12 +2733,12 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
             openFileDialog1.Multiselect = False
 
             ' Call the ShowDialog method to show the dialogbox.
-            Dim UserClickedOK As Boolean = openFileDialog1.ShowDialog
+            Dim UserClickedOK As DialogResult = openFileDialog1.ShowDialog
 
             ' Process input if the user clicked OK.
-            If UserClickedOK = True Then
+            If UserClickedOK = DialogResult.OK Then
                 Dim thing = openFileDialog1.FileName
-                If thing.Length Then
+                If thing.Length > 0 Then
                     thing = thing.Replace("\", "/")    ' because Opensim uses unix-like slashes, that's why
                     LoadIARContent(thing)
                 End If
@@ -2853,7 +2848,7 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
 
         Dim region = ChooseRegion(True)
 
-        If region.Length Then
+        If region.Length > 0 Then
             Dim backMeUp = MsgBox("Make a backup first?", vbYesNo, "Backup?")
             Dim num = RegionClass.FindRegionByName(region)
             Dim GroupName = RegionClass.GroupName(num)
@@ -2904,7 +2899,7 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
 
         Dim user = InputBox("User name that will get this IAR?")
         Dim password = InputBox("Password for user " + user + "?")
-        If user.Length And password.Length Then
+        If user.Length > 0 And password.Length > 0 Then
             For Each Y In RegionClass.RegionListByGroupNum(RegionClass.GroupName(num))   ' a booted region's group            
                 ConsoleCommand(RegionClass.ProcessID(Y), "load iar --merge " + user + " /Objects " + password + " " + """" + thing + """" + "{ENTER}")
                 ConsoleCommand(RegionClass.ProcessID(Y), "alert IAR content Is loaded{ENTER}")
@@ -2918,7 +2913,7 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
 
     Private Sub TextBox1_DragDrop(sender As System.Object, e As System.Windows.Forms.DragEventArgs) Handles TextBox1.DragDrop
 
-        Dim files() As String = e.Data.GetData(DataFormats.FileDrop)
+        Dim files() As String = CType(e.Data.GetData(DataFormats.FileDrop), String())
         For Each pathname As String In files
             pathname = pathname.Replace("\", "/")
             Dim extension = Path.GetExtension(pathname)
@@ -2944,7 +2939,7 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
 
     Private Sub PictureBox1_DragDrop(sender As System.Object, e As System.Windows.Forms.DragEventArgs) Handles PictureBox1.DragDrop
 
-        Dim files() As String = e.Data.GetData(DataFormats.FileDrop)
+        Dim files() As String = CType(e.Data.GetData(DataFormats.FileDrop), String())
         For Each pathname As String In files
             pathname = pathname.Replace("\", "/")
             Dim extension = Path.GetExtension(pathname)
@@ -3036,7 +3031,7 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
 
     Private Sub OarClick(sender As Object, e As EventArgs)
 
-        Dim File = Mid(sender.text, 1, InStr(sender.text, "|") - 2)
+        Dim File = Mid(CType(sender.text, String), 1, InStr(CType(sender.text, String), "|") - 2)
         File = Domain + "/Outworldz_Installer/OAR/" + File 'make a real URL
         LoadOARContent(File)
         sender.checked = True
@@ -3045,7 +3040,7 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
 
     Private Sub IarClick(sender As Object, e As EventArgs)
 
-        Dim file = Mid(sender.text, 1, InStr(sender.text, "|") - 2)
+        Dim file = Mid(CType(sender.text, String), 1, InStr(CType(sender.text, String), "|") - 2)
         file = Domain + "/Outworldz_Installer/IAR/" + file 'make a real URL
         LoadIARContent(file)
         sender.checked = True
@@ -3075,7 +3070,7 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
         UpdaterGo.Enabled = False
         UpdaterCancel.Visible = False
         Dim fileloaded As String = Download()
-        If (fileloaded.Length) Then
+        If fileloaded.Length > 0 Then
             Dim pUpdate As Process = New Process()
             Dim pi As ProcessStartInfo = New ProcessStartInfo()
             pi.Arguments = ""
@@ -3163,20 +3158,20 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
 
 #Region "Diagnostics"
 
-    Private Function CheckPort(ServerAddress As String, Port As String) As Boolean
+    Private Function CheckPort(ServerAddress As String, Port As Integer) As Boolean
 
-        Dim iPort As Integer = Convert.ToInt16(Port)
+
         Dim ClientSocket As New TcpClient
 
         Try
-            ClientSocket.Connect(ServerAddress, iPort)
+            ClientSocket.Connect(ServerAddress, Port)
         Catch ex As Exception
             Log("Info:Unable to connect to server:" + ex.Message)
             Return False
         End Try
 
         If ClientSocket.Connected Then
-            Log("Info: port probe success on port " + Convert.ToString(iPort))
+            Log("Info: port probe success on port " + Port.ToString)
             ClientSocket.Close()
             Return True
         End If
@@ -3188,7 +3183,7 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
 
         If Not MySetting.EnableHypergrid Then
             BumpProgress10()
-            If MySetting.DNSName.Length Then
+            If MySetting.DNSName.Length > 0 Then
                 BumpProgress10()
                 MySetting.PublicIP = MySetting.DNSName
             End If
@@ -3201,7 +3196,7 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
             Return False
         End If
 
-        If MySetting.DNSName.Length Then
+        If MySetting.DNSName.Length > 0 Then
             BumpProgress10()
             MySetting.PublicIP = MySetting.DNSName
             MySetting.SaveSettings()
@@ -3363,7 +3358,7 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
     Private Sub CheckDiagPort()
         gUseIcons = True
 
-        Dim wsstarted = CheckPort(MyUPnpMap.LocalIP, MySetting.DiagnosticPort)
+        Dim wsstarted = CheckPort(MyUPnpMap.LocalIP, CType(MySetting.DiagnosticPort, Integer))
         If wsstarted = False Then
             MsgBox("Diagnostics port " + MySetting.DiagnosticPort + " is not working or blocked by firewall or anti virus, icons disabled.", vbInformation, "Cannot HG")
             gUseIcons = False
@@ -3423,8 +3418,8 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
             If MyUPnpMap.Exists(Convert.ToInt16(MySetting.SC_PortBase), UPnp.Protocol.TCP) Then
                 MyUPnpMap.Remove(Convert.ToInt16(MySetting.SC_PortBase), UPnp.Protocol.TCP)
             End If
-            MyUPnpMap.Add(MyUPnpMap.LocalIP, Convert.ToInt16(MySetting.SC_PortBase), UPnp.Protocol.TCP, "Icecast TCP Public " + MySetting.SC_PortBase)
-            PrintFast("Icecast Port is set to " + MySetting.SC_PortBase)
+            MyUPnpMap.Add(MyUPnpMap.LocalIP, CType(MySetting.SC_PortBase, Integer), UPnp.Protocol.TCP, "Icecast TCP Public " + MySetting.SC_PortBase.ToString)
+            PrintFast("Icecast Port is set to " + MySetting.SC_PortBase.ToString)
             BumpProgress10()
 
             'diagnostics 8001
@@ -3451,7 +3446,7 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
             BumpProgress10()
 
             For Each X In RegionClass.RegionNumbers
-                Dim R As Int16 = RegionClass.RegionPort(X)
+                Dim R As Integer = RegionClass.RegionPort(X)
 
                 If MyUPnpMap.Exists(R, UPnp.Protocol.UDP) Then
                     MyUPnpMap.Remove(R, UPnp.Protocol.UDP)
@@ -3471,8 +3466,8 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
             If MyUPnpMap.Exists(Convert.ToInt16(MySetting.SC_PortBase), UPnp.Protocol.TCP) Then
                 MyUPnpMap.Remove(Convert.ToInt16(MySetting.SC_PortBase), UPnp.Protocol.TCP)
             End If
-            MyUPnpMap.Add(MyUPnpMap.LocalIP, Convert.ToInt16(MySetting.SC_PortBase), UPnp.Protocol.TCP, "Icecast TCP" + MySetting.SC_PortBase)
-            PrintFast("Icecast Port is set to " + MySetting.SC_PortBase)
+            MyUPnpMap.Add(MyUPnpMap.LocalIP, MySetting.SC_PortBase, UPnp.Protocol.TCP, "Icecast TCP" + MySetting.SC_PortBase.ToString)
+            PrintFast("Icecast Port is set to " + MySetting.SC_PortBase.ToString)
 
 
             BumpProgress10()
@@ -3566,12 +3561,12 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
         openFileDialog1.Multiselect = False
 
         ' Call the ShowDialog method to show the dialogbox.
-        Dim UserClickedOK As Boolean = openFileDialog1.ShowDialog
+        Dim UserClickedOK As DialogResult = openFileDialog1.ShowDialog
 
         ' Process input if the user clicked OK.
-        If UserClickedOK = True Then
+        If UserClickedOK = DialogResult.OK Then
             Dim thing = openFileDialog1.FileName
-            If thing.Length Then
+            If thing.Length > 0 Then
 
                 Dim yesno = MsgBox("Are you sure? Your database will re-loaded from the backup and all existing content replaced. Avatars, sims, inventory, all of it.", vbYesNo, "Restore?")
                 If yesno = vbYes Then
@@ -3637,7 +3632,7 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
 
             robustconnStr = "server=" + MySetting.RobustServer() _
                 + ";database=" + MySetting.RobustDataBaseName _
-                + ";port=" + MySetting.MySqlPort _
+                + ";port=" + MySetting.MySqlPort.ToString _
                 + ";user=" + MySetting.RobustUsername _
                 + ";password=" + MySetting.RobustPassword _
                 + ";Old Guids=true;Allow Zero Datetime=true;"
@@ -3646,7 +3641,7 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
 
         End If
 
-        Dim isRunning = CheckPort("127.0.0.1", MySetting.MySqlPort)
+        Dim isRunning = CheckPort("127.0.0.1", CType(MySetting.MySqlPort, Integer))
 
         If isRunning Then Return True
         ' Start MySql in background.
@@ -3659,8 +3654,8 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
         MySetting.LoadOtherIni(MyFolder & "\OutworldzFiles\mysql\my.ini", "#")
         MySetting.SetOtherIni("mysqld", "basedir", """" + gCurSlashDir + "/OutworldzFiles/Mysql" + """")
         MySetting.SetOtherIni("mysqld", "datadir", """" + gCurSlashDir + "/OutworldzFiles/Mysql/Data" + """")
-        MySetting.SetOtherIni("mysqld", "port", MySetting.MySqlPort)
-        MySetting.SetOtherIni("client", "port", MySetting.MySqlPort)
+        MySetting.SetOtherIni("mysqld", "port", MySetting.MySqlPort.ToString)
+        MySetting.SetOtherIni("client", "port", MySetting.MySqlPort.ToString)
         MySetting.SaveOtherINI()
 
         ' create test program 
@@ -3922,7 +3917,7 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
 
         ChDir(MyFolder & "\OutworldzFiles\mysql\bin")
         pi.WindowStyle = ProcessWindowStyle.Normal
-        pi.Arguments = MySetting.MySqlPort
+        pi.Arguments = MySetting.MySqlPort.ToString
         pi.FileName = "CheckAndRepair.bat"
         pMySqlDiag.StartInfo = pi
         pMySqlDiag.Start()
@@ -3964,7 +3959,7 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
 
     Private Sub Statmenu(sender As Object, e As EventArgs)
         If (Running) Then
-            Dim regionnum = RegionClass.FindRegionByName(sender.text)
+            Dim regionnum = RegionClass.FindRegionByName(CType(sender.text, String))
             Dim port As String = RegionClass.RegionPort(regionnum).ToString
             Dim webAddress As String = "http://localhost:" + port + "/bin/data/sim.html?port=" + port
             Process.Start(webAddress)
@@ -3990,7 +3985,7 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
 
         ' Handle robust clicking
         If sender.Text = "Robust" Then
-            If gRobustProcID Then
+            If gRobustProcID > 0 Then
                 ConsoleCommand(gRobustProcID, "q{ENTER}")
                 Me.Focus()
                 Log("Region:Stopped Robust")
@@ -4009,7 +4004,7 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
 
             Diagnostics.Debug.Print("Region:Clicked region " & sender.Text)
 
-            If RegionClass.AvatarCount(num) Then
+            If RegionClass.AvatarCount(num) > 0 Then
                 Dim response = MsgBox("That region has people in it. Are you sure you want to stop it?", vbYesNo)
                 If response = vbNo Then Return
             End If
@@ -4222,7 +4217,7 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
             Return
         End If
         Dim rname = ChooseRegion(True)
-        If rname.Length Then
+        If rname.Length > 0 Then
             Dim Message = InputBox("What do you want to say to this region?")
             Dim X = RegionClass.FindRegionByName(rname)
             ConsoleCommand(RegionClass.ProcessID(X), "change region  " + RegionClass.RegionName(X) + "{ENTER}")
@@ -4240,7 +4235,7 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
 
         Dim HowManyAreOnline As Integer = 0
         Dim Message = InputBox("What do you want to say to everyone online?")
-        If Message.Length Then
+        If Message.Length > 0 Then
             For Each X As Integer In RegionClass.RegionNumbers
                 If RegionClass.AvatarCount(X) > 0 Then
                     HowManyAreOnline = HowManyAreOnline + 1
@@ -4267,7 +4262,7 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
 
     Private Sub ShowUserDetailsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ShowUserDetailsToolStripMenuItem.Click
         Dim person = InputBox("Enter the first and last name of the user:")
-        If person.Length Then
+        If person.Length > 0 Then
             RobustCommand("show account " + person + "{ENTER}")
         End If
     End Sub

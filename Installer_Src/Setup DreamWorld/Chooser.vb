@@ -55,7 +55,7 @@
             MsgBox("Please select only one row", vbInformation, "Oops")
         End If
         If selectedRowCount = 1 Then
-            DialogResult = vbOK
+            DialogResult = DialogResult.OK
         End If
     End Sub
 

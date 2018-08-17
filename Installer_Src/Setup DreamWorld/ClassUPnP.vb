@@ -196,7 +196,7 @@ Public Class UPnp
             Try
                 Using sock
                     sock.Connect("8.8.8.8", 65530)  ' try Google
-                    Dim EndPoint As IPEndPoint = sock.LocalEndPoint
+                    Dim EndPoint As IPEndPoint = TryCast(sock.LocalEndPoint, IPEndPoint)
                     LocalIP = EndPoint.Address.ToString()
                 End Using
             Catch ex As Exception
