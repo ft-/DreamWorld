@@ -218,6 +218,14 @@ Public Class MySettings
             SaveSettings()
         End Try
 
+        Try
+            Dim x = LSL_HHTP()
+        Catch ex As Exception
+            LSL_HHTP() = False
+            SaveSettings()
+        End Try
+
+
         ' check for default
         If (SmtpHost() = "") Then SmtpHost() = "smtp.gmail.com"
         If (SmtpPort() = "") Then SmtpPort() = "587"
@@ -355,6 +363,16 @@ Public Class MySettings
 #End Region
 
 #Region "Properties"
+
+    Public Property LSL_HHTP() As Boolean
+        Get
+            Return CType(GetMySetting("LSL_HHTP"), Boolean)
+        End Get
+        Set
+            SetMySetting("LSL_HHTP", Value.ToString)
+        End Set
+    End Property
+
     Public Property DataSnapshot() As Boolean
         Get
             Return CType(GetMySetting("DataSnapshot"), Boolean)

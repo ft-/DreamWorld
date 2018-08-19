@@ -275,25 +275,26 @@ Public Class RegionMaker
         End Set
     End Property
 
-    Public Property MapType(n As Integer) As String
+    Public Property RegionSnapShot(n As Integer) As String
         Get
-            If (RegionList(n)._MapType) = "" Then
-                Return Form1.MySetting.MapType
-            End If
-
-            Return RegionList(n)._MapType.ToString
+            Return RegionList(n)._RegionSnapShot.ToString
         End Get
         Set(ByVal Value As String)
-            RegionList(n)._MapType = Value.ToString
+            RegionList(n)._RegionSnapShot = Value
+        End Set
+    End Property
+    Public Property MapType(n As Integer) As String
+        Get
+            Return RegionList(n)._MapType
+        End Get
+        Set(ByVal Value As String)
+            RegionList(n)._MapType = Value
         End Set
     End Property
 
     Public Property Physics(n As Integer) As String
         Get
-            If (RegionList(n)._Physics) = "" Then
-                Return Form1.MySetting.Physics.ToString
-            End If
-            Return CType(RegionList(n)._physics, String)
+            Return RegionList(n)._physics
         End Get
         Set(ByVal Value As String)
             RegionList(n)._physics = Value
@@ -302,10 +303,7 @@ Public Class RegionMaker
 
     Public Property AllowGods(n As Integer) As String
         Get
-            If (RegionList(n)._AllowGods) = "" Then
-                Return Form1.MySetting.Allow_grid_gods.ToString
-            End If
-            Return CType(RegionList(n)._AllowGods, String)
+            Return RegionList(n)._AllowGods
         End Get
         Set(ByVal Value As String)
             RegionList(n)._AllowGods = Value
@@ -314,10 +312,7 @@ Public Class RegionMaker
 
     Public Property RegionGod(n As Integer) As String
         Get
-            If (RegionList(n)._RegionGod) = "" Then
-                Return Form1.MySetting.Region_owner_is_god.ToString
-            End If
-            Return CType(RegionList(n)._RegionGod, String)
+            Return RegionList(n)._RegionGod
         End Get
         Set(ByVal Value As String)
             RegionList(n)._RegionGod = Value
@@ -326,15 +321,13 @@ Public Class RegionMaker
 
     Public Property ManagerGod(n As Integer) As String
         Get
-            If (RegionList(n)._ManagerGod) = "" Then
-                Return Form1.MySetting.Region_manager_is_god.ToString
-            End If
-            Return CType(RegionList(n)._ManagerGod, String)
+            Return RegionList(n)._ManagerGod
         End Get
         Set(ByVal Value As String)
             RegionList(n)._ManagerGod = Value
         End Set
     End Property
+
 
 #End Region
 
@@ -375,6 +368,7 @@ Public Class RegionMaker
         Public _Timer As Integer
 
         'extended vars
+        Public _RegionSnapShot As String
         Public _MapType As String
         Public _physics As String
         Public _AllowGods As String
@@ -625,13 +619,13 @@ Public Class RegionMaker
                         CoordX(n) = CType(parts(0), Integer)
                         CoordY(n) = CType(parts(1), Integer)
 
-
-                        MapType(n) = Form1.MySetting.GetIni(fName, "MapType", Form1.MySetting.MapType)
-                        Physics(n) = Form1.MySetting.GetIni(fName, "Physics", Form1.MySetting.Physics.ToString)
-                        MaxPrims(n) = Form1.MySetting.GetIni(fName, "MaxPrims", "45000")
-                        AllowGods(n) = Form1.MySetting.GetIni(fName, "AllowGods", Form1.MySetting.Allow_grid_gods.ToString)
-                        RegionGod(n) = Form1.MySetting.GetIni(fName, "RegionGod", Form1.MySetting.Region_manager_is_god.ToString)
-                        ManagerGod(n) = Form1.MySetting.GetIni(fName, "ManagerGod", Form1.MySetting.Region_owner_is_god.ToString)
+                        RegionSnapShot(n) = Form1.MySetting.GetIni(fName, "RegionSnapShot")
+                        MapType(n) = Form1.MySetting.GetIni(fName, "MapType")
+                        Physics(n) = Form1.MySetting.GetIni(fName, "Physics")
+                        MaxPrims(n) = Form1.MySetting.GetIni(fName, "MaxPrims", "15000")
+                        AllowGods(n) = Form1.MySetting.GetIni(fName, "AllowGods")
+                        RegionGod(n) = Form1.MySetting.GetIni(fName, "RegionGod")
+                        ManagerGod(n) = Form1.MySetting.GetIni(fName, "ManagerGod")
 
                         If initted Then
 
@@ -704,7 +698,9 @@ Public Class RegionMaker
         + "NonPhysicalPrimMax = " + NonPhysicalPrimMax(n).ToString + vbCrLf _
         + "PhysicalPrimMax = " + PhysicalPrimMax(n).ToString + vbCrLf _
         + "ClampPrimSize = " + ClampPrimSize(n).ToString + vbCrLf _
-        + "MaxPrims = " + MaxPrims(n) + vbCrLf _
+        + "MaxPrims = " + MaxPrims(n) + vbCrLf + vbCrLf _
+        + ";# Dreamgrid extended properties" + vbCrLf _
+        + "RegionSnapShot = " + RegionSnapShot(n) + vbCrLf _
         + "MapType = " + MapType(n) + vbCrLf _
         + "Physics = " + Physics(n) + vbCrLf _
         + "AllowGods = " + AllowGods(n) + vbCrLf _

@@ -13,6 +13,8 @@ Public Class FormRegion
     Dim isNew As Boolean = False
     Dim RegionClass As RegionMaker
 
+    Dim RName As String
+
     Public Sub New()
 
         ' This call is required by the designer.
@@ -23,8 +25,7 @@ Public Class FormRegion
     End Sub
 #End Region
 
-#Region "Functions"
-
+#Region "Start_Stop"
 
     Public Sub Init(Name As String)
 
@@ -124,14 +125,123 @@ Public Class FormRegion
                 RegionPort.Text = RegionClass.RegionPort(n).ToString
             End If
         End If
+
+        RName = Name
+
+        '''''''''''''''''''''''''''''  DREAMGRID REGION LOAD '''''''''''''''''
+
+        If RegionClass.MapType(n) = "" Then
+            Maps_Use_Default.Checked = True
+            MapPicture.Image = Nothing
+        ElseIf RegionClass.MapType(n) = "None" Then
+            MapNone.Checked = True
+            MapPicture.Image = Nothing
+        ElseIf RegionClass.MapType(n) = "Simple" Then
+            MapSimple.Checked = True
+            MapPicture.Image = My.Resources.Simple
+        ElseIf RegionClass.MapType(n) = "Good" Then
+            MapGood.Checked = True
+            MapPicture.Image = My.Resources.Good
+        ElseIf RegionClass.MapType(n) = "Better" Then
+            MapBetter.Checked = True
+            MapPicture.Image = My.Resources.Better
+        ElseIf RegionClass.MapType(n) = "Best" Then
+            MapBest.Checked = True
+            MapPicture.Image = My.Resources.Best
+        End If
+
+        Select Case RegionClass.Physics(n)
+            Case "" : Physics_Default.Checked = True
+            Case "0" : PhysicsNone.Checked = True
+            Case "1" : PhysicsODE.Checked = True
+            Case "2" : PhysicsBullet.Checked = True
+            Case "3" : PhysicsSeparate.Checked = True
+            Case "4" : PhysicsubODE.Checked = True
+            Case Else : Physics_Default.Checked = True
+        End Select
+
+        MaxPrims.Text = RegionClass.MaxPrims(n).ToString
+
+        If RegionClass.AllowGods(n) = "" And RegionClass.RegionGod(n) = "" And RegionClass.ManagerGod(n) = "" Then
+            Gods_Use_Default.Checked = True
+            AllowGods.Checked = False
+            RegionGod.Checked = False
+            ManagerGod.Checked = False
+        Else
+            AllowGods.Checked = CBool(RegionClass.AllowGods(n))
+            RegionGod.Checked = CBool(RegionClass.RegionGod(n))
+            ManagerGod.Checked = CBool(RegionClass.ManagerGod(n))
+        End If
+
+        If RegionClass.RegionSnapShot(n) = "" Then
+            PublishDefault.Checked = True
+        Else
+            Publish.Checked = CBool(RegionClass.RegionSnapShot(n))
+        End If
+
         Me.Focus()
         initted = True
 
     End Sub
 
+    Private Sub FormRegion_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
+
+        If changed Then
+            Dim v = MsgBox("Save changes?", vbYesNo, "Region Save")
+            If v = vbYes Then
+                Dim message = RegionValidate()
+                If Len(message) > 0 Then
+                    v = MsgBox(message + vbCrLf + "Discard all changes And Exit anyway?", vbYesNo, "Info")
+                    If v = vbYes Then
+                        Me.Close()
+                    End If
+                Else
+                    WriteRegion()
+                    Form1.CopyOpensimProto()
+                    RegionClass.GetAllRegions()
+                End If
+            End If
+        End If
+
+    End Sub
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+
+        Dim message = RegionValidate()
+        If Len(message) > 0 Then
+            Dim v = MsgBox(message + vbCrLf + "Discard all changes And Exit anyway?", vbYesNo, "Info")
+            If v = vbYes Then
+                Me.Close()
+            End If
+        Else
+
+            WriteRegion()
+            RegionClass.GetAllRegions()
+            Form1.CopyOpensimProto()
+
+            changed = False
+            Me.Close()
+        End If
+
+    End Sub
+
+#End Region
+
+#Region "Functions"
+    Private Function IsPowerOf256(x As Integer) As Boolean
+
+        Dim y As Single = Convert.ToSingle(x)
+        While y > 0
+            y = y - 256
+        End While
+        If y = 0 Then
+            Return True
+        End If
+        Return False
+
+    End Function
+
     Public Shared Function FilenameIsOK(ByVal fileName As String) As Boolean
         ' check for invalid chars in file name for INI file
-
 
         Dim value As Boolean = False
         Try
@@ -148,7 +258,7 @@ Public Class FormRegion
         Dim Message As String
 
         If Len(RegionName.Text) = 0 Then
-            Message = "Region name must not be blank"
+            Message = "Region name must Not be blank"
             Form1.Log(Message)
             Return Message
         End If
@@ -156,7 +266,7 @@ Public Class FormRegion
         ' UUID
         Dim result As Guid
         If Not Guid.TryParse(UUID.Text, result) Then
-            Message = "Region UUID is invalid: " + UUID.Text
+            Message = "Region UUID Is invalid " + UUID.Text
             Form1.Log(Message)
             Return Message
         End If
@@ -167,7 +277,7 @@ Public Class FormRegion
             Form1.Log(Message)
             Return Message
         ElseIf Convert.ToInt16(CoordX.Text) > 65536 Then
-            Message = "Region Coordinate X is too large"
+            Message = "Region Coordinate X Is too large"
             Form1.Log(Message)
             Return Message
         End If
@@ -177,13 +287,13 @@ Public Class FormRegion
             Form1.Log(Message)
             Return Message
         ElseIf Convert.ToInt16(CoordY.Text) > 65536 Then
-            Message = "Region CoordY is too large"
+            Message = "Region CoordY Is too large"
             Form1.Log(Message)
             Return Message
         End If
 
         If Convert.ToInt16(RegionPort.Text) = 0 Then
-            Message = "Region Port cannot be zero or undefined"
+            Message = "Region Port cannot be zero Or undefined"
             Form1.Log(Message)
             Return Message
         End If
@@ -221,7 +331,7 @@ Public Class FormRegion
                 RegionClass.RegionPath(n) = Filepath
                 Form1.CopyOpensimProto()
             Catch
-                MsgBox("Cannot create new region. It seems to already exist", vbInformation, "Info")
+                MsgBox("Cannot create New region. It seems to already exist", vbInformation, "Info")
                 Form1.PrintFast("Aborted")
                 Return
             End Try
@@ -231,7 +341,7 @@ Public Class FormRegion
 
         If isNew Then
             Dim NewGroup As String = RegionName.Text
-            Dim yesNo As MsgBoxResult = MsgBox("New regions can can be combined with other regions in an existing DOS box (Yes), or run in their own Dos Box (No)", vbYesNo, "Combine Regions?")
+            Dim yesNo As MsgBoxResult = MsgBox("New regions can can be combined with other regions in an existing DOS box (Yes), Or run in their own Dos Box (No)", vbYesNo, "Combine Regions?")
             If yesNo = vbYes Then
                 NewGroup = RegionChosen()
                 If NewGroup = "" Then
@@ -246,7 +356,69 @@ Public Class FormRegion
 
             RegionClass.RegionPath(n) = dir & "bin\Regions\" + NewGroup + "\Region\" + RegionName.Text + ".ini"
 
+        End If
 
+        Dim Snapshot As String = ""
+        If PublishDefault.Checked Then
+            Snapshot = ""
+        ElseIf NoPublish.Checked Then
+            Snapshot = "False"
+        ElseIf Publish.Checked Then
+            Snapshot = "True"
+        End If
+
+        RegionClass.RegionSnapShot(n) = Snapshot
+
+        Dim Map As String = ""
+        If MapNone.Checked Then
+            Map = ""
+        ElseIf MapNone.checked Then
+            Map = "None"
+        ElseIf MapSimple.Checked Then
+            Map = "Simple"
+        ElseIf MapGood.Checked Then
+            Map = "Good"
+        ElseIf MapBetter.Checked Then
+            Map = "Better"
+        ElseIf MapBest.Checked Then
+            Map = "Best"
+        End If
+
+        RegionClass.MapType(n) = Map
+
+        Dim Phys As String = ""
+        If Physics_Default.Checked Then
+            Phys = ""
+        ElseIf PhysicsNone.Checked Then
+            Phys = "0"
+        ElseIf PhysicsODE.Checked Then
+            Phys = "1"
+        ElseIf PhysicsBullet.Checked Then
+            Phys = "2"
+        ElseIf PhysicsSeparate.Checked Then
+            Phys = "3"
+        ElseIf PhysicsubODE.Checked Then
+            Phys = "4"
+        End If
+
+        RegionClass.Physics(n) = Phys
+
+        Dim AllowAGod As String = ""
+        If AllowGods.Checked Then
+            AllowAGod = "True"
+            RegionClass.AllowGods(n) = "True"
+        End If
+
+        Dim ARegionGod As String = ""
+        If RegionGod.Checked Then
+            ARegionGod = "True"
+            RegionClass.RegionGod(n) = "True"
+        End If
+
+        Dim AManagerGod As String = ""
+        If ManagerGod.Checked Then
+            AManagerGod = "True"
+            RegionClass.ManagerGod(n) = "True"
         End If
 
         Dim Region = "; * Regions configuration file" &
@@ -265,8 +437,17 @@ Public Class FormRegion
                         "NonPhysicalPrimMax = " & NonphysicalPrimMax.Text & vbCrLf &
                         "PhysicalPrimMax = " & PhysicalPrimMax.Text & vbCrLf &
                         "ClampPrimSize = " & ClampPrimSize.Checked.ToString & vbCrLf &
-                        "MaxPrims = " & MaxPrims.Text & vbCrLf &
-                        "MaxAgents = " & MaxAgents.Text & vbCrLf
+                        "MaxAgents = " & MaxAgents.Text & vbCrLf &
+                        "MaxPrims = " & MaxPrims.Text & vbCrLf & vbCrLf &
+                        ";# Extended region properties from Dreamgrid" & vbCrLf &
+                        "RegionSnapShot = " & Snapshot & vbCrLf &
+                        "MapType = " & Map & vbCrLf &
+                        "Physics = " & Phys & vbCrLf &
+                        "AllowGods = " & AllowAGod & vbCrLf &
+                        "RegionGod = " & ARegionGod & vbCrLf &
+                        "ManagerGod = " & AManagerGod
+
+        Debug.Print(Region)
 
         Try
             Using outputFile As New StreamWriter(RegionClass.RegionPath(n), False)
@@ -302,7 +483,55 @@ Public Class FormRegion
     End Function
 #End Region
 
-#Region "Checkboxes"
+#Region "Default"
+
+    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
+        '663, 613
+        If Big Then
+            Me.Size = New System.Drawing.Size(716, 555)
+            Advanced.Visible = True
+            Big = False
+        Else
+            Me.Size = New System.Drawing.Size(275, 290)
+            Advanced.Visible = False
+            Big = True
+        End If
+    End Sub
+
+    Private Sub DeleteButton_Click(sender As Object, e As EventArgs) Handles DeleteButton.Click
+
+        Dim msg = MsgBox("Are you sure you want To delete this region? ", vbYesNo, "Delete?")
+        If msg = vbYes Then
+            Try
+                My.Computer.FileSystem.DeleteFile(Form1.prefix & "bin\Regions\" + RegionName.Text + "\Region\" + RegionName.Text + ".bak")
+            Catch
+            End Try
+
+            Try
+                My.Computer.FileSystem.RenameFile(RegionClass.RegionPath(n), RegionName.Text + ".bak")
+                RegionClass.GetAllRegions()
+
+            Catch ex As Exception
+            End Try
+        End If
+        Me.Close()
+
+    End Sub
+
+    Private Sub RLostFocus(sender As Object, e As EventArgs) Handles RegionName.TextChanged
+
+        If Len(RegionName.Text) > 0 And initted Then
+            If Not FilenameIsOK(RegionName.Text) Then
+                MsgBox("Region name can't use special characters such as < > : """" / \ | ? *", vbInformation, "Info")
+                Return
+        End If
+        changed = True
+        End If
+
+    End Sub
+#End Region
+
+#Region "More"
 
     Private Sub Coordy_TextChanged(sender As Object, e As EventArgs) Handles CoordY.TextChanged
         If initted And CoordY.Text <> "" Then
@@ -336,18 +565,6 @@ Public Class FormRegion
             Catch
 
             End Try
-            changed = True
-        End If
-
-    End Sub
-
-    Private Sub RLostFocus(sender As Object, e As EventArgs) Handles RegionName.TextChanged
-
-        If Len(RegionName.Text) > 0 And initted Then
-            If Not FilenameIsOK(RegionName.Text) Then
-                MsgBox("Region name can't use special characters such as < > : """" / \ | ? *", vbInformation, "Info")
-                Return
-            End If
             changed = True
         End If
 
@@ -413,47 +630,6 @@ Public Class FormRegion
 
     End Sub
 
-    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
-
-        Dim message = RegionValidate()
-        If Len(message) > 0 Then
-            Dim v = MsgBox(message + vbCrLf + "Discard all changes and exit anyway?", vbYesNo, "Info")
-            If v = vbYes Then
-                Me.Close()
-            End If
-        Else
-
-            WriteRegion()
-            RegionClass.GetAllRegions()
-            Form1.CopyOpensimProto()
-
-            changed = False
-            Me.Close()
-        End If
-
-    End Sub
-
-    Private Sub FormRegion_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
-
-        If changed Then
-            Dim v = MsgBox("Save changes?", vbYesNo, "Region Save")
-            If v = vbYes Then
-                Dim message = RegionValidate()
-                If Len(message) > 0 Then
-                    v = MsgBox(message + vbCrLf + "Discard all changes and exit anyway?", vbYesNo, "Info")
-                    If v = vbYes Then
-                        Me.Close()
-                    End If
-                Else
-                    WriteRegion()
-                    Form1.CopyOpensimProto()
-                    RegionClass.GetAllRegions()
-                End If
-            End If
-        End If
-
-    End Sub
-
     Private Sub SizeX_Changed(sender As Object, e As EventArgs) Handles SizeX.LostFocus
 
         If initted And SizeX.Text <> "" Then
@@ -473,76 +649,183 @@ Public Class FormRegion
             End If
         End If
 
-
     End Sub
-
-    Private Function IsPowerOf256(x As Integer) As Boolean
-
-        Dim y As Single = Convert.ToSingle(x)
-        While y > 0
-            y = y - 256
-        End While
-        If y = 0 Then
-            Return True
-        End If
-        Return False
-
-    End Function
-
-    Private Sub DeleteButton_Click(sender As Object, e As EventArgs) Handles DeleteButton.Click
-
-        Dim msg = MsgBox("Are you sure you want to delete this region? ", vbYesNo, "Delete?")
-        If msg = vbYes Then
-            Try
-                My.Computer.FileSystem.DeleteFile(Form1.prefix & "bin\Regions\" + RegionName.Text + "\Region\" + RegionName.Text + ".bak")
-            Catch
-            End Try
-
-            Try
-                My.Computer.FileSystem.RenameFile(RegionClass.RegionPath(n), RegionName.Text + ".bak")
-                RegionClass.GetAllRegions()
-
-            Catch ex As Exception
-            End Try
-        End If
-        Me.Close()
-
-    End Sub
-
-    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
-        If Big Then
-            Me.Size = New System.Drawing.Size(275, 635)
-            Advanced.Visible = True
-            Big = False
-        Else
-            Me.Size = New System.Drawing.Size(275, 335)
-            Advanced.Visible = False
-            Big = True
-        End If
-    End Sub
-
-    Private Sub More_Click(sender As Object, e As EventArgs) Handles More.Click
-
-        If RegionClass.RegionName(n).Length = 0 Then
-            MsgBox("Region must have a name", vbInformation)
-            Return
-        End If
-
-        Dim ActualForm As New RegionSpecific
-        ActualForm.init(RegionClass.RegionName(n))
-        Dim X As Integer = 300
-        Dim Y As Integer = 200
-        ActualForm.SetDesktopLocation(X, Y)
-        ActualForm.Visible = True
-        ActualForm.Activate()
-        Application.DoEvents()
-    End Sub
-
-
-
-
-
 
 #End Region
 
+#Region "MoreExtras"
+
+    Private Sub Maps_Use_Default_changed(sender As Object, e As EventArgs) Handles Maps_Use_Default.CheckedChanged
+        If Maps_Use_Default.Checked Then
+            Form1.Log("Region " + Name + " Map is set to Default")
+            MapNone.Checked = False
+            MapSimple.Checked = False
+            MapGood.Checked = False
+            MapBetter.Checked = False
+            MapBest.Checked = False
+        End If
+
+        If initted Then changed = True
+    End Sub
+
+    Private Sub MapNone_CheckedChanged(sender As Object, e As EventArgs) Handles MapNone.CheckedChanged
+        If MapNone.Checked Then
+            Form1.Log("Region " + Name + " Map is set to None")
+        End If
+        If initted Then changed = True
+    End Sub
+
+    Private Sub MapSimple_CheckedChanged(sender As Object, e As EventArgs) Handles MapSimple.CheckedChanged
+        If MapSimple.Checked Then
+            Form1.Log("Region " + Name + " Map is set to Simple")
+        End If
+        If initted Then changed = True
+    End Sub
+
+    Private Sub MapGood_CheckedChanged(sender As Object, e As EventArgs) Handles MapGood.CheckedChanged
+        If MapGood.Checked Then
+            Form1.Log("Region " + Name + " Map is set to Good")
+        End If
+        If initted Then changed = True
+    End Sub
+
+    Private Sub MapBetter_CheckedChanged(sender As Object, e As EventArgs) Handles MapBetter.CheckedChanged
+        If MapBetter.Checked Then
+            Form1.Log("Region " + Name + " Map is set to Better")
+        End If
+        If initted Then changed = True
+    End Sub
+
+    Private Sub MapBest_CheckedChanged(sender As Object, e As EventArgs) Handles MapBest.CheckedChanged
+        If MapBest.Checked Then
+            Form1.Log("Region " + Name + " Map is set to Best")
+        End If
+        If initted Then changed = True
+    End Sub
+
+
+    Private Sub Physics_Default_CheckedChanged(sender As Object, e As EventArgs) Handles Physics_Default.CheckedChanged
+
+        If Physics_Default.Checked Then
+            Form1.Log("Region " + Name + " Physics is set to default")
+            PhysicsNone.Checked = False
+            PhysicsODE.Checked = False
+            PhysicsubODE.Checked = False
+            PhysicsBullet.Checked = False
+            PhysicsSeparate.Checked = False
+        End If
+
+        If initted Then changed = True
+    End Sub
+
+    Private Sub PhysicsNone_CheckedChanged(sender As Object, e As EventArgs) Handles PhysicsNone.CheckedChanged
+        If PhysicsNone.Checked Then
+            Form1.Log("Region " + Name + " Physics is set to None")
+        End If
+        If initted Then changed = True
+    End Sub
+
+    Private Sub PhysicsODE_CheckedChanged(sender As Object, e As EventArgs) Handles PhysicsODE.CheckedChanged
+        If PhysicsODE.Checked Then
+            Form1.Log("Region " + Name + " Physics is set to ODE")
+        End If
+        If initted Then changed = True
+    End Sub
+
+    Private Sub PhysicsBullet_CheckedChanged(sender As Object, e As EventArgs) Handles PhysicsBullet.CheckedChanged
+        If PhysicsBullet.Checked Then
+            Form1.Log("Region " + Name + " Physics is set to Bullet")
+        End If
+        If initted Then changed = True
+    End Sub
+
+    Private Sub PhysicsSeparate_CheckedChanged(sender As Object, e As EventArgs) Handles PhysicsSeparate.CheckedChanged
+        If PhysicsSeparate.Checked Then
+            Form1.Log("Region " + Name + " Physics is set to Bullet in a Thread")
+        End If
+        If initted Then changed = True
+    End Sub
+
+    Private Sub PhysicsubODE_CheckedChanged(sender As Object, e As EventArgs) Handles PhysicsubODE.CheckedChanged
+        If PhysicsubODE.Checked Then
+            Form1.Log("Region " + Name + " Physics is set to Ubit's ODE")
+        End If
+        If initted Then changed = True
+    End Sub
+
+    Private Sub EnableMaxPrims_text(sender As Object, e As EventArgs) Handles MaxPrims.TextChanged
+        If initted Then changed = True
+    End Sub
+
+    Private Sub Gods_Use_Default_CheckedChanged(sender As Object, e As EventArgs) Handles Gods_Use_Default.CheckedChanged
+        If Gods_Use_Default.Checked Then
+            AllowGods.Checked = False
+            RegionGod.Checked = False
+            ManagerGod.Checked = False
+            Form1.Log("Region " + Name + " is set to default for Gods")
+        End If
+
+        If initted Then changed = True
+    End Sub
+
+    Private Sub AllowGods_CheckedChanged(sender As Object, e As EventArgs) Handles AllowGods.CheckedChanged
+
+        If AllowGods.Checked Then
+            Gods_Use_Default.Checked = False
+            Form1.Log("Region " + Name + " is allowing Gods")
+        Else
+            Form1.Log("Region " + Name + " is not allowing Gods")
+        End If
+
+        If initted Then changed = True
+    End Sub
+
+    Private Sub RegionGod_CheckedChanged(sender As Object, e As EventArgs) Handles RegionGod.CheckedChanged
+
+        If RegionGod.Checked Then
+            Gods_Use_Default.Checked = False
+            Form1.Log("Region " + Name + " is allowing Region Gods")
+        Else
+            Form1.Log("Region " + Name + " is not allowing Region Gods")
+        End If
+
+        If initted Then changed = True
+    End Sub
+
+    Private Sub ManagerGod_CheckedChanged(sender As Object, e As EventArgs) Handles ManagerGod.CheckedChanged
+
+        If ManagerGod.Checked Then
+            Gods_Use_Default.Checked = False
+            Form1.Log("Region " + Name + " is allowing Manager Gods")
+        Else
+            Form1.Log("Region " + Name + " is not allowing Manager Gods")
+        End If
+        If initted Then changed = True
+    End Sub
+
+    Private Sub PublishDefault_CheckedChanged(sender As Object, e As EventArgs) Handles PublishDefault.CheckedChanged
+        If PublishDefault.Checked Then
+            Form1.Log("Region " + Name + " is set to default for snapshots")
+        End If
+        If initted Then changed = True
+    End Sub
+
+    Private Sub NoPublish_CheckedChanged(sender As Object, e As EventArgs) Handles NoPublish.CheckedChanged
+        If NoPublish.Checked Then
+            Form1.Log("Region " + Name + " is not set to publish snapshots")
+        End If
+        If initted Then changed = True
+    End Sub
+
+    Private Sub Publish_CheckedChanged(sender As Object, e As EventArgs) Handles Publish.CheckedChanged
+        If Publish.Checked Then
+            Form1.Log("Region " + Name + " is publishing snapshots")
+        Else
+            Form1.Log("Region " + Name + " is not publishing snapshots")
+        End If
+
+        If initted Then changed = True
+    End Sub
+
+#End Region
 End Class

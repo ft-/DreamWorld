@@ -23,6 +23,7 @@ Partial Class FormRegion
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FormRegion))
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.RegionPort = New System.Windows.Forms.TextBox()
         Me.CoordY = New System.Windows.Forms.TextBox()
@@ -59,9 +60,47 @@ Partial Class FormRegion
         Me.DeleteButton = New System.Windows.Forms.Button()
         Me.EnabledCheckBox = New System.Windows.Forms.CheckBox()
         Me.Button2 = New System.Windows.Forms.Button()
-        Me.More = New System.Windows.Forms.Button()
+        Me.GroupBox6 = New System.Windows.Forms.GroupBox()
+        Me.Label13 = New System.Windows.Forms.Label()
+        Me.GroupBox3 = New System.Windows.Forms.GroupBox()
+        Me.Publish = New System.Windows.Forms.RadioButton()
+        Me.NoPublish = New System.Windows.Forms.RadioButton()
+        Me.PublishDefault = New System.Windows.Forms.RadioButton()
+        Me.GroupBox4 = New System.Windows.Forms.GroupBox()
+        Me.Gods_Use_Default = New System.Windows.Forms.CheckBox()
+        Me.AllowGods = New System.Windows.Forms.CheckBox()
+        Me.GodHelp = New System.Windows.Forms.PictureBox()
+        Me.ManagerGod = New System.Windows.Forms.CheckBox()
+        Me.RegionGod = New System.Windows.Forms.CheckBox()
+        Me.MapBox = New System.Windows.Forms.GroupBox()
+        Me.Maps_Use_Default = New System.Windows.Forms.RadioButton()
+        Me.MapHelp = New System.Windows.Forms.PictureBox()
+        Me.MapPicture = New System.Windows.Forms.PictureBox()
+        Me.MapNone = New System.Windows.Forms.RadioButton()
+        Me.MapSimple = New System.Windows.Forms.RadioButton()
+        Me.MapBetter = New System.Windows.Forms.RadioButton()
+        Me.MapBest = New System.Windows.Forms.RadioButton()
+        Me.MapGood = New System.Windows.Forms.RadioButton()
+        Me.GroupBox5 = New System.Windows.Forms.GroupBox()
+        Me.AutoLoadCheckbox = New System.Windows.Forms.CheckBox()
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.Physics_Default = New System.Windows.Forms.RadioButton()
+        Me.PhysicsSeparate = New System.Windows.Forms.RadioButton()
+        Me.PhysicsNone = New System.Windows.Forms.RadioButton()
+        Me.PhysicsubODE = New System.Windows.Forms.RadioButton()
+        Me.PhysicsBullet = New System.Windows.Forms.RadioButton()
+        Me.PhysicsODE = New System.Windows.Forms.RadioButton()
         Me.Advanced.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
+        Me.GroupBox6.SuspendLayout()
+        Me.GroupBox3.SuspendLayout()
+        Me.GroupBox4.SuspendLayout()
+        CType(Me.GodHelp, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.MapBox.SuspendLayout()
+        CType(Me.MapHelp, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.MapPicture, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.GroupBox5.SuspendLayout()
+        Me.GroupBox1.SuspendLayout()
         Me.SuspendLayout()
         '
         'RegionPort
@@ -182,7 +221,7 @@ Partial Class FormRegion
         'Label9
         '
         Me.Label9.AutoSize = True
-        Me.Label9.Location = New System.Drawing.Point(60, 137)
+        Me.Label9.Location = New System.Drawing.Point(48, 137)
         Me.Label9.Name = "Label9"
         Me.Label9.Size = New System.Drawing.Size(92, 13)
         Me.Label9.TabIndex = 31
@@ -215,8 +254,7 @@ Partial Class FormRegion
         Me.Label11.Size = New System.Drawing.Size(55, 13)
         Me.Label11.TabIndex = 36
         Me.Label11.Text = "Max Prims"
-        Me.ToolTip1.SetToolTip(Me.Label11, "Not what you think it is.  Only used to tell scripts the max size allowed. Is not" &
-        " enforced by Opensim.  Viewer stops counting at 45,000, Opensim does not!")
+        Me.ToolTip1.SetToolTip(Me.Label11, "Viewer stops counting at 45,000")
         '
         'MaxPrims
         '
@@ -224,8 +262,8 @@ Partial Class FormRegion
         Me.MaxPrims.Name = "MaxPrims"
         Me.MaxPrims.Size = New System.Drawing.Size(40, 20)
         Me.MaxPrims.TabIndex = 19
-        Me.ToolTip1.SetToolTip(Me.MaxPrims, "Not what you think it is.  Only used to tell scripts the max size allowed. Id not" &
-        " enforced by Opensim.  Viewer stop at 45,000, Opensim does not!")
+        Me.ToolTip1.SetToolTip(Me.MaxPrims, "Not what you think it Is.  Only used To tell scripts the max size allowed. Id Not" &
+        " enforced by Opensim.  Viewer Stop at 45, 0, Opensim does not!")
         '
         'NonphysicalPrimMax
         '
@@ -244,7 +282,7 @@ Partial Class FormRegion
         Me.Label12.TabIndex = 38
         Me.Label12.Text = "Max Agents"
         Me.ToolTip1.SetToolTip(Me.Label12, "Clamps how many Avatars + NPC's can be in a sim before the region is shown as Ful" &
-        "l.   The actual value is set in Estate Settings in the viewer.")
+        "l. The actual value is set in Estate Settings in the viewer.")
         '
         'ClampPrimSize
         '
@@ -258,7 +296,6 @@ Partial Class FormRegion
         '
         'Advanced
         '
-        Me.Advanced.Controls.Add(Me.More)
         Me.Advanced.Controls.Add(Me.ClampPrimSize)
         Me.Advanced.Controls.Add(Me.Label12)
         Me.Advanced.Controls.Add(Me.Label10)
@@ -279,7 +316,7 @@ Partial Class FormRegion
         Me.Advanced.Controls.Add(Me.CoordX)
         Me.Advanced.Location = New System.Drawing.Point(15, 242)
         Me.Advanced.Name = "Advanced"
-        Me.Advanced.Size = New System.Drawing.Size(230, 292)
+        Me.Advanced.Size = New System.Drawing.Size(230, 256)
         Me.Advanced.TabIndex = 26
         Me.Advanced.TabStop = False
         Me.Advanced.Text = "Advanced"
@@ -419,21 +456,350 @@ Partial Class FormRegion
         Me.Button2.Text = "More"
         Me.Button2.UseVisualStyleBackColor = True
         '
-        'More
+        'GroupBox6
         '
-        Me.More.Location = New System.Drawing.Point(9, 251)
-        Me.More.Name = "More"
-        Me.More.Size = New System.Drawing.Size(177, 23)
-        Me.More.TabIndex = 27
-        Me.More.Text = "More Settings"
-        Me.More.UseVisualStyleBackColor = True
+        Me.GroupBox6.Controls.Add(Me.Label13)
+        Me.GroupBox6.Controls.Add(Me.GroupBox3)
+        Me.GroupBox6.Controls.Add(Me.GroupBox4)
+        Me.GroupBox6.Controls.Add(Me.MapBox)
+        Me.GroupBox6.Controls.Add(Me.GroupBox5)
+        Me.GroupBox6.Controls.Add(Me.GroupBox1)
+        Me.GroupBox6.Location = New System.Drawing.Point(265, 20)
+        Me.GroupBox6.Name = "GroupBox6"
+        Me.GroupBox6.Size = New System.Drawing.Size(423, 478)
+        Me.GroupBox6.TabIndex = 1879
+        Me.GroupBox6.TabStop = False
+        Me.GroupBox6.Text = "Region Specific Settings"
+        '
+        'Label13
+        '
+        Me.Label13.AutoSize = True
+        Me.Label13.Location = New System.Drawing.Point(31, 20)
+        Me.Label13.Name = "Label13"
+        Me.Label13.Size = New System.Drawing.Size(234, 13)
+        Me.Label13.TabIndex = 1884
+        Me.Label13.Text = "Region specific settings override default settings"
+        '
+        'GroupBox3
+        '
+        Me.GroupBox3.Controls.Add(Me.Publish)
+        Me.GroupBox3.Controls.Add(Me.NoPublish)
+        Me.GroupBox3.Controls.Add(Me.PublishDefault)
+        Me.GroupBox3.Location = New System.Drawing.Point(20, 44)
+        Me.GroupBox3.Name = "GroupBox3"
+        Me.GroupBox3.Size = New System.Drawing.Size(189, 106)
+        Me.GroupBox3.TabIndex = 1883
+        Me.GroupBox3.TabStop = False
+        Me.GroupBox3.Text = "Search"
+        '
+        'Publish
+        '
+        Me.Publish.AutoSize = True
+        Me.Publish.Location = New System.Drawing.Point(11, 74)
+        Me.Publish.Name = "Publish"
+        Me.Publish.Size = New System.Drawing.Size(175, 17)
+        Me.Publish.TabIndex = 1881
+        Me.Publish.TabStop = True
+        Me.Publish.Text = "Publish Items marked for search"
+        Me.Publish.UseVisualStyleBackColor = True
+        '
+        'NoPublish
+        '
+        Me.NoPublish.AutoSize = True
+        Me.NoPublish.Location = New System.Drawing.Point(11, 51)
+        Me.NoPublish.Name = "NoPublish"
+        Me.NoPublish.Size = New System.Drawing.Size(144, 17)
+        Me.NoPublish.TabIndex = 1880
+        Me.NoPublish.TabStop = True
+        Me.NoPublish.Text = "Do not publish this region"
+        Me.NoPublish.UseVisualStyleBackColor = True
+        '
+        'PublishDefault
+        '
+        Me.PublishDefault.AutoSize = True
+        Me.PublishDefault.Location = New System.Drawing.Point(11, 27)
+        Me.PublishDefault.Name = "PublishDefault"
+        Me.PublishDefault.Size = New System.Drawing.Size(81, 17)
+        Me.PublishDefault.TabIndex = 1879
+        Me.PublishDefault.TabStop = True
+        Me.PublishDefault.Text = "Use Default"
+        Me.PublishDefault.UseVisualStyleBackColor = True
+        '
+        'GroupBox4
+        '
+        Me.GroupBox4.Controls.Add(Me.Gods_Use_Default)
+        Me.GroupBox4.Controls.Add(Me.AllowGods)
+        Me.GroupBox4.Controls.Add(Me.GodHelp)
+        Me.GroupBox4.Controls.Add(Me.ManagerGod)
+        Me.GroupBox4.Controls.Add(Me.RegionGod)
+        Me.GroupBox4.Location = New System.Drawing.Point(23, 165)
+        Me.GroupBox4.Name = "GroupBox4"
+        Me.GroupBox4.Size = New System.Drawing.Size(186, 135)
+        Me.GroupBox4.TabIndex = 1882
+        Me.GroupBox4.TabStop = False
+        Me.GroupBox4.Text = "Permissions"
+        '
+        'Gods_Use_Default
+        '
+        Me.Gods_Use_Default.AutoSize = True
+        Me.Gods_Use_Default.Location = New System.Drawing.Point(14, 27)
+        Me.Gods_Use_Default.Name = "Gods_Use_Default"
+        Me.Gods_Use_Default.Size = New System.Drawing.Size(82, 17)
+        Me.Gods_Use_Default.TabIndex = 1859
+        Me.Gods_Use_Default.Text = "Use Default"
+        Me.Gods_Use_Default.UseVisualStyleBackColor = True
+        '
+        'AllowGods
+        '
+        Me.AllowGods.AutoSize = True
+        Me.AllowGods.Location = New System.Drawing.Point(14, 52)
+        Me.AllowGods.Name = "AllowGods"
+        Me.AllowGods.Size = New System.Drawing.Size(141, 17)
+        Me.AllowGods.TabIndex = 1858
+        Me.AllowGods.Text = "Allow Gods in this region"
+        Me.AllowGods.UseVisualStyleBackColor = True
+        '
+        'GodHelp
+        '
+        Me.GodHelp.Image = Global.Outworldz.My.Resources.Resources.about
+        Me.GodHelp.Location = New System.Drawing.Point(102, 19)
+        Me.GodHelp.Name = "GodHelp"
+        Me.GodHelp.Size = New System.Drawing.Size(30, 34)
+        Me.GodHelp.TabIndex = 1857
+        Me.GodHelp.TabStop = False
+        '
+        'ManagerGod
+        '
+        Me.ManagerGod.AutoSize = True
+        Me.ManagerGod.Location = New System.Drawing.Point(14, 99)
+        Me.ManagerGod.Name = "ManagerGod"
+        Me.ManagerGod.Size = New System.Drawing.Size(141, 17)
+        Me.ManagerGod.TabIndex = 6
+        Me.ManagerGod.Text = "Region manager is god?"
+        Me.ManagerGod.UseVisualStyleBackColor = True
+        '
+        'RegionGod
+        '
+        Me.RegionGod.AutoSize = True
+        Me.RegionGod.Location = New System.Drawing.Point(14, 75)
+        Me.RegionGod.Name = "RegionGod"
+        Me.RegionGod.Size = New System.Drawing.Size(132, 17)
+        Me.RegionGod.TabIndex = 1855
+        Me.RegionGod.Text = "Region owner is god? "
+        Me.RegionGod.UseVisualStyleBackColor = True
+        '
+        'MapBox
+        '
+        Me.MapBox.Controls.Add(Me.Maps_Use_Default)
+        Me.MapBox.Controls.Add(Me.MapHelp)
+        Me.MapBox.Controls.Add(Me.MapPicture)
+        Me.MapBox.Controls.Add(Me.MapNone)
+        Me.MapBox.Controls.Add(Me.MapSimple)
+        Me.MapBox.Controls.Add(Me.MapBetter)
+        Me.MapBox.Controls.Add(Me.MapBest)
+        Me.MapBox.Controls.Add(Me.MapGood)
+        Me.MapBox.Location = New System.Drawing.Point(226, 44)
+        Me.MapBox.Name = "MapBox"
+        Me.MapBox.Size = New System.Drawing.Size(173, 284)
+        Me.MapBox.TabIndex = 1881
+        Me.MapBox.TabStop = False
+        Me.MapBox.Text = "Maps"
+        '
+        'Maps_Use_Default
+        '
+        Me.Maps_Use_Default.AutoSize = True
+        Me.Maps_Use_Default.Location = New System.Drawing.Point(12, 51)
+        Me.Maps_Use_Default.Name = "Maps_Use_Default"
+        Me.Maps_Use_Default.Size = New System.Drawing.Size(81, 17)
+        Me.Maps_Use_Default.TabIndex = 1858
+        Me.Maps_Use_Default.TabStop = True
+        Me.Maps_Use_Default.Text = "Use Default"
+        Me.Maps_Use_Default.UseVisualStyleBackColor = True
+        '
+        'MapHelp
+        '
+        Me.MapHelp.Image = Global.Outworldz.My.Resources.Resources.about
+        Me.MapHelp.Location = New System.Drawing.Point(112, 17)
+        Me.MapHelp.Name = "MapHelp"
+        Me.MapHelp.Size = New System.Drawing.Size(28, 27)
+        Me.MapHelp.TabIndex = 1857
+        Me.MapHelp.TabStop = False
+        '
+        'MapPicture
+        '
+        Me.MapPicture.InitialImage = CType(resources.GetObject("MapPicture.InitialImage"), System.Drawing.Image)
+        Me.MapPicture.Location = New System.Drawing.Point(28, 176)
+        Me.MapPicture.Name = "MapPicture"
+        Me.MapPicture.Size = New System.Drawing.Size(100, 93)
+        Me.MapPicture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.MapPicture.TabIndex = 138
+        Me.MapPicture.TabStop = False
+        '
+        'MapNone
+        '
+        Me.MapNone.AutoSize = True
+        Me.MapNone.Location = New System.Drawing.Point(11, 70)
+        Me.MapNone.Name = "MapNone"
+        Me.MapNone.Size = New System.Drawing.Size(51, 17)
+        Me.MapNone.TabIndex = 7
+        Me.MapNone.TabStop = True
+        Me.MapNone.Text = "None"
+        Me.MapNone.UseVisualStyleBackColor = True
+        '
+        'MapSimple
+        '
+        Me.MapSimple.AutoSize = True
+        Me.MapSimple.Location = New System.Drawing.Point(11, 89)
+        Me.MapSimple.Name = "MapSimple"
+        Me.MapSimple.Size = New System.Drawing.Size(94, 17)
+        Me.MapSimple.TabIndex = 8
+        Me.MapSimple.TabStop = True
+        Me.MapSimple.Text = "Simple but fast"
+        Me.MapSimple.UseVisualStyleBackColor = True
+        '
+        'MapBetter
+        '
+        Me.MapBetter.AutoSize = True
+        Me.MapBetter.Location = New System.Drawing.Point(12, 128)
+        Me.MapBetter.Name = "MapBetter"
+        Me.MapBetter.Size = New System.Drawing.Size(116, 17)
+        Me.MapBetter.TabIndex = 10
+        Me.MapBetter.TabStop = True
+        Me.MapBetter.Text = "Better (Prims, Slow)"
+        Me.MapBetter.TextImageRelation = System.Windows.Forms.TextImageRelation.TextAboveImage
+        Me.MapBetter.UseVisualStyleBackColor = True
+        '
+        'MapBest
+        '
+        Me.MapBest.AutoSize = True
+        Me.MapBest.Location = New System.Drawing.Point(11, 150)
+        Me.MapBest.Name = "MapBest"
+        Me.MapBest.Size = New System.Drawing.Size(144, 17)
+        Me.MapBest.TabIndex = 11
+        Me.MapBest.TabStop = True
+        Me.MapBest.Text = "Best (Prims +Mesh, Slow)"
+        Me.MapBest.UseVisualStyleBackColor = True
+        '
+        'MapGood
+        '
+        Me.MapGood.AutoSize = True
+        Me.MapGood.Location = New System.Drawing.Point(12, 108)
+        Me.MapGood.Name = "MapGood"
+        Me.MapGood.Size = New System.Drawing.Size(100, 17)
+        Me.MapGood.TabIndex = 9
+        Me.MapGood.TabStop = True
+        Me.MapGood.Text = "Good (Warp3D)"
+        Me.MapGood.UseVisualStyleBackColor = True
+        '
+        'GroupBox5
+        '
+        Me.GroupBox5.Controls.Add(Me.AutoLoadCheckbox)
+        Me.GroupBox5.Location = New System.Drawing.Point(228, 387)
+        Me.GroupBox5.Name = "GroupBox5"
+        Me.GroupBox5.Size = New System.Drawing.Size(177, 48)
+        Me.GroupBox5.TabIndex = 1880
+        Me.GroupBox5.TabStop = False
+        Me.GroupBox5.Text = "Auto Boot on Teleport"
+        Me.GroupBox5.Visible = False
+        '
+        'AutoLoadCheckbox
+        '
+        Me.AutoLoadCheckbox.AutoSize = True
+        Me.AutoLoadCheckbox.Location = New System.Drawing.Point(12, 19)
+        Me.AutoLoadCheckbox.Name = "AutoLoadCheckbox"
+        Me.AutoLoadCheckbox.Size = New System.Drawing.Size(59, 17)
+        Me.AutoLoadCheckbox.TabIndex = 21
+        Me.AutoLoadCheckbox.Text = "Enable"
+        Me.AutoLoadCheckbox.UseVisualStyleBackColor = True
+        '
+        'GroupBox1
+        '
+        Me.GroupBox1.Controls.Add(Me.Physics_Default)
+        Me.GroupBox1.Controls.Add(Me.PhysicsSeparate)
+        Me.GroupBox1.Controls.Add(Me.PhysicsNone)
+        Me.GroupBox1.Controls.Add(Me.PhysicsubODE)
+        Me.GroupBox1.Controls.Add(Me.PhysicsBullet)
+        Me.GroupBox1.Controls.Add(Me.PhysicsODE)
+        Me.GroupBox1.Location = New System.Drawing.Point(23, 310)
+        Me.GroupBox1.Name = "GroupBox1"
+        Me.GroupBox1.Size = New System.Drawing.Size(189, 164)
+        Me.GroupBox1.TabIndex = 1879
+        Me.GroupBox1.TabStop = False
+        Me.GroupBox1.Text = "Physics Engine"
+        '
+        'Physics_Default
+        '
+        Me.Physics_Default.AutoSize = True
+        Me.Physics_Default.Location = New System.Drawing.Point(6, 26)
+        Me.Physics_Default.Name = "Physics_Default"
+        Me.Physics_Default.Size = New System.Drawing.Size(81, 17)
+        Me.Physics_Default.TabIndex = 137
+        Me.Physics_Default.TabStop = True
+        Me.Physics_Default.Text = "Use Default"
+        Me.Physics_Default.UseVisualStyleBackColor = True
+        '
+        'PhysicsSeparate
+        '
+        Me.PhysicsSeparate.AutoSize = True
+        Me.PhysicsSeparate.Location = New System.Drawing.Point(6, 141)
+        Me.PhysicsSeparate.Name = "PhysicsSeparate"
+        Me.PhysicsSeparate.Size = New System.Drawing.Size(180, 17)
+        Me.PhysicsSeparate.TabIndex = 37
+        Me.PhysicsSeparate.TabStop = True
+        Me.PhysicsSeparate.Text = "Bullet physics in separate thread."
+        Me.PhysicsSeparate.UseVisualStyleBackColor = True
+        '
+        'PhysicsNone
+        '
+        Me.PhysicsNone.AutoSize = True
+        Me.PhysicsNone.Location = New System.Drawing.Point(6, 50)
+        Me.PhysicsNone.Name = "PhysicsNone"
+        Me.PhysicsNone.Size = New System.Drawing.Size(51, 17)
+        Me.PhysicsNone.TabIndex = 33
+        Me.PhysicsNone.TabStop = True
+        Me.PhysicsNone.Text = "None"
+        Me.PhysicsNone.UseVisualStyleBackColor = True
+        '
+        'PhysicsubODE
+        '
+        Me.PhysicsubODE.AutoSize = True
+        Me.PhysicsubODE.Location = New System.Drawing.Point(6, 96)
+        Me.PhysicsubODE.Name = "PhysicsubODE"
+        Me.PhysicsubODE.Size = New System.Drawing.Size(153, 17)
+        Me.PhysicsubODE.TabIndex = 35
+        Me.PhysicsubODE.TabStop = True
+        Me.PhysicsubODE.Text = "Ubit Open Dynamic Engine"
+        Me.PhysicsubODE.UseVisualStyleBackColor = True
+        '
+        'PhysicsBullet
+        '
+        Me.PhysicsBullet.AutoSize = True
+        Me.PhysicsBullet.Location = New System.Drawing.Point(6, 118)
+        Me.PhysicsBullet.Name = "PhysicsBullet"
+        Me.PhysicsBullet.Size = New System.Drawing.Size(90, 17)
+        Me.PhysicsBullet.TabIndex = 136
+        Me.PhysicsBullet.TabStop = True
+        Me.PhysicsBullet.Text = "Bullet Physics"
+        Me.PhysicsBullet.UseVisualStyleBackColor = True
+        '
+        'PhysicsODE
+        '
+        Me.PhysicsODE.AutoSize = True
+        Me.PhysicsODE.Location = New System.Drawing.Point(6, 73)
+        Me.PhysicsODE.Name = "PhysicsODE"
+        Me.PhysicsODE.Size = New System.Drawing.Size(136, 17)
+        Me.PhysicsODE.TabIndex = 34
+        Me.PhysicsODE.TabStop = True
+        Me.PhysicsODE.Text = "Open Dynamics Engine"
+        Me.PhysicsODE.UseVisualStyleBackColor = True
         '
         'FormRegion
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.SystemColors.Control
-        Me.ClientSize = New System.Drawing.Size(259, 546)
+        Me.ClientSize = New System.Drawing.Size(700, 516)
+        Me.Controls.Add(Me.GroupBox6)
         Me.Controls.Add(Me.Button2)
         Me.Controls.Add(Me.EnabledCheckBox)
         Me.Controls.Add(Me.DeleteButton)
@@ -449,6 +815,21 @@ Partial Class FormRegion
         Me.Advanced.PerformLayout()
         Me.GroupBox2.ResumeLayout(False)
         Me.GroupBox2.PerformLayout()
+        Me.GroupBox6.ResumeLayout(False)
+        Me.GroupBox6.PerformLayout()
+        Me.GroupBox3.ResumeLayout(False)
+        Me.GroupBox3.PerformLayout()
+        Me.GroupBox4.ResumeLayout(False)
+        Me.GroupBox4.PerformLayout()
+        CType(Me.GodHelp, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.MapBox.ResumeLayout(False)
+        Me.MapBox.PerformLayout()
+        CType(Me.MapHelp, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.MapPicture, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.GroupBox5.ResumeLayout(False)
+        Me.GroupBox5.PerformLayout()
+        Me.GroupBox1.ResumeLayout(False)
+        Me.GroupBox1.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -489,5 +870,34 @@ Partial Class FormRegion
     Friend WithEvents MaxPrims As TextBox
     Friend WithEvents ClampPrimSize As CheckBox
     Friend WithEvents Button2 As Button
-    Friend WithEvents More As Button
+    Friend WithEvents GroupBox6 As GroupBox
+    Friend WithEvents Label13 As Label
+    Friend WithEvents GroupBox3 As GroupBox
+    Friend WithEvents NoPublish As RadioButton
+    Friend WithEvents PublishDefault As RadioButton
+    Friend WithEvents GroupBox4 As GroupBox
+    Friend WithEvents Gods_Use_Default As CheckBox
+    Friend WithEvents AllowGods As CheckBox
+    Friend WithEvents GodHelp As PictureBox
+    Friend WithEvents ManagerGod As CheckBox
+    Friend WithEvents RegionGod As CheckBox
+    Friend WithEvents MapBox As GroupBox
+    Friend WithEvents Maps_Use_Default As RadioButton
+    Friend WithEvents MapHelp As PictureBox
+    Friend WithEvents MapPicture As PictureBox
+    Friend WithEvents MapNone As RadioButton
+    Friend WithEvents MapSimple As RadioButton
+    Friend WithEvents MapBetter As RadioButton
+    Friend WithEvents MapBest As RadioButton
+    Friend WithEvents MapGood As RadioButton
+    Friend WithEvents GroupBox5 As GroupBox
+    Friend WithEvents AutoLoadCheckbox As CheckBox
+    Friend WithEvents GroupBox1 As GroupBox
+    Friend WithEvents Physics_Default As RadioButton
+    Friend WithEvents PhysicsSeparate As RadioButton
+    Friend WithEvents PhysicsNone As RadioButton
+    Friend WithEvents PhysicsubODE As RadioButton
+    Friend WithEvents PhysicsBullet As RadioButton
+    Friend WithEvents PhysicsODE As RadioButton
+    Friend WithEvents Publish As RadioButton
 End Class

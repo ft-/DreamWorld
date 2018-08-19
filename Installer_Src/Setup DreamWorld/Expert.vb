@@ -588,6 +588,11 @@ Public Class Expert
         Form1.MySetting.SaveSettings()
     End Sub
 
+    Private Sub LSLCheckbox_CheckedChanged(sender As Object, e As EventArgs) Handles LSLCheckbox.CheckedChanged
+        Form1.MySetting.LSL_HHTP() = LSLCheckbox.Checked
+        Form1.MySetting.SaveSettings()
+    End Sub
+
 
 
 #End Region

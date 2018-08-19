@@ -122,6 +122,8 @@ Partial Class Expert
         Me.PictureBox9 = New System.Windows.Forms.PictureBox()
         Me.GroupBox11 = New System.Windows.Forms.GroupBox()
         Me.LimitsBox = New System.Windows.Forms.GroupBox()
+        Me.GroupBox8 = New System.Windows.Forms.GroupBox()
+        Me.LSLCheckbox = New System.Windows.Forms.CheckBox()
         Me.GroupBox3.SuspendLayout()
         CType(Me.PictureBox7, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox6, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -147,6 +149,7 @@ Partial Class Expert
         CType(Me.PictureBox9, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox11.SuspendLayout()
         Me.LimitsBox.SuspendLayout()
+        Me.GroupBox8.SuspendLayout()
         Me.SuspendLayout()
         '
         'GroupBox3
@@ -960,7 +963,7 @@ Partial Class Expert
         'GroupBox5
         '
         Me.GroupBox5.Controls.Add(Me.AutoLoadCheckbox)
-        Me.GroupBox5.Location = New System.Drawing.Point(225, 417)
+        Me.GroupBox5.Location = New System.Drawing.Point(647, 458)
         Me.GroupBox5.Name = "GroupBox5"
         Me.GroupBox5.Size = New System.Drawing.Size(189, 48)
         Me.GroupBox5.TabIndex = 55
@@ -1147,11 +1150,33 @@ Partial Class Expert
         Me.LimitsBox.TabStop = False
         Me.LimitsBox.Text = "Prim Limits"
         '
+        'GroupBox8
+        '
+        Me.GroupBox8.Controls.Add(Me.LSLCheckbox)
+        Me.GroupBox8.Location = New System.Drawing.Point(225, 413)
+        Me.GroupBox8.Name = "GroupBox8"
+        Me.GroupBox8.Size = New System.Drawing.Size(189, 48)
+        Me.GroupBox8.TabIndex = 56
+        Me.GroupBox8.TabStop = False
+        Me.GroupBox8.Text = "Allow LSL to contact the server"
+        '
+        'LSLCheckbox
+        '
+        Me.LSLCheckbox.AutoSize = True
+        Me.LSLCheckbox.Location = New System.Drawing.Point(12, 19)
+        Me.LSLCheckbox.Name = "LSLCheckbox"
+        Me.LSLCheckbox.Size = New System.Drawing.Size(59, 17)
+        Me.LSLCheckbox.TabIndex = 21
+        Me.LSLCheckbox.Text = "Enable"
+        Me.ToolTip1.SetToolTip(Me.LSLCheckbox, "Click to enable LSL to talkto port 80 on this server.")
+        Me.LSLCheckbox.UseVisualStyleBackColor = True
+        '
         'Expert
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(900, 547)
+        Me.Controls.Add(Me.GroupBox8)
         Me.Controls.Add(Me.LimitsBox)
         Me.Controls.Add(Me.GroupBox11)
         Me.Controls.Add(Me.GroupBox6)
@@ -1206,6 +1231,8 @@ Partial Class Expert
         Me.GroupBox11.PerformLayout()
         Me.LimitsBox.ResumeLayout(False)
         Me.LimitsBox.PerformLayout()
+        Me.GroupBox8.ResumeLayout(False)
+        Me.GroupBox8.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -1307,4 +1334,6 @@ Partial Class Expert
     Friend WithEvents AutoRestartBox As TextBox
     Friend WithEvents PictureBox10 As PictureBox
     Friend WithEvents DataSnapshotCheckBox As CheckBox
+    Friend WithEvents GroupBox8 As GroupBox
+    Friend WithEvents LSLCheckbox As CheckBox
 End Class
