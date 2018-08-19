@@ -280,11 +280,22 @@ Public Class RegionList
                 If V = vbNo Then Return
 
                 For Each num In RegionClass.RegionListByGroupNum(RegionClass.GroupName(n))
-                    Form1.ConsoleCommand(RegionClass.ProcessID(num), "q{ENTER}")
-                    RegionClass.Booted(num) = False
-                    RegionClass.WarmingUp(num) = False
-                    RegionClass.ShuttingDown(num) = True
-                    Form1.Log("Region:Stopped Region " + RegionClass.RegionName(num))
+
+                    ' Ask before killing any people
+                    If RegionClass.AvatarCount(num) > 0 Then
+                        Dim response As MsgBoxResult
+
+                        If RegionClass.AvatarCount(num) = 1 Then
+                            response = MsgBox("There is one avatar in " + RegionClass.RegionName(num) + ".  Do you still want to stop it?", vbYesNo)
+                        Else
+                            response = MsgBox("There are " + RegionClass.AvatarCount(num).ToString + " avatars in " + RegionClass.RegionName(num) + ".  Do you still want to stop it?", vbYesNo)
+                        End If
+                        If response = vbYes Then
+                            StopRegionNum(num)
+                        End If
+                    Else
+                            StopRegionNum(num)
+                    End If
                 Next
 
             Catch ex As Exception
@@ -321,6 +332,14 @@ Public Class RegionList
             Timer1.Interval = 1000 ' force a refresh
         End If
 
+    End Sub
+
+    Private Sub StopRegionNum(num As Integer)
+        Form1.ConsoleCommand(RegionClass.ProcessID(num), "q{ENTER}")
+        RegionClass.Booted(num) = False
+        RegionClass.WarmingUp(num) = False
+        RegionClass.ShuttingDown(num) = True
+        Form1.Log("Region:Stopped Region " + RegionClass.RegionName(num))
     End Sub
 
     Private Sub ListView1_ItemCheck1(ByVal sender As Object, ByVal e As System.Windows.Forms.ItemCheckEventArgs) Handles ListView1.ItemCheck
