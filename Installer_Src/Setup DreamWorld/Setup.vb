@@ -963,6 +963,7 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
         ' Opensim.ini
         MySetting.LoadOtherIni(prefix + "bin\Opensim.proto", ";")
 
+        MySetting.SetOtherIni("Network", "ExternalHostNameForLSL", MySetting.DNSName)
 
         MySetting.SetOtherIni("DataSnapshot", "index_sims", MySetting.DataSnapshot().ToString)
         MySetting.SetOtherIni("AutoRestart", "Time", CType(MySetting.AutoRestartInterval(), String))
