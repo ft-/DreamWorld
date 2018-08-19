@@ -711,11 +711,6 @@ Public Class RegionMaker
         + "RegionGod = " + RegionGod(n) + vbCrLf _
         + "ManagerGod = " + ManagerGod(n) + vbCrLf
 
-
-
-
-
-
         Try
             My.Computer.FileSystem.DeleteFile(fname)
         Catch
@@ -723,9 +718,6 @@ Public Class RegionMaker
         Using outputFile As New StreamWriter(fname, True)
             outputFile.WriteLine(proto)
         End Using
-
-        'File.Copy(Form1.prefix & "bin\Regions.proto", fname, True)
-
 
 
     End Sub
