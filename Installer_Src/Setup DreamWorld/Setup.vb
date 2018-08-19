@@ -324,8 +324,9 @@ Public Class Form1
 
         ClearLogFiles() ' clear log fles
 
-        MyUPnpMap = New UPnp(MyFolder)
+        System.IO.Directory.Delete(MyFolder + "/Icecast", True)
 
+        MyUPnpMap = New UPnp(MyFolder)
 
         MySetting.PublicIP = MyUPnpMap.LocalIP
         MySetting.PrivateURL = MySetting.PublicIP
@@ -4251,8 +4252,6 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
             RobustCommand("show account " + person + "{ENTER}")
         End If
     End Sub
-
-
 
 
 #End Region
