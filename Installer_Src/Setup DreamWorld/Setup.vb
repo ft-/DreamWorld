@@ -324,7 +324,11 @@ Public Class Form1
 
         ClearLogFiles() ' clear log fles
 
-        System.IO.Directory.Delete(MyFolder + "/Icecast", True)
+        Try
+            System.IO.Directory.Delete(MyFolder + "/Icecast", True)
+        Catch
+        End Try
+
 
         MyUPnpMap = New UPnp(MyFolder)
 
@@ -519,8 +523,7 @@ Public Class Form1
         Print("")
     End Sub
 
-    Private Declare Function ShowWindow Lib "user32.dll" (
-ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
+    Private Declare Function ShowWindow Lib "user32.dll" (ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
 
     <Flags()>
     Private Enum SHOW_WINDOW As Integer
@@ -1044,23 +1047,23 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
         ' 4 = physics = ubODE
 
         Select Case MySetting.Physics
-            Case 0
+            Case "0"
                 MySetting.SetOtherIni("Startup", "meshing", "ZeroMesher")
                 MySetting.SetOtherIni("Startup", "physics", "basicphysics")
                 MySetting.SetOtherIni("Startup", "UseSeparatePhysicsThread", "false")
-            Case 1
+            Case "1"
                 MySetting.SetOtherIni("Startup", "meshing", "Meshmerizer")
                 MySetting.SetOtherIni("Startup", "physics", "OpenDynamicsEngine")
                 MySetting.SetOtherIni("Startup", "UseSeparatePhysicsThread", "false")
-            Case 2
+            Case "2"
                 MySetting.SetOtherIni("Startup", "meshing", "Meshmerizer")
                 MySetting.SetOtherIni("Startup", "physics", "BulletSim")
                 MySetting.SetOtherIni("Startup", "UseSeparatePhysicsThread", "false")
-            Case 3
+            Case "3"
                 MySetting.SetOtherIni("Startup", "meshing", "Meshmerizer")
                 MySetting.SetOtherIni("Startup", "physics", "BulletSim")
                 MySetting.SetOtherIni("Startup", "UseSeparatePhysicsThread", "true")
-            Case 4
+            Case "4"
                 MySetting.SetOtherIni("Startup", "meshing", "ubODEMeshmerizer")
                 MySetting.SetOtherIni("Startup", "physics", "ubODE")
                 MySetting.SetOtherIni("Startup", "UseSeparatePhysicsThread", "false")
@@ -1128,6 +1131,8 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
         MySetting.SetOtherIni("VivoxVoice", "vivox_admin_user", MySetting.Vivox_UserName)
         MySetting.SetOtherIni("VivoxVoice", "vivox_admin_password", MySetting.Vivox_password)
 
+
+
         MySetting.SaveOtherINI()
 
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -1194,11 +1199,150 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
                 MySetting.SetOtherIni(simName, "MaxPrims", Convert.ToString(RegionClass.MaxPrims(X)))
                 MySetting.SetOtherIni(simName, "MaxAgents", Convert.ToString(RegionClass.MaxAgents(X)))
                 MySetting.SetOtherIni(simName, "ClampPrimSize", Convert.ToString(RegionClass.ClampPrimSize(X)))
+
+                ' Extended in v 2.31 f
+
+                If RegionClass.MapType(X) = "None" Then
+                    MySetting.SetOtherIni(simName, "GenerateMaptiles", "false")
+                ElseIf RegionClass.MapType(X) = "Simple" Then
+                    MySetting.SetOtherIni(simName, "GenerateMaptiles", "true")
+                    MySetting.SetOtherIni(simName, "MapImageModule", "MapImageModule")  ' versus Warp3DImageModule
+                    MySetting.SetOtherIni(simName, "TextureOnMapTile", "false")         ' versus true
+                    MySetting.SetOtherIni(simName, "DrawPrimOnMapTile", "false")
+                    MySetting.SetOtherIni(simName, "TexturePrims", "false")
+                    MySetting.SetOtherIni(simName, "RenderMeshes", "false")
+                ElseIf RegionClass.MapType(X) = "Good" Then
+                    MySetting.SetOtherIni(simName, "GenerateMaptiles", "true")
+                    MySetting.SetOtherIni(simName, "MapImageModule", "Warp3DImageModule")  ' versus MapImageModule
+                    MySetting.SetOtherIni(simName, "TextureOnMapTile", "false")         ' versus true
+                    MySetting.SetOtherIni(simName, "DrawPrimOnMapTile", "false")
+                    MySetting.SetOtherIni(simName, "TexturePrims", "false")
+                    MySetting.SetOtherIni(simName, "RenderMeshes", "false")
+                ElseIf RegionClass.MapType(X) = "Better" Then
+                    MySetting.SetOtherIni(simName, "GenerateMaptiles", "true")
+                    MySetting.SetOtherIni(simName, "MapImageModule", "Warp3DImageModule")  ' versus MapImageModule
+                    MySetting.SetOtherIni(simName, "TextureOnMapTile", "true")         ' versus true
+                    MySetting.SetOtherIni(simName, "DrawPrimOnMapTile", "true")
+                    MySetting.SetOtherIni(simName, "TexturePrims", "false")
+                    MySetting.SetOtherIni(simName, "RenderMeshes", "false")
+                ElseIf RegionClass.MapType(X) = "Best" Then
+                    MySetting.SetOtherIni(simName, "GenerateMaptiles", "true")
+                    MySetting.SetOtherIni(simName, "MapImageModule", "Warp3DImageModule")  ' versus MapImageModule
+                    MySetting.SetOtherIni(simName, "TextureOnMapTile", "true")      ' versus true
+                    MySetting.SetOtherIni(simName, "DrawPrimOnMapTile", "true")
+                    MySetting.SetOtherIni(simName, "TexturePrims", "true")
+                    MySetting.SetOtherIni(simName, "RenderMeshes", "true")
+                End If
+
+                MySetting.SetOtherIni(simName, "Physics", RegionClass.Physics(X).ToString)
+
+                MySetting.SetOtherIni(simName, "MaxPrims", RegionClass.MaxPrims(X).ToString)
+                MySetting.SetOtherIni(simName, "AllowGods", RegionClass.AllowGods(X).ToString)
+                MySetting.SetOtherIni(simName, "RegionGod", RegionClass.RegionGod(X).ToString)
+                MySetting.SetOtherIni(simName, "ManagerGod", RegionClass.ManagerGod(X).ToString)
+
+                ' Opensim.ini
+                MySetting.LoadOtherIni(prefix + "bin\Opensim.proto", ";")
+
+                If RegionClass.MapType(X) = "None" Then
+                    MySetting.SetOtherIni("Map", "GenerateMaptiles", "false")
+                ElseIf RegionClass.MapType(X) = "Simple" Then
+                    MySetting.SetOtherIni("Map", "GenerateMaptiles", "true")
+                    MySetting.SetOtherIni("Map", "MapImageModule", "MapImageModule")  ' versus Warp3DImageModule
+                    MySetting.SetOtherIni("Map", "TextureOnMapTile", "false")         ' versus true
+                    MySetting.SetOtherIni("Map", "DrawPrimOnMapTile", "false")
+                    MySetting.SetOtherIni("Map", "TexturePrims", "false")
+                    MySetting.SetOtherIni("Map", "RenderMeshes", "false")
+                ElseIf RegionClass.MapType(X) = "Good" Then
+                    MySetting.SetOtherIni(simName, "GenerateMaptiles", "true")
+                    MySetting.SetOtherIni("Map", "MapImageModule", "Warp3DImageModule")  ' versus MapImageModule
+                    MySetting.SetOtherIni("Map", "TextureOnMapTile", "false")         ' versus true
+                    MySetting.SetOtherIni("Map", "DrawPrimOnMapTile", "false")
+                    MySetting.SetOtherIni("Map", "TexturePrims", "false")
+                    MySetting.SetOtherIni("Map", "RenderMeshes", "false")
+                ElseIf RegionClass.MapType(X) = "Better" Then
+                    MySetting.SetOtherIni("Map", "GenerateMaptiles", "true")
+                    MySetting.SetOtherIni("Map", "MapImageModule", "Warp3DImageModule")  ' versus MapImageModule
+                    MySetting.SetOtherIni("Map", "TextureOnMapTile", "true")         ' versus true
+                    MySetting.SetOtherIni("Map", "DrawPrimOnMapTile", "true")
+                    MySetting.SetOtherIni("Map", "TexturePrims", "false")
+                    MySetting.SetOtherIni("Map", "RenderMeshes", "false")
+                ElseIf RegionClass.MapType(X) = "Best" Then
+                    MySetting.SetOtherIni("Map", "GenerateMaptiles", "true")
+                    MySetting.SetOtherIni("Map", "MapImageModule", "Warp3DImageModule")  ' versus MapImageModule
+                    MySetting.SetOtherIni("Map", "TextureOnMapTile", "true")      ' versus true
+                    MySetting.SetOtherIni("Map", "DrawPrimOnMapTile", "true")
+                    MySetting.SetOtherIni("Map", "TexturePrims", "true")
+                    MySetting.SetOtherIni("Map", "RenderMeshes", "true")
+                End If
+
+
+                Select Case RegionClass.Physics(X).ToString
+                    Case "0"
+                        MySetting.SetOtherIni("Startup", "meshing", "ZeroMesher")
+                        MySetting.SetOtherIni("Startup", "physics", "basicphysics")
+                        MySetting.SetOtherIni("Startup", "UseSeparatePhysicsThread", "false")
+                    Case "1"
+                        MySetting.SetOtherIni("Startup", "meshing", "Meshmerizer")
+                        MySetting.SetOtherIni("Startup", "physics", "OpenDynamicsEngine")
+                        MySetting.SetOtherIni("Startup", "UseSeparatePhysicsThread", "false")
+                    Case "2"
+                        MySetting.SetOtherIni("Startup", "meshing", "Meshmerizer")
+                        MySetting.SetOtherIni("Startup", "physics", "BulletSim")
+                        MySetting.SetOtherIni("Startup", "UseSeparatePhysicsThread", "false")
+                    Case "3"
+                        MySetting.SetOtherIni("Startup", "meshing", "Meshmerizer")
+                        MySetting.SetOtherIni("Startup", "physics", "BulletSim")
+                        MySetting.SetOtherIni("Startup", "UseSeparatePhysicsThread", "true")
+                    Case "4"
+                        MySetting.SetOtherIni("Startup", "meshing", "ubODEMeshmerizer")
+                        MySetting.SetOtherIni("Startup", "physics", "ubODE")
+                        MySetting.SetOtherIni("Startup", "UseSeparatePhysicsThread", "false")
+                    Case Else
+                        MySetting.SetOtherIni("Startup", "meshing", "Meshmerizer")
+                        MySetting.SetOtherIni("Startup", "physics", "BulletSim")
+                        MySetting.SetOtherIni("Startup", "UseSeparatePhysicsThread", "true")
+                End Select
+
+
+                If CBool(RegionClass.RegionGod(X)) Or CBool(RegionClass.ManagerGod(X)) Then
+                    MySetting.SetOtherIni("Permissions", "allow_grid_gods", "true")
+                Else
+                    MySetting.SetOtherIni("Permissions", "allow_grid_gods", "false")
+                End If
+
+                If CBool(RegionClass.RegionGod(X)) Then
+                    MySetting.SetOtherIni("Permissions", "region_owner_is_god", "true")
+                Else
+                    MySetting.SetOtherIni("Permissions", "region_owner_is_god", "false")
+                End If
+
+                If (CBool(RegionClass.ManagerGod(X))) Then
+                    MySetting.SetOtherIni("Permissions", "region_manager_is_god", "true")
+                Else
+                    MySetting.SetOtherIni("Permissions", "region_manager_is_god", "false")
+                End If
+
+                If (CBool(RegionClass.AllowGods(X))) Then
+                    MySetting.SetOtherIni("Permissions", "allow_grid_gods", "true")
+                Else
+                    MySetting.SetOtherIni("Permissions", "allow_grid_gods", "false")
+                End If
+
+                MySetting.SaveOtherINI()
+
+
             End If
 
-            MySetting.SaveOtherINI()
-
         Next
+
+    End Sub
+    Public Sub SetRegionINI(regionname As String, key As String, value As String)
+
+        Dim X = RegionClass.FindRegionByName(regionname)
+        MySetting.LoadOtherIni(RegionClass.RegionPath(X), ";")
+        MySetting.SetOtherIni(regionname, key, value)
+        MySetting.SaveOtherINI()
 
     End Sub
 

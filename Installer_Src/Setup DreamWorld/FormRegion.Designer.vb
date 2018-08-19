@@ -59,6 +59,7 @@ Partial Class FormRegion
         Me.DeleteButton = New System.Windows.Forms.Button()
         Me.EnabledCheckBox = New System.Windows.Forms.CheckBox()
         Me.Button2 = New System.Windows.Forms.Button()
+        Me.More = New System.Windows.Forms.Button()
         Me.Advanced.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.SuspendLayout()
@@ -165,8 +166,8 @@ Partial Class FormRegion
         Me.MaxAgents.Name = "MaxAgents"
         Me.MaxAgents.Size = New System.Drawing.Size(40, 20)
         Me.MaxAgents.TabIndex = 20
-        Me.ToolTip1.SetToolTip(Me.MaxAgents, "Clamps how many Avatars + NPC's can be in a region before the region is shown as Ful" &
-        "l.   The actual value is set in Estate Settings in the viewer.")
+        Me.ToolTip1.SetToolTip(Me.MaxAgents, "Clamps how many Avatars + NPC's can be in a region before the region is shown as " &
+        "Full.   The actual value is set in Estate Settings in the viewer.")
         '
         'Label5
         '
@@ -257,6 +258,7 @@ Partial Class FormRegion
         '
         'Advanced
         '
+        Me.Advanced.Controls.Add(Me.More)
         Me.Advanced.Controls.Add(Me.ClampPrimSize)
         Me.Advanced.Controls.Add(Me.Label12)
         Me.Advanced.Controls.Add(Me.Label10)
@@ -277,7 +279,7 @@ Partial Class FormRegion
         Me.Advanced.Controls.Add(Me.CoordX)
         Me.Advanced.Location = New System.Drawing.Point(15, 242)
         Me.Advanced.Name = "Advanced"
-        Me.Advanced.Size = New System.Drawing.Size(230, 241)
+        Me.Advanced.Size = New System.Drawing.Size(230, 292)
         Me.Advanced.TabIndex = 26
         Me.Advanced.TabStop = False
         Me.Advanced.Text = "Advanced"
@@ -417,12 +419,21 @@ Partial Class FormRegion
         Me.Button2.Text = "More"
         Me.Button2.UseVisualStyleBackColor = True
         '
+        'More
+        '
+        Me.More.Location = New System.Drawing.Point(9, 251)
+        Me.More.Name = "More"
+        Me.More.Size = New System.Drawing.Size(177, 23)
+        Me.More.TabIndex = 27
+        Me.More.Text = "More Settings"
+        Me.More.UseVisualStyleBackColor = True
+        '
         'FormRegion
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.SystemColors.Control
-        Me.ClientSize = New System.Drawing.Size(259, 496)
+        Me.ClientSize = New System.Drawing.Size(259, 546)
         Me.Controls.Add(Me.Button2)
         Me.Controls.Add(Me.EnabledCheckBox)
         Me.Controls.Add(Me.DeleteButton)
@@ -478,4 +489,5 @@ Partial Class FormRegion
     Friend WithEvents MaxPrims As TextBox
     Friend WithEvents ClampPrimSize As CheckBox
     Friend WithEvents Button2 As Button
+    Friend WithEvents More As Button
 End Class

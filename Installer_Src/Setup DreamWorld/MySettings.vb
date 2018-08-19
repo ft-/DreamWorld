@@ -85,7 +85,7 @@ Public Class MySettings
             MyY() = My.Settings.MyY
 
             Password() = My.Settings.Password
-            Physics() = My.Settings.Physics
+            Physics() = My.Settings.Physics.ToString
             PrivatePort() = My.Settings.PrivatePort
             PublicIP() = My.Settings.PublicIP
 
@@ -662,7 +662,7 @@ Public Class MySettings
     End Property
     Public Property SmtpUsername() As String
         Get
-            Return TryCast(GetMySetting("SmtpUsername"), String)
+            Return GetMySetting("SmtpUsername")
         End Get
         Set
             SetMySetting("SmtpUsername", Value)
@@ -670,7 +670,7 @@ Public Class MySettings
     End Property
     Public Property SmtpPassword() As String
         Get
-            Return TryCast(GetMySetting("SmtpPassword"), String)
+            Return GetMySetting("SmtpPassword")
         End Get
         Set
             SetMySetting("SmtpPassword", Value)
@@ -702,7 +702,7 @@ Public Class MySettings
     End Property
     Public Property DNSName() As String
         Get
-            Return TryCast(GetMySetting("DnsName"), String)
+            Return GetMySetting("DnsName")
         End Get
         Set
             SetMySetting("DnsName", Value)
@@ -710,7 +710,7 @@ Public Class MySettings
     End Property
     Public Property HttpPort() As String
         Get
-            Return TryCast(GetMySetting("HttpPort"), String)
+            Return GetMySetting("HttpPort")
         End Get
         Set
             SetMySetting("HttpPort", Value)
@@ -718,7 +718,7 @@ Public Class MySettings
     End Property
     Public Property MachineID() As String
         Get
-            Return TryCast(GetMySetting("MachineID"), String)
+            Return GetMySetting("MachineID")
         End Get
         Set
             SetMySetting("MachineID", Value)
@@ -742,18 +742,18 @@ Public Class MySettings
     End Property
     Public Property SplashPage() As String
         Get
-            Return TryCast(GetMySetting("SplashPage"), String)
+            Return GetMySetting("SplashPage")
         End Get
         Set
             SetMySetting("SplashPage", Value)
         End Set
     End Property
-    Public Property Physics() As Integer
+    Public Property Physics() As String
         Get
-            Return CType(GetMySetting("Physics"), Integer)
+            Return GetMySetting("Physics")
         End Get
         Set
-            SetMySetting("Physics", Value.ToString)
+            SetMySetting("Physics", Value)
         End Set
     End Property
     Public Property MyX() As Integer
@@ -790,7 +790,7 @@ Public Class MySettings
     End Property
     Public Property Vivox_UserName() As String
         Get
-            Return TryCast(GetMySetting("Vivox_username"), String)
+            Return GetMySetting("Vivox_username")
         End Get
         Set
             SetMySetting("Vivox_username", Value)
@@ -798,7 +798,7 @@ Public Class MySettings
     End Property
     Public Property Vivox_password() As String
         Get
-            Return TryCast(GetMySetting("Vivox_password"), String)
+            Return GetMySetting("Vivox_password")
         End Get
         Set
             SetMySetting("Vivox_password", Value)
@@ -806,7 +806,7 @@ Public Class MySettings
     End Property
     Public Property MapType() As String
         Get
-            Return TryCast(GetMySetting("MapType"), String)
+            Return GetMySetting("MapType")
         End Get
         Set
             SetMySetting("MapType", Value)
@@ -814,7 +814,7 @@ Public Class MySettings
     End Property
     Public Property BackupFolder() As String
         Get
-            Return TryCast(GetMySetting("BackupFolder"), String)
+            Return GetMySetting("BackupFolder")
         End Get
         Set
             SetMySetting("BackupFolder", Value)
@@ -822,7 +822,7 @@ Public Class MySettings
     End Property
     Public Property WelcomeRegion() As String
         Get
-            Return TryCast(GetMySetting("WelcomeRegion"), String)
+            Return GetMySetting("WelcomeRegion")
         End Get
         Set
             SetMySetting("WelcomeRegion", Value)
@@ -846,7 +846,7 @@ Public Class MySettings
     End Property
     Public Property GLSandKey() As String
         Get
-            Return TryCast(GetMySetting("GLSandKey"), String)
+            Return GetMySetting("GLSandKey")
         End Get
         Set
             SetMySetting("GLSandKey", Value)
@@ -855,7 +855,7 @@ Public Class MySettings
 
     Public Property GLSandSecret() As String
         Get
-            Return TryCast(GetMySetting("GLSandSecret"), String)
+            Return GetMySetting("GLSandSecret")
         End Get
         Set
             SetMySetting("GLSandSecret", Value)
@@ -863,7 +863,7 @@ Public Class MySettings
     End Property
     Public Property GLBOwnerEmail() As String
         Get
-            Return TryCast(GetMySetting("GLBOwnerEmail"), String)
+            Return GetMySetting("GLBOwnerEmail")
         End Get
         Set
             SetMySetting("GLBOwnerEmail", Value)
@@ -871,7 +871,7 @@ Public Class MySettings
     End Property
     Public Property GLBOwnerName() As String
         Get
-            Return TryCast(GetMySetting("GLBOwnerName"), String)
+            Return GetMySetting("GLBOwnerName")
         End Get
         Set
             SetMySetting("GLBOwnerName", Value)
@@ -879,7 +879,7 @@ Public Class MySettings
     End Property
     Public Property GLProdKey() As String
         Get
-            Return TryCast(GetMySetting("GLProdKey"), String)
+            Return GetMySetting("GLProdKey")
         End Get
         Set
             SetMySetting("GLProdKey", Value)
@@ -895,7 +895,7 @@ Public Class MySettings
     End Property
     Public Property GLProdSecret() As String
         Get
-            Return TryCast(GetMySetting("GLProdSecret"), String)
+            Return GetMySetting("GLProdSecret")
         End Get
         Set
             SetMySetting("GLProdSecret", Value)
@@ -903,7 +903,7 @@ Public Class MySettings
     End Property
     Public Property RegionDbPassword() As String
         Get
-            Return TryCast(GetMySetting("RegionDbPassword"), String)
+            Return GetMySetting("RegionDbPassword")
         End Get
         Set
             SetMySetting("RegionDbPassword", Value)
@@ -911,7 +911,7 @@ Public Class MySettings
     End Property
     Public Property RegionDBUsername() As String
         Get
-            Return TryCast(GetMySetting("RegionDBUsername"), String)
+            Return GetMySetting("RegionDBUsername")
         End Get
         Set
             SetMySetting("RegionDBUsername", Value)
@@ -919,7 +919,7 @@ Public Class MySettings
     End Property
     Public Property RegionDBName() As String
         Get
-            Return TryCast(GetMySetting("RegionDBName"), String)
+            Return GetMySetting("RegionDBName")
         End Get
         Set
             SetMySetting("RegionDBName", Value)
@@ -935,7 +935,7 @@ Public Class MySettings
     End Property
     Public Property DiagnosticPort() As String
         Get
-            Return TryCast(GetMySetting("DiagnosticPort"), String)
+            Return GetMySetting("DiagnosticPort")
         End Get
         Set
             SetMySetting("DiagnosticPort", Value)
@@ -943,7 +943,7 @@ Public Class MySettings
     End Property
     Public Property RobustDataBaseName() As String
         Get
-            Return TryCast(GetMySetting("RobustMySqlName"), String)
+            Return GetMySetting("RobustMySqlName")
         End Get
         Set
             SetMySetting("RobustMySqlName", Value)
@@ -951,7 +951,7 @@ Public Class MySettings
     End Property
     Public Property RobustUsername() As String
         Get
-            Return TryCast(GetMySetting("RobustMySqlUsername"), String)
+            Return GetMySetting("RobustMySqlUsername")
         End Get
         Set
             SetMySetting("RobustMySqlUsername", Value)
@@ -959,7 +959,7 @@ Public Class MySettings
     End Property
     Public Property RobustPassword() As String
         Get
-            Return TryCast(GetMySetting("RobustMySqlPassword"), String)
+            Return GetMySetting("RobustMySqlPassword")
         End Get
         Set
             SetMySetting("RobustMySqlPassword", Value)
@@ -967,7 +967,7 @@ Public Class MySettings
     End Property
     Public Property SimName() As String
         Get
-            Return TryCast(GetMySetting("SimName"), String)
+            Return GetMySetting("SimName")
         End Get
         Set
             SetMySetting("SimName", Value)
@@ -1052,7 +1052,7 @@ Public Class MySettings
     End Property
     Public Property SC_Password() As String
         Get
-            Return TryCast(GetMySetting("SC_Password"), String)
+            Return GetMySetting("SC_Password")
         End Get
         Set
             SetMySetting("SC_Password", Value)
@@ -1060,7 +1060,7 @@ Public Class MySettings
     End Property
     Public Property SC_AdminPassword() As String
         Get
-            Return TryCast(GetMySetting("SC_AdminPassword"), String)
+            Return GetMySetting("SC_AdminPassword")
         End Get
         Set
             SetMySetting("SC_AdminPassword", Value)
@@ -1078,7 +1078,7 @@ Public Class MySettings
     'Save a random machine ID - we don't want any data to be sent that's personal or identifiable,  but it needs to be unique
     Public Property Machine() As String
         Get
-            Return TryCast(GetMySetting("MachineID"), String)
+            Return GetMySetting("MachineID")
         End Get
         Set(ByVal Value As String)
             If (GetMySetting("MachineID") = "") Then

@@ -57,11 +57,11 @@ Public Class Expert
         UniqueId.Text = Form1.MySetting.MachineID
 
         Select Case Form1.MySetting.Physics
-            Case 0 : PhysicsNone.Checked = True
-            Case 1 : PhysicsODE.Checked = True
-            Case 2 : PhysicsBullet.Checked = True
-            Case 3 : PhysicsSeparate.Checked = True
-            Case 4 : PhysicsubODE.Checked = True
+            Case "0" : PhysicsNone.Checked = True
+            Case "1" : PhysicsODE.Checked = True
+            Case "2" : PhysicsBullet.Checked = True
+            Case "3" : PhysicsSeparate.Checked = True
+            Case "4" : PhysicsubODE.Checked = True
             Case Else : PhysicsSeparate.Checked = True
         End Select
 
@@ -263,35 +263,35 @@ Public Class Expert
 
     Private Sub PhysicsNone_CheckedChanged(sender As Object, e As EventArgs) Handles PhysicsNone.CheckedChanged
         If PhysicsNone.Checked Then
-            Form1.MySetting.Physics = 0
+            Form1.MySetting.Physics = "0"
             Form1.MySetting.SaveSettings()
         End If
     End Sub
 
     Private Sub RadioButton1_CheckedChanged(sender As Object, e As EventArgs) Handles PhysicsODE.CheckedChanged
         If PhysicsODE.Checked Then
-            Form1.MySetting.Physics = 1
+            Form1.MySetting.Physics = "1"
             Form1.MySetting.SaveSettings()
         End If
     End Sub
 
     Private Sub PhysicsBullet_CheckedChanged(sender As Object, e As EventArgs) Handles PhysicsBullet.CheckedChanged
         If PhysicsBullet.Checked Then
-            Form1.MySetting.Physics = 2
+            Form1.MySetting.Physics = "2"
             Form1.MySetting.SaveSettings()
         End If
     End Sub
 
     Private Sub PhysicsSeparate_CheckedChanged(sender As Object, e As EventArgs) Handles PhysicsSeparate.CheckedChanged
         If PhysicsSeparate.Checked Then
-            Form1.MySetting.Physics = 3
+            Form1.MySetting.Physics = "3"
             Form1.MySetting.SaveSettings()
         End If
     End Sub
 
     Private Sub PhysicsubODE_CheckedChanged(sender As Object, e As EventArgs) Handles PhysicsubODE.CheckedChanged
         If PhysicsubODE.Checked Then
-            Form1.MySetting.Physics = 4
+            Form1.MySetting.Physics = "4"
             Form1.MySetting.SaveSettings()
         End If
     End Sub

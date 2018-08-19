@@ -491,7 +491,6 @@ Public Class FormRegion
 
     Private Sub DeleteButton_Click(sender As Object, e As EventArgs) Handles DeleteButton.Click
 
-
         Dim msg = MsgBox("Are you sure you want to delete this region? ", vbYesNo, "Delete?")
         If msg = vbYes Then
             Try
@@ -512,7 +511,7 @@ Public Class FormRegion
 
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
         If Big Then
-            Me.Size = New System.Drawing.Size(275, 535)
+            Me.Size = New System.Drawing.Size(275, 635)
             Advanced.Visible = True
             Big = False
         Else
@@ -521,6 +520,26 @@ Public Class FormRegion
             Big = True
         End If
     End Sub
+
+    Private Sub More_Click(sender As Object, e As EventArgs) Handles More.Click
+
+        If RegionClass.RegionName(n).Length = 0 Then
+            MsgBox("Region must have a name", vbInformation)
+            Return
+        End If
+
+        Dim ActualForm As New RegionSpecific
+        ActualForm.init(RegionClass.RegionName(n))
+        Dim X As Integer = 300
+        Dim Y As Integer = 200
+        ActualForm.SetDesktopLocation(X, Y)
+        ActualForm.Visible = True
+        ActualForm.Activate()
+        Application.DoEvents()
+    End Sub
+
+
+
 
 
 
