@@ -250,7 +250,7 @@ Public Class MySettings
         Try
             Dim x = BirdsFlockSize()
         Catch ex As Exception
-            BirdsFlockSize() = 25
+            BirdsFlockSize() = "25"
             SaveSettings()
         End Try
 
@@ -258,7 +258,7 @@ Public Class MySettings
         Try
             Dim x = BirdsChatChannel()
         Catch ex As Exception
-            BirdsChatChannel() = 118
+            BirdsChatChannel() = "118"
             SaveSettings()
         End Try
 
@@ -480,7 +480,7 @@ Public Class MySettings
             Return CType(GetMySetting("BirdsChatChannel"), Integer)
         End Get
         Set
-            SetMySetting("BirdsChatChannel", Value)
+            SetMySetting("BirdsChatChannel", Value.ToString)
         End Set
     End Property
     Public Property BirdsMaxSpeed() As Double

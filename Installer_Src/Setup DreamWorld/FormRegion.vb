@@ -179,6 +179,8 @@ Public Class FormRegion
             Publish.Checked = CBool(RegionClass.RegionSnapShot(n))
         End If
 
+        BirdsCheckBox.Checked = RegionClass.Birds(n)
+
         Me.Focus()
         initted = True
 
@@ -445,7 +447,8 @@ Public Class FormRegion
                         "Physics = " & Phys & vbCrLf &
                         "AllowGods = " & AllowAGod & vbCrLf &
                         "RegionGod = " & ARegionGod & vbCrLf &
-                        "ManagerGod = " & AManagerGod
+                        "ManagerGod = " & AManagerGod & vbCrLf &
+                        "Birds = " & RegionClass.Birds(n).tostring
 
         Debug.Print(Region)
 
@@ -825,6 +828,12 @@ Public Class FormRegion
         End If
 
         If initted Then changed = True
+    End Sub
+
+    Private Sub BirdsCheckBox_CheckedChanged(sender As Object, e As EventArgs) Handles BirdsCheckBox.CheckedChanged
+        If BirdsCheckBox.Checked Then
+            Form1.Log("Region " + Name + " has birds enabled")
+        End If
     End Sub
 
 #End Region

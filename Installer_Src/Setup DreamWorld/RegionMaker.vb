@@ -69,7 +69,54 @@ Public Class RegionMaker
     End Sub
 
 #End Region
+#Region "Classes"
+    Public Class JSON_result
+        Public alert As String
+        Public login As String
+        Public region_name As String
+        Public region_id As String
+    End Class
 
+    ' hold a copy of the Main region data on a per-form basis
+    Private Class Region_data
+        Public _RegionPath As String = ""  ' The full path to the region ini file
+        Public _FolderPath As String = ""   ' the path to the folde r that holds the region ini
+        Public _Group As String = ""       ' the folder name that holds the region(s), can be different named
+        Public _IniPath As String = ""      ' the folder that hold the Opensim.ini, above 'Region'
+        Public _RegionName As String = ""
+        Public _UUID As String = ""
+        Public _CoordX As Integer = 0
+        Public _CoordY As Integer = 0
+        Public _RegionPort As Integer = 0
+        Public _SizeX As Integer = 0
+        Public _SizeY As Integer = 0
+        Public _RegionEnabled As Boolean = False ' Will run or not
+        Public _NonPhysicalPrimMax As Integer
+        Public _PhysicalPrimMax As Integer
+        Public _ClampPrimSize As Boolean
+        Public _MaxPrims As String
+        Public _MaxAgents As Integer
+
+        ' RAM vars, not from files
+        Public _AvatarCount As Integer = 0
+        Public _ProcessID As Integer = 0
+        Public _Ready As Boolean = False       ' is up
+        Public _WarmingUp As Boolean = False    ' booting up
+        Public _ShuttingDown As Boolean = False ' shutting down
+        Public _Timer As Integer
+
+        'extended vars
+        Public _RegionSnapShot As String
+        Public _MapType As String
+        Public _physics As String
+        Public _AllowGods As String
+        Public _RegionGod As String
+        Public _ManagerGod As String
+        Public _Birds As Boolean
+
+    End Class
+
+#End Region
 #Region "Properties"
 
     Public Property GroupName(n As Integer) As String
@@ -274,10 +321,9 @@ Public Class RegionMaker
             RegionList(n)._CoordY = Value.ToString
         End Set
     End Property
-
     Public Property RegionSnapShot(n As Integer) As String
         Get
-            Return RegionList(n)._RegionSnapShot.ToString
+            Return CType(RegionList(n)._RegionSnapShot, String)
         End Get
         Set(ByVal Value As String)
             RegionList(n)._RegionSnapShot = Value
@@ -285,97 +331,52 @@ Public Class RegionMaker
     End Property
     Public Property MapType(n As Integer) As String
         Get
-            Return RegionList(n)._MapType
+            Return CType(RegionList(n)._MapType, String)
         End Get
         Set(ByVal Value As String)
             RegionList(n)._MapType = Value
         End Set
     End Property
-
     Public Property Physics(n As Integer) As String
         Get
-            Return RegionList(n)._physics
+            Return CType(RegionList(n)._physics, String)
         End Get
         Set(ByVal Value As String)
             RegionList(n)._physics = Value
         End Set
     End Property
-
     Public Property AllowGods(n As Integer) As String
         Get
-            Return RegionList(n)._AllowGods
+            Return CType(RegionList(n)._AllowGods, String)
         End Get
         Set(ByVal Value As String)
             RegionList(n)._AllowGods = Value
         End Set
     End Property
-
     Public Property RegionGod(n As Integer) As String
         Get
-            Return RegionList(n)._RegionGod
+            Return CType(RegionList(n)._RegionGod, String)
         End Get
         Set(ByVal Value As String)
             RegionList(n)._RegionGod = Value
         End Set
     End Property
-
     Public Property ManagerGod(n As Integer) As String
         Get
-            Return RegionList(n)._ManagerGod
+            Return CType(RegionList(n)._ManagerGod, String)
         End Get
         Set(ByVal Value As String)
             RegionList(n)._ManagerGod = Value
         End Set
     End Property
-
-
-#End Region
-
-#Region "Classes"
-    Public Class JSON_result
-        Public alert As String
-        Public login As String
-        Public region_name As String
-        Public region_id As String
-    End Class
-
-    ' hold a copy of the Main region data on a per-form basis
-    Private Class Region_data
-        Public _RegionPath As String = ""  ' The full path to the region ini file
-        Public _FolderPath As String = ""   ' the path to the folde r that holds the region ini
-        Public _Group As String = ""       ' the folder name that holds the region(s), can be different named
-        Public _IniPath As String = ""      ' the folder that hold the Opensim.ini, above 'Region'
-        Public _RegionName As String = ""
-        Public _UUID As String = ""
-        Public _CoordX As Integer = 0
-        Public _CoordY As Integer = 0
-        Public _RegionPort As Integer = 0
-        Public _SizeX As Integer = 0
-        Public _SizeY As Integer = 0
-        Public _RegionEnabled As Boolean = False ' Will run or not
-        Public _NonPhysicalPrimMax As Integer
-        Public _PhysicalPrimMax As Integer
-        Public _ClampPrimSize As Boolean
-        Public _MaxPrims As String
-        Public _MaxAgents As Integer
-
-        ' RAM vars, not from files
-        Public _AvatarCount As Integer = 0
-        Public _ProcessID As Integer = 0
-        Public _Ready As Boolean = False       ' is up
-        Public _WarmingUp As Boolean = False    ' booting up
-        Public _ShuttingDown As Boolean = False ' shutting down
-        Public _Timer As Integer
-
-        'extended vars
-        Public _RegionSnapShot As String
-        Public _MapType As String
-        Public _physics As String
-        Public _AllowGods As String
-        Public _RegionGod As String
-        Public _ManagerGod As String
-
-    End Class
+    Public Property Birds(n As Integer) As Boolean
+        Get
+            Return CBool(RegionList(n)._Birds)
+        End Get
+        Set(ByVal Value As Boolean)
+            RegionList(n)._Birds = Value.ToString
+        End Set
+    End Property
 
 #End Region
 

@@ -14,7 +14,7 @@
         For i = 1 To 100
             BirdsFlockSizeDomain.Items.Add(i.ToString)
         Next
-        BirdsFlockSizeDomain.SelectedIndex = 25
+        BirdsFlockSizeDomain.SelectedIndex = 24
 
 
         ChatChanelTextBox.Text = Form1.MySetting.BirdsChatChannel.ToString
@@ -27,6 +27,10 @@
         BirdsMaxHeightTextBox.Text = Form1.MySetting.BirdsMaxHeight.ToString
         PrimNameTextBox.Text = Form1.MySetting.BirdsPrim
 
+    End Sub
+
+    Private Sub Form1_Closed(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Closed
+        Form1.MySetting.BirdsFlockSize = BirdsFlockSizeDomain.Text
     End Sub
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
@@ -106,4 +110,7 @@
     Private Sub PrimNameTextBox_TextChanged(sender As Object, e As EventArgs) Handles PrimNameTextBox.TextChanged
         Form1.MySetting.BirdsPrim = PrimNameTextBox.Text
     End Sub
+
+
+
 End Class

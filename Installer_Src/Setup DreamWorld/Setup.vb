@@ -29,8 +29,7 @@ Imports IniParser
 Imports System.Threading
 Imports System.Runtime.InteropServices
 Imports System.Diagnostics
-
-
+Imports System.Text
 
 Public Class Form1
 
@@ -325,7 +324,11 @@ Public Class Form1
         ClearLogFiles() ' clear log fles
 
         Try
-            System.IO.Directory.Delete(MyFolder + "/Icecast", True)
+            System.IO.Directory.Delete(MyFolder + "\Icecast", True)
+        Catch
+        End Try
+        Try
+            System.IO.Directory.Delete(MyFolder + "\Outworldzfiles\Opensim\bin\config-include\Birds.ini", True)
         Catch
         End Try
 
@@ -928,20 +931,6 @@ Public Class Form1
         MySetting.SaveOtherINI()
 
 
-        ' Birds.ini
-        MySetting.LoadOtherIni(prefix + "bin\config-include\Birds.ini", ";")
-        MySetting.SetOtherIni("Birds", "BirdsModuleStartup", MySetting.BirdsModuleStartup.ToString)
-        MySetting.SetOtherIni("Birds", "BirdsEnabled", MySetting.BirdsModuleStartup.ToString)
-        MySetting.SetOtherIni("Birds", "BirdsChatChannel", MySetting.BirdsChatChannel.ToString())
-        MySetting.SetOtherIni("Birds", "BirdsMaxSpeed", MySetting.BirdsMaxSpeed.ToString())
-        MySetting.SetOtherIni("Birds", "BirdsMaxSpeed", MySetting.BirdsMaxSpeed.ToString())
-        MySetting.SetOtherIni("Birds", "BirdsNeighbourDistance", MySetting.BirdsNeighbourDistance.ToString())
-        MySetting.SetOtherIni("Birds", "BirdsDesiredSeparation", MySetting.BirdsDesiredSeparation.ToString())
-        MySetting.SetOtherIni("Birds", "BirdsEnabled", MySetting.BirdsTolerance.ToString())
-        MySetting.SetOtherIni("Birds", "BirdsTolerance", MySetting.BirdsBorderSize.ToString())
-        MySetting.SetOtherIni("Birds", "BirdsMaxHeight", MySetting.BirdsMaxHeight.ToString())
-        MySetting.SetOtherIni("Birds", "BirdsPrim", MySetting.BirdsPrim)
-        MySetting.SaveOtherINI()
 
         ''''''''''''''''''''''''''''''''''''''''''
         ' Robust Process
@@ -1209,6 +1198,13 @@ Public Class Form1
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
         'Regions - write all region.ini files with public IP and Public port
 
+        Dim BirdFile = MyFolder + "\OutworldzFiles\Opensim\bin\addon-modules\OpenSimBirds\config\OpenSimBirds.ini"
+        Try
+            System.IO.File.Delete(BirdFile)
+        Catch ex As Exception
+        End Try
+
+
         For Each X In RegionClass.RegionNumbers
             If RegionClass.RegionName(X) <> "Robust" Then
                 Dim simName = RegionClass.RegionName(X)
@@ -1361,6 +1357,56 @@ Public Class Form1
 
 
                 MySetting.SaveOtherINI()
+
+
+                ' Birds.ini
+                'MySetting.LoadOtherIni(prefix + "bin\config-include\Birds.proto", ";")
+                'MySetting.SetOtherIni("Birds", "BirdsModuleStartup", MySetting.BirdsModuleStartup.ToString)
+                'MySetting.SetOtherIni("Birds", "BirdsEnabled", MySetting.BirdsModuleStartup.ToString)
+                'MySetting.SetOtherIni("Birds", "BirdsChatChannel", MySetting.BirdsChatChannel.ToString())
+                'MySetting.SetOtherIni("Birds", "BirdsMaxSpeed", MySetting.BirdsMaxSpeed.ToString())
+                'MySetting.SetOtherIni("Birds", "BirdsFlockSize", MySetting.BirdsFlockSize.ToString())
+                'MySetting.SetOtherIni("Birds", "BirdsNeighbourDistance", MySetting.BirdsNeighbourDistance.ToString())
+                'MySetting.SetOtherIni("Birds", "BirdsDesiredSeparation", MySetting.BirdsDesiredSeparation.ToString())
+                'MySetting.SetOtherIni("Birds", "BirdsTolerance", MySetting.BirdsTolerance.ToString())
+                'MySetting.SetOtherIni("Birds", "BirdsBorderSize", MySetting.BirdsBorderSize.ToString())
+                'MySetting.SetOtherIni("Birds", "BirdsMaxHeight", MySetting.BirdsMaxHeight.ToString())
+                'MySetting.SetOtherIni("Birds", "BirdsPrim", MySetting.BirdsPrim)
+                'MySetting.SaveOtherINI()
+
+                Dim BirdData As String = "[" + simName + "]" + vbCrLf &
+                    ";this Is the default And determines whether the module does anything" & vbCrLf &
+                    "BirdsModuleStartup = " + MySetting.BirdsModuleStartup.ToString & vbCrLf & vbCrLf &
+                    ";set to false to disable the birds from appearing in this region" & vbCrLf &
+                    "BirdsEnabled = " + MySetting.BirdsModuleStartup.ToString & vbCrLf & vbCrLf &
+                    ";which channel do we listen on for in world commands" & vbCrLf &
+                    "BirdsChatChannel = " + MySetting.BirdsChatChannel.ToString() & vbCrLf & vbCrLf &
+                    ";the number of birds to flock" & vbCrLf &
+                    "BirdsFlockSize = " + MySetting.BirdsFlockSize.ToString() & vbCrLf & vbCrLf &
+                    ";how far each bird can travel per update" & vbCrLf &
+                    "BirdsMaxSpeed = " + MySetting.BirdsMaxSpeed.ToString() & vbCrLf & vbCrLf &
+                    ";the maximum acceleration allowed to the current velocity of the bird" & vbCrLf &
+                    "BirdsMaxForce = " + MySetting.BirdsMaxForce.ToString & vbCrLf & vbCrLf &
+                    ";max distance for other birds to be considered in the same flock as us" & vbCrLf &
+                    "BirdsNeighbourDistance = " + MySetting.BirdsNeighbourDistance.ToString() & vbCrLf & vbCrLf &
+                    ";how far away from other birds we would Like To stay" & vbCrLf &
+                    "BirdsDesiredSeparation = " + MySetting.BirdsDesiredSeparation.ToString() & vbCrLf & vbCrLf &
+                    ";how close To the edges Of things can we Get without being worried" & vbCrLf &
+                    "BirdsTolerance = " + MySetting.BirdsTolerance.ToString() & vbCrLf & vbCrLf &
+                    ";how close To the edge Of a region can we Get?" & vbCrLf &
+                    "BirdsBorderSize = " + MySetting.BirdsBorderSize.ToString() & vbCrLf & vbCrLf &
+                    ";how high are we allowed To flock" & vbCrLf &
+                    "BirdsMaxHeight = " + MySetting.BirdsMaxHeight.ToString() & vbCrLf & vbCrLf &
+                    ";By Default the Module will create a flock Of plain wooden spheres," & vbCrLf &
+                    ";however this can be overridden To the name Of an existing prim that" & vbCrLf &
+                    ";needs To already exist In the scene - i.e. be rezzed In the region." & vbCrLf &
+                    "BirdsPrim = " + MySetting.BirdsPrim & vbCrLf & vbCrLf &
+                    ";who Is allowed to send commands via chat Or script List of UUIDs Or ESTATE_OWNER Or ESTATE_MANAGER" & vbCrLf &
+                    ";Or everyone if Not specified" & vbCrLf &
+                    "BirdsAllowedControllers = ESTATE_OWNER, ESTATE_MANAGER" & vbCrLf & vbCrLf & vbCrLf
+
+
+                IO.File.AppendAllText(BirdFile, BirdData, Encoding.Default) 'The text file will be created if it does not already exist  
 
             End If
 
@@ -1627,7 +1673,7 @@ Public Class Form1
             Process.Start(webAddress)
             Print("Log in as '" + MySetting.AdminFirst + " " + MySetting.AdminLast + "' with a password of " + MySetting.Password + " to add user accounts.")
         Else
-                    Print("Opensim is not running. Cannot open the Web Interface.")
+            Print("Opensim is not running. Cannot open the Web Interface.")
         End If
     End Sub
 
@@ -2561,12 +2607,12 @@ Public Class Form1
     Public Sub Log(message As String)
 
         Try
-                Using outputFile As New StreamWriter(MyFolder & "\OutworldzFiles\Outworldz.log", True)
-                    outputFile.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + message)
-                    Diagnostics.Debug.Print(message)
-                End Using
-            Catch
-            End Try
+            Using outputFile As New StreamWriter(MyFolder & "\OutworldzFiles\Outworldz.log", True)
+                outputFile.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + message)
+                Diagnostics.Debug.Print(message)
+            End Using
+        Catch
+        End Try
 
     End Sub
 
@@ -2796,7 +2842,7 @@ Public Class Form1
             ' Display message, title, and default value.
             myValue = InputBox(Message, title, defaultValue)
             ' If user has clicked Cancel, set myValue to defaultValue 
-            If myValue.length = 0 Then Return
+            If myValue.Length = 0 Then Return
 
             If RegionClass.Booted(n) Then
                 Dim Group = RegionClass.GroupName(n)
@@ -4272,7 +4318,7 @@ Public Class Form1
 
     Private Sub SendMsg(msg As String)
 
-        If Not Running Then Print ("Opensim is not running")
+        If Not Running Then Print("Opensim is not running")
 
         For Each X As Integer In RegionClass.RegionNumbers
             If RegionClass.Booted(X) Then
