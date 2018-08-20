@@ -258,7 +258,7 @@ Public Class MySettings
         Try
             Dim x = BirdsChatChannel()
         Catch ex As Exception
-            BirdsChatChannel() = "118"
+            BirdsChatChannel() = 118
             SaveSettings()
         End Try
 
