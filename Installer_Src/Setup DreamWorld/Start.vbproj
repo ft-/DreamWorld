@@ -169,6 +169,12 @@
     <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BirdForm.Designer.vb">
+      <DependentUpon>BirdForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="BirdForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="GlobalSuppressions.vb" />
     <Compile Include="Setup.Designer.vb">
       <DependentUpon>Setup.vb</DependentUpon>
@@ -263,6 +269,9 @@
     <Compile Include="UploadImage.vb" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="BirdForm.resx">
+      <DependentUpon>BirdForm.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Setup.resx">
       <DependentUpon>Setup.vb</DependentUpon>
       <SubType>Designer</SubType>

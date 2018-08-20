@@ -90,6 +90,7 @@ Partial Class Expert
         Me.AutoRestartBox = New System.Windows.Forms.TextBox()
         Me.PictureBox10 = New System.Windows.Forms.PictureBox()
         Me.DataSnapshotCheckBox = New System.Windows.Forms.CheckBox()
+        Me.LSLCheckbox = New System.Windows.Forms.CheckBox()
         Me.RegionMySqlPassword = New System.Windows.Forms.TextBox()
         Me.Label21 = New System.Windows.Forms.Label()
         Me.RegionDBUsername = New System.Windows.Forms.TextBox()
@@ -123,7 +124,6 @@ Partial Class Expert
         Me.GroupBox11 = New System.Windows.Forms.GroupBox()
         Me.LimitsBox = New System.Windows.Forms.GroupBox()
         Me.GroupBox8 = New System.Windows.Forms.GroupBox()
-        Me.LSLCheckbox = New System.Windows.Forms.CheckBox()
         Me.GroupBox3.SuspendLayout()
         CType(Me.PictureBox7, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox6, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -832,6 +832,17 @@ Partial Class Expert
         Me.ToolTip1.SetToolTip(Me.DataSnapshotCheckBox, "Publish Items marked as 'Show in Search' to Hyperica.com")
         Me.DataSnapshotCheckBox.UseVisualStyleBackColor = True
         '
+        'LSLCheckbox
+        '
+        Me.LSLCheckbox.AutoSize = True
+        Me.LSLCheckbox.Location = New System.Drawing.Point(12, 19)
+        Me.LSLCheckbox.Name = "LSLCheckbox"
+        Me.LSLCheckbox.Size = New System.Drawing.Size(59, 17)
+        Me.LSLCheckbox.TabIndex = 21
+        Me.LSLCheckbox.Text = "Enable"
+        Me.ToolTip1.SetToolTip(Me.LSLCheckbox, "Click to enable LSL to talkto port 80 on this server.")
+        Me.LSLCheckbox.UseVisualStyleBackColor = True
+        '
         'RegionMySqlPassword
         '
         Me.RegionMySqlPassword.Location = New System.Drawing.Point(120, 107)
@@ -1159,17 +1170,6 @@ Partial Class Expert
         Me.GroupBox8.TabIndex = 56
         Me.GroupBox8.TabStop = False
         Me.GroupBox8.Text = "Allow LSL to contact the server"
-        '
-        'LSLCheckbox
-        '
-        Me.LSLCheckbox.AutoSize = True
-        Me.LSLCheckbox.Location = New System.Drawing.Point(12, 19)
-        Me.LSLCheckbox.Name = "LSLCheckbox"
-        Me.LSLCheckbox.Size = New System.Drawing.Size(59, 17)
-        Me.LSLCheckbox.TabIndex = 21
-        Me.LSLCheckbox.Text = "Enable"
-        Me.ToolTip1.SetToolTip(Me.LSLCheckbox, "Click to enable LSL to talkto port 80 on this server.")
-        Me.LSLCheckbox.UseVisualStyleBackColor = True
         '
         'Expert
         '

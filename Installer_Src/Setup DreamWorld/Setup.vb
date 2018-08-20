@@ -927,6 +927,22 @@ Public Class Form1
         MySetting.SetOtherIni("DatabaseService", "ConnectionString", ConnectionString)
         MySetting.SaveOtherINI()
 
+
+        ' Birds.ini
+        MySetting.LoadOtherIni(prefix + "bin\config-include\Birds.ini", ";")
+        MySetting.SetOtherIni("Birds", "BirdsModuleStartup", MySetting.BirdsModuleStartup.ToString)
+        MySetting.SetOtherIni("Birds", "BirdsEnabled", MySetting.BirdsModuleStartup.ToString)
+        MySetting.SetOtherIni("Birds", "BirdsChatChannel", MySetting.BirdsChatChannel.ToString())
+        MySetting.SetOtherIni("Birds", "BirdsMaxSpeed", MySetting.BirdsMaxSpeed.ToString())
+        MySetting.SetOtherIni("Birds", "BirdsMaxSpeed", MySetting.BirdsMaxSpeed.ToString())
+        MySetting.SetOtherIni("Birds", "BirdsNeighbourDistance", MySetting.BirdsNeighbourDistance.ToString())
+        MySetting.SetOtherIni("Birds", "BirdsDesiredSeparation", MySetting.BirdsDesiredSeparation.ToString())
+        MySetting.SetOtherIni("Birds", "BirdsEnabled", MySetting.BirdsTolerance.ToString())
+        MySetting.SetOtherIni("Birds", "BirdsTolerance", MySetting.BirdsBorderSize.ToString())
+        MySetting.SetOtherIni("Birds", "BirdsMaxHeight", MySetting.BirdsMaxHeight.ToString())
+        MySetting.SetOtherIni("Birds", "BirdsPrim", MySetting.BirdsPrim)
+        MySetting.SaveOtherINI()
+
         ''''''''''''''''''''''''''''''''''''''''''
         ' Robust Process
         MySetting.LoadOtherIni(prefix + "bin\Robust.HG.ini", ";")
@@ -961,6 +977,8 @@ Public Class Form1
         MySetting.SetOtherIni("SMTP", "SMTP_SERVER_PASSWORD", MySetting.SmtpPassword)
 
         MySetting.SaveOtherINI()
+
+
 
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
         ' Opensim.ini
@@ -3042,10 +3060,10 @@ Public Class Form1
 
     End Sub
 
-    Private Sub LoadIARContent(thing As String)
+    Public Sub LoadIARContent(thing As String)
 
         If Not Running Then
-            Print("Opensim is not running. Cannot save an OAR at this time.")
+            Print("Opensim is not running. Cannot load an IAR at this time.")
             Return
         End If
 

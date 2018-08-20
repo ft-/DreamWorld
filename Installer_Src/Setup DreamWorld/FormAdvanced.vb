@@ -318,37 +318,23 @@ Public Class AdvancedForm
 
     Private Sub TOSButton_Click(sender As Object, e As EventArgs) Handles TOSButton.Click
 
-
-
-        ' Set the new form's desktop location so it appears below and
-        ' to the right of the current form.
-        '        Tos.SetDesktopLocation(300, 200)
-        '       Tos.Activate()
-        '      Tos.Visible = True
-
-        ' Return
-
-        'Dim Livetext As New Process
-        'Dim pi As ProcessStartInfo = New ProcessStartInfo()
-        'pi.Arguments = ""
-        'pi.FileName = Form1.MyFolder & "/LiveSwitch.TextControl.exe"
-        'pi.WindowStyle = ProcessWindowStyle.Normal
-        'Livetext.StartInfo = pi
-        'Try
-        'Dim x = Livetext.Start()
-        ' Debug.Print(x.ToString())
-        'Catch ex As Exception
-        ' Form1.Log("Error:Editor failed to launch:" + ex.Message)
-        ' End Try
-
-        'Return
-
         Dim Tos As New TosForm
         ' Set the new form's desktop location so it appears below and
         ' to the right of the current form.
         Tos.SetDesktopLocation(300, 200)
         Tos.Activate()
         Tos.Visible = True
+
+    End Sub
+
+    Private Sub Birds_Click(sender As Object, e As EventArgs) Handles Birds.Click
+        Dim Bird As New BirdForm
+        ' Set the new form's desktop location so it appears below and
+        ' to the right of the current form.
+        Bird.SetDesktopLocation(300, 200)
+        Bird.Activate()
+        Bird.Visible = True
+
     End Sub
 
 

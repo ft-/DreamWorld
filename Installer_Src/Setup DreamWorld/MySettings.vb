@@ -225,6 +225,7 @@ Public Class MySettings
             SaveSettings()
         End Try
 
+        SetBirds()
 
         ' check for default
         If (SmtpHost() = "") Then SmtpHost() = "smtp.gmail.com"
@@ -232,6 +233,98 @@ Public Class MySettings
 
         SaveSettings()
 
+
+    End Sub
+
+    Private Sub SetBirds()
+
+        'this is the default and determines whether the module does anything
+        Try
+            Dim x = BirdsModuleStartup()
+        Catch ex As Exception
+            BirdsModuleStartup() = False
+            SaveSettings()
+        End Try
+
+        'the number of birds to flock
+        Try
+            Dim x = BirdsFlockSize()
+        Catch ex As Exception
+            BirdsFlockSize() = 25
+            SaveSettings()
+        End Try
+
+        'which channel do we listen on for in world commands
+        Try
+            Dim x = BirdsChatChannel()
+        Catch ex As Exception
+            BirdsChatChannel() = 118
+            SaveSettings()
+        End Try
+
+        'how far each bird can travel per update
+        Try
+            Dim x = BirdsMaxSpeed()
+        Catch ex As Exception
+            BirdsMaxSpeed() = 1.0
+            SaveSettings()
+        End Try
+
+        'the maximum acceleration allowed to the current velocity of the bird
+        Try
+            Dim x = BirdsMaxForce()
+        Catch ex As Exception
+            BirdsMaxForce() = 0.2
+            SaveSettings()
+        End Try
+
+        'max distance for other birds to be considered in the same flock as us
+        Try
+            Dim x = BirdsNeighbourDistance()
+        Catch ex As Exception
+            BirdsNeighbourDistance() = 25
+            SaveSettings()
+        End Try
+
+        'how far away from other birds we would like to stay
+        Try
+            Dim x = BirdsDesiredSeparation()
+        Catch ex As Exception
+            BirdsDesiredSeparation() = 5
+            SaveSettings()
+        End Try
+
+        'how close to the edges of things can we get without being worried
+        Try
+            Dim x = BirdsTolerance()
+        Catch ex As Exception
+            BirdsTolerance() = 25
+            SaveSettings()
+        End Try
+
+        'how close to the edge of a region can we get?
+        Try
+            Dim x = BirdsBorderSize()
+        Catch ex As Exception
+            BirdsBorderSize() = 25
+            SaveSettings()
+        End Try
+
+        'how high are we allowed to flock
+        Try
+            Dim x = BirdsMaxHeight()
+        Catch ex As Exception
+            BirdsMaxHeight() = 45
+            SaveSettings()
+        End Try
+
+        'By default the module will create a flock of plain wooden spheres, however this can be overridden to the name of an existing prim that
+        ' needs to already exist in the scene - i.e. be rezzed in the region.
+
+
+        If BirdsPrim() = "" Then
+            BirdsPrim() = "SeaGull1"
+        End If
 
     End Sub
 #End Region
@@ -363,6 +456,98 @@ Public Class MySettings
 #End Region
 
 #Region "Properties"
+
+
+    Public Property BirdsModuleStartup() As Boolean
+        Get
+            Return CType(GetMySetting("BirdsModuleStartup"), Boolean)
+        End Get
+        Set
+            SetMySetting("BirdsModuleStartup", Value.ToString)
+        End Set
+    End Property
+
+    Public Property BirdsFlockSize() As String
+        Get
+            Return GetMySetting("BirdsFlockSize")
+        End Get
+        Set
+            SetMySetting("BirdsFlockSize", Value)
+        End Set
+    End Property
+    Public Property BirdsChatChannel() As Integer
+        Get
+            Return CType(GetMySetting("BirdsChatChannel"), Integer)
+        End Get
+        Set
+            SetMySetting("BirdsChatChannel", Value)
+        End Set
+    End Property
+    Public Property BirdsMaxSpeed() As Double
+        Get
+            Return CType(GetMySetting("BirdsMaxSpeed"), Double)
+        End Get
+        Set
+            SetMySetting("BirdsMaxSpeed", Value.ToString)
+        End Set
+    End Property
+    Public Property BirdsMaxForce() As Double
+        Get
+            Return CType(GetMySetting("BirdsMaxForce"), Double)
+        End Get
+        Set
+            SetMySetting("BirdsMaxForce", Value.ToString)
+        End Set
+    End Property
+    Public Property BirdsNeighbourDistance() As Double
+        Get
+            Return CType(GetMySetting("BirdsNeighbourDistance"), Double)
+        End Get
+        Set
+            SetMySetting("BirdsNeighbourDistance", Value.ToString)
+        End Set
+    End Property
+    Public Property BirdsDesiredSeparation() As Double
+        Get
+            Return CType(GetMySetting("BirdsDesiredSeparation"), Double)
+        End Get
+        Set
+            SetMySetting("BirdsDesiredSeparation", Value.ToString)
+        End Set
+    End Property
+    Public Property BirdsTolerance() As Double
+        Get
+            Return CType(GetMySetting("BirdsTolerance"), Double)
+        End Get
+        Set
+            SetMySetting("BirdsTolerance", Value.ToString)
+        End Set
+    End Property
+    Public Property BirdsBorderSize() As Double
+        Get
+            Return CType(GetMySetting("BirdsBorderSize"), Double)
+        End Get
+        Set
+            SetMySetting("BirdsBorderSize", Value.ToString)
+        End Set
+    End Property
+    Public Property BirdsMaxHeight() As Double
+        Get
+            Return CType(GetMySetting("BirdsMaxHeight"), Double)
+        End Get
+        Set
+            SetMySetting("BirdsMaxHeight", Value.ToString)
+        End Set
+    End Property
+    Public Property BirdsPrim() As String
+        Get
+            Return GetMySetting("BirdsPrim")
+        End Get
+        Set
+            SetMySetting("BirdsPrim", Value)
+        End Set
+    End Property
+
 
     Public Property LSL_HHTP() As Boolean
         Get
