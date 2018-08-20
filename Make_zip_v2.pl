@@ -1,5 +1,5 @@
 
-my $type  = '-V2.31' ;  # '-Beta-V1.5';
+my $type  = '-V2.32' ;  # '-Beta-V1.5';
 my $dir = "D:/Opensim/Outworldz Dreamgrid Source";
 
 chdir ($dir);
@@ -62,7 +62,7 @@ unlink "../Zips/Outworldz-Update$type.zip" ;
 
 # mysql
 chdir(qq!$dir/OutworldzFiles/mysql/bin/!);
-print `mysqladmin.exe --port 3309 -u root shutdown`;
+print `mysqladmin.exe --port 3306 -u root shutdown`;
 
 unlink	"$dir/OutworldzFiles/mysql/data/ib_logfile0" || die;
 unlink	"$dir/OutworldzFiles/mysql/data/ib_logfile1" || die;
