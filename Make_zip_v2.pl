@@ -15,20 +15,18 @@ use 5.010;
 
 
 my @deletions = (
-				 "$dir/OutworldzFiles/Opensim/bin/assetcache",
-				 "$dir/OutworldzFiles/Opensim/bin/j2kDecodeCache",
-				 "$dir/OutworldzFiles/Opensim/bin/MeshCache",
-				 "$dir/OutworldzFiles/Opensim/bin/ScriptEngines",
-				 "$dir/OutworldzFiles/Opensim/bin/maptiles",
-				 "$dir/OutworldzFiles/Opensim/bin/Regions",
-				 "$dir/OutworldzFiles/Opensim/bin/bakes",
-				 "$dir/OutworldzFiles/mysql/data/opensim",
-				 "$dir/OutworldzFiles/mysql/data/robust",
-				 "$dir/OutworldzFiles/mysql/data/addin-db-002",
-				 "$dir/OutworldzFiles/mysql/data/fsassets",
-				 
-				 
-				 );
+	"$dir/OutworldzFiles/Opensim/bin/assetcache",
+	"$dir/OutworldzFiles/Opensim/bin/j2kDecodeCache",
+	"$dir/OutworldzFiles/Opensim/bin/MeshCache",
+	"$dir/OutworldzFiles/Opensim/bin/ScriptEngines",
+	"$dir/OutworldzFiles/Opensim/bin/maptiles",
+	"$dir/OutworldzFiles/Opensim/bin/Regions",
+	"$dir/OutworldzFiles/Opensim/bin/bakes",
+	"$dir/OutworldzFiles/mysql/data/opensim",
+	"$dir/OutworldzFiles/mysql/data/robust",
+	"$dir/OutworldzFiles/mysql/data/addin-db-002",
+	"$dir/OutworldzFiles/mysql/data/fsassets",
+);
 
 foreach my $path ( @deletions) {
 	rm($path);

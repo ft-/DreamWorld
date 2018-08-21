@@ -372,6 +372,7 @@ Public Class Form1
 
         mnuSettings.Visible = True
         SetIAROARContent() ' load IAR and OAR web content
+        LoadLocalIAROAR() ' load IAR and OAR local content
 
         If MySetting.Password = "secret" Then
             BumpProgress10()
@@ -3254,13 +3255,19 @@ Public Class Form1
                 ContentSeen = True
             End If
         End While
+
+
+
+
         BumpProgress10()
+
+
 
     End Sub
 
     Private Sub OarClick(sender As Object, e As EventArgs)
 
-        Dim File = Mid(CType(sender.text, String), 1, InStr(CType(sender.text, String), "|") - 2)
+        Dim File As String = Mid(CType(sender.text, String), 1, InStr(CType(sender.text, String), "|") - 2)
         File = Domain + "/Outworldz_Installer/OAR/" + File 'make a real URL
         LoadOARContent(File)
         sender.checked = True
@@ -3269,7 +3276,7 @@ Public Class Form1
 
     Private Sub IarClick(sender As Object, e As EventArgs)
 
-        Dim file = Mid(CType(sender.text, String), 1, InStr(CType(sender.text, String), "|") - 2)
+        Dim file As String = Mid(CType(sender.text, String), 1, InStr(CType(sender.text, String), "|") - 2)
         file = Domain + "/Outworldz_Installer/IAR/" + file 'make a real URL
         LoadIARContent(file)
         sender.checked = True
@@ -4472,6 +4479,59 @@ Public Class Form1
         If person.Length > 0 Then
             RobustCommand("show account " + person + "{ENTER}")
         End If
+    End Sub
+
+
+#End Region
+
+#Region "LocalOARIAR"
+
+    Private Sub LoadLocalIAROAR()
+
+        Dim Filename = MyFolder + "\OutworldzFiles\OAR\"
+        Dim OARs = Directory.GetFiles(Filename, "*.OAR", SearchOption.TopDirectoryOnly)
+
+        For Each OAR As String In OARs
+            Dim Name = Path.GetFileName(OAR)
+            Dim OarMenu As New ToolStripMenuItem
+            OarMenu.Text = Name
+            OarMenu.ToolTipText = "Click to load this content"
+            OarMenu.DisplayStyle = ToolStripItemDisplayStyle.Text
+            AddHandler OarMenu.Click, New EventHandler(AddressOf LocalOarClick)
+            LoadLocalOARSToolStripMenuItem.Visible = True
+            LoadLocalOARSToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {OarMenu})
+        Next
+
+        Filename = MyFolder + "\OutworldzFiles\IAR\"
+        Dim IARs = Directory.GetFiles(Filename, "*.IAR", SearchOption.TopDirectoryOnly)
+
+        For Each IAR As String In IARs
+            Dim Name = Path.GetFileName(IAR)
+            Dim IarMenu As New ToolStripMenuItem
+            IarMenu.Text = Name
+            IarMenu.ToolTipText = "Click to load this content"
+            IarMenu.DisplayStyle = ToolStripItemDisplayStyle.Text
+            AddHandler IarMenu.Click, New EventHandler(AddressOf LocalIarClick)
+            LoadLocalIARsToolStripMenuItem.Visible = True
+            LoadLocalIARsToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {IarMenu})
+        Next
+
+    End Sub
+
+    Private Sub LocalOarClick(sender As Object, e As EventArgs)
+
+        Dim File = MyFolder + "/OutworldzFiles/OAR/" + sender.text.ToString 'make a real URL
+        LoadOARContent(File)
+        Print("Opensimulator will load " + sender.text.ToString + ".  This may take time to load.")
+
+    End Sub
+
+    Private Sub LocalIarClick(sender As Object, e As EventArgs)
+
+        Dim File As String = MyFolder + "/OutworldzFiles/IAR/" + sender.text.ToString 'make a real URL
+        LoadIARContent(File)
+        Print("Opensimulator will load " + sender.text.ToString + ".  This may take time to load.")
+
     End Sub
 
 
