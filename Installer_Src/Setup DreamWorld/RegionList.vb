@@ -157,7 +157,7 @@ Public Class RegionList
             ElseIf RegionClass.Booted(X) Then
                 Letter = "Running"
                 Num = 2
-            ElseIf Not RegionClass.ProcessID(X) And RegionClass.ShuttingDown(X) Then
+            ElseIf Not CType(RegionClass.ProcessID(X), Boolean) And RegionClass.ShuttingDown(X) Then
                 Letter = "Exiting"
                 Num = 3
             ElseIf Not RegionClass.RegionEnabled(X) Then
@@ -280,11 +280,22 @@ Public Class RegionList
                 If V = vbNo Then Return
 
                 For Each num In RegionClass.RegionListByGroupNum(RegionClass.GroupName(n))
-                    Form1.ConsoleCommand(RegionClass.ProcessID(num), "q{ENTER}")
-                    RegionClass.Booted(num) = False
-                    RegionClass.WarmingUp(num) = False
-                    RegionClass.ShuttingDown(num) = True
-                    Form1.Log("Region:Stopped Region " + RegionClass.RegionName(num))
+
+                    ' Ask before killing any people
+                    If RegionClass.AvatarCount(num) > 0 Then
+                        Dim response As MsgBoxResult
+
+                        If RegionClass.AvatarCount(num) = 1 Then
+                            response = MsgBox("There is one avatar in " + RegionClass.RegionName(num) + ".  Do you still want to stop it?", vbYesNo)
+                        Else
+                            response = MsgBox("There are " + RegionClass.AvatarCount(num).ToString + " avatars in " + RegionClass.RegionName(num) + ".  Do you still want to stop it?", vbYesNo)
+                        End If
+                        If response = vbYes Then
+                            StopRegionNum(num)
+                        End If
+                    Else
+                            StopRegionNum(num)
+                    End If
                 Next
 
             Catch ex As Exception
@@ -321,6 +332,14 @@ Public Class RegionList
             Timer1.Interval = 1000 ' force a refresh
         End If
 
+    End Sub
+
+    Private Sub StopRegionNum(num As Integer)
+        Form1.ConsoleCommand(RegionClass.ProcessID(num), "q{ENTER}")
+        RegionClass.Booted(num) = False
+        RegionClass.WarmingUp(num) = False
+        RegionClass.ShuttingDown(num) = True
+        Form1.Log("Region:Stopped Region " + RegionClass.RegionName(num))
     End Sub
 
     Private Sub ListView1_ItemCheck1(ByVal sender As Object, ByVal e As System.Windows.Forms.ItemCheckEventArgs) Handles ListView1.ItemCheck
@@ -412,7 +431,7 @@ Public Class RegionList
 
     Private Sub ListView1_DragDrop(sender As System.Object, e As System.Windows.Forms.DragEventArgs) Handles ListView1.DragDrop
 
-        Dim files() As String = e.Data.GetData(DataFormats.FileDrop)
+        Dim files() As String = CType(e.Data.GetData(DataFormats.FileDrop), String())
 
         Dim dirpathname = ""
         Dim yesNo As MsgBoxResult = MsgBox("New regions can can be combined with other regions in an existing DOS box (Yes), or run in their own Dos Box (No)", vbYesNo, "Grouping Regions")
@@ -428,7 +447,7 @@ Public Class RegionList
 
         For Each pathname As String In files
             pathname = pathname.Replace("\", "/")
-            Dim extension = Path.GetExtension(pathname)
+            Dim extension As String = Path.GetExtension(pathname)
             extension = Mid(extension, 2, 5)
             If extension.ToLower = "ini" Then
                 Dim filename = Path.GetFileNameWithoutExtension(pathname)
@@ -448,7 +467,11 @@ Public Class RegionList
                 File.Copy(pathname, dir & "bin\Regions\" + dirpathname + "\Region\" + filename + ".ini")
 
             Else
-                Print("Unrecognized file type:" + extension + ".  Drag and drop any Region.ini files to add them to the system")
+
+                ' !!! No idea why this triggers a warning
+#Disable Warning BC42016 ' Implicit conversion
+                Print("Unrecognized file type: " + extension + ".  Drag and drop any Region.ini files to add them to the system")
+#Enable Warning BC42016 ' Implicit conversion
             End If
         Next
         RegionClass.GetAllRegions()
@@ -468,7 +491,7 @@ Public Class RegionList
         Try
             ' Read the chosen GROUP name
             chosen = Chooseform.DataGridView.CurrentCell.Value.ToString()
-            If chosen.Length Then
+            If chosen.Length > 0 Then
                 Chooseform.Dispose()
             End If
         Catch ex As Exception
@@ -488,9 +511,9 @@ Public Class RegionList
 
         For Each X As ListViewItem In ListView1.Items
             If ItemsAreChecked Then
-                X.Checked = CheckState.Unchecked
+                X.Checked = CType(CheckState.Unchecked, Boolean)
             Else
-                X.Checked = CheckState.Checked
+                X.Checked = CType(CheckState.Checked, Boolean)
             End If
         Next
 

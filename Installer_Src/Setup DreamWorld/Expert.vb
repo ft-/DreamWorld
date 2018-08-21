@@ -10,6 +10,7 @@ Public Class Expert
 
     Private Sub Loaded(sender As Object, e As EventArgs) Handles Me.Load
 
+        DataSnapshotCheckBox.Checked = Form1.MySetting.DataSnapshot()
 
         AutoRestartBox.Text = Form1.MySetting.AutoRestartInterval.ToString
         EnableMaxPrims.Checked = Form1.MySetting.Primlimits()
@@ -19,7 +20,7 @@ Public Class Expert
         BootStart.Checked = Form1.MySetting.BootStart
 
         'Clouds
-        DomainUpDown1.SelectedIndex = (1 - Form1.MySetting.Density) * 10
+        DomainUpDown1.SelectedIndex = CType((1 - Form1.MySetting.Density) * 10, Integer)
         Clouds.Checked = Form1.MySetting.Clouds
 
         DNSName.Text = Form1.MySetting.DNSName
@@ -56,11 +57,11 @@ Public Class Expert
         UniqueId.Text = Form1.MySetting.MachineID
 
         Select Case Form1.MySetting.Physics
-            Case 0 : PhysicsNone.Checked = True
-            Case 1 : PhysicsODE.Checked = True
-            Case 2 : PhysicsBullet.Checked = True
-            Case 3 : PhysicsSeparate.Checked = True
-            Case 4 : PhysicsubODE.Checked = True
+            Case "0" : PhysicsNone.Checked = True
+            Case "1" : PhysicsODE.Checked = True
+            Case "2" : PhysicsBullet.Checked = True
+            Case "3" : PhysicsSeparate.Checked = True
+            Case "4" : PhysicsubODE.Checked = True
             Case Else : PhysicsSeparate.Checked = True
         End Select
 
@@ -81,7 +82,7 @@ Public Class Expert
         RobustDbName.Text = Form1.MySetting.RobustDataBaseName
         RobustDBPassword.Text = Form1.MySetting.RobustPassword
         RobustDBUsername.Text = Form1.MySetting.RobustUsername
-        RobustDbPort.Text = Form1.MySetting.MySqlPort
+        RobustDbPort.Text = Form1.MySetting.MySqlPort.ToString
 
         uPnPEnabled.Checked = Form1.MySetting.UPnPEnabled
 
@@ -262,35 +263,35 @@ Public Class Expert
 
     Private Sub PhysicsNone_CheckedChanged(sender As Object, e As EventArgs) Handles PhysicsNone.CheckedChanged
         If PhysicsNone.Checked Then
-            Form1.MySetting.Physics = 0
+            Form1.MySetting.Physics = "0"
             Form1.MySetting.SaveSettings()
         End If
     End Sub
 
     Private Sub RadioButton1_CheckedChanged(sender As Object, e As EventArgs) Handles PhysicsODE.CheckedChanged
         If PhysicsODE.Checked Then
-            Form1.MySetting.Physics = 1
+            Form1.MySetting.Physics = "1"
             Form1.MySetting.SaveSettings()
         End If
     End Sub
 
     Private Sub PhysicsBullet_CheckedChanged(sender As Object, e As EventArgs) Handles PhysicsBullet.CheckedChanged
         If PhysicsBullet.Checked Then
-            Form1.MySetting.Physics = 2
+            Form1.MySetting.Physics = "2"
             Form1.MySetting.SaveSettings()
         End If
     End Sub
 
     Private Sub PhysicsSeparate_CheckedChanged(sender As Object, e As EventArgs) Handles PhysicsSeparate.CheckedChanged
         If PhysicsSeparate.Checked Then
-            Form1.MySetting.Physics = 3
+            Form1.MySetting.Physics = "3"
             Form1.MySetting.SaveSettings()
         End If
     End Sub
 
     Private Sub PhysicsubODE_CheckedChanged(sender As Object, e As EventArgs) Handles PhysicsubODE.CheckedChanged
         If PhysicsubODE.Checked Then
-            Form1.MySetting.Physics = 4
+            Form1.MySetting.Physics = "4"
             Form1.MySetting.SaveSettings()
         End If
     End Sub
@@ -366,7 +367,7 @@ Public Class Expert
     End Sub
 
     Private Sub RobustDbPortTextbox_TextChanged(sender As Object, e As EventArgs) Handles RobustDbPort.TextChanged
-        Form1.MySetting.MySqlPort = RobustDbPort.Text
+        Form1.MySetting.MySqlPort = CType(RobustDbPort.Text, Integer)
         Form1.MySetting.SaveSettings()
     End Sub
 
@@ -462,10 +463,11 @@ Public Class Expert
     Private Sub DomainUpDown1_SelectedItemChanged(sender As Object, e As EventArgs) Handles DomainUpDown1.SelectedItemChanged
 
         If initted Then
-            Dim var = DomainUpDown1.SelectedIndex.ToString()
+            Dim var As Double = CType(DomainUpDown1.SelectedIndex, Double)
+
             If var = -1 Then var = 0.5
             var = (10 - var) / 10
-            Debug.Print(var)
+            Debug.Print(var.ToString)
 
             Form1.MySetting.Density = var
             Form1.MySetting.SaveSettings()
@@ -515,7 +517,8 @@ Public Class Expert
                 'params.Add("file", "Photo.png")
 
                 Dim Myupload As New UploadImage
-                Myupload.PostContent_UploadFile("https://www.outworldz.com/cgi/uploadphoto.plx", Form1.MyFolder & "\OutworldzFiles\Photo.png", params)
+                Dim URL = New Uri("https://www.outworldz.com/cgi/uploadphoto.plx")
+                Myupload.PostContent_UploadFile(URL, Form1.MyFolder & "\OutworldzFiles\Photo.png", params)
 
             End If
         End If
@@ -584,6 +587,13 @@ Public Class Expert
         Form1.MySetting.DataSnapshot() = DataSnapshotCheckBox.Checked
         Form1.MySetting.SaveSettings()
     End Sub
+
+    Private Sub LSLCheckbox_CheckedChanged(sender As Object, e As EventArgs) Handles LSLCheckbox.CheckedChanged
+        Form1.MySetting.LSL_HHTP() = LSLCheckbox.Checked
+        Form1.MySetting.SaveSettings()
+    End Sub
+
+
 
 
 

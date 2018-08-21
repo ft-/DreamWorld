@@ -43,7 +43,7 @@
 [Const]
 
 ; Automatically changed by Dreamworld - do not change this
-http_listener_port=9053
+http_listener_port=8004
 
 ; Automatically changed by Dreamworld - do not change this
 ;# used by the one-exe-per-instance logic. This becomes the folder for the regions file.
@@ -51,7 +51,7 @@ RegionFolderName=Welcome
 
 ; Automatically changed by Dreamworld - do not change this
 ;# {BaseURL} {} {BaseURL} {"http://example.com","http://127.0.0.1"} "http://127.0.0.1"
-BaseURL=http://Mach.Outworldz.net
+BaseURL=http://Lomalia.Outworldz.net
 
 ; Automatically changed by Dreamworld - do not change this
 ;# {PublicPort} {} {PublicPort} {8002} "8002"
@@ -309,7 +309,7 @@ Stats_URI="jsonSimStats"
 ManagedStatsRemoteFetchURI="ManagedStats"
 
 ;# economy module
-economymodule=Gloebit
+economymodule=
 
 [RegionReady]
 
@@ -400,14 +400,14 @@ RenderMeshes=false
 
 ;# {EnforcePrimLimits} {} {Enforce parcel prim limits} {true false} false
 ;; Enable parcel prim limits.  Off by default to emulate pre-existing behavior.
-EnforcePrimLimits=False
+EnforcePrimLimits=True
 
 [Permissions]
 
 ;# {permissionmodules} {} {Permission modules to use (may specify multiple modules, separated by comma} {} DefaultPermissionsModule
 ;; Permission modules to use, separated by comma.
 ;; Possible modules are DefaultPermissionsModule, PrimLimitsModule
-permissionmodules=PrimLimitsModule
+permissionmodules=DefaultPermissionsModule,PrimLimitsModule
 
 ;# {serverside_object_permissions} {permissionmodules:DefaultPermissionsModule} {Activate permission handling by the sim?} {true false} true
 ;; These are the parameters for the default permissions module
@@ -426,7 +426,7 @@ allow_grid_gods=true
 ;; please note that this still doesn't duplicate SL, and is not intended to
 ;# {region_owner_is_god} {} {Allow region owner gods} {true false} true
 ;; Allow region owners to assume god powers in their regions
-region_owner_is_god=false
+region_owner_is_god=true
 
 ;# {region_manager_is_god} {} {Allow region manager gods} {true false} false
 ;; Allow region managers to assume god powers in regions they manage
@@ -476,7 +476,7 @@ enabled=true
 ;# {internal_object_host} {[Startup]emailmodule:DefaultEmailModule enabled:true} {Host name to treat as internal (object to object) email?} {} lsl.opensim.local
 ; internal_object_host = lsl.opensim.local
 ;# {host_domain_header_from} {[Startup]emailmodule:DefaultEmailModule enabled:true} {From address to use in the sent email header?} {} 127.0.0.1
-host_domain_header_from=Mach.Outworldz.net
+host_domain_header_from=Lomalia.Outworldz.net
 
 ;# {email_pause_time} {[Startup]emailmodule:DefaultEmailModule enabled:true} {Period in seconds to delay after an email is sent.} {} 20
 ; email_pause_time = 20
@@ -1334,7 +1334,7 @@ enabled=True
 
 ; Enable this to generate classic particle clouds above the sim.
 ; default is disabled - turn it on here
-enabled=false
+enabled=true
 
 ; Density of cloud cover 0.0 to 1.0 Default 0.5
 density=0.5

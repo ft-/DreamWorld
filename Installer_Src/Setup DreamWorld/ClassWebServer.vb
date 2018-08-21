@@ -7,7 +7,7 @@ Imports System.Xml
 
 
 Public Class NetServer
-    Private running As Integer = False
+    Private running As Boolean = False
     Private LocalTCPListener As TcpListener
     Dim listen As Boolean = True
     Private LocalAddress As IPAddress
@@ -26,7 +26,7 @@ Public Class NetServer
     End Sub
 
 
-    Public Sub StartServer(folder As String, IP As String, Port As String)
+    Public Sub StartServer(folder As String, IP As String, Port As Integer)
 
         MyPort = Port
         LocalAddress = IPAddress.Parse(IP)

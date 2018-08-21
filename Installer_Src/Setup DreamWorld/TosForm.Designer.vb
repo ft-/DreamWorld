@@ -41,7 +41,7 @@ Partial Class TosForm
         Me.ShowToHGUsersCheckbox.Name = "ShowToHGUsersCheckbox"
         Me.ShowToHGUsersCheckbox.Size = New System.Drawing.Size(292, 17)
         Me.ShowToHGUsersCheckbox.TabIndex = 3
-        Me.ShowToHGUsersCheckbox.Text = "Show TOS To Hypergrid Users on First Hypergrid Login?"
+        Me.ShowToHGUsersCheckbox.Text = "Show TOS To Hyper grid Users on First Hyper grid Login?"
         Me.ShowToHGUsersCheckbox.UseVisualStyleBackColor = True
         Me.ShowToHGUsersCheckbox.Visible = False
         '

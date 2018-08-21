@@ -76,13 +76,13 @@ Public Class UPnp
         Try
             staticMapping = UPnpnat.StaticPortMappingCollection()
             If staticMapping Is Nothing Then
-                Log("No UPnp mappings found. Do you have a UPnp enabled router as your gateway?")
+                Log("No UPnP mappings found. ")
                 staticEnabled = False
                 Return
             End If
 
             If staticMapping.Count = 0 Then
-                Log("Router does not have any active UPnp mappings.")
+                Log("Router does not have any active UPnP mappings.")
             End If
 
         Catch ex As NotImplementedException
@@ -127,7 +127,7 @@ Public Class UPnp
         If Not IsPrivateIP(localIP) Then Throw New ArgumentException("This is not a local IP address!", "localIP")
 
         ' Final check!
-        If Not staticEnabled Then Throw New ApplicationException("UPnp is not enabled, or there was an error with UPnp Initialization.")
+        If Not staticEnabled Then Throw New ApplicationException("UPnP is not enabled, or there was an error with UPnP Initialization.")
 
         ' Okay, continue on
         staticMapping.Add(port, prot.ToString(), port, localIP, True, desc + ":" + port.ToString)
@@ -196,7 +196,7 @@ Public Class UPnp
             Try
                 Using sock
                     sock.Connect("8.8.8.8", 65530)  ' try Google
-                    Dim EndPoint As IPEndPoint = sock.LocalEndPoint
+                    Dim EndPoint As IPEndPoint = TryCast(sock.LocalEndPoint, IPEndPoint)
                     LocalIP = EndPoint.Address.ToString()
                 End Using
             Catch ex As Exception
@@ -295,7 +295,7 @@ Public Class UPnp
                     End If
                     Log(String.Format("Port: {0}", Convert.ToString(mapping.InternalPort)))
                     Log(String.Format("Protocol: {0}", Convert.ToString(mapping.Protocol)))
-                    Log(String.Format("External IPAddress: {0}", Convert.ToString(mapping.ExternalIPAddress)))
+                    Log(String.Format("External IP Address: {0}", Convert.ToString(mapping.ExternalIPAddress)))
                     Log("--------------------------------------")
                 Next
             End If

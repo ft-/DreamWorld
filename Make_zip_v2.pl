@@ -1,6 +1,6 @@
 
-my $type  = '-V2.28';# '-Beta-V1.5';
-my $dir = "C:/Opensim/Outworldz Dreamgrid Source";
+my $type  = '-V2.32' ;  # '-Beta-V1.5';
+my $dir = "D:/Opensim/Outworldz Dreamgrid Source";
 
 chdir ($dir);
 use Cwd;
@@ -15,20 +15,18 @@ use 5.010;
 
 
 my @deletions = (
-				 "$dir/OutworldzFiles/Opensim/bin/assetcache",
-				 "$dir/OutworldzFiles/Opensim/bin/j2kDecodeCache",
-				 "$dir/OutworldzFiles/Opensim/bin/MeshCache",
-				 "$dir/OutworldzFiles/Opensim/bin/ScriptEngines",
-				 "$dir/OutworldzFiles/Opensim/bin/maptiles",
-				 "$dir/OutworldzFiles/Opensim/bin/Regions",
-				 "$dir/OutworldzFiles/Opensim/bin/bakes",
-				 "$dir/OutworldzFiles/mysql/data/opensim",
-				 "$dir/OutworldzFiles/mysql/data/robust",
-				 "$dir/OutworldzFiles/mysql/data/addin-db-002",
-				 "$dir/OutworldzFiles/mysql/data/fsassets",
-				 
-				 
-				 );
+	"$dir/OutworldzFiles/Opensim/bin/assetcache",
+	"$dir/OutworldzFiles/Opensim/bin/j2kDecodeCache",
+	"$dir/OutworldzFiles/Opensim/bin/MeshCache",
+	"$dir/OutworldzFiles/Opensim/bin/ScriptEngines",
+	"$dir/OutworldzFiles/Opensim/bin/maptiles",
+	"$dir/OutworldzFiles/Opensim/bin/Regions",
+	"$dir/OutworldzFiles/Opensim/bin/bakes",
+	"$dir/OutworldzFiles/mysql/data/opensim",
+	"$dir/OutworldzFiles/mysql/data/robust",
+	"$dir/OutworldzFiles/mysql/data/addin-db-002",
+	"$dir/OutworldzFiles/mysql/data/fsassets",
+);
 
 foreach my $path ( @deletions) {
 	rm($path);
@@ -62,7 +60,7 @@ unlink "../Zips/Outworldz-Update$type.zip" ;
 
 # mysql
 chdir(qq!$dir/OutworldzFiles/mysql/bin/!);
-print `mysqladmin.exe --port 3309 -u root shutdown`;
+print `mysqladmin.exe --port 3306 -u root shutdown`;
 
 unlink	"$dir/OutworldzFiles/mysql/data/ib_logfile0" || die;
 unlink	"$dir/OutworldzFiles/mysql/data/ib_logfile1" || die;
@@ -129,8 +127,7 @@ Process ("../7z.exe -tzip d ..\\Zips\\DreamGrid-$type.zip Make_zip_v2.pl -r ");
 Process ("../7z.exe -tzip d ..\\Zips\\DreamGrid-Update$type.zip DotNetZip.dll ");
 
 #####################
-print "Server Copy?\n";
-<stdin>;
+print "Server Copy\n";
 
 # Ready to move it all
 unlink "y:/Inetpub/Secondlife/Outworldz_Installer/Grid/DreamGrid$type.zip";
@@ -174,7 +171,7 @@ sub Process
 	
 	my $x = `$file`;
 	if ($x =~ /Everything is Ok/) {
-		print "Ok\n";
+		print "\n";
 	} else {
 		print "Fail: $x\n";
 		exit;
