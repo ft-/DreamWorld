@@ -1148,26 +1148,7 @@ ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
     End Function
     Private Sub SetTOSPort()
 
-        Dim reader As System.IO.StreamReader
-        Dim line As String
-
-        Try
-            My.Computer.FileSystem.DeleteFile(prefix + "\WifiPages\termsofservice.html")
-        Catch ex As Exception
-            'Nothing to do, this was just cleanup
-        End Try
-
-        Using outputFile As New StreamWriter(prefix + "\WifiPages\termsofservice.html")
-            reader = System.IO.File.OpenText(prefix + "\WifiPages\termsofservice.proto")
-            'now loop through each line
-            While reader.Peek <> -1
-                line = reader.ReadLine()
-                line = line.Replace("[ACTION]", "http://" + MySetting.PublicIP + ":" + MySetting.DiagnosticPort + "/TOS")
-                outputFile.WriteLine(line)
-            End While
-        End Using
-        'close your reader
-        reader.Close()
+        Return
 
 
     End Sub
