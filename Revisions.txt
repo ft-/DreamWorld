@@ -1,3 +1,7 @@
+﻿V2.32
+
+"Load Local IAR" and "Load Local OAR" menu items so you can quickly find your local OARS. These links scan the Outworldzfiles\OAR and \IAR folders  for files.
+
 V2.31
 
 Explicit casts (warnings removed)
