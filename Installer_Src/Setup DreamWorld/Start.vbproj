@@ -470,6 +470,7 @@
     <None Include="Resources\OfflineMap.jpg" />
     <Content Include="cubes_blue.ico" />
     <None Include="Resources\cubes_blue.ico" />
+    <None Include="Resources\map-1-9510-10006-objects.jpg" />
     <Content Include="Resources\wp_habitat.gif" />
     <Content Include="Resources\wp_Inside_in_shadows.gif" />
     <Content Include="Resources\wp_Mooferd.gif" />
