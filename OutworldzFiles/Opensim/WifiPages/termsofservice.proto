@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" /><!-- W3C wants this -->
-<title>[<!-- #get var=GridName -->] V2.22</title>
+<title>[<!-- #get var=GridName -->]</title>
 <link rel="shortcut icon" href="/wifi/images/favicon.ico" />
 <link rel="stylesheet" media="screen" type="text/css" href="/wifi/fluid.css" />
 
