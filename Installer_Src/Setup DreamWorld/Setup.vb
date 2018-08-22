@@ -1341,26 +1341,13 @@ Public Class Form1
                 MySetting.SaveOtherINI()
 
 
-                ' Birds.ini
-                'MySetting.LoadOtherIni(prefix + "bin\config-include\Birds.proto", ";")
-                'MySetting.SetOtherIni("Birds", "BirdsModuleStartup", MySetting.BirdsModuleStartup.ToString)
-                'MySetting.SetOtherIni("Birds", "BirdsEnabled", MySetting.BirdsModuleStartup.ToString)
-                'MySetting.SetOtherIni("Birds", "BirdsChatChannel", MySetting.BirdsChatChannel.ToString())
-                'MySetting.SetOtherIni("Birds", "BirdsMaxSpeed", MySetting.BirdsMaxSpeed.ToString())
-                'MySetting.SetOtherIni("Birds", "BirdsFlockSize", MySetting.BirdsFlockSize.ToString())
-                'MySetting.SetOtherIni("Birds", "BirdsNeighbourDistance", MySetting.BirdsNeighbourDistance.ToString())
-                'MySetting.SetOtherIni("Birds", "BirdsDesiredSeparation", MySetting.BirdsDesiredSeparation.ToString())
-                'MySetting.SetOtherIni("Birds", "BirdsTolerance", MySetting.BirdsTolerance.ToString())
-                'MySetting.SetOtherIni("Birds", "BirdsBorderSize", MySetting.BirdsBorderSize.ToString())
-                'MySetting.SetOtherIni("Birds", "BirdsMaxHeight", MySetting.BirdsMaxHeight.ToString())
-                'MySetting.SetOtherIni("Birds", "BirdsPrim", MySetting.BirdsPrim)
-                'MySetting.SaveOtherINI()
+
 
                 Dim BirdData As String = "[" + simName + "]" + vbCrLf &
                     ";this Is the default And determines whether the module does anything" & vbCrLf &
                     "BirdsModuleStartup = " + MySetting.BirdsModuleStartup.ToString & vbCrLf & vbCrLf &
                     ";set to false to disable the birds from appearing in this region" & vbCrLf &
-                    "BirdsEnabled = " + MySetting.BirdsModuleStartup.ToString & vbCrLf & vbCrLf &
+                    "BirdsEnabled = " + MySetting.BirdsEnabled.ToString & vbCrLf & vbCrLf &
                     ";which channel do we listen on for in world commands" & vbCrLf &
                     "BirdsChatChannel = " + MySetting.BirdsChatChannel.ToString() & vbCrLf & vbCrLf &
                     ";the number of birds to flock" & vbCrLf &

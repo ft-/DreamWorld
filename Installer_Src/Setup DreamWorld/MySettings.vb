@@ -246,6 +246,13 @@ Public Class MySettings
             SaveSettings()
         End Try
 
+        Try
+            Dim x = BirdsEnabled()
+        Catch ex As Exception
+            BirdsEnabled() = False
+            SaveSettings()
+        End Try
+
         'the number of birds to flock
         Try
             Dim x = BirdsFlockSize()
@@ -466,6 +473,17 @@ Public Class MySettings
             SetMySetting("BirdsModuleStartup", Value.ToString)
         End Set
     End Property
+
+
+    Public Property BirdsEnabled() As Boolean
+        Get
+            Return CType(GetMySetting("BirdsEnabled"), Boolean)
+        End Get
+        Set
+            SetMySetting("BirdsEnabled", Value.ToString)
+        End Set
+    End Property
+
 
     Public Property BirdsFlockSize() As String
         Get

@@ -60,7 +60,7 @@ unlink "../Zips/Outworldz-Update$type.zip" ;
 
 # mysql
 chdir(qq!$dir/OutworldzFiles/mysql/bin/!);
-print `mysqladmin.exe --port 3306 -u root shutdown`;
+print `mysqladmin.exe --port 3309 -u root shutdown`;
 
 unlink	"$dir/OutworldzFiles/mysql/data/ib_logfile0" || die;
 unlink	"$dir/OutworldzFiles/mysql/data/ib_logfile1" || die;
@@ -69,10 +69,10 @@ unlink	"$dir/OutworldzFiles/mysql/data/ibdata1" || die;
 say ("Start Mysql and wait for it to come up:");
 <STDIN>;
 
-print `mysqlcheck.exe --port 3306 -u root -r mysql`;
-print `mysqlcheck.exe --port 3306 -u root -r opensim`;
-print `mysqlcheck.exe --port 3306 -u root -r robust`;
-print `mysqladmin.exe --port 3306 -u root shutdown`;
+print `mysqlcheck.exe --port 3309 -u root -r mysql`;
+print `mysqlcheck.exe --port 3309 -u root -r opensim`;
+print `mysqlcheck.exe --port 3309 -u root -r robust`;
+print `mysqladmin.exe --port 3309 -u root shutdown`;
 
 
 #mysql

@@ -61,6 +61,8 @@ Partial Class FormRegion
         Me.EnabledCheckBox = New System.Windows.Forms.CheckBox()
         Me.Button2 = New System.Windows.Forms.Button()
         Me.GroupBox6 = New System.Windows.Forms.GroupBox()
+        Me.GroupBox7 = New System.Windows.Forms.GroupBox()
+        Me.BirdsCheckBox = New System.Windows.Forms.CheckBox()
         Me.Label13 = New System.Windows.Forms.Label()
         Me.GroupBox3 = New System.Windows.Forms.GroupBox()
         Me.Publish = New System.Windows.Forms.RadioButton()
@@ -90,11 +92,10 @@ Partial Class FormRegion
         Me.PhysicsubODE = New System.Windows.Forms.RadioButton()
         Me.PhysicsBullet = New System.Windows.Forms.RadioButton()
         Me.PhysicsODE = New System.Windows.Forms.RadioButton()
-        Me.GroupBox7 = New System.Windows.Forms.GroupBox()
-        Me.BirdsCheckBox = New System.Windows.Forms.CheckBox()
         Me.Advanced.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox6.SuspendLayout()
+        Me.GroupBox7.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         CType(Me.GodHelp, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -103,7 +104,6 @@ Partial Class FormRegion
         CType(Me.MapPicture, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox5.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
-        Me.GroupBox7.SuspendLayout()
         Me.SuspendLayout()
         '
         'RegionPort
@@ -475,6 +475,26 @@ Partial Class FormRegion
         Me.GroupBox6.TabStop = False
         Me.GroupBox6.Text = "Region Specific Settings"
         '
+        'GroupBox7
+        '
+        Me.GroupBox7.Controls.Add(Me.BirdsCheckBox)
+        Me.GroupBox7.Location = New System.Drawing.Point(228, 334)
+        Me.GroupBox7.Name = "GroupBox7"
+        Me.GroupBox7.Size = New System.Drawing.Size(177, 48)
+        Me.GroupBox7.TabIndex = 1881
+        Me.GroupBox7.TabStop = False
+        Me.GroupBox7.Text = "Birds Module"
+        '
+        'BirdsCheckBox
+        '
+        Me.BirdsCheckBox.AutoSize = True
+        Me.BirdsCheckBox.Location = New System.Drawing.Point(12, 19)
+        Me.BirdsCheckBox.Name = "BirdsCheckBox"
+        Me.BirdsCheckBox.Size = New System.Drawing.Size(59, 17)
+        Me.BirdsCheckBox.TabIndex = 21
+        Me.BirdsCheckBox.Text = "Enable"
+        Me.BirdsCheckBox.UseVisualStyleBackColor = True
+        '
         'Label13
         '
         Me.Label13.AutoSize = True
@@ -797,26 +817,6 @@ Partial Class FormRegion
         Me.PhysicsODE.Text = "Open Dynamics Engine"
         Me.PhysicsODE.UseVisualStyleBackColor = True
         '
-        'GroupBox7
-        '
-        Me.GroupBox7.Controls.Add(Me.BirdsCheckBox)
-        Me.GroupBox7.Location = New System.Drawing.Point(228, 334)
-        Me.GroupBox7.Name = "GroupBox7"
-        Me.GroupBox7.Size = New System.Drawing.Size(177, 48)
-        Me.GroupBox7.TabIndex = 1881
-        Me.GroupBox7.TabStop = False
-        Me.GroupBox7.Text = "Birds Module"
-        '
-        'BirdsCheckBox
-        '
-        Me.BirdsCheckBox.AutoSize = True
-        Me.BirdsCheckBox.Location = New System.Drawing.Point(12, 19)
-        Me.BirdsCheckBox.Name = "BirdsCheckBox"
-        Me.BirdsCheckBox.Size = New System.Drawing.Size(59, 17)
-        Me.BirdsCheckBox.TabIndex = 21
-        Me.BirdsCheckBox.Text = "Enable"
-        Me.BirdsCheckBox.UseVisualStyleBackColor = True
-        '
         'FormRegion
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -841,6 +841,8 @@ Partial Class FormRegion
         Me.GroupBox2.PerformLayout()
         Me.GroupBox6.ResumeLayout(False)
         Me.GroupBox6.PerformLayout()
+        Me.GroupBox7.ResumeLayout(False)
+        Me.GroupBox7.PerformLayout()
         Me.GroupBox3.ResumeLayout(False)
         Me.GroupBox3.PerformLayout()
         Me.GroupBox4.ResumeLayout(False)
@@ -854,8 +856,6 @@ Partial Class FormRegion
         Me.GroupBox5.PerformLayout()
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
-        Me.GroupBox7.ResumeLayout(False)
-        Me.GroupBox7.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
