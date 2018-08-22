@@ -307,6 +307,30 @@ Public Class FormRegion
             Return Message
         End If
 
+        If (NonphysicalPrimMax.Text = "") Or (CType(NonphysicalPrimMax.Text, Integer) <= 0) Then
+            Message = "Not a valid Non-Physical Prim Max Value. Must be greater than 0."
+            Form1.Log(Message)
+            Return Message
+        End If
+
+        If (PhysicalPrimMax.Text = "") Or (CType(PhysicalPrimMax.Text, Integer) <= 0) Then
+            Message = "Not a valid Physical Prim Max Value. Must be greater than 0."
+            Form1.Log(Message)
+            Return Message
+        End If
+
+        If (MaxPrims.Text = "") Or (CType(MaxPrims.Text, Integer) <= 0) Then
+            Message = "Not a valid MaxPrims Value. Must be greater than 0."
+            Form1.Log(Message)
+            Return Message
+        End If
+
+        If (MaxAgents.Text = "") Or (CType(MaxAgents.Text, Integer) <= 0) Then
+            Message = "Not a valid MaxAgents Value. Must be greater than 0."
+            Form1.Log(Message)
+            Return Message
+        End If
+
         Return ""
     End Function
 
@@ -666,6 +690,18 @@ Public Class FormRegion
             MapGood.Checked = False
             MapBetter.Checked = False
             MapBest.Checked = False
+
+            If Form1.MySetting.MapType = "None" Then
+                MapPicture.Image = Nothing
+            ElseIf Form1.MySetting.MapType = "Simple" Then
+                MapPicture.Image = My.Resources.Simple
+            ElseIf Form1.MySetting.MapType = "Good" Then
+                MapPicture.Image = My.Resources.Good
+            ElseIf Form1.MySetting.MapType = "Better" Then
+                MapPicture.Image = My.Resources.Better
+            ElseIf Form1.MySetting.MapType = "Best" Then
+                Form1.MySetting.MapType = "Best"
+            End If
         End If
 
         If initted Then changed = True
@@ -674,6 +710,7 @@ Public Class FormRegion
     Private Sub MapNone_CheckedChanged(sender As Object, e As EventArgs) Handles MapNone.CheckedChanged
         If MapNone.Checked Then
             Form1.Log("Region " + Name + " Map is set to None")
+            MapPicture.Image = Nothing
         End If
         If initted Then changed = True
     End Sub
@@ -681,6 +718,7 @@ Public Class FormRegion
     Private Sub MapSimple_CheckedChanged(sender As Object, e As EventArgs) Handles MapSimple.CheckedChanged
         If MapSimple.Checked Then
             Form1.Log("Region " + Name + " Map is set to Simple")
+            MapPicture.Image = My.Resources.Simple
         End If
         If initted Then changed = True
     End Sub
@@ -688,6 +726,7 @@ Public Class FormRegion
     Private Sub MapGood_CheckedChanged(sender As Object, e As EventArgs) Handles MapGood.CheckedChanged
         If MapGood.Checked Then
             Form1.Log("Region " + Name + " Map is set to Good")
+            MapPicture.Image = My.Resources.Good
         End If
         If initted Then changed = True
     End Sub
@@ -695,6 +734,7 @@ Public Class FormRegion
     Private Sub MapBetter_CheckedChanged(sender As Object, e As EventArgs) Handles MapBetter.CheckedChanged
         If MapBetter.Checked Then
             Form1.Log("Region " + Name + " Map is set to Better")
+            MapPicture.Image = My.Resources.Better
         End If
         If initted Then changed = True
     End Sub
@@ -702,6 +742,7 @@ Public Class FormRegion
     Private Sub MapBest_CheckedChanged(sender As Object, e As EventArgs) Handles MapBest.CheckedChanged
         If MapBest.Checked Then
             Form1.Log("Region " + Name + " Map is set to Best")
+            MapPicture.Image = My.Resources.Best
         End If
         If initted Then changed = True
     End Sub
