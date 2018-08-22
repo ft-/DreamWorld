@@ -44,7 +44,7 @@ Public Class AdvancedForm
 
         If Form1.MySetting.MapType = "None" Then
             MapNone.Checked = True
-            MapPicture.Image = Nothing
+            MapPicture.Image = My.Resources.blankbox
         ElseIf Form1.MySetting.MapType = "Simple" Then
             MapSimple.Checked = True
             MapPicture.Image = My.Resources.Simple
@@ -178,7 +178,7 @@ Public Class AdvancedForm
     Private Sub MapNone_CheckedChanged(sender As Object, e As EventArgs) Handles MapNone.CheckedChanged
         Form1.MySetting.MapType = "None"
         Form1.MySetting.SaveSettings()
-        MapPicture.Image = Nothing
+        MapPicture.Image = My.Resources.blankbox
 
     End Sub
 

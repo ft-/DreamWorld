@@ -132,10 +132,22 @@ Public Class FormRegion
 
         If RegionClass.MapType(n) = "" Then
             Maps_Use_Default.Checked = True
-            MapPicture.Image = Nothing
+
+            If Form1.MySetting.MapType = "None" Then
+                MapPicture.Image = My.Resources.blankbox
+            ElseIf Form1.MySetting.MapType = "Simple" Then
+                MapPicture.Image = My.Resources.Simple
+            ElseIf Form1.MySetting.MapType = "Good" Then
+                MapPicture.Image = My.Resources.Good
+            ElseIf Form1.MySetting.MapType = "Better" Then
+                MapPicture.Image = My.Resources.Better
+            ElseIf Form1.MySetting.MapType = "Best" Then
+                MapPicture.Image = My.Resources.Best
+            End If
+
         ElseIf RegionClass.MapType(n) = "None" Then
             MapNone.Checked = True
-            MapPicture.Image = Nothing
+            MapPicture.Image = My.Resources.blankbox
         ElseIf RegionClass.MapType(n) = "Simple" Then
             MapSimple.Checked = True
             MapPicture.Image = My.Resources.Simple
@@ -692,7 +704,7 @@ Public Class FormRegion
             MapBest.Checked = False
 
             If Form1.MySetting.MapType = "None" Then
-                MapPicture.Image = Nothing
+                MapPicture.Image = My.Resources.blankbox
             ElseIf Form1.MySetting.MapType = "Simple" Then
                 MapPicture.Image = My.Resources.Simple
             ElseIf Form1.MySetting.MapType = "Good" Then
@@ -710,7 +722,7 @@ Public Class FormRegion
     Private Sub MapNone_CheckedChanged(sender As Object, e As EventArgs) Handles MapNone.CheckedChanged
         If MapNone.Checked Then
             Form1.Log("Region " + Name + " Map is set to None")
-            MapPicture.Image = Nothing
+            MapPicture.Image = My.Resources.blankbox
         End If
         If initted Then changed = True
     End Sub
@@ -876,6 +888,7 @@ Public Class FormRegion
             Form1.Log("Region " + Name + " has birds enabled")
         End If
     End Sub
+
 
 #End Region
 End Class
