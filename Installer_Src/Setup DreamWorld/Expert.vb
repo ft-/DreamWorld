@@ -367,7 +367,7 @@ Public Class Expert
     End Sub
 
     Private Sub RobustDbPortTextbox_TextChanged(sender As Object, e As EventArgs) Handles RobustDbPort.TextChanged
-        Form1.MySetting.MySqlPort = CType(RobustDbPort.Text, Integer)
+        Form1.MySetting.MySqlPort = RobustDbPort.Text
         Form1.MySetting.SaveSettings()
     End Sub
 

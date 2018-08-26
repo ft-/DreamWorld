@@ -9,6 +9,7 @@ Public Class MySettings
     Dim Data As IniParser.Model.IniData
     Dim MyData As IniParser.Model.IniData
     Dim myINI As String = ""
+    Dim gFolder As String
 
 #Region "New"
     Public Sub New()
@@ -19,13 +20,13 @@ Public Class MySettings
 
     End Sub
 
-    Public Sub Init()
-
-        myINI = Form1.MyFolder + "\OutworldzFiles\Settings.ini"
+    Public Sub Init(Folder As String)
+        gFolder = Folder
+        myINI = Folder + "\OutworldzFiles\Settings.ini"
         If File.Exists(myINI) Then
             LoadMyIni()
         Else
-            myINI = Form1.MyFolder + "\OutworldzFiles\Settings.ini"
+            myINI = Folder + "\OutworldzFiles\Settings.ini"
             Dim contents = "[Data]" + vbCrLf
             Using outputFile As New StreamWriter(myINI, True)
                 outputFile.WriteLine(contents)
@@ -80,7 +81,7 @@ Public Class MySettings
 
             MapType() = My.Settings.MapType
 
-            MySqlPort() = CType(My.Settings.MySqlPort, Integer)
+            MySqlPort() = My.Settings.MySqlPort
             MyX() = My.Settings.MyX
             MyY() = My.Settings.MyY
 
@@ -370,7 +371,7 @@ Public Class MySettings
         parser.Parser.Configuration.AssigmentSpacer = ""
         Myparser.Parser.Configuration.CommentString = ";" ' Opensim uses semicolons
         Try
-            MyData = Myparser.ReadFile(Form1.MyFolder + "\OutworldzFiles\Settings.ini", System.Text.Encoding.ASCII)
+            MyData = Myparser.ReadFile(gFolder + "\OutworldzFiles\Settings.ini", System.Text.Encoding.ASCII)
         Catch ex As Exception
 
         End Try
@@ -1106,12 +1107,12 @@ Public Class MySettings
             SetMySetting("GLProdKey", Value)
         End Set
     End Property
-    Public Property MySqlPort() As Integer
+    Public Property MySqlPort() As String
         Get
-            Return CType(GetMySetting("MySqlPort"), Integer)
+            Return GetMySetting("MySqlPort")
         End Get
         Set
-            SetMySetting("MySqlPort", Value.ToString)
+            SetMySetting("MySqlPort", Value)
         End Set
     End Property
     Public Property GLProdSecret() As String

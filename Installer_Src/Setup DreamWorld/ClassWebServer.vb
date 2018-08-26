@@ -89,7 +89,7 @@ Public Class NetServer
 
                 ' Print out the received message to the console.
                 ' Log("Received:" + myCompleteMessage.ToString())
-                Response = RegionClass.ParsePost(myCompleteMessage.ToString())
+                Response = RegionClass.ParsePost(myCompleteMessage.ToString(), Myfolder)
             Else
                 Log("Error:Cannot read from this Network Stream.")
             End If

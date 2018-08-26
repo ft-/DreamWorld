@@ -68,7 +68,7 @@ Public Class Form1
 
     ' Mysql
     Dim MysqlOk As Boolean
-    Public robustconnStr As String
+    Public robustconnStr As String = ""
 
     Public Event RobustExited As EventHandler
     Private images As List(Of Image) = New List(Of Image) From {My.Resources.tangled, My.Resources.wp_habitat, My.Resources.wp_Mooferd,
@@ -271,7 +271,7 @@ Public Class Form1
         Catch
         End Try
 
-        MySetting.Init()
+        MySetting.Init(MyFolder)
 
         ' Save a random machine ID - we don't want any data to be sent that's personal or identifiable,  but it needs to be unique
         Randomize()
@@ -923,7 +923,7 @@ Public Class Form1
         Dim ConnectionString = """" _
             + "Data Source=" + "127.0.0.1" _
             + ";Database=" + MySetting.RegionDBName _
-            + ";Port=" + CType(MySetting.MySqlPort, String) _
+            + ";Port=" + MySetting.MySqlPort _
             + ";User ID=" + MySetting.RegionDBUsername _
             + ";Password=" + MySetting.RegionDbPassword _
             + ";Old Guids=true;Allow Zero Datetime=true;" _
@@ -940,7 +940,7 @@ Public Class Form1
         ConnectionString = """" _
             + "Data Source=" + MySetting.RobustServer _
             + ";Database=" + MySetting.RobustDataBaseName _
-            + ";Port=" + CType(MySetting.MySqlPort, String) _
+            + ";Port=" + MySetting.MySqlPort _
             + ";User ID=" + MySetting.RobustUsername _
             + ";Password=" + MySetting.RobustPassword _
             + ";Old Guids=true;Allow Zero Datetime=true;" _
@@ -1418,7 +1418,7 @@ Public Class Form1
 
         Dim ConnectionString = """" + "Data Source = " + MySetting.RobustServer _
             + ";Database=" + MySetting.RobustDataBaseName _
-            + ";Port=" + MySetting.MySqlPort.ToString _
+            + ";Port=" + MySetting.MySqlPort _
             + ";User ID=" + MySetting.RobustUsername _
             + ";Password=" + MySetting.RobustPassword _
             + ";Old Guids=True;Allow Zero Datetime=True;" + """"
@@ -1437,7 +1437,7 @@ Public Class Form1
         Dim ConnectionString = """" _
                 + "Data Source=" + "127.0.0.1" _
                 + ";Database=" + MySetting.RobustDataBaseName _
-                + ";Port=" + MySetting.MySqlPort.ToString _
+                + ";Port=" + MySetting.MySqlPort _
                 + ";User ID=" + MySetting.RobustUsername _
                 + ";Password=" + MySetting.RobustPassword _
                 + ";Old Guids=True;Allow Zero Datetime=True;" _
@@ -2733,13 +2733,12 @@ Public Class Form1
 
         PaintImage()
 
-        ScanAgents()
-
         If gDNSSTimer Mod 3600 = 0 Then
             RegisterDNS()
         End If
 
         If gDNSSTimer Mod 60 = 0 Then
+            ScanAgents()
             LoadRegionsStatsBar()   ' fill in menu once a minute
         End If
 
@@ -3832,11 +3831,11 @@ Public Class Form1
     Public Function StartMySQL() As Boolean
 
         ' Check for MySql operation
-        If Not MysqlOk Then
+        If robustconnStr = "" Then
 
             robustconnStr = "server=" + MySetting.RobustServer() _
                 + ";database=" + MySetting.RobustDataBaseName _
-                + ";port=" + MySetting.MySqlPort.ToString _
+                + ";port=" + MySetting.MySqlPort _
                 + ";user=" + MySetting.RobustUsername _
                 + ";password=" + MySetting.RobustPassword _
                 + ";Old Guids=true;Allow Zero Datetime=true;"
@@ -3858,8 +3857,8 @@ Public Class Form1
         MySetting.LoadOtherIni(MyFolder & "\OutworldzFiles\mysql\my.ini", "#")
         MySetting.SetOtherIni("mysqld", "basedir", """" + gCurSlashDir + "/OutworldzFiles/Mysql" + """")
         MySetting.SetOtherIni("mysqld", "datadir", """" + gCurSlashDir + "/OutworldzFiles/Mysql/Data" + """")
-        MySetting.SetOtherIni("mysqld", "port", MySetting.MySqlPort.ToString)
-        MySetting.SetOtherIni("client", "port", MySetting.MySqlPort.ToString)
+        MySetting.SetOtherIni("mysqld", "port", MySetting.MySqlPort)
+        MySetting.SetOtherIni("client", "port", MySetting.MySqlPort)
         MySetting.SaveOtherINI()
 
         ' create test program 
@@ -4099,7 +4098,7 @@ Public Class Form1
 
         ChDir(MyFolder & "\OutworldzFiles\mysql\bin")
         pi.WindowStyle = ProcessWindowStyle.Normal
-        pi.Arguments = MySetting.MySqlPort.ToString
+        pi.Arguments = MySetting.MySqlPort
         pi.FileName = "CheckAndRepair.bat"
         pMySqlDiag.StartInfo = pi
         pMySqlDiag.Start()

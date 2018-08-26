@@ -22,7 +22,7 @@ Public Class Mysql
     End Function
     Public Function IsMySqlRunning() As String
 
-        Dim Mysql = CheckPort("127.0.0.1", Form1.MySetting.MySqlPort)
+        Dim Mysql = CheckPort("127.0.0.1", CType(Form1.MySetting.MySqlPort, Integer))
         If Mysql Then
             Dim version = QueryString("SELECT VERSION()")
             Debug.Print("MySQL version: {0}", version)
