@@ -952,7 +952,7 @@ Public Class RegionMaker
                         Dim cmd As MySqlCommand = New MySqlCommand("update robust.userprofile set profilepartner=@p2, where userUUID = @p1'", MysqlConn)
                         cmd.Parameters.AddWithValue("p1", p1)
                         cmd.Parameters.AddWithValue("p2", p2)
-                        Dim a = cmd.ExecuteScalar()
+                        Dim a = Convert.ToString(cmd.ExecuteScalar())
                         cmd = New MySqlCommand("update robust.userprofile set profilepartner=@p1, where userUUID = @p2'", MysqlConn)
                         cmd.Parameters.AddWithValue("p1", p1)
                         cmd.Parameters.AddWithValue("p2", p2)
