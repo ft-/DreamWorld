@@ -51,7 +51,7 @@ RegionFolderName=Welcome
 
 ; Automatically changed by Dreamworld - do not change this
 ;# {BaseURL} {} {BaseURL} {"http://example.com","http://127.0.0.1"} "http://127.0.0.1"
-BaseURL=http://Lomalia.Outworldz.net
+BaseURL=http://Dwaonidd.Outworldz.net
 
 ; Automatically changed by Dreamworld - do not change this
 ;# {PublicPort} {} {PublicPort} {8002} "8002"
@@ -62,7 +62,7 @@ PublicPort=8002
 PrivatePort=8003
 
 ;# so localhost can be changed if necessary
-PrivURL=http://192.168.2.181
+PrivURL=http://192.168.2.134
 
 ; Automatically changed by Dreamworld - do not change this
 ;# Grid Name for Wifi to show
@@ -76,7 +76,7 @@ DiagnosticsPort=8001
 [Startup]
 
 ; Auto restart by Fly Man
-regionrestart=AutoRestart
+regionrestart=
 
 ;# {ConsolePrompt} {} {ConsolePrompt} {} "Region (\R) "
 ;; Console prompt
@@ -400,7 +400,7 @@ RenderMeshes=false
 
 ;# {EnforcePrimLimits} {} {Enforce parcel prim limits} {true false} false
 ;; Enable parcel prim limits.  Off by default to emulate pre-existing behavior.
-EnforcePrimLimits=True
+EnforcePrimLimits=False
 
 [Permissions]
 
@@ -420,17 +420,17 @@ permissionmodules=DefaultPermissionsModule,PrimLimitsModule
 ;# {allow_grid_gods} {} {Allow grid gods?} {true false} false
 ;; This allows users with a UserLevel of 200 or more to assume god
 ;; powers in the regions in this simulator.
-allow_grid_gods=true
+allow_grid_gods=False
 
 ;; This allows some control over permissions
 ;; please note that this still doesn't duplicate SL, and is not intended to
 ;# {region_owner_is_god} {} {Allow region owner gods} {true false} true
 ;; Allow region owners to assume god powers in their regions
-region_owner_is_god=true
+region_owner_is_god=False
 
 ;# {region_manager_is_god} {} {Allow region manager gods} {true false} false
 ;; Allow region managers to assume god powers in regions they manage
-region_manager_is_god=false
+region_manager_is_god=False
 
 ;# {simple_build_permissions} {} {Allow building in parcel by access list (no groups)} {true false} false
 ;; More control over permissions
@@ -476,7 +476,7 @@ enabled=true
 ;# {internal_object_host} {[Startup]emailmodule:DefaultEmailModule enabled:true} {Host name to treat as internal (object to object) email?} {} lsl.opensim.local
 ; internal_object_host = lsl.opensim.local
 ;# {host_domain_header_from} {[Startup]emailmodule:DefaultEmailModule enabled:true} {From address to use in the sent email header?} {} 127.0.0.1
-host_domain_header_from=Lomalia.Outworldz.net
+host_domain_header_from=Dwaonidd.Outworldz.net
 
 ;# {email_pause_time} {[Startup]emailmodule:DefaultEmailModule enabled:true} {Period in seconds to delay after an email is sent.} {} 20
 ; email_pause_time = 20
@@ -525,7 +525,7 @@ http_listener_port=${Const|http_listener_port}
 ; If you need to allow scripts to make some LAN calls use the OutboundDisallowForUserScriptsExcept parameter below.
 ; We recommend that you do not override OutboundDisallowForUserScripts directly unless you are very sure about what you're doing.
 ;
-OutboundDisallowForUserScriptsExcept=192.168.2.4:80|192.168.2.4:5000
+OutboundDisallowForUserScriptsExcept=
 
 ; You can whitelist individual endpoints by IP or FQDN, e.g.
 ;
@@ -561,7 +561,7 @@ OutboundDisallowForUserScriptsExcept=192.168.2.4:80|192.168.2.4:5000
 ;; Hostname to use in llRequestURL/llRequestSecureURL
 ;; if not defined - default machine name is being used
 ;; (on Windows this mean NETBIOS name - useably only inside local network)
-ExternalHostNameForLSL="www.outworldz.com"
+ExternalHostNameForLSL=Dwaonidd.Outworldz.net
 
 ;# {shard} {} {Name to use for X-Secondlife-Shard header? (press enter if unsure)} {} OpenSim
 ;; What is reported as the "X-Secondlife-Shard"
@@ -822,7 +822,7 @@ enable_windlight=true
 ;; searchable data.
 ;; If false, no data will be exposed, DataSnapshot module will be off,
 ;; and you can ignore the rest of these search-related configs.
-index_sims=True
+index_sims=False
 
 ;# {data_exposure} {index_sims:true} {How much data should be exposed?} {minimum all} minimum
 ;; The variable data_exposure controls what the regions expose:
@@ -873,7 +873,9 @@ SearchURL=http://hyperica.com/Search/query.php
 ; There is no intention to implement anything further in core OpenSimulator.
 ; This functionality has to be provided by third party modules.
 ;; Enables selling things for $0.  Default is true.
-; SellEnabled = true
+SellEnabled = true
+
+
 ;# {PriceUpload} {} {Price for uploading?} {} 0
 ;; Money Unit fee to upload textures, animations etc.  Default is 0.
 ; PriceUpload = 0
@@ -1334,7 +1336,7 @@ enabled=True
 
 ; Enable this to generate classic particle clouds above the sim.
 ; default is disabled - turn it on here
-enabled=true
+enabled=false
 
 ; Density of cloud cover 0.0 to 1.0 Default 0.5
 density=0.5
