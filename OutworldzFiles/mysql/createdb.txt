@@ -1,4 +1,11 @@
-With mysql running, these steps were used to make a initial database from scratch
+To wipe out mysql, delete the files in mysql\data.
+
+Navigate to Outworldzfiles\Mysql\bin.
+Once there, right click the blank area next to the filelist and press and hold the shift key. Select Open PowerShell Window Here, or Open Command Prompt Here.
+
+type this:
+
+
 
 mysql -u root
 create database opensim;
