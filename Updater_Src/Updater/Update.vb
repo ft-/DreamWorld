@@ -12,9 +12,9 @@ Imports System.Threading
 
 Public Class Update
 
-    Dim BLKSIZE As Integer = 256000
+    Dim BLKSIZE As Integer = 1000000
 
-    Dim Version As String = "2.25"
+    Dim Version As String = "3"
     Dim Type As String = "UpdateGrid"  ' possible server-side choices are "Update", "UpdateGrid" and "Installer"
     'Dim Type As String = "Update"  
     'Dim Type As String = "Install"  
@@ -23,10 +23,7 @@ Public Class Update
     Dim gFileName As String = Nothing
     Dim whereToSave As String = Nothing 'Where the program save the file
     Dim gshortfilename = Nothing    ' the short name
-
-    Delegate Sub ChangeTextsSafe(ByVal length As Long, ByVal position As Integer, ByVal percent As Integer, ByVal speed As Double)
-    Delegate Sub DownloadCompleteSafe(ByVal cancelled As Boolean)
-
+    Dim Cancelled As Boolean = False
     Public Property MyFolder() As String
         Get
             Return gCurDir
@@ -39,239 +36,142 @@ Public Class Update
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
         Log("Version " + Version)
-
-        Me.Text = "Outworldz " + Type + " V " + Version
+        Me.Show()
+        Me.Text = "Outworldz " + Type + " Updater V" + Version
         MyFolder = My.Application.Info.DirectoryPath
         ' I would like to buy an argument
         Dim arguments As String() = Environment.GetCommandLineArgs()
         If arguments.Length > 1 Then
             ' for debugging when compiling
             If arguments(1) = "-debug" Then
-                MyFolder = "C:\Users\Fred\Desktop\Dreamgrid" ' for testing, as the compiler buries itself in ../../../debug
+                MyFolder = "E:" ' for testing, as the compiler buries itself in ../../../debug
                 ChDir(MyFolder)
             End If
         End If
 
         Label1.Text = ""
-        Label2.Text = ""
-        Label3.Text = ""
 
         btnCancel.Visible = True
-
         StopMYSQL()
 
+        Application.DoEvents()
 
         Try
             Dim client As New System.Net.WebClient
             gshortfilename = client.DownloadString("http://www.outworldz.com/Outworldz_Installer/GetUpdate.plx?t=" + Type + "&r= " + Random())
         Catch ex As Exception
             Label1.Text = "Drat!  The Outworldz web site won't talk to me.  No " + Type + "file found"
-
         End Try
 
-        If arguments.Length > 1 Then
-            If arguments(1) = "-debug" Then
-                gshortfilename = "DreamGrid-Update-V2.25.zip"
-            End If
-        End If
+        If gshortfilename = "DreamGrid-Update.zip" Then
+            gFileName = "https://www.outworldz.com/Outworldz_Installer/Grid/" + gshortfilename
+            Dim Name As Uri = New Uri(gFileName)
+            Try
 
-        gFileName = "https://www.outworldz.com/Outworldz_Installer/Grid/" + gshortfilename
-        If gshortfilename.length Then
-            BackgroundWorker1.RunWorkerAsync() 'Start download
-        Else
-            Label1.Text = "Drat!  The Outworldz web site won't talk to me.  No " + Type + "file found"
-        End If
-    End Sub
+                Label1.Text = "Downloading File " + gshortfilename
+                Application.DoEvents()
+                Dim client As WebClient
+                client = New WebClient()
+                client.Credentials = New NetworkCredential("", "")
+                client.DownloadFile(Name, gshortfilename)
+                Application.DoEvents()
 
-    Private Sub btnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
-        Log("Cancel requested")
-        BackgroundWorker1.CancelAsync() 'Send cancel request
-    End Sub
+            Catch ex As TimeoutException
+                MessageBox.Show("Download Timeout", "Timeout", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                End
+                Exit Try
 
-    Public Sub ChangeTexts(ByVal length As Long, ByVal position As Integer, ByVal percent As Integer, ByVal speed As Double)
+            Catch ex As WebException
+                MessageBox.Show("The request was denied by the Outworldz web server.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                End
+                Exit Try
 
-        Label1.Text = "Downloading " + gshortfilename + ", please wait..."
-        'Label3.Text = "File Size: " & Math.Round((length / 1024), 2) & " KB"
-        Label2.Text = "Downloaded " & Math.Round((position / 1024), 2) & " KB of " & Math.Round((length / 1024), 2) & "KB "
-
-        If speed = -1 Then
-            Label3.Text = "Speed: calculating..."
-        Else
-            Label3.Text = "Speed: " & Math.Round((speed / 1024), 2) & " KB/s"
-        End If
-
-    End Sub
-
-    Private Sub BackgroundWorker1_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles BackgroundWorker1.DoWork
-
-        'Creating the request and getting the response
-
-        Dim theResponse As HttpWebResponse
-        Dim theRequest As HttpWebRequest
-        Try 'Checks if the file exist
-
-            theRequest = WebRequest.Create(gFileName)
-            Debug.Print(gFileName)
-            theResponse = theRequest.GetResponse
-        Catch ex As Exception
-            Log(ex.Message)
-            MessageBox.Show("An error occurred while downloading file. Possible causes:" & ControlChars.CrLf &
-                    "1) File doesn't exist" & ControlChars.CrLf &
-                    "2) Remote server error", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Catch ex As Exception
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            End Try
 
 
-            Exit Sub
-        End Try
-        Dim length As Long = theResponse.ContentLength 'Size of the response (in bytes)
-        If length = 0 Then
-            Log("File len = 0")
-            MessageBox.Show("An error occurred while downloading file. Possible causes:" & ControlChars.CrLf &
-                   "1) File doesn't exist" & ControlChars.CrLf &
-                   "2) Remote server error", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
-
-        End If
-
-        Dim safedelegate As New ChangeTextsSafe(AddressOf ChangeTexts)
-        Invoke(safedelegate, length, 0, 0, 0) 'Invoke the TreadsafeDelegate
-
-        whereToSave = MyFolder + "\" + "tmp.zip"
-        Log("Saving to " + whereToSave)
-        Debug.Print("Saving to " + whereToSave)
-        Dim writeStream As New IO.FileStream(whereToSave, IO.FileMode.Create)
-
-        'Replacement for Stream.Position (webResponse stream doesn't support seek)
-        Dim nRead As Integer
-
-        'To calculate the download speed
-        Dim speedtimer As New Stopwatch
-        Dim currentspeed As Double = -1
-        Dim readings As Integer = 0
-
-        Do
-            Application.DoEvents()
-
-            If BackgroundWorker1.CancellationPending Then 'If user abort download
-                Exit Do
-            End If
-            speedtimer.Start()
-
-            Dim readBytes(BLKSIZE) As Byte
-            Dim bytesread As Integer = theResponse.GetResponseStream.Read(readBytes, 0, BLKSIZE)
-
-            nRead += bytesread
-            Dim percent As Short = nRead / length
-
-            Invoke(safedelegate, length, nRead, percent, currentspeed)
-
-            If bytesread = 0 Then
-                Debug.Print("Exit do")
-                Exit Do
-            End If
-
-            writeStream.Write(readBytes, 0, bytesread)
-
-            speedtimer.Stop()
-
-            readings += 1
-            If readings >= 100 Then 'For increase precision, the speed it's calculated only every 100 cycles
-                currentspeed = bytesread / (speedtimer.ElapsedMilliseconds / 1000)
-                speedtimer.Reset()
-                readings = 0
-            End If
-        Loop
-
-        Log("Download Complete")
-        Debug.Print("Close stream")
-        'Close the streams
-        theResponse.GetResponseStream.Close()
-        writeStream.Close()
-
-        Dim cancelled As Boolean = False
-        If BackgroundWorker1.CancellationPending Then
-            Log("Deleteing " + whereToSave)
-            IO.File.Delete(whereToSave)
-
-            ' Dim cancelDelegate As New DownloadCompleteSafe(AddressOf DownloadComplete)
-            ' Invoke(cancelDelegate, True)
-            Exit Sub
-        End If
-
-        Log("Launching Install Thread")
-        'Dim completeDelegate As New DownloadCompleteSafe(AddressOf DownloadComplete)
-        'Invoke(completeDelegate, False)
-
-        'End Sub
-
-        'Public Sub DownloadComplete(ByVal cancelled As Boolean)
-
-        btnCancel.Visible = False
-        If cancelled Then
-            Log("Aborted")
-            MessageBox.Show("Download aborted", "Aborted", MessageBoxButtons.OK, MessageBoxIcon.Information)
-            Label2.Text = ""
-            Label3.Text = ""
-            End
-        Else
             Log("Download Complete")
-            Thread.Sleep(5000)
-            Label1.Text = ""
-            Label2.Text = ""
-            Label3.Text = ""
 
+            Label1.Text = "Download Complete"
+            Application.DoEvents()
+            Thread.Sleep(1000)
             Dim ctr As Integer
             Try
                 Log("Opening zip " + MyFolder + "\tmp.zip")
-                Using zip As ZipFile = ZipFile.Read(MyFolder + "\tmp.zip")
-                    Debug.Print("Received " + Str(zip.Entries.Count) + " files. Extracting to disk.")
-                    Log("Received " + Str(zip.Entries.Count) + " files. Extracting to disk.")
+                Using zip As ZipFile = ZipFile.Read(MyFolder + "\" + gshortfilename)
+                    Debug.Print("Received " + Str(zip.Entries.Count) + " files. Extracting To disk.")
+                    Log("Received " + Str(zip.Entries.Count) + " files. Extracting To disk.")
 
-                    My.Computer.FileSystem.DeleteDirectory(MyFolder + "\Outworldzfiles\opensim\bin\addin-db-002", FileIO.DeleteDirectoryOption.DeleteAllContents)
+                    Try
+                        My.Computer.FileSystem.DeleteDirectory(MyFolder + "\Outworldzfiles\opensim\bin\addin-db-002", FileIO.DeleteDirectoryOption.DeleteAllContents)
+                    Catch
+                    End Try
 
                     For Each ZipEntry In zip
-                        Application.DoEvents()
-                        ctr = ctr + 1
-                        Label1.Text = "Extracting " + Path.GetFileName(ZipEntry.FileName)
-                        'Log("Extracting " + Path.GetFileName(ZipEntry.FileName))
-                        ZipEntry.Extract(MyFolder, Ionic.Zip.ExtractExistingFileAction.OverwriteSilently)
+                        If Cancelled = False Then
+                            Application.DoEvents()
+                            ctr = ctr + 1
+                            Label1.Text = "Extracting " + Path.GetFileName(ZipEntry.FileName)
+                            Application.DoEvents()
+                            ZipEntry.Extract(MyFolder, Ionic.Zip.ExtractExistingFileAction.OverwriteSilently)
+                        End If
+
                     Next
                 End Using
             Catch ex As Exception
                 Log("Update Aborted: " + ex.Message)
                 Label1.Text = "Update Aborted: " + ex.Message
+                Application.DoEvents()
+                Thread.Sleep(2000)
+                Log("Exit")
             End Try
             Log("Extract Complete")
 
-            Try
-                My.Computer.FileSystem.DeleteFile(MyFolder + "\" + "tmp.zip")
-            Catch
-                Log("Could not delete " + gFileName)
-                Label1.Text = "Could not delete " + gFileName
-            End Try
+            If Not Cancelled Then
 
-            Label1.Text = "Update Complete.  Waking up the Outworldz..."
-            Dim newDream As New Process()
-            Try
-                newDream.StartInfo.UseShellExecute = False
-                newDream.StartInfo.FileName = "Start.exe"
-                newDream.Start()
-            Catch e As Exception
-                Label1.Text = ""
-                Label2.Text = ""
-                Label3.Text = ""
-                Label1.Text = "How odd, there seems to be nothing to run!"
-                Return
-            End Try
-            Thread.Sleep(1000)
-            Log("Exit Done")
+                Label1.Text = "Update Complete.  Waking up the Outworldz..."
+                Application.DoEvents()
+                Dim newDream As New Process()
+                Try
+                    newDream.StartInfo.UseShellExecute = False
+                    newDream.StartInfo.FileName = "Start.exe"
+                    newDream.Start()
+                Catch ex As Exception
+                    Label1.Text = "How odd, there seems to be no Start.exe to run!"
+                    Log("No Start.exe Exit")
+                    Application.DoEvents()
+                    Thread.Sleep(2000)
+                    End
+                End Try
+                Log("Normal Exit")
+                End
+
+            End If
+            Label1.Text = "Cancelled"
+            Application.DoEvents()
+            Thread.Sleep(2000)
+            Log("Cancelled Exit")
+            End
+        Else
+            Label1.Text = "Drat!  The Outworldz web site won't talk to me.  No " + Type + "file found"
+            Application.DoEvents()
+            Thread.Sleep(2000)
+            Log("Web Page Exit")
             End
         End If
     End Sub
+
+    Private Sub btnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
+        Log("Cancelled")
+        Cancelled = True
+    End Sub
+
     Private Function Random() As String
         Randomize()
         Dim value As Integer = CInt(Int((6000 * Rnd()) + 1))
         Random = Str(value)
     End Function
-
 
     Public Function Log(message As String)
         Try
@@ -287,6 +187,8 @@ Public Class Update
 
     Private Sub StopMYSQL()
 
+        Label1.Text = "Stopping database to prep for update"
+        Application.DoEvents()
         Log("Info:using mysqladmin to close db")
         Dim p As Process = New Process()
         Dim pi As ProcessStartInfo = New ProcessStartInfo()
@@ -299,6 +201,10 @@ Public Class Update
         Catch
             Log("Error:mysqladmin failed to stop mysql")
         End Try
+
+        p.WaitForExit()
+        p.Close()
+
 
     End Sub
 
