@@ -1,4 +1,5 @@
 ﻿
+
 #Region "Copyright"
 ' Copyright 2014 Fred Beckhusen for Outworldz.com
 ' https://opensource.org/licenses/AGPL
@@ -4453,10 +4454,15 @@ Public Class Form1
 
 #Region "LocalOARIAR"
 
+
     Private Sub LoadLocalIAROAR()
+        ''' <summary>
+        ''' Loads OAR and IAR from the menu
+        ''' </summary>
+        ''' <remarks>Handles both the IAR/OAR and Autobackup folders</remarks>
 
         Dim Filename = MyFolder + "\OutworldzFiles\OAR\"
-        Dim OARs = Directory.GetFiles(Filename, "*.OAR", SearchOption.TopDirectoryOnly)
+        Dim OARs As Array = Directory.GetFiles(Filename, "*.OAR", SearchOption.TopDirectoryOnly)
 
         For Each OAR As String In OARs
             Dim Name = Path.GetFileName(OAR)
@@ -4469,8 +4475,31 @@ Public Class Form1
             LoadLocalOARSToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {OarMenu})
         Next
 
+        If MySetting.BackupFolder = "AutoBackup" Then
+            Filename = MyFolder + "\OutworldzFiles\AutoBackup\"
+        Else
+            Filename = MySetting.BackupFolder
+        End If
+
+        Try
+            Dim AutoOARs As Array = Directory.GetFiles(Filename, "*.OAR", SearchOption.TopDirectoryOnly)
+
+            For Each OAR As String In AutoOARs
+                Dim Name = Path.GetFileName(OAR)
+                Dim OarMenu As New ToolStripMenuItem
+                OarMenu.Text = Name
+                OarMenu.ToolTipText = "Click to load this content"
+                OarMenu.DisplayStyle = ToolStripItemDisplayStyle.Text
+                AddHandler OarMenu.Click, New EventHandler(AddressOf BackupOarClick)
+                LoadLocalOARSToolStripMenuItem.Visible = True
+                LoadLocalOARSToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {OarMenu})
+            Next
+        Catch
+        End Try
+        ' now for the IARs
+
         Filename = MyFolder + "\OutworldzFiles\IAR\"
-        Dim IARs = Directory.GetFiles(Filename, "*.IAR", SearchOption.TopDirectoryOnly)
+        Dim IARs As Array = Directory.GetFiles(Filename, "*.IAR", SearchOption.TopDirectoryOnly)
 
         For Each IAR As String In IARs
             Dim Name = Path.GetFileName(IAR)
@@ -4483,6 +4512,29 @@ Public Class Form1
             LoadLocalIARsToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {IarMenu})
         Next
 
+        If MySetting.BackupFolder = "AutoBackup" Then
+            Filename = MyFolder + "\OutworldzFiles\AutoBackup\"
+        Else
+            Filename = MySetting.BackupFolder
+        End If
+
+        Try
+
+            Dim AutoIARs As Array = Directory.GetFiles(Filename, "*.IAR", SearchOption.TopDirectoryOnly)
+            For Each IAR As String In AutoIARs
+                Dim Name = Path.GetFileName(IAR)
+                Dim IarMenu As New ToolStripMenuItem
+                IarMenu.Text = Name
+                IarMenu.ToolTipText = "Click to load this content"
+                IarMenu.DisplayStyle = ToolStripItemDisplayStyle.Text
+                AddHandler IarMenu.Click, New EventHandler(AddressOf BackupIarClick)
+                LoadLocalIARsToolStripMenuItem.Visible = True
+                LoadLocalIARsToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {IarMenu})
+            Next
+        Catch
+        End Try
+
+
     End Sub
 
     Private Sub LocalOarClick(sender As Object, e As EventArgs)
@@ -4492,10 +4544,25 @@ Public Class Form1
         Print("Opensimulator will load " + sender.text.ToString + ".  This may take time to load.")
 
     End Sub
+    Private Sub BackupOarClick(sender As Object, e As EventArgs)
+
+        Dim File = MyFolder + "/OutworldzFiles/AutoBackup/" + sender.text.ToString 'make a real URL
+        LoadOARContent(File)
+        Print("Opensimulator will load " + sender.text.ToString + ".  This may take time to load.")
+
+    End Sub
 
     Private Sub LocalIarClick(sender As Object, e As EventArgs)
 
         Dim File As String = MyFolder + "/OutworldzFiles/IAR/" + sender.text.ToString 'make a real URL
+        LoadIARContent(File)
+        Print("Opensimulator will load " + sender.text.ToString + ".  This may take time to load.")
+
+    End Sub
+
+    Private Sub BackupIarClick(sender As Object, e As EventArgs)
+
+        Dim File As String = MyFolder + "/OutworldzFiles/AutoBackup/" + sender.text.ToString 'make a real URL
         LoadIARContent(File)
         Print("Opensimulator will load " + sender.text.ToString + ".  This may take time to load.")
 
