@@ -23,6 +23,7 @@ OutworldzFiles/opensim/bin/bakes/*
 Outworldzfiles/opensim/bin/Robust.HG.ini.bak
 Outworldzfiles/Settings.ini
 Outworldzfiles/Settings.bak
+Installer_Src/Setup Dreamworld/bin
 
 Thumbs.db
 .vs/*
@@ -41,9 +42,9 @@ Thumbs.db
 ~*
 *~
 
-obj/
-Release/
-Debug/
+*/obj/*
+*/Release/*
+*/Debug/*
 
 
 # Ignore .user and .suo files as these are user preference specific
