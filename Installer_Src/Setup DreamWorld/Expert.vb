@@ -54,7 +54,7 @@ Public Class Expert
         SmtpHost.Text = Form1.MySetting.SmtpHost
 
         ' Unique ID
-        UniqueId.Text = Form1.MySetting.MachineID
+        UniqueId.Text = Form1.MySetting.Machine()
 
         Select Case Form1.MySetting.Physics
             Case "0" : PhysicsNone.Checked = True
@@ -93,6 +93,9 @@ Public Class Expert
         Catch
             PictureBox9.Image = My.Resources.blankbox
         End Try
+
+        LSLCheckbox.Checked = Form1.MySetting.LSL_HTTP()
+
 
         initted = True ' suppress the install of the startup on formload
 
@@ -238,7 +241,7 @@ Public Class Expert
 
     Private Sub UniqueId_TextChanged(sender As Object, e As EventArgs) Handles UniqueId.TextChanged
 
-        Form1.MySetting.MachineID = UniqueId.Text
+        Form1.MySetting.Machine() = UniqueId.Text
         Form1.MySetting.SaveSettings()
 
     End Sub
@@ -513,7 +516,7 @@ Public Class Expert
                 End Try
 
                 Dim params As New Specialized.NameValueCollection
-                params.Add("MachineID", Form1.MySetting.MachineID)
+                params.Add("MachineID", Form1.MySetting.MachineID())
                 'params.Add("file", "Photo.png")
 
                 Dim Myupload As New UploadImage
@@ -589,7 +592,7 @@ Public Class Expert
     End Sub
 
     Private Sub LSLCheckbox_CheckedChanged(sender As Object, e As EventArgs) Handles LSLCheckbox.CheckedChanged
-        Form1.MySetting.LSL_HHTP() = LSLCheckbox.Checked
+        Form1.MySetting.LSL_HTTP() = LSLCheckbox.Checked
         Form1.MySetting.SaveSettings()
     End Sub
 
