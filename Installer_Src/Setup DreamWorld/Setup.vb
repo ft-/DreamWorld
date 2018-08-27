@@ -273,10 +273,12 @@ Public Class Form1
         End Try
 
         MySetting.Init(MyFolder)
+        MySetting.Myfolder = MyFolder
 
         ' Save a random machine ID - we don't want any data to be sent that's personal or identifiable,  but it needs to be unique
         Randomize()
         MySetting.Machine() = Random()  ' a random machine ID may be generated.  Happens only once
+
 
         'hide progress
         ProgressBar1.Visible = True
@@ -361,7 +363,7 @@ Public Class Form1
         ws = NetServer.GetWebServer
         Log("Info:Starting Web Server ")
 
-        ws.StartServer(MyFolder, MySetting.PrivateURL, CType(MySetting.DiagnosticPort, Integer))
+        ws.StartServer(MySetting, MySetting.PrivateURL, CType(MySetting.DiagnosticPort, Integer))
 
         ' Run diagnostics, maybe
         If Not MySetting.RanAllDiags Or gDebug Then
@@ -621,9 +623,9 @@ Public Class Form1
                 If isRunning > 0 Then counter = 0
 
                 Dim v As Double = isRunning / TotalRunningRegions * 100
-                If v >= 0 And v <= 100 Then
+                If v > 0 And v <= 100 Then
                     ProgressBar1.Value = CType(v, Integer)
-                    Diagnostics.Debug.Print("V=" + ProgressBar1.Value.ToString)
+                   ' Diagnostics.Debug.Print("V=" + ProgressBar1.Value.ToString)
                 End If
 
             End While
@@ -975,10 +977,10 @@ Public Class Form1
         ' Opensim.ini
         MySetting.LoadOtherIni(prefix + "bin\Opensim.proto", ";")
 
-        If MySetting.LSL_HHTP Then
-            MySetting.SetOtherIni("Network", "OutboundDisallowForUserScriptsExcept", MySetting.PrivateURL)
+        If MySetting.LSL_HTTP Then
+            MySetting.SetOtherIni("Network", "OutboundDisallowForUserScriptsExcept", MySetting.DNSName + "|" + MySetting.PrivateURL + ":" + MySetting.DiagnosticPort)
         Else
-            MySetting.SetOtherIni("Network", "OutboundDisallowForUserScriptsExcept", "")
+            MySetting.SetOtherIni("Network", "OutboundDisallowForUserScriptsExcept", MySetting.PrivateURL + ":" + MySetting.DiagnosticPort)
         End If
         MySetting.SetOtherIni("Network", "ExternalHostNameForLSL", MySetting.DNSName)
 
@@ -1620,7 +1622,14 @@ Public Class Form1
         If gStopping = True Then
             gStopping = False
             Print("Stopped")
+            For Each X As Integer In RegionClass.RegionNumbers
+                RegionClass.ShuttingDown(X) = False
+                RegionClass.Booted(X) = False
+                RegionClass.WarmingUp(X) = False
+            Next
+
             Buttons(StartButton)
+
             Print("Opensim Is Stopped")
             ProgressBar1.Value = 0
             ProgressBar1.Visible = False
@@ -4056,7 +4065,7 @@ Public Class Form1
 
         Try
             Checkname = client.DownloadString("http://outworldz.net/dns.plx/?GridName=" + name _
-                                              + "&MachineID=" + MySetting.MachineID.ToString _
+                                              + "&MachineID=" + MySetting.Machine() _
                                               + "&Port=" + MySetting.HttpPort.ToString _
                                               + "&Public=" + MySetting.GDPR.ToString _
                                               + "&r=" + Random())

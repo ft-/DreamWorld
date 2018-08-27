@@ -220,9 +220,9 @@ Public Class MySettings
         End Try
 
         Try
-            Dim x = LSL_HHTP()
+            Dim x = LSL_HTTP()
         Catch ex As Exception
-            LSL_HHTP() = False
+            LSL_HTTP() = False
             SaveSettings()
         End Try
 
@@ -465,6 +465,14 @@ Public Class MySettings
 
 #Region "Properties"
 
+    Public Property Myfolder() As String
+        Get
+            Return GetMySetting("Myfolder")
+        End Get
+        Set
+            SetMySetting("Myfolder", Value)
+        End Set
+    End Property
 
     Public Property BirdsModuleStartup() As Boolean
         Get
@@ -568,12 +576,12 @@ Public Class MySettings
     End Property
 
 
-    Public Property LSL_HHTP() As Boolean
+    Public Property LSL_HTTP() As Boolean
         Get
-            Return CType(GetMySetting("LSL_HHTP"), Boolean)
+            Return CType(GetMySetting("LSL_HTTP"), Boolean)
         End Get
         Set
-            SetMySetting("LSL_HHTP", Value.ToString)
+            SetMySetting("LSL_HTTP", Value.ToString)
         End Set
     End Property
 

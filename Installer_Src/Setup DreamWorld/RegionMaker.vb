@@ -783,7 +783,7 @@ Public Class RegionMaker
 
 #Region "POST"
 
-    Public Function ParsePost(POST As String, Folder As String) As String
+    Public Function ParsePost(POST As String, MySetting As MySettings) As String
         ' set Region.Booted to true if the POST from the region indicates it is online
         ' requires a section in Opensim.ini where [RegionReady] has this:
 
@@ -921,15 +921,33 @@ Public Class RegionMaker
                 Return "<html><head></head><body>Error</html>"
             End Try
 
-        ElseIf POST.Contains("Partner1=") And POST.Contains("Partner2=") Then
+        ElseIf POST.Contains("get_partner") Then
 
-            Dim pattern1 As Regex = New Regex("Partner1=(.*?)&")
+            Dim PWok As Boolean = CheckPassword(POST, MySetting.Machine().ToLower)
+            If Not PWok Then Return ""
+
+            Dim pattern1 As Regex = New Regex("User=(.*?) ")
+            Dim match1 As Match = pattern1.Match(POST)
+            Dim p1 As String = ""
+            If match1.Success Then
+                p1 = match1.Groups(1).Value
+            End If
+
+            Return GetPartner(p1, MySetting)
+
+        ElseIf POST.Contains("set_partner") Then
+
+            Dim PWok As Boolean = CheckPassword(POST, MySetting.Machine().ToLower)
+            If Not PWok Then Return ""
+
+
+            Dim pattern1 As Regex = New Regex("User=(.*?)&")
             Dim match1 As Match = pattern1.Match(POST)
             If match1.Success Then
                 Dim p1 As String = ""
                 Dim p2 As String = ""
                 p1 = match1.Groups(1).Value
-                Dim pattern2 As Regex = New Regex("Partner2=(.*)")
+                Dim pattern2 As Regex = New Regex("Partner=(.*)")
                 Dim match2 As Match = pattern2.Match(POST)
                 If match2.Success Then
                     p2 = match2.Groups(1).Value
@@ -937,38 +955,38 @@ Public Class RegionMaker
                 Dim result As New Guid
                 If Guid.TryParse(p1, result) And Guid.TryParse(p1, result) Then
                     Try
-                        Dim MySetting As New MySettings
-                        MySetting.Init(Folder)
-                        Debug.Print(MySetting.MySqlPort)
+
+                        Dim Partner = GetPartner(p1, MySetting)
+                        Debug.Print("Partner=" + p2)
+
                         Dim Str As String = "server=" + MySetting.RobustServer _
-                            + ";database=" + MySetting.RobustDataBaseName _
-                            + ";port=" + MySetting.MySqlPort _
-                            + ";user=" + MySetting.RobustUsername _
-                            + ";password=" + MySetting.RobustPassword _
-                            + ";Old Guids=true;Allow Zero Datetime=true;"
+                                + ";database=" + MySetting.RobustDataBaseName _
+                                + ";port=" + MySetting.MySqlPort _
+                                + ";user=" + MySetting.RobustUsername _
+                                + ";password=" + MySetting.RobustPassword _
+                                + ";Old Guids=true;Allow Zero Datetime=true;"
 
+                        Dim myConnection As MySqlConnection = New MySqlConnection(Str)
 
-                        Dim MysqlConn As MySqlConnection = New MySqlConnection(Str)
-                        Dim cmd As MySqlCommand = New MySqlCommand("update robust.userprofile set profilepartner=@p2, where userUUID = @p1'", MysqlConn)
-                        cmd.Parameters.AddWithValue("p1", p1)
-                        cmd.Parameters.AddWithValue("p2", p2)
-                        Dim a = Convert.ToString(cmd.ExecuteScalar())
-                        cmd = New MySqlCommand("update robust.userprofile set profilepartner=@p1, where userUUID = @p2'", MysqlConn)
-                        cmd.Parameters.AddWithValue("p1", p1)
-                        cmd.Parameters.AddWithValue("p2", p2)
-                        Dim b = Convert.ToString(cmd.ExecuteScalar())
+                        Dim Query1 = "update robust.userprofile set profilepartner=@p2 where userUUID = @p1; "
+                        Dim myCommand1 As MySqlCommand = New MySqlCommand(Query1)
+                        myCommand1.Connection = myConnection
+                        myConnection.Open()
+                        myCommand1.Prepare()
 
-                        Debug.Print(a)
-                        Debug.Print(b)
+                        myCommand1.Parameters.AddWithValue("p1", p1)
+                        myCommand1.Parameters.AddWithValue("p2", p2)
 
-                        MysqlConn.Close()
-                        Return "ACK"
+                        myCommand1.ExecuteScalar()
+                        myConnection.Close()
+
+                        Return Partner
                     Catch ex As Exception
                         Debug.Print(ex.Message)
                     End Try
                 End If
             End If
-            Return "NAK"
+            Return ""
 
         Else
             Return "Test Completed"
@@ -983,6 +1001,43 @@ Public Class RegionMaker
         Return value.Substring(value.Length - length)
     End Function
 
+    Function CheckPassword(POST As String, Machine As String) As Boolean
+
+        ' Returns true is password is blank or matching
+        Dim pattern1 As Regex = New Regex("PW=(.*?)&")
+        Dim match1 As Match = pattern1.Match(POST)
+        If match1.Success Then
+            Dim p1 As String = match1.Groups(1).Value
+            If p1 = "" Then Return True
+            If Machine = p1.ToLower Then Return True
+        End If
+        Return False
+
+    End Function
+
+    Function GetPartner(p1 As String, Mysetting As MySettings) As String
+
+        Dim Str As String = "server=" + Mysetting.RobustServer _
+                                + ";database=" + Mysetting.RobustDataBaseName _
+                                + ";port=" + Mysetting.MySqlPort _
+                                + ";user=" + Mysetting.RobustUsername _
+                                + ";password=" + Mysetting.RobustPassword _
+                                + ";Old Guids=true;Allow Zero Datetime=true;"
+
+        Dim myConnection As MySqlConnection = New MySqlConnection(Str)
+        Dim Query1 = "Select profilepartner from robust.userprofile where userUUID=@p1;"
+        Dim myCommand1 As MySqlCommand = New MySqlCommand(Query1)
+        myCommand1.Connection = myConnection
+        myConnection.Open()
+        myCommand1.Prepare()
+        myCommand1.Parameters.AddWithValue("p1", p1)
+        Dim a = Convert.ToString(myCommand1.ExecuteScalar())
+        Debug.Print("User=" + p1 + ", Partner=" + a)
+
+        myConnection.Close()
+        Return a
+
+    End Function
 #End Region
 
 End Class

@@ -1,0 +1,6 @@
+<Project name="Partner" guid="3cd41629-3e7e-47ef-be7c-647168c7d989">
+	<Object name="Object" guid="9888cd4b-9c6d-4c75-878d-fe30785e6462" active="true">
+		<Script name="Partner Script.ll" guid="64ea8f03-ab96-4aad-b397-30b9abd6f9ad">
+		</Script>
+	</Object>
+</Project>

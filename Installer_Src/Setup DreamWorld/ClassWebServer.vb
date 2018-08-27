@@ -18,6 +18,7 @@ Public Class NetServer
     Private IP As String = Nothing
     Private MyPort As Integer
     Dim RegionClass As RegionMaker = RegionMaker.Instance(Form1.MysqlConn)
+    Dim Setting As MySettings
 
     Private Sub New()
 
@@ -26,13 +27,15 @@ Public Class NetServer
     End Sub
 
 
-    Public Sub StartServer(folder As String, IP As String, Port As Integer)
+    Public Sub StartServer(MySetting As MySettings, IP As String, Port As Integer)
 
+        ' stash some globs
+        Setting = MySetting
         MyPort = Port
         LocalAddress = IPAddress.Parse(IP)
 
         If running Then Return
-        Myfolder = folder
+
         Try
             Log("Info:Starting Diagnostic Webserver")
             WebThread = New Thread(AddressOf Looper)
@@ -89,7 +92,7 @@ Public Class NetServer
 
                 ' Print out the received message to the console.
                 ' Log("Received:" + myCompleteMessage.ToString())
-                Response = RegionClass.ParsePost(myCompleteMessage.ToString(), Myfolder)
+                Response = RegionClass.ParsePost(myCompleteMessage.ToString(), Setting)
             Else
                 Log("Error:Cannot read from this Network Stream.")
             End If
