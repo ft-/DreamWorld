@@ -5,22 +5,24 @@
 // Put this in a box. When two people touch it, they can make a partership.
 //Mods by Ferd Frederix for Dreamgrid
 
-// SETTINGS YOU HAVE TO SET
-// Enter your grid URL here.  You must enable the setting "Allow LSL to contact the server" in Settings->Expert. 
-string URL = "http://localhost";
-// Default = 8001 for Dreamgrid. :80 or blank for other grids
-string PORT = ":8001";
-// Your Unique grid identifier from the Settings panel.
-string PW = "Mach";        
-// How long you have to convince him/her  to click the box
-float TIMEOUT = 10.0; // seconds
-// Ifg you wanto  see a lot of messages, set this to TRUE
-integer debug = TRUE;
+// A SETTING YOU HAVE TO SET FOR SECURITY
+// It worklds whenblank, but it is possible for someone with this script to make or drop partners!
+
+// Set this to your Unique grid identifier from the Settings panel.
+string PW = "";        
 
 // CODE follows, the rest of this should probably not be modified.
-
+// If you want to  see a lot of messages, set this to TRUE
+integer debug = FALSE;
 
 // variables 
+string URL = "";
+// Default = 8001 for Dreamgrid. :80 or blank for other grids
+string PORT = ":8001";
+// How long you have to convince him/her  to click the box
+float TIMEOUT = 10.0; // seconds
+
+
 list PAR = [];
 key id1; // 1st user
 string name1; // 1st user
@@ -36,15 +38,32 @@ key http_request_id4; // begin: set_partner; 2nd user
 key http_request_id5; // dissolve: set_partner; 1st user
 key http_request_id6; // dissolve: set_partner; 2nd user
 
+
 DEBUG(string msg) {
     if (debug) { 
         llSay(0,msg);
     };
 }
 
+string left(string src, string divider) {
+    integer index = llSubStringIndex( src, divider );
+    if(~index)
+        return llDeleteSubString( src, index, -1);
+    return src;
+}
+string right(string src, string divider) {
+    integer index = llSubStringIndex( src, divider );
+    if(~index)
+        return llDeleteSubString( src, 0, index + llStringLength(divider) - 1);
+    return src;
+}
 // default state
 default {
     state_entry()    {
+        //Grid Gatekeeper Uri
+        URL = "http:" + left(right(osGetGridGatekeeperURI(),":"),":");
+        DEBUG(URL);
+   
         llSetText("Click here to begin or\ndissolve partnership", <1,1,1>, 1);
     }
     touch_start(integer num_detected)     {
@@ -97,7 +116,7 @@ default {
             http_request_id4 = llHTTPRequest(req, PAR, "");
         } else if (request_id == http_request_id4) {
             // begin: set_partner; 2nd user
-            llSay(0, name1 + " and " + name2 + " are partners, now");
+            llSay(0, name1 + " and " + name2 + " are now partners. Relog to see your new relationship status in your profiles.");
             state default;
         } else if (request_id == http_request_id5) {
             // dissolve: set_partner; 2nd user
