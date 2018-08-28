@@ -191,3 +191,9 @@ C:\Opensim\Outworldz Dreamgrid Source\Updater_Src\Updater\bin\Release\UpdateGrid
 C:\Opensim\Outworldz Dreamgrid Source\Updater_Src\Updater\obj\Release\UpdateGrid.TrustInfo.xml
 C:\Opensim\Outworldz Dreamgrid Source\Updater_Src\Updater\obj\Release\UpdateGrid.exe.manifest
 C:\Opensim\Outworldz Dreamgrid Source\Updater_Src\Updater\obj\Release\UpdateGrid.application
+D:\Opensim\Outworldz Dreamgrid Source\Updater_Src\Updater\obj\Release\Updater.vbprojResolveAssemblyReference.cache
+D:\Opensim\Outworldz Dreamgrid Source\Updater_Src\Updater\obj\Release\UpdateGrid.TrustInfo.xml
+D:\Opensim\Outworldz Dreamgrid Source\Updater_Src\Updater\bin\Release\UpdateGrid.exe.manifest
+D:\Opensim\Outworldz Dreamgrid Source\Updater_Src\Updater\bin\Release\UpdateGrid.application
+D:\Opensim\Outworldz Dreamgrid Source\Updater_Src\Updater\obj\Release\UpdateGrid.exe.manifest
+D:\Opensim\Outworldz Dreamgrid Source\Updater_Src\Updater\obj\Release\UpdateGrid.application
