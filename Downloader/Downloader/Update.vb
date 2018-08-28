@@ -63,10 +63,10 @@ Public Class Update
         Dim newDream As New Process()
         Try
             newDream.StartInfo.UseShellExecute = False
-            newDream.StartInfo.FileName = "Updategrid.exe"
+            newDream.StartInfo.FileName = "UpdategridV3.exe"
             newDream.Start()
         Catch ex As Exception
-            Label1.Text = "How odd, there seems to be no Updategrid.exe to run!"
+            Label1.Text = "How odd, there seems to be no UpdategridV3.exe to run!"
             Log("No Start.exe Exit")
             Application.DoEvents()
 

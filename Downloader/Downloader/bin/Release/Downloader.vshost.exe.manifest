@@ -42,14 +42,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Downloader.exe" size="15872">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Downloader.exe" size="16384">
       <assemblyIdentity name="Downloader" version="1.2.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>GurNwlyMJ2C8OjuRezB4WYYPLwzXwDjHrQ+et7vTLR4=</dsig:DigestValue>
+        <dsig:DigestValue>O7BeLDfhq4ZHzi45Y6oBf4bslFd0Sxf1xPjfyiLFJCs=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
