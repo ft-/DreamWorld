@@ -1,4 +1,10 @@
-﻿V2.33
+﻿V2.35
+God mode was always off, and could only be enabled in regions.
+
+V2.34
+Missing {ENTER} on Commands
+
+V2.33
 Single threaded updater - the multi-threaded version would not start a thread on some machinery.
 Gloebits Sell enabled bug fixed by setting sell explictly true
 Bird Startup Fix
