@@ -36,7 +36,7 @@ Public Class Form1
 
 #Region "Declarations"
 
-    Dim MyVersion As String = "2.34"
+    Dim MyVersion As String = "2.35"
     Dim DebugPath As String = "\Opensim\Outworldz DreamGrid Source"  ' no slash at end
     Public Domain As String = "https://www.outworldz.com"
     Public prefix As String ' Holds path to Opensim folder
@@ -1319,32 +1319,28 @@ Public Class Form1
                 If RegionClass.RegionGod(X) = "True" Or RegionClass.ManagerGod(X) = "True" Then
                     MySetting.SetOtherIni("Permissions", "allow_grid_gods", "True")
                 Else
-                    MySetting.SetOtherIni("Permissions", "allow_grid_gods", "False")
+                    MySetting.SetOtherIni("Permissions", "allow_grid_gods", MySetting.Allow_grid_gods.ToString)
                 End If
 
                 If RegionClass.RegionGod(X) = "True" Then
                     MySetting.SetOtherIni("Permissions", "region_owner_is_god", "True")
                 Else
-                    MySetting.SetOtherIni("Permissions", "region_owner_is_god", "False")
+                    MySetting.SetOtherIni("Permissions", "region_owner_is_god", MySetting.Region_owner_is_god.ToString)
                 End If
 
                 If RegionClass.ManagerGod(X) = "True" Then
                     MySetting.SetOtherIni("Permissions", "region_manager_is_god", "True")
                 Else
-                    MySetting.SetOtherIni("Permissions", "region_manager_is_god", "False")
+                    MySetting.SetOtherIni("Permissions", "region_manager_is_god", MySetting.Region_manager_is_god.ToString)
                 End If
 
                 If RegionClass.AllowGods(X) = "True" Then
                     MySetting.SetOtherIni("Permissions", "allow_grid_gods", "True")
                 Else
-                    MySetting.SetOtherIni("Permissions", "allow_grid_gods", "False")
+                    MySetting.SetOtherIni("Permissions", "allow_grid_gods", MySetting.Allow_grid_gods.ToString)
                 End If
 
-
                 MySetting.SaveOtherINI()
-
-
-
 
                 Dim BirdData As String = "[" + simName + "]" + vbCrLf &
                     ";this Is the default And determines whether the module does anything" & vbCrLf &
