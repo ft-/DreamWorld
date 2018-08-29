@@ -36,7 +36,7 @@ Public Class Form1
 
 #Region "Declarations"
 
-    Dim MyVersion As String = "2.33"
+    Dim MyVersion As String = "2.34"
     Dim DebugPath As String = "\Opensim\Outworldz DreamGrid Source"  ' no slash at end
     Public Domain As String = "https://www.outworldz.com"
     Public prefix As String ' Holds path to Opensim folder
@@ -2639,7 +2639,7 @@ Public Class Form1
             command = command.Replace(")", "{)}")
 
             AppActivate(ProcessID)
-
+            SendKeys.SendWait("{ENTER}")
             SendKeys.SendWait(command)
         Catch ex As Exception
             Log("Warn:" + ex.Message)
@@ -3204,7 +3204,7 @@ Public Class Form1
             End If
         End While
         BumpProgress10()
-
+        Log("Info:OARS loaded")
         Print("Dreaming up some clothes and items for your avatar")
         Dim iars As String = ""
         Try
@@ -3234,7 +3234,7 @@ Public Class Form1
         End While
 
 
-
+        Log("Info: IARS loaded")
 
         BumpProgress10()
 
@@ -4469,6 +4469,7 @@ Public Class Form1
         ''' Loads OAR and IAR from the menu
         ''' </summary>
         ''' <remarks>Handles both the IAR/OAR and Autobackup folders</remarks>
+        Log("Local OAR")
 
         Dim Filename = MyFolder + "\OutworldzFiles\OAR\"
         Dim OARs As Array = Directory.GetFiles(Filename, "*.OAR", SearchOption.TopDirectoryOnly)
@@ -4482,6 +4483,7 @@ Public Class Form1
             AddHandler OarMenu.Click, New EventHandler(AddressOf LocalOarClick)
             LoadLocalOARSToolStripMenuItem.Visible = True
             LoadLocalOARSToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {OarMenu})
+            Log(Name)
         Next
 
         If MySetting.BackupFolder = "AutoBackup" Then
@@ -4489,7 +4491,7 @@ Public Class Form1
         Else
             Filename = MySetting.BackupFolder
         End If
-
+        Log("Auto OAR")
         Try
             Dim AutoOARs As Array = Directory.GetFiles(Filename, "*.OAR", SearchOption.TopDirectoryOnly)
 
@@ -4502,11 +4504,13 @@ Public Class Form1
                 AddHandler OarMenu.Click, New EventHandler(AddressOf BackupOarClick)
                 LoadLocalOARSToolStripMenuItem.Visible = True
                 LoadLocalOARSToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {OarMenu})
+                Log(Name)
             Next
         Catch
         End Try
         ' now for the IARs
 
+        Log("Local IAR")
         Filename = MyFolder + "\OutworldzFiles\IAR\"
         Dim IARs As Array = Directory.GetFiles(Filename, "*.IAR", SearchOption.TopDirectoryOnly)
 
@@ -4519,6 +4523,7 @@ Public Class Form1
             AddHandler IarMenu.Click, New EventHandler(AddressOf LocalIarClick)
             LoadLocalIARsToolStripMenuItem.Visible = True
             LoadLocalIARsToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {IarMenu})
+            Log(Name)
         Next
 
         If MySetting.BackupFolder = "AutoBackup" Then
@@ -4528,7 +4533,7 @@ Public Class Form1
         End If
 
         Try
-
+            Log("Auto IAR")
             Dim AutoIARs As Array = Directory.GetFiles(Filename, "*.IAR", SearchOption.TopDirectoryOnly)
             For Each IAR As String In AutoIARs
                 Dim Name = Path.GetFileName(IAR)
@@ -4539,6 +4544,7 @@ Public Class Form1
                 AddHandler IarMenu.Click, New EventHandler(AddressOf BackupIarClick)
                 LoadLocalIARsToolStripMenuItem.Visible = True
                 LoadLocalIARsToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {IarMenu})
+                Log(Name)
             Next
         Catch
         End Try
