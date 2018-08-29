@@ -4470,20 +4470,25 @@ Public Class Form1
         ''' </summary>
         ''' <remarks>Handles both the IAR/OAR and Autobackup folders</remarks>
         Log("Local OAR")
-
+        Dim MaxFileNum As Integer = 10
+        Dim counter = MaxFileNum
         Dim Filename = MyFolder + "\OutworldzFiles\OAR\"
         Dim OARs As Array = Directory.GetFiles(Filename, "*.OAR", SearchOption.TopDirectoryOnly)
 
         For Each OAR As String In OARs
-            Dim Name = Path.GetFileName(OAR)
-            Dim OarMenu As New ToolStripMenuItem
-            OarMenu.Text = Name
-            OarMenu.ToolTipText = "Click to load this content"
-            OarMenu.DisplayStyle = ToolStripItemDisplayStyle.Text
-            AddHandler OarMenu.Click, New EventHandler(AddressOf LocalOarClick)
-            LoadLocalOARSToolStripMenuItem.Visible = True
-            LoadLocalOARSToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {OarMenu})
-            Log(Name)
+            counter = counter - 1
+            If counter > 0 Then
+                Dim Name = Path.GetFileName(OAR)
+                Dim OarMenu As New ToolStripMenuItem
+                OarMenu.Text = Name
+                OarMenu.ToolTipText = "Click to load this content"
+                OarMenu.DisplayStyle = ToolStripItemDisplayStyle.Text
+                AddHandler OarMenu.Click, New EventHandler(AddressOf LocalOarClick)
+                LoadLocalOARSToolStripMenuItem.Visible = True
+                LoadLocalOARSToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {OarMenu})
+                Log(Name)
+            End If
+
         Next
 
         If MySetting.BackupFolder = "AutoBackup" Then
@@ -4494,17 +4499,22 @@ Public Class Form1
         Log("Auto OAR")
         Try
             Dim AutoOARs As Array = Directory.GetFiles(Filename, "*.OAR", SearchOption.TopDirectoryOnly)
+            counter = MaxFileNum
 
             For Each OAR As String In AutoOARs
-                Dim Name = Path.GetFileName(OAR)
-                Dim OarMenu As New ToolStripMenuItem
-                OarMenu.Text = Name
-                OarMenu.ToolTipText = "Click to load this content"
-                OarMenu.DisplayStyle = ToolStripItemDisplayStyle.Text
-                AddHandler OarMenu.Click, New EventHandler(AddressOf BackupOarClick)
-                LoadLocalOARSToolStripMenuItem.Visible = True
-                LoadLocalOARSToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {OarMenu})
-                Log(Name)
+                counter = counter - 1
+                If counter > 0 Then
+                    Dim Name = Path.GetFileName(OAR)
+                    Dim OarMenu As New ToolStripMenuItem
+                    OarMenu.Text = Name
+                    OarMenu.ToolTipText = "Click to load this content"
+                    OarMenu.DisplayStyle = ToolStripItemDisplayStyle.Text
+                    AddHandler OarMenu.Click, New EventHandler(AddressOf BackupOarClick)
+                    LoadLocalOARSToolStripMenuItem.Visible = True
+                    LoadLocalOARSToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {OarMenu})
+                    Log(Name)
+                End If
+
             Next
         Catch
         End Try
@@ -4513,17 +4523,21 @@ Public Class Form1
         Log("Local IAR")
         Filename = MyFolder + "\OutworldzFiles\IAR\"
         Dim IARs As Array = Directory.GetFiles(Filename, "*.IAR", SearchOption.TopDirectoryOnly)
-
+        counter = MaxFileNum
         For Each IAR As String In IARs
-            Dim Name = Path.GetFileName(IAR)
-            Dim IarMenu As New ToolStripMenuItem
-            IarMenu.Text = Name
-            IarMenu.ToolTipText = "Click to load this content"
-            IarMenu.DisplayStyle = ToolStripItemDisplayStyle.Text
-            AddHandler IarMenu.Click, New EventHandler(AddressOf LocalIarClick)
-            LoadLocalIARsToolStripMenuItem.Visible = True
-            LoadLocalIARsToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {IarMenu})
-            Log(Name)
+            counter = counter - 1
+            If counter > 0 Then
+                Dim Name = Path.GetFileName(IAR)
+                Dim IarMenu As New ToolStripMenuItem
+                IarMenu.Text = Name
+                IarMenu.ToolTipText = "Click to load this content"
+                IarMenu.DisplayStyle = ToolStripItemDisplayStyle.Text
+                AddHandler IarMenu.Click, New EventHandler(AddressOf LocalIarClick)
+                LoadLocalIARsToolStripMenuItem.Visible = True
+                LoadLocalIARsToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {IarMenu})
+                Log(Name)
+            End If
+
         Next
 
         If MySetting.BackupFolder = "AutoBackup" Then
@@ -4535,16 +4549,21 @@ Public Class Form1
         Try
             Log("Auto IAR")
             Dim AutoIARs As Array = Directory.GetFiles(Filename, "*.IAR", SearchOption.TopDirectoryOnly)
+            counter = MaxFileNum
             For Each IAR As String In AutoIARs
-                Dim Name = Path.GetFileName(IAR)
-                Dim IarMenu As New ToolStripMenuItem
-                IarMenu.Text = Name
-                IarMenu.ToolTipText = "Click to load this content"
-                IarMenu.DisplayStyle = ToolStripItemDisplayStyle.Text
-                AddHandler IarMenu.Click, New EventHandler(AddressOf BackupIarClick)
-                LoadLocalIARsToolStripMenuItem.Visible = True
-                LoadLocalIARsToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {IarMenu})
-                Log(Name)
+                counter = counter - 1
+                If counter > 0 Then
+                    Dim Name = Path.GetFileName(IAR)
+                    Dim IarMenu As New ToolStripMenuItem
+                    IarMenu.Text = Name
+                    IarMenu.ToolTipText = "Click to load this content"
+                    IarMenu.DisplayStyle = ToolStripItemDisplayStyle.Text
+                    AddHandler IarMenu.Click, New EventHandler(AddressOf BackupIarClick)
+                    LoadLocalIARsToolStripMenuItem.Visible = True
+                    LoadLocalIARsToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {IarMenu})
+                    Log(Name)
+                End If
+
             Next
         Catch
         End Try
