@@ -466,7 +466,7 @@ Public Class RegionMaker
             L.Add(ctr)
             ctr = ctr + 1
         Next
-        'Debug.Print("List Len = " + L.Count.ToString)
+        Debug.Print("List Len = " + L.Count.ToString)
         Return L
     End Function
 
@@ -475,7 +475,7 @@ Public Class RegionMaker
         Dim i As Integer = 0
         For Each obj As Region_data In RegionList
             If Name = obj._RegionName Then
-                ' Debug.Print("Current Region is " + obj._RegionName)
+                Debug.Print("Current Region is " + obj._RegionName)
                 Return i
             End If
             i = i + 1

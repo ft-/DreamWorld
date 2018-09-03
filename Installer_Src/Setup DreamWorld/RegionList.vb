@@ -256,6 +256,29 @@ Public Class RegionList
 
 
     End Sub
+
+    Private Declare Function ShowWindow Lib "user32.dll" (ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
+
+    <Flags()>
+    Private Enum SHOW_WINDOW As Integer
+        SW_HIDE = 0
+        SW_SHOWNORMAL = 1
+        SW_NORMAL = 1
+        SW_SHOWMINIMIZED = 2
+        SW_SHOWMAXIMIZED = 3
+        SW_MAXIMIZE = 3
+        SW_SHOWNOACTIVATE = 4
+        SW_SHOW = 5
+        SW_MINIMIZE = 6
+        SW_SHOWMINNOACTIVE = 7
+        SW_SHOWNA = 8
+        SW_RESTORE = 9
+        SW_SHOWDEFAULT = 10
+        SW_FORCEMINIMIZE = 11
+        SW_MAX = 11
+    End Enum
+
+
     Private Sub StartStopEdit(checked As Boolean, n As Integer)
 
         ' stop it, start it, or edit it
@@ -279,7 +302,12 @@ Public Class RegionList
                 Dim V = MsgBox("Stop " + RegionClass.GroupName(n) + "?", vbYesNo)
                 If V = vbNo Then Return
 
+
+
+
                 For Each num In RegionClass.RegionListByGroupNum(RegionClass.GroupName(n))
+
+                    ShowWindow(Process.GetProcessById(RegionClass.ProcessID(num)).MainWindowHandle, SHOW_WINDOW.SW_RESTORE)
 
                     ' Ask before killing any people
                     If RegionClass.AvatarCount(num) > 0 Then
