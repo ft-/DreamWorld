@@ -581,22 +581,22 @@ Public Class Form1
             End If
 
         Next
+        Log("TotalRunningRegions=" + TotalRunningRegions.ToString)
 
         ' show robust last
         ShowWindow(Process.GetProcessById(gRobustProcID).MainWindowHandle, SHOW_WINDOW.SW_RESTORE)
+        '
 
-        Dim ctr = 0
         For Each X As Integer In RegionClass.RegionNumbers
-            Dim PID As Integer = RegionClass.ProcessID(ctr)
+            Dim PID As Integer = RegionClass.ProcessID(X)
             If PID > 0 Then
-                RegionClass.ShuttingDown(ctr) = True
-                RegionClass.Booted(ctr) = False
-                RegionClass.WarmingUp(ctr) = False
-                Print("Shutting down " + RegionClass.RegionName(ctr))
+                RegionClass.ShuttingDown(X) = True
+                RegionClass.Booted(X) = False
+                RegionClass.WarmingUp(X) = False
+                Print("Shutting down " + RegionClass.RegionName(X))
                 ConsoleCommand(PID, "q{ENTER}")
             End If
             Application.DoEvents()
-            ctr = ctr + 1
         Next
         Dim counter = 300 ' 5 minutes to quit all regions
 
@@ -611,21 +611,21 @@ Public Class Form1
                 Sleep(1000)
 
                 counter = counter - 1
-                Dim isRunning As Integer = 0
+                Dim CountisRunning As Integer = 0
 
                 For Each X In RegionClass.RegionNumbers
                     If RegionClass.ProcessID(X) > 0 Then
-                        isRunning = isRunning + 1
+                        CountisRunning = CountisRunning + 1
                         Log(RegionClass.RegionName(X) + " is still running")
                     End If
                     Application.DoEvents()
                 Next
-                If isRunning > 0 Then counter = 0
+                If CountisRunning = 0 Then counter = 0
 
-                Dim v As Double = isRunning / TotalRunningRegions * 100
+                Dim v As Double = CountisRunning / TotalRunningRegions * 100
                 If v > 0 And v <= 100 Then
                     ProgressBar1.Value = CType(v, Integer)
-                   ' Diagnostics.Debug.Print("V=" + ProgressBar1.Value.ToString)
+                    Diagnostics.Debug.Print("V=" + ProgressBar1.Value.ToString)
                 End If
 
             End While
@@ -3499,7 +3499,7 @@ Public Class Form1
 
     Private Function ProbePublicPort() As Boolean
 
-        If MySetting.PublicIP = "localhost" Or MySetting.PublicIP = "127.0.0.1" Then
+        If MySetting.PublicIP = "localhost" Or MySetting.PublicIP = "127.0.0.1" Or MySetting.PublicIP = MySetting.PrivateURL Then
             Return True
         End If
         Print("Checking Router")
@@ -4009,6 +4009,7 @@ Public Class Form1
             Return True
         End If
 
+        Print("Setting DynDNS")
         Dim client As New System.Net.WebClient
         Dim Checkname As String = String.Empty
 
