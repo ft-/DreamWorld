@@ -505,6 +505,7 @@ Public Class Expert
         ofd.Multiselect = False
         If ofd.ShowDialog = DialogResult.OK Then
             If ofd.FileName <> String.Empty Then
+                PictureBox9.Image = Nothing
                 PictureBox9.Image = Bitmap.FromFile(ofd.FileName)
                 Try
                     My.Computer.FileSystem.DeleteFile(Form1.MyFolder & "\OutworldzFiles\Photo.png")
@@ -513,11 +514,12 @@ Public Class Expert
                 Try
                     PictureBox9.Image.Save(Form1.MyFolder & "\OutworldzFiles\Photo.png", System.Drawing.Imaging.ImageFormat.Png)
                 Catch ex As Exception
+                    Form1.Log(ex.Message)
                 End Try
 
                 Dim params As New Specialized.NameValueCollection
                 params.Add("MachineID", Form1.MySetting.MachineID())
-                'params.Add("file", "Photo.png")
+                params.Add("DnsName", Form1.MySetting.DNSName)
 
                 Dim Myupload As New UploadImage
                 Dim URL = New Uri("https://www.outworldz.com/cgi/uploadphoto.plx")
