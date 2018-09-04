@@ -71,6 +71,7 @@ Public Class RegionMaker
     End Sub
 
 #End Region
+
 #Region "Classes"
     Public Class JSON_result
         Public alert As String
@@ -119,6 +120,7 @@ Public Class RegionMaker
     End Class
 
 #End Region
+
 #Region "Properties"
 
     Public Property GroupName(n As Integer) As String
@@ -384,37 +386,6 @@ Public Class RegionMaker
 
 #Region "Functions"
 
-    Public Sub CheckDupPorts()
-
-        Dim Portlist As New Dictionary(Of Integer, String)
-        For Each r As Region_data In RegionList
-            Dim port As Integer = r._RegionPort
-            Dim name As String = r._RegionName
-            Try
-                Portlist.Add(port, name)
-            Catch ex As Exception
-
-                Dim msg As String
-
-                msg = "ŐŐps!, I see a hole in your pants. I mean, an overlap in your ports. " + vbCrLf _
-                        + "Region " + Portlist.Item(r._RegionPort) + ":" + r._RegionPort.ToString + " is already in use." + vbCrLf _
-                        + "Region " + name + " overlaps it." + vbCrLf _
-                        + "Want me to fix it?"
-
-                Dim response = MsgBox(msg, vbYesNo)
-                If response = vbYes Then
-                    Dim newport = Form1.RegionClass.LargestPort + 1
-                    Portlist.Add(newport, name)
-                    r._RegionPort = newport
-                    WriteRegionObject(name)
-                End If
-            End Try
-
-        Next
-
-
-    End Sub
-
     Private Function CheckN(n As Integer) As Integer
 
         If n > RegionList.Count Or n < 0 Then
@@ -651,7 +622,7 @@ Public Class RegionMaker
                         End If
 
                         n = n + 1
-
+                        Application.DoEvents()
                     Next
 
                 Catch ex As Exception
@@ -672,15 +643,19 @@ Public Class RegionMaker
             Return
         End If
 
-        Dim pathtoWelcome As String = Form1.prefix + "bin\Regions\" + name + "\Region\"
-        Dim fname = pathtoWelcome + name + ".ini"
-        If Not Directory.Exists(pathtoWelcome) Then
-            Try
-                Directory.CreateDirectory(pathtoWelcome)
-            Catch ex As Exception
+        Dim fname As String = RegionList(n)._FolderPath.ToString
 
-            End Try
+        If (fname = "") Then
+            Dim pathtoWelcome As String = Form1.prefix + "bin\Regions\" + name + "\Region\"
+            fname = pathtoWelcome + name + ".ini"
+            If Not Directory.Exists(pathtoWelcome) Then
+                Try
+                    Directory.CreateDirectory(pathtoWelcome)
+                Catch ex As Exception
 
+                End Try
+
+            End If
         End If
 
         Dim proto = "; * Regions configuration file; " + vbCrLf _
@@ -756,7 +731,8 @@ Public Class RegionMaker
         For Each obj As Region_data In RegionList
             Try
                 Portlist.Add(obj._RegionPort, obj._RegionName)
-            Catch
+            Catch ex As Exception
+                Debug.Print(ex.Message)
             End Try
         Next
 

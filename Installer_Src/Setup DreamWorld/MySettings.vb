@@ -226,6 +226,19 @@ Public Class MySettings
             SaveSettings()
         End Try
 
+        Try
+            Dim x = FirstRegionPort()
+            If x = "" Then
+                x = "8004"
+                FirstRegionPort = x
+                SaveSettings()
+            End If
+        Catch ex As Exception
+            FirstRegionPort() = "8004"
+            SaveSettings()
+        End Try
+
+
         SetBirds()
 
         ' check for default
@@ -464,6 +477,15 @@ Public Class MySettings
 #End Region
 
 #Region "Properties"
+
+    Public Property FirstRegionPort() As String
+        Get
+            Return GetMySetting("FirstRegionPort")
+        End Get
+        Set
+            SetMySetting("FirstRegionPort", Value)
+        End Set
+    End Property
 
     Public Property Myfolder() As String
         Get

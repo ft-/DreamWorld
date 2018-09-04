@@ -10,6 +10,10 @@ Public Class Expert
 
     Private Sub Loaded(sender As Object, e As EventArgs) Handles Me.Load
 
+
+        FirstRegionPort.Text = Form1.MySetting.FirstRegionPort()
+        MaxP.Text = "Highest used: " + Form1.gMaxPortUsed.ToString
+
         DataSnapshotCheckBox.Checked = Form1.MySetting.DataSnapshot()
 
         AutoRestartBox.Text = Form1.MySetting.AutoRestartInterval.ToString
@@ -598,8 +602,10 @@ Public Class Expert
         Form1.MySetting.SaveSettings()
     End Sub
 
-
-
+    Private Sub FirstRegionPort_TextChanged(sender As Object, e As EventArgs) Handles FirstRegionPort.TextChanged
+        Form1.MySetting.FirstRegionPort() = FirstRegionPort.Text
+        Form1.MySetting.SaveSettings()
+    End Sub
 
 
 #End Region
