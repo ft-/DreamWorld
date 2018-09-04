@@ -42,9 +42,9 @@ Thumbs.db
 ~*
 *~
 
-*/obj/*
-*/Release/*
-*/Debug/*
+**/obj/*
+**/Release/*
+**/Debug/*
 
 
 # Ignore .user and .suo files as these are user preference specific
