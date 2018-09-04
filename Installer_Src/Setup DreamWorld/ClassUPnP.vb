@@ -241,9 +241,12 @@ Public Class UPnp
     ''' <remarks></remarks>
     Private Shared Function IsPrivateIP(ByVal CheckIP As String) As Boolean
         Dim Quad1, Quad2 As Integer
+        Try
+            Quad1 = CInt(CheckIP.Substring(0, CheckIP.IndexOf(".")))
+            Quad2 = CInt(CheckIP.Substring(CheckIP.IndexOf(".") + 1).Substring(0, CheckIP.IndexOf(".")))
+        Catch
+        End Try
 
-        Quad1 = CInt(CheckIP.Substring(0, CheckIP.IndexOf(".")))
-        Quad2 = CInt(CheckIP.Substring(CheckIP.IndexOf(".") + 1).Substring(0, CheckIP.IndexOf(".")))
         Select Case Quad1
             Case 10
                 Return True
