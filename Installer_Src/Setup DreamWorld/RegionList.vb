@@ -298,16 +298,13 @@ Public Class RegionList
 
         If (RegionClass.Booted(n) Or RegionClass.WarmingUp(n)) Or RegionClass.ShuttingDown(n) Then
             ' if enabled and running, even partly up, stop it.
+
+            ShowWindow(Process.GetProcessById(RegionClass.ProcessID(n)).MainWindowHandle, SHOW_WINDOW.SW_RESTORE)
             Try
                 Dim V = MsgBox("Stop " + RegionClass.GroupName(n) + "?", vbYesNo)
                 If V = vbNo Then Return
 
-
-
-
                 For Each num In RegionClass.RegionListByGroupNum(RegionClass.GroupName(n))
-
-                    ShowWindow(Process.GetProcessById(RegionClass.ProcessID(num)).MainWindowHandle, SHOW_WINDOW.SW_RESTORE)
 
                     ' Ask before killing any people
                     If RegionClass.AvatarCount(num) > 0 Then
@@ -322,7 +319,7 @@ Public Class RegionList
                             StopRegionNum(num)
                         End If
                     Else
-                            StopRegionNum(num)
+                        StopRegionNum(num)
                     End If
                 Next
 
