@@ -1,8 +1,11 @@
-﻿V2.35
+﻿V2.36
+Regions auto-count up
+
+V2.35
 God mode was always off, and could only be enabled in regions.
 
 V2.34
-Missing {ENTER} on Commands
+Add an extra {ENTER} befgore typing commands
 
 V2.33
 Single threaded updater - the multi-threaded version would not start a thread on some machinery.
