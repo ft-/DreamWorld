@@ -36,7 +36,7 @@ Public Class Form1
 
 #Region "Declarations"
 
-    Dim MyVersion As String = "2.35"
+    Dim MyVersion As String = "2.36"
     Dim DebugPath As String = "\Opensim\Outworldz DreamGrid Source"  ' no slash at end
     Public Domain As String = "https://www.outworldz.com"
     Public prefix As String ' Holds path to Opensim folder
@@ -3997,7 +3997,7 @@ Public Class Form1
         pi.Arguments = "-u root shutdown"
         pi.FileName = """" + MyFolder + "\OutworldzFiles\mysql\bin\mysqladmin.exe" + """"
         pi.UseShellExecute = True ' so we can redirect streams and minimize
-        pi.WindowStyle = ProcessWindowStyle.Normal
+        pi.WindowStyle = ProcessWindowStyle.Hidden
         p.StartInfo = pi
 
         Try
