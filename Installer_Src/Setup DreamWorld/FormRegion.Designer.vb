@@ -110,6 +110,7 @@ Partial Class FormRegion
         '
         Me.RegionPort.Location = New System.Drawing.Point(97, 39)
         Me.RegionPort.Name = "RegionPort"
+        Me.RegionPort.ReadOnly = True
         Me.RegionPort.Size = New System.Drawing.Size(40, 20)
         Me.RegionPort.TabIndex = 14
         Me.ToolTip1.SetToolTip(Me.RegionPort, "The UDP port the region will operate on. Must be unique")
