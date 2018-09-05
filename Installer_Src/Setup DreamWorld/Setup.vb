@@ -70,6 +70,7 @@ Public Class Form1
     ' Mysql
     Dim MysqlOk As Boolean
     Public robustconnStr As String = ""
+    Public gMaxPortUsed As Integer = 0
 
     Public Event RobustExited As EventHandler
     Private images As List(Of Image) = New List(Of Image) From {My.Resources.tangled, My.Resources.wp_habitat, My.Resources.wp_Mooferd,
@@ -1189,13 +1190,20 @@ Public Class Form1
         Catch ex As Exception
         End Try
 
+        ' Self setting Region Ports
+        Dim FirstPort As Integer = Convert.ToInt16(MySetting.FirstRegionPort())
 
         For Each X In RegionClass.RegionNumbers
             If RegionClass.RegionName(X) <> "Robust" Then
                 Dim simName = RegionClass.RegionName(X)
 
                 MySetting.LoadOtherIni(RegionClass.RegionPath(X), ";")
-                MySetting.SetOtherIni(simName, "InternalPort", Convert.ToString(RegionClass.RegionPort(X)))
+                MySetting.SetOtherIni(simName, "InternalPort", FirstPort.ToString)
+
+                ' Self setting Region Ports
+                gMaxPortUsed = FirstPort
+                FirstPort = FirstPort + 1
+
                 MySetting.SetOtherIni(simName, "ExternalHostName", Convert.ToString(MySetting.PublicIP))
 
                 ' not a standard INI, only use by the Dreamers
@@ -1813,8 +1821,6 @@ Public Class Form1
     Private Function Start_Opensimulator() As Boolean
 
         If Running = False Then Return True
-
-        RegionClass.CheckDupPorts()
 
         PortTests()
 
@@ -2738,6 +2744,7 @@ Public Class Form1
     Private Sub Timer1_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Timer1.Tick
 
         PaintImage()
+        gDNSSTimer = gDNSSTimer + 1
 
         If gDNSSTimer Mod 3600 = 0 Then
             RegisterDNS()
@@ -2748,7 +2755,7 @@ Public Class Form1
             LoadRegionsStatsBar()   ' fill in menu once a minute
         End If
 
-        gDNSSTimer = gDNSSTimer + 1
+
 
     End Sub
 
@@ -3589,8 +3596,12 @@ Public Class Form1
 
         Dim Quad1, Quad2 As Integer
 
-        Quad1 = CInt(CheckIP.Substring(0, CheckIP.IndexOf(".")))
-        Quad2 = CInt(CheckIP.Substring(CheckIP.IndexOf(".") + 1).Substring(0, CheckIP.IndexOf(".")))
+        Try
+            Quad1 = CInt(CheckIP.Substring(0, CheckIP.IndexOf(".")))
+            Quad2 = CInt(CheckIP.Substring(CheckIP.IndexOf(".") + 1).Substring(0, CheckIP.IndexOf(".")))
+        Catch
+        End Try
+
         Select Case Quad1
             Case 10
                 Return True
@@ -4009,12 +4020,16 @@ Public Class Form1
             Return True
         End If
 
-        Print("Setting DynDNS")
+        If IsPrivateIP(MySetting.DNSName) Then
+            Return True
+        End If
+
+        Print("Setting DynDNS " + MySetting.DNSName)
         Dim client As New System.Net.WebClient
         Dim Checkname As String = String.Empty
 
         Try
-            Checkname = client.DownloadString("http://outworldz.net/dns.plx?GridName=" + MySetting.PublicIP + "&r=" + Random())
+            Checkname = client.DownloadString("http://outworldz.net/dns.plx?GridName=" + MySetting.DNSName + "&r=" + Random())
         Catch ex As Exception
             Log("Warn:Cannot check the DNS Name" + ex.Message)
             Return False

@@ -46,6 +46,9 @@ Partial Class Expert
         Me.ManagerGod = New System.Windows.Forms.CheckBox()
         Me.RegionGod = New System.Windows.Forms.CheckBox()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
+        Me.MaxP = New System.Windows.Forms.Label()
+        Me.Label26 = New System.Windows.Forms.Label()
+        Me.FirstRegionPort = New System.Windows.Forms.TextBox()
         Me.PictureBox2 = New System.Windows.Forms.PictureBox()
         Me.uPnPEnabled = New System.Windows.Forms.CheckBox()
         Me.Label7 = New System.Windows.Forms.Label()
@@ -76,7 +79,6 @@ Partial Class Expert
         Me.RobustDBPassword = New System.Windows.Forms.TextBox()
         Me.RobustDBUsername = New System.Windows.Forms.TextBox()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
-        Me.PictureBox3 = New System.Windows.Forms.PictureBox()
         Me.AutoLoadCheckbox = New System.Windows.Forms.CheckBox()
         Me.AdminFirst = New System.Windows.Forms.TextBox()
         Me.AdminLast = New System.Windows.Forms.TextBox()
@@ -137,7 +139,6 @@ Partial Class Expert
         CType(Me.PictureBox8, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox1.SuspendLayout()
         Me.GridGroup.SuspendLayout()
-        CType(Me.PictureBox3, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox4, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.GridNameHelp, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox10, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -374,6 +375,9 @@ Partial Class Expert
         '
         'GroupBox2
         '
+        Me.GroupBox2.Controls.Add(Me.MaxP)
+        Me.GroupBox2.Controls.Add(Me.Label26)
+        Me.GroupBox2.Controls.Add(Me.FirstRegionPort)
         Me.GroupBox2.Controls.Add(Me.PictureBox2)
         Me.GroupBox2.Controls.Add(Me.uPnPEnabled)
         Me.GroupBox2.Controls.Add(Me.Label7)
@@ -384,17 +388,43 @@ Partial Class Expert
         Me.GroupBox2.Controls.Add(Me.Label4)
         Me.GroupBox2.Location = New System.Drawing.Point(424, 12)
         Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Size = New System.Drawing.Size(199, 121)
+        Me.GroupBox2.Size = New System.Drawing.Size(199, 166)
         Me.GroupBox2.TabIndex = 44
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Ports"
         '
+        'MaxP
+        '
+        Me.MaxP.AutoSize = True
+        Me.MaxP.Location = New System.Drawing.Point(71, 148)
+        Me.MaxP.Name = "MaxP"
+        Me.MaxP.Size = New System.Drawing.Size(99, 13)
+        Me.MaxP.TabIndex = 1862
+        Me.MaxP.Text = "Highest used: 8004"
+        '
+        'Label26
+        '
+        Me.Label26.AutoSize = True
+        Me.Label26.Location = New System.Drawing.Point(18, 130)
+        Me.Label26.Name = "Label26"
+        Me.Label26.Size = New System.Drawing.Size(98, 13)
+        Me.Label26.TabIndex = 1861
+        Me.Label26.Text = "Region Port Start #"
+        '
+        'FirstRegionPort
+        '
+        Me.FirstRegionPort.Location = New System.Drawing.Point(138, 121)
+        Me.FirstRegionPort.Name = "FirstRegionPort"
+        Me.FirstRegionPort.Size = New System.Drawing.Size(47, 20)
+        Me.FirstRegionPort.TabIndex = 1860
+        Me.ToolTip1.SetToolTip(Me.FirstRegionPort, "Port 8004 is the default- ports count up by 1. ")
+        '
         'PictureBox2
         '
         Me.PictureBox2.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.PictureBox2.Location = New System.Drawing.Point(155, 9)
+        Me.PictureBox2.Location = New System.Drawing.Point(155, 15)
         Me.PictureBox2.Name = "PictureBox2"
-        Me.PictureBox2.Size = New System.Drawing.Size(30, 34)
+        Me.PictureBox2.Size = New System.Drawing.Size(30, 29)
         Me.PictureBox2.TabIndex = 1859
         Me.PictureBox2.TabStop = False
         Me.ToolTip1.SetToolTip(Me.PictureBox2, "UPnP may port forward your ports for you.")
@@ -690,16 +720,6 @@ Partial Class Expert
         Me.RobustDBUsername.Size = New System.Drawing.Size(107, 20)
         Me.RobustDBUsername.TabIndex = 36
         '
-        'PictureBox3
-        '
-        Me.PictureBox3.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.PictureBox3.Location = New System.Drawing.Point(192, 12)
-        Me.PictureBox3.Name = "PictureBox3"
-        Me.PictureBox3.Size = New System.Drawing.Size(30, 34)
-        Me.PictureBox3.TabIndex = 1860
-        Me.PictureBox3.TabStop = False
-        Me.ToolTip1.SetToolTip(Me.PictureBox3, "A local Database for Region storage")
-        '
         'AutoLoadCheckbox
         '
         Me.AutoLoadCheckbox.AutoSize = True
@@ -761,7 +781,7 @@ Partial Class Expert
         'PictureBox4
         '
         Me.PictureBox4.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.PictureBox4.Location = New System.Drawing.Point(148, 12)
+        Me.PictureBox4.Location = New System.Drawing.Point(148, 6)
         Me.PictureBox4.Name = "PictureBox4"
         Me.PictureBox4.Size = New System.Drawing.Size(30, 34)
         Me.PictureBox4.TabIndex = 1858
@@ -845,7 +865,7 @@ Partial Class Expert
         '
         'RegionMySqlPassword
         '
-        Me.RegionMySqlPassword.Location = New System.Drawing.Point(120, 107)
+        Me.RegionMySqlPassword.Location = New System.Drawing.Point(120, 81)
         Me.RegionMySqlPassword.Name = "RegionMySqlPassword"
         Me.RegionMySqlPassword.Size = New System.Drawing.Size(107, 20)
         Me.RegionMySqlPassword.TabIndex = 32
@@ -854,7 +874,7 @@ Partial Class Expert
         'Label21
         '
         Me.Label21.AutoSize = True
-        Me.Label21.Location = New System.Drawing.Point(17, 78)
+        Me.Label21.Location = New System.Drawing.Point(17, 52)
         Me.Label21.Name = "Label21"
         Me.Label21.Size = New System.Drawing.Size(55, 13)
         Me.Label21.TabIndex = 16
@@ -862,14 +882,14 @@ Partial Class Expert
         '
         'RegionDBUsername
         '
-        Me.RegionDBUsername.Location = New System.Drawing.Point(120, 78)
+        Me.RegionDBUsername.Location = New System.Drawing.Point(120, 52)
         Me.RegionDBUsername.Name = "RegionDBUsername"
         Me.RegionDBUsername.Size = New System.Drawing.Size(107, 20)
         Me.RegionDBUsername.TabIndex = 31
         '
         'RegionDbName
         '
-        Me.RegionDbName.Location = New System.Drawing.Point(120, 52)
+        Me.RegionDbName.Location = New System.Drawing.Point(120, 26)
         Me.RegionDbName.Name = "RegionDbName"
         Me.RegionDbName.Size = New System.Drawing.Size(107, 20)
         Me.RegionDbName.TabIndex = 30
@@ -877,7 +897,7 @@ Partial Class Expert
         'Label20
         '
         Me.Label20.AutoSize = True
-        Me.Label20.Location = New System.Drawing.Point(16, 52)
+        Me.Label20.Location = New System.Drawing.Point(16, 26)
         Me.Label20.Name = "Label20"
         Me.Label20.Size = New System.Drawing.Size(53, 13)
         Me.Label20.TabIndex = 13
@@ -886,7 +906,7 @@ Partial Class Expert
         'Label22
         '
         Me.Label22.AutoSize = True
-        Me.Label22.Location = New System.Drawing.Point(17, 105)
+        Me.Label22.Location = New System.Drawing.Point(17, 79)
         Me.Label22.Name = "Label22"
         Me.Label22.Size = New System.Drawing.Size(53, 13)
         Me.Label22.TabIndex = 17
@@ -895,7 +915,6 @@ Partial Class Expert
         'StandaloneGroup
         '
         Me.StandaloneGroup.Controls.Add(Me.Label22)
-        Me.StandaloneGroup.Controls.Add(Me.PictureBox3)
         Me.StandaloneGroup.Controls.Add(Me.Label20)
         Me.StandaloneGroup.Controls.Add(Me.RegionDbName)
         Me.StandaloneGroup.Controls.Add(Me.RegionDBUsername)
@@ -903,7 +922,7 @@ Partial Class Expert
         Me.StandaloneGroup.Controls.Add(Me.RegionMySqlPassword)
         Me.StandaloneGroup.Location = New System.Drawing.Point(633, 180)
         Me.StandaloneGroup.Name = "StandaloneGroup"
-        Me.StandaloneGroup.Size = New System.Drawing.Size(243, 142)
+        Me.StandaloneGroup.Size = New System.Drawing.Size(243, 119)
         Me.StandaloneGroup.TabIndex = 54
         Me.StandaloneGroup.TabStop = False
         Me.StandaloneGroup.Text = "Local Region Database"
@@ -917,7 +936,7 @@ Partial Class Expert
         Me.AutoStart.Controls.Add(Me.Label6)
         Me.AutoStart.Controls.Add(Me.BootStart)
         Me.AutoStart.Controls.Add(Me.AutoStartCheckbox)
-        Me.AutoStart.Location = New System.Drawing.Point(639, 334)
+        Me.AutoStart.Location = New System.Drawing.Point(633, 311)
         Me.AutoStart.Name = "AutoStart"
         Me.AutoStart.Size = New System.Drawing.Size(243, 118)
         Me.AutoStart.TabIndex = 44
@@ -974,7 +993,7 @@ Partial Class Expert
         'GroupBox5
         '
         Me.GroupBox5.Controls.Add(Me.AutoLoadCheckbox)
-        Me.GroupBox5.Location = New System.Drawing.Point(647, 458)
+        Me.GroupBox5.Location = New System.Drawing.Point(639, 442)
         Me.GroupBox5.Name = "GroupBox5"
         Me.GroupBox5.Size = New System.Drawing.Size(189, 48)
         Me.GroupBox5.TabIndex = 55
@@ -1039,7 +1058,7 @@ Partial Class Expert
         Me.Web.Controls.Add(Me.Label11)
         Me.Web.Controls.Add(Me.Label10)
         Me.Web.Controls.Add(Me.AdminPassword)
-        Me.Web.Location = New System.Drawing.Point(431, 155)
+        Me.Web.Location = New System.Drawing.Point(431, 184)
         Me.Web.Name = "Web"
         Me.Web.Size = New System.Drawing.Size(192, 167)
         Me.Web.TabIndex = 47
@@ -1056,9 +1075,9 @@ Partial Class Expert
         Me.GroupBox6.Controls.Add(Me.Label18)
         Me.GroupBox6.Controls.Add(Me.Label14)
         Me.GroupBox6.Controls.Add(Me.GmailUsername)
-        Me.GroupBox6.Location = New System.Drawing.Point(433, 329)
+        Me.GroupBox6.Location = New System.Drawing.Point(433, 358)
         Me.GroupBox6.Name = "GroupBox6"
-        Me.GroupBox6.Size = New System.Drawing.Size(200, 156)
+        Me.GroupBox6.Size = New System.Drawing.Size(200, 150)
         Me.GroupBox6.TabIndex = 1861
         Me.GroupBox6.TabStop = False
         Me.GroupBox6.Text = "SMTP Send Email Account"
@@ -1156,7 +1175,7 @@ Partial Class Expert
         Me.LimitsBox.Controls.Add(Me.EnableMaxPrims)
         Me.LimitsBox.Location = New System.Drawing.Point(225, 348)
         Me.LimitsBox.Name = "LimitsBox"
-        Me.LimitsBox.Size = New System.Drawing.Size(189, 56)
+        Me.LimitsBox.Size = New System.Drawing.Size(189, 47)
         Me.LimitsBox.TabIndex = 1860
         Me.LimitsBox.TabStop = False
         Me.LimitsBox.Text = "Prim Limits"
@@ -1164,7 +1183,7 @@ Partial Class Expert
         'GroupBox8
         '
         Me.GroupBox8.Controls.Add(Me.LSLCheckbox)
-        Me.GroupBox8.Location = New System.Drawing.Point(225, 413)
+        Me.GroupBox8.Location = New System.Drawing.Point(225, 401)
         Me.GroupBox8.Name = "GroupBox8"
         Me.GroupBox8.Size = New System.Drawing.Size(189, 48)
         Me.GroupBox8.TabIndex = 56
@@ -1212,7 +1231,6 @@ Partial Class Expert
         Me.GroupBox1.PerformLayout()
         Me.GridGroup.ResumeLayout(False)
         Me.GridGroup.PerformLayout()
-        CType(Me.PictureBox3, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox4, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.GridNameHelp, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox10, System.ComponentModel.ISupportInitialize).EndInit()
@@ -1291,7 +1309,6 @@ Partial Class Expert
     Friend WithEvents BootStart As CheckBox
     Friend WithEvents PictureBox5 As PictureBox
     Friend WithEvents PictureBox2 As PictureBox
-    Friend WithEvents PictureBox3 As PictureBox
     Friend WithEvents PictureBox7 As PictureBox
     Friend WithEvents PictureBox6 As PictureBox
     Friend WithEvents EnableHypergrid As CheckBox
@@ -1336,4 +1353,7 @@ Partial Class Expert
     Friend WithEvents DataSnapshotCheckBox As CheckBox
     Friend WithEvents GroupBox8 As GroupBox
     Friend WithEvents LSLCheckbox As CheckBox
+    Friend WithEvents Label26 As Label
+    Friend WithEvents FirstRegionPort As TextBox
+    Friend WithEvents MaxP As Label
 End Class
