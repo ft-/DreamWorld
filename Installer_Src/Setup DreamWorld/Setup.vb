@@ -615,9 +615,9 @@ Public Class Form1
 
                 counter = counter - 1
                 Dim CountisRunning As Integer = 0
-
+                Sleep(1000)
                 For Each X In RegionClass.RegionNumbers
-                    PrintFast("Checking if " + RegionClass.RegionName(X) + " has exited")
+                    PrintFast("Checking " + RegionClass.RegionName(X))
                     'If CheckPort("127.0.0.1", RegionClass.RegionPort(X)) Then
                     If RegionClass.ProcessID(X) > 0 Then
                         CountisRunning = CountisRunning + 1
@@ -751,6 +751,7 @@ Public Class Form1
         PictureBox1.Visible = False
         TextBox1.Visible = True
         TextBox1.Text = Value
+        Sleep(100)
         Application.DoEvents()
 
     End Sub
@@ -907,7 +908,7 @@ Public Class Form1
             Log("Info:Console will not be shown")
         End If
 
-        Print("Saving all settings")
+        PrintFast("Saving all settings")
 
         MySetting.SaveSettings()
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -929,8 +930,6 @@ Public Class Form1
         MySetting.SetOtherIni("TOSModule", "ShowToForeignUsers", MySetting.ShowToForeignUsers.ToString)
         MySetting.SetOtherIni("TOSModule", "TOS_URL", "http://" + MySetting.PublicIP + ":" + MySetting.HttpPort + "/wifi/termsofservice.html")
         MySetting.SaveOtherINI()
-
-        SetTOSPort()
 
         MySetting.LoadOtherIni(prefix + "bin\config-include\Gridcommon.ini", ";")
         Dim ConnectionString = """" _
@@ -1174,12 +1173,6 @@ Public Class Form1
 
 
     End Function
-    Private Sub SetTOSPort()
-
-        Return
-
-
-    End Sub
 
     Private Sub DoRegions()
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -2771,11 +2764,43 @@ Public Class Form1
         If gDNSSTimer Mod 60 = 0 Then
 
             LoadRegionsStatsBar()   ' fill in menu once a minute
-
             ScanAgents() ' update agent count
             RegionRestart() ' check for reboot 
+            RegionListHTML()
         End If
 
+
+    End Sub
+
+    Private Sub RegionListHTML()
+        If Not MySetting.LSL_HTTP() Then Return
+
+        'http://localhost:8002/bin/data/teleports.htm
+        'Outworldz|Welcome||www.outworldz.com:9000:Welcome|128,128,96|
+        '*|Welcome||www.outworldz.com9000Welcome|128,128,96|
+        Dim HTML As String
+        Dim HTMLFILE = MyFolder & "\OutworldzFiles\Opensim\bin\data\teleports.htm"
+        HTML = "Welcome to |" + MySetting.SimName + "||" + MySetting.DNSName + ":" + MySetting.HttpPort + ":" + MySetting.WelcomeRegion + "||" + vbCrLf
+
+        For Each X As Integer In RegionClass.RegionNumbers
+            If RegionClass.Booted(X) Then
+                If RegionClass.RegionName(X) <> MySetting.WelcomeRegion Then
+                    HTML = HTML + "*|" + RegionClass.RegionName(X) + "||" + MySetting.DNSName + ":" + MySetting.HttpPort + ":" + RegionClass.RegionName(X) + "||" + vbCrLf
+                End If
+            End If
+        Next
+        Try
+            My.Computer.FileSystem.DeleteFile(HTMLFILE)
+        Catch
+        End Try
+
+        Try
+            Using outputFile As New StreamWriter(HTMLFILE, True)
+                outputFile.WriteLine(HTML)
+            End Using
+        Catch ex As Exception
+            Log("Failed to create file:" + ex.Message)
+        End Try
 
     End Sub
 
@@ -4120,7 +4145,7 @@ Public Class Form1
             Return True
         End If
 
-        Print("Setting DynDNS name of " + "http://" + MySetting.DNSName + ":" + MySetting.HttpPort)
+        PrintFast("Setting DynDNS name of " + "http://" + MySetting.DNSName + ":" + MySetting.HttpPort)
 
         Dim client As New System.Net.WebClient
         Dim Checkname As String = String.Empty
@@ -4261,7 +4286,7 @@ Public Class Form1
         If (Running) Then
             Dim regionnum = RegionClass.FindRegionByName(CType(sender.text, String))
             Dim port As String = RegionClass.RegionPort(regionnum).ToString
-            Dim webAddress As String = "http://localhost:" + port + "/bin/data/sim.html?port=" + port
+            Dim webAddress As String = "http://localhost:" + MySetting.HttpPort + "/bin/data/sim.html?port=" + port
             Process.Start(webAddress)
         Else
             Print("Opensim is not running. Cannot open the Web Interface.")
