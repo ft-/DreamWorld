@@ -594,18 +594,14 @@ Public Class Form1
 
         ' show robust last
         ShowWindow(Process.GetProcessById(gRobustProcID).MainWindowHandle, SHOW_WINDOW.SW_RESTORE)
-        '
 
         For Each X As Integer In RegionClass.RegionNumbers
-            Dim PID As Integer = RegionClass.ProcessID(X)
-            If PID > 0 Then
-                RegionClass.ShuttingDown(X) = True
-                RegionClass.Booted(X) = False
-                RegionClass.WarmingUp(X) = False
-                Print("Shutting down " + RegionClass.RegionName(X))
-                ConsoleCommand(PID, "q{ENTER}")
-            End If
-            Application.DoEvents()
+            PrintFast("Shutting down " + RegionClass.RegionName(X))
+            ConsoleCommand(RegionClass.ProcessID(X), "q{ENTER}")
+
+            RegionClass.ShuttingDown(X) = True
+            RegionClass.Booted(X) = False
+            RegionClass.WarmingUp(X) = False
         Next
         Dim counter = 300 ' 5 minutes to quit all regions
 
@@ -617,13 +613,13 @@ Public Class Form1
             While (counter > 0)
                 ' decrement progress bar according to the ratio of what we had / what we have now
 
-                Sleep(1000)
-
                 counter = counter - 1
                 Dim CountisRunning As Integer = 0
 
                 For Each X In RegionClass.RegionNumbers
-                    If CheckPort("127.0.0.1", RegionClass.RegionPort(X)) Then
+                    PrintFast("Checking if " + RegionClass.RegionName(X) + " has exited")
+                    'If CheckPort("127.0.0.1", RegionClass.RegionPort(X)) Then
+                    If RegionClass.ProcessID(X) > 0 Then
                         CountisRunning = CountisRunning + 1
                         Log(RegionClass.RegionName(X) + " is still running")
                     End If
@@ -639,6 +635,7 @@ Public Class Form1
                     ProgressBar1.Value = CType(v, Integer)
                     Diagnostics.Debug.Print("V=" + ProgressBar1.Value.ToString)
                 End If
+                Application.DoEvents()
 
             End While
         End If
@@ -653,6 +650,7 @@ Public Class Form1
             RegionClass.ShuttingDown(X) = False
             RegionClass.Booted(X) = False
             RegionClass.WarmingUp(X) = False
+            RegionClass.ProcessID(X) = 0
         Next
 
         If gRobustProcID > 0 Then
@@ -2459,7 +2457,7 @@ Public Class Form1
         Buttons(StopButton)
 
         Dim n = RegionClass.FindRegionByName(BootName)
-        If RegionClass.ProcessID(n) > 0 Or RegionClass.Booted(n) Or RegionClass.WarmingUp(n) Or RegionClass.ShuttingDown(n) Then
+        If RegionClass.Booted(n) Or RegionClass.WarmingUp(n) Or RegionClass.ShuttingDown(n) Then
             Return True
         End If
 
@@ -2479,7 +2477,9 @@ Public Class Form1
             'Return False
         End If
 
-        Print("Starting Region " + BootName)
+        Dim Groupname = RegionClass.GroupName(n)
+
+        Print("Starting Instance " + Groupname)
 
         Try
             myProcess.EnableRaisingEvents = True
@@ -2517,14 +2517,12 @@ Public Class Form1
             Catch ex As Exception
             End Try
 
-
-            RegionClass.ProcessID(n) = 0
             myProcess.Start()
-            RegionClass.ProcessID(n) = myProcess.Id
             Diagnostics.Debug.Print("PID=" + myProcess.Id.ToString)
             If myProcess.Id > 0 Then
 
-                For Each num In RegionClass.RegionListByGroupNum(RegionClass.GroupName(n))
+                For Each num In RegionClass.RegionListByGroupNum(Groupname)
+                    Diagnostics.Debug.Print("Booting " + RegionClass.RegionName(num))
                     RegionClass.WarmingUp(num) = True
                     RegionClass.Booted(num) = False
                     RegionClass.ShuttingDown(num) = False
@@ -2801,7 +2799,8 @@ Public Class Form1
             ' if a restart is signalled, boot it up
             If RegionClass.Timer(X) = -2 Then
                 RegionClass.Timer(X) = 0
-                Boot(RegionClass.RegionName(X))
+                Dim name = RegionClass.RegionName(X)
+                Boot(Name)
                 Return
             End If
 
@@ -4121,7 +4120,8 @@ Public Class Form1
             Return True
         End If
 
-        Print("Setting DynDNS " + MySetting.DNSName)
+        Print("Setting DynDNS name of " + "http://" + MySetting.DNSName + ":" + MySetting.HttpPort)
+
         Dim client As New System.Net.WebClient
         Dim Checkname As String = String.Empty
 
