@@ -84,7 +84,7 @@ Partial Class FormRegion
         Me.MapBest = New System.Windows.Forms.RadioButton()
         Me.MapGood = New System.Windows.Forms.RadioButton()
         Me.GroupBox5 = New System.Windows.Forms.GroupBox()
-        Me.AutoLoadCheckbox = New System.Windows.Forms.CheckBox()
+
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.Physics_Default = New System.Windows.Forms.RadioButton()
         Me.PhysicsSeparate = New System.Windows.Forms.RadioButton()
@@ -716,26 +716,8 @@ Partial Class FormRegion
         Me.MapGood.Text = "Good (Warp3D)"
         Me.MapGood.UseVisualStyleBackColor = True
         '
-        'GroupBox5
-        '
-        Me.GroupBox5.Controls.Add(Me.AutoLoadCheckbox)
-        Me.GroupBox5.Location = New System.Drawing.Point(228, 406)
-        Me.GroupBox5.Name = "GroupBox5"
-        Me.GroupBox5.Size = New System.Drawing.Size(177, 48)
-        Me.GroupBox5.TabIndex = 1880
-        Me.GroupBox5.TabStop = False
-        Me.GroupBox5.Text = "Auto Boot on Teleport"
-        Me.GroupBox5.Visible = False
-        '
-        'AutoLoadCheckbox
-        '
-        Me.AutoLoadCheckbox.AutoSize = True
-        Me.AutoLoadCheckbox.Location = New System.Drawing.Point(12, 19)
-        Me.AutoLoadCheckbox.Name = "AutoLoadCheckbox"
-        Me.AutoLoadCheckbox.Size = New System.Drawing.Size(59, 17)
-        Me.AutoLoadCheckbox.TabIndex = 21
-        Me.AutoLoadCheckbox.Text = "Enable"
-        Me.AutoLoadCheckbox.UseVisualStyleBackColor = True
+
+
         '
         'GroupBox1
         '
@@ -918,7 +900,7 @@ Partial Class FormRegion
     Friend WithEvents MapBest As RadioButton
     Friend WithEvents MapGood As RadioButton
     Friend WithEvents GroupBox5 As GroupBox
-    Friend WithEvents AutoLoadCheckbox As CheckBox
+
     Friend WithEvents GroupBox1 As GroupBox
     Friend WithEvents Physics_Default As RadioButton
     Friend WithEvents PhysicsSeparate As RadioButton

@@ -20,7 +20,7 @@ Public Class Expert
         EnableMaxPrims.Checked = Form1.MySetting.Primlimits()
         GDPRCheckBox.Checked = Form1.MySetting.GDPR()
         AutoStartCheckbox.Checked = Form1.MySetting.Autostart
-        AutoLoadCheckbox.Checked = Form1.MySetting.AutoLoad
+
         BootStart.Checked = Form1.MySetting.BootStart
 
         'Clouds
@@ -460,12 +460,7 @@ Public Class Expert
 
     End Function
 
-    Private Sub CheckBox1_CheckedChanged_1(sender As Object, e As EventArgs) Handles AutoLoadCheckbox.CheckedChanged
 
-        Form1.MySetting.AutoLoad = AutoLoadCheckbox.Checked
-        Form1.MySetting.SaveSettings()
-
-    End Sub
 
     Private Sub DomainUpDown1_SelectedItemChanged(sender As Object, e As EventArgs) Handles DomainUpDown1.SelectedItemChanged
 
