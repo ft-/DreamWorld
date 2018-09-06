@@ -273,6 +273,15 @@ Public Class Form1
         Catch
         End Try
 
+        Try
+            My.Computer.FileSystem.DeleteFile(prefix + "\bin\OpenSim.Addons.AutoRestart.dll")
+        Catch
+        End Try
+        Try
+            My.Computer.FileSystem.DeleteFile(prefix + "\bin\OpenSim.Addons.AutoRestart.pdb")
+        Catch
+        End Try
+
         MySetting.Init(MyFolder)
         MySetting.Myfolder = MyFolder
 
@@ -986,14 +995,6 @@ Public Class Form1
         MySetting.SetOtherIni("Network", "ExternalHostNameForLSL", MySetting.DNSName)
 
         MySetting.SetOtherIni("DataSnapshot", "index_sims", MySetting.DataSnapshot().ToString)
-
-        If MySetting.AutoRestartInterval() = 0 Then
-            MySetting.SetOtherIni("Startup", "regionrestart", "")
-        Else
-            MySetting.SetOtherIni("Startup", "regionrestart", "AutoRestart")
-            MySetting.SetOtherIni("AutoRestart", "Time", CType(MySetting.AutoRestartInterval(), String))
-        End If
-
 
         MySetting.SetOtherIni("PrimLimitsModule", "EnforcePrimLimits", CType(MySetting.Primlimits, String))
 
@@ -2298,8 +2299,10 @@ Public Class Form1
 
         Dim n As Integer = RegionClass.FindRegionByProcessID(CType(sender.Id, Integer))
         If n < 0 Then Return
+        Dim ShouldIRestart = RegionClass.Timer(n)
 
-        If RegionClass.WarmingUp(n) = True Then
+        ' skip prompt if auto restarting
+        If RegionClass.WarmingUp(n) = True And RegionClass.Timer(n) >= 0 Then
             Dim yesno = MsgBox(RegionClass.RegionName(n) + " did not start. Do you want to see the log file?", vbYesNo, "Error")
             If (yesno = vbYes) Then
                 System.Diagnostics.Process.Start("notepad.exe", RegionClass.IniPath(n) + "Opensim.log")
@@ -2315,7 +2318,13 @@ Public Class Form1
             RegionClass.WarmingUp(X) = False
             RegionClass.ShuttingDown(X) = False
             RegionClass.ProcessID(X) = 0
+            RegionClass.Timer(X) = 0            ' no longer has running time
         Next
+
+        ' Auto restart if negative
+        If ShouldIRestart = -1 Then
+            RegionClass.Timer(n) = -2 ' signal a restart is needed
+        End If
 
     End Sub
 
@@ -2510,13 +2519,14 @@ Public Class Form1
             RegionClass.ProcessID(n) = 0
             myProcess.Start()
             RegionClass.ProcessID(n) = myProcess.Id
-
+            Diagnostics.Debug.Print("PID=" + myProcess.Id.ToString)
             If myProcess.Id > 0 Then
 
                 For Each num In RegionClass.RegionListByGroupNum(RegionClass.GroupName(n))
                     RegionClass.WarmingUp(num) = True
                     RegionClass.Booted(num) = False
                     RegionClass.ShuttingDown(num) = False
+                    RegionClass.ProcessID(n) = myProcess.Id
                 Next
 
                 Thread.Sleep(2000)
@@ -2741,21 +2751,95 @@ Public Class Form1
 
     End Sub
 
+
     Private Sub Timer1_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Timer1.Tick
 
         PaintImage()
         gDNSSTimer = gDNSSTimer + 1
 
+        ' hourly
         If gDNSSTimer Mod 3600 = 0 Then
             RegisterDNS()
         End If
 
-        If gDNSSTimer Mod 60 = 0 Then
-            ScanAgents()
+        ' 10 seconds check for a restart
+        If gDNSSTimer Mod 10 = 0 Then
+            Reboot()
+        End If
+
+        ' check for avatars and Regions to restart every minute
+        If gDNSSTimer Mod 10 = 0 Then
+
             LoadRegionsStatsBar()   ' fill in menu once a minute
+
+            ScanAgents() ' update agent count
+            RegionRestart() ' cweck for reboot 
         End If
 
 
+    End Sub
+
+    Private Sub Reboot()
+        For Each X As Integer In RegionClass.RegionNumbers
+            ' if a restart is signalled, boot it up
+            If RegionClass.Timer(X) = -2 Then
+                RegionClass.Timer(X) = 0
+                Boot(RegionClass.RegionName(X))
+                Return
+            End If
+        Next
+    End Sub
+
+    Private Sub RegionRestart()
+
+        If MySetting.AutoRestartInterval() = 0 Then Return
+
+        For Each X As Integer In RegionClass.RegionNumbers
+
+            ' if a restart is signalled, boot it up
+            If RegionClass.Timer(X) = -2 Then
+                RegionClass.Timer(X) = 0
+                Boot(RegionClass.RegionName(X))
+                Return
+            End If
+
+            If Running And RegionClass.RegionEnabled(X) And (RegionClass.Booted(X) Or RegionClass.WarmingUp(X)) Then
+
+                Dim timervalue As Integer = RegionClass.Timer(X)
+                Dim Groupname = RegionClass.GroupName(X)
+
+                ' if its past time and no one is in the sim...
+                If timervalue >= MySetting.AutoRestartInterval() And RegionClass.AvatarCount(X) = 0 Then
+
+                    ' shut down the group
+
+                    ConsoleCommand(RegionClass.ProcessID(X), "q{ENTER}")
+                    Print("Restarting " + Groupname)
+
+                    RegionClass.Timer(X) = -1
+
+                    For Each RegionNum As Integer In RegionClass.RegionListByGroupNum(Groupname)
+
+                        ' if enabled and running, stopit
+
+                        If Running And RegionClass.RegionEnabled(X) And RegionClass.Booted(X) Then
+                            Diagnostics.Debug.Print("AutoRestart is shutting down " + RegionClass.RegionName(X))
+                            RegionClass.Booted(RegionNum) = False
+                            RegionClass.WarmingUp(RegionNum) = False
+                            RegionClass.ShuttingDown(RegionNum) = True
+                            RegionClass.Timer(RegionNum) = -1 ' -1 means restart on exit
+                        End If
+
+                    Next
+
+                End If
+                If RegionClass.Timer(X) > -1 Then
+                    RegionClass.Timer(X) = RegionClass.Timer(X) + 1
+                End If
+
+            End If
+
+        Next
 
     End Sub
 
@@ -2773,7 +2857,7 @@ Public Class Form1
 
     Private Sub ShowHyperGridAddressToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ShowHyperGridAddressToolStripMenuItem.Click
 
-        Print("Hypergrid address is http://" + MySetting.PublicIP + ":" + MySetting.HttpPort)
+        Print("Hypergrid address Is http: //" + MySetting.PublicIP + ":" + MySetting.HttpPort)
 
     End Sub
 
@@ -4267,25 +4351,6 @@ Public Class Form1
             End If
         Next
 
-        If MySetting.AutoLoad Then
-            For Each X As Integer In RegionClass.RegionNumbers
-                If RegionClass.Timer(X) > 0 Then RegionClass.Timer(X) = RegionClass.Timer(X) - 1
-
-                ' if enabled and running, stopit
-                If RegionClass.AvatarCount(X) = 0 Then
-                    If Running And RegionClass.RegionEnabled(X) And RegionClass.Booted(X) Then
-                        Diagnostics.Debug.Print("AutoLoad is shutting down " + RegionClass.RegionName(X))
-                        ConsoleCommand(RegionClass.ProcessID(X), "q{ENTER}")
-                        Me.Focus()
-                        RegionClass.Booted(X) = False
-                        RegionClass.WarmingUp(X) = False
-                        RegionClass.ShuttingDown(X) = True
-                    End If
-                Else
-                    RegionClass.Timer(X) = 60 ' 60 seconds and we will shut it off
-                End If
-            Next
-        End If
 
     End Sub
 
