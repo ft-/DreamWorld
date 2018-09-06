@@ -465,7 +465,6 @@ Public Class Form1
 
         If Not MySetting.RunOnce Then
             MsgBox("Please type 'create user<ret>' to make the system owner's account in the ROBUST console, and then answer any questions.", vbInformation, "Info")
-            Sleep(10000)
             MySetting.RunOnce = True
             MySetting.SaveSettings()
         End If
@@ -624,7 +623,7 @@ Public Class Form1
                 Dim CountisRunning As Integer = 0
 
                 For Each X In RegionClass.RegionNumbers
-                    If RegionClass.ProcessID(X) > 0 Then
+                    If CheckPort("127.0.0.1", RegionClass.RegionPort(X)) Then
                         CountisRunning = CountisRunning + 1
                         Log(RegionClass.RegionName(X) + " is still running")
                     End If
@@ -1738,7 +1737,7 @@ Public Class Form1
             IcecastProcess.Start()
             gIcecastProcID = IcecastProcess.Id
 
-            Thread.Sleep(2000)
+            Sleep(2000)
             SetWindowText(IcecastProcess.MainWindowHandle, "Icecast")
 
         Catch ex As Exception
@@ -1775,7 +1774,7 @@ Public Class Form1
             RobustProcess.Start()
             gRobustProcID = RobustProcess.Id
 
-            Thread.Sleep(1000)
+            Sleep(1000)
             SetWindowText(RobustProcess.MainWindowHandle, "Robust")
 
         Catch ex As Exception
@@ -2473,8 +2472,8 @@ Public Class Form1
         Dim myProcess As Process = GetNewProcess()
 
         If myProcess Is Nothing Then
-            Print("Exceeded max number of processes (100): could not start " + RegionClass.RegionName(n))
-            Return False
+            Print("Exceeded max number of trackable regions (100):" + RegionClass.RegionName(n))
+            'Return False
         End If
 
         Print("Starting Region " + BootName)
@@ -2526,10 +2525,10 @@ Public Class Form1
                     RegionClass.WarmingUp(num) = True
                     RegionClass.Booted(num) = False
                     RegionClass.ShuttingDown(num) = False
-                    RegionClass.ProcessID(n) = myProcess.Id
+                    RegionClass.ProcessID(num) = myProcess.Id
                 Next
 
-                Thread.Sleep(2000)
+                Sleep(2000)
 
                 SetWindowText(myProcess.MainWindowHandle, RegionClass.GroupName(n))
 
@@ -2768,7 +2767,7 @@ Public Class Form1
         End If
 
         ' check for avatars and Regions to restart every minute
-        If gDNSSTimer Mod 10 = 0 Then
+        If gDNSSTimer Mod 60 = 0 Then
 
             LoadRegionsStatsBar()   ' fill in menu once a minute
 
