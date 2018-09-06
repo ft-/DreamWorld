@@ -845,7 +845,7 @@ Partial Class Expert
         Me.LSLCheckbox.Size = New System.Drawing.Size(59, 17)
         Me.LSLCheckbox.TabIndex = 21
         Me.LSLCheckbox.Text = "Enable"
-        Me.ToolTip1.SetToolTip(Me.LSLCheckbox, "Click to enable LSL to talkto port 80 on this server.")
+        Me.ToolTip1.SetToolTip(Me.LSLCheckbox, "Click to enable LSL to talk to port 80 on this server.")
         Me.LSLCheckbox.UseVisualStyleBackColor = True
         '
         'RegionMySqlPassword
