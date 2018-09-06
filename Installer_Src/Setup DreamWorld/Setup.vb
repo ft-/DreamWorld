@@ -629,10 +629,13 @@ Public Class Form1
                     End If
                     Application.DoEvents()
                 Next
-                If CountisRunning = 0 Then counter = 0
+                If CountisRunning = 0 Then
+                    counter = 0
+                    ProgressBar1.Value = 0
+                End If
 
                 Dim v As Double = CountisRunning / TotalRunningRegions * 100
-                If v > 0 And v <= 100 Then
+                If v >= 0 And v <= 100 Then
                     ProgressBar1.Value = CType(v, Integer)
                     Diagnostics.Debug.Print("V=" + ProgressBar1.Value.ToString)
                 End If
@@ -2772,7 +2775,7 @@ Public Class Form1
             LoadRegionsStatsBar()   ' fill in menu once a minute
 
             ScanAgents() ' update agent count
-            RegionRestart() ' cweck for reboot 
+            RegionRestart() ' check for reboot 
         End If
 
 
@@ -2808,7 +2811,7 @@ Public Class Form1
                 Dim Groupname = RegionClass.GroupName(X)
 
                 ' if its past time and no one is in the sim...
-                If timervalue >= MySetting.AutoRestartInterval() And RegionClass.AvatarCount(X) = 0 Then
+                If timervalue >= MySetting.AutoRestartInterval() And Not AvatarsIsInGroup(Groupname) Then
 
                     ' shut down the group
 
@@ -2841,6 +2844,17 @@ Public Class Form1
         Next
 
     End Sub
+
+    Private Function AvatarsIsInGroup(groupname As String) As Boolean
+
+        Dim present As Integer = 0
+        For Each RegionNum As Integer In RegionClass.RegionListByGroupNum(groupname)
+            present = present + RegionClass.AvatarCount(RegionNum)
+        Next
+
+        Return CType(present, Boolean)
+
+    End Function
 
     Private Sub PictureBox1_Click(sender As Object, e As EventArgs) Handles PictureBox1.Click
 
