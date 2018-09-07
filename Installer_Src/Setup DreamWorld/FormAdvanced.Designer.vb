@@ -42,6 +42,8 @@ Partial Class AdvancedForm
         Me.WelcomeBox1 = New System.Windows.Forms.ComboBox()
         Me.RegionHelp = New System.Windows.Forms.PictureBox()
         Me.TOSButton = New System.Windows.Forms.Button()
+        Me.Birds = New System.Windows.Forms.Button()
+        Me.TideButton = New System.Windows.Forms.Button()
         Me.GloebitsButton = New System.Windows.Forms.Button()
         Me.ExpertButton1 = New System.Windows.Forms.Button()
         Me.MapBox = New System.Windows.Forms.GroupBox()
@@ -60,7 +62,6 @@ Partial Class AdvancedForm
         Me.RegionButton = New System.Windows.Forms.Button()
         Me.Shoutcast = New System.Windows.Forms.Button()
         Me.GroupBox8 = New System.Windows.Forms.GroupBox()
-        Me.Birds = New System.Windows.Forms.Button()
         CType(Me.MapHelp, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PersonalityHelp, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.AutoBackupHelp, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -245,13 +246,33 @@ Partial Class AdvancedForm
         '
         'TOSButton
         '
-        Me.TOSButton.Location = New System.Drawing.Point(6, 133)
+        Me.TOSButton.Location = New System.Drawing.Point(6, 159)
         Me.TOSButton.Name = "TOSButton"
         Me.TOSButton.Size = New System.Drawing.Size(145, 23)
         Me.TOSButton.TabIndex = 18
         Me.TOSButton.Text = "TOS Settings"
         Me.ToolTip1.SetToolTip(Me.TOSButton, "Click to set up your Terms of Service")
         Me.TOSButton.UseVisualStyleBackColor = True
+        '
+        'Birds
+        '
+        Me.Birds.Location = New System.Drawing.Point(6, 101)
+        Me.Birds.Name = "Birds"
+        Me.Birds.Size = New System.Drawing.Size(145, 23)
+        Me.Birds.TabIndex = 20
+        Me.Birds.Text = "Bird Settings"
+        Me.ToolTip1.SetToolTip(Me.Birds, "Click to set up your Terms of Service")
+        Me.Birds.UseVisualStyleBackColor = True
+        '
+        'TideButton
+        '
+        Me.TideButton.Location = New System.Drawing.Point(6, 130)
+        Me.TideButton.Name = "TideButton"
+        Me.TideButton.Size = New System.Drawing.Size(145, 23)
+        Me.TideButton.TabIndex = 21
+        Me.TideButton.Text = "Tide Settings"
+        Me.ToolTip1.SetToolTip(Me.TideButton, "Click to set up your Terms of Service")
+        Me.TideButton.UseVisualStyleBackColor = True
         '
         'GloebitsButton
         '
@@ -264,7 +285,7 @@ Partial Class AdvancedForm
         '
         'ExpertButton1
         '
-        Me.ExpertButton1.Location = New System.Drawing.Point(6, 162)
+        Me.ExpertButton1.Location = New System.Drawing.Point(6, 188)
         Me.ExpertButton1.Name = "ExpertButton1"
         Me.ExpertButton1.Size = New System.Drawing.Size(143, 23)
         Me.ExpertButton1.TabIndex = 19
@@ -417,7 +438,7 @@ Partial Class AdvancedForm
         Me.RegionButton.Name = "RegionButton"
         Me.RegionButton.Size = New System.Drawing.Size(148, 23)
         Me.RegionButton.TabIndex = 14
-        Me.RegionButton.Text = "Configure Regions"
+        Me.RegionButton.Text = "Configure All Regions"
         Me.RegionButton.UseVisualStyleBackColor = True
         '
         'Shoutcast
@@ -431,6 +452,7 @@ Partial Class AdvancedForm
         '
         'GroupBox8
         '
+        Me.GroupBox8.Controls.Add(Me.TideButton)
         Me.GroupBox8.Controls.Add(Me.Birds)
         Me.GroupBox8.Controls.Add(Me.GloebitsButton)
         Me.GroupBox8.Controls.Add(Me.ExpertButton1)
@@ -439,26 +461,16 @@ Partial Class AdvancedForm
         Me.GroupBox8.Controls.Add(Me.Shoutcast)
         Me.GroupBox8.Location = New System.Drawing.Point(458, 150)
         Me.GroupBox8.Name = "GroupBox8"
-        Me.GroupBox8.Size = New System.Drawing.Size(192, 200)
+        Me.GroupBox8.Size = New System.Drawing.Size(165, 230)
         Me.GroupBox8.TabIndex = 1870
         Me.GroupBox8.TabStop = False
-        Me.GroupBox8.Text = "Settings"
-        '
-        'Birds
-        '
-        Me.Birds.Location = New System.Drawing.Point(6, 101)
-        Me.Birds.Name = "Birds"
-        Me.Birds.Size = New System.Drawing.Size(145, 23)
-        Me.Birds.TabIndex = 20
-        Me.Birds.Text = "Bird Settings"
-        Me.ToolTip1.SetToolTip(Me.Birds, "Click to set up your Terms of Service")
-        Me.Birds.UseVisualStyleBackColor = True
+        Me.GroupBox8.Text = "Global Settings"
         '
         'AdvancedForm
         '
         Me.AutoSize = True
         Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-        Me.ClientSize = New System.Drawing.Size(672, 366)
+        Me.ClientSize = New System.Drawing.Size(705, 394)
         Me.Controls.Add(Me.GroupBox8)
         Me.Controls.Add(Me.MapBox)
         Me.Controls.Add(Me.GroupBox5)
@@ -522,4 +534,5 @@ Partial Class AdvancedForm
     Friend WithEvents TOSButton As Button
     Friend WithEvents GroupBox8 As GroupBox
     Friend WithEvents Birds As Button
+    Friend WithEvents TideButton As Button
 End Class

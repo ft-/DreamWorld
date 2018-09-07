@@ -334,7 +334,15 @@ Public Class AdvancedForm
         Bird.SetDesktopLocation(300, 200)
         Bird.Activate()
         Bird.Visible = True
+    End Sub
 
+    Private Sub TideButton_Click(sender As Object, e As EventArgs) Handles TideButton.Click
+        Dim Tide As New Tides
+        ' Set the new form's desktop location so it appears below and
+        ' to the right of the current form.
+        Tide.SetDesktopLocation(300, 200)
+        Tide.Activate()
+        Tide.Visible = True
     End Sub
 
 

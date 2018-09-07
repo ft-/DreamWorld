@@ -1178,11 +1178,6 @@ Public Class Form1
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
         'Regions - write all region.ini files with public IP and Public port
 
-        Dim BirdFile = MyFolder + "\OutworldzFiles\Opensim\bin\addon-modules\OpenSimBirds\config\OpenSimBirds.ini"
-        Try
-            System.IO.File.Delete(BirdFile)
-        Catch ex As Exception
-        End Try
 
         ' Self setting Region Ports
         Dim FirstPort As Integer = Convert.ToInt16(MySetting.FirstRegionPort())
@@ -1254,6 +1249,8 @@ Public Class Form1
                 MySetting.SetOtherIni(simName, "RegionGod", RegionClass.RegionGod(X))
                 MySetting.SetOtherIni(simName, "ManagerGod", RegionClass.ManagerGod(X))
                 MySetting.SetOtherIni(simName, "RegionSnapShot", RegionClass.RegionSnapShot(X).ToString)
+                MySetting.SetOtherIni(simName, "Birds", RegionClass.Birds(X))
+                MySetting.SetOtherIni(simName, "Tides", RegionClass.Tides(X))
 
                 MySetting.SaveOtherINI()
 
@@ -1344,7 +1341,8 @@ Public Class Form1
 
                 MySetting.SaveOtherINI()
 
-                Dim BirdData As String = "[" + simName + "]" + vbCrLf &
+                If MySetting.BirdsEnabled And RegionClass.Birds(X) = "True" Then
+                    Dim BirdData As String = "[" + simName + "]" + vbCrLf &
                     ";this Is the default And determines whether the module does anything" & vbCrLf &
                     "BirdsModuleStartup = " + MySetting.BirdsModuleStartup.ToString & vbCrLf & vbCrLf &
                     ";set to false to disable the birds from appearing in this region" & vbCrLf &
@@ -1375,14 +1373,65 @@ Public Class Form1
                     ";Or everyone if Not specified" & vbCrLf &
                     "BirdsAllowedControllers = ESTATE_OWNER, ESTATE_MANAGER" & vbCrLf & vbCrLf & vbCrLf
 
+                    Dim BirdFile = MyFolder + "\OutworldzFiles\Opensim\bin\addon-modules\OpenSimBirds\config\OpenSimBirds.ini"
+                    Try
+                        System.IO.File.Delete(BirdFile)
+                    Catch ex As Exception
+                    End Try
+                    IO.File.AppendAllText(BirdFile, BirdData, Encoding.Default) 'The text file will be created if it does not already exist  
 
-                IO.File.AppendAllText(BirdFile, BirdData, Encoding.Default) 'The text file will be created if it does not already exist  
+                End If
 
+                If MySetting.TideEnabled And RegionClass.Tides(X) = "True" Then
+
+                    Dim TideData As String = ";; Set the Tide settings per named region" & vbCrLf &
+                     "[" + simName + "]" + vbCrLf &
+                    ";this determines whether the module does anything in this region" & vbCrLf &
+                    ";# {TideEnabled} {} {Enable the tide to come in and out?} {true false} false" & vbCrLf &
+                    "TideEnabled = " + MySetting.TideEnabled.ToString & vbCrLf &
+                     vbCrLf &
+                    ";; Tides currently only work on single regions And varregions (non megaregions) " & vbCrLf &
+                    ";# surrounded completely by water" & vbCrLf &
+                    ";; Anything else will produce weird results where you may see a big" & vbCrLf &
+                    ";; vertical 'step' in the ocean" & vbCrLf &
+                    ";; update the tide every x simulator frames" & vbCrLf &
+                    "TideUpdateRate = 50" & vbCrLf &
+                     vbCrLf &
+                    ";; low And high water marks in metres" & vbCrLf &
+                    "TideLowWater = " & MySetting.TideHighLevel() & vbCrLf &
+                    "TideHighWater = " & MySetting.TideLowLevel() & vbCrLf &
+                    vbCrLf &
+                    ";; how long in seconds for a complete cycle time low->high->low" & vbCrLf &
+                    "TideCycleTime = " & MySetting.CycleTime() & vbCrLf &
+                     vbCrLf &
+                    ";; provide tide information on the console?" & vbCrLf &
+                    "TideInfoDebug = " & MySetting.TideInfoDebug.ToString & vbCrLf &
+                     vbCrLf &
+                    ";; chat tide info to the whole region?" & vbCrLf &
+                    "TideInfoBroadcast = " & MySetting.BroadcastTideInfo() & vbCrLf &
+                     vbCrLf &
+                    ";; which channel to region chat on for the full tide info" & vbCrLf &
+                    "TideInfoChannel = " & MySetting.TideInfoChannel & vbCrLf &
+                    vbCrLf &
+                    ";; which channel to region chat on for just the tide level in metres" & vbCrLf &
+                    "TideLevelChannel = " & MySetting.TideLevelChannel() & vbCrLf &
+                     vbCrLf &
+                    ";; How many times to repeat Tide Warning messages at high/low tide" & vbCrLf &
+                    "TideAnnounceCount = 1" & vbCrLf & vbCrLf & vbCrLf & vbCrLf
+
+                    Dim TideFile = MyFolder + "\OutworldzFiles\Opensim\bin\addon-modules\OpenSimTide\config\OpenSimTide.ini"
+                    Try
+                        System.IO.File.Delete(TideFile)
+                    Catch ex As Exception
+                    End Try
+                    IO.File.AppendAllText(TideFile, TideData, Encoding.Default) 'The text file will be created if it does not already exist 
+
+                End If
             End If
-
         Next
 
     End Sub
+
     Public Sub SetRegionINI(regionname As String, key As String, value As String)
 
         Dim X = RegionClass.FindRegionByName(regionname)
@@ -1455,7 +1504,7 @@ Public Class Form1
         End If
 
         MySetting.SetOtherIni("WifiService", "GridName", MySetting.SimName)
-        MySetting.SetOtherIni("WifiService", "LoginURL", "http://" + MySetting.PublicIP + ":" + MySetting.HttpPort)
+        MySetting.SetOtherIni("WifiService", "LoginURL", "http: //" + MySetting.PublicIP + ":" + MySetting.HttpPort)
         MySetting.SetOtherIni("WifiService", "WebAddress", "http://" + MySetting.PublicIP + ":" + MySetting.HttpPort)
 
         ' Wifi Admin'
@@ -1524,36 +1573,6 @@ Public Class Form1
 
 #Region "Ports"
 
-    Function PortTests() As Boolean
-
-        Dim Passfail As Boolean = True
-        ' Do some tests
-        Dim ports(1) As Object
-        ports(0) = Nothing
-
-        Dim n = 0
-        For Each X As Integer In RegionClass.RegionNumbers
-            If ports.Length <= RegionClass.RegionPort(n) Then
-                ReDim ports(RegionClass.RegionPort(n) + 1)
-            End If
-            Try
-                If ports(RegionClass.RegionPort(n)) Is Nothing Then
-                    ports(RegionClass.RegionPort(n)) = RegionClass.RegionName(n)
-                Else
-                    MsgBox(RegionClass.RegionName(n) + " has a duplicated port with " + ports(RegionClass.RegionPort(n)) + ". Skipping boot of " + RegionClass.RegionName(n), vbInformation, "Error")
-                    RegionClass.RegionEnabled(n) = False
-                    Passfail = False
-                End If
-            Catch ex As Exception
-                Log("Error" + ex.Message)
-                ports(RegionClass.RegionPort(n)) = 0
-            End Try
-            n = n + 1
-        Next
-
-        Return Passfail
-
-    End Function
 
     Public Sub CheckDefaultPorts()
 
@@ -1815,8 +1834,6 @@ Public Class Form1
     Private Function Start_Opensimulator() As Boolean
 
         If Running = False Then Return True
-
-        PortTests()
 
         Try
             ' Boot them up
@@ -2626,8 +2643,7 @@ Public Class Form1
 #End Region
 
 #Region "Subs"
-    Public Sub ConsoleCommand(ProcessID As Integer, command As String)
-
+    Public Function ConsoleCommand(ProcessID As Integer, command As String) As Boolean
 
         Try
             Dim p = Process.GetProcessById(ProcessID)
@@ -2646,11 +2662,14 @@ Public Class Form1
             AppActivate(ProcessID)
             SendKeys.SendWait("{ENTER}")
             SendKeys.SendWait(command)
+
         Catch ex As Exception
             Log("Warn:" + ex.Message)
+            Return False
         End Try
+        Return True
 
-    End Sub
+    End Function
 
 
     Private Sub SaySomething()
@@ -2763,7 +2782,8 @@ Public Class Form1
         ' check for avatars and Regions to restart every minute
         If gDNSSTimer Mod 60 = 0 Then
 
-            LoadRegionsStatsBar()   ' fill in menu once a minute
+            If MySetting.StandAlone() Then LoadRegionsStatsBar()   ' fill in menu once a minute
+
             ScanAgents() ' update agent count
             RegionRestart() ' check for reboot 
             RegionListHTML()

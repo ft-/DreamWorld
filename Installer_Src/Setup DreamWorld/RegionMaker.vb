@@ -115,7 +115,8 @@ Public Class RegionMaker
         Public _AllowGods As String
         Public _RegionGod As String
         Public _ManagerGod As String
-        Public _Birds As Boolean
+        Public _Birds As String
+        Public _Tides As String
 
     End Class
 
@@ -297,9 +298,6 @@ Public Class RegionMaker
     Public Property RegionPort(n As Integer) As Integer
         Get
             Try
-                If RegionList(n)._RegionPort <= Form1.MySetting.PrivatePort Then
-                    RegionList(n)._RegionPort = (CType(Form1.MySetting.PrivatePort, Integer) + 1).ToString ' 8004, by default
-                End If
                 Return CType(RegionList(n)._RegionPort, Integer)
             Catch
             End Try
@@ -373,12 +371,20 @@ Public Class RegionMaker
             RegionList(n)._ManagerGod = Value
         End Set
     End Property
-    Public Property Birds(n As Integer) As Boolean
+    Public Property Birds(n As Integer) As String
         Get
-            Return CBool(RegionList(n)._Birds)
+            Return RegionList(n)._Birds.ToString
         End Get
-        Set(ByVal Value As Boolean)
-            RegionList(n)._Birds = Value.ToString
+        Set(ByVal Value As String)
+            RegionList(n)._Birds = Value
+        End Set
+    End Property
+    Public Property Tides(n As Integer) As String
+        Get
+            Return RegionList(n)._Tides.ToString
+        End Get
+        Set(ByVal Value As String)
+            RegionList(n)._Tides = Value.ToString
         End Set
     End Property
 
@@ -600,6 +606,8 @@ Public Class RegionMaker
                         AllowGods(n) = Form1.MySetting.GetIni(fName, "AllowGods")
                         RegionGod(n) = Form1.MySetting.GetIni(fName, "RegionGod")
                         ManagerGod(n) = Form1.MySetting.GetIni(fName, "ManagerGod")
+                        Birds(n) = Form1.MySetting.GetIni(fName, "Birds")
+                        Tides(n) = Form1.MySetting.GetIni(fName, "Tides")
 
                         If initted Then
 
@@ -683,7 +691,9 @@ Public Class RegionMaker
         + "Physics = " + Physics(n) + vbCrLf _
         + "AllowGods = " + AllowGods(n) + vbCrLf _
         + "RegionGod = " + RegionGod(n) + vbCrLf _
-        + "ManagerGod = " + ManagerGod(n) + vbCrLf
+        + "ManagerGod = " + ManagerGod(n) + vbCrLf _
+        + "Birds = " + Birds(n) + vbCrLf _
+        + "Tides = " + Tides(n) + vbCrLf
 
         Try
             My.Computer.FileSystem.DeleteFile(fname)
@@ -854,9 +864,9 @@ Public Class RegionMaker
             '"POST /TOS HTTP/1.1" & vbCrLf & "Host: mach.outworldz.net:9201" & vbCrLf & "Connection: keep-alive" & vbCrLf & "Content-Length: 102" & vbCrLf & "Cache-Control: max-age=0" & vbCrLf & "Upgrade-Insecure-Requests: 1" & vbCrLf & "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36" & vbCrLf & "Origin: http://mach.outworldz.net:9201" & vbCrLf & "Content-Type: application/x-www-form-urlencoded" & vbCrLf & "DNT: 1" & vbCrLf & "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8" & vbCrLf & "Referer: http://mach.outworldz.net:9200/wifi/termsofservice.html?uid=acb8fd92-c725-423f-b750-5fd971d73182&sid=40c5b80a-5377-4b97-820c-a0952782a701" & vbCrLf & "Accept-Encoding: gzip, deflate" & vbCrLf & "Accept-Language: en-US,en;q=0.9" & vbCrLf & vbCrLf & 
             '"action-accept=Accept&uid=acb8fd92-c725-423f-b750-5fd971d73182&sid=40c5b80a-5377-4b97-820c-a0952782a701"
 
-            'If Not Form1.MySetting.StandAlone() Then
-            Return "<html><head></head><body>Error</html>"
-            'End If
+            If Not Form1.MySetting.StandAlone() Then
+                Return "<html><head></head><body>Error</html>"
+            End If
 
             Dim uid As Guid
             Dim sid As Guid
@@ -884,88 +894,103 @@ Public Class RegionMaker
                     ' Not implemented at all in Grid mode - the Diva DLL Diva is stubbed off.
                     Dim result As Integer = 1
 
-                    ' result = Convert.ToInt16(MysqlConn.QueryString("update opensim.griduser set TOS = 1 where UserID = '" + uid.ToString() + "'; select count(TOS) from opensim.griduser where UserID = '" + uid.ToString() + "';"))
-                    If result = 0 Then
-                        Return "<html><head></head><body>Error</html>"
-                    End If
+                    Dim Str As String = "server=" + MySetting.RobustServer _
+                            + ";database=" + MySetting.RobustDataBaseName _
+                            + ";port=" + MySetting.MySqlPort _
+                            + ";user=" + MySetting.RobustUsername _
+                            + ";password=" + MySetting.RobustPassword _
+                            + ";Old Guids=true;Allow Zero Datetime=true;"
+
+                    Dim myConnection As MySqlConnection = New MySqlConnection(Str)
+
+                    Dim Query1 = "update opensim.griduser set TOS = 1 where UserID = @p1; "
+                    Dim myCommand1 As MySqlCommand = New MySqlCommand(Query1)
+                    myCommand1.Connection = myConnection
+                    myConnection.Open()
+                    myCommand1.Prepare()
+                    myCommand1.Parameters.AddWithValue("p1", uid.ToString())
+                    myCommand1.ExecuteScalar()
+                    myConnection.Close()
+
                     Return "<html><head></head><body>Welcome! You can close this window.</html>"
+
                 Else
                     Return "<html><head></head><body>Error</html>"
                 End If
 
             Catch ex As Exception
-                Return "<html><head></head><body>Error</html>"
-            End Try
+                    Return "<html><head></head><body>Error</html>"
+                End Try
 
-        ElseIf POST.Contains("get_partner") Then
+            ElseIf POST.Contains("get_partner") Then
 
-            Dim PWok As Boolean = CheckPassword(POST, MySetting.Machine().ToLower)
-            If Not PWok Then Return ""
+                Dim PWok As Boolean = CheckPassword(POST, MySetting.Machine().ToLower)
+                If Not PWok Then Return ""
 
-            Dim pattern1 As Regex = New Regex("User=(.*?) ")
-            Dim match1 As Match = pattern1.Match(POST)
-            Dim p1 As String = ""
-            If match1.Success Then
-                p1 = match1.Groups(1).Value
-            End If
-
-            Return GetPartner(p1, MySetting)
-
-        ElseIf POST.Contains("set_partner") Then
-
-            Dim PWok As Boolean = CheckPassword(POST, MySetting.Machine().ToLower)
-            If Not PWok Then Return ""
-
-
-            Dim pattern1 As Regex = New Regex("User=(.*?)&")
-            Dim match1 As Match = pattern1.Match(POST)
-            If match1.Success Then
+                Dim pattern1 As Regex = New Regex("User=(.*?) ")
+                Dim match1 As Match = pattern1.Match(POST)
                 Dim p1 As String = ""
-                Dim p2 As String = ""
-                p1 = match1.Groups(1).Value
-                Dim pattern2 As Regex = New Regex("Partner=(.*)")
-                Dim match2 As Match = pattern2.Match(POST)
-                If match2.Success Then
-                    p2 = match2.Groups(1).Value
+                If match1.Success Then
+                    p1 = match1.Groups(1).Value
                 End If
-                Dim result As New Guid
-                If Guid.TryParse(p1, result) And Guid.TryParse(p1, result) Then
-                    Try
 
-                        Dim Partner = GetPartner(p1, MySetting)
-                        Debug.Print("Partner=" + p2)
+                Return GetPartner(p1, MySetting)
 
-                        Dim Str As String = "server=" + MySetting.RobustServer _
+            ElseIf POST.Contains("set_partner") Then
+
+                Dim PWok As Boolean = CheckPassword(POST, MySetting.Machine().ToLower)
+                If Not PWok Then Return ""
+
+
+                Dim pattern1 As Regex = New Regex("User=(.*?)&")
+                Dim match1 As Match = pattern1.Match(POST)
+                If match1.Success Then
+                    Dim p1 As String = ""
+                    Dim p2 As String = ""
+                    p1 = match1.Groups(1).Value
+                    Dim pattern2 As Regex = New Regex("Partner=(.*)")
+                    Dim match2 As Match = pattern2.Match(POST)
+                    If match2.Success Then
+                        p2 = match2.Groups(1).Value
+                    End If
+                    Dim result As New Guid
+                    If Guid.TryParse(p1, result) And Guid.TryParse(p1, result) Then
+                        Try
+
+                            Dim Partner = GetPartner(p1, MySetting)
+                            Debug.Print("Partner=" + p2)
+
+                            Dim Str As String = "server=" + MySetting.RobustServer _
                                 + ";database=" + MySetting.RobustDataBaseName _
                                 + ";port=" + MySetting.MySqlPort _
                                 + ";user=" + MySetting.RobustUsername _
                                 + ";password=" + MySetting.RobustPassword _
                                 + ";Old Guids=true;Allow Zero Datetime=true;"
 
-                        Dim myConnection As MySqlConnection = New MySqlConnection(Str)
+                            Dim myConnection As MySqlConnection = New MySqlConnection(Str)
 
-                        Dim Query1 = "update robust.userprofile set profilepartner=@p2 where userUUID = @p1; "
-                        Dim myCommand1 As MySqlCommand = New MySqlCommand(Query1)
-                        myCommand1.Connection = myConnection
-                        myConnection.Open()
-                        myCommand1.Prepare()
+                            Dim Query1 = "update robust.userprofile set profilepartner=@p2 where userUUID = @p1; "
+                            Dim myCommand1 As MySqlCommand = New MySqlCommand(Query1)
+                            myCommand1.Connection = myConnection
+                            myConnection.Open()
+                            myCommand1.Prepare()
 
-                        myCommand1.Parameters.AddWithValue("p1", p1)
-                        myCommand1.Parameters.AddWithValue("p2", p2)
+                            myCommand1.Parameters.AddWithValue("p1", p1)
+                            myCommand1.Parameters.AddWithValue("p2", p2)
 
-                        myCommand1.ExecuteScalar()
-                        myConnection.Close()
+                            myCommand1.ExecuteScalar()
+                            myConnection.Close()
 
-                        Return Partner
-                    Catch ex As Exception
-                        Debug.Print(ex.Message)
-                    End Try
+                            Return Partner
+                        Catch ex As Exception
+                            Debug.Print(ex.Message)
+                        End Try
+                    End If
                 End If
-            End If
-            Return ""
+                Return ""
 
-        Else
-            Return "Test Completed"
+            Else
+                Return "Test Completed"
         End If
 
         Return ""
