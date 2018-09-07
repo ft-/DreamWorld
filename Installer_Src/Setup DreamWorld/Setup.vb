@@ -38,7 +38,7 @@ Public Class Form1
 
     Dim MyVersion As String = "2.36"
     Dim DebugPath As String = "\Opensim\Outworldz DreamGrid Source"  ' no slash at end
-    Public Domain As String = "https://www.outworldz.com"
+    Public Domain As String = "http://www.outworldz.com"
     Public prefix As String ' Holds path to Opensim folder
 
     Dim REGIONMAX As Integer = 100
@@ -3203,20 +3203,25 @@ Public Class Form1
             Dim backMeUp = MsgBox("Make a backup first?", vbYesNo, "Backup?")
             Dim num = RegionClass.FindRegionByName(region)
             Dim GroupName = RegionClass.GroupName(num)
+            Dim once As Boolean = False
             For Each Y In RegionClass.RegionListByGroupNum(GroupName)
                 Try
-                    Print("Opensimulator will load  " + thing + ".  This may take some time.")
-                    thing = thing.Replace("\", "/")    ' because Opensim uses unix-like slashes, that's why
+                    If Not once Then
+                        Print("Opensimulator will load  " + thing + ".  This may take some time.")
+                        thing = thing.Replace("\", "/")    ' because Opensim uses unix-like slashes, that's why
 
-                    ConsoleCommand(RegionClass.ProcessID(Y), "change region " + region + "{ENTER}")
-                    If backMeUp = vbYes Then
-                        ConsoleCommand(RegionClass.ProcessID(Y), "alert CPU Intensive Backup Started {ENTER}")
-                        ConsoleCommand(RegionClass.ProcessID(Y), "save oar " + """" + BackupPath() + "Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
+                        ConsoleCommand(RegionClass.ProcessID(Y), "change region " + region + "{ENTER}")
+                        If backMeUp = vbYes Then
+                            ConsoleCommand(RegionClass.ProcessID(Y), "alert CPU Intensive Backup Started {ENTER}")
+                            ConsoleCommand(RegionClass.ProcessID(Y), "save oar " + """" + BackupPath() + "Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
+                        End If
+                        ConsoleCommand(RegionClass.ProcessID(Y), "alert New content Is loading ...{ENTER}")
+                        ConsoleCommand(RegionClass.ProcessID(Y), "load oar --force-terrain --force-parcels " + """" + thing + """" + "{ENTER}")
+                        ConsoleCommand(RegionClass.ProcessID(Y), "alert New content just loaded. {ENTER}")
+                        Application.DoEvents()
+                        once = True
                     End If
-                    ConsoleCommand(RegionClass.ProcessID(Y), "alert New content Is loading ...{ENTER}")
-                    ConsoleCommand(RegionClass.ProcessID(Y), "load oar --force-terrain --force-parcels " + """" + thing + """" + "{ENTER}")
-                    ConsoleCommand(RegionClass.ProcessID(Y), "alert New content just loaded. {ENTER}")
-                    Application.DoEvents()
+
                 Catch ex As Exception
                     Log("Error: " + ex.Message)
                 End Try
@@ -3251,10 +3256,10 @@ Public Class Form1
         Dim user = InputBox("User name that will get this IAR?")
         Dim password = InputBox("Password for user " + user + "?")
         If user.Length > 0 And password.Length > 0 Then
-            For Each Y In RegionClass.RegionListByGroupNum(RegionClass.GroupName(num))   ' a booted region's group            
-                ConsoleCommand(RegionClass.ProcessID(Y), "load iar --merge " + user + " /Objects " + password + " " + """" + thing + """" + "{ENTER}")
-                ConsoleCommand(RegionClass.ProcessID(Y), "alert IAR content Is loaded{ENTER}")
-            Next
+
+            ConsoleCommand(RegionClass.ProcessID(num), "load iar --merge " + user + " /Objects " + password + " " + """" + thing + """" + "{ENTER}")
+            ConsoleCommand(RegionClass.ProcessID(num), "alert IAR content Is loaded{ENTER}")
+
             Print("Opensim is loading your item. You will find it in Inventory in /Objects soon.")
         Else
             Print("Load IAR cancelled - must use the full user name and password.")
