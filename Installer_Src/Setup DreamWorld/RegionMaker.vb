@@ -115,9 +115,9 @@ Public Class RegionMaker
         Public _AllowGods As String
         Public _RegionGod As String
         Public _ManagerGod As String
-        Public _Birds As String
-        Public _Tides As String
-        Public _Teleport As String
+        Public _Birds As String = ""
+        Public _Tides As String = ""
+        Public _Teleport As String = ""
 
     End Class
 

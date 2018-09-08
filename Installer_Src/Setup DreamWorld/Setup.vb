@@ -630,11 +630,13 @@ Public Class Form1
                 Dim CountisRunning As Integer = 0
                 Sleep(1000)
                 For Each X In RegionClass.RegionNumbers
-                    If RegionClass.RegionEnabled(X) And CheckPort("127.0.0.1", RegionClass.RegionPort(X)) And Running Then
-                        'If RegionClass.ProcessID(X) > 0 And Running Then
-                        PrintFast("Checking " + RegionClass.RegionName(X))
-                        CountisRunning = CountisRunning + 1
-                        Log(RegionClass.RegionName(X) + " is still running")
+                    If RegionClass.RegionEnabled(X) Then
+                        If CheckPort("127.0.0.1", RegionClass.RegionPort(X)) And Running Then
+                            'If RegionClass.ProcessID(X) > 0 And Running Then
+                            PrintFast("Checking " + RegionClass.RegionName(X))
+                            CountisRunning = CountisRunning + 1
+                            Log(RegionClass.RegionName(X) + " is still running")
+                        End If
                     End If
                     Application.DoEvents()
                 Next
