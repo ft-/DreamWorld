@@ -24,6 +24,7 @@ Partial Class Tides
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.TideInfoDebugCheckBox = New System.Windows.Forms.CheckBox()
         Me.BroadcastTideInfo = New System.Windows.Forms.CheckBox()
         Me.Label5 = New System.Windows.Forms.Label()
         Me.TideHiLoChannelTextBox = New System.Windows.Forms.TextBox()
@@ -37,7 +38,6 @@ Partial Class Tides
         Me.TideHighLevelTextBox = New System.Windows.Forms.TextBox()
         Me.TideEnabledCheckbox = New System.Windows.Forms.CheckBox()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
-        Me.TideInfoDebugCheckBox = New System.Windows.Forms.CheckBox()
         Me.GroupBox1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -62,6 +62,17 @@ Partial Class Tides
         Me.GroupBox1.TabIndex = 0
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Global Tide Settings"
+        '
+        'TideInfoDebugCheckBox
+        '
+        Me.TideInfoDebugCheckBox.AutoSize = True
+        Me.TideInfoDebugCheckBox.Location = New System.Drawing.Point(27, 244)
+        Me.TideInfoDebugCheckBox.Name = "TideInfoDebugCheckBox"
+        Me.TideInfoDebugCheckBox.Size = New System.Drawing.Size(131, 17)
+        Me.TideInfoDebugCheckBox.TabIndex = 12
+        Me.TideInfoDebugCheckBox.Text = "Broadcast To Console"
+        Me.ToolTip1.SetToolTip(Me.TideInfoDebugCheckBox, "Provide tide information on the console?")
+        Me.TideInfoDebugCheckBox.UseVisualStyleBackColor = True
         '
         'BroadcastTideInfo
         '
@@ -171,17 +182,6 @@ Partial Class Tides
         '
         Me.ToolTip1.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info
         Me.ToolTip1.ToolTipTitle = "Enable the tide to come in and out?"
-        '
-        'TideInfoDebugCheckBox
-        '
-        Me.TideInfoDebugCheckBox.AutoSize = True
-        Me.TideInfoDebugCheckBox.Location = New System.Drawing.Point(27, 244)
-        Me.TideInfoDebugCheckBox.Name = "TideInfoDebugCheckBox"
-        Me.TideInfoDebugCheckBox.Size = New System.Drawing.Size(119, 17)
-        Me.TideInfoDebugCheckBox.TabIndex = 12
-        Me.TideInfoDebugCheckBox.Text = "Broadcast Tide Info"
-        Me.ToolTip1.SetToolTip(Me.TideInfoDebugCheckBox, "provide tide information on the console?")
-        Me.TideInfoDebugCheckBox.UseVisualStyleBackColor = True
         '
         'Tides
         '
