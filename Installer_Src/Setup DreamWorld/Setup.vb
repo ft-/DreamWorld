@@ -36,7 +36,8 @@ Public Class Form1
 
 #Region "Declarations"
 
-    Dim MyVersion As String = "2.36"
+    Dim MyVersion As String = "2.38"
+    Dim SimVersion As String = "0.9.1"
     Dim DebugPath As String = "\Opensim\Outworldz DreamGrid Source"  ' no slash at end
     Public Domain As String = "http://www.outworldz.com"
     Public prefix As String ' Holds path to Opensim folder
@@ -287,7 +288,7 @@ Public Class Form1
 
         ' Save a random machine ID - we don't want any data to be sent that's personal or identifiable,  but it needs to be unique
         Randomize()
-        MySetting.Machine() = Random()  ' a random machine ID may be generated.  Happens only once
+        If MySetting.Machine() = "" Then MySetting.Machine() = Random()  ' a random machine ID may be generated.  Happens only once
 
 
         'hide progress
@@ -494,7 +495,7 @@ Public Class Form1
         Buttons(StopButton)
         ProgressBar1.Value = 100
         Print("Outworldz is almost ready for you to log in.  Wait for INITIALIZATION COMPLETE - LOGINS ENABLED to appear in the console, and you can log in." + vbCrLf _
-              + " Hypergrid address is http://" + MySetting.PublicIP + ":" + MySetting.HttpPort)
+              + " Hypergrid address is" + vbCrLf + "http://" + MySetting.PublicIP + ":" + MySetting.HttpPort)
 
         ' done with bootup
         ProgressBar1.Visible = False
@@ -605,12 +606,15 @@ Public Class Form1
         ShowWindow(Process.GetProcessById(gRobustProcID).MainWindowHandle, SHOW_WINDOW.SW_RESTORE)
 
         For Each X As Integer In RegionClass.RegionNumbers
-            PrintFast("Shutting down " + RegionClass.RegionName(X))
-            ConsoleCommand(RegionClass.ProcessID(X), "q{ENTER}")
+            If RegionClass.RegionEnabled(X) Then
+                PrintFast("Shutting down " + RegionClass.RegionName(X))
+                ConsoleCommand(RegionClass.ProcessID(X), "q{ENTER}")
+            End If
 
-            RegionClass.ShuttingDown(X) = True
             RegionClass.Booted(X) = False
+            RegionClass.ShuttingDown(X) = True
             RegionClass.WarmingUp(X) = False
+
         Next
         Dim counter = 300 ' 5 minutes to quit all regions
 
@@ -626,8 +630,8 @@ Public Class Form1
                 Dim CountisRunning As Integer = 0
                 Sleep(1000)
                 For Each X In RegionClass.RegionNumbers
-                    'If CheckPort("127.0.0.1", RegionClass.RegionPort(X)) Then
-                    If RegionClass.ProcessID(X) > 0 Then
+                    If RegionClass.RegionEnabled(X) And CheckPort("127.0.0.1", RegionClass.RegionPort(X)) And Running Then
+                        'If RegionClass.ProcessID(X) > 0 And Running Then
                         PrintFast("Checking " + RegionClass.RegionName(X))
                         CountisRunning = CountisRunning + 1
                         Log(RegionClass.RegionName(X) + " is still running")
@@ -714,6 +718,7 @@ Public Class Form1
 
             Buttons(StartButton)
             Print("Stopped")
+            Running = False
             ProgressBar1.Visible = False
         End If
     End Sub
@@ -1187,12 +1192,22 @@ Public Class Form1
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
         'Regions - write all region.ini files with public IP and Public port
 
+        Dim BirdFile = MyFolder + "\OutworldzFiles\Opensim\bin\addon-modules\OpenSimBirds\config\OpenSimBirds.ini"
+        Try
+            System.IO.File.Delete(BirdFile)
+        Catch ex As Exception
+        End Try
+        Dim TideFile = MyFolder + "\OutworldzFiles\Opensim\bin\addon-modules\OpenSimTide\config\OpenSimTide.ini"
+        Try
+            System.IO.File.Delete(TideFile)
+        Catch ex As Exception
+        End Try
 
         ' Self setting Region Ports
         Dim FirstPort As Integer = Convert.ToInt16(MySetting.FirstRegionPort())
 
         For Each X In RegionClass.RegionNumbers
-            If RegionClass.RegionName(X) <> "Robust" Then
+            If RegionClass.RegionName(X) <> "Robust" And RegionClass.RegionEnabled(X) Then
                 Dim simName = RegionClass.RegionName(X)
 
                 MySetting.LoadOtherIni(RegionClass.RegionPath(X), ";")
@@ -1260,6 +1275,7 @@ Public Class Form1
                 MySetting.SetOtherIni(simName, "RegionSnapShot", RegionClass.RegionSnapShot(X).ToString)
                 MySetting.SetOtherIni(simName, "Birds", RegionClass.Birds(X))
                 MySetting.SetOtherIni(simName, "Tides", RegionClass.Tides(X))
+                MySetting.SetOtherIni(simName, "Teleport", RegionClass.Teleport(X))
 
                 MySetting.SaveOtherINI()
 
@@ -1350,12 +1366,12 @@ Public Class Form1
 
                 MySetting.SaveOtherINI()
 
-                If MySetting.BirdsEnabled And RegionClass.Birds(X) = "True" Then
+                If MySetting.BirdsModuleStartup Then
                     Dim BirdData As String = "[" + simName + "]" + vbCrLf &
                     ";this Is the default And determines whether the module does anything" & vbCrLf &
-                    "BirdsModuleStartup = " + MySetting.BirdsModuleStartup.ToString & vbCrLf & vbCrLf &
+                    "BirdsModuleStartup = True" & vbCrLf & vbCrLf &
                     ";set to false to disable the birds from appearing in this region" & vbCrLf &
-                    "BirdsEnabled = " + MySetting.BirdsEnabled.ToString & vbCrLf & vbCrLf &
+                    "BirdsEnabled = " & RegionClass.Birds(X) & vbCrLf & vbCrLf &
                     ";which channel do we listen on for in world commands" & vbCrLf &
                     "BirdsChatChannel = " + MySetting.BirdsChatChannel.ToString() & vbCrLf & vbCrLf &
                     ";the number of birds to flock" & vbCrLf &
@@ -1382,22 +1398,18 @@ Public Class Form1
                     ";Or everyone if Not specified" & vbCrLf &
                     "BirdsAllowedControllers = ESTATE_OWNER, ESTATE_MANAGER" & vbCrLf & vbCrLf & vbCrLf
 
-                    Dim BirdFile = MyFolder + "\OutworldzFiles\Opensim\bin\addon-modules\OpenSimBirds\config\OpenSimBirds.ini"
-                    Try
-                        System.IO.File.Delete(BirdFile)
-                    Catch ex As Exception
-                    End Try
+
                     IO.File.AppendAllText(BirdFile, BirdData, Encoding.Default) 'The text file will be created if it does not already exist  
 
                 End If
 
-                If MySetting.TideEnabled And RegionClass.Tides(X) = "True" Then
+                If MySetting.TideEnabled Then
 
                     Dim TideData As String = ";; Set the Tide settings per named region" & vbCrLf &
                      "[" + simName + "]" + vbCrLf &
                     ";this determines whether the module does anything in this region" & vbCrLf &
                     ";# {TideEnabled} {} {Enable the tide to come in and out?} {true false} false" & vbCrLf &
-                    "TideEnabled = " + MySetting.TideEnabled.ToString & vbCrLf &
+                    "TideEnabled = " & RegionClass.Tides(X) & vbCrLf &
                      vbCrLf &
                     ";; Tides currently only work on single regions And varregions (non megaregions) " & vbCrLf &
                     ";# surrounded completely by water" & vbCrLf &
@@ -1428,11 +1440,7 @@ Public Class Form1
                     ";; How many times to repeat Tide Warning messages at high/low tide" & vbCrLf &
                     "TideAnnounceCount = 1" & vbCrLf & vbCrLf & vbCrLf & vbCrLf
 
-                    Dim TideFile = MyFolder + "\OutworldzFiles\Opensim\bin\addon-modules\OpenSimTide\config\OpenSimTide.ini"
-                    Try
-                        System.IO.File.Delete(TideFile)
-                    Catch ex As Exception
-                    End Try
+
                     IO.File.AppendAllText(TideFile, TideData, Encoding.Default) 'The text file will be created if it does not already exist 
 
                 End If
@@ -1581,7 +1589,6 @@ Public Class Form1
 #End Region
 
 #Region "Ports"
-
 
     Public Sub CheckDefaultPorts()
 
@@ -2810,12 +2817,20 @@ Public Class Form1
         Dim HTML As String
         Dim HTMLFILE = MyFolder & "\OutworldzFiles\Opensim\bin\data\teleports.htm"
         HTML = "Welcome to |" + MySetting.SimName + "||" + MySetting.DNSName + ":" + MySetting.HttpPort + ":" + MySetting.WelcomeRegion + "||" + vbCrLf
-
+        Dim ToSort As New List(Of String)
         For Each X As Integer In RegionClass.RegionNumbers
-            If RegionClass.Booted(X) Then
-                HTML = HTML + "*|" + RegionClass.RegionName(X) + "||" + MySetting.DNSName + ":" + MySetting.HttpPort + ":" + RegionClass.RegionName(X) + "||" + vbCrLf
+            If RegionClass.Booted(X) And RegionClass.Teleport(X) = "True" Then
+                ToSort.Add(RegionClass.RegionName(X))
             End If
         Next
+
+        ToSort.Sort()
+
+        For Each S As String In ToSort
+            Dim X = RegionClass.FindRegionByName(S)
+            HTML = HTML + "*|" + RegionClass.RegionName(X) + "||" + MySetting.DNSName + ":" + MySetting.HttpPort + ":" + RegionClass.RegionName(X) + "||" + vbCrLf
+        Next
+
         Try
             My.Computer.FileSystem.DeleteFile(HTMLFILE)
         Catch
@@ -2921,7 +2936,7 @@ Public Class Form1
 
     Private Sub ShowHyperGridAddressToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ShowHyperGridAddressToolStripMenuItem.Click
 
-        Print("Hypergrid address Is http: //" + MySetting.PublicIP + ":" + MySetting.HttpPort)
+        Print("Hypergrid address is " + vbCrLf + "http://" + MySetting.PublicIP + ":" + MySetting.HttpPort)
 
     End Sub
 
@@ -3473,7 +3488,7 @@ Public Class Form1
         End Try
 
         Try
-            fileName = client.DownloadString(Domain + "/Outworldz_Installer/GetUpdaterGrid.plx?r" + Random())
+            fileName = client.DownloadString(Domain + "/Outworldz_Installer/GetUpdaterGrid.plx?r=1" + GetPostData())
         Catch
             MsgBox("Could not fetch an update. Please try again, later", vbInformation, "Info")
             Return ""
@@ -3497,12 +3512,11 @@ Public Class Form1
 
         Dim Update As String = ""
         Dim isPortOpen As String = ""
-        Dim Data As String = GetPostData()
 
         MySetting.SkipUpdateCheck = False
 
         Try
-            Update = client.DownloadString(Domain + "/Outworldz_Installer/UpdateGrid.plx?Ver=" + Str(MyVersion) + Data)
+            Update = client.DownloadString(Domain + "/Outworldz_Installer/UpdateGrid.plx?r=1" + GetPostData())
         Catch ex As Exception
             Log("Dang:The Outworldz web site is down")
         End Try
@@ -3576,8 +3590,9 @@ Public Class Form1
 
             If RegisterDNS() Then
                 ProbePublicPort()
+                Return True
             End If
-            Return True
+
         End If
 
 
@@ -3670,8 +3685,7 @@ Public Class Form1
             ' Send unique, anonymous random ID, both of the versions of Opensim and this program, and the diagnostics test results 
             ' See my privacy policy at https://www.outworldz.com/privacy.htm
 
-            Dim Data As String = GetPostData()
-            Dim Url = Domain + "/cgi/probetest.plx?IP=" + MySetting.PublicIP + "&Port=" + MySetting.DiagnosticPort + Data
+            Dim Url = Domain + "/cgi/probetest.plx?IP=" + MySetting.PublicIP + "&Port=" + MySetting.DiagnosticPort + GetPostData()
             'Log(Url)
             isPortOpen = client.DownloadString(Url)
         Catch ex As Exception
@@ -3859,8 +3873,6 @@ Public Class Form1
 
     Private Function GetPostData() As String
 
-        Dim SimVersion = "0.9.0"
-
         Dim UPnp As String = "Fail"
         If MySetting.UPnpDiag Then
             UPnp = "Pass"
@@ -3870,13 +3882,16 @@ Public Class Form1
             Loopb = "Pass"
         End If
 
+        Dim Grid As String = "Grid"
+        If MySetting.StandAlone() Then Grid = "Standalone"
 
-        Dim data As String = "&Machine=" + MySetting.Machine _
+        Dim data As String = "&MachineID=" + MySetting.Machine() _
             + "&V=" + MyVersion _
             + "&OV=" + SimVersion _
             + "&uPnp=" + UPnp _
             + "&Loop=" + Loopb _
-            + "&Type=Grid" _
+            + "&Type=" + Grid _
+            + "&Ver=" + MyVersion _
             + "&r=" + Random()
         Return data
 
@@ -4183,12 +4198,13 @@ Public Class Form1
         Dim Checkname As String = String.Empty
 
         Try
-            Checkname = client.DownloadString("http://outworldz.net/dns.plx?GridName=" + MySetting.DNSName + "&r=" + Random())
+            Checkname = client.DownloadString("http://outworldz.net/dns.plx?GridName=" + MySetting.DNSName + GetPostData())
         Catch ex As Exception
             Log("Warn:Cannot check the DNS Name" + ex.Message)
             Return False
         End Try
-        Return True
+        If Checkname = "UPDATED" Then Return True
+        Return False
 
     End Function
 
@@ -4230,11 +4246,8 @@ Public Class Form1
         Dim Checkname As String = String.Empty
 
         Try
-            Checkname = client.DownloadString("http://outworldz.net/dns.plx/?GridName=" + name _
-                                              + "&MachineID=" + MySetting.Machine() _
-                                              + "&Port=" + MySetting.HttpPort.ToString _
-                                              + "&Public=" + MySetting.GDPR.ToString _
-                                              + "&r=" + Random())
+            Checkname = client.DownloadString("http://outworldz.net/dns.plx/?GridName=" + name + GetPostData())
+
         Catch ex As Exception
             Log("Warn: Cannot check the DNS Name" + ex.Message)
         End Try
