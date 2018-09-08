@@ -45,6 +45,8 @@ Partial Class FormRegion
         Me.NonphysicalPrimMax = New System.Windows.Forms.TextBox()
         Me.Label12 = New System.Windows.Forms.Label()
         Me.ClampPrimSize = New System.Windows.Forms.CheckBox()
+        Me.BirdsCheckBox = New System.Windows.Forms.CheckBox()
+        Me.TidesCheckbox = New System.Windows.Forms.CheckBox()
         Me.Advanced = New System.Windows.Forms.GroupBox()
         Me.Label6 = New System.Windows.Forms.Label()
         Me.Label4 = New System.Windows.Forms.Label()
@@ -62,7 +64,6 @@ Partial Class FormRegion
         Me.Button2 = New System.Windows.Forms.Button()
         Me.GroupBox6 = New System.Windows.Forms.GroupBox()
         Me.GroupBox7 = New System.Windows.Forms.GroupBox()
-        Me.BirdsCheckBox = New System.Windows.Forms.CheckBox()
         Me.Label13 = New System.Windows.Forms.Label()
         Me.GroupBox3 = New System.Windows.Forms.GroupBox()
         Me.Publish = New System.Windows.Forms.RadioButton()
@@ -91,8 +92,7 @@ Partial Class FormRegion
         Me.PhysicsubODE = New System.Windows.Forms.RadioButton()
         Me.PhysicsBullet = New System.Windows.Forms.RadioButton()
         Me.PhysicsODE = New System.Windows.Forms.RadioButton()
-        Me.GroupBox8 = New System.Windows.Forms.GroupBox()
-        Me.TidesCheckbox = New System.Windows.Forms.CheckBox()
+        Me.TPCheckBox1 = New System.Windows.Forms.CheckBox()
         Me.Advanced.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox6.SuspendLayout()
@@ -104,7 +104,6 @@ Partial Class FormRegion
         CType(Me.MapHelp, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.MapPicture, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox1.SuspendLayout()
-        Me.GroupBox8.SuspendLayout()
         Me.SuspendLayout()
         '
         'RegionPort
@@ -299,6 +298,28 @@ Partial Class FormRegion
         Me.ToolTip1.SetToolTip(Me.ClampPrimSize, "Clamp Prim Size is an option to ensure no prim can exceed the set size..")
         Me.ClampPrimSize.UseVisualStyleBackColor = True
         '
+        'BirdsCheckBox
+        '
+        Me.BirdsCheckBox.AutoSize = True
+        Me.BirdsCheckBox.Location = New System.Drawing.Point(15, 19)
+        Me.BirdsCheckBox.Name = "BirdsCheckBox"
+        Me.BirdsCheckBox.Size = New System.Drawing.Size(85, 17)
+        Me.BirdsCheckBox.TabIndex = 21
+        Me.BirdsCheckBox.Text = "Birds Enable"
+        Me.ToolTip1.SetToolTip(Me.BirdsCheckBox, "If set, the global Bird settungs will apply to this region")
+        Me.BirdsCheckBox.UseVisualStyleBackColor = True
+        '
+        'TidesCheckbox
+        '
+        Me.TidesCheckbox.AutoSize = True
+        Me.TidesCheckbox.Location = New System.Drawing.Point(15, 42)
+        Me.TidesCheckbox.Name = "TidesCheckbox"
+        Me.TidesCheckbox.Size = New System.Drawing.Size(88, 17)
+        Me.TidesCheckbox.TabIndex = 21
+        Me.TidesCheckbox.Text = "Tides Enable"
+        Me.ToolTip1.SetToolTip(Me.TidesCheckbox, "If set, the global Tide settungs will apply to this region")
+        Me.TidesCheckbox.UseVisualStyleBackColor = True
+        '
         'Advanced
         '
         Me.Advanced.Controls.Add(Me.ClampPrimSize)
@@ -463,7 +484,6 @@ Partial Class FormRegion
         '
         'GroupBox6
         '
-        Me.GroupBox6.Controls.Add(Me.GroupBox8)
         Me.GroupBox6.Controls.Add(Me.GroupBox7)
         Me.GroupBox6.Controls.Add(Me.Label13)
         Me.GroupBox6.Controls.Add(Me.GroupBox3)
@@ -480,24 +500,15 @@ Partial Class FormRegion
         '
         'GroupBox7
         '
+        Me.GroupBox7.Controls.Add(Me.TPCheckBox1)
+        Me.GroupBox7.Controls.Add(Me.TidesCheckbox)
         Me.GroupBox7.Controls.Add(Me.BirdsCheckBox)
         Me.GroupBox7.Location = New System.Drawing.Point(228, 334)
         Me.GroupBox7.Name = "GroupBox7"
-        Me.GroupBox7.Size = New System.Drawing.Size(177, 48)
+        Me.GroupBox7.Size = New System.Drawing.Size(177, 111)
         Me.GroupBox7.TabIndex = 1881
         Me.GroupBox7.TabStop = False
-        Me.GroupBox7.Text = "Birds Module"
-        '
-        'BirdsCheckBox
-        '
-        Me.BirdsCheckBox.AutoSize = True
-        Me.BirdsCheckBox.Location = New System.Drawing.Point(12, 19)
-        Me.BirdsCheckBox.Name = "BirdsCheckBox"
-        Me.BirdsCheckBox.Size = New System.Drawing.Size(59, 17)
-        Me.BirdsCheckBox.TabIndex = 21
-        Me.BirdsCheckBox.Text = "Enable"
-        Me.ToolTip1.SetToolTip(Me.BirdsCheckBox, "If set, the global Bird settungs will apply to this region")
-        Me.BirdsCheckBox.UseVisualStyleBackColor = True
+        Me.GroupBox7.Text = "Modules:"
         '
         'Label13
         '
@@ -808,26 +819,16 @@ Partial Class FormRegion
         Me.PhysicsODE.Text = "Open Dynamics Engine"
         Me.PhysicsODE.UseVisualStyleBackColor = True
         '
-        'GroupBox8
+        'TPCheckBox1
         '
-        Me.GroupBox8.Controls.Add(Me.TidesCheckbox)
-        Me.GroupBox8.Location = New System.Drawing.Point(228, 388)
-        Me.GroupBox8.Name = "GroupBox8"
-        Me.GroupBox8.Size = New System.Drawing.Size(177, 48)
-        Me.GroupBox8.TabIndex = 1882
-        Me.GroupBox8.TabStop = False
-        Me.GroupBox8.Text = "Tides Module"
-        '
-        'TidesCheckbox
-        '
-        Me.TidesCheckbox.AutoSize = True
-        Me.TidesCheckbox.Location = New System.Drawing.Point(12, 19)
-        Me.TidesCheckbox.Name = "TidesCheckbox"
-        Me.TidesCheckbox.Size = New System.Drawing.Size(59, 17)
-        Me.TidesCheckbox.TabIndex = 21
-        Me.TidesCheckbox.Text = "Enable"
-        Me.ToolTip1.SetToolTip(Me.TidesCheckbox, "If set, the global Tide settungs will apply to this region")
-        Me.TidesCheckbox.UseVisualStyleBackColor = True
+        Me.TPCheckBox1.AutoSize = True
+        Me.TPCheckBox1.Location = New System.Drawing.Point(15, 65)
+        Me.TPCheckBox1.Name = "TPCheckBox1"
+        Me.TPCheckBox1.Size = New System.Drawing.Size(110, 17)
+        Me.TPCheckBox1.TabIndex = 22
+        Me.TPCheckBox1.Text = "Teleporter Enable"
+        Me.ToolTip1.SetToolTip(Me.TPCheckBox1, "If set, the global Tide settungs will apply to this region")
+        Me.TPCheckBox1.UseVisualStyleBackColor = True
         '
         'FormRegion
         '
@@ -866,8 +867,6 @@ Partial Class FormRegion
         CType(Me.MapPicture, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
-        Me.GroupBox8.ResumeLayout(False)
-        Me.GroupBox8.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -940,6 +939,6 @@ Partial Class FormRegion
     Friend WithEvents Publish As RadioButton
     Friend WithEvents GroupBox7 As GroupBox
     Friend WithEvents BirdsCheckBox As CheckBox
-    Friend WithEvents GroupBox8 As GroupBox
     Friend WithEvents TidesCheckbox As CheckBox
+    Friend WithEvents TPCheckBox1 As CheckBox
 End Class
