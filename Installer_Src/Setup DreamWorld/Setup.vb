@@ -306,6 +306,15 @@ Public Class Form1
             Me.Location = New Point(MySetting.MyX, MySetting.MyY)
         End If
 
+        ' add 10 minutes to allow time to auto backup and then restart
+        Dim BTime As Int16 = CType(MySetting.AutobackupInterval, Int16)
+        If MySetting.AutoRestartInterval > 0 And MySetting.AutoRestartInterval < BTime Then
+            MySetting.AutoRestartInterval = BTime + 30
+            Print("Upping AutoRestart Time to " + BTime.ToString + " + 30 Minutes so backups have time to run.")
+        End If
+
+
+
         TextBox1.BackColor = Me.BackColor
         TextBox1.AllowDrop = True
 
@@ -617,9 +626,9 @@ Public Class Form1
                 Dim CountisRunning As Integer = 0
                 Sleep(1000)
                 For Each X In RegionClass.RegionNumbers
-                    PrintFast("Checking " + RegionClass.RegionName(X))
                     'If CheckPort("127.0.0.1", RegionClass.RegionPort(X)) Then
                     If RegionClass.ProcessID(X) > 0 Then
+                        PrintFast("Checking " + RegionClass.RegionName(X))
                         CountisRunning = CountisRunning + 1
                         Log(RegionClass.RegionName(X) + " is still running")
                     End If
@@ -2804,9 +2813,7 @@ Public Class Form1
 
         For Each X As Integer In RegionClass.RegionNumbers
             If RegionClass.Booted(X) Then
-                If RegionClass.RegionName(X) <> MySetting.WelcomeRegion Then
-                    HTML = HTML + "*|" + RegionClass.RegionName(X) + "||" + MySetting.DNSName + ":" + MySetting.HttpPort + ":" + RegionClass.RegionName(X) + "||" + vbCrLf
-                End If
+                HTML = HTML + "*|" + RegionClass.RegionName(X) + "||" + MySetting.DNSName + ":" + MySetting.HttpPort + ":" + RegionClass.RegionName(X) + "||" + vbCrLf
             End If
         Next
         Try
