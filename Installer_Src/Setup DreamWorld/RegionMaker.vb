@@ -115,8 +115,9 @@ Public Class RegionMaker
         Public _AllowGods As String
         Public _RegionGod As String
         Public _ManagerGod As String
-        Public _Birds As String
-        Public _Tides As String
+        Public _Birds As String = ""
+        Public _Tides As String = ""
+        Public _Teleport As String = ""
 
     End Class
 
@@ -387,6 +388,14 @@ Public Class RegionMaker
             RegionList(n)._Tides = Value.ToString
         End Set
     End Property
+    Public Property Teleport(n As Integer) As String
+        Get
+            Return RegionList(n)._Teleport.ToString
+        End Get
+        Set(ByVal Value As String)
+            RegionList(n)._Teleport = Value.ToString
+        End Set
+    End Property
 
 #End Region
 
@@ -608,6 +617,7 @@ Public Class RegionMaker
                         ManagerGod(n) = Form1.MySetting.GetIni(fName, "ManagerGod")
                         Birds(n) = Form1.MySetting.GetIni(fName, "Birds")
                         Tides(n) = Form1.MySetting.GetIni(fName, "Tides")
+                        Teleport(n) = Form1.MySetting.GetIni(fName, "Teleport")
 
                         If initted Then
 
@@ -693,7 +703,8 @@ Public Class RegionMaker
         + "RegionGod = " + RegionGod(n) + vbCrLf _
         + "ManagerGod = " + ManagerGod(n) + vbCrLf _
         + "Birds = " + Birds(n) + vbCrLf _
-        + "Tides = " + Tides(n) + vbCrLf
+        + "Tides = " + Tides(n) + vbCrLf _
+        + "Teleport = " + Teleport(n) + vbCrLf
 
         Try
             My.Computer.FileSystem.DeleteFile(fname)

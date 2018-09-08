@@ -1482,9 +1482,7 @@ Public Class MySettings
             Return GetMySetting("MachineID")
         End Get
         Set(ByVal Value As String)
-            If (GetMySetting("MachineID") = "") Then
-                SetMySetting("MachineID", Value)
-            End If
+            SetMySetting("MachineID", Value)
         End Set
     End Property
 End Class

@@ -1,6 +1,10 @@
-﻿V2.37 
+﻿V2.38
+Teleport IAR makes a Grid-wide Teleporter for the first 32 regions.
+
+V2.37 
 Auto Restart interval for each Region Instance
 Tides module lets you have working tides and floating objects that move with the water
+Includes an IAR with a floating buoy
 
 V2.36
 Regions auto-count up

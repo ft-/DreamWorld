@@ -9,6 +9,7 @@
         BroadcastTideInfo.Checked = CType(Form1.MySetting.BroadcastTideInfo, Boolean)
         TideInfoChannelTextBox.Text = Form1.MySetting.TideInfoChannel
         TideHiLoChannelTextBox.Text = Form1.MySetting.TideLevelChannel
+        TideInfoDebugCheckBox.Checked = Form1.MySetting.TideInfoDebug
     End Sub
 
     Private Sub TideEnabledCheckbox_CheckedChanged(sender As Object, e As EventArgs) Handles TideEnabledCheckbox.CheckedChanged

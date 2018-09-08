@@ -194,8 +194,13 @@ Public Class FormRegion
         If RegionClass.Birds(n) = "True" Then
             BirdsCheckBox.Checked = True
         End If
+
         If RegionClass.Tides(n) = "True" Then
             TidesCheckbox.Checked = True
+        End If
+
+        If RegionClass.Teleport(n) = "True" Then
+            TPCheckBox1.Checked = True
         End If
 
 
@@ -491,7 +496,8 @@ Public Class FormRegion
                         "RegionGod = " & ARegionGod & vbCrLf &
                         "ManagerGod = " & AManagerGod & vbCrLf &
                         "Birds = " & BirdsCheckBox.Checked.ToString & vbCrLf &
-                        "Tides = " & TidesCheckbox.Checked.ToString
+                        "Tides = " & TidesCheckbox.Checked.ToString & vbCrLf &
+                        "Teleport = " & TPCheckBox1.Checked.ToString
 
         Debug.Print(Region)
 
@@ -886,24 +892,28 @@ Public Class FormRegion
         Else
             Form1.Log("Region " + Name + " is not publishing snapshots")
         End If
-
         If initted Then changed = True
     End Sub
 
     Private Sub BirdsCheckBox_CheckedChanged(sender As Object, e As EventArgs) Handles BirdsCheckBox.CheckedChanged
         If BirdsCheckBox.Checked Then
             Form1.Log("Region " + Name + " has birds enabled")
-
-            If initted Then changed = True
         End If
+        If initted Then changed = True
     End Sub
 
     Private Sub TidesCheckbox_CheckedChanged(sender As Object, e As EventArgs) Handles TidesCheckbox.CheckedChanged
         If TidesCheckbox.Checked Then
             Form1.Log("Region " + Name + " has tides enabled")
-
-            If initted Then changed = True
         End If
+        If initted Then changed = True
+    End Sub
+
+    Private Sub TPCheckBox1_CheckedChanged(sender As Object, e As EventArgs) Handles TPCheckBox1.CheckedChanged
+        If TPCheckBox1.Checked Then
+            Form1.Log("Region " + Name + " has Teleport Board enabled")
+        End If
+        If initted Then changed = True
     End Sub
 
 

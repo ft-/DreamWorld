@@ -81,6 +81,9 @@ Public Class AdvancedForm
         If text = "Daily" Then Interval = 60 * 24
         If text = "Weekly" Then Interval = 60 * 24 * 7
         Form1.MySetting.AutobackupInterval = Interval.ToString
+
+
+
         Form1.MySetting.SaveSettings()
     End Sub
 
