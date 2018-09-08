@@ -1,4 +1,8 @@
-﻿V2.36
+﻿V2.37 
+Auto Restart interval for each Region Instance
+Tides module lets you have working tides and floating objects that move with the water
+
+V2.36
 Regions auto-count up
 
 V2.35

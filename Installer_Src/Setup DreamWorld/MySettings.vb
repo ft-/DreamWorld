@@ -239,20 +239,71 @@ Public Class MySettings
         End Try
 
 
-        SetBirds()
+        '=============== Tides
+        Try
+            Dim x As Boolean = TideEnabled()
+        Catch ex As Exception
+            TideEnabled() = False
+            SaveSettings()
+        End Try
 
-        ' check for default
-        If (SmtpHost() = "") Then SmtpHost() = "smtp.gmail.com"
-        If (SmtpPort() = "") Then SmtpPort() = "587"
+        Try
+            Dim x As String = TideHighLevel()
+            If x = "" Then TideHighLevel() = "20"
+        Catch ex As Exception
+            TideHighLevel() = "20"
+            SaveSettings()
+        End Try
 
-        SaveSettings()
+        Try
+            Dim x As String = TideLowLevel()
+            If x = "" Then TideLowLevel() = "17"
+        Catch ex As Exception
+            TideLowLevel() = "17"
+            SaveSettings()
+        End Try
+
+        Try
+            Dim x As Boolean = TideInfoDebug()
+        Catch ex As Exception
+            TideInfoDebug() = False
+            SaveSettings()
+        End Try
+
+        Try
+            Dim x As String = CycleTime()
+            If x = "" Then CycleTime() = "900"
+        Catch ex As Exception
+            CycleTime() = "900"
+            SaveSettings()
+        End Try
+
+        Try
+            Dim x As Boolean = BroadcastTideInfo()
+        Catch ex As Exception
+            BroadcastTideInfo() = False
+            SaveSettings()
+        End Try
+
+        Try
+            Dim x = TideInfoChannel()
+            If x = "" Then TideInfoChannel() = "5555"
+        Catch ex As Exception
+            TideInfoChannel() = "5555"
+            SaveSettings()
+        End Try
+
+        Try
+            Dim x = TideLevelChannel()
+            If x = "" Then TideLevelChannel() = "5556"
+        Catch ex As Exception
+            TideLevelChannel() = "5556"
+            SaveSettings()
+        End Try
 
 
-    End Sub
 
-    Private Sub SetBirds()
-
-        'this is the default and determines whether the module does anything
+        'Birds: this is the default and determines whether the module does anything
         Try
             Dim x = BirdsModuleStartup()
         Catch ex As Exception
@@ -270,6 +321,7 @@ Public Class MySettings
         'the number of birds to flock
         Try
             Dim x = BirdsFlockSize()
+            If x = "" Then BirdsFlockSize() = "25"
         Catch ex As Exception
             BirdsFlockSize() = "25"
             SaveSettings()
@@ -278,6 +330,7 @@ Public Class MySettings
         'which channel do we listen on for in world commands
         Try
             Dim x = BirdsChatChannel()
+            If x = 0 Then BirdsChatChannel() = 118
         Catch ex As Exception
             BirdsChatChannel() = 118
             SaveSettings()
@@ -286,6 +339,7 @@ Public Class MySettings
         'how far each bird can travel per update
         Try
             Dim x = BirdsMaxSpeed()
+            If x = 0 Then BirdsMaxSpeed() = 1.0
         Catch ex As Exception
             BirdsMaxSpeed() = 1.0
             SaveSettings()
@@ -294,6 +348,7 @@ Public Class MySettings
         'the maximum acceleration allowed to the current velocity of the bird
         Try
             Dim x = BirdsMaxForce()
+            If x = 0 Then BirdsMaxForce() = 0.2
         Catch ex As Exception
             BirdsMaxForce() = 0.2
             SaveSettings()
@@ -302,6 +357,7 @@ Public Class MySettings
         'max distance for other birds to be considered in the same flock as us
         Try
             Dim x = BirdsNeighbourDistance()
+            If x = 0 Then BirdsNeighbourDistance() = 25
         Catch ex As Exception
             BirdsNeighbourDistance() = 25
             SaveSettings()
@@ -310,6 +366,7 @@ Public Class MySettings
         'how far away from other birds we would like to stay
         Try
             Dim x = BirdsDesiredSeparation()
+            If x = 0 Then BirdsDesiredSeparation() = 5
         Catch ex As Exception
             BirdsDesiredSeparation() = 5
             SaveSettings()
@@ -318,6 +375,7 @@ Public Class MySettings
         'how close to the edges of things can we get without being worried
         Try
             Dim x = BirdsTolerance()
+            If x = 0 Then BirdsTolerance() = 25
         Catch ex As Exception
             BirdsTolerance() = 25
             SaveSettings()
@@ -326,6 +384,7 @@ Public Class MySettings
         'how close to the edge of a region can we get?
         Try
             Dim x = BirdsBorderSize()
+            If x = 0 Then BirdsBorderSize() = 25
         Catch ex As Exception
             BirdsBorderSize() = 25
             SaveSettings()
@@ -334,6 +393,7 @@ Public Class MySettings
         'how high are we allowed to flock
         Try
             Dim x = BirdsMaxHeight()
+            If x = 0 Then BirdsMaxHeight() = 45
         Catch ex As Exception
             BirdsMaxHeight() = 45
             SaveSettings()
@@ -342,12 +402,20 @@ Public Class MySettings
         'By default the module will create a flock of plain wooden spheres, however this can be overridden to the name of an existing prim that
         ' needs to already exist in the scene - i.e. be rezzed in the region.
 
-
         If BirdsPrim() = "" Then
             BirdsPrim() = "SeaGull1"
         End If
 
+        ' check for default
+        If (SmtpHost() = "") Then SmtpHost() = "smtp.gmail.com"
+        If (SmtpPort() = "") Then SmtpPort() = "587"
+
+        SaveSettings()
+
+
     End Sub
+
+
 #End Region
 
 #Region "Functions And Subs"
@@ -410,6 +478,14 @@ Public Class MySettings
 #End Region
 
 #Region "GetSet"
+
+
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="section"></param>
+    ''' <returns></returns>
+    ''' 
     Public Function GetIni(section As String, key As String, Optional D As String = "") As String
 
         Dim R = Stripqq(Data(section)(key))
@@ -477,6 +553,79 @@ Public Class MySettings
 #End Region
 
 #Region "Properties"
+
+    ' Tides
+    Public Property TideInfoDebug() As Boolean
+        Get
+            Return CType(GetMySetting("TideInfoDebug"), Boolean)
+        End Get
+        Set
+            SetMySetting("TideInfoDebug", Value.ToString)
+        End Set
+    End Property
+
+    Public Property TideEnabled() As Boolean
+        Get
+            Return CType(GetMySetting("TideEnabled"), Boolean)
+        End Get
+        Set
+            SetMySetting("TideEnabled", Value.ToString)
+        End Set
+    End Property
+
+    Public Property TideHighLevel() As String
+        Get
+            Return GetMySetting("TideHighLevel")
+        End Get
+        Set
+            SetMySetting("TideHighLevel", Value)
+        End Set
+    End Property
+
+    Public Property TideLowLevel() As String
+        Get
+            Return GetMySetting("TideLowLevel")
+        End Get
+        Set
+            SetMySetting("TideLowLevel", Value)
+        End Set
+    End Property
+
+    Public Property CycleTime() As String
+        Get
+            Return GetMySetting("CycleTime")
+        End Get
+        Set
+            SetMySetting("CycleTime", Value)
+        End Set
+    End Property
+
+    Public Property BroadcastTideInfo() As Boolean
+        Get
+            Return CType(GetMySetting("BroadcastTideInfo"), Boolean)
+        End Get
+        Set
+            SetMySetting("BroadcastTideInfo", Value.ToString)
+        End Set
+    End Property
+    Public Property TideInfoChannel() As String
+        Get
+            Return GetMySetting("TideInfoChannel")
+        End Get
+        Set
+            SetMySetting("TideInfoChannel", Value)
+        End Set
+    End Property
+    Public Property TideLevelChannel() As String
+        Get
+            Return GetMySetting("TideLevelChannel")
+        End Get
+        Set
+            SetMySetting("TideLevelChannel", Value)
+        End Set
+    End Property
+
+    ' more stuff
 
     Public Property FirstRegionPort() As String
         Get

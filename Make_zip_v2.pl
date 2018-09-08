@@ -1,5 +1,5 @@
 
-my $type  = '-V2.36' ;  # '-Beta-V1.5';
+my $type  = '-V2.37' ;  # '-Beta-V1.5';
 my $dir = "D:/Opensim/Outworldz Dreamgrid Source";
 
 chdir ($dir);

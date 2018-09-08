@@ -260,6 +260,12 @@
     <Compile Include="IceCast.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="TideForm.Designer.vb">
+      <DependentUpon>TideForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="TideForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="TosForm.designer.vb">
       <DependentUpon>TosForm.vb</DependentUpon>
     </Compile>
@@ -310,6 +316,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="IceCast.resx">
       <DependentUpon>IceCast.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TideForm.resx">
+      <DependentUpon>TideForm.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TosForm.resx">
       <DependentUpon>TosForm.vb</DependentUpon>

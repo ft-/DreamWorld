@@ -79,7 +79,6 @@ Partial Class Expert
         Me.RobustDBPassword = New System.Windows.Forms.TextBox()
         Me.RobustDBUsername = New System.Windows.Forms.TextBox()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
-        Me.AutoLoadCheckbox = New System.Windows.Forms.CheckBox()
         Me.AdminFirst = New System.Windows.Forms.TextBox()
         Me.AdminLast = New System.Windows.Forms.TextBox()
         Me.AccountConfirmationRequired = New System.Windows.Forms.CheckBox()
@@ -106,7 +105,6 @@ Partial Class Expert
         Me.Label6 = New System.Windows.Forms.Label()
         Me.BootStart = New System.Windows.Forms.CheckBox()
         Me.AutoStartCheckbox = New System.Windows.Forms.CheckBox()
-        Me.GroupBox5 = New System.Windows.Forms.GroupBox()
         Me.AdminPassword = New System.Windows.Forms.TextBox()
         Me.Label10 = New System.Windows.Forms.Label()
         Me.Label11 = New System.Windows.Forms.Label()
@@ -144,7 +142,6 @@ Partial Class Expert
         CType(Me.PictureBox10, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.StandaloneGroup.SuspendLayout()
         Me.AutoStart.SuspendLayout()
-        Me.GroupBox5.SuspendLayout()
         Me.Web.SuspendLayout()
         Me.GroupBox6.SuspendLayout()
         CType(Me.PictureBox9, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -720,18 +717,6 @@ Partial Class Expert
         Me.RobustDBUsername.Size = New System.Drawing.Size(107, 20)
         Me.RobustDBUsername.TabIndex = 36
         '
-        'AutoLoadCheckbox
-        '
-        Me.AutoLoadCheckbox.AutoSize = True
-        Me.AutoLoadCheckbox.Location = New System.Drawing.Point(12, 19)
-        Me.AutoLoadCheckbox.Name = "AutoLoadCheckbox"
-        Me.AutoLoadCheckbox.Size = New System.Drawing.Size(59, 17)
-        Me.AutoLoadCheckbox.TabIndex = 21
-        Me.AutoLoadCheckbox.Text = "Enable"
-        Me.ToolTip1.SetToolTip(Me.AutoLoadCheckbox, "Click to enable Auto loading of Sims on Teleport requests. All sims except the We" &
-        "lcome region will be shut down if no one is in world.")
-        Me.AutoLoadCheckbox.UseVisualStyleBackColor = True
-        '
         'AdminFirst
         '
         Me.AdminFirst.Location = New System.Drawing.Point(86, 44)
@@ -860,7 +845,7 @@ Partial Class Expert
         Me.LSLCheckbox.Size = New System.Drawing.Size(59, 17)
         Me.LSLCheckbox.TabIndex = 21
         Me.LSLCheckbox.Text = "Enable"
-        Me.ToolTip1.SetToolTip(Me.LSLCheckbox, "Click to enable LSL to talkto port 80 on this server.")
+        Me.ToolTip1.SetToolTip(Me.LSLCheckbox, "Click to enable LSL to talk to port 80 on this server.")
         Me.LSLCheckbox.UseVisualStyleBackColor = True
         '
         'RegionMySqlPassword
@@ -989,17 +974,6 @@ Partial Class Expert
         Me.AutoStartCheckbox.TabIndex = 21
         Me.AutoStartCheckbox.Text = "Enable"
         Me.AutoStartCheckbox.UseVisualStyleBackColor = True
-        '
-        'GroupBox5
-        '
-        Me.GroupBox5.Controls.Add(Me.AutoLoadCheckbox)
-        Me.GroupBox5.Location = New System.Drawing.Point(639, 442)
-        Me.GroupBox5.Name = "GroupBox5"
-        Me.GroupBox5.Size = New System.Drawing.Size(189, 48)
-        Me.GroupBox5.TabIndex = 55
-        Me.GroupBox5.TabStop = False
-        Me.GroupBox5.Text = "Auto Boot on Teleport"
-        Me.GroupBox5.Visible = False
         '
         'AdminPassword
         '
@@ -1199,7 +1173,6 @@ Partial Class Expert
         Me.Controls.Add(Me.LimitsBox)
         Me.Controls.Add(Me.GroupBox11)
         Me.Controls.Add(Me.GroupBox6)
-        Me.Controls.Add(Me.GroupBox5)
         Me.Controls.Add(Me.AutoStart)
         Me.Controls.Add(Me.StandaloneGroup)
         Me.Controls.Add(Me.GridGroup)
@@ -1238,8 +1211,6 @@ Partial Class Expert
         Me.StandaloneGroup.PerformLayout()
         Me.AutoStart.ResumeLayout(False)
         Me.AutoStart.PerformLayout()
-        Me.GroupBox5.ResumeLayout(False)
-        Me.GroupBox5.PerformLayout()
         Me.Web.ResumeLayout(False)
         Me.Web.PerformLayout()
         Me.GroupBox6.ResumeLayout(False)
@@ -1312,8 +1283,6 @@ Partial Class Expert
     Friend WithEvents PictureBox7 As PictureBox
     Friend WithEvents PictureBox6 As PictureBox
     Friend WithEvents EnableHypergrid As CheckBox
-    Friend WithEvents GroupBox5 As GroupBox
-    Friend WithEvents AutoLoadCheckbox As CheckBox
     Friend WithEvents RobustServer As TextBox
     Friend WithEvents Label16 As Label
     Friend WithEvents DomainUpDown1 As DomainUpDown

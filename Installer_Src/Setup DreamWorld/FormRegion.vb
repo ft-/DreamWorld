@@ -191,7 +191,13 @@ Public Class FormRegion
             Publish.Checked = CBool(RegionClass.RegionSnapShot(n))
         End If
 
-        BirdsCheckBox.Checked = RegionClass.Birds(n)
+        If RegionClass.Birds(n) = "True" Then
+            BirdsCheckBox.Checked = True
+        End If
+        If RegionClass.Tides(n) = "True" Then
+            TidesCheckbox.Checked = True
+        End If
+
 
         Me.Focus()
         initted = True
@@ -484,7 +490,8 @@ Public Class FormRegion
                         "AllowGods = " & AllowAGod & vbCrLf &
                         "RegionGod = " & ARegionGod & vbCrLf &
                         "ManagerGod = " & AManagerGod & vbCrLf &
-                        "Birds = " & RegionClass.Birds(n).tostring
+                        "Birds = " & BirdsCheckBox.Checked.ToString & vbCrLf &
+                        "Tides = " & TidesCheckbox.Checked.ToString
 
         Debug.Print(Region)
 
@@ -886,6 +893,16 @@ Public Class FormRegion
     Private Sub BirdsCheckBox_CheckedChanged(sender As Object, e As EventArgs) Handles BirdsCheckBox.CheckedChanged
         If BirdsCheckBox.Checked Then
             Form1.Log("Region " + Name + " has birds enabled")
+
+            If initted Then changed = True
+        End If
+    End Sub
+
+    Private Sub TidesCheckbox_CheckedChanged(sender As Object, e As EventArgs) Handles TidesCheckbox.CheckedChanged
+        If TidesCheckbox.Checked Then
+            Form1.Log("Region " + Name + " has tides enabled")
+
+            If initted Then changed = True
         End If
     End Sub
 

@@ -1,7 +1,7 @@
 ﻿
 
 #Region "Copyright"
-' Copyright 2014 Fred Beckhusen for Outworldz.com
+' Copyright 2014 Fred Beckhusen for www.Outworldz.com
 ' https://opensource.org/licenses/AGPL
 
 'Permission Is hereby granted, free Of charge, to any person obtaining a copy of this software 
@@ -273,6 +273,15 @@ Public Class Form1
         Catch
         End Try
 
+        Try
+            My.Computer.FileSystem.DeleteFile(prefix + "\bin\OpenSim.Addons.AutoRestart.dll")
+        Catch
+        End Try
+        Try
+            My.Computer.FileSystem.DeleteFile(prefix + "\bin\OpenSim.Addons.AutoRestart.pdb")
+        Catch
+        End Try
+
         MySetting.Init(MyFolder)
         MySetting.Myfolder = MyFolder
 
@@ -456,7 +465,6 @@ Public Class Form1
 
         If Not MySetting.RunOnce Then
             MsgBox("Please type 'create user<ret>' to make the system owner's account in the ROBUST console, and then answer any questions.", vbInformation, "Info")
-            Sleep(10000)
             MySetting.RunOnce = True
             MySetting.SaveSettings()
         End If
@@ -586,18 +594,14 @@ Public Class Form1
 
         ' show robust last
         ShowWindow(Process.GetProcessById(gRobustProcID).MainWindowHandle, SHOW_WINDOW.SW_RESTORE)
-        '
 
         For Each X As Integer In RegionClass.RegionNumbers
-            Dim PID As Integer = RegionClass.ProcessID(X)
-            If PID > 0 Then
-                RegionClass.ShuttingDown(X) = True
-                RegionClass.Booted(X) = False
-                RegionClass.WarmingUp(X) = False
-                Print("Shutting down " + RegionClass.RegionName(X))
-                ConsoleCommand(PID, "q{ENTER}")
-            End If
-            Application.DoEvents()
+            PrintFast("Shutting down " + RegionClass.RegionName(X))
+            ConsoleCommand(RegionClass.ProcessID(X), "q{ENTER}")
+
+            RegionClass.ShuttingDown(X) = True
+            RegionClass.Booted(X) = False
+            RegionClass.WarmingUp(X) = False
         Next
         Dim counter = 300 ' 5 minutes to quit all regions
 
@@ -609,25 +613,29 @@ Public Class Form1
             While (counter > 0)
                 ' decrement progress bar according to the ratio of what we had / what we have now
 
-                Sleep(1000)
-
                 counter = counter - 1
                 Dim CountisRunning As Integer = 0
-
+                Sleep(1000)
                 For Each X In RegionClass.RegionNumbers
+                    PrintFast("Checking " + RegionClass.RegionName(X))
+                    'If CheckPort("127.0.0.1", RegionClass.RegionPort(X)) Then
                     If RegionClass.ProcessID(X) > 0 Then
                         CountisRunning = CountisRunning + 1
                         Log(RegionClass.RegionName(X) + " is still running")
                     End If
                     Application.DoEvents()
                 Next
-                If CountisRunning = 0 Then counter = 0
+                If CountisRunning = 0 Then
+                    counter = 0
+                    ProgressBar1.Value = 0
+                End If
 
                 Dim v As Double = CountisRunning / TotalRunningRegions * 100
-                If v > 0 And v <= 100 Then
+                If v >= 0 And v <= 100 Then
                     ProgressBar1.Value = CType(v, Integer)
                     Diagnostics.Debug.Print("V=" + ProgressBar1.Value.ToString)
                 End If
+                Application.DoEvents()
 
             End While
         End If
@@ -642,6 +650,7 @@ Public Class Form1
             RegionClass.ShuttingDown(X) = False
             RegionClass.Booted(X) = False
             RegionClass.WarmingUp(X) = False
+            RegionClass.ProcessID(X) = 0
         Next
 
         If gRobustProcID > 0 Then
@@ -742,6 +751,7 @@ Public Class Form1
         PictureBox1.Visible = False
         TextBox1.Visible = True
         TextBox1.Text = Value
+        Sleep(100)
         Application.DoEvents()
 
     End Sub
@@ -898,7 +908,7 @@ Public Class Form1
             Log("Info:Console will not be shown")
         End If
 
-        Print("Saving all settings")
+        PrintFast("Saving all settings")
 
         MySetting.SaveSettings()
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -920,8 +930,6 @@ Public Class Form1
         MySetting.SetOtherIni("TOSModule", "ShowToForeignUsers", MySetting.ShowToForeignUsers.ToString)
         MySetting.SetOtherIni("TOSModule", "TOS_URL", "http://" + MySetting.PublicIP + ":" + MySetting.HttpPort + "/wifi/termsofservice.html")
         MySetting.SaveOtherINI()
-
-        SetTOSPort()
 
         MySetting.LoadOtherIni(prefix + "bin\config-include\Gridcommon.ini", ";")
         Dim ConnectionString = """" _
@@ -986,14 +994,6 @@ Public Class Form1
         MySetting.SetOtherIni("Network", "ExternalHostNameForLSL", MySetting.DNSName)
 
         MySetting.SetOtherIni("DataSnapshot", "index_sims", MySetting.DataSnapshot().ToString)
-
-        If MySetting.AutoRestartInterval() = 0 Then
-            MySetting.SetOtherIni("Startup", "regionrestart", "")
-        Else
-            MySetting.SetOtherIni("Startup", "regionrestart", "AutoRestart")
-            MySetting.SetOtherIni("AutoRestart", "Time", CType(MySetting.AutoRestartInterval(), String))
-        End If
-
 
         MySetting.SetOtherIni("PrimLimitsModule", "EnforcePrimLimits", CType(MySetting.Primlimits, String))
 
@@ -1173,22 +1173,11 @@ Public Class Form1
 
 
     End Function
-    Private Sub SetTOSPort()
-
-        Return
-
-
-    End Sub
 
     Private Sub DoRegions()
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
         'Regions - write all region.ini files with public IP and Public port
 
-        Dim BirdFile = MyFolder + "\OutworldzFiles\Opensim\bin\addon-modules\OpenSimBirds\config\OpenSimBirds.ini"
-        Try
-            System.IO.File.Delete(BirdFile)
-        Catch ex As Exception
-        End Try
 
         ' Self setting Region Ports
         Dim FirstPort As Integer = Convert.ToInt16(MySetting.FirstRegionPort())
@@ -1260,6 +1249,8 @@ Public Class Form1
                 MySetting.SetOtherIni(simName, "RegionGod", RegionClass.RegionGod(X))
                 MySetting.SetOtherIni(simName, "ManagerGod", RegionClass.ManagerGod(X))
                 MySetting.SetOtherIni(simName, "RegionSnapShot", RegionClass.RegionSnapShot(X).ToString)
+                MySetting.SetOtherIni(simName, "Birds", RegionClass.Birds(X))
+                MySetting.SetOtherIni(simName, "Tides", RegionClass.Tides(X))
 
                 MySetting.SaveOtherINI()
 
@@ -1350,7 +1341,8 @@ Public Class Form1
 
                 MySetting.SaveOtherINI()
 
-                Dim BirdData As String = "[" + simName + "]" + vbCrLf &
+                If MySetting.BirdsEnabled And RegionClass.Birds(X) = "True" Then
+                    Dim BirdData As String = "[" + simName + "]" + vbCrLf &
                     ";this Is the default And determines whether the module does anything" & vbCrLf &
                     "BirdsModuleStartup = " + MySetting.BirdsModuleStartup.ToString & vbCrLf & vbCrLf &
                     ";set to false to disable the birds from appearing in this region" & vbCrLf &
@@ -1381,14 +1373,65 @@ Public Class Form1
                     ";Or everyone if Not specified" & vbCrLf &
                     "BirdsAllowedControllers = ESTATE_OWNER, ESTATE_MANAGER" & vbCrLf & vbCrLf & vbCrLf
 
+                    Dim BirdFile = MyFolder + "\OutworldzFiles\Opensim\bin\addon-modules\OpenSimBirds\config\OpenSimBirds.ini"
+                    Try
+                        System.IO.File.Delete(BirdFile)
+                    Catch ex As Exception
+                    End Try
+                    IO.File.AppendAllText(BirdFile, BirdData, Encoding.Default) 'The text file will be created if it does not already exist  
 
-                IO.File.AppendAllText(BirdFile, BirdData, Encoding.Default) 'The text file will be created if it does not already exist  
+                End If
 
+                If MySetting.TideEnabled And RegionClass.Tides(X) = "True" Then
+
+                    Dim TideData As String = ";; Set the Tide settings per named region" & vbCrLf &
+                     "[" + simName + "]" + vbCrLf &
+                    ";this determines whether the module does anything in this region" & vbCrLf &
+                    ";# {TideEnabled} {} {Enable the tide to come in and out?} {true false} false" & vbCrLf &
+                    "TideEnabled = " + MySetting.TideEnabled.ToString & vbCrLf &
+                     vbCrLf &
+                    ";; Tides currently only work on single regions And varregions (non megaregions) " & vbCrLf &
+                    ";# surrounded completely by water" & vbCrLf &
+                    ";; Anything else will produce weird results where you may see a big" & vbCrLf &
+                    ";; vertical 'step' in the ocean" & vbCrLf &
+                    ";; update the tide every x simulator frames" & vbCrLf &
+                    "TideUpdateRate = 50" & vbCrLf &
+                     vbCrLf &
+                    ";; low And high water marks in metres" & vbCrLf &
+                    "TideLowWater = " & MySetting.TideHighLevel() & vbCrLf &
+                    "TideHighWater = " & MySetting.TideLowLevel() & vbCrLf &
+                    vbCrLf &
+                    ";; how long in seconds for a complete cycle time low->high->low" & vbCrLf &
+                    "TideCycleTime = " & MySetting.CycleTime() & vbCrLf &
+                     vbCrLf &
+                    ";; provide tide information on the console?" & vbCrLf &
+                    "TideInfoDebug = " & MySetting.TideInfoDebug.ToString & vbCrLf &
+                     vbCrLf &
+                    ";; chat tide info to the whole region?" & vbCrLf &
+                    "TideInfoBroadcast = " & MySetting.BroadcastTideInfo() & vbCrLf &
+                     vbCrLf &
+                    ";; which channel to region chat on for the full tide info" & vbCrLf &
+                    "TideInfoChannel = " & MySetting.TideInfoChannel & vbCrLf &
+                    vbCrLf &
+                    ";; which channel to region chat on for just the tide level in metres" & vbCrLf &
+                    "TideLevelChannel = " & MySetting.TideLevelChannel() & vbCrLf &
+                     vbCrLf &
+                    ";; How many times to repeat Tide Warning messages at high/low tide" & vbCrLf &
+                    "TideAnnounceCount = 1" & vbCrLf & vbCrLf & vbCrLf & vbCrLf
+
+                    Dim TideFile = MyFolder + "\OutworldzFiles\Opensim\bin\addon-modules\OpenSimTide\config\OpenSimTide.ini"
+                    Try
+                        System.IO.File.Delete(TideFile)
+                    Catch ex As Exception
+                    End Try
+                    IO.File.AppendAllText(TideFile, TideData, Encoding.Default) 'The text file will be created if it does not already exist 
+
+                End If
             End If
-
         Next
 
     End Sub
+
     Public Sub SetRegionINI(regionname As String, key As String, value As String)
 
         Dim X = RegionClass.FindRegionByName(regionname)
@@ -1461,7 +1504,7 @@ Public Class Form1
         End If
 
         MySetting.SetOtherIni("WifiService", "GridName", MySetting.SimName)
-        MySetting.SetOtherIni("WifiService", "LoginURL", "http://" + MySetting.PublicIP + ":" + MySetting.HttpPort)
+        MySetting.SetOtherIni("WifiService", "LoginURL", "http: //" + MySetting.PublicIP + ":" + MySetting.HttpPort)
         MySetting.SetOtherIni("WifiService", "WebAddress", "http://" + MySetting.PublicIP + ":" + MySetting.HttpPort)
 
         ' Wifi Admin'
@@ -1530,36 +1573,6 @@ Public Class Form1
 
 #Region "Ports"
 
-    Function PortTests() As Boolean
-
-        Dim Passfail As Boolean = True
-        ' Do some tests
-        Dim ports(1) As Object
-        ports(0) = Nothing
-
-        Dim n = 0
-        For Each X As Integer In RegionClass.RegionNumbers
-            If ports.Length <= RegionClass.RegionPort(n) Then
-                ReDim ports(RegionClass.RegionPort(n) + 1)
-            End If
-            Try
-                If ports(RegionClass.RegionPort(n)) Is Nothing Then
-                    ports(RegionClass.RegionPort(n)) = RegionClass.RegionName(n)
-                Else
-                    MsgBox(RegionClass.RegionName(n) + " has a duplicated port with " + ports(RegionClass.RegionPort(n)) + ". Skipping boot of " + RegionClass.RegionName(n), vbInformation, "Error")
-                    RegionClass.RegionEnabled(n) = False
-                    Passfail = False
-                End If
-            Catch ex As Exception
-                Log("Error" + ex.Message)
-                ports(RegionClass.RegionPort(n)) = 0
-            End Try
-            n = n + 1
-        Next
-
-        Return Passfail
-
-    End Function
 
     Public Sub CheckDefaultPorts()
 
@@ -1737,7 +1750,7 @@ Public Class Form1
             IcecastProcess.Start()
             gIcecastProcID = IcecastProcess.Id
 
-            Thread.Sleep(2000)
+            Sleep(2000)
             SetWindowText(IcecastProcess.MainWindowHandle, "Icecast")
 
         Catch ex As Exception
@@ -1774,7 +1787,7 @@ Public Class Form1
             RobustProcess.Start()
             gRobustProcID = RobustProcess.Id
 
-            Thread.Sleep(1000)
+            Sleep(1000)
             SetWindowText(RobustProcess.MainWindowHandle, "Robust")
 
         Catch ex As Exception
@@ -1821,8 +1834,6 @@ Public Class Form1
     Private Function Start_Opensimulator() As Boolean
 
         If Running = False Then Return True
-
-        PortTests()
 
         Try
             ' Boot them up
@@ -2298,8 +2309,10 @@ Public Class Form1
 
         Dim n As Integer = RegionClass.FindRegionByProcessID(CType(sender.Id, Integer))
         If n < 0 Then Return
+        Dim ShouldIRestart = RegionClass.Timer(n)
 
-        If RegionClass.WarmingUp(n) = True Then
+        ' skip prompt if auto restarting
+        If RegionClass.WarmingUp(n) = True And RegionClass.Timer(n) >= 0 Then
             Dim yesno = MsgBox(RegionClass.RegionName(n) + " did not start. Do you want to see the log file?", vbYesNo, "Error")
             If (yesno = vbYes) Then
                 System.Diagnostics.Process.Start("notepad.exe", RegionClass.IniPath(n) + "Opensim.log")
@@ -2315,7 +2328,13 @@ Public Class Form1
             RegionClass.WarmingUp(X) = False
             RegionClass.ShuttingDown(X) = False
             RegionClass.ProcessID(X) = 0
+            RegionClass.Timer(X) = 0            ' no longer has running time
         Next
+
+        ' Auto restart if negative
+        If ShouldIRestart = -1 Then
+            RegionClass.Timer(n) = -2 ' signal a restart is needed
+        End If
 
     End Sub
 
@@ -2448,7 +2467,7 @@ Public Class Form1
         Buttons(StopButton)
 
         Dim n = RegionClass.FindRegionByName(BootName)
-        If RegionClass.ProcessID(n) > 0 Or RegionClass.Booted(n) Or RegionClass.WarmingUp(n) Or RegionClass.ShuttingDown(n) Then
+        If RegionClass.Booted(n) Or RegionClass.WarmingUp(n) Or RegionClass.ShuttingDown(n) Then
             Return True
         End If
 
@@ -2464,11 +2483,13 @@ Public Class Form1
         Dim myProcess As Process = GetNewProcess()
 
         If myProcess Is Nothing Then
-            Print("Exceeded max number of processes (100): could not start " + RegionClass.RegionName(n))
-            Return False
+            Print("Exceeded max number of trackable regions (100):" + RegionClass.RegionName(n))
+            'Return False
         End If
 
-        Print("Starting Region " + BootName)
+        Dim Groupname = RegionClass.GroupName(n)
+
+        Print("Starting Instance " + Groupname)
 
         Try
             myProcess.EnableRaisingEvents = True
@@ -2506,20 +2527,19 @@ Public Class Form1
             Catch ex As Exception
             End Try
 
-
-            RegionClass.ProcessID(n) = 0
             myProcess.Start()
-            RegionClass.ProcessID(n) = myProcess.Id
-
+            Diagnostics.Debug.Print("PID=" + myProcess.Id.ToString)
             If myProcess.Id > 0 Then
 
-                For Each num In RegionClass.RegionListByGroupNum(RegionClass.GroupName(n))
+                For Each num In RegionClass.RegionListByGroupNum(Groupname)
+                    Diagnostics.Debug.Print("Booting " + RegionClass.RegionName(num))
                     RegionClass.WarmingUp(num) = True
                     RegionClass.Booted(num) = False
                     RegionClass.ShuttingDown(num) = False
+                    RegionClass.ProcessID(num) = myProcess.Id
                 Next
 
-                Thread.Sleep(2000)
+                Sleep(2000)
 
                 SetWindowText(myProcess.MainWindowHandle, RegionClass.GroupName(n))
 
@@ -2623,8 +2643,7 @@ Public Class Form1
 #End Region
 
 #Region "Subs"
-    Public Sub ConsoleCommand(ProcessID As Integer, command As String)
-
+    Public Function ConsoleCommand(ProcessID As Integer, command As String) As Boolean
 
         Try
             Dim p = Process.GetProcessById(ProcessID)
@@ -2643,11 +2662,14 @@ Public Class Form1
             AppActivate(ProcessID)
             SendKeys.SendWait("{ENTER}")
             SendKeys.SendWait(command)
+
         Catch ex As Exception
             Log("Warn:" + ex.Message)
+            Return False
         End Try
+        Return True
 
-    End Sub
+    End Function
 
 
     Private Sub SaySomething()
@@ -2741,23 +2763,142 @@ Public Class Form1
 
     End Sub
 
+
     Private Sub Timer1_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Timer1.Tick
 
         PaintImage()
         gDNSSTimer = gDNSSTimer + 1
 
+        ' hourly
         If gDNSSTimer Mod 3600 = 0 Then
             RegisterDNS()
         End If
 
+        ' 10 seconds check for a restart
+        If gDNSSTimer Mod 10 = 0 Then
+            Reboot()
+        End If
+
+        ' check for avatars and Regions to restart every minute
         If gDNSSTimer Mod 60 = 0 Then
-            ScanAgents()
-            LoadRegionsStatsBar()   ' fill in menu once a minute
+
+            If MySetting.StandAlone() Then LoadRegionsStatsBar()   ' fill in menu once a minute
+
+            ScanAgents() ' update agent count
+            RegionRestart() ' check for reboot 
+            RegionListHTML()
         End If
 
 
+    End Sub
+
+    Private Sub RegionListHTML()
+        If Not MySetting.LSL_HTTP() Then Return
+
+        'http://localhost:8002/bin/data/teleports.htm
+        'Outworldz|Welcome||www.outworldz.com:9000:Welcome|128,128,96|
+        '*|Welcome||www.outworldz.com9000Welcome|128,128,96|
+        Dim HTML As String
+        Dim HTMLFILE = MyFolder & "\OutworldzFiles\Opensim\bin\data\teleports.htm"
+        HTML = "Welcome to |" + MySetting.SimName + "||" + MySetting.DNSName + ":" + MySetting.HttpPort + ":" + MySetting.WelcomeRegion + "||" + vbCrLf
+
+        For Each X As Integer In RegionClass.RegionNumbers
+            If RegionClass.Booted(X) Then
+                If RegionClass.RegionName(X) <> MySetting.WelcomeRegion Then
+                    HTML = HTML + "*|" + RegionClass.RegionName(X) + "||" + MySetting.DNSName + ":" + MySetting.HttpPort + ":" + RegionClass.RegionName(X) + "||" + vbCrLf
+                End If
+            End If
+        Next
+        Try
+            My.Computer.FileSystem.DeleteFile(HTMLFILE)
+        Catch
+        End Try
+
+        Try
+            Using outputFile As New StreamWriter(HTMLFILE, True)
+                outputFile.WriteLine(HTML)
+            End Using
+        Catch ex As Exception
+            Log("Failed to create file:" + ex.Message)
+        End Try
 
     End Sub
+
+    Private Sub Reboot()
+        For Each X As Integer In RegionClass.RegionNumbers
+            ' if a restart is signalled, boot it up
+            If RegionClass.Timer(X) = -2 Then
+                RegionClass.Timer(X) = 0
+                Boot(RegionClass.RegionName(X))
+                Return
+            End If
+        Next
+    End Sub
+
+    Private Sub RegionRestart()
+
+        If MySetting.AutoRestartInterval() = 0 Then Return
+
+        For Each X As Integer In RegionClass.RegionNumbers
+
+            ' if a restart is signalled, boot it up
+            If RegionClass.Timer(X) = -2 Then
+                RegionClass.Timer(X) = 0
+                Dim name = RegionClass.RegionName(X)
+                Boot(Name)
+                Return
+            End If
+
+            If Running And RegionClass.RegionEnabled(X) And (RegionClass.Booted(X) Or RegionClass.WarmingUp(X)) Then
+
+                Dim timervalue As Integer = RegionClass.Timer(X)
+                Dim Groupname = RegionClass.GroupName(X)
+
+                ' if its past time and no one is in the sim...
+                If timervalue >= MySetting.AutoRestartInterval() And Not AvatarsIsInGroup(Groupname) Then
+
+                    ' shut down the group
+
+                    ConsoleCommand(RegionClass.ProcessID(X), "q{ENTER}")
+                    Print("Restarting " + Groupname)
+
+                    RegionClass.Timer(X) = -1
+
+                    For Each RegionNum As Integer In RegionClass.RegionListByGroupNum(Groupname)
+
+                        ' if enabled and running, stopit
+
+                        If Running And RegionClass.RegionEnabled(X) And RegionClass.Booted(X) Then
+                            Diagnostics.Debug.Print("AutoRestart is shutting down " + RegionClass.RegionName(X))
+                            RegionClass.Booted(RegionNum) = False
+                            RegionClass.WarmingUp(RegionNum) = False
+                            RegionClass.ShuttingDown(RegionNum) = True
+                            RegionClass.Timer(RegionNum) = -1 ' -1 means restart on exit
+                        End If
+
+                    Next
+
+                End If
+                If RegionClass.Timer(X) > -1 Then
+                    RegionClass.Timer(X) = RegionClass.Timer(X) + 1
+                End If
+
+            End If
+
+        Next
+
+    End Sub
+
+    Private Function AvatarsIsInGroup(groupname As String) As Boolean
+
+        Dim present As Integer = 0
+        For Each RegionNum As Integer In RegionClass.RegionListByGroupNum(groupname)
+            present = present + RegionClass.AvatarCount(RegionNum)
+        Next
+
+        Return CType(present, Boolean)
+
+    End Function
 
     Private Sub PictureBox1_Click(sender As Object, e As EventArgs) Handles PictureBox1.Click
 
@@ -2773,7 +2914,7 @@ Public Class Form1
 
     Private Sub ShowHyperGridAddressToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ShowHyperGridAddressToolStripMenuItem.Click
 
-        Print("Hypergrid address is http://" + MySetting.PublicIP + ":" + MySetting.HttpPort)
+        Print("Hypergrid address Is http: //" + MySetting.PublicIP + ":" + MySetting.HttpPort)
 
     End Sub
 
@@ -4024,7 +4165,8 @@ Public Class Form1
             Return True
         End If
 
-        Print("Setting DynDNS " + MySetting.DNSName)
+        PrintFast("Setting DynDNS name of " + "http://" + MySetting.DNSName + ":" + MySetting.HttpPort)
+
         Dim client As New System.Net.WebClient
         Dim Checkname As String = String.Empty
 
@@ -4164,7 +4306,7 @@ Public Class Form1
         If (Running) Then
             Dim regionnum = RegionClass.FindRegionByName(CType(sender.text, String))
             Dim port As String = RegionClass.RegionPort(regionnum).ToString
-            Dim webAddress As String = "http://localhost:" + port + "/bin/data/sim.html?port=" + port
+            Dim webAddress As String = "http://localhost:" + MySetting.HttpPort + "/bin/data/sim.html?port=" + port
             Process.Start(webAddress)
         Else
             Print("Opensim is not running. Cannot open the Web Interface.")
@@ -4267,25 +4409,6 @@ Public Class Form1
             End If
         Next
 
-        If MySetting.AutoLoad Then
-            For Each X As Integer In RegionClass.RegionNumbers
-                If RegionClass.Timer(X) > 0 Then RegionClass.Timer(X) = RegionClass.Timer(X) - 1
-
-                ' if enabled and running, stopit
-                If RegionClass.AvatarCount(X) = 0 Then
-                    If Running And RegionClass.RegionEnabled(X) And RegionClass.Booted(X) Then
-                        Diagnostics.Debug.Print("AutoLoad is shutting down " + RegionClass.RegionName(X))
-                        ConsoleCommand(RegionClass.ProcessID(X), "q{ENTER}")
-                        Me.Focus()
-                        RegionClass.Booted(X) = False
-                        RegionClass.WarmingUp(X) = False
-                        RegionClass.ShuttingDown(X) = True
-                    End If
-                Else
-                    RegionClass.Timer(X) = 60 ' 60 seconds and we will shut it off
-                End If
-            Next
-        End If
 
     End Sub
 
