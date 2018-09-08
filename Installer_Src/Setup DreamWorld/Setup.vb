@@ -1369,11 +1369,19 @@ Public Class Form1
                 MySetting.SaveOtherINI()
 
                 If MySetting.BirdsModuleStartup Then
+                    Dim Birds As String = ""
+                    If RegionClass.Birds(X) = "True" Then
+                        Birds = "True"
+                    Else
+                        Birds = "False"
+                    End If
+
+
                     Dim BirdData As String = "[" + simName + "]" + vbCrLf &
                     ";this Is the default And determines whether the module does anything" & vbCrLf &
                     "BirdsModuleStartup = True" & vbCrLf & vbCrLf &
                     ";set to false to disable the birds from appearing in this region" & vbCrLf &
-                    "BirdsEnabled = " & RegionClass.Birds(X) & vbCrLf & vbCrLf &
+                    "BirdsEnabled = " & Birds & vbCrLf & vbCrLf &
                     ";which channel do we listen on for in world commands" & vbCrLf &
                     "BirdsChatChannel = " + MySetting.BirdsChatChannel.ToString() & vbCrLf & vbCrLf &
                     ";the number of birds to flock" & vbCrLf &
@@ -1407,11 +1415,18 @@ Public Class Form1
 
                 If MySetting.TideEnabled Then
 
+                    Dim Tides As String = ""
+                    If RegionClass.Tides(X) = "True" Then
+                        Tides = "True"
+                    Else
+                        Tides = "False"
+                    End If
+
                     Dim TideData As String = ";; Set the Tide settings per named region" & vbCrLf &
                      "[" + simName + "]" + vbCrLf &
                     ";this determines whether the module does anything in this region" & vbCrLf &
                     ";# {TideEnabled} {} {Enable the tide to come in and out?} {true false} false" & vbCrLf &
-                    "TideEnabled = " & RegionClass.Tides(X) & vbCrLf &
+                    "TideEnabled = " & Tides & vbCrLf &
                      vbCrLf &
                     ";; Tides currently only work on single regions And varregions (non megaregions) " & vbCrLf &
                     ";# surrounded completely by water" & vbCrLf &
