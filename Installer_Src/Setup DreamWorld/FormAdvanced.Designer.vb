@@ -246,7 +246,7 @@ Partial Class AdvancedForm
         '
         'TOSButton
         '
-        Me.TOSButton.Location = New System.Drawing.Point(6, 159)
+        Me.TOSButton.Location = New System.Drawing.Point(7, 130)
         Me.TOSButton.Name = "TOSButton"
         Me.TOSButton.Size = New System.Drawing.Size(145, 23)
         Me.TOSButton.TabIndex = 18
@@ -256,17 +256,18 @@ Partial Class AdvancedForm
         '
         'Birds
         '
-        Me.Birds.Location = New System.Drawing.Point(6, 101)
+        Me.Birds.Location = New System.Drawing.Point(7, 188)
         Me.Birds.Name = "Birds"
         Me.Birds.Size = New System.Drawing.Size(145, 23)
         Me.Birds.TabIndex = 20
         Me.Birds.Text = "Bird Settings"
         Me.ToolTip1.SetToolTip(Me.Birds, "Click to set up your Terms of Service")
         Me.Birds.UseVisualStyleBackColor = True
+        Me.Birds.Visible = False
         '
         'TideButton
         '
-        Me.TideButton.Location = New System.Drawing.Point(6, 130)
+        Me.TideButton.Location = New System.Drawing.Point(6, 101)
         Me.TideButton.Name = "TideButton"
         Me.TideButton.Size = New System.Drawing.Size(145, 23)
         Me.TideButton.TabIndex = 21
@@ -285,7 +286,7 @@ Partial Class AdvancedForm
         '
         'ExpertButton1
         '
-        Me.ExpertButton1.Location = New System.Drawing.Point(6, 188)
+        Me.ExpertButton1.Location = New System.Drawing.Point(9, 159)
         Me.ExpertButton1.Name = "ExpertButton1"
         Me.ExpertButton1.Size = New System.Drawing.Size(143, 23)
         Me.ExpertButton1.TabIndex = 19
@@ -461,7 +462,7 @@ Partial Class AdvancedForm
         Me.GroupBox8.Controls.Add(Me.Shoutcast)
         Me.GroupBox8.Location = New System.Drawing.Point(458, 150)
         Me.GroupBox8.Name = "GroupBox8"
-        Me.GroupBox8.Size = New System.Drawing.Size(165, 230)
+        Me.GroupBox8.Size = New System.Drawing.Size(165, 223)
         Me.GroupBox8.TabIndex = 1870
         Me.GroupBox8.TabStop = False
         Me.GroupBox8.Text = "Global Settings"

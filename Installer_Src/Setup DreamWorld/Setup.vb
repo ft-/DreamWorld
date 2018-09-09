@@ -283,6 +283,13 @@ Public Class Form1
         Catch
         End Try
 
+        Try
+            My.Computer.FileSystem.DeleteFile(prefix + "\bin\OpenSimBirds.Module.dll")
+            My.Computer.FileSystem.DeleteFile(prefix + "\bin\OpenSimBirds.Module.pdb")
+        Catch
+        End Try
+
+
         MySetting.Init(MyFolder)
         MySetting.Myfolder = MyFolder
 
