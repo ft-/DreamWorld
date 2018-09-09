@@ -495,7 +495,7 @@ Public Class Form1
         Buttons(StopButton)
         ProgressBar1.Value = 100
         Print("Outworldz is almost ready for you to log in.  Wait for INITIALIZATION COMPLETE - LOGINS ENABLED to appear in the console, and you can log in." + vbCrLf _
-              + " Hypergrid address is" + vbCrLf + "http://" + MySetting.PublicIP + ":" + MySetting.HttpPort)
+              + "Grid address is" + vbCrLf + "http://" + MySetting.PublicIP + ":" + MySetting.HttpPort)
 
         ' done with bootup
         ProgressBar1.Visible = False
@@ -978,7 +978,7 @@ Public Class Form1
         MySetting.SetOtherIni("Const", "GridName", MySetting.SimName)
         MySetting.SetOtherIni("Const", "BaseURL", "http://" + MySetting.PublicIP)
         MySetting.SetOtherIni("Const", "PublicPort", MySetting.HttpPort) ' 8002
-        MySetting.SetOtherIni("Const", "PrivatePort", MySetting.PrivatePort) ' \
+        MySetting.SetOtherIni("Const", "PrivatePort", MySetting.PrivatePort)
         MySetting.SetOtherIni("Const", "http_listener_port", MySetting.HttpPort)
         MySetting.SetOtherIni("GridInfoService", "welcome", MySetting.SplashPage)
 
@@ -1003,11 +1003,11 @@ Public Class Form1
         MySetting.LoadOtherIni(prefix + "bin\Opensim.proto", ";")
 
         If MySetting.LSL_HTTP Then
-            MySetting.SetOtherIni("Network", "OutboundDisallowForUserScriptsExcept", MySetting.DNSName + "|" + MySetting.PrivateURL + ":" + MySetting.DiagnosticPort)
+            MySetting.SetOtherIni("Network", "OutboundDisallowForUserScriptsExcept", MySetting.PublicIP + "|" + MySetting.PrivateURL + ":" + MySetting.DiagnosticPort)
         Else
             MySetting.SetOtherIni("Network", "OutboundDisallowForUserScriptsExcept", MySetting.PrivateURL + ":" + MySetting.DiagnosticPort)
         End If
-        MySetting.SetOtherIni("Network", "ExternalHostNameForLSL", MySetting.DNSName)
+        MySetting.SetOtherIni("Network", "ExternalHostNameForLSL", MySetting.PublicIP)
 
         MySetting.SetOtherIni("DataSnapshot", "index_sims", MySetting.DataSnapshot().ToString)
 
@@ -2833,7 +2833,7 @@ Public Class Form1
         '*|Welcome||www.outworldz.com9000Welcome|128,128,96|
         Dim HTML As String
         Dim HTMLFILE = MyFolder & "\OutworldzFiles\Opensim\bin\data\teleports.htm"
-        HTML = "Welcome to |" + MySetting.SimName + "||" + MySetting.DNSName + ":" + MySetting.HttpPort + ":" + MySetting.WelcomeRegion + "||" + vbCrLf
+        HTML = "Welcome to |" + MySetting.SimName + "||" + MySetting.PublicIP + ":" + MySetting.HttpPort + ":" + MySetting.WelcomeRegion + "||" + vbCrLf
         Dim ToSort As New List(Of String)
         For Each X As Integer In RegionClass.RegionNumbers
             If RegionClass.Booted(X) And RegionClass.Teleport(X) = "True" Then
@@ -2845,7 +2845,7 @@ Public Class Form1
 
         For Each S As String In ToSort
             Dim X = RegionClass.FindRegionByName(S)
-            HTML = HTML + "*|" + RegionClass.RegionName(X) + "||" + MySetting.DNSName + ":" + MySetting.HttpPort + ":" + RegionClass.RegionName(X) + "||" + vbCrLf
+            HTML = HTML + "*|" + RegionClass.RegionName(X) + "||" + MySetting.PublicIP + ":" + MySetting.HttpPort + ":" + RegionClass.RegionName(X) + "||" + vbCrLf
         Next
 
         Try
@@ -2953,7 +2953,7 @@ Public Class Form1
 
     Private Sub ShowHyperGridAddressToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ShowHyperGridAddressToolStripMenuItem.Click
 
-        Print("Hypergrid address is " + vbCrLf + "http://" + MySetting.PublicIP + ":" + MySetting.HttpPort)
+        Print("Grid address is " + vbCrLf + "http://" + MySetting.PublicIP + ":" + MySetting.HttpPort)
 
     End Sub
 
@@ -3581,21 +3581,26 @@ Public Class Form1
 
     Public Function SetPublicIP() As Boolean
 
+        ' LAN USE
         If Not MySetting.EnableHypergrid Then
             BumpProgress10()
             If MySetting.DNSName.Length > 0 Then
-                BumpProgress10()
                 MySetting.PublicIP = MySetting.DNSName
-            End If
+                MySetting.SaveSettings()
+                Return False
+            Else
 
 #Disable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
-            MySetting.PublicIP = MyUPnpMap.LocalIP
+                MySetting.PublicIP = MyUPnpMap.LocalIP
 #Enable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
 
-            MySetting.SaveSettings()
-            Return False
+                MySetting.SaveSettings()
+                Return False
+            End If
+
         End If
 
+        '  HG USE
         If MySetting.DNSName.Length > 0 Then
             BumpProgress10()
             MySetting.PublicIP = MySetting.DNSName
@@ -3606,7 +3611,6 @@ Public Class Form1
             End If
 
             If RegisterDNS() Then
-                ProbePublicPort()
                 Return True
             End If
 
@@ -3694,7 +3698,7 @@ Public Class Form1
         If MySetting.PublicIP = "localhost" Or MySetting.PublicIP = "127.0.0.1" Or MySetting.PublicIP = MySetting.PrivateURL Then
             Return True
         End If
-        Print("Checking Router")
+        Print("Checking Network Connectivity")
 
         Dim isPortOpen As String = ""
         Try
@@ -3748,7 +3752,7 @@ Public Class Form1
         Else
             NewDNSName()
         End If
-        Log("Diagnostics set the Hypergrid address to " + MySetting.PublicIP)
+        Log("Diagnostics set the Grid address to " + MySetting.PublicIP)
 
         Diagsrunning = False
 

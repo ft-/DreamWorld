@@ -518,7 +518,7 @@ Public Class Expert
 
                 Dim params As New Specialized.NameValueCollection
                 params.Add("MachineID", Form1.MySetting.MachineID())
-                params.Add("DnsName", Form1.MySetting.DNSName)
+                params.Add("DnsName", Form1.MySetting.PublicIP)
 
                 Dim Myupload As New UploadImage
                 Dim URL = New Uri("https://www.outworldz.com/cgi/uploadphoto.plx")
