@@ -118,7 +118,7 @@ Public Class Icecast
     End Sub
 
     Private Sub LoadURL_Click(sender As Object, e As EventArgs) Handles LoadURL.Click
-        If Form1.Running Then
+        If Form1.OpensimIsRunning Then
             Dim webAddress As String = "http://" + Form1.MySetting.PublicIP + ":" + ShoutcastPort.Text
             Form1.Print("Icecast lets you stream music into your sim. The address will be " + webAddress)
             Process.Start(webAddress)
