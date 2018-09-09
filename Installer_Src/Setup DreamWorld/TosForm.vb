@@ -50,7 +50,7 @@ Public Class TosForm
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
 
-        If Form1.Running Then
+        If Form1.OpensimIsRunning Then
             Dim webAddress As String = "http://" + Form1.MySetting.PublicIP + ":" + Form1.MySetting.HttpPort + "/wifi/termsofservice.html"
             Process.Start(webAddress)
         Else

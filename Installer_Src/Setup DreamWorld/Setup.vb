@@ -36,7 +36,7 @@ Public Class Form1
 
 #Region "Declarations"
 
-    Dim MyVersion As String = "2.38"
+    Dim MyVersion As String = "2.39"
     Dim SimVersion As String = "0.9.1"
     Dim DebugPath As String = "\Opensim\Outworldz DreamGrid Source"  ' no slash at end
     Public Domain As String = "http://www.outworldz.com"
@@ -243,7 +243,7 @@ Public Class Form1
         End Set
     End Property
 
-    Public Property Running() As Boolean
+    Public Property OpensimIsRunning() As Boolean
         Get
             Return isRunning
         End Get
@@ -337,7 +337,7 @@ Public Class Form1
 
         gChatTime = MySetting.ChatTime
 
-        Running = False ' true when opensim is running
+        OpensimIsRunning = False ' true when opensim is running
         Me.Show()
 
         RegionClass = RegionMaker.Instance(MysqlConn)
@@ -457,7 +457,7 @@ Public Class Form1
         ProgressBar1.Value = 0
         ProgressBar1.Visible = True
         Buttons(BusyButton)
-        Running = True
+        OpensimIsRunning = True
         MapDelete()
         RegionClass.GetAllRegions()
 
@@ -602,8 +602,11 @@ Public Class Form1
         Next
         Log("TotalRunningRegions=" + TotalRunningRegions.ToString)
 
-        ' show robust last
-        ShowWindow(Process.GetProcessById(gRobustProcID).MainWindowHandle, SHOW_WINDOW.SW_RESTORE)
+        ' show robust last, try-catch in case it crashed.
+        Try
+            ShowWindow(Process.GetProcessById(gRobustProcID).MainWindowHandle, SHOW_WINDOW.SW_RESTORE)
+        Catch
+        End Try
 
         For Each X As Integer In RegionClass.RegionNumbers
             If RegionClass.RegionEnabled(X) Then
@@ -614,8 +617,8 @@ Public Class Form1
             RegionClass.Booted(X) = False
             RegionClass.ShuttingDown(X) = True
             RegionClass.WarmingUp(X) = False
-
         Next
+
         Dim counter = 300 ' 5 minutes to quit all regions
 
         ' only wait if the port 8001 is working
@@ -630,9 +633,8 @@ Public Class Form1
                 Dim CountisRunning As Integer = 0
                 Sleep(1000)
                 For Each X In RegionClass.RegionNumbers
-                    If RegionClass.RegionEnabled(X) Then
-                        If CheckPort("127.0.0.1", RegionClass.RegionPort(X)) And Running Then
-                            'If RegionClass.ProcessID(X) > 0 And Running Then
+                    If RegionClass.RegionEnabled(X) And OpensimIsRunning Then
+                        If CheckPort("127.0.0.1", RegionClass.RegionPort(X)) Then
                             PrintFast("Checking " + RegionClass.RegionName(X))
                             CountisRunning = CountisRunning + 1
                             Log(RegionClass.RegionName(X) + " is still running")
@@ -677,7 +679,7 @@ Public Class Form1
         IslandToolStripMenuItem.Visible = False
         ClothingInventoryToolStripMenuItem.Visible = False
 
-        Running = False
+        OpensimIsRunning = False
         Me.AllowDrop = False
 
         ProgressBar1.Value = 0
@@ -720,7 +722,7 @@ Public Class Form1
 
             Buttons(StartButton)
             Print("Stopped")
-            Running = False
+            OpensimIsRunning = False
             ProgressBar1.Visible = False
         End If
     End Sub
@@ -800,7 +802,7 @@ Public Class Form1
         MySetting.ConsoleShow = mnuShow.Checked
         MySetting.SaveSettings()
 
-        If Running Then
+        If OpensimIsRunning Then
             Print("The Opensimulator Console will be shown the next time the system is started.")
         End If
 
@@ -814,7 +816,7 @@ Public Class Form1
         MySetting.ConsoleShow = mnuShow.Checked
         MySetting.SaveSettings()
 
-        If Running Then
+        If OpensimIsRunning Then
             Print("The Opensimulator Console will not be shown. Change will occur when Opensim is restarted")
         End If
 
@@ -827,7 +829,7 @@ Public Class Form1
 
     Private Sub WebUIToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs)
         Print("The Web UI lets you add or view settings for the default avatar. ")
-        If Running Then
+        If OpensimIsRunning Then
             Dim webAddress As String = "http://127.0.0.1:" + MySetting.HttpPort
             Process.Start(webAddress)
         End If
@@ -1628,7 +1630,7 @@ Public Class Form1
 
     Private Sub ClearCachesToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ClearCachesToolStripMenuItem.Click
 
-        If Not Running Then
+        If Not OpensimIsRunning Then
             Try
                 My.Computer.FileSystem.DeleteDirectory(prefix & "bin\bakes\", FileIO.DeleteDirectoryOption.DeleteAllContents)
                 My.Computer.FileSystem.DeleteDirectory(prefix & "bin\\ScriptEngines\", FileIO.DeleteDirectoryOption.DeleteAllContents)
@@ -1643,7 +1645,7 @@ Public Class Form1
         Catch
         End Try
 
-        If Not Running Then
+        If Not OpensimIsRunning Then
             Print("All Server Caches cleared")
         Else
             Print("All Server Caches except scripts And bakes were cleared. Opensim must be stopped to clear script And bake caches.")
@@ -1693,11 +1695,12 @@ Public Class Form1
         Print("Opensim Is Stopped")
         ProgressBar1.Value = 0
         ProgressBar1.Visible = False
+        gStopping = False
 
     End Sub
 
     Private Sub AdminUIToolStripMenuItem1_Click(sender As Object, e As EventArgs) Handles ViewWebUI.Click
-        If (Running) Then
+        If OpensimIsRunning Then
             Dim webAddress As String = "http://127.0.0.1:" + MySetting.HttpPort
             Process.Start(webAddress)
             Print("Log in as '" + MySetting.AdminFirst + " " + MySetting.AdminLast + "' with a password of " + MySetting.Password + " to add user accounts.")
@@ -1833,7 +1836,7 @@ Public Class Form1
         ' Wait for Opensim to start listening 
 
         Dim counter = 0
-        While Not IsRobustRunning() And Running
+        While Not IsRobustRunning() And OpensimIsRunning
             Application.DoEvents()
             BumpProgress(1)
             counter = counter + 1
@@ -1866,13 +1869,13 @@ Public Class Form1
 
     Private Function Start_Opensimulator() As Boolean
 
-        If Running = False Then Return True
+        If OpensimIsRunning = False Then Return True
 
         Try
             ' Boot them up
             Dim n = 0
             For Each x In RegionClass.RegionNumbers
-                If RegionClass.RegionEnabled(n) And Running Then '
+                If RegionClass.RegionEnabled(n) And OpensimIsRunning Then '
                     If Not Boot(RegionClass.RegionName(n)) Then
                         Print("Boot skipped for " + RegionClass.RegionName(n))
                     End If
@@ -2496,7 +2499,7 @@ Public Class Form1
 
     Public Function Boot(BootName As String) As Boolean
 
-        Running = True
+        OpensimIsRunning = True
         Buttons(StopButton)
 
         Dim n = RegionClass.FindRegionByName(BootName)
@@ -2604,7 +2607,7 @@ Public Class Form1
             If ex.Message.Contains("404") Then Return True
             Return False
         End Try
-        If Up.Length = 0 And Running Then
+        If Up.Length = 0 And OpensimIsRunning Then
             Return False
         End If
 
@@ -2826,7 +2829,7 @@ Public Class Form1
     End Sub
 
     Private Sub RegionListHTML()
-        If Not MySetting.LSL_HTTP() Then Return
+
 
         'http://localhost:8002/bin/data/teleports.htm
         'Outworldz|Welcome||www.outworldz.com:9000:Welcome|128,128,96|
@@ -2888,7 +2891,7 @@ Public Class Form1
                 Return
             End If
 
-            If Running And RegionClass.RegionEnabled(X) And (RegionClass.Booted(X) Or RegionClass.WarmingUp(X)) Then
+            If OpensimIsRunning And RegionClass.RegionEnabled(X) And (RegionClass.Booted(X) Or RegionClass.WarmingUp(X)) Then
 
                 Dim timervalue As Integer = RegionClass.Timer(X)
                 Dim Groupname = RegionClass.GroupName(X)
@@ -2907,7 +2910,7 @@ Public Class Form1
 
                         ' if enabled and running, stopit
 
-                        If Running And RegionClass.RegionEnabled(X) And RegionClass.Booted(X) Then
+                        If OpensimIsRunning And RegionClass.RegionEnabled(X) And RegionClass.Booted(X) Then
                             Diagnostics.Debug.Print("AutoRestart is shutting down " + RegionClass.RegionName(X))
                             RegionClass.Booted(RegionNum) = False
                             RegionClass.WarmingUp(RegionNum) = False
@@ -2987,7 +2990,7 @@ Public Class Form1
 
     Private Sub SaveRegionOARToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles SaveRegionOARToolStripMenuItem.Click
 
-        If (Running) Then
+        If OpensimIsRunning Then
 
             Dim chosen = ChooseRegion(True)
             Dim n As Integer = RegionClass.FindRegionByName(chosen)
@@ -3024,7 +3027,7 @@ Public Class Form1
 
     Private Sub LoadRegionOarToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles LoadRegionOarToolStripMenuItem.Click
 
-        If (Running) Then
+        If OpensimIsRunning Then
             Dim chosen = ChooseRegion(True)
             Dim n As Integer = RegionClass.FindRegionByName(chosen)
 
@@ -3080,7 +3083,7 @@ Public Class Form1
 
     Private Sub AllRegionsOARsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AllTheRegionsOarsToolStripMenuItem.Click
 
-        If Not Running Then
+        If Not OpensimIsRunning Then
             Print("Opensim Is Not running. Cannot save an OAR at this time.")
             Return
         End If
@@ -3112,7 +3115,7 @@ Public Class Form1
 
     Private Sub LoadInventoryIARToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles LoadInventoryIARToolStripMenuItem.Click
 
-        If Running Then
+        If OpensimIsRunning Then
             ' Create an instance of the open file dialog box.
             Dim openFileDialog1 As OpenFileDialog = New OpenFileDialog
 
@@ -3141,7 +3144,7 @@ Public Class Form1
 
     Private Sub SaveInventoryIARToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles SaveInventoryIARToolStripMenuItem.Click
 
-        If (Running) Then
+        If OpensimIsRunning Then
             Dim Message, title, defaultValue As String
 
             '''''''''''''''''''''''
@@ -3274,7 +3277,7 @@ Public Class Form1
 
     Public Sub LoadIARContent(thing As String)
 
-        If Not Running Then
+        If Not OpensimIsRunning Then
             Print("Opensim is not running. Cannot load an IAR at this time.")
             Return
         End If
@@ -3678,7 +3681,7 @@ Public Class Form1
 
     Private Sub DiagnosticsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles DiagnosticsToolStripMenuItem.Click
 
-        If Running Then
+        If OpensimIsRunning Then
             Print("Cannot run dignostics while Opensimulator is running. Click 'Stop' and try again.")
             Return
         End If
@@ -3920,8 +3923,6 @@ Public Class Form1
 
     Private Function OpenPorts() As Boolean
 
-        'If Running = False Then Return True
-
         Try
             If OpenRouterPorts() Then ' open UPnp port
                 Log("UPnP: Ok")
@@ -3953,7 +3954,7 @@ Public Class Form1
 
     Private Sub RestoreDatabaseToolStripMenuItem1_Click(sender As Object, e As EventArgs) Handles RestoreDatabaseToolStripMenuItem1.Click
 
-        If Running Then
+        If OpensimIsRunning Then
             Print("Cannot restore when Opensim is running. Click [Stop] and try again.")
             Return
         End If
@@ -4100,7 +4101,7 @@ Public Class Form1
         ProcessMySql.Start()
 
         ' wait for MySql to come up
-        While Not MysqlOk And Running
+        While Not MysqlOk And OpensimIsRunning
 
             BumpProgress(1)
             Application.DoEvents()
@@ -4349,7 +4350,7 @@ Public Class Form1
 
 
     Private Sub Statmenu(sender As Object, e As EventArgs)
-        If (Running) Then
+        If OpensimIsRunning Then
             Dim regionnum = RegionClass.FindRegionByName(CType(sender.text, String))
             Dim port As String = RegionClass.RegionPort(regionnum).ToString
             Dim webAddress As String = "http://localhost:" + MySetting.HttpPort + "/bin/data/sim.html?port=" + port
@@ -4400,12 +4401,12 @@ Public Class Form1
                 If response = vbNo Then Return
             End If
 
-            ' Running, stop it
+            ' OpensimIsRunning, stop it
             If RegionClass.RegionEnabled(num) And (RegionClass.Booted(num) Or RegionClass.WarmingUp(num)) Then
 
                 ' if enabled and running, even partly up, stop it.
                 sender.Checked = False
-                If Running Then
+                If OpensimIsRunning Then
                     Try
                         ConsoleCommand(RegionClass.ProcessID(num), "q{ENTER}")
                         Me.Focus()
@@ -4466,7 +4467,7 @@ Public Class Form1
 
     Private Sub MapDelete()
 
-        If Running And MySetting.MapType <> "None" Then
+        If OpensimIsRunning And MySetting.MapType <> "None" Then
             Try
                 My.Computer.FileSystem.DeleteDirectory(prefix & "bin\maptiles\", FileIO.DeleteDirectoryOption.DeleteAllContents)
             Catch
@@ -4483,7 +4484,7 @@ Public Class Form1
 
     Private Sub SendMsg(msg As String)
 
-        If Not Running Then Print("Opensim is not running")
+        If Not OpensimIsRunning Then Print("Opensim is not running")
 
         For Each X As Integer In RegionClass.RegionNumbers
             If RegionClass.Booted(X) Then
@@ -4516,7 +4517,7 @@ Public Class Form1
     End Sub
 
     Private Sub ViewIcecastWebPageToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ViewIcecastWebPageToolStripMenuItem.Click
-        If Running And MySetting.SC_Enable Then
+        If OpensimIsRunning And MySetting.SC_Enable Then
             Dim webAddress As String = "http://" + MySetting.PublicIP + ":" + MySetting.SC_PortBase.ToString
             Print("Icecast lets you stream music into your sim. The Music URL is " + webAddress + "/stream")
             Process.Start(webAddress)
@@ -4528,7 +4529,7 @@ Public Class Form1
     End Sub
 
     Private Sub RestartOneRegionToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles RestartOneRegionToolStripMenuItem.Click
-        If Not Running Then
+        If Not OpensimIsRunning Then
             Print("Opensim is not running")
             Return
         End If
@@ -4542,7 +4543,7 @@ Public Class Form1
     End Sub
 
     Private Sub RestartTheInstanceToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles RestartTheInstanceToolStripMenuItem.Click
-        If Not Running Then
+        If Not OpensimIsRunning Then
             Print("Opensim is not running")
             Return
         End If
@@ -4554,7 +4555,7 @@ Public Class Form1
 
     End Sub
     Private Sub SendScriptCmd(cmd As String)
-        If Not Running Then
+        If Not OpensimIsRunning Then
             Print("Opensim is not running")
             Return
         End If
@@ -4584,7 +4585,7 @@ Public Class Form1
 
     Private Sub AllUsersAllSimsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles JustOneRegionToolStripMenuItem.Click
 
-        If Not Running Then
+        If Not OpensimIsRunning Then
             Print("Opensim is not running")
             Return
         End If
@@ -4600,7 +4601,7 @@ Public Class Form1
 
     Private Sub JustOneRegionToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AllUsersAllSimsToolStripMenuItem.Click
 
-        If Not Running Then
+        If Not OpensimIsRunning Then
             Print("Opensim is not running")
             Return
         End If

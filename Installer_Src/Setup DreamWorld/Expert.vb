@@ -152,7 +152,7 @@ Public Class Expert
         Form1.MySetting.Password = AdminPassword.Text
         Form1.MySetting.SaveSettings()
 
-        If Form1.Running Then
+        If Form1.OpensimIsRunning Then
             Form1.ConsoleCommand(Form1.gRobustProcID, "reset user password Wifi Admin " + Form1.MySetting.Password + "{Enter}")
         End If
         'Me.Focus()

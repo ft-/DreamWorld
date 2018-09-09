@@ -1,4 +1,7 @@
-﻿V2.38
+﻿V2.39
+No need to enable  "Allow LSL to reach the server" switch to use the teleporter
+
+V2.38
 Teleport IAR makes a Grid-wide Teleporter for the first 32 regions.
 
 V2.37 
