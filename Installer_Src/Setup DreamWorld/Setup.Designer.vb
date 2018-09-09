@@ -233,7 +233,7 @@ Partial Class Form1
         Me.ShowHyperGridAddressToolStripMenuItem.Name = "ShowHyperGridAddressToolStripMenuItem"
         Me.ShowHyperGridAddressToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Shift Or System.Windows.Forms.Keys.F1), System.Windows.Forms.Keys)
         Me.ShowHyperGridAddressToolStripMenuItem.Size = New System.Drawing.Size(269, 26)
-        Me.ShowHyperGridAddressToolStripMenuItem.Text = "Show HyperGrid Address"
+        Me.ShowHyperGridAddressToolStripMenuItem.Text = "Show Grid Address"
         Me.ShowHyperGridAddressToolStripMenuItem.ToolTipText = "You can give this address out to people and they can visit your grid"
         '
         'ToolStripSeparator1
