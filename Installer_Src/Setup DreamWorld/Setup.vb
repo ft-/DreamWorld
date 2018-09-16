@@ -3127,7 +3127,7 @@ Public Class Form1
         Dim myProcess As Process = GetNewProcess()
 
         If myProcess Is Nothing Then
-            Print("Exceeded max number of trackable regions (" + REGIONMAX + ") : " + RegionClass.RegionName(n))
+            Print("Exceeded max number of trackable regions (" + REGIONMAX.ToString + ") : " + RegionClass.RegionName(n))
             'Return False
         End If
 
@@ -4378,7 +4378,7 @@ Public Class Form1
 
         Dim wsstarted = CheckPort(MyUPnpMap.LocalIP, CType(MySetting.DiagnosticPort, Integer))
         If wsstarted = False Then
-            MsgBox("Diagnostics port " + MySetting.DiagnosticPort + " is not working or blocked by firewall or anti virus, icons disabled.", vbInformation, "Cannot HG")
+            MsgBox("Diagnostics port " + MySetting.DiagnosticPort + " is not working or blocked by firewall or anti virus, so region icons are disabled.", vbInformation, "Cannot HG")
             gUseIcons = False
             MySetting.DiagFailed = True
             MySetting.SaveSettings()
@@ -4904,7 +4904,7 @@ Public Class Form1
                     MySetting.DNSName = newname
                     MySetting.PublicIP = newname
                     MySetting.SaveSettings()
-                    MsgBox("Your system's name has been set to " + newname + ". You can change the name in the Advanced menu at any time", vbInformation, "Info")
+                    MsgBox("Your system's name has been set to " + newname + ". You can change the name in the Expert menu at any time", vbInformation, "Info")
                 End If
             End If
             BumpProgress10()

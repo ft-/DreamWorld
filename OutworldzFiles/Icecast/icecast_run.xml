@@ -1,5 +1,5 @@
 <icecast>
-<hostname>Mach.Outworldz.net</hostname>
+<hostname>Dorenidd.Outworldz.net</hostname>
 <location>DreamGrid</location>
 <admin>email@somewhere.com</admin>
 <shoutcast-mount>/stream</shoutcast-mount>

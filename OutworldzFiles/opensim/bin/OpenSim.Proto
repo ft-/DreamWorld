@@ -43,35 +43,35 @@
 [Const]
 
 ; Automatically changed by Dreamworld - do not change this
-http_listener_port=9017
+http_listener_port=8005
 
 ; Automatically changed by Dreamworld - do not change this
 ;# used by the one-exe-per-instance logic. This becomes the folder for the regions file.
-RegionFolderName=Welcome
+RegionFolderName=joe
 
 ; Automatically changed by Dreamworld - do not change this
 ;# {BaseURL} {} {BaseURL} {"http://example.com","http://127.0.0.1"} "http://127.0.0.1"
-BaseURL=http://www.Outworldz.com
+BaseURL=http://Dorenidd.Outworldz.net
 
 ; Automatically changed by Dreamworld - do not change this
 ;# {PublicPort} {} {PublicPort} {8002} "8002"
-PublicPort=9000
+PublicPort=8002
 
 ; Automatically changed by Dreamworld - do not change this
 ;# {PrivatePort} {} {PrivatePort} {8003} "8003"
 PrivatePort=8003
 
 ;# so localhost can be changed if necessary
-PrivURL=http://192.168.2.140
+PrivURL=http://192.168.2.134
 
 ; Automatically changed by Dreamworld - do not change this
 ;# Grid Name for Wifi to show
-GridName=www.Outworldz.com
+GridName=DreamGrid
 
 ; Automatically changed by Dreamworld - do not change this
 ;# Dreamworld runs a listener on this port to run diagnostics. Dreamgrid listens for regions LOGINS enabled
 ;# {DiagnosticsPort} {} {DiagnosticsPort} {8001} "8001"
-DiagnosticsPort=9001
+DiagnosticsPort=8001
 
 [Startup]
 
@@ -256,7 +256,7 @@ meshing=Meshmerizer
 physics=BulletSim
 
 ;
-UseSeparatePhysicsThread=true
+UseSeparatePhysicsThread=True
 
 ;# {DefaultScriptEngine} {} {Default script engine} {XEngine} XEngine
 ;; Default script engine to use. Currently, we only have XEngine
@@ -359,11 +359,11 @@ alert_uri=${Const|PrivURL}:${Const|DiagnosticsPort}
 ;; If false then the texture referenced by MaptileStaticUUID is used instead, which can also be overridden
 ;; in individual region config file(s).  If you do not want to upload map tiles at all, then you will need
 ;; both to set this to false and comment out the [Modules] MapImageServiceModule setting in config-include/
-GenerateMaptiles=false
+GenerateMaptiles=True
 
 ;# {MapImageModule} {} {The map image module to use} {MapImageModule Warp3DImageModule} MapImageModule
 ;; The module to use in order to generate map images.
-MapImageModule=MapImageModule
+MapImageModule=Warp3DImageModule
 
 ;; generate better images.
 ;MapImageModule = "MapImageModule"
@@ -378,29 +378,29 @@ MapImageModule=MapImageModule
 ; MaptileStaticUUID = "00000000-0000-0000-0000-000000000000"
 ;# {TextureOnMapTile} {} {Use terrain textures for map tiles?} {true false} true
 ;; Use terrain texture for maptiles if true, use shaded green if false
-TextureOnMapTile=false
+TextureOnMapTile=True
 
 ;# {DrawPrimOnMapTile} {} {Draw prim shapes on map tiles?} {true false} false
 ;; Draw objects on maptile.  This step might take a long time if you've
 ;; got a large number of objects, so you can turn it off here if you'd like.
-DrawPrimOnMapTile=false
+DrawPrimOnMapTile=True
 
 ;# {TexturePrims} {} {Texture prims on map tiles?} {true false} true
 ;; Texture the faces of the prims that are rendered on the map tiles.
-TexturePrims=false
+TexturePrims=True
 
 ;# {TexturePrimSize} {} {Size of prims to texture faces?} {} 48
 ;; Only texture prims that have a diagonal size greater than this number
 ; TexturePrimSize = 48
 ;# {RenderMeshes} {} {Render meshes and sculpties on map tiles?} {true false} false
 ;; Attempt to render meshes and sculpties on the map
-RenderMeshes=false
+RenderMeshes=True
 
 [PrimLimitsModule]
 
 ;# {EnforcePrimLimits} {} {Enforce parcel prim limits} {true false} false
 ;; Enable parcel prim limits.  Off by default to emulate pre-existing behavior.
-EnforcePrimLimits=False
+EnforcePrimLimits=True
 
 [Permissions]
 
@@ -476,7 +476,7 @@ enabled=true
 ;# {internal_object_host} {[Startup]emailmodule:DefaultEmailModule enabled:true} {Host name to treat as internal (object to object) email?} {} lsl.opensim.local
 ; internal_object_host = lsl.opensim.local
 ;# {host_domain_header_from} {[Startup]emailmodule:DefaultEmailModule enabled:true} {From address to use in the sent email header?} {} 127.0.0.1
-host_domain_header_from=www.Outworldz.com
+host_domain_header_from=Dorenidd.Outworldz.net
 
 ;# {email_pause_time} {[Startup]emailmodule:DefaultEmailModule enabled:true} {Period in seconds to delay after an email is sent.} {} 20
 ; email_pause_time = 20
@@ -489,10 +489,10 @@ SMTP_SERVER_HOSTNAME=smtp.gmail.com
 SMTP_SERVER_PORT=587
 
 ;# {SMTP_SERVER_LOGIN} {[Startup]emailmodule:DefaultEmailModule enabled:true} {SMTP server user name?} {}
-SMTP_SERVER_LOGIN=fred.beckhusen@gmail.com
+SMTP_SERVER_LOGIN=Gmail for notification
 
 ;# {SMTP_SERVER_PASSWORD} {[Startup]emailmodule:DefaultEmailModule enabled:true} {SMTP server password} {}
-SMTP_SERVER_PASSWORD=4a<$moreG
+SMTP_SERVER_PASSWORD=Gmail password
 
 [Network]
 'must be started with parameter "-console=rest". Furthermore, the configuration options
@@ -525,7 +525,7 @@ http_listener_port=${Const|http_listener_port}
 ; If you need to allow scripts to make some LAN calls use the OutboundDisallowForUserScriptsExcept parameter below.
 ; We recommend that you do not override OutboundDisallowForUserScripts directly unless you are very sure about what you're doing.
 ;
-OutboundDisallowForUserScriptsExcept=192.168.2.140:9001
+OutboundDisallowForUserScriptsExcept=192.168.2.134:8001
 
 ; You can whitelist individual endpoints by IP or FQDN, e.g.
 ;
@@ -561,7 +561,7 @@ OutboundDisallowForUserScriptsExcept=192.168.2.140:9001
 ;; Hostname to use in llRequestURL/llRequestSecureURL
 ;; if not defined - default machine name is being used
 ;; (on Windows this mean NETBIOS name - useably only inside local network)
-ExternalHostNameForLSL=www.Outworldz.com
+ExternalHostNameForLSL=Dorenidd.Outworldz.net
 
 ;# {shard} {} {Name to use for X-Secondlife-Shard header? (press enter if unsure)} {} OpenSim
 ;; What is reported as the "X-Secondlife-Shard"
@@ -840,7 +840,7 @@ gridname="${Const|GridName}"
 ;; Period between data snapshots, in seconds. 20 minutes, for starters,
 ;; so that you see the initial changes fast.
 ;; Later, you may want to increase this to 3600 (1 hour) or more
-default_snapshot_period = 3600
+default_snapshot_period=3600
 
 ;; This will be created in bin, if it doesn't exist already. It will hold
 ;; the data snapshots.
@@ -848,14 +848,13 @@ snapshot_cache_directory="./Regions/${Const|RegionFolderName}/DataSnapshot"
 
 ;; [Supported, but obsolete]
 ;# {data_services} {index_sims:true} {Data service URLs to register with?} {} http://metaverseink.com/cgi-bin/register.py
-
 ; This semicolon-separated string serves to notify specific data services
 ; about the existence of this sim. Uncomment if you want to index your
 ; data with this and/or other search providers.
 ;; New way of specifying data services, one per service
 DATA_SRV_MISearch=http://www.hyperica.com/Search/register.php
 data_services=http://www.hyperica.com/Search/register.php
-
+indexsims=true
 
 [Search]
 Module=OpenSimSearch
@@ -1024,7 +1023,7 @@ Include-osslEnable="config-include/osslEnableDG.ini"
 ;
 ; For this to work you need to obtain an admin account from Vivox
 ; that allows you to create voice accounts and region channels.
-enabled=true
+enabled=false
 
 ; vivox voice server
 vivox_server=www.osp.vivox.com
@@ -1033,10 +1032,10 @@ vivox_server=www.osp.vivox.com
 vivox_sip_uri=osp.vivox.com
 
 ; vivox admin user name
-vivox_admin_user=fredusen0744-admin
+vivox_admin_user=someusername
 
 ; vivox admin password
-vivox_admin_password=aBev5Fzq
+vivox_admin_password=somepassword
 
 ; channel type: "channel" or "positional"
 ; - positional: spatial sound (default)
@@ -1302,13 +1301,13 @@ Include-Architecture="config-include/GridHypergrid.ini"
 ; Automatically changed by Dreamworld - do not change this
 AutoBackupModuleEnabled=true
 AutoBackup=true
-AutoBackupInterval=1440
+AutoBackupInterval=720
 AutoBackupBusyCheck=false
 AutoBackupThreshold=1
 AutoBackupSkipAssets=false
-AutoBackupKeepFilesForDays=60
+AutoBackupKeepFilesForDays=30
 AutoBackupNaming=Time
-AutoBackupDir=O:/Opensim/AutoBackup/
+AutoBackupDir=/Opensim/Outworldz DreamGrid Source/OutworldzFiles/Autobackup/
 
 [CameraOnlyModeModule]
 
@@ -1340,7 +1339,7 @@ enabled=True
 enabled=true
 
 ; Density of cloud cover 0.0 to 1.0 Default 0.5
-density=0.3
+density=0.5
 
 ; update interval for the cloud cover data returned by llCloud().
 ; default is 1000
