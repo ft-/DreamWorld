@@ -36,13 +36,13 @@ Public Class Form1
 
 #Region "Declarations"
 
-    Dim MyVersion As String = "2.39"
+    Dim MyVersion As String = "2.4"
     Dim SimVersion As String = "0.9.1"
     Dim DebugPath As String = "\Opensim\Outworldz DreamGrid Source"  ' no slash at end
     Public Domain As String = "http://www.outworldz.com"
     Public prefix As String ' Holds path to Opensim folder
 
-    Dim REGIONMAX As Integer = 100
+    Dim REGIONMAX As Integer = 200
     Public MyFolder As String   ' Holds the current folder that we are running in
     Dim gCurSlashDir As String '  holds the current directory info in Unix format
     Public isRunning As Boolean = False
@@ -122,6 +122,7 @@ Public Class Form1
     <CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1060:MovePInvokesToNativeMethodsClass")>
     <DllImport("user32.dll")>
     Shared Function SetWindowText(ByVal hwnd As IntPtr, ByVal windowName As String) As Boolean
+
     End Function
 
 
@@ -228,6 +229,106 @@ Public Class Form1
     Private WithEvents MyProcess98 As New Process()
     Private WithEvents MyProcess99 As New Process()
     Private WithEvents MyProcess100 As New Process()
+    Private WithEvents MyProcess101 As New Process()
+    Private WithEvents MyProcess102 As New Process()
+    Private WithEvents MyProcess103 As New Process()
+    Private WithEvents MyProcess104 As New Process()
+    Private WithEvents MyProcess105 As New Process()
+    Private WithEvents MyProcess106 As New Process()
+    Private WithEvents MyProcess107 As New Process()
+    Private WithEvents MyProcess108 As New Process()
+    Private WithEvents MyProcess109 As New Process()
+    Private WithEvents MyProcess110 As New Process()
+    Private WithEvents MyProcess111 As New Process()
+    Private WithEvents MyProcess112 As New Process()
+    Private WithEvents MyProcess113 As New Process()
+    Private WithEvents MyProcess114 As New Process()
+    Private WithEvents MyProcess115 As New Process()
+    Private WithEvents MyProcess116 As New Process()
+    Private WithEvents MyProcess117 As New Process()
+    Private WithEvents MyProcess118 As New Process()
+    Private WithEvents MyProcess119 As New Process()
+    Private WithEvents MyProcess120 As New Process()
+    Private WithEvents MyProcess121 As New Process()
+    Private WithEvents MyProcess122 As New Process()
+    Private WithEvents MyProcess123 As New Process()
+    Private WithEvents MyProcess124 As New Process()
+    Private WithEvents MyProcess125 As New Process()
+    Private WithEvents MyProcess126 As New Process()
+    Private WithEvents MyProcess127 As New Process()
+    Private WithEvents MyProcess128 As New Process()
+    Private WithEvents MyProcess129 As New Process()
+    Private WithEvents MyProcess130 As New Process()
+    Private WithEvents MyProcess131 As New Process()
+    Private WithEvents MyProcess132 As New Process()
+    Private WithEvents MyProcess133 As New Process()
+    Private WithEvents MyProcess134 As New Process()
+    Private WithEvents MyProcess135 As New Process()
+    Private WithEvents MyProcess136 As New Process()
+    Private WithEvents MyProcess137 As New Process()
+    Private WithEvents MyProcess138 As New Process()
+    Private WithEvents MyProcess139 As New Process()
+    Private WithEvents MyProcess140 As New Process()
+    Private WithEvents MyProcess141 As New Process()
+    Private WithEvents MyProcess142 As New Process()
+    Private WithEvents MyProcess143 As New Process()
+    Private WithEvents MyProcess144 As New Process()
+    Private WithEvents MyProcess145 As New Process()
+    Private WithEvents MyProcess146 As New Process()
+    Private WithEvents MyProcess147 As New Process()
+    Private WithEvents MyProcess148 As New Process()
+    Private WithEvents MyProcess149 As New Process()
+    Private WithEvents MyProcess150 As New Process()
+    Private WithEvents MyProcess151 As New Process()
+    Private WithEvents MyProcess152 As New Process()
+    Private WithEvents MyProcess153 As New Process()
+    Private WithEvents MyProcess154 As New Process()
+    Private WithEvents MyProcess155 As New Process()
+    Private WithEvents MyProcess156 As New Process()
+    Private WithEvents MyProcess157 As New Process()
+    Private WithEvents MyProcess158 As New Process()
+    Private WithEvents MyProcess159 As New Process()
+    Private WithEvents MyProcess160 As New Process()
+    Private WithEvents MyProcess161 As New Process()
+    Private WithEvents MyProcess162 As New Process()
+    Private WithEvents MyProcess163 As New Process()
+    Private WithEvents MyProcess164 As New Process()
+    Private WithEvents MyProcess165 As New Process()
+    Private WithEvents MyProcess166 As New Process()
+    Private WithEvents MyProcess167 As New Process()
+    Private WithEvents MyProcess168 As New Process()
+    Private WithEvents MyProcess169 As New Process()
+    Private WithEvents MyProcess170 As New Process()
+    Private WithEvents MyProcess171 As New Process()
+    Private WithEvents MyProcess172 As New Process()
+    Private WithEvents MyProcess173 As New Process()
+    Private WithEvents MyProcess174 As New Process()
+    Private WithEvents MyProcess175 As New Process()
+    Private WithEvents MyProcess176 As New Process()
+    Private WithEvents MyProcess177 As New Process()
+    Private WithEvents MyProcess178 As New Process()
+    Private WithEvents MyProcess179 As New Process()
+    Private WithEvents MyProcess180 As New Process()
+    Private WithEvents MyProcess181 As New Process()
+    Private WithEvents MyProcess182 As New Process()
+    Private WithEvents MyProcess183 As New Process()
+    Private WithEvents MyProcess184 As New Process()
+    Private WithEvents MyProcess185 As New Process()
+    Private WithEvents MyProcess186 As New Process()
+    Private WithEvents MyProcess187 As New Process()
+    Private WithEvents MyProcess188 As New Process()
+    Private WithEvents MyProcess189 As New Process()
+    Private WithEvents MyProcess190 As New Process()
+    Private WithEvents MyProcess191 As New Process()
+    Private WithEvents MyProcess192 As New Process()
+    Private WithEvents MyProcess193 As New Process()
+    Private WithEvents MyProcess194 As New Process()
+    Private WithEvents MyProcess195 As New Process()
+    Private WithEvents MyProcess196 As New Process()
+    Private WithEvents MyProcess197 As New Process()
+    Private WithEvents MyProcess198 As New Process()
+    Private WithEvents MyProcess199 As New Process()
+    Private WithEvents MyProcess200 As New Process()
 
 
 #End Region
@@ -2338,6 +2439,506 @@ Public Class Form1
     End Sub
     Private Sub OpensimProcess100_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess100.Exited
         RegionHandles(100) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess101_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess101.Exited
+        RegionHandles(101) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess102_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess102.Exited
+        RegionHandles(102) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess103_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess103.Exited
+        RegionHandles(103) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess104_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess104.Exited
+        RegionHandles(104) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess105_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess105.Exited
+        RegionHandles(105) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess106_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess106.Exited
+        RegionHandles(106) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess107_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess107.Exited
+        RegionHandles(107) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess108_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess108.Exited
+        RegionHandles(108) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess109_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess109.Exited
+        RegionHandles(109) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess110_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess110.Exited
+        RegionHandles(110) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess111_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess111.Exited
+        RegionHandles(111) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess112_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess112.Exited
+        RegionHandles(112) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess113_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess113.Exited
+        RegionHandles(113) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess114_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess114.Exited
+        RegionHandles(114) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess115_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess115.Exited
+        RegionHandles(115) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess116_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess116.Exited
+        RegionHandles(116) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess117_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess117.Exited
+        RegionHandles(117) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess118_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess118.Exited
+        RegionHandles(118) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess119_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess119.Exited
+        RegionHandles(119) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess120_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess120.Exited
+        RegionHandles(120) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess121_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess121.Exited
+        RegionHandles(121) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess122_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess122.Exited
+        RegionHandles(122) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess123_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess123.Exited
+        RegionHandles(123) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess124_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess124.Exited
+        RegionHandles(124) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess125_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess125.Exited
+        RegionHandles(125) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess126_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess126.Exited
+        RegionHandles(126) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess127_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess127.Exited
+        RegionHandles(127) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess128_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess128.Exited
+        RegionHandles(128) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess129_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess129.Exited
+        RegionHandles(129) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess130_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess130.Exited
+        RegionHandles(130) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess131_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess131.Exited
+        RegionHandles(131) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess132_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess132.Exited
+        RegionHandles(132) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess133_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess133.Exited
+        RegionHandles(133) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess134_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess134.Exited
+        RegionHandles(134) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess135_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess135.Exited
+        RegionHandles(135) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess136_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess136.Exited
+        RegionHandles(136) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess137_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess137.Exited
+        RegionHandles(137) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess138_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess138.Exited
+        RegionHandles(138) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess139_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess139.Exited
+        RegionHandles(139) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess140_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess140.Exited
+        RegionHandles(140) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess141_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess141.Exited
+        RegionHandles(141) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess142_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess142.Exited
+        RegionHandles(142) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess143_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess143.Exited
+        RegionHandles(143) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess144_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess144.Exited
+        RegionHandles(144) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess145_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess145.Exited
+        RegionHandles(145) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess146_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess146.Exited
+        RegionHandles(146) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess147_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess147.Exited
+        RegionHandles(147) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess148_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess148.Exited
+        RegionHandles(148) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess149_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess149.Exited
+        RegionHandles(149) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess150_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess150.Exited
+        RegionHandles(150) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess151_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess151.Exited
+        RegionHandles(151) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess152_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess152.Exited
+        RegionHandles(152) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess153_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess153.Exited
+        RegionHandles(153) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess154_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess154.Exited
+        RegionHandles(154) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess155_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess155.Exited
+        RegionHandles(155) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess156_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess156.Exited
+        RegionHandles(156) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess157_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess157.Exited
+        RegionHandles(157) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess158_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess158.Exited
+        RegionHandles(158) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess159_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess159.Exited
+        RegionHandles(159) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess160_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess160.Exited
+        RegionHandles(160) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess161_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess161.Exited
+        RegionHandles(161) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess162_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess162.Exited
+        RegionHandles(162) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess163_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess163.Exited
+        RegionHandles(163) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess164_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess164.Exited
+        RegionHandles(164) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess165_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess165.Exited
+        RegionHandles(165) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess166_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess166.Exited
+        RegionHandles(166) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess167_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess167.Exited
+        RegionHandles(167) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess168_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess168.Exited
+        RegionHandles(168) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess169_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess169.Exited
+        RegionHandles(169) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess170_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess170.Exited
+        RegionHandles(170) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess171_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess171.Exited
+        RegionHandles(171) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess172_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess172.Exited
+        RegionHandles(172) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess173_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess173.Exited
+        RegionHandles(173) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess174_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess174.Exited
+        RegionHandles(174) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess175_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess175.Exited
+        RegionHandles(175) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess176_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess176.Exited
+        RegionHandles(176) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess177_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess177.Exited
+        RegionHandles(177) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess178_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess178.Exited
+        RegionHandles(178) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess179_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess179.Exited
+        RegionHandles(179) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess180_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess180.Exited
+        RegionHandles(180) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess181_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess181.Exited
+        RegionHandles(181) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess182_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess182.Exited
+        RegionHandles(182) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess183_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess183.Exited
+        RegionHandles(183) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess184_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess184.Exited
+        RegionHandles(184) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess185_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess185.Exited
+        RegionHandles(185) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess186_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess186.Exited
+        RegionHandles(186) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess187_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess187.Exited
+        RegionHandles(187) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess188_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess188.Exited
+        RegionHandles(188) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess189_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess189.Exited
+        RegionHandles(189) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess190_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess190.Exited
+        RegionHandles(190) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess191_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess191.Exited
+        RegionHandles(191) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess192_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess192.Exited
+        RegionHandles(192) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess193_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess193.Exited
+        RegionHandles(193) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess194_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess194.Exited
+        RegionHandles(194) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess195_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess195.Exited
+        RegionHandles(195) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess196_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess196.Exited
+        RegionHandles(196) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess197_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess197.Exited
+        RegionHandles(197) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess198_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess198.Exited
+        RegionHandles(198) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess199_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess199.Exited
+        RegionHandles(199) = False
+        DoExit(sender)
+    End Sub
+
+    Private Sub OpensimProcess200_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyProcess200.Exited
+        RegionHandles(200) = False
         DoExit(sender)
     End Sub
 

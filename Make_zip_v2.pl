@@ -1,5 +1,5 @@
 
-my $type  = '-V2.39' ;  # '-Beta-V1.5';
+my $type  = '-V2.4' ;  # '-Beta-V1.5';
 my $dir = "F:/Opensim/Outworldz Dreamgrid Source";
 
 chdir ($dir);
@@ -84,10 +84,8 @@ unlink "$dir/OutworldzFiles/mysql/data/Alienware.pid" ;
 
 chdir ($dir);
 
-print " SIGN FIRST! \n";
+print "Processing Main Zip\n";
 
-print "Process Main Zip?\n";
-<STDIN>;
 
 my @files =   `cmd /c dir /b `;
 

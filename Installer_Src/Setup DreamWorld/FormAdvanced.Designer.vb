@@ -256,14 +256,13 @@ Partial Class AdvancedForm
         '
         'Birds
         '
-        Me.Birds.Location = New System.Drawing.Point(7, 188)
+        Me.Birds.Location = New System.Drawing.Point(9, 160)
         Me.Birds.Name = "Birds"
         Me.Birds.Size = New System.Drawing.Size(145, 23)
         Me.Birds.TabIndex = 20
         Me.Birds.Text = "Bird Settings"
         Me.ToolTip1.SetToolTip(Me.Birds, "Click to set up your Terms of Service")
         Me.Birds.UseVisualStyleBackColor = True
-        Me.Birds.Visible = False
         '
         'TideButton
         '
@@ -286,7 +285,7 @@ Partial Class AdvancedForm
         '
         'ExpertButton1
         '
-        Me.ExpertButton1.Location = New System.Drawing.Point(9, 159)
+        Me.ExpertButton1.Location = New System.Drawing.Point(9, 189)
         Me.ExpertButton1.Name = "ExpertButton1"
         Me.ExpertButton1.Size = New System.Drawing.Size(143, 23)
         Me.ExpertButton1.TabIndex = 19
