@@ -2970,7 +2970,11 @@ Public Class Form1
     Private Sub BumpProgress(bump As Integer)
 
         If ProgressBar1.Value < 100 Then
-            ProgressBar1.Value = ProgressBar1.Value + bump
+            Dim nextval As Integer = ProgressBar1.Value + bump
+            If nextval > 100 Then
+                nextval = 100
+            End If
+            ProgressBar1.Value = nextval
         End If
 
     End Sub
