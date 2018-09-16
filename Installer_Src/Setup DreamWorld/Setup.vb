@@ -2969,24 +2969,24 @@ Public Class Form1
 
     Private Sub BumpProgress(bump As Integer)
 
-        If ProgressBar1.Value < 100 Then
-            Dim nextval As Integer = ProgressBar1.Value + bump
+        Dim nextval As Integer = ProgressBar1.Value + bump
             If nextval > 100 Then
                 nextval = 100
             End If
             ProgressBar1.Value = nextval
-        End If
 
+        Application.DoEvents()
     End Sub
 
     Private Sub BumpProgress10()
 
-        If ProgressBar1.Value < 90 Then
-            ProgressBar1.Value = ProgressBar1.Value + 10
-        Else
-            ProgressBar1.Value = 100
+        Dim nextval As Integer = ProgressBar1.Value + 10
+        If nextval > 100 Then
+            nextval = 100
         End If
+        ProgressBar1.Value = nextval
         Application.DoEvents()
+
     End Sub
 
     Private Function Stripqq(input As String) As String
@@ -3005,7 +3005,6 @@ Public Class Form1
 
             Dim chosen = ChooseRegion(True)
             Dim n As Integer = RegionClass.FindRegionByName(chosen)
-
 
             Dim Message, title, defaultValue As String
             Dim myValue As String
