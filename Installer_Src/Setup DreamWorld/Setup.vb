@@ -2385,7 +2385,7 @@ Public Class Form1
 
         ' find a empty regionhandle
         Dim ProcessCount As Integer = 0
-        While ProcessCount < 100
+        While ProcessCount < REGIONMAX
             If Not RegionHandles(ProcessCount) Then
                 RegionHandles(ProcessCount) = True
                 Exit While
@@ -2526,7 +2526,7 @@ Public Class Form1
         Dim myProcess As Process = GetNewProcess()
 
         If myProcess Is Nothing Then
-            Print("Exceeded max number of trackable regions (100):" + RegionClass.RegionName(n))
+            Print("Exceeded max number of trackable regions (" + REGIONMAX + ") : " + RegionClass.RegionName(n))
             'Return False
         End If
 
