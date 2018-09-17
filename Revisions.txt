@@ -1,5 +1,11 @@
-﻿V2.39
+﻿V2.40
+Fix crash in Bords on quit
+200 region capacity
+Progress bar crash fix
+
+V2.39
 No need to enable  "Allow LSL to reach the server" switch to use the teleporter
+fix DNS names with :8002 and http://
 
 V2.38
 Teleport IAR makes a Grid-wide Teleporter for the first 32 regions.

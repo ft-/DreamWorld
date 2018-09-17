@@ -229,7 +229,8 @@ namespace Flocking
 		{
             m_log.InfoFormat("[{0}]: Removing region {1} from this module", m_name, scene.RegionInfo.RegionName);
             if (m_startup) {
-                m_view.Clear();
+                if (m_view !=null)
+                    m_view.Clear();
 			    scene.EventManager.OnFrame -= FlockUpdate;
 			    scene.EventManager.OnChatFromClient -= SimChatSent;
                 scene.EventManager.OnChatFromWorld -= SimChatSent;
@@ -242,10 +243,12 @@ namespace Flocking
         {
             if (m_startup)
             {
-                m_scene.EventManager.OnFrame -= FlockUpdate;
-                m_scene.EventManager.OnChatFromClient -= SimChatSent;
-                m_scene.EventManager.OnChatFromWorld -= SimChatSent;
-                m_scene.EventManager.OnPrimsLoaded -= PrimsLoaded;
+                if (m_scene != null) {
+                    m_scene.EventManager.OnFrame -= FlockUpdate;
+                    m_scene.EventManager.OnChatFromClient -= SimChatSent;
+                    m_scene.EventManager.OnChatFromWorld -= SimChatSent;
+                    m_scene.EventManager.OnPrimsLoaded -= PrimsLoaded;
+                }
                 m_ready = false;
             }
         }

@@ -52,7 +52,7 @@
     <NoWarn>42017,42018,42019,42032,42036</NoWarn>
     <Prefer32Bit>false</Prefer32Bit>
     <RunCodeAnalysis>true</RunCodeAnalysis>
-    <CodeAnalysisRuleSet>ExtendedCorrectnessRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>Start.ruleset</CodeAnalysisRuleSet>
     <WarningsAsErrors>
     </WarningsAsErrors>
   </PropertyGroup>
@@ -68,7 +68,7 @@
     <NoWarn>42017,42018,42019,42032,42036</NoWarn>
     <Prefer32Bit>false</Prefer32Bit>
     <RunCodeAnalysis>true</RunCodeAnalysis>
-    <CodeAnalysisRuleSet>BasicCorrectnessRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>Start.ruleset</CodeAnalysisRuleSet>
     <WarningsAsErrors>
     </WarningsAsErrors>
   </PropertyGroup>
@@ -340,6 +340,7 @@
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
       <SubType>Designer</SubType>
     </None>
+    <None Include="Start.ruleset" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">

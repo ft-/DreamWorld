@@ -1,4 +1,4 @@
-﻿
+﻿Imports System.Text.RegularExpressions
 Imports System.Net
 
 Public Class DNSName
@@ -34,6 +34,9 @@ Public Class DNSName
             TextBox1.Text = TextBox1.Text.Replace("http://", "")
             TextBox1.Text = TextBox1.Text.Replace("https://", "")
 
+            TextBox1.Text = Regex.Replace(TextBox1.Text, ":\d+", "") ' no :8002 on end.
+
+
             Dim client As New System.Net.WebClient
             Dim Checkname As String = String.Empty
             Try
@@ -50,10 +53,7 @@ Public Class DNSName
     Private Sub SaveButton_Click(sender As Object, e As EventArgs) Handles SaveButton.Click
 
         If TextBox1.Text <> String.Empty Then
-
-
             NextNameButton.Text = "Saving..."
-
             Form1.RegisterName(TextBox1.Text)
 
             NextNameButton.Text = "Next Name"

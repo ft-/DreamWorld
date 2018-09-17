@@ -41,7 +41,7 @@ Partial Class DNSName
         '
         'SaveButton
         '
-        Me.SaveButton.Location = New System.Drawing.Point(12, 87)
+        Me.SaveButton.Location = New System.Drawing.Point(124, 45)
         Me.SaveButton.Name = "SaveButton"
         Me.SaveButton.Size = New System.Drawing.Size(64, 23)
         Me.SaveButton.TabIndex = 5
@@ -76,7 +76,7 @@ Partial Class DNSName
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(252, 122)
+        Me.ClientSize = New System.Drawing.Size(252, 87)
         Me.Controls.Add(Me.PictureBox4)
         Me.Controls.Add(Me.NextNameButton)
         Me.Controls.Add(Me.SaveButton)
