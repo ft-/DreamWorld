@@ -1,5 +1,7 @@
 ﻿V2.40
-200 regions
+Fix crash in Bords on quit
+200 region capacity
+Progress bar crash fix
 
 V2.39
 No need to enable  "Allow LSL to reach the server" switch to use the teleporter
