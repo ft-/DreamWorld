@@ -1546,8 +1546,8 @@ Public Class Form1
                     "TideUpdateRate = 50" & vbCrLf &
                      vbCrLf &
                     ";; low And high water marks in metres" & vbCrLf &
-                    "TideLowWater = " & MySetting.TideHighLevel() & vbCrLf &
-                    "TideHighWater = " & MySetting.TideLowLevel() & vbCrLf &
+                    "TideHighWater = " & MySetting.TideHighLevel() & vbCrLf &
+                    "TideLowWater = " & MySetting.TideLowLevel() & vbCrLf &
                     vbCrLf &
                     ";; how long in seconds for a complete cycle time low->high->low" & vbCrLf &
                     "TideCycleTime = " & MySetting.CycleTime() & vbCrLf &
