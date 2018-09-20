@@ -775,6 +775,34 @@ Public Class RegionMaker
 
     End Function
 
+    Function LowestPort() As Integer
+        ' locate lowest port
+        Dim Min As Integer = 65536
+        Dim Portlist As New Dictionary(Of Integer, String)
+
+        Dim counter As Integer = 0
+        For Each obj As Region_data In RegionList
+            Try
+                Portlist.Add(obj._RegionPort, obj._RegionName)
+            Catch ex As Exception
+                Debug.Print(ex.Message)
+            End Try
+        Next
+
+        If Portlist.Count = 0 Then
+            Return 8004
+        End If
+
+        For Each thing In Portlist
+            If thing.Key < Min Then
+                Min = thing.Key ' Min is always the current value
+            End If
+
+        Next
+        If Min = 65536 Then Return 8004
+
+        Return Min
+    End Function
 
 #End Region
 
