@@ -1,5 +1,5 @@
 
-my $type  = '-V2.4' ;  # '-Beta-V1.5';
+my $type  = '-V2.42' ;  # '-Beta-V1.5';
 my $dir = "F:/Opensim/Outworldz Dreamgrid Source";
 
 chdir ($dir);
@@ -84,10 +84,30 @@ unlink "$dir/OutworldzFiles/mysql/data/Alienware.pid" ;
 
 chdir ($dir);
 
+say "Signing";
+
+use IO::All;
+
+my @files = io->dir($dir)->all(0);  
+
+foreach my $file (@files) {
+    my $name = $file->name;
+    next if $name =~ /Installer_Src|\.git/;
+    if ($name =~ /dll$|exe$/ ) {
+        my $f = qq!../Certs/DigiCertUtil.exe sign /noInput /sha1 "52CADF8EA98C9382D0350815A68B2C79340E141F" "$name"!;
+        print $f;
+        my $result = `$f`;
+        print $result. "\n";
+        if ($result !~ /success/) {
+            die;
+        }
+    }
+}
+
 print "Processing Main Zip\n";
 
 
-my @files =   `cmd /c dir /b `;
+@files =   `cmd /c dir /b `;
 
 foreach my $file (@files) {
 	chomp $file;
@@ -119,7 +139,7 @@ Process ("../7z.exe -tzip d ..\\Zips\\DreamGrid-Update$type.zip Outworldzfiles\\
 
 say ("Dropping Perl  from both");
 Process ("../7z.exe -tzip d ..\\Zips\\DreamGrid-Update$type.zip Make_zip_v2.pl -r ");
-Process ("../7z.exe -tzip d ..\\Zips\\DreamGrid-$type.zip Make_zip_v2.pl -r ");
+Process ("../7z.exe -tzip d ..\\Zips\\DreamGrid$type.zip Make_zip_v2.pl -r ");
 
 # del Dot net because we cannot overwrite an open file
 Process ("../7z.exe -tzip d ..\\Zips\\DreamGrid-Update$type.zip DotNetZip.dll ");
