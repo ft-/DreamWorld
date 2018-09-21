@@ -3695,11 +3695,32 @@ Public Class Form1
     End Sub
     Private Function BackupPath() As String
 
+        'Autobackup must exist. if not create it
+        ' if they set the folder somewhere else, it may have been deleted, so reset it to default
         If MySetting.BackupFolder = "AutoBackup" Then
-            BackupPath = gCurSlashDir + "/OutworldzFiles/Autobackup/"
+            BackupPath = gCurSlashDir + "/OutworldzFiles/AutoBackup/"
+            If Not Directory.Exists(BackupPath) Then
+                MkDir(BackupPath)
+                MkDir(BackupPath + "MySQL")
+                MkDir(BackupPath + "Regions")
+            End If
         Else
             BackupPath = MySetting.BackupFolder + "/"
             BackupPath = BackupPath.Replace("\", "/")    ' because Opensim uses unix-like slashes, that's why
+
+            If Not Directory.Exists(BackupPath) Then
+
+                BackupPath = gCurSlashDir + "/OutworldzFiles/Autobackup/"
+
+                If Not Directory.Exists(BackupPath) Then
+                    MkDir(BackupPath)
+                    MkDir(BackupPath + "MySQL")
+                    MkDir(BackupPath + "Regions")
+                End If
+                MsgBox("Autoback folder cannot be located, so It has been reset to the default:" + BackupPath)
+                MySetting.BackupFolder = "AutoBackup"
+                MySetting.SaveSettings()
+            End If
         End If
 
     End Function
@@ -3872,7 +3893,7 @@ Public Class Form1
             For Each Y In RegionClass.RegionListByGroupNum(GroupName)
                 Try
                     If Not once Then
-                        Print("Opensimulator will load  " + thing + ".  This may take some time.")
+                        Print("Opensimulator will load " + thing + ". This may take some time.")
                         thing = thing.Replace("\", "/")    ' because Opensim uses unix-like slashes, that's why
 
                         ConsoleCommand(RegionClass.ProcessID(Y), "change region " + region + "{ENTER}")
@@ -5301,6 +5322,7 @@ Public Class Form1
         Else
             Filename = MySetting.BackupFolder
         End If
+
         Log("Auto OAR")
         Try
             Dim AutoOARs As Array = Directory.GetFiles(Filename, "*.OAR", SearchOption.TopDirectoryOnly)

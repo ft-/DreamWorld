@@ -82,8 +82,6 @@ Public Class AdvancedForm
         If text = "Weekly" Then Interval = 60 * 24 * 7
         Form1.MySetting.AutobackupInterval = Interval.ToString
 
-
-
         Form1.MySetting.SaveSettings()
     End Sub
 
@@ -347,6 +345,7 @@ Public Class AdvancedForm
         Tide.Activate()
         Tide.Visible = True
     End Sub
+
 
 
 #End Region
