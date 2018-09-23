@@ -1,4 +1,11 @@
-﻿V2.41
+﻿V2.42 
+If AutoBackup folder does not exist, restore the defaults.
+Console logging lowered to INFO from DEBUG 
+Upgrade always set region ports to 8004 - now it uses the lowest port it finds.
+Digitally signed all programs and DLL's
+LoginURL exposed to get_grid_info had an extra space in it
+
+V2.41
 Tide high and Low Water levels were swapped
 
 V2.4

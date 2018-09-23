@@ -14,6 +14,7 @@ use File::Path;
 use 5.010;
 
 
+
 my @deletions = (
 	"$dir/OutworldzFiles/Opensim/bin/assetcache",
 	"$dir/OutworldzFiles/Opensim/bin/j2kDecodeCache",
@@ -57,6 +58,32 @@ unlink "$dir/OutworldzFiles/http.log" ;
 unlink "../Zips/DreamGrid$type.zip" ;
 unlink "../Zips/Outworldz-Update$type.zip" ;
 
+say("Signing");
+use IO::All;
+
+my @files = io->dir($dir)->all(0);  
+
+foreach my $file (@files) {
+    my $name = $file->name;
+    next if $name =~ /Installer_Src|\.git/;
+    if ($name =~ /dll$|exe$/ ) {
+        
+        my $r = qq!../Certs/sigcheck64.exe "$name"!;
+        print $r. "\n";
+        my $result1 = `$r`;
+        if ($result1 =~ /Publisher:.*Outworldz, LLC/) {
+            next;
+        }
+        
+        my $f = qq!../Certs/DigiCertUtil.exe sign /noInput /sha1 "52CADF8EA98C9382D0350815A68B2C79340E141F" "$name"!;
+        print $f;
+        my $result = `$f`;
+        print $result. "\n";
+        if ($result !~ /success/) {
+            die;
+        }
+    }
+}
 
 # mysql
 chdir(qq!$dir/OutworldzFiles/mysql/bin/!);
