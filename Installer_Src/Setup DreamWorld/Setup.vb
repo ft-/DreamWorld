@@ -357,6 +357,12 @@ Public Class Form1
 
 #Region "StartStop"
 
+    ''' <summary>
+    ''' Form Load is main() for all Drteamgrid
+    ''' </summary>
+    ''' <param name="sender">Unused</param>
+    ''' <param name="e">Unused</param>
+    ''' 
     Private Sub Form1_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 
         MyFolder = My.Application.Info.DirectoryPath
@@ -556,14 +562,16 @@ Public Class Form1
 
     End Sub
 
-    Private Sub StartButton_Click(sender As System.Object, e As System.EventArgs) Handles StartButton.Click
 
+    ''' <summary>
+    ''' Start Button on main form
+    ''' </summary>
+    Private Sub StartButton_Click(sender As System.Object, e As System.EventArgs) Handles StartButton.Click
         Startup()
         Print("")
     End Sub
 
     Private Sub Startup()
-
         exiting = False  ' suppress exit warning messages
         ProgressBar1.Value = 0
         ProgressBar1.Visible = True
@@ -1660,7 +1668,7 @@ Public Class Form1
         End If
 
         MySetting.SetOtherIni("WifiService", "GridName", MySetting.SimName)
-        MySetting.SetOtherIni("WifiService", "LoginURL", "http: //" + MySetting.PublicIP + ":" + MySetting.HttpPort)
+        MySetting.SetOtherIni("WifiService", "LoginURL", "http://" + MySetting.PublicIP + ":" + MySetting.HttpPort)
         MySetting.SetOtherIni("WifiService", "WebAddress", "http://" + MySetting.PublicIP + ":" + MySetting.HttpPort)
 
         ' Wifi Admin'
@@ -4424,10 +4432,11 @@ Public Class Form1
         ''' <summary>
         ''' Checks to see if an IP address is a local IP address.
         ''' </summary>
-        ''' <param name="CheckIP">The IP address to check.</param>
+        ''' <param name="CheckIP">The IP address to check, or localhost.</param>
         ''' <returns>Boolean</returns>
         ''' <remarks></remarks>
         ''' 
+        If CheckIP = "localhost" Then Return True
 
         Dim Quad1, Quad2 As Integer
 
