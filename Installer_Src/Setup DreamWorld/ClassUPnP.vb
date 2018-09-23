@@ -20,17 +20,15 @@ Public Class UPnp
     ''' </summary>
     ''' <remarks></remarks>
     Public Enum Protocol
-
         ''' <summary>
         ''' Transmission Control Protocol
         ''' </summary>
-        ''' <remarks></remarks>
+
         TCP
 
         ''' <summary>
         ''' User Datagram Protocol
         ''' </summary>
-        ''' <remarks></remarks>
         UDP
 
     End Enum
@@ -240,6 +238,9 @@ Public Class UPnp
     ''' <returns>Boolean</returns>
     ''' <remarks></remarks>
     Private Shared Function IsPrivateIP(ByVal CheckIP As String) As Boolean
+
+        If CheckIP = "localhost" Then Return True
+
         Dim Quad1, Quad2 As Integer
         Try
             Quad1 = CInt(CheckIP.Substring(0, CheckIP.IndexOf(".")))
