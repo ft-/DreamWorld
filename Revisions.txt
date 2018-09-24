@@ -4,9 +4,10 @@ Console logging lowered to INFO from DEBUG
 Upgrade always set region ports to 8004 - now it uses the lowest port it finds.
 Digitally signed all programs and DLL's
 LoginURL exposed to get_grid_info had an extra space in it
+Opensim.log now appears in each Region folder in each Group
 
 V2.41
-Tide high and Low Water levels were swapped
+Tide High and Low Water levels were swapped
 
 V2.4
 Fix crash in Birds on quit

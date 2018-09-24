@@ -4739,7 +4739,7 @@ Public Class Form1
         End Try
 
         CreateService()
-
+        CreateStopMySql()
 
         BumpProgress(5)
 
@@ -4804,6 +4804,27 @@ Public Class Form1
 
     End Sub
 
+    Private Sub CreateStopMySql()
+
+        ' create test program 
+        ' slants the other way:
+        Dim testProgram As String = MyFolder & "\OutworldzFiles\Mysql\bin\StopMySQL.bat"
+        Try
+            My.Computer.FileSystem.DeleteFile(testProgram)
+        Catch ex As Exception
+            Log("Delete File: " + ex.Message)
+        End Try
+        Try
+            Using outputFile As New StreamWriter(testProgram, True)
+                outputFile.WriteLine("@REM Program to Stop Mysql" + vbCrLf +
+                "mysqldadmin.exe -u root --port " + MySetting.MySqlPort + " shutdown")+ vbCrLf
+            End Using
+        Catch ex As Exception
+            Log("Error:StopMySQL.bat" + ex.Message)
+        End Try
+
+    End Sub
+
     Function CheckMysql() As Boolean
 
         Dim version As String = Nothing
@@ -4837,7 +4858,7 @@ Public Class Form1
 
         Dim p As Process = New Process()
         Dim pi As ProcessStartInfo = New ProcessStartInfo()
-        pi.Arguments = "-u root shutdown"
+        pi.Arguments = "--port " + MySetting.MySqlPort + " -u root shutdown"
         pi.FileName = """" + MyFolder + "\OutworldzFiles\mysql\bin\mysqladmin.exe" + """"
         pi.UseShellExecute = True ' so we can redirect streams and minimize
         pi.WindowStyle = ProcessWindowStyle.Hidden
