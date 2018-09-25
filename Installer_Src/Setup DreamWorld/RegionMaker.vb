@@ -512,7 +512,7 @@ Public Class RegionMaker
         r._SizeY = 256
         r._CoordX = LargestX() + 4
         r._CoordY = LargestY() + 0
-        r._RegionPort = LargestPort() + 1 '8003 + 1
+        r._RegionPort = CType(Form1.MySetting.PrivatePort, Integer) + 1 '8003 + 1
         r._ProcessID = 0
         r._AvatarCount = 0
         r._Ready = False

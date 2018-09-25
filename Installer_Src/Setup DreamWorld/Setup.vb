@@ -36,7 +36,7 @@ Public Class Form1
 
 #Region "Declarations"
 
-    Dim MyVersion As String = "2.42"
+    Dim MyVersion As String = "2.43"
     Dim SimVersion As String = "0.9.1"
     Dim DebugPath As String = "\Opensim\Outworldz DreamGrid Source"  ' no slash at end
     Public Domain As String = "http://www.outworldz.com"
@@ -4313,13 +4313,12 @@ Public Class Form1
 
         BumpProgress10()
 
-        If result = "Test Completed" And Not gDebug Then
+        If result = "Test Completed" And Not gDebug And MySetting.PublicIP <> MyUPnpMap.LocalIP() Then
             Log("Passed:" + result)
             MySetting.LoopBackDiag = True
             MySetting.SaveSettings()
         Else
-            Log("Failed:" + result)
-            Print("Router Loopback failed. See the Help section for 'Loopback' and how to enable it in Windows. Continuing...")
+
             MySetting.LoopBackDiag = False
             MySetting.DiagFailed = True
 #Disable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
@@ -4817,7 +4816,7 @@ Public Class Form1
         Try
             Using outputFile As New StreamWriter(testProgram, True)
                 outputFile.WriteLine("@REM Program to Stop Mysql" + vbCrLf +
-                "mysqldadmin.exe -u root --port " + MySetting.MySqlPort + " shutdown")+ vbCrLf
+                "mysqldadmin.exe -u root --port " + MySetting.MySqlPort + " shutdown" + vbCrLf)
             End Using
         Catch ex As Exception
             Log("Error:StopMySQL.bat" + ex.Message)
