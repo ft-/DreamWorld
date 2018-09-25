@@ -1177,7 +1177,7 @@ Enabled=true
 ; AllowCloneOtherAvatars = false
 ;; if true NPCs will have no group title, if false display "- NPC -" for easy identification {true false} default: true
 ; NoNPCGroup = false
-;
+;    
 ;
 [Terrain]
 
