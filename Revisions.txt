@@ -1,5 +1,6 @@
 ﻿V2.43
 Upgrade always set region ports to 8004, or 1 on new installs- now it uses the lowest port it finds or 8004.
+Birds recompiled
 
 V2.42 
 If AutoBackup folder does not exist, restore the defaults.
