@@ -1,2 +1,3 @@
-@rem shuts down mysql
-mysqladmin -u root shutdown
+@REM Program to Stop Mysql
+mysqldadmin.exe -u root --port 3309 shutdown
+

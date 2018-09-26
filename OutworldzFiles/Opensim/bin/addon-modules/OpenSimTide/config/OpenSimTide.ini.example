@@ -1,5 +1,5 @@
 ;; Set the Tide settings per named region
-   
+
 [Test Region 1]
 
 	;# {TideEnabled} {} {Enable the tide to come in and out?} {true false} false

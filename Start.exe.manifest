@@ -74,19 +74,19 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>y9Ub0DFum3Xusbg40g62x299awMo9WlooAEEsCOgaew=</dsig:DigestValue>
+        <dsig:DigestValue>CzWtCLTI18Huh7iri3y8UpYihmNRSPdKL2iVIJ1c+Zo=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="LiveSwitch.TextControl.exe" size="513536">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="LiveSwitch.TextControl.exe" size="521696">
       <assemblyIdentity name="LiveSwitch.TextControl" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>XA8gfxZzw4w1wLdcazYt7czFanTfbAHxQ5XPSpUz6hk=</dsig:DigestValue>
+        <dsig:DigestValue>5r4kbKmNDS2i8vu01aK45OlqcWpvkWy8R038JPK+/jk=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -122,7 +122,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>m7olfumd1oAUhD6tyaXLBvKIs/0fIHMsOj1Cs6EeSKw=</dsig:DigestValue>
+        <dsig:DigestValue>bDi+jv6h81TKzDajgsqQqyJlBWv0YoYKZoAGDaO9qJo=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
