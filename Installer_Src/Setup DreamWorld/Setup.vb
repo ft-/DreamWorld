@@ -36,7 +36,7 @@ Public Class Form1
 
 #Region "Declarations"
 
-    Dim MyVersion As String = "2.43"
+    Dim MyVersion As String = "2.44"
     Dim SimVersion As String = "0.9.1"
 
     Dim DebugPath As String = "\Opensim\Outworldz DreamGrid Source"  ' no slash at end
@@ -578,7 +578,7 @@ Public Class Form1
         ProgressBar1.Visible = True
         Buttons(BusyButton)
         OpensimIsRunning = True
-        MapDelete()
+        'MapDelete()
         RegionClass.GetAllRegions()
 
         If SetPublicIP() Then
@@ -4274,23 +4274,33 @@ Public Class Form1
 
         End If
 
-
-        ' Set Public IP
-        Try
-            Dim ip As String = client.DownloadString("http://api.ipify.org/?r=" + Random())
-            BumpProgress10()
-            Log("Info:Public IP=" + MySetting.PublicIP)
-            MySetting.PublicIP = ip
-            MySetting.SaveSettings()
+        If MySetting.PublicIP = "localhost" Or MySetting.PublicIP = "127.0.0.1" Then
             Return True
+        End If
+
+
+        'V 2.44
+
+        Try
+
+            Log("Info:Public IP=" + MySetting.PublicIP)
+            If TestPublicLoopback() Then
+                ' Set Public IP
+                Dim ip As String = client.DownloadString("http://api.ipify.org/?r=" + Random())
+                BumpProgress10()
+
+                MySetting.PublicIP = ip
+                MySetting.SaveSettings()
+                Return True
+            End If
 
         Catch ex As Exception
-            Print("Hmm, I cannot reach the Internet? Uh. Okay, continuing." + ex.Message)
-            MySetting.DiagFailed = True
-            Log("Info:Public IP=" + "127.0.0.1")
-        End Try
+                Print("Hmm, I cannot reach the Internet? Uh. Okay, continuing." + ex.Message)
+                MySetting.DiagFailed = True
+                Log("Info:Public IP=" + "127.0.0.1")
+            End Try
 
-        MySetting.PublicIP = "127.0.0.1"
+        MySetting.PublicIP = MyUPnpMap.LocalIP
         MySetting.SaveSettings()
 
         BumpProgress10()
@@ -4298,11 +4308,8 @@ Public Class Form1
 
     End Function
 
-    Private Sub TestLoopback()
+    Private Function TestPublicLoopback() As Boolean
 
-        If MySetting.PublicIP = "localhost" Or MySetting.PublicIP = "127.0.0.1" Then
-            Return
-        End If
 
         Print("Running Loopback Test")
         Dim result As String = ""
@@ -4312,14 +4319,18 @@ Public Class Form1
             result = client.DownloadString(loopbacktest)
         Catch ex As Exception
             Log("Err:Loopback fail:" + result + ":" + ex.Message)
+            Return False
         End Try
 
         BumpProgress10()
 
-        If result = "Test Completed" And Not gDebug And MySetting.PublicIP <> MyUPnpMap.LocalIP() Then
+        If MySetting.PublicIP = MyUPnpMap.LocalIP() Then Return False
+
+        If result = "Test Completed" And Not gDebug Then
             Log("Passed:" + result)
             MySetting.LoopBackDiag = True
             MySetting.SaveSettings()
+            Return True
         Else
 
             MySetting.LoopBackDiag = False
@@ -4330,8 +4341,9 @@ Public Class Form1
 
             MySetting.SaveSettings()
         End If
+        Return False
 
-    End Sub
+    End Function
 
     Private Sub DiagnosticsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles DiagnosticsToolStripMenuItem.Click
 
@@ -4403,7 +4415,7 @@ Public Class Form1
         OpenPorts() ' Open router ports with UPnp
         CheckDiagPort()
         ProbePublicPort()
-        TestLoopback()
+        TestPublicLoopback()
         If MySetting.DiagFailed Then
             ShowLog()
         Else
