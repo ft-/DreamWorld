@@ -1135,11 +1135,11 @@ Public Class Form1
 
         MySetting.SetOtherIni("PrimLimitsModule", "EnforcePrimLimits", CType(MySetting.Primlimits, String))
 
-        ' If MySetting.Primlimits Then
-        'MySetting.SetOtherIni("Permissions", "permissionmodules", "DefaultPermissionsModule, PrimLimitsModule")
-        'Else
-        '   MySetting.SetOtherIni("Permissions", "permissionmodules", "DefaultPermissionsModule")
-        ' End If
+        If MySetting.Primlimits Then
+            MySetting.SetOtherIni("Permissions", "permissionmodules", "DefaultPermissionsModule, PrimLimitsModule")
+        Else
+            MySetting.SetOtherIni("Permissions", "permissionmodules", "DefaultPermissionsModule")
+        End If
 
         If MySetting.GDPR Then
             MySetting.SetOtherIni("DataSnapshot", "indexsims", "true")
@@ -1362,153 +1362,155 @@ Public Class Form1
                 ' Extended in v 2.1
                 MySetting.SetOtherIni(simName, "NonPhysicalPrimMax", Convert.ToString(RegionClass.NonPhysicalPrimMax(RegionNum)))
                 MySetting.SetOtherIni(simName, "PhysicalPrimMax", Convert.ToString(RegionClass.PhysicalPrimMax(RegionNum)))
-                MySetting.SetOtherIni(simName, "MaxPrims", Convert.ToString(RegionClass.MaxPrims(RegionNum)))
+                If (MySetting.Primlimits) Then
+                    MySetting.SetOtherIni(simName, "MaxPrims", Convert.ToString(RegionClass.MaxPrims(RegionNum)))
+                End If
                 MySetting.SetOtherIni(simName, "MaxAgents", Convert.ToString(RegionClass.MaxAgents(RegionNum)))
-                MySetting.SetOtherIni(simName, "ClampPrimSize", Convert.ToString(RegionClass.ClampPrimSize(RegionNum)))
+                    MySetting.SetOtherIni(simName, "ClampPrimSize", Convert.ToString(RegionClass.ClampPrimSize(RegionNum)))
 
-                ' Extended in v 2.31 optional things
+                    ' Extended in v 2.31 optional things
 
-                If RegionClass.MapType(RegionNum) = "None" Then
-                    MySetting.SetOtherIni(simName, "GenerateMaptiles", "False")
-                ElseIf RegionClass.MapType(RegionNum) = "Simple" Then
-                    MySetting.SetOtherIni(simName, "GenerateMaptiles", "True")
-                    MySetting.SetOtherIni(simName, "MapImageModule", "MapImageModule")  ' versus Warp3DImageModule
-                    MySetting.SetOtherIni(simName, "TextureOnMapTile", "False")         ' versus True
-                    MySetting.SetOtherIni(simName, "DrawPrimOnMapTile", "False")
-                    MySetting.SetOtherIni(simName, "TexturePrims", "False")
-                    MySetting.SetOtherIni(simName, "RenderMeshes", "False")
-                ElseIf RegionClass.MapType(RegionNum) = "Good" Then
-                    MySetting.SetOtherIni(simName, "GenerateMaptiles", "True")
-                    MySetting.SetOtherIni(simName, "MapImageModule", "Warp3DImageModule")  ' versus MapImageModule
-                    MySetting.SetOtherIni(simName, "TextureOnMapTile", "False")         ' versus True
-                    MySetting.SetOtherIni(simName, "DrawPrimOnMapTile", "False")
-                    MySetting.SetOtherIni(simName, "TexturePrims", "False")
-                    MySetting.SetOtherIni(simName, "RenderMeshes", "False")
-                ElseIf RegionClass.MapType(RegionNum) = "Better" Then
-                    MySetting.SetOtherIni(simName, "GenerateMaptiles", "True")
-                    MySetting.SetOtherIni(simName, "MapImageModule", "Warp3DImageModule")  ' versus MapImageModule
-                    MySetting.SetOtherIni(simName, "TextureOnMapTile", "True")         ' versus True
-                    MySetting.SetOtherIni(simName, "DrawPrimOnMapTile", "True")
-                    MySetting.SetOtherIni(simName, "TexturePrims", "False")
-                    MySetting.SetOtherIni(simName, "RenderMeshes", "False")
-                ElseIf RegionClass.MapType(RegionNum) = "Best" Then
-                    MySetting.SetOtherIni(simName, "GenerateMaptiles", "True")
-                    MySetting.SetOtherIni(simName, "MapImageModule", "Warp3DImageModule")  ' versus MapImageModule
-                    MySetting.SetOtherIni(simName, "TextureOnMapTile", "True")      ' versus True
-                    MySetting.SetOtherIni(simName, "DrawPrimOnMapTile", "True")
-                    MySetting.SetOtherIni(simName, "TexturePrims", "True")
-                    MySetting.SetOtherIni(simName, "RenderMeshes", "True")
-                End If
+                    If RegionClass.MapType(RegionNum) = "None" Then
+                        MySetting.SetOtherIni(simName, "GenerateMaptiles", "False")
+                    ElseIf RegionClass.MapType(RegionNum) = "Simple" Then
+                        MySetting.SetOtherIni(simName, "GenerateMaptiles", "True")
+                        MySetting.SetOtherIni(simName, "MapImageModule", "MapImageModule")  ' versus Warp3DImageModule
+                        MySetting.SetOtherIni(simName, "TextureOnMapTile", "False")         ' versus True
+                        MySetting.SetOtherIni(simName, "DrawPrimOnMapTile", "False")
+                        MySetting.SetOtherIni(simName, "TexturePrims", "False")
+                        MySetting.SetOtherIni(simName, "RenderMeshes", "False")
+                    ElseIf RegionClass.MapType(RegionNum) = "Good" Then
+                        MySetting.SetOtherIni(simName, "GenerateMaptiles", "True")
+                        MySetting.SetOtherIni(simName, "MapImageModule", "Warp3DImageModule")  ' versus MapImageModule
+                        MySetting.SetOtherIni(simName, "TextureOnMapTile", "False")         ' versus True
+                        MySetting.SetOtherIni(simName, "DrawPrimOnMapTile", "False")
+                        MySetting.SetOtherIni(simName, "TexturePrims", "False")
+                        MySetting.SetOtherIni(simName, "RenderMeshes", "False")
+                    ElseIf RegionClass.MapType(RegionNum) = "Better" Then
+                        MySetting.SetOtherIni(simName, "GenerateMaptiles", "True")
+                        MySetting.SetOtherIni(simName, "MapImageModule", "Warp3DImageModule")  ' versus MapImageModule
+                        MySetting.SetOtherIni(simName, "TextureOnMapTile", "True")         ' versus True
+                        MySetting.SetOtherIni(simName, "DrawPrimOnMapTile", "True")
+                        MySetting.SetOtherIni(simName, "TexturePrims", "False")
+                        MySetting.SetOtherIni(simName, "RenderMeshes", "False")
+                    ElseIf RegionClass.MapType(RegionNum) = "Best" Then
+                        MySetting.SetOtherIni(simName, "GenerateMaptiles", "True")
+                        MySetting.SetOtherIni(simName, "MapImageModule", "Warp3DImageModule")  ' versus MapImageModule
+                        MySetting.SetOtherIni(simName, "TextureOnMapTile", "True")      ' versus True
+                        MySetting.SetOtherIni(simName, "DrawPrimOnMapTile", "True")
+                        MySetting.SetOtherIni(simName, "TexturePrims", "True")
+                        MySetting.SetOtherIni(simName, "RenderMeshes", "True")
+                    End If
 
-                MySetting.SetOtherIni(simName, "Physics", RegionClass.Physics(RegionNum))
-                MySetting.SetOtherIni(simName, "MaxPrims", RegionClass.MaxPrims(RegionNum))
-                MySetting.SetOtherIni(simName, "AllowGods", RegionClass.AllowGods(RegionNum))
-                MySetting.SetOtherIni(simName, "RegionGod", RegionClass.RegionGod(RegionNum))
-                MySetting.SetOtherIni(simName, "ManagerGod", RegionClass.ManagerGod(RegionNum))
-                MySetting.SetOtherIni(simName, "RegionSnapShot", RegionClass.RegionSnapShot(RegionNum).ToString)
-                MySetting.SetOtherIni(simName, "Birds", RegionClass.Birds(RegionNum))
-                MySetting.SetOtherIni(simName, "Tides", RegionClass.Tides(RegionNum))
-                MySetting.SetOtherIni(simName, "Teleport", RegionClass.Teleport(RegionNum))
+                    MySetting.SetOtherIni(simName, "Physics", RegionClass.Physics(RegionNum))
+                    MySetting.SetOtherIni(simName, "MaxPrims", RegionClass.MaxPrims(RegionNum))
+                    MySetting.SetOtherIni(simName, "AllowGods", RegionClass.AllowGods(RegionNum))
+                    MySetting.SetOtherIni(simName, "RegionGod", RegionClass.RegionGod(RegionNum))
+                    MySetting.SetOtherIni(simName, "ManagerGod", RegionClass.ManagerGod(RegionNum))
+                    MySetting.SetOtherIni(simName, "RegionSnapShot", RegionClass.RegionSnapShot(RegionNum).ToString)
+                    MySetting.SetOtherIni(simName, "Birds", RegionClass.Birds(RegionNum))
+                    MySetting.SetOtherIni(simName, "Tides", RegionClass.Tides(RegionNum))
+                    MySetting.SetOtherIni(simName, "Teleport", RegionClass.Teleport(RegionNum))
 
-                MySetting.SaveOtherINI()
+                    MySetting.SaveOtherINI()
 
-                '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-                ' Opensim.ini
-                MySetting.LoadOtherIni(prefix + "bin\Opensim.proto", ";")
+                    '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+                    ' Opensim.ini
+                    MySetting.LoadOtherIni(prefix + "bin\Opensim.proto", ";")
 
-                If RegionClass.MapType(RegionNum) = "Simple" Then
-                    MySetting.SetOtherIni("Map", "GenerateMaptiles", "True")
-                    MySetting.SetOtherIni("Map", "MapImageModule", "MapImageModule")  ' versus Warp3DImageModule
-                    MySetting.SetOtherIni("Map", "TextureOnMapTile", "False")         ' versus True
-                    MySetting.SetOtherIni("Map", "DrawPrimOnMapTile", "False")
-                    MySetting.SetOtherIni("Map", "TexturePrims", "False")
-                    MySetting.SetOtherIni("Map", "RenderMeshes", "False")
-                ElseIf RegionClass.MapType(RegionNum) = "Good" Then
-                    MySetting.SetOtherIni(simName, "GenerateMaptiles", "True")
-                    MySetting.SetOtherIni("Map", "MapImageModule", "Warp3DImageModule")  ' versus MapImageModule
-                    MySetting.SetOtherIni("Map", "TextureOnMapTile", "False")         ' versus True
-                    MySetting.SetOtherIni("Map", "DrawPrimOnMapTile", "False")
-                    MySetting.SetOtherIni("Map", "TexturePrims", "False")
-                    MySetting.SetOtherIni("Map", "RenderMeshes", "False")
-                ElseIf RegionClass.MapType(RegionNum) = "Better" Then
-                    MySetting.SetOtherIni("Map", "GenerateMaptiles", "True")
-                    MySetting.SetOtherIni("Map", "MapImageModule", "Warp3DImageModule")  ' versus MapImageModule
-                    MySetting.SetOtherIni("Map", "TextureOnMapTile", "True")         ' versus True
-                    MySetting.SetOtherIni("Map", "DrawPrimOnMapTile", "True")
-                    MySetting.SetOtherIni("Map", "TexturePrims", "False")
-                    MySetting.SetOtherIni("Map", "RenderMeshes", "False")
-                ElseIf RegionClass.MapType(RegionNum) = "Best" Then
-                    MySetting.SetOtherIni("Map", "GenerateMaptiles", "True")
-                    MySetting.SetOtherIni("Map", "MapImageModule", "Warp3DImageModule")  ' versus MapImageModule
-                    MySetting.SetOtherIni("Map", "TextureOnMapTile", "True")      ' versus True
-                    MySetting.SetOtherIni("Map", "DrawPrimOnMapTile", "True")
-                    MySetting.SetOtherIni("Map", "TexturePrims", "True")
-                    MySetting.SetOtherIni("Map", "RenderMeshes", "True")
-                End If
-
-
-                Select Case RegionClass.Physics(RegionNum)
-                    Case "0"
-                        MySetting.SetOtherIni("Startup", "meshing", "ZeroMesher")
-                        MySetting.SetOtherIni("Startup", "physics", "basicphysics")
-                        MySetting.SetOtherIni("Startup", "UseSeparatePhysicsThread", "False")
-                    Case "1"
-                        MySetting.SetOtherIni("Startup", "meshing", "Meshmerizer")
-                        MySetting.SetOtherIni("Startup", "physics", "OpenDynamicsEngine")
-                        MySetting.SetOtherIni("Startup", "UseSeparatePhysicsThread", "False")
-                    Case "2"
-                        MySetting.SetOtherIni("Startup", "meshing", "Meshmerizer")
-                        MySetting.SetOtherIni("Startup", "physics", "BulletSim")
-                        MySetting.SetOtherIni("Startup", "UseSeparatePhysicsThread", "False")
-                    Case "3"
-                        MySetting.SetOtherIni("Startup", "meshing", "Meshmerizer")
-                        MySetting.SetOtherIni("Startup", "physics", "BulletSim")
-                        MySetting.SetOtherIni("Startup", "UseSeparatePhysicsThread", "True")
-                    Case "4"
-                        MySetting.SetOtherIni("Startup", "meshing", "ubODEMeshmerizer")
-                        MySetting.SetOtherIni("Startup", "physics", "ubODE")
-                        MySetting.SetOtherIni("Startup", "UseSeparatePhysicsThread", "False")
-                    Case Else
-                        ' do nothing
-                End Select
-
-
-                If RegionClass.RegionGod(RegionNum) = "True" Or RegionClass.ManagerGod(RegionNum) = "True" Then
-                    MySetting.SetOtherIni("Permissions", "allow_grid_gods", "True")
-                Else
-                    MySetting.SetOtherIni("Permissions", "allow_grid_gods", MySetting.Allow_grid_gods.ToString)
-                End If
-
-                If RegionClass.RegionGod(RegionNum) = "True" Then
-                    MySetting.SetOtherIni("Permissions", "region_owner_is_god", "True")
-                Else
-                    MySetting.SetOtherIni("Permissions", "region_owner_is_god", MySetting.Region_owner_is_god.ToString)
-                End If
-
-                If RegionClass.ManagerGod(RegionNum) = "True" Then
-                    MySetting.SetOtherIni("Permissions", "region_manager_is_god", "True")
-                Else
-                    MySetting.SetOtherIni("Permissions", "region_manager_is_god", MySetting.Region_manager_is_god.ToString)
-                End If
-
-                If RegionClass.AllowGods(RegionNum) = "True" Then
-                    MySetting.SetOtherIni("Permissions", "allow_grid_gods", "True")
-                Else
-                    MySetting.SetOtherIni("Permissions", "allow_grid_gods", MySetting.Allow_grid_gods.ToString)
-                End If
-
-                MySetting.SaveOtherINI()
-
-                If MySetting.BirdsModuleStartup Then
-                    Dim Birds As String = ""
-                    If RegionClass.Birds(RegionNum) = "True" Then
-                        Birds = "True"
-                    Else
-                        Birds = "False"
+                    If RegionClass.MapType(RegionNum) = "Simple" Then
+                        MySetting.SetOtherIni("Map", "GenerateMaptiles", "True")
+                        MySetting.SetOtherIni("Map", "MapImageModule", "MapImageModule")  ' versus Warp3DImageModule
+                        MySetting.SetOtherIni("Map", "TextureOnMapTile", "False")         ' versus True
+                        MySetting.SetOtherIni("Map", "DrawPrimOnMapTile", "False")
+                        MySetting.SetOtherIni("Map", "TexturePrims", "False")
+                        MySetting.SetOtherIni("Map", "RenderMeshes", "False")
+                    ElseIf RegionClass.MapType(RegionNum) = "Good" Then
+                        MySetting.SetOtherIni(simName, "GenerateMaptiles", "True")
+                        MySetting.SetOtherIni("Map", "MapImageModule", "Warp3DImageModule")  ' versus MapImageModule
+                        MySetting.SetOtherIni("Map", "TextureOnMapTile", "False")         ' versus True
+                        MySetting.SetOtherIni("Map", "DrawPrimOnMapTile", "False")
+                        MySetting.SetOtherIni("Map", "TexturePrims", "False")
+                        MySetting.SetOtherIni("Map", "RenderMeshes", "False")
+                    ElseIf RegionClass.MapType(RegionNum) = "Better" Then
+                        MySetting.SetOtherIni("Map", "GenerateMaptiles", "True")
+                        MySetting.SetOtherIni("Map", "MapImageModule", "Warp3DImageModule")  ' versus MapImageModule
+                        MySetting.SetOtherIni("Map", "TextureOnMapTile", "True")         ' versus True
+                        MySetting.SetOtherIni("Map", "DrawPrimOnMapTile", "True")
+                        MySetting.SetOtherIni("Map", "TexturePrims", "False")
+                        MySetting.SetOtherIni("Map", "RenderMeshes", "False")
+                    ElseIf RegionClass.MapType(RegionNum) = "Best" Then
+                        MySetting.SetOtherIni("Map", "GenerateMaptiles", "True")
+                        MySetting.SetOtherIni("Map", "MapImageModule", "Warp3DImageModule")  ' versus MapImageModule
+                        MySetting.SetOtherIni("Map", "TextureOnMapTile", "True")      ' versus True
+                        MySetting.SetOtherIni("Map", "DrawPrimOnMapTile", "True")
+                        MySetting.SetOtherIni("Map", "TexturePrims", "True")
+                        MySetting.SetOtherIni("Map", "RenderMeshes", "True")
                     End If
 
 
-                    Dim BirdData As String = "[" + simName + "]" + vbCrLf &
+                    Select Case RegionClass.Physics(RegionNum)
+                        Case "0"
+                            MySetting.SetOtherIni("Startup", "meshing", "ZeroMesher")
+                            MySetting.SetOtherIni("Startup", "physics", "basicphysics")
+                            MySetting.SetOtherIni("Startup", "UseSeparatePhysicsThread", "False")
+                        Case "1"
+                            MySetting.SetOtherIni("Startup", "meshing", "Meshmerizer")
+                            MySetting.SetOtherIni("Startup", "physics", "OpenDynamicsEngine")
+                            MySetting.SetOtherIni("Startup", "UseSeparatePhysicsThread", "False")
+                        Case "2"
+                            MySetting.SetOtherIni("Startup", "meshing", "Meshmerizer")
+                            MySetting.SetOtherIni("Startup", "physics", "BulletSim")
+                            MySetting.SetOtherIni("Startup", "UseSeparatePhysicsThread", "False")
+                        Case "3"
+                            MySetting.SetOtherIni("Startup", "meshing", "Meshmerizer")
+                            MySetting.SetOtherIni("Startup", "physics", "BulletSim")
+                            MySetting.SetOtherIni("Startup", "UseSeparatePhysicsThread", "True")
+                        Case "4"
+                            MySetting.SetOtherIni("Startup", "meshing", "ubODEMeshmerizer")
+                            MySetting.SetOtherIni("Startup", "physics", "ubODE")
+                            MySetting.SetOtherIni("Startup", "UseSeparatePhysicsThread", "False")
+                        Case Else
+                            ' do nothing
+                    End Select
+
+
+                    If RegionClass.RegionGod(RegionNum) = "True" Or RegionClass.ManagerGod(RegionNum) = "True" Then
+                        MySetting.SetOtherIni("Permissions", "allow_grid_gods", "True")
+                    Else
+                        MySetting.SetOtherIni("Permissions", "allow_grid_gods", MySetting.Allow_grid_gods.ToString)
+                    End If
+
+                    If RegionClass.RegionGod(RegionNum) = "True" Then
+                        MySetting.SetOtherIni("Permissions", "region_owner_is_god", "True")
+                    Else
+                        MySetting.SetOtherIni("Permissions", "region_owner_is_god", MySetting.Region_owner_is_god.ToString)
+                    End If
+
+                    If RegionClass.ManagerGod(RegionNum) = "True" Then
+                        MySetting.SetOtherIni("Permissions", "region_manager_is_god", "True")
+                    Else
+                        MySetting.SetOtherIni("Permissions", "region_manager_is_god", MySetting.Region_manager_is_god.ToString)
+                    End If
+
+                    If RegionClass.AllowGods(RegionNum) = "True" Then
+                        MySetting.SetOtherIni("Permissions", "allow_grid_gods", "True")
+                    Else
+                        MySetting.SetOtherIni("Permissions", "allow_grid_gods", MySetting.Allow_grid_gods.ToString)
+                    End If
+
+                    MySetting.SaveOtherINI()
+
+                    If MySetting.BirdsModuleStartup Then
+                        Dim Birds As String = ""
+                        If RegionClass.Birds(RegionNum) = "True" Then
+                            Birds = "True"
+                        Else
+                            Birds = "False"
+                        End If
+
+
+                        Dim BirdData As String = "[" + simName + "]" + vbCrLf &
                     ";this Is the default And determines whether the module does anything" & vbCrLf &
                     "BirdsModuleStartup = True" & vbCrLf & vbCrLf &
                     ";set to false to disable the birds from appearing in this region" & vbCrLf &
@@ -1554,39 +1556,39 @@ Public Class Form1
                     End If
 
                     Dim TideData As String = ";; Set the Tide settings per named region" & vbCrLf &
-                     "[" + simName + "]" + vbCrLf &
-                    ";this determines whether the module does anything in this region" & vbCrLf &
-                    ";# {TideEnabled} {} {Enable the tide to come in and out?} {true false} false" & vbCrLf &
-                    "TideEnabled = " & Tides & vbCrLf &
-                     vbCrLf &
-                    ";; Tides currently only work on single regions And varregions (non megaregions) " & vbCrLf &
-                    ";# surrounded completely by water" & vbCrLf &
-                    ";; Anything else will produce weird results where you may see a big" & vbCrLf &
-                    ";; vertical 'step' in the ocean" & vbCrLf &
-                    ";; update the tide every x simulator frames" & vbCrLf &
-                    "TideUpdateRate = 50" & vbCrLf &
-                     vbCrLf &
-                    ";; low And high water marks in metres" & vbCrLf &
-                    "TideHighWater = " & MySetting.TideHighLevel() & vbCrLf &
-                    "TideLowWater = " & MySetting.TideLowLevel() & vbCrLf &
+                    "[" + simName + "]" + vbCrLf &
+                ";this determines whether the module does anything in this region" & vbCrLf &
+                ";# {TideEnabled} {} {Enable the tide to come in and out?} {true false} false" & vbCrLf &
+                "TideEnabled = " & Tides & vbCrLf &
                     vbCrLf &
-                    ";; how long in seconds for a complete cycle time low->high->low" & vbCrLf &
-                    "TideCycleTime = " & MySetting.CycleTime() & vbCrLf &
-                     vbCrLf &
-                    ";; provide tide information on the console?" & vbCrLf &
-                    "TideInfoDebug = " & MySetting.TideInfoDebug.ToString & vbCrLf &
-                     vbCrLf &
-                    ";; chat tide info to the whole region?" & vbCrLf &
-                    "TideInfoBroadcast = " & MySetting.BroadcastTideInfo() & vbCrLf &
-                     vbCrLf &
-                    ";; which channel to region chat on for the full tide info" & vbCrLf &
-                    "TideInfoChannel = " & MySetting.TideInfoChannel & vbCrLf &
+                ";; Tides currently only work on single regions And varregions (non megaregions) " & vbCrLf &
+                ";# surrounded completely by water" & vbCrLf &
+                ";; Anything else will produce weird results where you may see a big" & vbCrLf &
+                ";; vertical 'step' in the ocean" & vbCrLf &
+                ";; update the tide every x simulator frames" & vbCrLf &
+                "TideUpdateRate = 50" & vbCrLf &
                     vbCrLf &
-                    ";; which channel to region chat on for just the tide level in metres" & vbCrLf &
-                    "TideLevelChannel = " & MySetting.TideLevelChannel() & vbCrLf &
-                     vbCrLf &
-                    ";; How many times to repeat Tide Warning messages at high/low tide" & vbCrLf &
-                    "TideAnnounceCount = 1" & vbCrLf & vbCrLf & vbCrLf & vbCrLf
+                ";; low And high water marks in metres" & vbCrLf &
+                "TideHighWater = " & MySetting.TideHighLevel() & vbCrLf &
+                "TideLowWater = " & MySetting.TideLowLevel() & vbCrLf &
+                vbCrLf &
+                ";; how long in seconds for a complete cycle time low->high->low" & vbCrLf &
+                "TideCycleTime = " & MySetting.CycleTime() & vbCrLf &
+                    vbCrLf &
+                ";; provide tide information on the console?" & vbCrLf &
+                "TideInfoDebug = " & MySetting.TideInfoDebug.ToString & vbCrLf &
+                    vbCrLf &
+                ";; chat tide info to the whole region?" & vbCrLf &
+                "TideInfoBroadcast = " & MySetting.BroadcastTideInfo() & vbCrLf &
+                    vbCrLf &
+                ";; which channel to region chat on for the full tide info" & vbCrLf &
+                "TideInfoChannel = " & MySetting.TideInfoChannel & vbCrLf &
+                vbCrLf &
+                ";; which channel to region chat on for just the tide level in metres" & vbCrLf &
+                "TideLevelChannel = " & MySetting.TideLevelChannel() & vbCrLf &
+                    vbCrLf &
+                ";; How many times to repeat Tide Warning messages at high/low tide" & vbCrLf &
+                "TideAnnounceCount = 1" & vbCrLf & vbCrLf & vbCrLf & vbCrLf
 
 
                     IO.File.AppendAllText(TideFile, TideData, Encoding.Default) 'The text file will be created if it does not already exist 
