@@ -736,7 +736,7 @@ Public Class Form1
             RegionClass.WarmingUp(X) = False
         Next
 
-        Dim counter = 300 ' 5 minutes to quit all regions
+        Dim counter = 600 ' 10 minutes to quit all regions
 
         ' only wait if the port 8001 is working
         If gUseIcons Then
@@ -4914,7 +4914,7 @@ Public Class Form1
             Return True
         End If
 
-        PrintFast("Setting DynDNS name of " + "http://" + MySetting.DNSName + ":" + MySetting.HttpPort)
+        PrintFast("Checking " + "http://" + MySetting.DNSName + ":" + MySetting.HttpPort)
 
         Dim client As New System.Net.WebClient
         Dim Checkname As String = String.Empty
