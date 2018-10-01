@@ -50,7 +50,7 @@ Public Class TosForm
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
 
-        If Form1.OpensimIsRunning Then
+        If Form1.OpensimIsRunning() Then
             Dim webAddress As String = "http://" + Form1.MySetting.PublicIP + ":" + Form1.MySetting.HttpPort + "/wifi/termsofservice.html"
             Process.Start(webAddress)
         Else
@@ -63,7 +63,7 @@ Public Class TosForm
 
         Dim response = MsgBox("Clicking Yes will force all users to re-agree to the TOS on next login or visit.", vbYesNo)
         If response = vbYes Then
-            Dim m As New Mysql(Form1.robustconnStr)
+            Dim m As New Mysql(Form1.gRobustConnStr)
             If m.IsMySqlRunning() Is Nothing Then
                 MsgBox("MySql is not running, so I cannot save the re-validate data. Start Opensim or Mysql and try again.")
             Else

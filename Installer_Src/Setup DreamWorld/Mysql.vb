@@ -102,6 +102,7 @@ Public Class Mysql
     'End Sub
 
     ' This code added by Visual Basic to correctly implement the disposable pattern.
+    <CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA1816:CallGCSuppressFinalizeCorrectly")>
     Public Sub Dispose() Implements IDisposable.Dispose
         ' Do not change this code.  Put cleanup code in Dispose(disposing As Boolean) above.
         Dispose(True)

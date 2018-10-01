@@ -278,22 +278,22 @@ Public Class AdvancedForm
 #Region "Help"
 
     Private Sub PictureBox2_Click(sender As Object, e As EventArgs) Handles AutoBackupHelp.Click
-        Dim webAddress As String = Form1.Domain + "/Outworldz_installer/technical.htm#Backup"
+        Dim webAddress As String = Form1.gDomain + "/Outworldz_installer/technical.htm#Backup"
         Process.Start(webAddress)
     End Sub
 
     Private Sub PictureBox3_Click(sender As Object, e As EventArgs) Handles MapHelp.Click
-        Dim webAddress As String = Form1.Domain + "/Outworldz_installer/technical.htm#Maps"
+        Dim webAddress As String = Form1.gDomain + "/Outworldz_installer/technical.htm#Maps"
         Process.Start(webAddress)
     End Sub
 
     Private Sub PictureBox4_Click(sender As Object, e As EventArgs) Handles PersonalityHelp.Click
-        Dim webAddress As String = Form1.Domain + "/Outworldz_installer/technical.htm#Personality"
+        Dim webAddress As String = Form1.gDomain + "/Outworldz_installer/technical.htm#Personality"
         Process.Start(webAddress)
     End Sub
 
     Private Sub PictureBox1_Click_1(sender As Object, e As EventArgs) Handles RegionHelp.Click
-        Dim webAddress As String = Form1.Domain + "/Outworldz_installer/technical.htm#Regions"
+        Dim webAddress As String = Form1.gDomain + "/Outworldz_installer/technical.htm#Regions"
         Process.Start(webAddress)
     End Sub
 

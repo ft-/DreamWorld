@@ -222,6 +222,7 @@ Public Class FormRegion
                     End If
                 Else
                     WriteRegion()
+                    Form1.RegionClass.UpdateAllRegionPorts()
                     Form1.CopyOpensimProto()
                     RegionClass.GetAllRegions()
                 End If
@@ -240,6 +241,7 @@ Public Class FormRegion
         Else
 
             WriteRegion()
+            Form1.RegionClass.UpdateAllRegionPorts()
             RegionClass.GetAllRegions()
             Form1.CopyOpensimProto()
 

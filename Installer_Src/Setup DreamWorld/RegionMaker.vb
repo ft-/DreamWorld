@@ -546,7 +546,7 @@ Public Class RegionMaker
         Dim folders() As String
         Dim regionfolders() As String
         Dim n As Integer = 0
-        folders = Directory.GetDirectories(Form1.prefix + "bin\Regions")
+        folders = Directory.GetDirectories(Form1.gPath + "bin\Regions")
         For Each FolderName As String In folders
             'Form1.Log("Info:Region Path:" + FolderName)
             regionfolders = Directory.GetDirectories(FolderName)
@@ -664,7 +664,7 @@ Public Class RegionMaker
         Dim fname As String = RegionList(n)._FolderPath.ToString
 
         If (fname = "") Then
-            Dim pathtoWelcome As String = Form1.prefix + "bin\Regions\" + name + "\Region\"
+            Dim pathtoWelcome As String = Form1.gPath + "bin\Regions\" + name + "\Region\"
             fname = pathtoWelcome + name + ".ini"
             If Not Directory.Exists(pathtoWelcome) Then
                 Try
@@ -804,6 +804,25 @@ Public Class RegionMaker
         Return Min
     End Function
 
+    ''' <summary>
+    ''' Self setting Region Ports
+    ''' Iterate over all regions and set the ports from the starting value
+    ''' </summary>
+    Public Sub UpdateAllRegionPorts()
+
+        Dim Portnumber As Integer = CType(Form1.MySetting.FirstRegionPort(), Integer)
+        For Each RegionNum As Integer In Form1.RegionClass.RegionNumbers
+            Dim simName = Form1.RegionClass.RegionName(RegionNum)
+            Form1.MySetting.LoadOtherIni(Form1.RegionClass.RegionPath(RegionNum), ";")
+            Form1.MySetting.SetOtherIni(simName, "InternalPort", Portnumber.ToString)
+            Form1.RegionClass.RegionPort(RegionNum) = Portnumber
+            ' Self setting Region Ports
+            Form1.gMaxPortUsed = Portnumber
+            Portnumber = Portnumber + 1
+            Form1.MySetting.SaveOtherINI()
+        Next
+
+    End Sub
 #End Region
 
 #Region "POST"

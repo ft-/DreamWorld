@@ -1,4 +1,10 @@
-﻿V2.43
+﻿V2.44
+Primlimits global setting was not being used.  If Primlimits global is off, no prim limits are enforced
+Set Ip to LAN IP if loopback test fails. Before it would still set WAN IP.
+Set all region ports from base setting when a region is added or deleted
+Deleting Caches no longer deletes script state.
+
+V2.43
 Upgrade always set region ports to 8004, or 1 on new installs- now it uses the lowest port it finds or 8004.
 Birds recompiled
 
