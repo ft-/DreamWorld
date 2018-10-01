@@ -34,7 +34,7 @@ Public Class Form1
 
 #Region "Declarations"
 
-    Dim gMyVersion As String = "2.44"
+    Dim gMyVersion As String = "2.45"
     Dim gSimVersion As String = "0.9.1"
 
     ' edit this to compile and run in the correct folder root
@@ -749,11 +749,13 @@ Public Class Form1
                 Dim CountisRunning As Integer = 0
                 Sleep(1000)
                 For Each X In RegionClass.RegionNumbers
-                    If RegionClass.RegionEnabled(X) And OpensimIsRunning() Then
+                    If RegionClass.ShuttingDown(X) = True And OpensimIsRunning() Then
+
+                        PrintFast("Checking " + RegionClass.RegionName(X))
                         If CheckPort("127.0.0.1", RegionClass.RegionPort(X)) Then
-                            PrintFast("Checking " + RegionClass.RegionName(X))
                             CountisRunning = CountisRunning + 1
-                            Log(RegionClass.RegionName(X) + " is still running")
+                        Else
+                            RegionClass.ShuttingDown(X) = False
                         End If
                     End If
                     Application.DoEvents()
