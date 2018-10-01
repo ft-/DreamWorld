@@ -360,7 +360,7 @@ Public Class RegionList
     End Sub
 
     Private Sub StopRegionNum(num As Integer)
-        If Form1.ConsoleCommand(RegionClass.ProcessID(num), "q{ENTER}") Then
+        If Form1.ConsoleCommand(RegionClass.ProcessID(num), "{ENTER}q{ENTER}") Then
             RegionClass.Booted(num) = False
             RegionClass.WarmingUp(num) = False
             RegionClass.ShuttingDown(num) = True
@@ -473,7 +473,7 @@ Public Class RegionList
             End If
         End If
 
-        Dim dir = Form1.prefix
+        Dim dir = Form1.gPath
 
         For Each pathname As String In files
             pathname = pathname.Replace("\", "/")
@@ -533,7 +533,7 @@ Public Class RegionList
 
     Private Sub RegionHelp_Click(sender As Object, e As EventArgs) Handles RegionHelp.Click
 
-        Process.Start(Form1.Domain + "/Outworldz_Installer/RegionHelp.htm") ' !!!
+        Process.Start(Form1.gDomain + "/Outworldz_Installer/RegionHelp.htm") ' !!!
 
     End Sub
 

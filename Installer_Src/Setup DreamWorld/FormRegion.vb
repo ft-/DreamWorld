@@ -222,6 +222,7 @@ Public Class FormRegion
                     End If
                 Else
                     WriteRegion()
+                    Form1.RegionClass.UpdateAllRegionPorts()
                     Form1.CopyOpensimProto()
                     RegionClass.GetAllRegions()
                 End If
@@ -240,6 +241,7 @@ Public Class FormRegion
         Else
 
             WriteRegion()
+            Form1.RegionClass.UpdateAllRegionPorts()
             RegionClass.GetAllRegions()
             Form1.CopyOpensimProto()
 
@@ -361,7 +363,6 @@ Public Class FormRegion
 
         ' save the Region File, choose an existing DOS box to put it in, or make a new one
 
-        Dim dir = Form1.prefix
         Dim Filepath = RegionClass.RegionPath(n)
         Dim Folderpath = RegionClass.FolderPath(n)
 
@@ -374,7 +375,7 @@ Public Class FormRegion
             End Try
 
             Try
-                Dim NewFilepath = dir & "bin\Regions\" + RegionName.Text + "\Region\"
+                Dim NewFilepath = Form1.gPath & "bin\Regions\" + RegionName.Text + "\Region\"
                 Directory.CreateDirectory(NewFilepath)
                 Filepath = NewFilepath + RegionName.Text + ".ini"
                 RegionClass.RegionPath(n) = Filepath
@@ -555,7 +556,7 @@ Public Class FormRegion
         Dim msg = MsgBox("Are you sure you want To delete this region? ", vbYesNo, "Delete?")
         If msg = vbYes Then
             Try
-                My.Computer.FileSystem.DeleteFile(Form1.prefix & "bin\Regions\" + RegionName.Text + "\Region\" + RegionName.Text + ".bak")
+                My.Computer.FileSystem.DeleteFile(Form1.gPath & "bin\Regions\" + RegionName.Text + "\Region\" + RegionName.Text + ".bak")
             Catch
             End Try
 

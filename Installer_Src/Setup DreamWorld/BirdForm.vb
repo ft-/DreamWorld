@@ -39,7 +39,7 @@
     End Sub
 
     Private Sub BirdHelp_Click(sender As Object, e As EventArgs) Handles BirdHelp.Click
-        Dim webAddress As String = Form1.Domain + "/Outworldz_installer/Bird_Module.htm"
+        Dim webAddress As String = Form1.gDomain + "/Outworldz_installer/Bird_Module.htm"
         Process.Start(webAddress)
     End Sub
 

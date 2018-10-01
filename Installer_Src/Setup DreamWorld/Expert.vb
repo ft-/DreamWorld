@@ -10,7 +10,6 @@ Public Class Expert
 
     Private Sub Loaded(sender As Object, e As EventArgs) Handles Me.Load
 
-
         FirstRegionPort.Text = Form1.MySetting.FirstRegionPort()
         MaxP.Text = "Highest used: " + Form1.gMaxPortUsed.ToString
 
@@ -108,31 +107,34 @@ Public Class Expert
 #End Region
 
 #Region "Ports"
-    Private Sub Http_Port_TextChanged(sender As Object, e As EventArgs)
-        Form1.MySetting.DiagnosticPort = DiagnosticPort.Text
-        Form1.MySetting.SaveSettings()
-        Form1.CheckDefaultPorts()
-
-    End Sub
 
     Private Sub PrivatePort_TextChanged(sender As Object, e As EventArgs) Handles PrivatePort.TextChanged
+        If Not initted Then Return
         Form1.MySetting.PrivatePort = PrivatePort.Text
         Form1.MySetting.SaveSettings()
         Form1.CheckDefaultPorts()
-
     End Sub
 
     Private Sub PublicPort_TextChanged(sender As Object, e As EventArgs) Handles DiagnosticPort.TextChanged
+        If Not initted Then Return
         Form1.MySetting.DiagnosticPort = DiagnosticPort.Text
         Form1.MySetting.SaveSettings()
         Form1.CheckDefaultPorts()
-
     End Sub
 
     Private Sub HTTP_Port_TextChanged_1(sender As Object, e As EventArgs) Handles HTTPPort.TextChanged
+        If Not initted Then Return
         Form1.MySetting.HttpPort = HTTPPort.Text
         Form1.MySetting.SaveSettings()
         Form1.CheckDefaultPorts()
+    End Sub
+
+    Private Sub FirstRegionPort_TextChanged(sender As Object, e As EventArgs) Handles FirstRegionPort.TextChanged
+        If initted Then
+            Form1.MySetting.FirstRegionPort() = FirstRegionPort.Text
+            Form1.MySetting.SaveSettings()
+            Form1.RegionClass.UpdateAllRegionPorts()
+        End If
     End Sub
 
 
@@ -140,45 +142,41 @@ Public Class Expert
 
 #Region "Wifi"
     Private Sub AdminFirst_TextChanged_2(sender As Object, e As EventArgs) Handles AdminFirst.TextChanged
+        If Not initted Then Return
         Form1.MySetting.AdminFirst = AdminFirst.Text
         Form1.MySetting.SaveSettings()
     End Sub
 
     Private Sub AdminLast_TextChanged(sender As Object, e As EventArgs) Handles AdminLast.TextChanged
+        If Not initted Then Return
         Form1.MySetting.AdminLast = AdminLast.Text
         Form1.MySetting.SaveSettings()
     End Sub
     Private Sub Password_TextChanged(sender As Object, e As EventArgs) Handles AdminPassword.LostFocus
+        If Not initted Then Return
         Form1.MySetting.Password = AdminPassword.Text
         Form1.MySetting.SaveSettings()
 
-        If Form1.OpensimIsRunning Then
+        If Form1.OpensimIsRunning() Then
             Form1.ConsoleCommand(Form1.gRobustProcID, "reset user password Wifi Admin " + Form1.MySetting.Password + "{Enter}")
         End If
         'Me.Focus()
     End Sub
 
     Private Sub TextBox1_TextChanged_3(sender As Object, e As EventArgs) Handles AdminEmail.TextChanged
+        If Not initted Then Return
         Form1.MySetting.AdminEmail = AdminEmail.Text
         Form1.MySetting.SaveSettings()
     End Sub
 
     Private Sub AccountConfirmationRequired_CheckedChanged(sender As Object, e As EventArgs) Handles AccountConfirmationRequired.CheckedChanged
+        If Not initted Then Return
         Form1.MySetting.AccountConfirmationRequired = AccountConfirmationRequired.Checked
         Form1.MySetting.SaveSettings()
     End Sub
 
-    Private Sub SmtpUsername_TextChanged(sender As Object, e As EventArgs)
-        Form1.MySetting.SmtpUsername = GmailUsername.Text
-        Form1.MySetting.SaveSettings()
-    End Sub
-
-    Private Sub SmtpPassword_TextChanged(sender As Object, e As EventArgs)
-        Form1.MySetting.SmtpPassword = GmailPassword.Text
-        Form1.MySetting.SaveSettings()
-    End Sub
-
     Private Sub WifiEnabled_CheckedChanged(sender As Object, e As EventArgs) Handles WifiEnabled.CheckedChanged
+        If Not initted Then Return
         Form1.MySetting.WifiEnabled = WifiEnabled.Checked
         Form1.MySetting.SaveSettings()
 
@@ -207,29 +205,31 @@ Public Class Expert
 
 #Region "Gods"
     Private Sub CheckBox1_CheckedChanged_2(sender As Object, e As EventArgs) Handles AllowGods.CheckedChanged
+        If Not initted Then Return
         Form1.MySetting.Allow_grid_gods = AllowGods.Checked
         Form1.MySetting.SaveSettings()
     End Sub
 
     Private Sub RegionGod_CheckedChanged(sender As Object, e As EventArgs) Handles RegionGod.CheckedChanged
+        If Not initted Then Return
         Form1.MySetting.Region_owner_is_god = RegionGod.Checked
         If RegionGod.Checked Then AllowGods.Checked = True
         Form1.MySetting.SaveSettings()
     End Sub
 
     Private Sub ManagerGod_CheckedChanged(sender As Object, e As EventArgs) Handles ManagerGod.CheckedChanged
+        If Not initted Then Return
         Form1.MySetting.Region_manager_is_god = ManagerGod.Checked
         If ManagerGod.Checked Then AllowGods.Checked = True
         Form1.MySetting.SaveSettings()
     End Sub
-
-
 
 #End Region
 
 #Region "Misc"
     Private Sub GridName_TextChanged(sender As Object, e As EventArgs) Handles GridName.TextChanged
 
+        If Not initted Then Return
         Form1.MySetting.SimName = GridName.Text
         Form1.MySetting.SaveSettings()
 
@@ -237,14 +237,15 @@ Public Class Expert
 
     Private Sub UPnPEnabled_CheckedChanged(sender As Object, e As EventArgs) Handles uPnPEnabled.CheckedChanged
 
+        If Not initted Then Return
         Form1.MySetting.UPnPEnabled = uPnPEnabled.Checked
         Form1.MySetting.SaveSettings()
 
     End Sub
 
-
     Private Sub UniqueId_TextChanged(sender As Object, e As EventArgs) Handles UniqueId.TextChanged
 
+        If Not initted Then Return
         Form1.MySetting.Machine() = UniqueId.Text
         Form1.MySetting.SaveSettings()
 
@@ -252,6 +253,7 @@ Public Class Expert
 
     Private Sub CheckBox1_CheckedChanged(sender As Object, e As EventArgs) Handles Clouds.CheckedChanged
 
+        If Not initted Then Return
         Form1.MySetting.Clouds = Clouds.Checked
         Form1.MySetting.SaveSettings()
 
@@ -261,6 +263,7 @@ Public Class Expert
 #Region "Splash"
 
     Private Sub TextBox1_TextChanged(sender As Object, e As EventArgs) Handles SplashPage.TextChanged
+        If Not initted Then Return
         Form1.MySetting.SplashPage = SplashPage.Text
         Form1.MySetting.SaveSettings()
     End Sub
@@ -269,6 +272,7 @@ Public Class Expert
 #Region "Physics"
 
     Private Sub PhysicsNone_CheckedChanged(sender As Object, e As EventArgs) Handles PhysicsNone.CheckedChanged
+        If Not initted Then Return
         If PhysicsNone.Checked Then
             Form1.MySetting.Physics = "0"
             Form1.MySetting.SaveSettings()
@@ -276,6 +280,7 @@ Public Class Expert
     End Sub
 
     Private Sub RadioButton1_CheckedChanged(sender As Object, e As EventArgs) Handles PhysicsODE.CheckedChanged
+        If Not initted Then Return
         If PhysicsODE.Checked Then
             Form1.MySetting.Physics = "1"
             Form1.MySetting.SaveSettings()
@@ -283,6 +288,7 @@ Public Class Expert
     End Sub
 
     Private Sub PhysicsBullet_CheckedChanged(sender As Object, e As EventArgs) Handles PhysicsBullet.CheckedChanged
+        If Not initted Then Return
         If PhysicsBullet.Checked Then
             Form1.MySetting.Physics = "2"
             Form1.MySetting.SaveSettings()
@@ -290,6 +296,7 @@ Public Class Expert
     End Sub
 
     Private Sub PhysicsSeparate_CheckedChanged(sender As Object, e As EventArgs) Handles PhysicsSeparate.CheckedChanged
+        If Not initted Then Return
         If PhysicsSeparate.Checked Then
             Form1.MySetting.Physics = "3"
             Form1.MySetting.SaveSettings()
@@ -297,6 +304,7 @@ Public Class Expert
     End Sub
 
     Private Sub PhysicsubODE_CheckedChanged(sender As Object, e As EventArgs) Handles PhysicsubODE.CheckedChanged
+        If Not initted Then Return
         If PhysicsubODE.Checked Then
             Form1.MySetting.Physics = "4"
             Form1.MySetting.SaveSettings()
@@ -308,7 +316,7 @@ Public Class Expert
 #Region "DNS"
 
     Private Sub EnableHypergrid_CheckedChanged(sender As Object, e As EventArgs) Handles EnableHypergrid.CheckedChanged
-
+        If Not initted Then Return
         Form1.MySetting.EnableHypergrid = EnableHypergrid.Checked
         Form1.MySetting.SaveSettings()
 
@@ -337,43 +345,50 @@ Public Class Expert
 
 #Region "Database"
 
-
     Private Sub RobustServer_TextChanged(sender As Object, e As EventArgs) Handles RobustServer.TextChanged
+        If Not initted Then Return
         Form1.MySetting.RobustServer = RobustServer.Text
         Form1.MySetting.SaveSettings()
     End Sub
 
     Private Sub DatabaseNameUser_TextChanged(sender As Object, e As EventArgs) Handles RegionDbName.TextChanged
+        If Not initted Then Return
         Form1.MySetting.RegionDBName = RegionDbName.Text
         Form1.MySetting.SaveSettings()
     End Sub
 
     Private Sub DbUsername_TextChanged(sender As Object, e As EventArgs) Handles RegionDBUsername.TextChanged
+        If Not initted Then Return
         Form1.MySetting.RegionDBUsername = RegionDBUsername.Text
         Form1.MySetting.SaveSettings()
     End Sub
 
     Private Sub DbPassword_TextChanged(sender As Object, e As EventArgs) Handles RegionMySqlPassword.TextChanged
+        If Not initted Then Return
         Form1.MySetting.RegionDbPassword = RegionMySqlPassword.Text
         Form1.MySetting.SaveSettings()
     End Sub
 
     Private Sub TextBox1_TextChanged_1(sender As Object, e As EventArgs) Handles RobustDbName.TextChanged
+        If Not initted Then Return
         Form1.MySetting.RobustDataBaseName = RobustDbName.Text
         Form1.MySetting.SaveSettings()
     End Sub
 
     Private Sub RobustUsernameTextBox_TextChanged(sender As Object, e As EventArgs) Handles RobustDBUsername.TextChanged
+        If Not initted Then Return
         Form1.MySetting.RobustUsername = RobustDBUsername.Text
         Form1.MySetting.SaveSettings()
     End Sub
 
     Private Sub RobustPasswordTextBox_TextChanged(sender As Object, e As EventArgs) Handles RobustDBPassword.TextChanged
+        If Not initted Then Return
         Form1.MySetting.RobustPassword = RobustDBPassword.Text
         Form1.MySetting.SaveSettings()
     End Sub
 
     Private Sub RobustDbPortTextbox_TextChanged(sender As Object, e As EventArgs) Handles RobustDbPort.TextChanged
+        If Not initted Then Return
         Form1.MySetting.MySqlPort = RobustDbPort.Text
         Form1.MySetting.SaveSettings()
     End Sub
@@ -385,12 +400,12 @@ Public Class Expert
 #Region "Help"
 
     Private Sub PictureBox1_Click(sender As Object, e As EventArgs) Handles GodHelp.Click
-        Dim webAddress As String = Form1.Domain + "/Outworldz_installer/technical.htm#GridGod"
+        Dim webAddress As String = Form1.gDomain + "/Outworldz_installer/technical.htm#GridGod"
         Process.Start(webAddress)
     End Sub
 
     Private Sub PictureBox5_Click(sender As Object, e As EventArgs) Handles DNSHelp.Click
-        Dim webAddress As String = Form1.Domain + "/Outworldz_installer/technical.htm#Grid"
+        Dim webAddress As String = Form1.gDomain + "/Outworldz_installer/technical.htm#Grid"
         Process.Start(webAddress)
     End Sub
 
@@ -400,16 +415,13 @@ Public Class Expert
 #Region "AutoStart"
 
     Private Sub AutoStartCheckbox_CheckedChanged(sender As Object, e As EventArgs) Handles AutoStartCheckbox.CheckedChanged
-
+        If Not initted Then Return
         Form1.MySetting.Autostart = AutoStartCheckbox.Checked
         Form1.MySetting.SaveSettings()
-
     End Sub
 
     Private Sub BootStart_CheckedChanged(sender As Object, e As EventArgs) Handles BootStart.CheckedChanged
-
         If Not initted Then Return
-
 
         Form1.MySetting.BootStart = BootStart.Checked
         Dim ProcessTask As Process = New Process()
@@ -443,6 +455,7 @@ Public Class Expert
         Else
             MsgBox("DreamGrid must be started in Administrator mode to setup a scheduled task. Right click the icon and select Run As Administrator.", vbInformation, "Escalation Needed")
         End If
+
     End Sub
 
     Private Function IsUserAdministrator() As Boolean
@@ -457,13 +470,9 @@ Public Class Expert
             isAdmin = False
         End Try
         Return isAdmin
-
     End Function
 
-
-
     Private Sub DomainUpDown1_SelectedItemChanged(sender As Object, e As EventArgs) Handles DomainUpDown1.SelectedItemChanged
-
         If initted Then
             Dim var As Double = CType(DomainUpDown1.SelectedIndex, Double)
 
@@ -474,22 +483,32 @@ Public Class Expert
             Form1.MySetting.Density = var
             Form1.MySetting.SaveSettings()
         End If
+    End Sub
+
+    Private Sub SmtpHost_TextChanged(sender As Object, e As EventArgs) Handles SmtpHost.TextChanged
+        If initted Then
+            Form1.MySetting.SmtpHost = SmtpHost.Text
+            Form1.MySetting.SaveSettings()
+        End If
 
     End Sub
 
-    Private Sub SmtpHost_TextChanged(sender As Object, e As EventArgs)
-        Form1.MySetting.SmtpHost = SmtpHost.Text
-        Form1.MySetting.SaveSettings()
-    End Sub
+    Private Sub SmtpPort_TextChanged(sender As Object, e As EventArgs) Handles SmtpPort.TextChanged
 
-    Private Sub SmtpPort_TextChanged(sender As Object, e As EventArgs)
-        Form1.MySetting.SmtpPort = SmtpPort.Text
-        Form1.MySetting.SaveSettings()
+        If initted Then
+            Form1.MySetting.SmtpPort = SmtpPort.Text
+            Form1.MySetting.SaveSettings()
+        End If
+
     End Sub
 
     Private Sub GDPRCheckBox_CheckedChanged(sender As Object, e As EventArgs) Handles GDPRCheckBox.CheckedChanged
-        Form1.MySetting.GDPR() = GDPRCheckBox.Checked
-        Form1.MySetting.SaveSettings()
+
+        If initted Then
+            Form1.MySetting.GDPR() = GDPRCheckBox.Checked
+            Form1.MySetting.SaveSettings()
+        End If
+
     End Sub
 
     Private Sub GridNameHelp_Click(sender As Object, e As EventArgs) Handles GridNameHelp.Click
@@ -530,77 +549,89 @@ Public Class Expert
 
     Private Sub SuitcaseCheckbox_CheckedChanged_3(sender As Object, e As EventArgs) Handles SuitcaseCheckbox.CheckedChanged
 
-        Form1.MySetting.Suitcase() = SuitcaseCheckbox.Checked
-        Form1.MySetting.SaveSettings()
+        If initted Then
+            Form1.MySetting.Suitcase() = SuitcaseCheckbox.Checked
+            Form1.MySetting.SaveSettings()
 
-        If Not SuitcaseCheckbox.Checked Then
-            MsgBox("Disabling the Inventory Suitcase exposes all your inventory to other grids. ")
+            If Not SuitcaseCheckbox.Checked Then
+                MsgBox("Disabling the Inventory Suitcase exposes all your inventory to other grids. ")
+            End If
         End If
+
 
     End Sub
 
     Private Sub EnableMaxPrims_CheckedChanged(sender As Object, e As EventArgs) Handles EnableMaxPrims.CheckedChanged
 
-        Form1.MySetting.Primlimits() = EnableMaxPrims.Checked
-        Form1.MySetting.SaveSettings()
+        If initted Then
+            Form1.MySetting.Primlimits() = EnableMaxPrims.Checked
+            Form1.MySetting.SaveSettings()
+        End If
 
     End Sub
 
     Private Sub GmailUsername_TextChanged(sender As Object, e As EventArgs) Handles GmailUsername.TextChanged
 
-        Form1.MySetting.SmtpUsername = GmailUsername.Text
-        Form1.MySetting.SaveSettings()
+        If initted Then
+            Form1.MySetting.SmtpUsername = GmailUsername.Text
+            Form1.MySetting.SaveSettings()
+        End If
 
     End Sub
 
     Private Sub GmailPassword_TextChanged(sender As Object, e As EventArgs) Handles GmailPassword.TextChanged
-
-        Form1.MySetting.SmtpPassword = GmailPassword.Text
-        Form1.MySetting.SaveSettings()
+        If initted Then
+            Form1.MySetting.SmtpPassword = GmailPassword.Text
+            Form1.MySetting.SaveSettings()
+        End If
 
     End Sub
 
     Private Sub AdminPassword_TextChanged(sender As Object, e As EventArgs) Handles AdminPassword.TextChanged
-
-        Form1.MySetting.Password = AdminPassword.Text
-        Form1.MySetting.SaveSettings()
-
+        If initted Then
+            Form1.MySetting.Password = AdminPassword.Text
+            Form1.MySetting.SaveSettings()
+        End If
     End Sub
 
     Private Sub AutoRestartBox_TextChanged(sender As Object, e As EventArgs) Handles AutoRestartBox.TextChanged
-
-        Try
-            Form1.MySetting.AutoRestartInterval = Convert.ToInt16(AutoRestartBox.Text)
-            Form1.MySetting.SaveSettings()
-        Catch
-        End Try
+        If initted Then
+            Try
+                Form1.MySetting.AutoRestartInterval = Convert.ToInt16(AutoRestartBox.Text)
+                Form1.MySetting.SaveSettings()
+            Catch
+            End Try
+        End If
 
     End Sub
 
     Private Sub PictureBox5_Click_1(sender As Object, e As EventArgs) Handles PictureBox5.Click
-        Dim webAddress As String = Form1.Domain + "/Outworldz_installer/technical.htm#Grid"
+        Dim webAddress As String = Form1.gDomain + "/Outworldz_installer/technical.htm#Grid"
         Process.Start(webAddress)
     End Sub
 
     Private Sub PictureBox6_Click(sender As Object, e As EventArgs) Handles PictureBox6.Click
-        Dim webAddress As String = Form1.Domain + "/Outworldz_installer/technical.htm#Grid"
+        Dim webAddress As String = Form1.gDomain + "/Outworldz_installer/technical.htm#Grid"
         Process.Start(webAddress)
     End Sub
 
     Private Sub DataSnapshotCheckBox_CheckedChanged(sender As Object, e As EventArgs) Handles DataSnapshotCheckBox.CheckedChanged
-        Form1.MySetting.DataSnapshot() = DataSnapshotCheckBox.Checked
-        Form1.MySetting.SaveSettings()
+        If initted Then
+            Form1.MySetting.DataSnapshot() = DataSnapshotCheckBox.Checked
+            Form1.MySetting.SaveSettings()
+        End If
+
     End Sub
 
     Private Sub LSLCheckbox_CheckedChanged(sender As Object, e As EventArgs) Handles LSLCheckbox.CheckedChanged
-        Form1.MySetting.LSL_HTTP() = LSLCheckbox.Checked
-        Form1.MySetting.SaveSettings()
+        If initted Then
+            Form1.MySetting.LSL_HTTP() = LSLCheckbox.Checked
+            Form1.MySetting.SaveSettings()
+        End If
+
     End Sub
 
-    Private Sub FirstRegionPort_TextChanged(sender As Object, e As EventArgs) Handles FirstRegionPort.TextChanged
-        Form1.MySetting.FirstRegionPort() = FirstRegionPort.Text
-        Form1.MySetting.SaveSettings()
-    End Sub
+
 
 
 #End Region

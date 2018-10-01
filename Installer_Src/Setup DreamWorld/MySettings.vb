@@ -226,17 +226,6 @@ Public Class MySettings
             SaveSettings()
         End Try
 
-        Try
-            Dim x = FirstRegionPort()
-            If x = "" Then
-                x = "8004"
-                FirstRegionPort = x
-                SaveSettings()
-            End If
-        Catch ex As Exception
-            FirstRegionPort() = "8004"
-            SaveSettings()
-        End Try
 
 
         '=============== Tides

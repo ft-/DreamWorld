@@ -1,5 +1,5 @@
 
-my $type  = '-V2.4' ;  # '-Beta-V1.5';
+my $type  = '-V2.43' ;  # '-Beta-V1.5';
 my $dir = "F:/Opensim/Outworldz Dreamgrid Source";
 
 chdir ($dir);
@@ -12,6 +12,7 @@ die if $curdir ne $dir ;
 use File::Copy;
 use File::Path;
 use 5.010;
+
 
 
 my @deletions = (
@@ -57,6 +58,32 @@ unlink "$dir/OutworldzFiles/http.log" ;
 unlink "../Zips/DreamGrid$type.zip" ;
 unlink "../Zips/Outworldz-Update$type.zip" ;
 
+say("Signing");
+use IO::All;
+
+my @files = io->dir($dir)->all(0);  
+
+foreach my $file (@files) {
+    my $name = $file->name;
+    next if $name =~ /Installer_Src|\.git/;
+    if ($name =~ /dll$|exe$/ ) {
+        
+        my $r = qq!../Certs/sigcheck64.exe "$name"!;
+        print $r. "\n";
+        my $result1 = `$r`;
+        if ($result1 =~ /Publisher:.*Outworldz, LLC/) {
+            next;
+        }
+        
+        my $f = qq!../Certs/DigiCertUtil.exe sign /noInput /sha1 "52CADF8EA98C9382D0350815A68B2C79340E141F" "$name"!;
+        print $f;
+        my $result = `$f`;
+        print $result. "\n";
+        if ($result !~ /success/) {
+            die;
+        }
+    }
+}
 
 # mysql
 chdir(qq!$dir/OutworldzFiles/mysql/bin/!);
@@ -66,13 +93,13 @@ unlink	"$dir/OutworldzFiles/mysql/data/ib_logfile0" || die;
 unlink	"$dir/OutworldzFiles/mysql/data/ib_logfile1" || die;
 unlink	"$dir/OutworldzFiles/mysql/data/ibdata1" || die;
 
-say ("Start Mysql and wait for it to come up:");
-<STDIN>;
-
-print `mysqlcheck.exe --port 3309 -u root -r mysql`;
-print `mysqlcheck.exe --port 3309 -u root -r opensim`;
-print `mysqlcheck.exe --port 3309 -u root -r robust`;
-print `mysqladmin.exe --port 3309 -u root shutdown`;
+#say ("Start Mysql and wait for it to come up:");
+#<STDIN>;
+#
+#print `mysqlcheck.exe --port 3309 -u root -r mysql`;
+#print `mysqlcheck.exe --port 3309 -u root -r opensim`;
+#print `mysqlcheck.exe --port 3309 -u root -r robust`;
+#print `mysqladmin.exe --port 3309 -u root shutdown`;
 
 
 #mysql
@@ -84,10 +111,11 @@ unlink "$dir/OutworldzFiles/mysql/data/Alienware.pid" ;
 
 chdir ($dir);
 
+
 print "Processing Main Zip\n";
 
 
-my @files =   `cmd /c dir /b `;
+@files =   `cmd /c dir /b `;
 
 foreach my $file (@files) {
 	chomp $file;
@@ -119,7 +147,7 @@ Process ("../7z.exe -tzip d ..\\Zips\\DreamGrid-Update$type.zip Outworldzfiles\\
 
 say ("Dropping Perl  from both");
 Process ("../7z.exe -tzip d ..\\Zips\\DreamGrid-Update$type.zip Make_zip_v2.pl -r ");
-Process ("../7z.exe -tzip d ..\\Zips\\DreamGrid-$type.zip Make_zip_v2.pl -r ");
+Process ("../7z.exe -tzip d ..\\Zips\\DreamGrid$type.zip Make_zip_v2.pl -r ");
 
 # del Dot net because we cannot overwrite an open file
 Process ("../7z.exe -tzip d ..\\Zips\\DreamGrid-Update$type.zip DotNetZip.dll ");
@@ -147,6 +175,7 @@ if (!copy ("../Zips/DreamGrid-Update$type.zip", "y:/Inetpub/Secondlife/Outworldz
 
 # lastly revisions file
 if (!copy ('Revisions.txt', 'y:/Inetpub/Secondlife/Outworldz_Installer/Revisions.txt'))  {die $!;}
+if (!copy ('Revisions.txt', 'y:/Inetpub/Secondlife/Outworldz_Installer/Grid/Revisions.txt'))  {die $!;}
 
 
 

@@ -1,7 +1,29 @@
-﻿V2.40
-Fix crash in Bords on quit
+﻿V2.44
+Primlimits global setting was not being used.  If Primlimits global is off, no prim limits are enforced
+Set Ip to LAN IP if loopback test fails. Before it would still set WAN IP.
+Set all region ports from base setting when a region is added or deleted
+Deleting Caches no longer deletes script state.
+
+V2.43
+Upgrade always set region ports to 8004, or 1 on new installs- now it uses the lowest port it finds or 8004.
+Birds recompiled
+
+V2.42 
+If AutoBackup folder does not exist, restore the defaults.
+Console logging lowered to INFO from DEBUG 
+Cryptographically re-signed all EXE and DLL's
+LoginURL exposed to get_grid_info had an extra space in it
+Opensim.log now appears in each Region folder in each Group
+Support > 4 TB HDD in MySQL
+
+V2.41
+Tide High and Low Water levels were swapped
+
+V2.4
+Fix crash in Birds on quit
 200 region capacity
-Progress bar crash fix
+Progress bar fix
+Stop Memory leak in HttpServer_OpenSim.dll
 
 V2.39
 No need to enable  "Allow LSL to reach the server" switch to use the teleporter

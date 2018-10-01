@@ -51,4 +51,6 @@
         Form1.MySetting.TideInfoDebug = TideInfoDebugCheckBox.Checked
         Form1.MySetting.SaveOtherINI()
     End Sub
+
+
 End Class

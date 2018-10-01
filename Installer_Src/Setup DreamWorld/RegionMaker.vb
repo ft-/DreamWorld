@@ -512,7 +512,7 @@ Public Class RegionMaker
         r._SizeY = 256
         r._CoordX = LargestX() + 4
         r._CoordY = LargestY() + 0
-        r._RegionPort = LargestPort() + 1 '8003 + 1
+        r._RegionPort = CType(Form1.MySetting.PrivatePort, Integer) + 1 '8003 + 1
         r._ProcessID = 0
         r._AvatarCount = 0
         r._Ready = False
@@ -546,7 +546,7 @@ Public Class RegionMaker
         Dim folders() As String
         Dim regionfolders() As String
         Dim n As Integer = 0
-        folders = Directory.GetDirectories(Form1.prefix + "bin\Regions")
+        folders = Directory.GetDirectories(Form1.gPath + "bin\Regions")
         For Each FolderName As String In folders
             'Form1.Log("Info:Region Path:" + FolderName)
             regionfolders = Directory.GetDirectories(FolderName)
@@ -664,7 +664,7 @@ Public Class RegionMaker
         Dim fname As String = RegionList(n)._FolderPath.ToString
 
         If (fname = "") Then
-            Dim pathtoWelcome As String = Form1.prefix + "bin\Regions\" + name + "\Region\"
+            Dim pathtoWelcome As String = Form1.gPath + "bin\Regions\" + name + "\Region\"
             fname = pathtoWelcome + name + ".ini"
             If Not Directory.Exists(pathtoWelcome) Then
                 Try
@@ -775,7 +775,54 @@ Public Class RegionMaker
 
     End Function
 
+    Function LowestPort() As Integer
+        ' locate lowest port
+        Dim Min As Integer = 65536
+        Dim Portlist As New Dictionary(Of Integer, String)
 
+        Dim counter As Integer = 0
+        For Each obj As Region_data In RegionList
+            Try
+                Portlist.Add(obj._RegionPort, obj._RegionName)
+            Catch ex As Exception
+                Debug.Print(ex.Message)
+            End Try
+        Next
+
+        If Portlist.Count = 0 Then
+            Return 8004
+        End If
+
+        For Each thing In Portlist
+            If thing.Key < Min Then
+                Min = thing.Key ' Min is always the current value
+            End If
+
+        Next
+        If Min = 65536 Then Return 8004
+
+        Return Min
+    End Function
+
+    ''' <summary>
+    ''' Self setting Region Ports
+    ''' Iterate over all regions and set the ports from the starting value
+    ''' </summary>
+    Public Sub UpdateAllRegionPorts()
+
+        Dim Portnumber As Integer = CType(Form1.MySetting.FirstRegionPort(), Integer)
+        For Each RegionNum As Integer In Form1.RegionClass.RegionNumbers
+            Dim simName = Form1.RegionClass.RegionName(RegionNum)
+            Form1.MySetting.LoadOtherIni(Form1.RegionClass.RegionPath(RegionNum), ";")
+            Form1.MySetting.SetOtherIni(simName, "InternalPort", Portnumber.ToString)
+            Form1.RegionClass.RegionPort(RegionNum) = Portnumber
+            ' Self setting Region Ports
+            Form1.gMaxPortUsed = Portnumber
+            Portnumber = Portnumber + 1
+            Form1.MySetting.SaveOtherINI()
+        Next
+
+    End Sub
 #End Region
 
 #Region "POST"

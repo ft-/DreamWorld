@@ -47,11 +47,11 @@ http_listener_port=8005
 
 ; Automatically changed by Dreamworld - do not change this
 ;# used by the one-exe-per-instance logic. This becomes the folder for the regions file.
-RegionFolderName=joe
+RegionFolderName=Welcome
 
 ; Automatically changed by Dreamworld - do not change this
 ;# {BaseURL} {} {BaseURL} {"http://example.com","http://127.0.0.1"} "http://127.0.0.1"
-BaseURL=http://Dorenidd.Outworldz.net
+BaseURL=http://Adwulind.Outworldz.net
 
 ; Automatically changed by Dreamworld - do not change this
 ;# {PublicPort} {} {PublicPort} {8002} "8002"
@@ -62,7 +62,7 @@ PublicPort=8002
 PrivatePort=8003
 
 ;# so localhost can be changed if necessary
-PrivURL=http://192.168.2.134
+PrivURL=http://192.168.2.155
 
 ; Automatically changed by Dreamworld - do not change this
 ;# Grid Name for Wifi to show
@@ -256,7 +256,7 @@ meshing=Meshmerizer
 physics=BulletSim
 
 ;
-UseSeparatePhysicsThread=True
+UseSeparatePhysicsThread=true
 
 ;# {DefaultScriptEngine} {} {Default script engine} {XEngine} XEngine
 ;; Default script engine to use. Currently, we only have XEngine
@@ -359,11 +359,11 @@ alert_uri=${Const|PrivURL}:${Const|DiagnosticsPort}
 ;; If false then the texture referenced by MaptileStaticUUID is used instead, which can also be overridden
 ;; in individual region config file(s).  If you do not want to upload map tiles at all, then you will need
 ;; both to set this to false and comment out the [Modules] MapImageServiceModule setting in config-include/
-GenerateMaptiles=True
+GenerateMaptiles=true
 
 ;# {MapImageModule} {} {The map image module to use} {MapImageModule Warp3DImageModule} MapImageModule
 ;; The module to use in order to generate map images.
-MapImageModule=Warp3DImageModule
+MapImageModule=MapImageModule
 
 ;; generate better images.
 ;MapImageModule = "MapImageModule"
@@ -378,29 +378,29 @@ MapImageModule=Warp3DImageModule
 ; MaptileStaticUUID = "00000000-0000-0000-0000-000000000000"
 ;# {TextureOnMapTile} {} {Use terrain textures for map tiles?} {true false} true
 ;; Use terrain texture for maptiles if true, use shaded green if false
-TextureOnMapTile=True
+TextureOnMapTile=false
 
 ;# {DrawPrimOnMapTile} {} {Draw prim shapes on map tiles?} {true false} false
 ;; Draw objects on maptile.  This step might take a long time if you've
 ;; got a large number of objects, so you can turn it off here if you'd like.
-DrawPrimOnMapTile=True
+DrawPrimOnMapTile=false
 
 ;# {TexturePrims} {} {Texture prims on map tiles?} {true false} true
 ;; Texture the faces of the prims that are rendered on the map tiles.
-TexturePrims=True
+TexturePrims=false
 
 ;# {TexturePrimSize} {} {Size of prims to texture faces?} {} 48
 ;; Only texture prims that have a diagonal size greater than this number
 ; TexturePrimSize = 48
 ;# {RenderMeshes} {} {Render meshes and sculpties on map tiles?} {true false} false
 ;; Attempt to render meshes and sculpties on the map
-RenderMeshes=True
+RenderMeshes=false
 
 [PrimLimitsModule]
 
 ;# {EnforcePrimLimits} {} {Enforce parcel prim limits} {true false} false
 ;; Enable parcel prim limits.  Off by default to emulate pre-existing behavior.
-EnforcePrimLimits=True
+EnforcePrimLimits=False
 
 [Permissions]
 
@@ -420,17 +420,17 @@ permissionmodules=DefaultPermissionsModule,PrimLimitsModule
 ;# {allow_grid_gods} {} {Allow grid gods?} {true false} false
 ;; This allows users with a UserLevel of 200 or more to assume god
 ;; powers in the regions in this simulator.
-allow_grid_gods=True
+allow_grid_gods=False
 
 ;; This allows some control over permissions
 ;; please note that this still doesn't duplicate SL, and is not intended to
 ;# {region_owner_is_god} {} {Allow region owner gods} {true false} true
 ;; Allow region owners to assume god powers in their regions
-region_owner_is_god=True
+region_owner_is_god=False
 
 ;# {region_manager_is_god} {} {Allow region manager gods} {true false} false
 ;; Allow region managers to assume god powers in regions they manage
-region_manager_is_god=True
+region_manager_is_god=False
 
 ;# {simple_build_permissions} {} {Allow building in parcel by access list (no groups)} {true false} false
 ;; More control over permissions
@@ -476,7 +476,7 @@ enabled=true
 ;# {internal_object_host} {[Startup]emailmodule:DefaultEmailModule enabled:true} {Host name to treat as internal (object to object) email?} {} lsl.opensim.local
 ; internal_object_host = lsl.opensim.local
 ;# {host_domain_header_from} {[Startup]emailmodule:DefaultEmailModule enabled:true} {From address to use in the sent email header?} {} 127.0.0.1
-host_domain_header_from=Dorenidd.Outworldz.net
+host_domain_header_from=Adwulind.Outworldz.net
 
 ;# {email_pause_time} {[Startup]emailmodule:DefaultEmailModule enabled:true} {Period in seconds to delay after an email is sent.} {} 20
 ; email_pause_time = 20
@@ -525,7 +525,7 @@ http_listener_port=${Const|http_listener_port}
 ; If you need to allow scripts to make some LAN calls use the OutboundDisallowForUserScriptsExcept parameter below.
 ; We recommend that you do not override OutboundDisallowForUserScripts directly unless you are very sure about what you're doing.
 ;
-OutboundDisallowForUserScriptsExcept=192.168.2.134:8001
+OutboundDisallowForUserScriptsExcept=192.168.2.155:8001
 
 ; You can whitelist individual endpoints by IP or FQDN, e.g.
 ;
@@ -561,7 +561,7 @@ OutboundDisallowForUserScriptsExcept=192.168.2.134:8001
 ;; Hostname to use in llRequestURL/llRequestSecureURL
 ;; if not defined - default machine name is being used
 ;; (on Windows this mean NETBIOS name - useably only inside local network)
-ExternalHostNameForLSL=Dorenidd.Outworldz.net
+ExternalHostNameForLSL=Adwulind.Outworldz.net
 
 ;# {shard} {} {Name to use for X-Secondlife-Shard header? (press enter if unsure)} {} OpenSim
 ;; What is reported as the "X-Secondlife-Shard"
@@ -822,7 +822,7 @@ enable_windlight=true
 ;; searchable data.
 ;; If false, no data will be exposed, DataSnapshot module will be off,
 ;; and you can ignore the rest of these search-related configs.
-index_sims=True
+index_sims=False
 
 ;# {data_exposure} {index_sims:true} {How much data should be exposed?} {minimum all} minimum
 ;; The variable data_exposure controls what the regions expose:
@@ -854,7 +854,7 @@ snapshot_cache_directory="./Regions/${Const|RegionFolderName}/DataSnapshot"
 ;; New way of specifying data services, one per service
 DATA_SRV_MISearch=http://www.hyperica.com/Search/register.php
 data_services=http://www.hyperica.com/Search/register.php
-indexsims=true
+indexsims=false
 
 [Search]
 Module=OpenSimSearch
@@ -1307,7 +1307,7 @@ AutoBackupThreshold=1
 AutoBackupSkipAssets=false
 AutoBackupKeepFilesForDays=30
 AutoBackupNaming=Time
-AutoBackupDir=/Opensim/Outworldz DreamGrid Source/OutworldzFiles/Autobackup/
+AutoBackupDir=/Opensim/Outworldz DreamGrid Source/OutworldzFiles/AutoBackup/
 
 [CameraOnlyModeModule]
 
@@ -1336,7 +1336,7 @@ enabled=True
 
 ; Enable this to generate classic particle clouds above the sim.
 ; default is disabled - turn it on here
-enabled=true
+enabled=false
 
 ; Density of cloud cover 0.0 to 1.0 Default 0.5
 density=0.5
