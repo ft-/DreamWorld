@@ -1,5 +1,6 @@
 ﻿V2.45
-More graceful test and shutdown without timeout for stuck region
+More graceful test of regions running at shutdown 
+Region settings for Physics, once set, would not unset.
 
 V2.44
 Primlimits global setting was not being used.  If Primlimits global is off, no prim limits are enforced
