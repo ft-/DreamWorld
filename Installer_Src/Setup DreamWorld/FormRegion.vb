@@ -401,10 +401,10 @@ Public Class FormRegion
             End If
 
             If Not Directory.Exists(Filepath) Or Filepath = "" Then
-                Directory.CreateDirectory(dir & "bin\Regions\" + NewGroup + "\Region")
+                Directory.CreateDirectory(Form1.gPath & "bin\Regions\" + NewGroup + "\Region")
             End If
 
-            RegionClass.RegionPath(n) = dir & "bin\Regions\" + NewGroup + "\Region\" + RegionName.Text + ".ini"
+            RegionClass.RegionPath(n) = Form1.gPath & "bin\Regions\" + NewGroup + "\Region\" + RegionName.Text + ".ini"
 
         End If
 

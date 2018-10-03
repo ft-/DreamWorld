@@ -473,7 +473,7 @@ Public Class RegionList
             End If
         End If
 
-        Dim dir = Form1.gPath
+
 
         For Each pathname As String In files
             pathname = pathname.Replace("\", "/")
@@ -489,12 +489,12 @@ Public Class RegionList
 
                 If dirpathname = "" Then dirpathname = filename
 
-                Dim NewFilepath = dir & "bin\Regions\" + dirpathname + "\Region\"
+                Dim NewFilepath = Form1.gPath & "bin\Regions\" + dirpathname + "\Region\"
                 If Not Directory.Exists(NewFilepath) Then
-                    Directory.CreateDirectory(dir & "bin\Regions\" + dirpathname + "\Region")
+                    Directory.CreateDirectory(Form1.gPath & "bin\Regions\" + dirpathname + "\Region")
                 End If
 
-                File.Copy(pathname, dir & "bin\Regions\" + dirpathname + "\Region\" + filename + ".ini")
+                File.Copy(pathname, Form1.gPath & "bin\Regions\" + dirpathname + "\Region\" + filename + ".ini")
 
             Else
 
