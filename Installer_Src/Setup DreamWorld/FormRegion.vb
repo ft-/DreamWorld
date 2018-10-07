@@ -53,10 +53,7 @@ Public Class FormRegion
             MaxAgents.Text = 100.ToString
 
             n = RegionClass.CreateRegion("")
-            If RegionList.InstanceExists Then
-                RegionClass.GetAllRegions()
-                RegionList.LoadMyListView()
-            End If
+
         Else
             isNew = False
             n = RegionClass.FindRegionByName(Name)
@@ -267,7 +264,7 @@ Public Class FormRegion
             Form1.CopyOpensimProto()
 
             If RegionList.InstanceExists Then
-                RegionClass.GetAllRegions()
+
                 RegionList.LoadMyListView()
             End If
 

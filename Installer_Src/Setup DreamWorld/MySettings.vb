@@ -459,7 +459,7 @@ Public Class MySettings
             Data = parser.ReadFile(arg, System.Text.Encoding.ASCII)
         Catch ex As Exception
             Form1.Log(ex.Message)
-            MsgBox("Error reading INI file:" + ex.Message)
+            ' MsgBox("Error reading INI file:" + ex.Message)
         End Try
         INI = arg
     End Sub

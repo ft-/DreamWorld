@@ -197,7 +197,7 @@ Public Class RegionList
 
             item1.SubItems.Add(Letter)
             ListView1.Items.AddRange(New ListViewItem() {item1})
-
+            Application.DoEvents()
 
         Next
 
@@ -396,6 +396,7 @@ Public Class RegionList
                 Form1.MySetting.SaveOtherINI()
             End If
         End If
+
         Application.DoEvents()
 
     End Sub
