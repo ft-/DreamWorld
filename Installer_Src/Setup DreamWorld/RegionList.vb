@@ -109,7 +109,7 @@ Public Class RegionList
         Timer1.Interval = 30000
     End Sub
 
-    Private Sub LoadMyListView()
+    Public Sub LoadMyListView()
 
         ViewBusy = False
 
@@ -157,7 +157,7 @@ Public Class RegionList
             ElseIf RegionClass.Booted(X) Then
                 Letter = "Running"
                 Num = 2
-            ElseIf Not CType(RegionClass.ProcessID(X), Boolean) And RegionClass.ShuttingDown(X) Then
+            ElseIf RegionClass.ProcessID(X) > 0 And RegionClass.ShuttingDown(X) Then
                 Letter = "Exiting"
                 Num = 3
             ElseIf Not RegionClass.RegionEnabled(X) Then
@@ -251,7 +251,11 @@ Public Class RegionList
             Dim RegionName = item.SubItems(0).Text
             Dim checked As Boolean = item.Checked
             Debug.Print("Clicked row " + RegionName)
-            StartStopEdit(checked, RegionClass.FindRegionByName(RegionName))
+            Dim R = RegionClass.FindRegionByName(RegionName)
+            If R >= 0 Then
+                StartStopEdit(checked, R)
+            End If
+
         Next
 
 
@@ -376,7 +380,7 @@ Public Class RegionList
 
         Dim Item As ListViewItem = ListView1.Items.Item(e.Index)
         Dim n As Integer = RegionClass.FindRegionByName(Item.Text)
-
+        If n = -1 Then Return
         If ViewBusy Then
             If (e.CurrentValue = CheckState.Unchecked) Then
                 RegionClass.RegionEnabled(n) = True
