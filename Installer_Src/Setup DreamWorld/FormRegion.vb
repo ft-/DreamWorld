@@ -53,7 +53,10 @@ Public Class FormRegion
             MaxAgents.Text = 100.ToString
 
             n = RegionClass.CreateRegion("")
-
+            If RegionList.InstanceExists Then
+                RegionClass.GetAllRegions()
+                RegionList.LoadMyListView()
+            End If
         Else
             isNew = False
             n = RegionClass.FindRegionByName(Name)
@@ -212,12 +215,19 @@ Public Class FormRegion
     Private Sub FormRegion_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
 
         If changed Then
+
+
             Dim v = MsgBox("Save changes?", vbYesNo, "Region Save")
             If v = vbYes Then
                 Dim message = RegionValidate()
                 If Len(message) > 0 Then
                     v = MsgBox(message + vbCrLf + "Discard all changes And Exit anyway?", vbYesNo, "Info")
                     If v = vbYes Then
+                        If RegionList.InstanceExists Then
+                            RegionClass.GetAllRegions()
+                            RegionList.LoadMyListView()
+                        End If
+
                         Me.Close()
                     End If
                 Else
@@ -225,6 +235,11 @@ Public Class FormRegion
                     Form1.RegionClass.UpdateAllRegionPorts()
                     Form1.CopyOpensimProto()
                     RegionClass.GetAllRegions()
+                    If RegionList.InstanceExists Then
+                        RegionClass.GetAllRegions()
+                        RegionList.LoadMyListView()
+                    End If
+
                 End If
             End If
         End If
@@ -236,6 +251,12 @@ Public Class FormRegion
         If Len(message) > 0 Then
             Dim v = MsgBox(message + vbCrLf + "Discard all changes And Exit anyway?", vbYesNo, "Info")
             If v = vbYes Then
+
+                If RegionList.InstanceExists Then
+                    RegionClass.GetAllRegions()
+                    RegionList.LoadMyListView()
+                End If
+
                 Me.Close()
             End If
         Else
@@ -244,6 +265,12 @@ Public Class FormRegion
             Form1.RegionClass.UpdateAllRegionPorts()
             RegionClass.GetAllRegions()
             Form1.CopyOpensimProto()
+
+            If RegionList.InstanceExists Then
+                RegionClass.GetAllRegions()
+                RegionList.LoadMyListView()
+            End If
+
 
             changed = False
             Me.Close()
@@ -534,9 +561,7 @@ Public Class FormRegion
         Return chosen
 
     End Function
-#End Region
 
-#Region "Default"
 
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
         '663, 613
@@ -567,9 +592,21 @@ Public Class FormRegion
             Catch ex As Exception
             End Try
         End If
+
+        If RegionList.InstanceExists Then
+            RegionClass.GetAllRegions()
+            RegionList.LoadMyListView()
+        End If
+
+
         Me.Close()
 
     End Sub
+
+#End Region
+
+#Region "Changed"
+
 
     Private Sub RLostFocus(sender As Object, e As EventArgs) Handles RegionName.TextChanged
 
@@ -582,9 +619,6 @@ Public Class FormRegion
         End If
 
     End Sub
-#End Region
-
-#Region "More"
 
     Private Sub Coordy_TextChanged(sender As Object, e As EventArgs) Handles CoordY.TextChanged
         If initted And CoordY.Text <> "" Then
