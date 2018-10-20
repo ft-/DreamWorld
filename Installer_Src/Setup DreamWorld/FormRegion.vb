@@ -641,19 +641,6 @@ Public Class FormRegion
 
     End Sub
 
-    Private Sub RegionPort_TextChanged(sender As Object, e As EventArgs) Handles RegionPort.TextChanged
-
-        If initted Then
-            Try
-                RegionPort.Text = RegionPort.Text
-            Catch
-
-            End Try
-            changed = True
-        End If
-
-    End Sub
-
     Private Sub RadioButton1_CheckedChanged(sender As Object, e As EventArgs) Handles RadioButton1.CheckedChanged
 
         If initted And RadioButton1.Checked Then
