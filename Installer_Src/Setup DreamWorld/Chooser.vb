@@ -19,6 +19,9 @@
         Dim L As New List(Of String)
 
         ' add to list Unique Name
+        If type = "Group" Then
+            DataGridView.Rows.Add("New Name")
+        End If
 
         For Each X As Integer In RegionClass.RegionNumbers
             Dim name As String

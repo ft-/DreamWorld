@@ -229,7 +229,7 @@ Public Class FormRegion
                     End If
                 Else
                     WriteRegion()
-                    Form1.RegionClass.UpdateAllRegionPorts()
+
                     Form1.CopyOpensimProto()
                     RegionClass.GetAllRegions()
                     If RegionList.InstanceExists Then
@@ -259,7 +259,7 @@ Public Class FormRegion
         Else
 
             WriteRegion()
-            Form1.RegionClass.UpdateAllRegionPorts()
+
             RegionClass.GetAllRegions()
             Form1.CopyOpensimProto()
 
@@ -390,6 +390,7 @@ Public Class FormRegion
         Dim Filepath = RegionClass.RegionPath(n)
         Dim Folderpath = RegionClass.FolderPath(n)
 
+
         ' rename is possible
         If oldname <> RegionName.Text And Not isNew Then
             Try
@@ -415,14 +416,14 @@ Public Class FormRegion
 
         If isNew Then
             Dim NewGroup As String = RegionName.Text
-            Dim yesNo As MsgBoxResult = MsgBox("New regions can can be combined with other regions in an existing DOS box (Yes), Or run in their own Dos Box (No)", vbYesNo, "Combine Regions?")
-            If yesNo = vbYes Then
-                NewGroup = RegionChosen()
+            'Dim yesNo As MsgBoxResult = MsgBox("New regions can be combined with other regions in an existing DOS box (Yes), Or run in their own Dos Box (No)", vbYesNo, "Combine Regions?")
+            'If yesNo = vbYes Then
+            NewGroup = RegionChosen()
                 If NewGroup = "" Then
                     Form1.PrintFast("Aborted")
                     Return
                 End If
-            End If
+            'End If
 
             If Not Directory.Exists(Filepath) Or Filepath = "" Then
                 Directory.CreateDirectory(Form1.gPath & "bin\Regions\" + NewGroup + "\Region")
@@ -549,6 +550,9 @@ Public Class FormRegion
         Try
             ' Read the chosen sim name
             chosen = Chooseform.DataGridView.CurrentCell.Value.ToString()
+            If chosen = "New Name" Then
+                chosen = InputBox("Enter the new Dos Box name")
+            End If
             If chosen.Length > 0 Then
                 Chooseform.Dispose()
             End If

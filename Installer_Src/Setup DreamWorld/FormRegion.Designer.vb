@@ -47,6 +47,7 @@ Partial Class FormRegion
         Me.ClampPrimSize = New System.Windows.Forms.CheckBox()
         Me.BirdsCheckBox = New System.Windows.Forms.CheckBox()
         Me.TidesCheckbox = New System.Windows.Forms.CheckBox()
+        Me.TPCheckBox1 = New System.Windows.Forms.CheckBox()
         Me.Advanced = New System.Windows.Forms.GroupBox()
         Me.Label6 = New System.Windows.Forms.Label()
         Me.Label4 = New System.Windows.Forms.Label()
@@ -92,7 +93,6 @@ Partial Class FormRegion
         Me.PhysicsubODE = New System.Windows.Forms.RadioButton()
         Me.PhysicsBullet = New System.Windows.Forms.RadioButton()
         Me.PhysicsODE = New System.Windows.Forms.RadioButton()
-        Me.TPCheckBox1 = New System.Windows.Forms.CheckBox()
         Me.Advanced.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox6.SuspendLayout()
@@ -319,6 +319,17 @@ Partial Class FormRegion
         Me.TidesCheckbox.Text = "Tides Enable"
         Me.ToolTip1.SetToolTip(Me.TidesCheckbox, "If set, the global Tide settungs will apply to this region")
         Me.TidesCheckbox.UseVisualStyleBackColor = True
+        '
+        'TPCheckBox1
+        '
+        Me.TPCheckBox1.AutoSize = True
+        Me.TPCheckBox1.Location = New System.Drawing.Point(15, 65)
+        Me.TPCheckBox1.Name = "TPCheckBox1"
+        Me.TPCheckBox1.Size = New System.Drawing.Size(110, 17)
+        Me.TPCheckBox1.TabIndex = 22
+        Me.TPCheckBox1.Text = "Teleporter Enable"
+        Me.ToolTip1.SetToolTip(Me.TPCheckBox1, "If set, the global Tide settungs will apply to this region")
+        Me.TPCheckBox1.UseVisualStyleBackColor = True
         '
         'Advanced
         '
@@ -819,17 +830,6 @@ Partial Class FormRegion
         Me.PhysicsODE.Text = "Open Dynamics Engine"
         Me.PhysicsODE.UseVisualStyleBackColor = True
         '
-        'TPCheckBox1
-        '
-        Me.TPCheckBox1.AutoSize = True
-        Me.TPCheckBox1.Location = New System.Drawing.Point(15, 65)
-        Me.TPCheckBox1.Name = "TPCheckBox1"
-        Me.TPCheckBox1.Size = New System.Drawing.Size(110, 17)
-        Me.TPCheckBox1.TabIndex = 22
-        Me.TPCheckBox1.Text = "Teleporter Enable"
-        Me.ToolTip1.SetToolTip(Me.TPCheckBox1, "If set, the global Tide settungs will apply to this region")
-        Me.TPCheckBox1.UseVisualStyleBackColor = True
-        '
         'FormRegion
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -846,6 +846,7 @@ Partial Class FormRegion
         Me.Controls.Add(Me.Label8)
         Me.Controls.Add(Me.GroupBox2)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Name = "FormRegion"
         Me.Text = "Region"
         Me.Advanced.ResumeLayout(False)

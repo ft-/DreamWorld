@@ -441,9 +441,10 @@ Public Class MySettings
         parser.Parser.Configuration.AssigmentSpacer = ""
         Myparser.Parser.Configuration.CommentString = ";" ' Opensim uses semicolons
         Try
+            Form1.Log("Loading Settings.ini")
             MyData = Myparser.ReadFile(gFolder + "\OutworldzFiles\Settings.ini", System.Text.Encoding.ASCII)
         Catch ex As Exception
-
+            Form1.Log("Failed to load Settings.ini")
         End Try
 
     End Sub
@@ -456,10 +457,10 @@ Public Class MySettings
         parser.Parser.Configuration.AssigmentSpacer = ""
         parser.Parser.Configuration.CommentString = comment ' Opensim uses semicolons
         Try
+            Form1.Log("Loading " + arg)
             Data = parser.ReadFile(arg, System.Text.Encoding.ASCII)
         Catch ex As Exception
             Form1.Log(ex.Message)
-            ' MsgBox("Error reading INI file:" + ex.Message)
         End Try
         INI = arg
     End Sub

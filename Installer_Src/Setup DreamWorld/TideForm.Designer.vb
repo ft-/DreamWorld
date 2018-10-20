@@ -23,6 +23,7 @@ Partial Class Tides
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Tides))
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.TideInfoDebugCheckBox = New System.Windows.Forms.CheckBox()
         Me.BroadcastTideInfo = New System.Windows.Forms.CheckBox()
@@ -189,6 +190,7 @@ Partial Class Tides
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.ClientSize = New System.Drawing.Size(253, 254)
         Me.Controls.Add(Me.GroupBox1)
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Name = "Tides"
         Me.Text = "Tides"
         Me.GroupBox1.ResumeLayout(False)

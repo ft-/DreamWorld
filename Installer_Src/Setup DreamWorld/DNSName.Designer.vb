@@ -23,6 +23,7 @@ Partial Class DNSName
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(DNSName))
         Me.TextBox1 = New System.Windows.Forms.TextBox()
         Me.SaveButton = New System.Windows.Forms.Button()
         Me.NextNameButton = New System.Windows.Forms.Button()
@@ -76,12 +77,14 @@ Partial Class DNSName
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
-        Me.ClientSize = New System.Drawing.Size(252, 87)
+        Me.ClientSize = New System.Drawing.Size(251, 87)
         Me.Controls.Add(Me.PictureBox4)
         Me.Controls.Add(Me.NextNameButton)
         Me.Controls.Add(Me.SaveButton)
         Me.Controls.Add(Me.TextBox1)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
+        Me.MaximizeBox = False
         Me.Name = "DNSName"
         Me.Text = "DNS Name"
         CType(Me.PictureBox4, System.ComponentModel.ISupportInitialize).EndInit()

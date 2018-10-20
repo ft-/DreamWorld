@@ -471,14 +471,14 @@ Public Class RegionList
         Dim files() As String = CType(e.Data.GetData(DataFormats.FileDrop), String())
 
         Dim dirpathname = ""
-        Dim yesNo As MsgBoxResult = MsgBox("New regions can can be combined with other regions in an existing DOS box (Yes), or run in their own Dos Box (No)", vbYesNo, "Grouping Regions")
-        If yesNo = vbYes Then
-            dirpathname = PickGroup()
+        'Dim yesNo As MsgBoxResult = MsgBox("New regions can be combined with other regions in an existing DOS box (Yes), or run in their own Dos Box (No)", vbYesNo, "Grouping Regions")
+        'If yesNo = vbYes Then
+        dirpathname = PickGroup()
             If dirpathname = "" Then
                 Form1.PrintFast("Aborted")
                 Return
             End If
-        End If
+        'End If
 
 
 

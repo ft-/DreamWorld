@@ -142,6 +142,7 @@ Partial Class TosForm
         Me.Controls.Add(Me.TOSEnable)
         Me.Controls.Add(Me.ShowToLocalUsersCheckbox)
         Me.Controls.Add(Me.ShowToHGUsersCheckbox)
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
         Me.Name = "TosForm"
         Me.Text = "Terms of Service"

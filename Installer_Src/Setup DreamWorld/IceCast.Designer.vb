@@ -23,6 +23,7 @@ Partial Class Icecast
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Icecast))
         Me.ShoutcastEnable = New System.Windows.Forms.CheckBox()
         Me.ShoutcastPassword = New System.Windows.Forms.TextBox()
         Me.Label1 = New System.Windows.Forms.Label()
@@ -175,6 +176,7 @@ Partial Class Icecast
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(238, 222)
         Me.Controls.Add(Me.GroupBox1)
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Name = "Icecast"
         Me.Text = "IceCast"
         Me.ToolTip1.SetToolTip(Me, "Click for help on setting up Shoutcast")

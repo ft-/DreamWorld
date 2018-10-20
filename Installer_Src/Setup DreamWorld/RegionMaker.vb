@@ -452,7 +452,7 @@ Public Class RegionMaker
             L.Add(ctr)
             ctr = ctr + 1
         Next
-        Debug.Print("List Len = " + L.Count.ToString)
+        'Debug.Print("List Len = " + L.Count.ToString)
         Return L
     End Function
 
