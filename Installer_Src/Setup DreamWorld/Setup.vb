@@ -3526,6 +3526,7 @@ Public Class Form1
             ' if a restart is signalled, boot it up
             If RegionClass.Timer(X) = -2 Then
                 RegionClass.Timer(X) = 0
+                Sleep(1000)
                 Boot(RegionClass.RegionName(X))
                 Return
             End If
