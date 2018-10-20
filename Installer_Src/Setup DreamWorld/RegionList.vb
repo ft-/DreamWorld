@@ -375,7 +375,7 @@ Public Class RegionList
             RegionClass.WarmingUp(num) = False
             RegionClass.ShuttingDown(num) = False
         End If
-        Form1.Log("Region:Stopped Region " + RegionClass.RegionName(num))
+        Form1.Log("Region:Stopping Region " + RegionClass.RegionName(num))
     End Sub
 
     Private Sub ListView1_ItemCheck1(ByVal sender As Object, ByVal e As System.Windows.Forms.ItemCheckEventArgs) Handles ListView1.ItemCheck
