@@ -1,6 +1,10 @@
-﻿V2.47 
+V2.47
+Create a New Group Name when installing a new region
 Rename of region has better err checking
-Tabindexes set throughout
+Tabindexes & Icons on forms
+Skip UPnP for Icecast if disabled (speedup boot)
+Set INI for all regions, even if disabled, so you can start them at any time
+Upnp Manager try can catch on bad routers
 
 V2.46 
 Could not save a region name due to a bad variable name
@@ -113,7 +117,7 @@ Modules:
  - Auto Restart Module by Fly Man. You can AutoRestart regions automagically with a timer. If no avatars are in the region, it will auto-reset periodically. This clears RAM used by visitors and helps maintain stability. 240 minutes (4 hours) is the default.
  - Birds Module by jonc and Jak Daniels: 
 
-There is an IAR called “!OpensimBirds.iar” in the top of the Free Avatar Parts menu. Click it to load into your master avatar, just like any other IAR. To use this, log in and rez a bird from Objects/OpensimBirds. There are two types, SeaGull1 and SeaGull2.  Type this onto the region console:
+There is an IAR called ?!OpensimBirds.iar? in the top of the Free Avatar Parts menu. Click it to load into your master avatar, just like any other IAR. To use this, log in and rez a bird from Objects/OpensimBirds. There are two types, SeaGull1 and SeaGull2.  Type this onto the region console:
 
 birds-prim SeaGull1 <enter> (or use SeaGull2, whichever bird you have put out)
 birds-start<enter>

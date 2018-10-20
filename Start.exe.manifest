@@ -74,7 +74,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>BwAj4G3G/0xImW6tz9wN0iakAKsxrJMdT7Sgc6mpREM=</dsig:DigestValue>
+        <dsig:DigestValue>sW1Zozh/W3RiNM/GIKvgWZi7uxqhRgHOTMHeT408OyA=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -115,14 +115,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Start.exe" size="30252032">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Start.exe" size="30885376">
       <assemblyIdentity name="Start" version="2.0.1.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>8GTj1Ze/JPTpJZEcMOMjQLlZg+MEJ5v7pWhcUIGLnGo=</dsig:DigestValue>
+        <dsig:DigestValue>Yje2uHSI4kM7Mdj9ntPaLzJCpJvwCWQYMkxDr0+RwE8=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -216,13 +216,13 @@
       <dsig:DigestValue>Djaf0Dwe1IybX0ipMG50tWxdFoc9mvZUP1UB6Oir/Tk=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="Start.exe.config" size="10443">
+  <file name="Start.exe.config" size="10573">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>L5sVlcYa8wTeZNVL81X7G3noDMyoyuiPBkhXvirwyb8=</dsig:DigestValue>
+      <dsig:DigestValue>lcb1gXpJIdHp9zB9/91t2PiEFRs32DISwzhJRI4JqOI=</dsig:DigestValue>
     </hash>
   </file>
   <compatibility xmlns="urn:schemas-microsoft-com:compatibility.v1">
@@ -233,13 +233,18 @@
       <!-- Windows Vista -->
       <!--<supportedOS Id="{e2011457-1546-43c5-a5fe-008deee3d3f0}" />-->
       <!-- Windows 7 -->
-      <!--<supportedOS Id="{35138b9a-5d96-4fbd-8e2d-a2440225f93a}" />-->
+      <supportedOS Id="{35138b9a-5d96-4fbd-8e2d-a2440225f93a}" />
       <!-- Windows 8 -->
-      <!--<supportedOS Id="{4a2f28e3-53b9-4441-ba9c-d69d4a4a6e38}" />-->
+      <supportedOS Id="{4a2f28e3-53b9-4441-ba9c-d69d4a4a6e38}" />
       <!-- Windows 8.1 -->
-      <!--<supportedOS Id="{1f676c76-80e1-4239-95bb-83d0f6d0da78}" />-->
+      <supportedOS Id="{1f676c76-80e1-4239-95bb-83d0f6d0da78}" />
       <!-- Windows 10 -->
-      <!--<supportedOS Id="{8e0f7a12-bfb3-4fe8-b9a5-48fd50a15a9a}" />-->
+      <supportedOS Id="{8e0f7a12-bfb3-4fe8-b9a5-48fd50a15a9a}" />
     </application>
   </compatibility>
+  <application xmlns="urn:schemas-microsoft-com:asm.v3">
+    <windowsSettings>
+      <dpiAware xmlns="http://schemas.microsoft.com/SMI/2005/WindowsSettings">true</dpiAware>
+    </windowsSettings>
+  </application>
 </asmv1:assembly>

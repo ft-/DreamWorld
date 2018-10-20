@@ -261,6 +261,7 @@ Public Class RegionList
 
     End Sub
 
+
     Private Declare Function ShowWindow Lib "user32.dll" (ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
 
     <Flags()>
