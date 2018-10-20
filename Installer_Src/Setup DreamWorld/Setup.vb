@@ -577,7 +577,7 @@ Public Class Form1
         Buttons(BusyButton)
 
         OpensimIsRunning() = True
-        'MapDelete()
+
         RegionClass.GetAllRegions()
 
         If SetPublicIP() Then
@@ -4517,13 +4517,15 @@ Public Class Form1
 
         Try
 
-            'Icecast 8080
-            If MyUPnpMap.Exists(Convert.ToInt16(MySetting.SC_PortBase), UPnp.Protocol.TCP) Then
-                MyUPnpMap.Remove(Convert.ToInt16(MySetting.SC_PortBase), UPnp.Protocol.TCP)
+            If MySetting.SC_Enable Then
+                'Icecast 8080
+                If MyUPnpMap.Exists(Convert.ToInt16(MySetting.SC_PortBase), UPnp.Protocol.TCP) Then
+                    MyUPnpMap.Remove(Convert.ToInt16(MySetting.SC_PortBase), UPnp.Protocol.TCP)
+                End If
+                MyUPnpMap.Add(MyUPnpMap.LocalIP, CType(MySetting.SC_PortBase, Integer), UPnp.Protocol.TCP, "Icecast TCP Public " + MySetting.SC_PortBase.ToString)
+                PrintFast("Icecast Port is set to " + MySetting.SC_PortBase.ToString)
+                BumpProgress10()
             End If
-            MyUPnpMap.Add(MyUPnpMap.LocalIP, CType(MySetting.SC_PortBase, Integer), UPnp.Protocol.TCP, "Icecast TCP Public " + MySetting.SC_PortBase.ToString)
-            PrintFast("Icecast Port is set to " + MySetting.SC_PortBase.ToString)
-            BumpProgress10()
 
             'diagnostics 8001
             If MyUPnpMap.Exists(Convert.ToInt16(MySetting.DiagnosticPort), UPnp.Protocol.TCP) Then
