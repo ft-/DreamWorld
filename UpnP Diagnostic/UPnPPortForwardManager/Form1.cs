@@ -91,9 +91,20 @@ namespace UPnPPortForwardManager
         {
             lbPortMappings.Items.Clear();
 
-            foreach(NATUPNPLib.IStaticPortMapping p in UPnPNATHelper.StaticPortMappings){
-                lbPortMappings.Items.Add(new NATUPnPListBoxItem(p));
+            try
+            {
+                foreach (NATUPNPLib.IStaticPortMapping p in UPnPNATHelper.StaticPortMappings)
+                {
+                    lbPortMappings.Items.Add(new NATUPnPListBoxItem(p));
+                }
+            } 
+            catch
+            {
+                MessageBox.Show("UPnp is not supported on this router with this program");
+                Application.Exit();
+
             }
+
         }
 
         private void lbPortMappings_SelectedIndexChanged(object sender, EventArgs e)

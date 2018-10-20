@@ -49,19 +49,31 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>U9VjkMKDljScg8spJaGOS1LhsbE=</dsig:DigestValue>
+        <dsig:DigestValue>Ol/Vl7XRPdCP3GBbFKwcr0K3PAQ=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="UPnPPortForwardManager.exe" size="19344">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Interop.UPNPLib.dll" size="14848">
+      <assemblyIdentity name="Interop.UPNPLib" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <dsig:DigestValue>WGqCGfi+yIHRzdU0Udo3i3GCGpg=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="UPnPPortForwardManager.exe" size="18432">
       <assemblyIdentity name="UPnPPortForwardManager" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>r8H/LvH39avDn/GczfDHQifqarg=</dsig:DigestValue>
+        <dsig:DigestValue>+BSFIPzXdOgEGwNtgIINb8Scqrg=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

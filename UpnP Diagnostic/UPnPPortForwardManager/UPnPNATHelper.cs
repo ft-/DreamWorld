@@ -74,8 +74,14 @@ namespace UPnPPortForwardManager
             {
                 throw new ArgumentException("Internal Client must be specified.", "internalClient");
             }
+            try
+            {
+                return UPnPNat.StaticPortMappingCollection.Add(externalPort, protocol, internalPort, internalClient, enabled, description);
+            }
+            catch {
+                throw new ArgumentException("Oops", "UPNP");
+            }
 
-            return UPnPNat.StaticPortMappingCollection.Add(externalPort, protocol, internalPort, internalClient, enabled, description);
         }
 
         /// <summary>
