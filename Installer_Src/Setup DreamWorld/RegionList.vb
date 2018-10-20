@@ -302,8 +302,10 @@ Public Class RegionList
 
         If (RegionClass.Booted(n) Or RegionClass.WarmingUp(n)) Or RegionClass.ShuttingDown(n) Then
             ' if enabled and running, even partly up, stop it.
-
-            ShowWindow(Process.GetProcessById(RegionClass.ProcessID(n)).MainWindowHandle, SHOW_WINDOW.SW_RESTORE)
+            Try
+                ShowWindow(Process.GetProcessById(RegionClass.ProcessID(n)).MainWindowHandle, SHOW_WINDOW.SW_RESTORE)
+            Catch
+            End Try
             Try
                 Dim V = MsgBox("Stop " + RegionClass.GroupName(n) + "?", vbYesNo)
                 If V = vbNo Then Return
