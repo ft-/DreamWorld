@@ -39,7 +39,7 @@ Partial Class TosForm
         Me.ShowToHGUsersCheckbox.AutoSize = True
         Me.ShowToHGUsersCheckbox.Location = New System.Drawing.Point(24, 81)
         Me.ShowToHGUsersCheckbox.Name = "ShowToHGUsersCheckbox"
-        Me.ShowToHGUsersCheckbox.Size = New System.Drawing.Size(292, 17)
+        Me.ShowToHGUsersCheckbox.Size = New System.Drawing.Size(298, 17)
         Me.ShowToHGUsersCheckbox.TabIndex = 3
         Me.ShowToHGUsersCheckbox.Text = "Show TOS To Hyper grid Users on First Hyper grid Login?"
         Me.ShowToHGUsersCheckbox.UseVisualStyleBackColor = True
@@ -107,7 +107,7 @@ Partial Class TosForm
         Me.Editor1.Html = Nothing
         Me.Editor1.Location = New System.Drawing.Point(12, 104)
         Me.Editor1.Name = "Editor1"
-        Me.Editor1.Size = New System.Drawing.Size(627, 338)
+        Me.Editor1.Size = New System.Drawing.Size(636, 338)
         Me.Editor1.TabIndex = 7
         '
         'SaveButton
@@ -130,8 +130,8 @@ Partial Class TosForm
         '
         'TosForm
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.ClientSize = New System.Drawing.Size(660, 500)
         Me.Controls.Add(Me.ApplyButton)
         Me.Controls.Add(Me.SaveButton)

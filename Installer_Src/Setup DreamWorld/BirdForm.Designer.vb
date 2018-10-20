@@ -98,7 +98,7 @@ Partial Class BirdForm
         Me.PrimNameTextBox.Location = New System.Drawing.Point(7, 287)
         Me.PrimNameTextBox.Name = "PrimNameTextBox"
         Me.PrimNameTextBox.Size = New System.Drawing.Size(72, 20)
-        Me.PrimNameTextBox.TabIndex = 22
+        Me.PrimNameTextBox.TabIndex = 11
         Me.PrimNameTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         Me.ToolTip1.SetToolTip(Me.PrimNameTextBox, resources.GetString("PrimNameTextBox.ToolTip"))
         '
@@ -117,7 +117,7 @@ Partial Class BirdForm
         Me.BirdsMaxHeightTextBox.Location = New System.Drawing.Point(7, 261)
         Me.BirdsMaxHeightTextBox.Name = "BirdsMaxHeightTextBox"
         Me.BirdsMaxHeightTextBox.Size = New System.Drawing.Size(43, 20)
-        Me.BirdsMaxHeightTextBox.TabIndex = 20
+        Me.BirdsMaxHeightTextBox.TabIndex = 10
         Me.BirdsMaxHeightTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         Me.ToolTip1.SetToolTip(Me.BirdsMaxHeightTextBox, "How close to the edges of things can we get without being worried")
         '
@@ -136,7 +136,7 @@ Partial Class BirdForm
         Me.BirdsBorderSizeTextBox.Location = New System.Drawing.Point(7, 235)
         Me.BirdsBorderSizeTextBox.Name = "BirdsBorderSizeTextBox"
         Me.BirdsBorderSizeTextBox.Size = New System.Drawing.Size(43, 20)
-        Me.BirdsBorderSizeTextBox.TabIndex = 18
+        Me.BirdsBorderSizeTextBox.TabIndex = 9
         Me.BirdsBorderSizeTextBox.Text = "10"
         Me.BirdsBorderSizeTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         Me.ToolTip1.SetToolTip(Me.BirdsBorderSizeTextBox, "How close to the edges of things can we get without being worried")
@@ -156,7 +156,7 @@ Partial Class BirdForm
         Me.BirdsToleranceTextBox.Location = New System.Drawing.Point(7, 209)
         Me.BirdsToleranceTextBox.Name = "BirdsToleranceTextBox"
         Me.BirdsToleranceTextBox.Size = New System.Drawing.Size(43, 20)
-        Me.BirdsToleranceTextBox.TabIndex = 16
+        Me.BirdsToleranceTextBox.TabIndex = 8
         Me.BirdsToleranceTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         Me.ToolTip1.SetToolTip(Me.BirdsToleranceTextBox, "How close to the edges of things can we get without being worried")
         '
@@ -175,7 +175,7 @@ Partial Class BirdForm
         Me.DesiredSeparationTextBox.Location = New System.Drawing.Point(7, 183)
         Me.DesiredSeparationTextBox.Name = "DesiredSeparationTextBox"
         Me.DesiredSeparationTextBox.Size = New System.Drawing.Size(43, 20)
-        Me.DesiredSeparationTextBox.TabIndex = 12
+        Me.DesiredSeparationTextBox.TabIndex = 7
         Me.DesiredSeparationTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         Me.ToolTip1.SetToolTip(Me.DesiredSeparationTextBox, "How far away from other birds we would like to stay")
         '
@@ -194,7 +194,7 @@ Partial Class BirdForm
         Me.BirdsNeighbourDistanceTextBox.Location = New System.Drawing.Point(7, 157)
         Me.BirdsNeighbourDistanceTextBox.Name = "BirdsNeighbourDistanceTextBox"
         Me.BirdsNeighbourDistanceTextBox.Size = New System.Drawing.Size(43, 20)
-        Me.BirdsNeighbourDistanceTextBox.TabIndex = 10
+        Me.BirdsNeighbourDistanceTextBox.TabIndex = 6
         Me.BirdsNeighbourDistanceTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         Me.ToolTip1.SetToolTip(Me.BirdsNeighbourDistanceTextBox, "Max distance for other birds to be considered in the same flock as us")
         '
@@ -213,7 +213,7 @@ Partial Class BirdForm
         Me.MaxForceTextBox.Location = New System.Drawing.Point(7, 131)
         Me.MaxForceTextBox.Name = "MaxForceTextBox"
         Me.MaxForceTextBox.Size = New System.Drawing.Size(43, 20)
-        Me.MaxForceTextBox.TabIndex = 8
+        Me.MaxForceTextBox.TabIndex = 5
         Me.MaxForceTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         Me.ToolTip1.SetToolTip(Me.MaxForceTextBox, "How far in meters each bird can travel per update")
         '
@@ -231,7 +231,7 @@ Partial Class BirdForm
         Me.MaxSpeedTextBox.Location = New System.Drawing.Point(7, 105)
         Me.MaxSpeedTextBox.Name = "MaxSpeedTextBox"
         Me.MaxSpeedTextBox.Size = New System.Drawing.Size(43, 20)
-        Me.MaxSpeedTextBox.TabIndex = 6
+        Me.MaxSpeedTextBox.TabIndex = 4
         Me.MaxSpeedTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         Me.ToolTip1.SetToolTip(Me.MaxSpeedTextBox, "How far in meters each bird can travel per update")
         '
@@ -251,7 +251,7 @@ Partial Class BirdForm
         Me.ChatChanelTextBox.Location = New System.Drawing.Point(7, 78)
         Me.ChatChanelTextBox.Name = "ChatChanelTextBox"
         Me.ChatChanelTextBox.Size = New System.Drawing.Size(43, 20)
-        Me.ChatChanelTextBox.TabIndex = 4
+        Me.ChatChanelTextBox.TabIndex = 3
         Me.ChatChanelTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'Label1
@@ -278,7 +278,7 @@ Partial Class BirdForm
         Me.BirdsModuleStartupbox.Location = New System.Drawing.Point(7, 20)
         Me.BirdsModuleStartupbox.Name = "BirdsModuleStartupbox"
         Me.BirdsModuleStartupbox.Size = New System.Drawing.Size(124, 17)
-        Me.BirdsModuleStartupbox.TabIndex = 0
+        Me.BirdsModuleStartupbox.TabIndex = 1
         Me.BirdsModuleStartupbox.Text = "Enable Bird Module?"
         Me.ToolTip1.SetToolTip(Me.BirdsModuleStartupbox, "This determines whether the module does anything")
         Me.BirdsModuleStartupbox.UseVisualStyleBackColor = True
@@ -298,7 +298,7 @@ Partial Class BirdForm
         Me.Button1.Location = New System.Drawing.Point(19, 20)
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(108, 23)
-        Me.Button1.TabIndex = 1
+        Me.Button1.TabIndex = 0
         Me.Button1.Text = "Load Bird IAR"
         Me.Button1.UseVisualStyleBackColor = True
         '

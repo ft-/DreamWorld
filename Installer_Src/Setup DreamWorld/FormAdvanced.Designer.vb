@@ -249,7 +249,7 @@ Partial Class AdvancedForm
         Me.TOSButton.Location = New System.Drawing.Point(7, 130)
         Me.TOSButton.Name = "TOSButton"
         Me.TOSButton.Size = New System.Drawing.Size(145, 23)
-        Me.TOSButton.TabIndex = 18
+        Me.TOSButton.TabIndex = 19
         Me.TOSButton.Text = "TOS Settings"
         Me.ToolTip1.SetToolTip(Me.TOSButton, "Click to set up your Terms of Service")
         Me.TOSButton.UseVisualStyleBackColor = True
@@ -269,7 +269,7 @@ Partial Class AdvancedForm
         Me.TideButton.Location = New System.Drawing.Point(6, 101)
         Me.TideButton.Name = "TideButton"
         Me.TideButton.Size = New System.Drawing.Size(145, 23)
-        Me.TideButton.TabIndex = 21
+        Me.TideButton.TabIndex = 18
         Me.TideButton.Text = "Tide Settings"
         Me.ToolTip1.SetToolTip(Me.TideButton, "Click to set up your Terms of Service")
         Me.TideButton.UseVisualStyleBackColor = True
@@ -288,7 +288,7 @@ Partial Class AdvancedForm
         Me.ExpertButton1.Location = New System.Drawing.Point(9, 189)
         Me.ExpertButton1.Name = "ExpertButton1"
         Me.ExpertButton1.Size = New System.Drawing.Size(143, 23)
-        Me.ExpertButton1.TabIndex = 19
+        Me.ExpertButton1.TabIndex = 21
         Me.ExpertButton1.Text = "Expert Settings"
         Me.ExpertButton1.UseVisualStyleBackColor = True
         '
@@ -468,6 +468,8 @@ Partial Class AdvancedForm
         '
         'AdvancedForm
         '
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.AutoSize = True
         Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.ClientSize = New System.Drawing.Size(705, 394)

@@ -44,7 +44,7 @@ Partial Class DNSName
         Me.SaveButton.Location = New System.Drawing.Point(124, 45)
         Me.SaveButton.Name = "SaveButton"
         Me.SaveButton.Size = New System.Drawing.Size(64, 23)
-        Me.SaveButton.TabIndex = 5
+        Me.SaveButton.TabIndex = 3
         Me.SaveButton.Text = "Save"
         Me.SaveButton.UseVisualStyleBackColor = True
         '
@@ -53,7 +53,7 @@ Partial Class DNSName
         Me.NextNameButton.Location = New System.Drawing.Point(6, 45)
         Me.NextNameButton.Name = "NextNameButton"
         Me.NextNameButton.Size = New System.Drawing.Size(78, 23)
-        Me.NextNameButton.TabIndex = 6
+        Me.NextNameButton.TabIndex = 2
         Me.NextNameButton.Text = "Next Name"
         Me.NextNameButton.UseVisualStyleBackColor = True
         '
@@ -74,8 +74,8 @@ Partial Class DNSName
         '
         'DNSName
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.ClientSize = New System.Drawing.Size(252, 87)
         Me.Controls.Add(Me.PictureBox4)
         Me.Controls.Add(Me.NextNameButton)

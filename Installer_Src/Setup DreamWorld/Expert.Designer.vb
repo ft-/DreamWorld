@@ -177,10 +177,10 @@ Partial Class Expert
         'SuitcaseCheckbox
         '
         Me.SuitcaseCheckbox.AutoSize = True
-        Me.SuitcaseCheckbox.Location = New System.Drawing.Point(18, 54)
+        Me.SuitcaseCheckbox.Location = New System.Drawing.Point(18, 26)
         Me.SuitcaseCheckbox.Name = "SuitcaseCheckbox"
         Me.SuitcaseCheckbox.Size = New System.Drawing.Size(150, 17)
-        Me.SuitcaseCheckbox.TabIndex = 1866
+        Me.SuitcaseCheckbox.TabIndex = 1
         Me.SuitcaseCheckbox.Text = "Enable Inventory Suitcase"
         Me.ToolTip1.SetToolTip(Me.SuitcaseCheckbox, "Disbale the suitcase is less secure but easier to travel with")
         Me.SuitcaseCheckbox.UseVisualStyleBackColor = True
@@ -188,10 +188,10 @@ Partial Class Expert
         'EnableHypergrid
         '
         Me.EnableHypergrid.AutoSize = True
-        Me.EnableHypergrid.Location = New System.Drawing.Point(18, 27)
+        Me.EnableHypergrid.Location = New System.Drawing.Point(18, 54)
         Me.EnableHypergrid.Name = "EnableHypergrid"
         Me.EnableHypergrid.Size = New System.Drawing.Size(107, 17)
-        Me.EnableHypergrid.TabIndex = 1866
+        Me.EnableHypergrid.TabIndex = 2
         Me.EnableHypergrid.Text = "Enable Hypergrid"
         Me.ToolTip1.SetToolTip(Me.EnableHypergrid, "Enables Hypergrid to all sims.")
         Me.EnableHypergrid.UseVisualStyleBackColor = True
@@ -248,14 +248,14 @@ Partial Class Expert
         Me.DNSButton.Location = New System.Drawing.Point(11, 96)
         Me.DNSButton.Name = "DNSButton"
         Me.DNSButton.Size = New System.Drawing.Size(170, 23)
-        Me.DNSButton.TabIndex = 1861
+        Me.DNSButton.TabIndex = 3
         Me.DNSButton.Text = "DNS Name or IP Address"
         Me.DNSButton.UseVisualStyleBackColor = True
         '
         'DNSHelp
         '
         Me.DNSHelp.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.DNSHelp.Location = New System.Drawing.Point(134, 19)
+        Me.DNSHelp.Location = New System.Drawing.Point(157, 70)
         Me.DNSHelp.Name = "DNSHelp"
         Me.DNSHelp.Size = New System.Drawing.Size(28, 27)
         Me.DNSHelp.TabIndex = 1859
@@ -267,7 +267,7 @@ Partial Class Expert
         Me.TestButton1.Location = New System.Drawing.Point(11, 125)
         Me.TestButton1.Name = "TestButton1"
         Me.TestButton1.Size = New System.Drawing.Size(75, 23)
-        Me.TestButton1.TabIndex = 33
+        Me.TestButton1.TabIndex = 334
         Me.TestButton1.Text = "Test DNS"
         Me.TestButton1.UseVisualStyleBackColor = True
         '
@@ -293,7 +293,7 @@ Partial Class Expert
         Me.GridName.Location = New System.Drawing.Point(12, 231)
         Me.GridName.Name = "GridName"
         Me.GridName.Size = New System.Drawing.Size(173, 20)
-        Me.GridName.TabIndex = 10
+        Me.GridName.TabIndex = 105
         Me.ToolTip1.SetToolTip(Me.GridName, "Appears on the Web Page")
         '
         'Label19
@@ -310,7 +310,7 @@ Partial Class Expert
         Me.SplashPage.Location = New System.Drawing.Point(9, 292)
         Me.SplashPage.Name = "SplashPage"
         Me.SplashPage.Size = New System.Drawing.Size(177, 20)
-        Me.SplashPage.TabIndex = 45
+        Me.SplashPage.TabIndex = 6
         Me.ToolTip1.SetToolTip(Me.SplashPage, "The web page that appears when you log in to this grid")
         '
         'GroupBox4
@@ -332,7 +332,7 @@ Partial Class Expert
         Me.AllowGods.Location = New System.Drawing.Point(15, 35)
         Me.AllowGods.Name = "AllowGods"
         Me.AllowGods.Size = New System.Drawing.Size(85, 17)
-        Me.AllowGods.TabIndex = 1858
+        Me.AllowGods.TabIndex = 14
         Me.AllowGods.Text = "Allow Gods?"
         Me.ToolTip1.SetToolTip(Me.AllowGods, "By itself, this allows users with a UserLevel of 200 or more to assume god" & Global.Microsoft.VisualBasic.ChrW(10) & " power" &
         "s in the regions in this simulator..")
@@ -354,7 +354,7 @@ Partial Class Expert
         Me.ManagerGod.Location = New System.Drawing.Point(15, 82)
         Me.ManagerGod.Name = "ManagerGod"
         Me.ManagerGod.Size = New System.Drawing.Size(141, 17)
-        Me.ManagerGod.TabIndex = 6
+        Me.ManagerGod.TabIndex = 16
         Me.ManagerGod.Text = "Region manager is god?"
         Me.ToolTip1.SetToolTip(Me.ManagerGod, "Allow region managers to assume god powers in regions they manage")
         Me.ManagerGod.UseVisualStyleBackColor = True
@@ -365,7 +365,7 @@ Partial Class Expert
         Me.RegionGod.Location = New System.Drawing.Point(15, 58)
         Me.RegionGod.Name = "RegionGod"
         Me.RegionGod.Size = New System.Drawing.Size(132, 17)
-        Me.RegionGod.TabIndex = 1855
+        Me.RegionGod.TabIndex = 15
         Me.RegionGod.Text = "Region owner is god? "
         Me.ToolTip1.SetToolTip(Me.RegionGod, "Allow region owners to assume god powers in their regions")
         Me.RegionGod.UseVisualStyleBackColor = True
@@ -413,7 +413,7 @@ Partial Class Expert
         Me.FirstRegionPort.Location = New System.Drawing.Point(138, 121)
         Me.FirstRegionPort.Name = "FirstRegionPort"
         Me.FirstRegionPort.Size = New System.Drawing.Size(47, 20)
-        Me.FirstRegionPort.TabIndex = 1860
+        Me.FirstRegionPort.TabIndex = 25
         Me.ToolTip1.SetToolTip(Me.FirstRegionPort, "Port 8004 is the default- ports count up by 1. ")
         '
         'PictureBox2
@@ -432,7 +432,7 @@ Partial Class Expert
         Me.uPnPEnabled.Location = New System.Drawing.Point(22, 23)
         Me.uPnPEnabled.Name = "uPnPEnabled"
         Me.uPnPEnabled.Size = New System.Drawing.Size(96, 17)
-        Me.uPnPEnabled.TabIndex = 40
+        Me.uPnPEnabled.TabIndex = 21
         Me.uPnPEnabled.Text = "UPnP Enabled"
         Me.ToolTip1.SetToolTip(Me.uPnPEnabled, "If on, will attempt to program the router port forwards. ")
         Me.uPnPEnabled.UseVisualStyleBackColor = True
@@ -460,7 +460,7 @@ Partial Class Expert
         Me.HTTPPort.Location = New System.Drawing.Point(138, 70)
         Me.HTTPPort.Name = "HTTPPort"
         Me.HTTPPort.Size = New System.Drawing.Size(47, 20)
-        Me.HTTPPort.TabIndex = 39
+        Me.HTTPPort.TabIndex = 23
         Me.ToolTip1.SetToolTip(Me.HTTPPort, "Port 8002 is the default")
         '
         'PrivatePort
@@ -468,7 +468,7 @@ Partial Class Expert
         Me.PrivatePort.Location = New System.Drawing.Point(138, 96)
         Me.PrivatePort.Name = "PrivatePort"
         Me.PrivatePort.Size = New System.Drawing.Size(47, 20)
-        Me.PrivatePort.TabIndex = 35
+        Me.PrivatePort.TabIndex = 24
         Me.ToolTip1.SetToolTip(Me.PrivatePort, "Port 8003 is the default")
         '
         'DiagnosticPort
@@ -476,7 +476,7 @@ Partial Class Expert
         Me.DiagnosticPort.Location = New System.Drawing.Point(138, 44)
         Me.DiagnosticPort.Name = "DiagnosticPort"
         Me.DiagnosticPort.Size = New System.Drawing.Size(47, 20)
-        Me.DiagnosticPort.TabIndex = 34
+        Me.DiagnosticPort.TabIndex = 22
         Me.ToolTip1.SetToolTip(Me.DiagnosticPort, "Port 8001 is the default.")
         '
         'Label4
@@ -516,7 +516,7 @@ Partial Class Expert
         Me.DomainUpDown1.Location = New System.Drawing.Point(77, 18)
         Me.DomainUpDown1.Name = "DomainUpDown1"
         Me.DomainUpDown1.Size = New System.Drawing.Size(66, 20)
-        Me.DomainUpDown1.TabIndex = 1859
+        Me.DomainUpDown1.TabIndex = 18
         Me.DomainUpDown1.Text = "Density"
         '
         'PictureBox8
@@ -535,7 +535,7 @@ Partial Class Expert
         Me.Clouds.Location = New System.Drawing.Point(12, 19)
         Me.Clouds.Name = "Clouds"
         Me.Clouds.Size = New System.Drawing.Size(59, 17)
-        Me.Clouds.TabIndex = 21
+        Me.Clouds.TabIndex = 17
         Me.Clouds.Text = "Enable"
         Me.ToolTip1.SetToolTip(Me.Clouds, "The original Second Life clouds")
         Me.Clouds.UseVisualStyleBackColor = True
@@ -560,7 +560,7 @@ Partial Class Expert
         Me.PhysicsSeparate.Location = New System.Drawing.Point(6, 92)
         Me.PhysicsSeparate.Name = "PhysicsSeparate"
         Me.PhysicsSeparate.Size = New System.Drawing.Size(180, 17)
-        Me.PhysicsSeparate.TabIndex = 37
+        Me.PhysicsSeparate.TabIndex = 13
         Me.PhysicsSeparate.TabStop = True
         Me.PhysicsSeparate.Text = "Bullet physics in separate thread."
         Me.ToolTip1.SetToolTip(Me.PhysicsSeparate, "(Default)  Runs Bullet physics in a thread where it will not be affected by scrip" &
@@ -573,7 +573,7 @@ Partial Class Expert
         Me.PhysicsNone.Location = New System.Drawing.Point(6, 19)
         Me.PhysicsNone.Name = "PhysicsNone"
         Me.PhysicsNone.Size = New System.Drawing.Size(51, 17)
-        Me.PhysicsNone.TabIndex = 33
+        Me.PhysicsNone.TabIndex = 9
         Me.PhysicsNone.TabStop = True
         Me.PhysicsNone.Text = "None"
         Me.ToolTip1.SetToolTip(Me.PhysicsNone, "No physics at all. Useful for troubleshooting.")
@@ -585,7 +585,7 @@ Partial Class Expert
         Me.PhysicsubODE.Location = New System.Drawing.Point(6, 56)
         Me.PhysicsubODE.Name = "PhysicsubODE"
         Me.PhysicsubODE.Size = New System.Drawing.Size(153, 17)
-        Me.PhysicsubODE.TabIndex = 35
+        Me.PhysicsubODE.TabIndex = 11
         Me.PhysicsubODE.TabStop = True
         Me.PhysicsubODE.Text = "Ubit Open Dynamic Engine"
         Me.ToolTip1.SetToolTip(Me.PhysicsubODE, "A more-SL-like physics engine with more compatible vehicles and sim crossings.")
@@ -597,7 +597,7 @@ Partial Class Expert
         Me.PhysicsBullet.Location = New System.Drawing.Point(6, 74)
         Me.PhysicsBullet.Name = "PhysicsBullet"
         Me.PhysicsBullet.Size = New System.Drawing.Size(90, 17)
-        Me.PhysicsBullet.TabIndex = 136
+        Me.PhysicsBullet.TabIndex = 12
         Me.PhysicsBullet.TabStop = True
         Me.PhysicsBullet.Text = "Bullet Physics"
         Me.ToolTip1.SetToolTip(Me.PhysicsBullet, "Academy Award-winning physics engine")
@@ -609,7 +609,7 @@ Partial Class Expert
         Me.PhysicsODE.Location = New System.Drawing.Point(6, 38)
         Me.PhysicsODE.Name = "PhysicsODE"
         Me.PhysicsODE.Size = New System.Drawing.Size(136, 17)
-        Me.PhysicsODE.TabIndex = 34
+        Me.PhysicsODE.TabIndex = 10
         Me.PhysicsODE.TabStop = True
         Me.PhysicsODE.Text = "Open Dynamics Engine"
         Me.ToolTip1.SetToolTip(Me.PhysicsODE, "OpenDynamicsEngine was the previous default physics engine in OpenSimulator 0.7.6" &
@@ -641,7 +641,7 @@ Partial Class Expert
         Me.RobustServer.Location = New System.Drawing.Point(119, 25)
         Me.RobustServer.Name = "RobustServer"
         Me.RobustServer.Size = New System.Drawing.Size(107, 20)
-        Me.RobustServer.TabIndex = 39
+        Me.RobustServer.TabIndex = 37
         '
         'Label16
         '
@@ -675,14 +675,14 @@ Partial Class Expert
         Me.RobustDbPort.Location = New System.Drawing.Point(123, 129)
         Me.RobustDbPort.Name = "RobustDbPort"
         Me.RobustDbPort.Size = New System.Drawing.Size(47, 20)
-        Me.RobustDbPort.TabIndex = 33
+        Me.RobustDbPort.TabIndex = 41
         '
         'RobustDbName
         '
         Me.RobustDbName.Location = New System.Drawing.Point(119, 51)
         Me.RobustDbName.Name = "RobustDbName"
         Me.RobustDbName.Size = New System.Drawing.Size(107, 20)
-        Me.RobustDbName.TabIndex = 36
+        Me.RobustDbName.TabIndex = 38
         '
         'Label15
         '
@@ -707,7 +707,7 @@ Partial Class Expert
         Me.RobustDBPassword.Location = New System.Drawing.Point(121, 103)
         Me.RobustDBPassword.Name = "RobustDBPassword"
         Me.RobustDBPassword.Size = New System.Drawing.Size(107, 20)
-        Me.RobustDBPassword.TabIndex = 37
+        Me.RobustDBPassword.TabIndex = 40
         Me.RobustDBPassword.UseSystemPasswordChar = True
         '
         'RobustDBUsername
@@ -715,14 +715,14 @@ Partial Class Expert
         Me.RobustDBUsername.Location = New System.Drawing.Point(121, 77)
         Me.RobustDBUsername.Name = "RobustDBUsername"
         Me.RobustDBUsername.Size = New System.Drawing.Size(107, 20)
-        Me.RobustDBUsername.TabIndex = 36
+        Me.RobustDBUsername.TabIndex = 39
         '
         'AdminFirst
         '
         Me.AdminFirst.Location = New System.Drawing.Point(86, 44)
         Me.AdminFirst.Name = "AdminFirst"
         Me.AdminFirst.Size = New System.Drawing.Size(100, 20)
-        Me.AdminFirst.TabIndex = 14
+        Me.AdminFirst.TabIndex = 27
         Me.ToolTip1.SetToolTip(Me.AdminFirst, "The first name of the Wifi Administrator.  Default is Wifi")
         '
         'AdminLast
@@ -730,7 +730,7 @@ Partial Class Expert
         Me.AdminLast.Location = New System.Drawing.Point(86, 66)
         Me.AdminLast.Name = "AdminLast"
         Me.AdminLast.Size = New System.Drawing.Size(100, 20)
-        Me.AdminLast.TabIndex = 15
+        Me.AdminLast.TabIndex = 28
         Me.ToolTip1.SetToolTip(Me.AdminLast, "The last name of the Wifi Administrator.  Default is Admin")
         '
         'AccountConfirmationRequired
@@ -739,7 +739,7 @@ Partial Class Expert
         Me.AccountConfirmationRequired.Location = New System.Drawing.Point(21, 139)
         Me.AccountConfirmationRequired.Name = "AccountConfirmationRequired"
         Me.AccountConfirmationRequired.Size = New System.Drawing.Size(175, 17)
-        Me.AccountConfirmationRequired.TabIndex = 18
+        Me.AccountConfirmationRequired.TabIndex = 31
         Me.AccountConfirmationRequired.Text = "Confirmation required to Log in?"
         Me.ToolTip1.SetToolTip(Me.AccountConfirmationRequired, "You must log in as Wifi Admin and enabled new users before they can log in.")
         Me.AccountConfirmationRequired.UseVisualStyleBackColor = True
@@ -749,7 +749,7 @@ Partial Class Expert
         Me.AdminEmail.Location = New System.Drawing.Point(86, 112)
         Me.AdminEmail.Name = "AdminEmail"
         Me.AdminEmail.Size = New System.Drawing.Size(100, 20)
-        Me.AdminEmail.TabIndex = 17
+        Me.AdminEmail.TabIndex = 30
         Me.ToolTip1.SetToolTip(Me.AdminEmail, "The email address to send requests for an account to.")
         '
         'WifiEnabled
@@ -758,7 +758,7 @@ Partial Class Expert
         Me.WifiEnabled.Location = New System.Drawing.Point(26, 19)
         Me.WifiEnabled.Name = "WifiEnabled"
         Me.WifiEnabled.Size = New System.Drawing.Size(65, 17)
-        Me.WifiEnabled.TabIndex = 22
+        Me.WifiEnabled.TabIndex = 26
         Me.WifiEnabled.Text = "Enabled"
         Me.ToolTip1.SetToolTip(Me.WifiEnabled, "A Web UI for creating and managing User Accounts")
         Me.WifiEnabled.UseVisualStyleBackColor = True
@@ -779,7 +779,7 @@ Partial Class Expert
         Me.GDPRCheckBox.Location = New System.Drawing.Point(6, 19)
         Me.GDPRCheckBox.Name = "GDPRCheckBox"
         Me.GDPRCheckBox.Size = New System.Drawing.Size(162, 17)
-        Me.GDPRCheckBox.TabIndex = 1863
+        Me.GDPRCheckBox.TabIndex = 7
         Me.GDPRCheckBox.Text = "Publish Grid to Hyperica.com"
         Me.ToolTip1.SetToolTip(Me.GDPRCheckBox, "Displays your grid information publicly on Hyperica.com. Click to agree to expose" &
         " this information to the public on www.Outworldz.com/hyperica and in-world on te" &
@@ -802,7 +802,7 @@ Partial Class Expert
         Me.EnableMaxPrims.Location = New System.Drawing.Point(12, 19)
         Me.EnableMaxPrims.Name = "EnableMaxPrims"
         Me.EnableMaxPrims.Size = New System.Drawing.Size(144, 17)
-        Me.EnableMaxPrims.TabIndex = 21
+        Me.EnableMaxPrims.TabIndex = 19
         Me.EnableMaxPrims.Text = "Enable MAXPRIMS limits"
         Me.ToolTip1.SetToolTip(Me.EnableMaxPrims, "The original Second Life clouds")
         Me.EnableMaxPrims.UseVisualStyleBackColor = True
@@ -812,7 +812,7 @@ Partial Class Expert
         Me.AutoRestartBox.Location = New System.Drawing.Point(124, 80)
         Me.AutoRestartBox.Name = "AutoRestartBox"
         Me.AutoRestartBox.Size = New System.Drawing.Size(57, 20)
-        Me.AutoRestartBox.TabIndex = 1861
+        Me.AutoRestartBox.TabIndex = 47
         Me.ToolTip1.SetToolTip(Me.AutoRestartBox, "Minutes to Autorestart: default 240 (4 hour).  Set to to disable auto restart of " &
         "region")
         '
@@ -832,7 +832,7 @@ Partial Class Expert
         Me.DataSnapshotCheckBox.Location = New System.Drawing.Point(14, 148)
         Me.DataSnapshotCheckBox.Name = "DataSnapshotCheckBox"
         Me.DataSnapshotCheckBox.Size = New System.Drawing.Size(176, 17)
-        Me.DataSnapshotCheckBox.TabIndex = 1866
+        Me.DataSnapshotCheckBox.TabIndex = 8
         Me.DataSnapshotCheckBox.Text = "Publish Items marked for search"
         Me.ToolTip1.SetToolTip(Me.DataSnapshotCheckBox, "Publish Items marked as 'Show in Search' to Hyperica.com")
         Me.DataSnapshotCheckBox.UseVisualStyleBackColor = True
@@ -843,7 +843,7 @@ Partial Class Expert
         Me.LSLCheckbox.Location = New System.Drawing.Point(12, 19)
         Me.LSLCheckbox.Name = "LSLCheckbox"
         Me.LSLCheckbox.Size = New System.Drawing.Size(59, 17)
-        Me.LSLCheckbox.TabIndex = 21
+        Me.LSLCheckbox.TabIndex = 210
         Me.LSLCheckbox.Text = "Enable"
         Me.ToolTip1.SetToolTip(Me.LSLCheckbox, "Click to enable LSL to talk to port 80 on this server.")
         Me.LSLCheckbox.UseVisualStyleBackColor = True
@@ -853,7 +853,7 @@ Partial Class Expert
         Me.RegionMySqlPassword.Location = New System.Drawing.Point(120, 81)
         Me.RegionMySqlPassword.Name = "RegionMySqlPassword"
         Me.RegionMySqlPassword.Size = New System.Drawing.Size(107, 20)
-        Me.RegionMySqlPassword.TabIndex = 32
+        Me.RegionMySqlPassword.TabIndex = 44
         Me.RegionMySqlPassword.UseSystemPasswordChar = True
         '
         'Label21
@@ -870,14 +870,14 @@ Partial Class Expert
         Me.RegionDBUsername.Location = New System.Drawing.Point(120, 52)
         Me.RegionDBUsername.Name = "RegionDBUsername"
         Me.RegionDBUsername.Size = New System.Drawing.Size(107, 20)
-        Me.RegionDBUsername.TabIndex = 31
+        Me.RegionDBUsername.TabIndex = 43
         '
         'RegionDbName
         '
         Me.RegionDbName.Location = New System.Drawing.Point(120, 26)
         Me.RegionDbName.Name = "RegionDbName"
         Me.RegionDbName.Size = New System.Drawing.Size(107, 20)
-        Me.RegionDbName.TabIndex = 30
+        Me.RegionDbName.TabIndex = 42
         '
         'Label20
         '
@@ -961,7 +961,7 @@ Partial Class Expert
         Me.BootStart.Location = New System.Drawing.Point(122, 34)
         Me.BootStart.Name = "BootStart"
         Me.BootStart.Size = New System.Drawing.Size(59, 17)
-        Me.BootStart.TabIndex = 22
+        Me.BootStart.TabIndex = 46
         Me.BootStart.Text = "Enable"
         Me.BootStart.UseVisualStyleBackColor = True
         '
@@ -971,7 +971,7 @@ Partial Class Expert
         Me.AutoStartCheckbox.Location = New System.Drawing.Point(13, 34)
         Me.AutoStartCheckbox.Name = "AutoStartCheckbox"
         Me.AutoStartCheckbox.Size = New System.Drawing.Size(59, 17)
-        Me.AutoStartCheckbox.TabIndex = 21
+        Me.AutoStartCheckbox.TabIndex = 45
         Me.AutoStartCheckbox.Text = "Enable"
         Me.AutoStartCheckbox.UseVisualStyleBackColor = True
         '
@@ -980,7 +980,7 @@ Partial Class Expert
         Me.AdminPassword.Location = New System.Drawing.Point(86, 90)
         Me.AdminPassword.Name = "AdminPassword"
         Me.AdminPassword.Size = New System.Drawing.Size(100, 20)
-        Me.AdminPassword.TabIndex = 16
+        Me.AdminPassword.TabIndex = 29
         Me.AdminPassword.UseSystemPasswordChar = True
         '
         'Label10
@@ -1061,7 +1061,7 @@ Partial Class Expert
         Me.SmtpPort.Location = New System.Drawing.Point(96, 107)
         Me.SmtpPort.Name = "SmtpPort"
         Me.SmtpPort.Size = New System.Drawing.Size(33, 20)
-        Me.SmtpPort.TabIndex = 1869
+        Me.SmtpPort.TabIndex = 36
         '
         'Label24
         '
@@ -1077,7 +1077,7 @@ Partial Class Expert
         Me.SmtpHost.Location = New System.Drawing.Point(97, 81)
         Me.SmtpHost.Name = "SmtpHost"
         Me.SmtpHost.Size = New System.Drawing.Size(95, 20)
-        Me.SmtpHost.TabIndex = 1867
+        Me.SmtpHost.TabIndex = 186735
         '
         'Label23
         '
@@ -1093,7 +1093,7 @@ Partial Class Expert
         Me.GmailPassword.Location = New System.Drawing.Point(95, 55)
         Me.GmailPassword.Name = "GmailPassword"
         Me.GmailPassword.Size = New System.Drawing.Size(95, 20)
-        Me.GmailPassword.TabIndex = 1864
+        Me.GmailPassword.TabIndex = 34
         Me.GmailPassword.UseSystemPasswordChar = True
         '
         'Label18
@@ -1119,7 +1119,7 @@ Partial Class Expert
         Me.GmailUsername.Location = New System.Drawing.Point(95, 30)
         Me.GmailUsername.Name = "GmailUsername"
         Me.GmailUsername.Size = New System.Drawing.Size(95, 20)
-        Me.GmailUsername.TabIndex = 1863
+        Me.GmailUsername.TabIndex = 33
         '
         'PictureBox9
         '
@@ -1166,8 +1166,8 @@ Partial Class Expert
         '
         'Expert
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.ClientSize = New System.Drawing.Size(900, 547)
         Me.Controls.Add(Me.GroupBox8)
         Me.Controls.Add(Me.LimitsBox)
