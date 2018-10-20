@@ -1,4 +1,8 @@
-﻿V2.46 
+﻿V2.47 
+Rename of region has better err checking
+Tabindexes set throughout
+
+V2.46 
 Could not save a region name due to a bad variable name
 
 V2.45

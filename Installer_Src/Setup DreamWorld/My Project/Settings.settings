@@ -245,5 +245,8 @@
     <Setting Name="SimName" Type="System.String" Scope="User">
       <Value Profile="(Default)">DreamGrid</Value>
     </Setting>
+    <Setting Name="EnableWindowsFormsHighDpiAutoResizing" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
