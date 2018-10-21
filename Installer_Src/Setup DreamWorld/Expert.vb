@@ -131,9 +131,16 @@ Public Class Expert
 
     Private Sub FirstRegionPort_TextChanged(sender As Object, e As EventArgs) Handles FirstRegionPort.TextChanged
         If initted Then
+
+            If Form1.OpensimIsRunning() Then
+                MsgBox("Cannot change Ports while Opensimulator is running. Please stop the grid, and then change the starting port.")
+                Return
+            End If
+
             Form1.MySetting.FirstRegionPort() = FirstRegionPort.Text
             Form1.MySetting.SaveSettings()
             Form1.RegionClass.UpdateAllRegionPorts()
+
         End If
     End Sub
 

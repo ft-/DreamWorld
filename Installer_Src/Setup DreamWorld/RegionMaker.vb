@@ -810,6 +810,11 @@ Public Class RegionMaker
     ''' </summary>
     Public Sub UpdateAllRegionPorts()
 
+        If Form1.OpensimIsRunning Then
+            Form1.Log("Trying to update all region ports while running')")
+            Return
+        End If
+
         Dim Portnumber As Integer = CType(Form1.MySetting.FirstRegionPort(), Integer)
         For Each RegionNum As Integer In Form1.RegionClass.RegionNumbers
             Dim simName = Form1.RegionClass.RegionName(RegionNum)
@@ -818,8 +823,8 @@ Public Class RegionMaker
             Form1.RegionClass.RegionPort(RegionNum) = Portnumber
             ' Self setting Region Ports
             Form1.gMaxPortUsed = Portnumber
-            Portnumber = Portnumber + 1
             Form1.MySetting.SaveOtherINI()
+            Portnumber = Portnumber + 1
         Next
 
     End Sub

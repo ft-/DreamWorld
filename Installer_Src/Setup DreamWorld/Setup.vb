@@ -34,7 +34,7 @@ Public Class Form1
 
 #Region "Declarations"
 
-    Dim gMyVersion As String = "2.47"
+    Dim gMyVersion As String = "2.48"
     Dim gSimVersion As String = "0.9.1"
 
     ' edit this to compile and run in the correct folder root
@@ -395,7 +395,6 @@ Public Class Form1
 
         MySetting.Init(MyFolder)
 
-
         MySetting.Myfolder = MyFolder
 
         ' Save a random machine ID - we don't want any data to be sent that's personal or identifiable,  but it needs to be unique
@@ -419,13 +418,12 @@ Public Class Form1
             Me.Location = New Point(MySetting.MyX, MySetting.MyY)
         End If
 
-        ' add 10 minutes to allow time to auto backup and then restart
+        ' add 30 minutes to allow time to auto backup and then restart
         Dim BTime As Int16 = CType(MySetting.AutobackupInterval, Int16)
         If MySetting.AutoRestartInterval > 0 And MySetting.AutoRestartInterval < BTime Then
             MySetting.AutoRestartInterval = BTime + 30
             Print("Upping AutoRestart Time to " + BTime.ToString + " + 30 Minutes so backups have time to run.")
         End If
-
 
 
         TextBox1.BackColor = Me.BackColor
@@ -505,6 +503,7 @@ Public Class Form1
 
         If Not SetIniData() Then Return
 
+        RegionClass.UpdateAllRegionPorts() ' must be after SetIniData
 
         mnuSettings.Visible = True
         SetIAROARContent() ' load IAR and OAR web content
@@ -575,6 +574,8 @@ Public Class Form1
         ProgressBar1.Value = 0
         ProgressBar1.Visible = True
         Buttons(BusyButton)
+
+        RegionClass.UpdateAllRegionPorts() ' must be donbe before we are running
 
         OpensimIsRunning() = True
 
@@ -752,9 +753,8 @@ Public Class Form1
                 Sleep(1000)
                 For Each X In RegionClass.RegionNumbers
                     If RegionClass.ShuttingDown(X) = True And OpensimIsRunning() Then
-
                         PrintFast("Checking " + RegionClass.RegionName(X))
-                        If CheckPort("127.0.0.1", RegionClass.RegionPort(X)) Then
+                        If CheckPort("127.0.0.1", RegionClass.GroupPort(X)) Then
                             CountisRunning = CountisRunning + 1
                         Else
                             RegionClass.ShuttingDown(X) = False
@@ -1478,11 +1478,9 @@ Public Class Form1
             Dim simName = RegionClass.RegionName(RegionNum)
 
             MySetting.LoadOtherIni(RegionClass.RegionPath(RegionNum), ";")
-            MySetting.SetOtherIni(simName, "InternalPort", FirstPort.ToString)
-            RegionClass.RegionPort(RegionNum) = FirstPort
-            ' Self setting Region Ports
-            gMaxPortUsed = FirstPort
-            FirstPort = FirstPort + 1
+            MySetting.SetOtherIni(simName, "InternalPort", RegionClass.RegionPort(RegionNum))
+
+
 
             MySetting.SetOtherIni(simName, "ExternalHostName", Convert.ToString(MySetting.PublicIP))
 
@@ -3166,7 +3164,7 @@ Public Class Form1
             Return True
         End If
 
-        Dim isRegionRunning = CheckPort("127.0.0.1", RegionClass.RegionPort(n))
+        Dim isRegionRunning = CheckPort("127.0.0.1", RegionClass.GroupPort(n))
         If isRegionRunning Then
             Print(BootName + " is already running")
             Return True
