@@ -124,7 +124,7 @@ Public Class RegionList
         ' Create columns for the items and subitems.
         ' Width of -2 indicates auto-size.
         ListView1.Columns.Add("Enabled", 120, HorizontalAlignment.Center)
-        ListView1.Columns.Add("Group", 100, HorizontalAlignment.Center)
+        ListView1.Columns.Add("DOS Box", 100, HorizontalAlignment.Center)
         ListView1.Columns.Add("Agents", 60, HorizontalAlignment.Center)
         ListView1.Columns.Add("Status", 60, HorizontalAlignment.Center)
 

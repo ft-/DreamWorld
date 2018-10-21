@@ -1,7 +1,6 @@
 *.pid
 Outworldzfiles\Photo.png
 UDProxy
-/Signed_Binaries/*
 /OutworldzFiles/mysql/data/*.err
 /OutworldzFiles/Opensim/bin/addin-db-002/*
 LocalUserStatistics.db
@@ -12,6 +11,7 @@ OpenSim.log
 Init.txt
 Outworldz.log
 Http.log
+
 OutworldzFiles/opensim/bin/assetcache/*
 OutworldzFiles/opensim/bin/maptiles/*
 OutworldzFiles/opensim/bin/DataSnapshot/*
@@ -23,7 +23,7 @@ OutworldzFiles/opensim/bin/bakes/*
 Outworldzfiles/opensim/bin/Robust.HG.ini.bak
 Outworldzfiles/Settings.ini
 Outworldzfiles/Settings.bak
-Installer_Src/Setup Dreamworld/bin
+Installer_Src/Setup Dreamworld/bin/*
 **/teleports.htm
 
 Thumbs.db

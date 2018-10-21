@@ -1,10 +1,14 @@
+V2.48
+Startup sometimes checked the wrong region port when starting an offline region.
+
 V2.47
-Create a New Group Name when installing a new region
-Rename of region has better err checking
-Tabindexes & Icons on forms
-Skip UPnP for Icecast if disabled (speedup boot)
-Set INI for all regions, even if disabled, so you can start them at any time
-Upnp Manager try can catch on bad routers
+You can create a New Group Name when installing a new region, or select an existing Group Name
+Rename of region could throw an error on a blank name
+Forms have Tab key reordered
+Icons on all forms
+Skip UPnP for Icecast if disabled (minor speedup of boot time)
+Set INI for all regions, even if disabled, so you can start them at any time, add +1 to new regions ports
+Upnp Manager try-catch on bad routers
 
 V2.46 
 Could not save a region name due to a bad variable name

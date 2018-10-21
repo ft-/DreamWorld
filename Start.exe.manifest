@@ -74,7 +74,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>sW1Zozh/W3RiNM/GIKvgWZi7uxqhRgHOTMHeT408OyA=</dsig:DigestValue>
+        <dsig:DigestValue>BwAj4G3G/0xImW6tz9wN0iakAKsxrJMdT7Sgc6mpREM=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -115,14 +115,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Start.exe" size="30885376">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Start.exe" size="30885888">
       <assemblyIdentity name="Start" version="2.0.1.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>Yje2uHSI4kM7Mdj9ntPaLzJCpJvwCWQYMkxDr0+RwE8=</dsig:DigestValue>
+        <dsig:DigestValue>BGWPoynNof0D1pe14dyJ0POxCEw2LYLjdQGZvooVdMU=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
