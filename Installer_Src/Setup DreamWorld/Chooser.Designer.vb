@@ -57,7 +57,7 @@ Partial Class Choice
         'Button1
         '
         Me.Button1.Location = New System.Drawing.Point(86, 195)
-        Me.Button1.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.Button1.Margin = New System.Windows.Forms.Padding(2)
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(56, 24)
         Me.Button1.TabIndex = 3
@@ -66,8 +66,8 @@ Partial Class Choice
         '
         'Choice
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.ClientSize = New System.Drawing.Size(217, 225)
         Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.DataGridView)

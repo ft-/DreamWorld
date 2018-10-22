@@ -1,3 +1,6 @@
+V2.49
+Some forms not set to Autoscale as DPI for high rez monitors.
+
 V2.48
 Startup sometimes checked the wrong region port when starting an offline region.
 
