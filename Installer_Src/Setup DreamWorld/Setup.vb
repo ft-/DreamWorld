@@ -1478,10 +1478,7 @@ Public Class Form1
             Dim simName = RegionClass.RegionName(RegionNum)
 
             MySetting.LoadOtherIni(RegionClass.RegionPath(RegionNum), ";")
-            MySetting.SetOtherIni(simName, "InternalPort", RegionClass.RegionPort(RegionNum))
-
-
-
+            MySetting.SetOtherIni(simName, "InternalPort", RegionClass.RegionPort(RegionNum).ToString)
             MySetting.SetOtherIni(simName, "ExternalHostName", Convert.ToString(MySetting.PublicIP))
 
             ' not a standard INI, only use by the Dreamers
