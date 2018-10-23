@@ -25,7 +25,7 @@ Partial Class Choice
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Choice))
         Me.DataGridView = New System.Windows.Forms.DataGridView()
         Me.Group = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.Button1 = New System.Windows.Forms.Button()
+        Me.OKButton1 = New System.Windows.Forms.Button()
         CType(Me.DataGridView, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -54,22 +54,22 @@ Partial Class Choice
         Me.Group.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
         Me.Group.ToolTipText = "Click to choose a group"
         '
-        'Button1
+        'OKButton1
         '
-        Me.Button1.Location = New System.Drawing.Point(86, 195)
-        Me.Button1.Margin = New System.Windows.Forms.Padding(2)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(56, 24)
-        Me.Button1.TabIndex = 3
-        Me.Button1.Text = "OK"
-        Me.Button1.UseVisualStyleBackColor = True
+        Me.OKButton1.Location = New System.Drawing.Point(86, 195)
+        Me.OKButton1.Margin = New System.Windows.Forms.Padding(2)
+        Me.OKButton1.Name = "OKButton1"
+        Me.OKButton1.Size = New System.Drawing.Size(56, 24)
+        Me.OKButton1.TabIndex = 3
+        Me.OKButton1.Text = "OK"
+        Me.OKButton1.UseVisualStyleBackColor = True
         '
         'Choice
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.ClientSize = New System.Drawing.Size(217, 225)
-        Me.Controls.Add(Me.Button1)
+        Me.Controls.Add(Me.OKButton1)
         Me.Controls.Add(Me.DataGridView)
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Name = "Choice"
@@ -80,5 +80,5 @@ Partial Class Choice
     End Sub
     Friend WithEvents DataGridView As DataGridView
     Friend WithEvents Group As DataGridViewTextBoxColumn
-    Friend WithEvents Button1 As Button
+    Friend WithEvents OKButton1 As Button
 End Class
