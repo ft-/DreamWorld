@@ -5,7 +5,7 @@ Imports System.ComponentModel
 Public Class FormRegion
 
 #Region "Declarations"
-    Dim Big As Boolean = False
+
     Dim n As Integer
     Dim oldname As String = ""
     Dim initted As Boolean = False ' needed a flag to see if we are initted as the dialogs change on start.
@@ -29,9 +29,7 @@ Public Class FormRegion
 
     Public Sub Init(Name As String)
 
-        Me.Size = New System.Drawing.Size(275, 335)
-        Advanced.Visible = False
-        Big = True
+
         Me.Focus()
 
         RegionClass = RegionMaker.Instance(Form1.MysqlConn)
@@ -564,19 +562,6 @@ Public Class FormRegion
     End Function
 
 
-    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
-        '663, 613
-        If Big Then
-            Me.Size = New System.Drawing.Size(716, 555)
-            Advanced.Visible = True
-            Big = False
-        Else
-            Me.Size = New System.Drawing.Size(275, 290)
-            Advanced.Visible = False
-            Big = True
-        End If
-    End Sub
-
     Private Sub DeleteButton_Click(sender As Object, e As EventArgs) Handles DeleteButton.Click
 
         Dim msg = MsgBox("Are you sure you want To delete this region? ", vbYesNo, "Delete?")
@@ -938,6 +923,7 @@ Public Class FormRegion
         End If
         If initted Then changed = True
     End Sub
+
 
 
 #End Region
