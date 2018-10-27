@@ -34,7 +34,7 @@ Public Class Form1
 
 #Region "Declarations"
 
-    Dim gMyVersion As String = "2.48"
+    Dim gMyVersion As String = "2.50"
     Dim gSimVersion As String = "0.9.1"
 
     ' edit this to compile and run in the correct folder root
@@ -1479,9 +1479,6 @@ Public Class Form1
 
             MySetting.LoadOtherIni(RegionClass.RegionPath(RegionNum), ";")
             MySetting.SetOtherIni(simName, "InternalPort", RegionClass.RegionPort(RegionNum).ToString)
-
-
-
             MySetting.SetOtherIni(simName, "ExternalHostName", Convert.ToString(MySetting.PublicIP))
 
             ' not a standard INI, only use by the Dreamers

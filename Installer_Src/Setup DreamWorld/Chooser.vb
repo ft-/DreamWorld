@@ -7,6 +7,9 @@
         Dim columnHeaderStyle As New DataGridViewCellStyle
         columnHeaderStyle.Font = New Font("Verdana", 10, FontStyle.Bold)
         DataGridView.ColumnHeadersDefaultCellStyle = columnHeaderStyle
+        OKButton1.Enabled = False
+        DataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect
+        DataGridView.MultiSelect = False
 
         DataGridView.Text = "Select from..."
 
@@ -51,7 +54,7 @@
 
     End Sub
 
-    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles OKButton1.Click
 
         Dim selectedRowCount = DataGridView.Rows.GetRowCount(DataGridViewElementStates.Selected)
         If selectedRowCount > 1 Then
@@ -62,5 +65,15 @@
         End If
     End Sub
 
+    Private Sub RowClick(ByVal sender As Object, ByVal e As DataGridViewCellEventArgs) Handles DataGridView.CellDoubleClick
 
+        If e.RowIndex = -1 Then
+            Return
+        End If
+        OKButton1.Enabled = True
+        DialogResult = DialogResult.OK
+    End Sub
+    Private Sub CellClick(ByVal sender As Object, ByVal e As DataGridViewCellEventArgs) Handles DataGridView.CellClick
+        OKButton1.Enabled = True
+    End Sub
 End Class

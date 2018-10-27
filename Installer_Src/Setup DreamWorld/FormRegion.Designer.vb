@@ -48,6 +48,8 @@ Partial Class FormRegion
         Me.BirdsCheckBox = New System.Windows.Forms.CheckBox()
         Me.TidesCheckbox = New System.Windows.Forms.CheckBox()
         Me.TPCheckBox1 = New System.Windows.Forms.CheckBox()
+        Me.MapHelp = New System.Windows.Forms.PictureBox()
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.Advanced = New System.Windows.Forms.GroupBox()
         Me.Label6 = New System.Windows.Forms.Label()
         Me.Label4 = New System.Windows.Forms.Label()
@@ -62,7 +64,6 @@ Partial Class FormRegion
         Me.Button1 = New System.Windows.Forms.Button()
         Me.DeleteButton = New System.Windows.Forms.Button()
         Me.EnabledCheckBox = New System.Windows.Forms.CheckBox()
-        Me.Button2 = New System.Windows.Forms.Button()
         Me.GroupBox6 = New System.Windows.Forms.GroupBox()
         Me.GroupBox7 = New System.Windows.Forms.GroupBox()
         Me.Label13 = New System.Windows.Forms.Label()
@@ -78,7 +79,6 @@ Partial Class FormRegion
         Me.RegionGod = New System.Windows.Forms.CheckBox()
         Me.MapBox = New System.Windows.Forms.GroupBox()
         Me.Maps_Use_Default = New System.Windows.Forms.RadioButton()
-        Me.MapHelp = New System.Windows.Forms.PictureBox()
         Me.MapPicture = New System.Windows.Forms.PictureBox()
         Me.MapNone = New System.Windows.Forms.RadioButton()
         Me.MapSimple = New System.Windows.Forms.RadioButton()
@@ -93,6 +93,9 @@ Partial Class FormRegion
         Me.PhysicsubODE = New System.Windows.Forms.RadioButton()
         Me.PhysicsBullet = New System.Windows.Forms.RadioButton()
         Me.PhysicsODE = New System.Windows.Forms.RadioButton()
+        Me.PictureBox2 = New System.Windows.Forms.PictureBox()
+        CType(Me.MapHelp, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Advanced.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox6.SuspendLayout()
@@ -101,9 +104,9 @@ Partial Class FormRegion
         Me.GroupBox4.SuspendLayout()
         CType(Me.GodHelp, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.MapBox.SuspendLayout()
-        CType(Me.MapHelp, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.MapPicture, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox1.SuspendLayout()
+        CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'RegionPort
@@ -205,7 +208,7 @@ Partial Class FormRegion
         '
         'MaxAgents
         '
-        Me.MaxAgents.Location = New System.Drawing.Point(146, 212)
+        Me.MaxAgents.Location = New System.Drawing.Point(181, 208)
         Me.MaxAgents.Name = "MaxAgents"
         Me.MaxAgents.Size = New System.Drawing.Size(40, 20)
         Me.MaxAgents.TabIndex = 20
@@ -215,63 +218,65 @@ Partial Class FormRegion
         'Label5
         '
         Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(32, 114)
+        Me.Label5.Location = New System.Drawing.Point(6, 114)
         Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(111, 13)
+        Me.Label5.Size = New System.Drawing.Size(137, 13)
         Me.Label5.TabIndex = 30
-        Me.Label5.Text = "Nonphysical Prim Max"
-        Me.ToolTip1.SetToolTip(Me.Label5, "You cannot make a regular prim bigger than this.")
+        Me.Label5.Text = "Nonphysical Prim Max Size "
+        Me.ToolTip1.SetToolTip(Me.Label5, "As big as 1500 meters with Singularity. You cannot make a regular prim bigger tha" &
+        "n this.")
         '
         'Label9
         '
         Me.Label9.AutoSize = True
-        Me.Label9.Location = New System.Drawing.Point(48, 137)
+        Me.Label9.Location = New System.Drawing.Point(9, 138)
         Me.Label9.Name = "Label9"
-        Me.Label9.Size = New System.Drawing.Size(92, 13)
+        Me.Label9.Size = New System.Drawing.Size(115, 13)
         Me.Label9.TabIndex = 31
-        Me.Label9.Text = "Physical Prim Max"
+        Me.Label9.Text = "Physical Prim Max Size"
         Me.ToolTip1.SetToolTip(Me.Label9, "You cannot make a physical prim bigger than this.")
         '
         'PhysicalPrimMax
         '
-        Me.PhysicalPrimMax.Location = New System.Drawing.Point(146, 134)
+        Me.PhysicalPrimMax.Location = New System.Drawing.Point(181, 133)
         Me.PhysicalPrimMax.Name = "PhysicalPrimMax"
         Me.PhysicalPrimMax.Size = New System.Drawing.Size(40, 20)
         Me.PhysicalPrimMax.TabIndex = 17
-        Me.ToolTip1.SetToolTip(Me.PhysicalPrimMax, "You cannot make a physical prim bigger than this.")
+        Me.ToolTip1.SetToolTip(Me.PhysicalPrimMax, "You cannot make a prim go physical that is larger than this.")
         '
         'Label10
         '
         Me.Label10.AutoSize = True
-        Me.Label10.Location = New System.Drawing.Point(61, 163)
+        Me.Label10.Location = New System.Drawing.Point(9, 163)
         Me.Label10.Name = "Label10"
-        Me.Label10.Size = New System.Drawing.Size(82, 13)
+        Me.Label10.Size = New System.Drawing.Size(88, 13)
         Me.Label10.TabIndex = 34
-        Me.Label10.Text = "Clamp Prim Size"
+        Me.Label10.Text = "Clamp Prim Size?"
         Me.ToolTip1.SetToolTip(Me.Label10, "Clamp Prim Size is an option to ensure no prim can exceed the set size.")
         '
         'Label11
         '
         Me.Label11.AutoSize = True
-        Me.Label11.Location = New System.Drawing.Point(85, 189)
+        Me.Label11.Location = New System.Drawing.Point(9, 186)
         Me.Label11.Name = "Label11"
-        Me.Label11.Size = New System.Drawing.Size(55, 13)
+        Me.Label11.Size = New System.Drawing.Size(160, 13)
         Me.Label11.TabIndex = 36
-        Me.Label11.Text = "Max Prims"
+        Me.Label11.Text = "Max Number of Prims in a Parcel"
         Me.ToolTip1.SetToolTip(Me.Label11, "Viewer stops counting at 45,000")
         '
         'MaxPrims
         '
-        Me.MaxPrims.Location = New System.Drawing.Point(146, 186)
+        Me.MaxPrims.Location = New System.Drawing.Point(181, 179)
         Me.MaxPrims.Name = "MaxPrims"
         Me.MaxPrims.Size = New System.Drawing.Size(40, 20)
         Me.MaxPrims.TabIndex = 19
-        Me.ToolTip1.SetToolTip(Me.MaxPrims, "Not what you think it Is.  Only used To tell scripts the max size allowed. Id Not" &
-        " enforced by Opensim.  Viewer Stop at 45, 0, Opensim does not!")
+        Me.ToolTip1.SetToolTip(Me.MaxPrims, "Not normally enforced by Opensim.  Viewer will nto show more than 45K. Setting th" &
+        "is here and enabling this in Expert settings will enforce the limit and may  ret" &
+        "urn prims!")
         '
         'NonphysicalPrimMax
         '
-        Me.NonphysicalPrimMax.Location = New System.Drawing.Point(146, 107)
+        Me.NonphysicalPrimMax.Location = New System.Drawing.Point(181, 107)
         Me.NonphysicalPrimMax.Name = "NonphysicalPrimMax"
         Me.NonphysicalPrimMax.Size = New System.Drawing.Size(40, 20)
         Me.NonphysicalPrimMax.TabIndex = 16
@@ -280,22 +285,22 @@ Partial Class FormRegion
         'Label12
         '
         Me.Label12.AutoSize = True
-        Me.Label12.Location = New System.Drawing.Point(77, 215)
+        Me.Label12.Location = New System.Drawing.Point(9, 211)
         Me.Label12.Name = "Label12"
-        Me.Label12.Size = New System.Drawing.Size(63, 13)
+        Me.Label12.Size = New System.Drawing.Size(120, 13)
         Me.Label12.TabIndex = 38
-        Me.Label12.Text = "Max Agents"
+        Me.Label12.Text = "Max Agents in a Region"
         Me.ToolTip1.SetToolTip(Me.Label12, "Clamps how many Avatars + NPC's can be in a sim before the region is shown as Ful" &
         "l. The actual value is set in Estate Settings in the viewer.")
         '
         'ClampPrimSize
         '
         Me.ClampPrimSize.AutoSize = True
-        Me.ClampPrimSize.Location = New System.Drawing.Point(146, 163)
+        Me.ClampPrimSize.Location = New System.Drawing.Point(181, 159)
         Me.ClampPrimSize.Name = "ClampPrimSize"
         Me.ClampPrimSize.Size = New System.Drawing.Size(15, 14)
         Me.ClampPrimSize.TabIndex = 18
-        Me.ToolTip1.SetToolTip(Me.ClampPrimSize, "Clamp Prim Size is an option to ensure no prim can exceed the set size..")
+        Me.ToolTip1.SetToolTip(Me.ClampPrimSize, "Clamp Prim Size ensures no prim can exceed the set size.")
         Me.ClampPrimSize.UseVisualStyleBackColor = True
         '
         'BirdsCheckBox
@@ -330,6 +335,26 @@ Partial Class FormRegion
         Me.TPCheckBox1.Text = "Teleporter Enable"
         Me.ToolTip1.SetToolTip(Me.TPCheckBox1, "If set, the global Tide settungs will apply to this region")
         Me.TPCheckBox1.UseVisualStyleBackColor = True
+        '
+        'MapHelp
+        '
+        Me.MapHelp.Image = Global.Outworldz.My.Resources.Resources.about
+        Me.MapHelp.Location = New System.Drawing.Point(112, 17)
+        Me.MapHelp.Name = "MapHelp"
+        Me.MapHelp.Size = New System.Drawing.Size(28, 27)
+        Me.MapHelp.TabIndex = 1857
+        Me.MapHelp.TabStop = False
+        Me.ToolTip1.SetToolTip(Me.MapHelp, "Overrides the global Map Settings for this one region")
+        '
+        'PictureBox1
+        '
+        Me.PictureBox1.Image = Global.Outworldz.My.Resources.Resources.about
+        Me.PictureBox1.Location = New System.Drawing.Point(125, 15)
+        Me.PictureBox1.Name = "PictureBox1"
+        Me.PictureBox1.Size = New System.Drawing.Size(28, 27)
+        Me.PictureBox1.TabIndex = 1886
+        Me.PictureBox1.TabStop = False
+        Me.ToolTip1.SetToolTip(Me.PictureBox1, "Enables the setting if the global  Settings is checked")
         '
         'Advanced
         '
@@ -458,7 +483,7 @@ Partial Class FormRegion
         '
         'Button1
         '
-        Me.Button1.Location = New System.Drawing.Point(93, 207)
+        Me.Button1.Location = New System.Drawing.Point(34, 206)
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(59, 23)
         Me.Button1.TabIndex = 10
@@ -467,7 +492,7 @@ Partial Class FormRegion
         '
         'DeleteButton
         '
-        Me.DeleteButton.Location = New System.Drawing.Point(169, 207)
+        Me.DeleteButton.Location = New System.Drawing.Point(161, 208)
         Me.DeleteButton.Name = "DeleteButton"
         Me.DeleteButton.Size = New System.Drawing.Size(75, 23)
         Me.DeleteButton.TabIndex = 11
@@ -483,15 +508,6 @@ Partial Class FormRegion
         Me.EnabledCheckBox.TabIndex = 2
         Me.EnabledCheckBox.Text = "Enabled"
         Me.EnabledCheckBox.UseVisualStyleBackColor = True
-        '
-        'Button2
-        '
-        Me.Button2.Location = New System.Drawing.Point(14, 207)
-        Me.Button2.Name = "Button2"
-        Me.Button2.Size = New System.Drawing.Size(69, 23)
-        Me.Button2.TabIndex = 9
-        Me.Button2.Text = "More"
-        Me.Button2.UseVisualStyleBackColor = True
         '
         'GroupBox6
         '
@@ -511,12 +527,13 @@ Partial Class FormRegion
         '
         'GroupBox7
         '
+        Me.GroupBox7.Controls.Add(Me.PictureBox1)
         Me.GroupBox7.Controls.Add(Me.TPCheckBox1)
         Me.GroupBox7.Controls.Add(Me.TidesCheckbox)
         Me.GroupBox7.Controls.Add(Me.BirdsCheckBox)
         Me.GroupBox7.Location = New System.Drawing.Point(228, 334)
         Me.GroupBox7.Name = "GroupBox7"
-        Me.GroupBox7.Size = New System.Drawing.Size(177, 111)
+        Me.GroupBox7.Size = New System.Drawing.Size(177, 101)
         Me.GroupBox7.TabIndex = 1881
         Me.GroupBox7.TabStop = False
         Me.GroupBox7.Text = "Modules:"
@@ -617,6 +634,7 @@ Partial Class FormRegion
         Me.GodHelp.Size = New System.Drawing.Size(30, 34)
         Me.GodHelp.TabIndex = 1857
         Me.GodHelp.TabStop = False
+        Me.ToolTip1.SetToolTip(Me.GodHelp, "Allow or disallow  Gods in the one region")
         '
         'ManagerGod
         '
@@ -665,15 +683,6 @@ Partial Class FormRegion
         Me.Maps_Use_Default.TabStop = True
         Me.Maps_Use_Default.Text = "Use Default"
         Me.Maps_Use_Default.UseVisualStyleBackColor = True
-        '
-        'MapHelp
-        '
-        Me.MapHelp.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.MapHelp.Location = New System.Drawing.Point(112, 17)
-        Me.MapHelp.Name = "MapHelp"
-        Me.MapHelp.Size = New System.Drawing.Size(28, 27)
-        Me.MapHelp.TabIndex = 1857
-        Me.MapHelp.TabStop = False
         '
         'MapPicture
         '
@@ -751,6 +760,7 @@ Partial Class FormRegion
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.PictureBox2)
         Me.GroupBox1.Controls.Add(Me.Physics_Default)
         Me.GroupBox1.Controls.Add(Me.PhysicsSeparate)
         Me.GroupBox1.Controls.Add(Me.PhysicsNone)
@@ -830,14 +840,23 @@ Partial Class FormRegion
         Me.PhysicsODE.Text = "Open Dynamics Engine"
         Me.PhysicsODE.UseVisualStyleBackColor = True
         '
+        'PictureBox2
+        '
+        Me.PictureBox2.Image = Global.Outworldz.My.Resources.Resources.about
+        Me.PictureBox2.Location = New System.Drawing.Point(116, 19)
+        Me.PictureBox2.Name = "PictureBox2"
+        Me.PictureBox2.Size = New System.Drawing.Size(30, 34)
+        Me.PictureBox2.TabIndex = 1860
+        Me.PictureBox2.TabStop = False
+        Me.ToolTip1.SetToolTip(Me.PictureBox2, "You can choose a differentphysics for this one region ")
+        '
         'FormRegion
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.BackColor = System.Drawing.SystemColors.Control
         Me.ClientSize = New System.Drawing.Size(700, 516)
         Me.Controls.Add(Me.GroupBox6)
-        Me.Controls.Add(Me.Button2)
         Me.Controls.Add(Me.EnabledCheckBox)
         Me.Controls.Add(Me.DeleteButton)
         Me.Controls.Add(Me.Button1)
@@ -849,6 +868,8 @@ Partial Class FormRegion
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Name = "FormRegion"
         Me.Text = "Region"
+        CType(Me.MapHelp, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Advanced.ResumeLayout(False)
         Me.Advanced.PerformLayout()
         Me.GroupBox2.ResumeLayout(False)
@@ -864,10 +885,10 @@ Partial Class FormRegion
         CType(Me.GodHelp, System.ComponentModel.ISupportInitialize).EndInit()
         Me.MapBox.ResumeLayout(False)
         Me.MapBox.PerformLayout()
-        CType(Me.MapHelp, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.MapPicture, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
+        CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -907,7 +928,6 @@ Partial Class FormRegion
     Friend WithEvents Label11 As Label
     Friend WithEvents MaxPrims As TextBox
     Friend WithEvents ClampPrimSize As CheckBox
-    Friend WithEvents Button2 As Button
     Friend WithEvents GroupBox6 As GroupBox
     Friend WithEvents Label13 As Label
     Friend WithEvents GroupBox3 As GroupBox
@@ -942,4 +962,6 @@ Partial Class FormRegion
     Friend WithEvents BirdsCheckBox As CheckBox
     Friend WithEvents TidesCheckbox As CheckBox
     Friend WithEvents TPCheckBox1 As CheckBox
+    Friend WithEvents PictureBox1 As PictureBox
+    Friend WithEvents PictureBox2 As PictureBox
 End Class
