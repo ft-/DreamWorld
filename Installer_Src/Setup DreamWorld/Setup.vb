@@ -1478,7 +1478,7 @@ Public Class Form1
             Dim simName = RegionClass.RegionName(RegionNum)
 
             MySetting.LoadOtherIni(RegionClass.RegionPath(RegionNum), ";")
-            MySetting.SetOtherIni(simName, "InternalPort", RegionClass.RegionPort(RegionNum))
+            MySetting.SetOtherIni(simName, "InternalPort", RegionClass.RegionPort(RegionNum).ToString)
 
 
 
