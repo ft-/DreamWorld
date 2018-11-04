@@ -27,9 +27,9 @@ Partial Class Expert
         Me.GroupBox3 = New System.Windows.Forms.GroupBox()
         Me.SuitcaseCheckbox = New System.Windows.Forms.CheckBox()
         Me.EnableHypergrid = New System.Windows.Forms.CheckBox()
-        Me.PictureBox7 = New System.Windows.Forms.PictureBox()
-        Me.PictureBox6 = New System.Windows.Forms.PictureBox()
-        Me.PictureBox5 = New System.Windows.Forms.PictureBox()
+        Me.ViewerSplash = New System.Windows.Forms.PictureBox()
+        Me.FriendlyName = New System.Windows.Forms.PictureBox()
+        Me.DynDNSPassword = New System.Windows.Forms.PictureBox()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.UniqueId = New System.Windows.Forms.TextBox()
         Me.DNSButton = New System.Windows.Forms.Button()
@@ -49,7 +49,7 @@ Partial Class Expert
         Me.MaxP = New System.Windows.Forms.Label()
         Me.Label26 = New System.Windows.Forms.Label()
         Me.FirstRegionPort = New System.Windows.Forms.TextBox()
-        Me.PictureBox2 = New System.Windows.Forms.PictureBox()
+        Me.Upnp = New System.Windows.Forms.PictureBox()
         Me.uPnPEnabled = New System.Windows.Forms.CheckBox()
         Me.Label7 = New System.Windows.Forms.Label()
         Me.Label5 = New System.Windows.Forms.Label()
@@ -59,7 +59,7 @@ Partial Class Expert
         Me.Label4 = New System.Windows.Forms.Label()
         Me.GroupBox7 = New System.Windows.Forms.GroupBox()
         Me.DomainUpDown1 = New System.Windows.Forms.DomainUpDown()
-        Me.PictureBox8 = New System.Windows.Forms.PictureBox()
+        Me.Cloudy = New System.Windows.Forms.PictureBox()
         Me.Clouds = New System.Windows.Forms.CheckBox()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.PhysicsSeparate = New System.Windows.Forms.RadioButton()
@@ -84,14 +84,15 @@ Partial Class Expert
         Me.AccountConfirmationRequired = New System.Windows.Forms.CheckBox()
         Me.AdminEmail = New System.Windows.Forms.TextBox()
         Me.WifiEnabled = New System.Windows.Forms.CheckBox()
-        Me.PictureBox4 = New System.Windows.Forms.PictureBox()
+        Me.WiFi = New System.Windows.Forms.PictureBox()
         Me.GDPRCheckBox = New System.Windows.Forms.CheckBox()
-        Me.GridNameHelp = New System.Windows.Forms.PictureBox()
+        Me.PublicPhoto = New System.Windows.Forms.PictureBox()
         Me.EnableMaxPrims = New System.Windows.Forms.CheckBox()
         Me.AutoRestartBox = New System.Windows.Forms.TextBox()
-        Me.PictureBox10 = New System.Windows.Forms.PictureBox()
+        Me.RunOnBoot = New System.Windows.Forms.PictureBox()
         Me.DataSnapshotCheckBox = New System.Windows.Forms.CheckBox()
         Me.LSLCheckbox = New System.Windows.Forms.CheckBox()
+        Me.AutoRestart = New System.Windows.Forms.PictureBox()
         Me.RegionMySqlPassword = New System.Windows.Forms.TextBox()
         Me.Label21 = New System.Windows.Forms.Label()
         Me.RegionDBUsername = New System.Windows.Forms.TextBox()
@@ -125,21 +126,22 @@ Partial Class Expert
         Me.LimitsBox = New System.Windows.Forms.GroupBox()
         Me.GroupBox8 = New System.Windows.Forms.GroupBox()
         Me.GroupBox3.SuspendLayout()
-        CType(Me.PictureBox7, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.PictureBox6, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.PictureBox5, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.ViewerSplash, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.FriendlyName, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.DynDNSPassword, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.DNSHelp, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox4.SuspendLayout()
         CType(Me.GodHelp, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox2.SuspendLayout()
-        CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.Upnp, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox7.SuspendLayout()
-        CType(Me.PictureBox8, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.Cloudy, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox1.SuspendLayout()
         Me.GridGroup.SuspendLayout()
-        CType(Me.PictureBox4, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.GridNameHelp, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.PictureBox10, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.WiFi, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.PublicPhoto, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.RunOnBoot, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.AutoRestart, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.StandaloneGroup.SuspendLayout()
         Me.AutoStart.SuspendLayout()
         Me.Web.SuspendLayout()
@@ -154,9 +156,9 @@ Partial Class Expert
         '
         Me.GroupBox3.Controls.Add(Me.SuitcaseCheckbox)
         Me.GroupBox3.Controls.Add(Me.EnableHypergrid)
-        Me.GroupBox3.Controls.Add(Me.PictureBox7)
-        Me.GroupBox3.Controls.Add(Me.PictureBox6)
-        Me.GroupBox3.Controls.Add(Me.PictureBox5)
+        Me.GroupBox3.Controls.Add(Me.ViewerSplash)
+        Me.GroupBox3.Controls.Add(Me.FriendlyName)
+        Me.GroupBox3.Controls.Add(Me.DynDNSPassword)
         Me.GroupBox3.Controls.Add(Me.Label1)
         Me.GroupBox3.Controls.Add(Me.UniqueId)
         Me.GroupBox3.Controls.Add(Me.DNSButton)
@@ -196,35 +198,35 @@ Partial Class Expert
         Me.ToolTip1.SetToolTip(Me.EnableHypergrid, "Enables Hypergrid to all sims.")
         Me.EnableHypergrid.UseVisualStyleBackColor = True
         '
-        'PictureBox7
+        'ViewerSplash
         '
-        Me.PictureBox7.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.PictureBox7.Location = New System.Drawing.Point(151, 254)
-        Me.PictureBox7.Name = "PictureBox7"
-        Me.PictureBox7.Size = New System.Drawing.Size(30, 34)
-        Me.PictureBox7.TabIndex = 1865
-        Me.PictureBox7.TabStop = False
-        Me.ToolTip1.SetToolTip(Me.PictureBox7, "The web page shown when your users log in")
+        Me.ViewerSplash.Image = Global.Outworldz.My.Resources.Resources.about
+        Me.ViewerSplash.Location = New System.Drawing.Point(151, 254)
+        Me.ViewerSplash.Name = "ViewerSplash"
+        Me.ViewerSplash.Size = New System.Drawing.Size(30, 34)
+        Me.ViewerSplash.TabIndex = 1865
+        Me.ViewerSplash.TabStop = False
+        Me.ToolTip1.SetToolTip(Me.ViewerSplash, "The web page shown when your users log in")
         '
-        'PictureBox6
+        'FriendlyName
         '
-        Me.PictureBox6.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.PictureBox6.Location = New System.Drawing.Point(151, 195)
-        Me.PictureBox6.Name = "PictureBox6"
-        Me.PictureBox6.Size = New System.Drawing.Size(30, 34)
-        Me.PictureBox6.TabIndex = 1864
-        Me.PictureBox6.TabStop = False
-        Me.ToolTip1.SetToolTip(Me.PictureBox6, "Appears in the Diva Wifi web page ")
+        Me.FriendlyName.Image = Global.Outworldz.My.Resources.Resources.about
+        Me.FriendlyName.Location = New System.Drawing.Point(151, 195)
+        Me.FriendlyName.Name = "FriendlyName"
+        Me.FriendlyName.Size = New System.Drawing.Size(30, 34)
+        Me.FriendlyName.TabIndex = 1864
+        Me.FriendlyName.TabStop = False
+        Me.ToolTip1.SetToolTip(Me.FriendlyName, "Appears in the Diva Wifi web page ")
         '
-        'PictureBox5
+        'DynDNSPassword
         '
-        Me.PictureBox5.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.PictureBox5.Location = New System.Drawing.Point(114, 156)
-        Me.PictureBox5.Name = "PictureBox5"
-        Me.PictureBox5.Size = New System.Drawing.Size(30, 34)
-        Me.PictureBox5.TabIndex = 1860
-        Me.PictureBox5.TabStop = False
-        Me.ToolTip1.SetToolTip(Me.PictureBox5, "This ID reserves your DYNDNS name. ")
+        Me.DynDNSPassword.Image = Global.Outworldz.My.Resources.Resources.about
+        Me.DynDNSPassword.Location = New System.Drawing.Point(114, 156)
+        Me.DynDNSPassword.Name = "DynDNSPassword"
+        Me.DynDNSPassword.Size = New System.Drawing.Size(30, 34)
+        Me.DynDNSPassword.TabIndex = 1860
+        Me.DynDNSPassword.TabStop = False
+        Me.ToolTip1.SetToolTip(Me.DynDNSPassword, "This ID reserves your DYNDNS name. ")
         '
         'Label1
         '
@@ -375,7 +377,7 @@ Partial Class Expert
         Me.GroupBox2.Controls.Add(Me.MaxP)
         Me.GroupBox2.Controls.Add(Me.Label26)
         Me.GroupBox2.Controls.Add(Me.FirstRegionPort)
-        Me.GroupBox2.Controls.Add(Me.PictureBox2)
+        Me.GroupBox2.Controls.Add(Me.Upnp)
         Me.GroupBox2.Controls.Add(Me.uPnPEnabled)
         Me.GroupBox2.Controls.Add(Me.Label7)
         Me.GroupBox2.Controls.Add(Me.Label5)
@@ -416,15 +418,15 @@ Partial Class Expert
         Me.FirstRegionPort.TabIndex = 25
         Me.ToolTip1.SetToolTip(Me.FirstRegionPort, "Port 8004 is the default- ports count up by 1. ")
         '
-        'PictureBox2
+        'Upnp
         '
-        Me.PictureBox2.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.PictureBox2.Location = New System.Drawing.Point(155, 15)
-        Me.PictureBox2.Name = "PictureBox2"
-        Me.PictureBox2.Size = New System.Drawing.Size(30, 29)
-        Me.PictureBox2.TabIndex = 1859
-        Me.PictureBox2.TabStop = False
-        Me.ToolTip1.SetToolTip(Me.PictureBox2, "UPnP may port forward your ports for you.")
+        Me.Upnp.Image = Global.Outworldz.My.Resources.Resources.about
+        Me.Upnp.Location = New System.Drawing.Point(155, 15)
+        Me.Upnp.Name = "Upnp"
+        Me.Upnp.Size = New System.Drawing.Size(30, 29)
+        Me.Upnp.TabIndex = 1859
+        Me.Upnp.TabStop = False
+        Me.ToolTip1.SetToolTip(Me.Upnp, "UPnP may port forward your ports for you.")
         '
         'uPnPEnabled
         '
@@ -491,7 +493,7 @@ Partial Class Expert
         'GroupBox7
         '
         Me.GroupBox7.Controls.Add(Me.DomainUpDown1)
-        Me.GroupBox7.Controls.Add(Me.PictureBox8)
+        Me.GroupBox7.Controls.Add(Me.Cloudy)
         Me.GroupBox7.Controls.Add(Me.Clouds)
         Me.GroupBox7.Location = New System.Drawing.Point(225, 286)
         Me.GroupBox7.Name = "GroupBox7"
@@ -519,15 +521,15 @@ Partial Class Expert
         Me.DomainUpDown1.TabIndex = 18
         Me.DomainUpDown1.Text = "Density"
         '
-        'PictureBox8
+        'Cloudy
         '
-        Me.PictureBox8.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.PictureBox8.Location = New System.Drawing.Point(149, 16)
-        Me.PictureBox8.Name = "PictureBox8"
-        Me.PictureBox8.Size = New System.Drawing.Size(30, 34)
-        Me.PictureBox8.TabIndex = 1858
-        Me.PictureBox8.TabStop = False
-        Me.ToolTip1.SetToolTip(Me.PictureBox8, "For singularity viewers. If set, you get 0% to 100% clouds on your sims")
+        Me.Cloudy.Image = Global.Outworldz.My.Resources.Resources.about
+        Me.Cloudy.Location = New System.Drawing.Point(149, 16)
+        Me.Cloudy.Name = "Cloudy"
+        Me.Cloudy.Size = New System.Drawing.Size(30, 34)
+        Me.Cloudy.TabIndex = 1858
+        Me.Cloudy.TabStop = False
+        Me.ToolTip1.SetToolTip(Me.Cloudy, "For singularity viewers. If set, you get 0% to 100% clouds on your sims")
         '
         'Clouds
         '
@@ -763,15 +765,15 @@ Partial Class Expert
         Me.ToolTip1.SetToolTip(Me.WifiEnabled, "A Web UI for creating and managing User Accounts")
         Me.WifiEnabled.UseVisualStyleBackColor = True
         '
-        'PictureBox4
+        'WiFi
         '
-        Me.PictureBox4.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.PictureBox4.Location = New System.Drawing.Point(148, 6)
-        Me.PictureBox4.Name = "PictureBox4"
-        Me.PictureBox4.Size = New System.Drawing.Size(30, 34)
-        Me.PictureBox4.TabIndex = 1858
-        Me.PictureBox4.TabStop = False
-        Me.ToolTip1.SetToolTip(Me.PictureBox4, "Wifi is a Web Based Login and User control panel.")
+        Me.WiFi.Image = Global.Outworldz.My.Resources.Resources.about
+        Me.WiFi.Location = New System.Drawing.Point(148, 6)
+        Me.WiFi.Name = "WiFi"
+        Me.WiFi.Size = New System.Drawing.Size(30, 34)
+        Me.WiFi.TabIndex = 1858
+        Me.WiFi.TabStop = False
+        Me.ToolTip1.SetToolTip(Me.WiFi, "Wifi is a Web Based Login and User control panel.")
         '
         'GDPRCheckBox
         '
@@ -786,15 +788,15 @@ Partial Class Expert
         "leports.  The URL and photo are listed.")
         Me.GDPRCheckBox.UseVisualStyleBackColor = True
         '
-        'GridNameHelp
+        'PublicPhoto
         '
-        Me.GridNameHelp.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.GridNameHelp.Location = New System.Drawing.Point(174, 12)
-        Me.GridNameHelp.Name = "GridNameHelp"
-        Me.GridNameHelp.Size = New System.Drawing.Size(28, 27)
-        Me.GridNameHelp.TabIndex = 1865
-        Me.GridNameHelp.TabStop = False
-        Me.ToolTip1.SetToolTip(Me.GridNameHelp, "Click for Hyperica.com")
+        Me.PublicPhoto.Image = Global.Outworldz.My.Resources.Resources.about
+        Me.PublicPhoto.Location = New System.Drawing.Point(174, 12)
+        Me.PublicPhoto.Name = "PublicPhoto"
+        Me.PublicPhoto.Size = New System.Drawing.Size(28, 27)
+        Me.PublicPhoto.TabIndex = 1865
+        Me.PublicPhoto.TabStop = False
+        Me.ToolTip1.SetToolTip(Me.PublicPhoto, "Click for Hyperica.com")
         '
         'EnableMaxPrims
         '
@@ -816,15 +818,15 @@ Partial Class Expert
         Me.ToolTip1.SetToolTip(Me.AutoRestartBox, "Minutes to Autorestart: default 240 (4 hour).  Set to to disable auto restart of " &
         "region")
         '
-        'PictureBox10
+        'RunOnBoot
         '
-        Me.PictureBox10.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.PictureBox10.Location = New System.Drawing.Point(208, 19)
-        Me.PictureBox10.Name = "PictureBox10"
-        Me.PictureBox10.Size = New System.Drawing.Size(30, 34)
-        Me.PictureBox10.TabIndex = 1859
-        Me.PictureBox10.TabStop = False
-        Me.ToolTip1.SetToolTip(Me.PictureBox10, "Right click Dreamgrid and start as Administrator to enable this.")
+        Me.RunOnBoot.Image = Global.Outworldz.My.Resources.Resources.about
+        Me.RunOnBoot.Location = New System.Drawing.Point(208, 19)
+        Me.RunOnBoot.Name = "RunOnBoot"
+        Me.RunOnBoot.Size = New System.Drawing.Size(30, 34)
+        Me.RunOnBoot.TabIndex = 1859
+        Me.RunOnBoot.TabStop = False
+        Me.ToolTip1.SetToolTip(Me.RunOnBoot, "Right click Dreamgrid and start as Administrator to enable this.")
         '
         'DataSnapshotCheckBox
         '
@@ -847,6 +849,16 @@ Partial Class Expert
         Me.LSLCheckbox.Text = "Enable"
         Me.ToolTip1.SetToolTip(Me.LSLCheckbox, "Click to enable LSL to talk to port 80 on this server.")
         Me.LSLCheckbox.UseVisualStyleBackColor = True
+        '
+        'AutoRestart
+        '
+        Me.AutoRestart.Image = Global.Outworldz.My.Resources.Resources.about
+        Me.AutoRestart.Location = New System.Drawing.Point(197, 66)
+        Me.AutoRestart.Name = "AutoRestart"
+        Me.AutoRestart.Size = New System.Drawing.Size(30, 34)
+        Me.AutoRestart.TabIndex = 1863
+        Me.AutoRestart.TabStop = False
+        Me.ToolTip1.SetToolTip(Me.AutoRestart, "Right click Dreamgrid and start as Administrator to enable this.")
         '
         'RegionMySqlPassword
         '
@@ -914,9 +926,10 @@ Partial Class Expert
         '
         'AutoStart
         '
+        Me.AutoStart.Controls.Add(Me.AutoRestart)
         Me.AutoStart.Controls.Add(Me.Label25)
         Me.AutoStart.Controls.Add(Me.AutoRestartBox)
-        Me.AutoStart.Controls.Add(Me.PictureBox10)
+        Me.AutoStart.Controls.Add(Me.RunOnBoot)
         Me.AutoStart.Controls.Add(Me.Label13)
         Me.AutoStart.Controls.Add(Me.Label6)
         Me.AutoStart.Controls.Add(Me.BootStart)
@@ -1021,7 +1034,7 @@ Partial Class Expert
         '
         'Web
         '
-        Me.Web.Controls.Add(Me.PictureBox4)
+        Me.Web.Controls.Add(Me.WiFi)
         Me.Web.Controls.Add(Me.WifiEnabled)
         Me.Web.Controls.Add(Me.Label17)
         Me.Web.Controls.Add(Me.AdminEmail)
@@ -1134,7 +1147,7 @@ Partial Class Expert
         'GroupBox11
         '
         Me.GroupBox11.Controls.Add(Me.DataSnapshotCheckBox)
-        Me.GroupBox11.Controls.Add(Me.GridNameHelp)
+        Me.GroupBox11.Controls.Add(Me.PublicPhoto)
         Me.GroupBox11.Controls.Add(Me.GDPRCheckBox)
         Me.GroupBox11.Controls.Add(Me.PictureBox9)
         Me.GroupBox11.Location = New System.Drawing.Point(12, 343)
@@ -1188,26 +1201,27 @@ Partial Class Expert
         Me.Text = "Expert"
         Me.GroupBox3.ResumeLayout(False)
         Me.GroupBox3.PerformLayout()
-        CType(Me.PictureBox7, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.PictureBox6, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.PictureBox5, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.ViewerSplash, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.FriendlyName, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.DynDNSPassword, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.DNSHelp, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox4.ResumeLayout(False)
         Me.GroupBox4.PerformLayout()
         CType(Me.GodHelp, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox2.ResumeLayout(False)
         Me.GroupBox2.PerformLayout()
-        CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.Upnp, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox7.ResumeLayout(False)
         Me.GroupBox7.PerformLayout()
-        CType(Me.PictureBox8, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.Cloudy, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
         Me.GridGroup.ResumeLayout(False)
         Me.GridGroup.PerformLayout()
-        CType(Me.PictureBox4, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.GridNameHelp, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.PictureBox10, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.WiFi, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.PublicPhoto, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.RunOnBoot, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.AutoRestart, System.ComponentModel.ISupportInitialize).EndInit()
         Me.StandaloneGroup.ResumeLayout(False)
         Me.StandaloneGroup.PerformLayout()
         Me.AutoStart.ResumeLayout(False)
@@ -1279,15 +1293,15 @@ Partial Class Expert
     Friend WithEvents Label13 As Label
     Friend WithEvents Label6 As Label
     Friend WithEvents BootStart As CheckBox
-    Friend WithEvents PictureBox5 As PictureBox
-    Friend WithEvents PictureBox2 As PictureBox
-    Friend WithEvents PictureBox7 As PictureBox
-    Friend WithEvents PictureBox6 As PictureBox
+    Friend WithEvents DynDNSPassword As PictureBox
+    Friend WithEvents Upnp As PictureBox
+    Friend WithEvents ViewerSplash As PictureBox
+    Friend WithEvents FriendlyName As PictureBox
     Friend WithEvents EnableHypergrid As CheckBox
     Friend WithEvents RobustServer As TextBox
     Friend WithEvents Label16 As Label
     Friend WithEvents DomainUpDown1 As DomainUpDown
-    Friend WithEvents PictureBox8 As PictureBox
+    Friend WithEvents Cloudy As PictureBox
     Friend WithEvents AllowGods As CheckBox
     Friend WithEvents AdminPassword As TextBox
     Friend WithEvents Label10 As Label
@@ -1299,7 +1313,7 @@ Partial Class Expert
     Friend WithEvents AdminEmail As TextBox
     Friend WithEvents Label17 As Label
     Friend WithEvents WifiEnabled As CheckBox
-    Friend WithEvents PictureBox4 As PictureBox
+    Friend WithEvents WiFi As PictureBox
     Friend WithEvents Web As GroupBox
     Friend WithEvents GroupBox6 As GroupBox
     Friend WithEvents SmtpPort As TextBox
@@ -1313,17 +1327,18 @@ Partial Class Expert
     Friend WithEvents GDPRCheckBox As CheckBox
     Friend WithEvents PictureBox9 As PictureBox
     Friend WithEvents GroupBox11 As GroupBox
-    Friend WithEvents GridNameHelp As PictureBox
+    Friend WithEvents PublicPhoto As PictureBox
     Friend WithEvents SuitcaseCheckbox As CheckBox
     Friend WithEvents LimitsBox As GroupBox
     Friend WithEvents EnableMaxPrims As CheckBox
     Friend WithEvents Label25 As Label
     Friend WithEvents AutoRestartBox As TextBox
-    Friend WithEvents PictureBox10 As PictureBox
+    Friend WithEvents RunOnBoot As PictureBox
     Friend WithEvents DataSnapshotCheckBox As CheckBox
     Friend WithEvents GroupBox8 As GroupBox
     Friend WithEvents LSLCheckbox As CheckBox
     Friend WithEvents Label26 As Label
     Friend WithEvents FirstRegionPort As TextBox
     Friend WithEvents MaxP As Label
+    Friend WithEvents AutoRestart As PictureBox
 End Class

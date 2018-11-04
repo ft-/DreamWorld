@@ -1,3 +1,9 @@
+V2.51
+Forms remember their last moved-to position 
+
+V2.50
+Form Region now set to full size - no more [More] Button
+
 V2.49
 Some forms not set to Autoscale as DPI for high rez monitors.
 More intuitive Click action on the Chooser form - Single click a cell selects the entire row, double click selects and OK's it.

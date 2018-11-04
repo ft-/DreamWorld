@@ -1,6 +1,26 @@
 ﻿Public Class Choice
     Implements IDisposable
 
+#Region "ScreenSize"
+    Public ScreenPosition As ScreenPos
+    Private Handler As New EventHandler(AddressOf resize_page)
+
+    'The following detects  the location of the form in screen coordinates
+    Private Sub resize_page(ByVal sender As Object, ByVal e As System.EventArgs)
+        'Me.Text = "Form screen position = " + Me.Location.ToString
+        ScreenPosition.SaveXY(Me.Left, Me.Top)
+    End Sub
+    Private Sub SetScreen()
+        Me.Show()
+        ScreenPosition = New ScreenPos(Me.Name)
+        AddHandler ResizeEnd, Handler
+        Dim xy As List(Of Integer) = ScreenPosition.GetXY()
+        Me.Left = xy.Item(0)
+        Me.Top = xy.Item(1)
+    End Sub
+
+#End Region
+
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
         ' Set the column header style.
@@ -12,6 +32,7 @@
         DataGridView.MultiSelect = False
 
         DataGridView.Text = "Select from..."
+        SetScreen()
 
     End Sub
 

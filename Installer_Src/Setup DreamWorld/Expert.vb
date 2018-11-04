@@ -6,6 +6,25 @@ Public Class Expert
 
     Dim initted As Boolean = False
 
+#Region "ScreenSize"
+    Public ScreenPosition As ScreenPos
+    Private Handler As New EventHandler(AddressOf resize_page)
+
+    'The following detects  the location of the form in screen coordinates
+    Private Sub resize_page(ByVal sender As Object, ByVal e As System.EventArgs)
+        'Me.Text = "Form screen position = " + Me.Location.ToString
+        ScreenPosition.SaveXY(Me.Left, Me.Top)
+    End Sub
+    Private Sub SetScreen()
+        Me.Show()
+        ScreenPosition = New ScreenPos(Me.Name)
+        AddHandler ResizeEnd, Handler
+        Dim xy As List(Of Integer) = ScreenPosition.GetXY()
+        Me.Left = xy.Item(0)
+        Me.Top = xy.Item(1)
+    End Sub
+
+#End Region
 #Region "Load/Exit"
 
     Private Sub Loaded(sender As Object, e As EventArgs) Handles Me.Load
@@ -99,6 +118,7 @@ Public Class Expert
 
         LSLCheckbox.Checked = Form1.MySetting.LSL_HTTP()
 
+        SetScreen()
 
         initted = True ' suppress the install of the startup on formload
 
@@ -404,30 +424,18 @@ Public Class Expert
 
 #End Region
 
-#Region "Help"
-
-    Private Sub PictureBox1_Click(sender As Object, e As EventArgs) Handles GodHelp.Click
-        Dim webAddress As String = Form1.gDomain + "/Outworldz_installer/technical.htm#GridGod"
-        Process.Start(webAddress)
-    End Sub
-
-    Private Sub PictureBox5_Click(sender As Object, e As EventArgs) Handles DNSHelp.Click
-        Dim webAddress As String = Form1.gDomain + "/Outworldz_installer/technical.htm#Grid"
-        Process.Start(webAddress)
-    End Sub
-
-
-#End Region
-
 #Region "AutoStart"
 
     Private Sub AutoStartCheckbox_CheckedChanged(sender As Object, e As EventArgs) Handles AutoStartCheckbox.CheckedChanged
+
         If Not initted Then Return
         Form1.MySetting.Autostart = AutoStartCheckbox.Checked
         Form1.MySetting.SaveSettings()
+
     End Sub
 
     Private Sub BootStart_CheckedChanged(sender As Object, e As EventArgs) Handles BootStart.CheckedChanged
+
         If Not initted Then Return
 
         Form1.MySetting.BootStart = BootStart.Checked
@@ -477,9 +485,11 @@ Public Class Expert
             isAdmin = False
         End Try
         Return isAdmin
+
     End Function
 
     Private Sub DomainUpDown1_SelectedItemChanged(sender As Object, e As EventArgs) Handles DomainUpDown1.SelectedItemChanged
+
         If initted Then
             Dim var As Double = CType(DomainUpDown1.SelectedIndex, Double)
 
@@ -490,9 +500,11 @@ Public Class Expert
             Form1.MySetting.Density = var
             Form1.MySetting.SaveSettings()
         End If
+
     End Sub
 
     Private Sub SmtpHost_TextChanged(sender As Object, e As EventArgs) Handles SmtpHost.TextChanged
+
         If initted Then
             Form1.MySetting.SmtpHost = SmtpHost.Text
             Form1.MySetting.SaveSettings()
@@ -518,12 +530,8 @@ Public Class Expert
 
     End Sub
 
-    Private Sub GridNameHelp_Click(sender As Object, e As EventArgs) Handles GridNameHelp.Click
-        Dim webAddress As String = "http://www.hyperica.com"
-        Process.Start(webAddress)
-    End Sub
-
     Private Sub PictureBox9_Click(sender As Object, e As EventArgs) Handles PictureBox9.Click
+
         Dim ofd As New OpenFileDialog
         ofd.Filter = "PNG Files (*.PNG,*.png)|*.png;|All Files (*.*)|*.*"
         ofd.FilterIndex = 1
@@ -552,6 +560,7 @@ Public Class Expert
 
             End If
         End If
+
     End Sub
 
     Private Sub SuitcaseCheckbox_CheckedChanged_3(sender As Object, e As EventArgs) Handles SuitcaseCheckbox.CheckedChanged
@@ -564,7 +573,6 @@ Public Class Expert
                 MsgBox("Disabling the Inventory Suitcase exposes all your inventory to other grids. ")
             End If
         End If
-
 
     End Sub
 
@@ -586,22 +594,36 @@ Public Class Expert
 
     End Sub
 
+    Private Sub GmailPassword_Click(sender As Object, e As EventArgs) Handles GmailPassword.Click
+
+        GmailPassword.UseSystemPasswordChar = False
+
+    End Sub
+
     Private Sub GmailPassword_TextChanged(sender As Object, e As EventArgs) Handles GmailPassword.TextChanged
+
         If initted Then
             Form1.MySetting.SmtpPassword = GmailPassword.Text
             Form1.MySetting.SaveSettings()
         End If
 
     End Sub
+    Private Sub AdminPassword_Click(sender As Object, e As EventArgs) Handles AdminPassword.Click
 
+        AdminPassword.UseSystemPasswordChar = False
+
+    End Sub
     Private Sub AdminPassword_TextChanged(sender As Object, e As EventArgs) Handles AdminPassword.TextChanged
+
         If initted Then
             Form1.MySetting.Password = AdminPassword.Text
             Form1.MySetting.SaveSettings()
         End If
+
     End Sub
 
     Private Sub AutoRestartBox_TextChanged(sender As Object, e As EventArgs) Handles AutoRestartBox.TextChanged
+
         If initted Then
             Try
                 Form1.MySetting.AutoRestartInterval = Convert.ToInt16(AutoRestartBox.Text)
@@ -612,17 +634,8 @@ Public Class Expert
 
     End Sub
 
-    Private Sub PictureBox5_Click_1(sender As Object, e As EventArgs) Handles PictureBox5.Click
-        Dim webAddress As String = Form1.gDomain + "/Outworldz_installer/technical.htm#Grid"
-        Process.Start(webAddress)
-    End Sub
-
-    Private Sub PictureBox6_Click(sender As Object, e As EventArgs) Handles PictureBox6.Click
-        Dim webAddress As String = Form1.gDomain + "/Outworldz_installer/technical.htm#Grid"
-        Process.Start(webAddress)
-    End Sub
-
     Private Sub DataSnapshotCheckBox_CheckedChanged(sender As Object, e As EventArgs) Handles DataSnapshotCheckBox.CheckedChanged
+
         If initted Then
             Form1.MySetting.DataSnapshot() = DataSnapshotCheckBox.Checked
             Form1.MySetting.SaveSettings()
@@ -631,6 +644,7 @@ Public Class Expert
     End Sub
 
     Private Sub LSLCheckbox_CheckedChanged(sender As Object, e As EventArgs) Handles LSLCheckbox.CheckedChanged
+
         If initted Then
             Form1.MySetting.LSL_HTTP() = LSLCheckbox.Checked
             Form1.MySetting.SaveSettings()
@@ -638,8 +652,76 @@ Public Class Expert
 
     End Sub
 
+#End Region
 
+#Region "Help"
 
+    Private Sub PictureBox1_Click(sender As Object, e As EventArgs) Handles GodHelp.Click
+        Dim webAddress As String = Form1.gDomain + "/Outworldz_installer/technical.htm#GridGod"
+        Process.Start(webAddress)
+    End Sub
+
+    Private Sub PictureBox5_Click(sender As Object, e As EventArgs) Handles DNSHelp.Click
+        Dim webAddress As String = Form1.gDomain + "/Outworldz_installer/technical.htm#DNSHelp"
+        Process.Start(webAddress)
+    End Sub
+
+    Private Sub PictureBox10_Click(sender As Object, e As EventArgs) Handles DNSHelp.Click
+        '!!!
+        Dim webAddress As String = Form1.gDomain + "/Outworldz_installer/technical.htm#DNSHelp"
+        Process.Start(webAddress)
+    End Sub
+
+    Private Sub PictureBox1_Click_1(sender As Object, e As EventArgs) Handles AutoRestart.Click
+        '!!!
+        Dim webAddress As String = Form1.gDomain + "/Outworldz_installer/technical.htm#AutoRestart"
+        Process.Start(webAddress)
+    End Sub
+
+    Private Sub PictureBox4_Click(sender As Object, e As EventArgs) Handles WiFi.Click
+        '!!!
+        Dim webAddress As String = Form1.gDomain + "/Outworldz_installer/technical.htm#WiFi"
+        Process.Start(webAddress)
+    End Sub
+
+    Private Sub PictureBox2_Click(sender As Object, e As EventArgs) Handles Upnp.Click
+        '!!!
+        Dim webAddress As String = Form1.gDomain + "/Outworldz_installer/technical.htm#Upnp"
+        Process.Start(webAddress)
+    End Sub
+
+    Private Sub PictureBox8_Click(sender As Object, e As EventArgs) Handles Cloudy.Click
+        '!!!
+        Dim webAddress As String = Form1.gDomain + "/Outworldz_installer/technical.htm#Cloudy"
+        Process.Start(webAddress)
+    End Sub
+
+    Private Sub ViewerSplash_Click(sender As Object, e As EventArgs) Handles ViewerSplash.Click
+        '!!!
+        Dim webAddress As String = Form1.gDomain + "/Outworldz_installer/technical.htm#ViewerSplash"
+        Process.Start(webAddress)
+    End Sub
+
+    Private Sub GridNameHelp_Click(sender As Object, e As EventArgs) Handles PublicPhoto.Click
+        '!!!
+        Dim webAddress As String = "http://www.hyperica.com"
+        Process.Start(webAddress)
+    End Sub
+
+    Private Sub PictureBox5_Click_1(sender As Object, e As EventArgs) Handles DynDNSPassword.Click
+        Dim webAddress As String = Form1.gDomain + "/Outworldz_installer/technical.htm#Grid"
+        Process.Start(webAddress)
+    End Sub
+
+    Private Sub PictureBox6_Click(sender As Object, e As EventArgs) Handles FriendlyName.Click
+        Dim webAddress As String = Form1.gDomain + "/Outworldz_installer/technical.htm#Grid"
+        Process.Start(webAddress)
+    End Sub
+
+    Private Sub RunOnBoot_Click(sender As Object, e As EventArgs) Handles RunOnBoot.Click
+        Dim webAddress As String = Form1.gDomain + "/Outworldz_installer/technical.htm#RunOnBoot"
+        Process.Start(webAddress)
+    End Sub
 
 #End Region
 

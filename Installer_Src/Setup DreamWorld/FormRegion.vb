@@ -25,10 +25,11 @@ Public Class FormRegion
     End Sub
 #End Region
 
+    ' Regions does not use the ScreenSet even or functions to make it play across the screen
+
 #Region "Start_Stop"
 
     Public Sub Init(Name As String)
-
 
         Me.Focus()
 
@@ -200,7 +201,6 @@ Public Class FormRegion
         If RegionClass.Teleport(n) = "True" Then
             TPCheckBox1.Checked = True
         End If
-
 
         Me.Focus()
         initted = True
@@ -402,7 +402,6 @@ Public Class FormRegion
                 Directory.CreateDirectory(NewFilepath)
                 Filepath = NewFilepath + RegionName.Text + ".ini"
                 RegionClass.RegionPath(n) = Filepath
-                Form1.CopyOpensimProto()
             Catch
                 MsgBox("Cannot create New region. It seems to already exist", vbInformation, "Info")
                 Form1.PrintFast("Aborted")
@@ -529,7 +528,8 @@ Public Class FormRegion
             Using outputFile As New StreamWriter(RegionClass.RegionPath(n), False)
                 outputFile.Write(Region)
             End Using
-        Catch
+        Catch ex As Exception
+            Form1.Log("Cannot write region:" + ex.Message)
         End Try
 
         oldname = RegionName.Text

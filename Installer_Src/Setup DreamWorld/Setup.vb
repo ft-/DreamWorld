@@ -34,7 +34,7 @@ Public Class Form1
 
 #Region "Declarations"
 
-    Dim gMyVersion As String = "2.50"
+    Dim gMyVersion As String = "2.51"
     Dim gSimVersion As String = "0.9.1"
 
     ' edit this to compile and run in the correct folder root
@@ -118,9 +118,32 @@ Public Class Form1
     Shared Function SetWindowText(ByVal hwnd As IntPtr, ByVal windowName As String) As Boolean
 
     End Function
+#End Region
 
+
+#Region "ScreenSize"
+    Public ScreenPosition As ScreenPos
+    Private Handler As New EventHandler(AddressOf resize_page)
+
+    'The following detects  the location of the form in screen coordinates
+    Private Sub resize_page(ByVal sender As Object, ByVal e As System.EventArgs)
+        'Me.Text = "Form screen position = " + Me.Location.ToString
+        ScreenPosition.SaveXY(Me.Left, Me.Top)
+    End Sub
+    Private Sub SetScreen()
+        Me.Show()
+        ScreenPosition = New ScreenPos(Me.Name)
+        AddHandler ResizeEnd, Handler
+        Dim xy As List(Of Integer) = ScreenPosition.GetXY()
+        Me.Left = xy.Item(0)
+        Me.Top = xy.Item(1)
+    End Sub
 
 #End Region
+
+
+
+
 
 #Region "Events"
     Private WithEvents MyProcess1 As New Process()
@@ -371,6 +394,8 @@ Public Class Form1
         gCurSlashDir = MyFolder.Replace("\", "/")    ' because Mysql uses unix like slashes, that's why
         gPath = MyFolder & "\OutworldzFiles\Opensim\"
 
+        SetScreen()     ' move Form to fit screen from SetXY.ini
+
         ' Kill Shoutcast
         Try
             My.Computer.FileSystem.DeleteDirectory(MyFolder + "\Shoutcast", FileIO.DeleteDirectoryOption.DeleteAllContents)
@@ -408,15 +433,7 @@ Public Class Form1
         ProgressBar1.Maximum = 100
         ProgressBar1.Value = 0
 
-        If MySetting.MyX > 1000 Or MySetting.MyY > 1000 Then
-            Me.CenterToScreen()
-        ElseIf MySetting.MyX < 0 Or MySetting.MyY < 0 Then
-            Me.CenterToScreen()
-        ElseIf MySetting.MyX = 0 And MySetting.MyY = 0 Then
-            Me.CenterToScreen()
-        Else
-            Me.Location = New Point(MySetting.MyX, MySetting.MyY)
-        End If
+
 
         ' add 30 minutes to allow time to auto backup and then restart
         Dim BTime As Int16 = CType(MySetting.AutobackupInterval, Int16)
@@ -1877,9 +1894,6 @@ Public Class Form1
     Private Sub AdvancedSettingsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AdvancedSettingsToolStripMenuItem.Click
 
         Dim ActualForm As New AdvancedForm
-        ' Set the new form's desktop location so it appears below and
-        ' to the right of the current form.
-        ActualForm.SetDesktopLocation(300, 200)
         ActualForm.Activate()
         ActualForm.Visible = True
 
@@ -3652,6 +3666,7 @@ Public Class Form1
         If OpensimIsRunning() Then
 
             Dim chosen = ChooseRegion(True)
+            If chosen.Length = 0 Then Return
             Dim n As Integer = RegionClass.FindRegionByName(chosen)
 
             Dim Message, title, defaultValue As String
@@ -3687,6 +3702,7 @@ Public Class Form1
 
         If OpensimIsRunning() Then
             Dim chosen = ChooseRegion(True)
+            If chosen.Length = 0 Then Return
             Dim n As Integer = RegionClass.FindRegionByName(chosen)
 
             ' Create an instance of the open file dialog box.
@@ -3919,9 +3935,9 @@ Public Class Form1
         End If
 
         Dim region = ChooseRegion(True)
+        If region.Length = 0 Then Return
 
-        If region.Length > 0 Then
-            Dim backMeUp = MsgBox("Make a backup first?", vbYesNo, "Backup?")
+        Dim backMeUp = MsgBox("Make a backup first?", vbYesNo, "Backup?")
             Dim num = RegionClass.FindRegionByName(region)
             Dim GroupName = RegionClass.GroupName(num)
             Dim once As Boolean = False
@@ -3949,8 +3965,6 @@ Public Class Form1
             Next
 
             Me.Focus()
-
-        End If
 
     End Sub
 

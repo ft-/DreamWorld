@@ -2,6 +2,26 @@
 
 Public Class TosForm
 
+#Region "ScreenSize"
+    Public ScreenPosition As ScreenPos
+    Private Handler As New EventHandler(AddressOf resize_page)
+
+    'The following detects  the location of the form in screen coordinates
+    Private Sub resize_page(ByVal sender As Object, ByVal e As System.EventArgs)
+        'Me.Text = "Form screen position = " + Me.Location.ToString
+        ScreenPosition.SaveXY(Me.Left, Me.Top)
+    End Sub
+    Private Sub SetScreen()
+        Me.Show()
+        ScreenPosition = New ScreenPos(Me.Name)
+        AddHandler ResizeEnd, Handler
+        Dim xy As List(Of Integer) = ScreenPosition.GetXY()
+        Me.Left = xy.Item(0)
+        Me.Top = xy.Item(1)
+    End Sub
+
+#End Region
+
     Private Sub Form1_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 
         'Load file MyFolder + "TOS.txt"
@@ -18,7 +38,7 @@ Public Class TosForm
         ShowToLocalUsersCheckbox.Checked = Form1.MySetting.ShowToLocalUsers
         ShowToHGUsersCheckbox.Checked = Form1.MySetting.ShowToForeignUsers
         TOSEnable.Checked = Form1.MySetting.TOSEnabled
-
+        SetScreen()
 
     End Sub
     Private Sub Form1_Closed(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Closed
