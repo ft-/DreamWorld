@@ -11,7 +11,7 @@ OpenSim.log
 Init.txt
 Outworldz.log
 Http.log
-
+XYSettings.ini
 OutworldzFiles/opensim/bin/assetcache/*
 OutworldzFiles/opensim/bin/maptiles/*
 OutworldzFiles/opensim/bin/DataSnapshot/*
