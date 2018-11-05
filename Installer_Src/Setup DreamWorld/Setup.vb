@@ -412,8 +412,8 @@ Public Class Form1
         End Try
 
         Try
-            My.Computer.FileSystem.DeleteFile(gPath + "\bin\OpenSimBirds.Module.dll")
-            My.Computer.FileSystem.DeleteFile(gPath + "\bin\OpenSimBirds.Module.pdb")
+            'My.Computer.FileSystem.DeleteFile(gPath + "\bin\OpenSimBirds.Module.dll")
+            'My.Computer.FileSystem.DeleteFile(gPath + "\bin\OpenSimBirds.Module.pdb")
         Catch
         End Try
 
