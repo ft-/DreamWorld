@@ -176,6 +176,7 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="GlobalSuppressions.vb" />
+    <Compile Include="Screenpos.vb" />
     <Compile Include="Setup.Designer.vb">
       <DependentUpon>Setup.vb</DependentUpon>
     </Compile>

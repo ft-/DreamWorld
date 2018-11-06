@@ -11,9 +11,31 @@ Public Class AdvancedForm
 
 #End Region
 
+
+#Region "ScreenSize"
+    Public ScreenPosition As ScreenPos
+    Private Handler As New EventHandler(AddressOf resize_page)
+
+    'The following detects  the location of the form in screen coordinates
+    Private Sub resize_page(ByVal sender As Object, ByVal e As System.EventArgs)
+        'Me.Text = "Form screen position = " + Me.Location.ToString
+        ScreenPosition.SaveXY(Me.Left, Me.Top)
+    End Sub
+    Private Sub SetScreen()
+        Me.Show()
+        ScreenPosition = New ScreenPos(Me.Name)
+        AddHandler ResizeEnd, Handler
+        Dim xy As List(Of Integer) = ScreenPosition.GetXY()
+        Me.Left = xy.Item(0)
+        Me.Top = xy.Item(1)
+    End Sub
+
+#End Region
+
 #Region "Functions"
 
     Private Sub Loaded(sender As Object, e As EventArgs) Handles Me.Load
+
         AutoBackupKeepFilesForDays.Text = Form1.MySetting.KeepForDays.ToString
         If CType(Form1.MySetting.AutobackupInterval, Double) = 60 Then
             AutoBackupInterval.SelectedIndex = 0
@@ -60,12 +82,12 @@ Public Class AdvancedForm
         End If
         LoadWelcomeBox()
 
+        SetScreen()
+
     End Sub
 
     Private Sub Form1_Closed(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Closed
-
         ' nothing
-
     End Sub
 
     Private Sub ABEnabled_CheckedChanged(sender As Object, e As EventArgs) Handles AutoBackup.CheckedChanged
@@ -137,7 +159,7 @@ Public Class AdvancedForm
             Try
                 Dim RegionName = RegionClass.RegionName(Z)
                 Dim ActualForm As New FormRegion
-                ActualForm.SetDesktopLocation(X, Y)
+
                 ActualForm.Init(RegionName)
                 ActualForm.Activate()
                 ActualForm.Visible = True
@@ -160,7 +182,7 @@ Public Class AdvancedForm
 
         RegionClass.CreateRegion("")
         Dim ActualForm As New FormRegion
-        ActualForm.SetDesktopLocation(X, Y)
+
         ActualForm.Init("")
         ActualForm.Activate()
         ActualForm.Visible = True
@@ -169,9 +191,7 @@ Public Class AdvancedForm
 
     Private Sub VoiceButton1_Click(sender As Object, e As EventArgs) Handles VoiceButton1.Click
         Dim Voice As New FormVoice
-        ' Set the new form's desktop location so it appears below and
-        ' to the right of the current form.
-        Voice.SetDesktopLocation(300, 200)
+
         Voice.Activate()
         Voice.Visible = True
     End Sub
@@ -268,7 +288,7 @@ Public Class AdvancedForm
         Dim Gloebits As New Gloebits
         ' Set the new form's desktop location so it appears below and
         ' to the right of the current form.
-        Gloebits.SetDesktopLocation(300, 200)
+
         Gloebits.Activate()
         Gloebits.Visible = True
     End Sub
@@ -299,9 +319,6 @@ Public Class AdvancedForm
 
     Private Sub ExpertButton1_Click(sender As Object, e As EventArgs) Handles ExpertButton1.Click
         Dim ActualForm As New Expert
-        Dim X As Integer = 300
-        Dim Y As Integer = 200
-        ActualForm.SetDesktopLocation(X, Y)
         ActualForm.Visible = True
         ActualForm.Activate()
         Application.DoEvents()
@@ -309,9 +326,6 @@ Public Class AdvancedForm
 
     Private Sub Shoutcast_Click(sender As Object, e As EventArgs) Handles Shoutcast.Click
         Dim ActualForm As New Icecast
-        Dim X As Integer = 300
-        Dim Y As Integer = 200
-        ActualForm.SetDesktopLocation(X, Y)
         ActualForm.Visible = True
         ActualForm.Activate()
         Application.DoEvents()
@@ -320,9 +334,7 @@ Public Class AdvancedForm
     Private Sub TOSButton_Click(sender As Object, e As EventArgs) Handles TOSButton.Click
 
         Dim Tos As New TosForm
-        ' Set the new form's desktop location so it appears below and
-        ' to the right of the current form.
-        Tos.SetDesktopLocation(300, 200)
+
         Tos.Activate()
         Tos.Visible = True
 
@@ -330,18 +342,12 @@ Public Class AdvancedForm
 
     Private Sub Birds_Click(sender As Object, e As EventArgs) Handles Birds.Click
         Dim Bird As New BirdForm
-        ' Set the new form's desktop location so it appears below and
-        ' to the right of the current form.
-        Bird.SetDesktopLocation(300, 200)
         Bird.Activate()
         Bird.Visible = True
     End Sub
 
     Private Sub TideButton_Click(sender As Object, e As EventArgs) Handles TideButton.Click
         Dim Tide As New Tides
-        ' Set the new form's desktop location so it appears below and
-        ' to the right of the current form.
-        Tide.SetDesktopLocation(300, 200)
         Tide.Activate()
         Tide.Visible = True
     End Sub

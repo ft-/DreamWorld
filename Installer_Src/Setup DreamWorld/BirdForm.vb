@@ -1,10 +1,33 @@
 ﻿Public Class BirdForm
+
+#Region "ScreenSize"
+    Public ScreenPosition As ScreenPos
+    Private Handler As New EventHandler(AddressOf resize_page)
+
+    'The following detects  the location of the form in screen coordinates
+    Private Sub resize_page(ByVal sender As Object, ByVal e As System.EventArgs)
+        'Me.Text = "Form screen position = " + Me.Location.ToString
+        ScreenPosition.SaveXY(Me.Left, Me.Top)
+    End Sub
+    Private Sub SetScreen()
+        Me.Show()
+        ScreenPosition = New ScreenPos(Me.Name)
+        AddHandler ResizeEnd, Handler
+        Dim xy As List(Of Integer) = ScreenPosition.GetXY()
+        Me.Left = xy.Item(0)
+        Me.Top = xy.Item(1)
+    End Sub
+
+#End Region
+
+
     Public Sub New()
 
         ' This call is required by the designer.
         InitializeComponent()
 
         ' Add any initialization after the InitializeComponent() call.
+        SetScreen()
 
         BirdsModuleStartupbox.Checked = Form1.MySetting.BirdsModuleStartup
 
@@ -14,8 +37,7 @@
         For i = 1 To 100
             BirdsFlockSizeDomain.Items.Add(i.ToString)
         Next
-        BirdsFlockSizeDomain.SelectedIndex = 24
-
+        BirdsFlockSizeDomain.SelectedIndex = CType(Form1.MySetting.BirdsFlockSize, Integer) - 1
 
         ChatChanelTextBox.Text = Form1.MySetting.BirdsChatChannel.ToString
         MaxSpeedTextBox.Text = Form1.MySetting.BirdsMaxSpeed.ToString
@@ -31,6 +53,7 @@
 
     Private Sub Form1_Closed(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Closed
         Form1.MySetting.BirdsFlockSize = BirdsFlockSizeDomain.Text
+        Form1.MySetting.SaveSettings()
     End Sub
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
