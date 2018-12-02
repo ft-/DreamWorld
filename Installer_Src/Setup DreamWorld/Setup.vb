@@ -34,7 +34,7 @@ Public Class Form1
 
 #Region "Declarations"
 
-    Dim gMyVersion As String = "2.51"
+    Dim gMyVersion As String = "2.52"
     Dim gSimVersion As String = "0.9.1"
 
     ' edit this to compile and run in the correct folder root
@@ -434,12 +434,13 @@ Public Class Form1
         ProgressBar1.Value = 0
 
 
-
-        ' add 30 minutes to allow time to auto backup and then restart
-        Dim BTime As Int16 = CType(MySetting.AutobackupInterval, Int16)
-        If MySetting.AutoRestartInterval > 0 And MySetting.AutoRestartInterval < BTime Then
-            MySetting.AutoRestartInterval = BTime + 30
-            Print("Upping AutoRestart Time to " + BTime.ToString + " + 30 Minutes so backups have time to run.")
+        If MySetting.AutobackupInterval.Length > 0 Then
+            ' add 30 minutes to allow time to auto backup and then restart
+            Dim BTime As Int16 = CType(MySetting.AutobackupInterval, Int16)
+            If MySetting.AutoRestartInterval > 0 And MySetting.AutoRestartInterval < BTime Then
+                MySetting.AutoRestartInterval = BTime + 30
+                Print("Upping AutoRestart Time to " + BTime.ToString + " + 30 Minutes so backups have time to run.")
+            End If
         End If
 
 
@@ -2041,14 +2042,14 @@ Public Class Form1
 
         Try
             ' Boot them up
-            Dim n = 0
+
             For Each x In RegionClass.RegionNumbers
-                If RegionClass.RegionEnabled(n) And OpensimIsRunning() Then '
-                    If Not Boot(RegionClass.RegionName(n)) Then
-                        Print("Boot skipped for " + RegionClass.RegionName(n))
+                If RegionClass.RegionEnabled(x) Then '
+                    If Not Boot(RegionClass.RegionName(x)) Then
+                        Print("Boot skipped for " + RegionClass.RegionName(x))
                     End If
                 End If
-                n = n + 1
+
             Next
         Catch ex As Exception
             Diagnostics.Debug.Print(ex.Message)
@@ -3170,17 +3171,30 @@ Public Class Form1
         OpensimIsRunning() = True
         Buttons(StopButton)
 
+        Diagnostics.Debug.Print("Region:Starting Region " + BootName)
+
         Dim n = RegionClass.FindRegionByName(BootName)
-        If RegionClass.Booted(n) Or RegionClass.WarmingUp(n) Or RegionClass.ShuttingDown(n) Then
+        If RegionClass.Booted(n) Then
+            Log("Region " + BootName + "failed to start as it is already booted")
             Return True
         End If
+
+        If RegionClass.WarmingUp(n) Then
+            Log("Region " + BootName + "failed to start as it is already WarmingUp")
+            Return True
+        End If
+
+        If RegionClass.ShuttingDown(n) Then
+            Log("Region " + BootName + "failed to start as it is already ShuttingDown")
+            Return True
+        End If
+
 
         Dim isRegionRunning = CheckPort("127.0.0.1", RegionClass.GroupPort(n))
         If isRegionRunning Then
-            Print(BootName + " is already running")
-            Return True
+            Log("Region " + BootName + "failed to start as it is already running")
+            Return False
         End If
-
 
         Environment.SetEnvironmentVariable("OSIM_LOGPATH", gPath + "bin\Regions\" + RegionClass.GroupName(n))
 
@@ -3539,9 +3553,8 @@ Public Class Form1
             ' if a restart is signalled, boot it up
             If RegionClass.Timer(X) = -2 Then
                 RegionClass.Timer(X) = 0
-                Sleep(1000)
                 Boot(RegionClass.RegionName(X))
-                Return
+
             End If
         Next
     End Sub
@@ -3552,15 +3565,8 @@ Public Class Form1
 
         For Each X As Integer In RegionClass.RegionNumbers
 
-            ' if a restart is signalled, boot it up
-            If RegionClass.Timer(X) = -2 Then
-                RegionClass.Timer(X) = 0
-                Dim name = RegionClass.RegionName(X)
-                Boot(Name)
-                Return
-            End If
 
-            If OpensimIsRunning() And RegionClass.RegionEnabled(X) And (RegionClass.Booted(X) Or RegionClass.WarmingUp(X)) Then
+            If OpensimIsRunning() And RegionClass.RegionEnabled(X) And RegionClass.Booted(X) Then
 
                 Dim timervalue As Integer = RegionClass.Timer(X)
                 Dim Groupname = RegionClass.GroupName(X)
@@ -3571,7 +3577,7 @@ Public Class Form1
                     ' shut down the group
 
                     ConsoleCommand(RegionClass.ProcessID(X), "{ENTER}q{ENTER}")
-                    Print("Restarting " + Groupname)
+                    Print("AutoRestarting " + Groupname)
 
                     RegionClass.Timer(X) = -1
 
@@ -3579,8 +3585,8 @@ Public Class Form1
 
                         ' if enabled and running, stopit
 
-                        If OpensimIsRunning() And RegionClass.RegionEnabled(X) And RegionClass.Booted(X) Then
-                            Diagnostics.Debug.Print("AutoRestart is shutting down " + RegionClass.RegionName(X))
+                        If OpensimIsRunning() And RegionClass.RegionEnabled(RegionNum) And RegionClass.Booted(RegionNum) Then
+                            Print("AutoRestart is shutting down " + RegionClass.RegionName(RegionNum))
                             RegionClass.Booted(RegionNum) = False
                             RegionClass.WarmingUp(RegionNum) = False
                             RegionClass.ShuttingDown(RegionNum) = True
@@ -5166,7 +5172,7 @@ Public Class Form1
                 MySetting.SaveOtherINI()
 
                 Boot(RegionClass.RegionName(num))
-                Diagnostics.Debug.Print("Region:Started Region " + RegionClass.RegionName(num))
+
             End If
         End If
 

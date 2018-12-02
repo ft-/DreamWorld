@@ -1,3 +1,6 @@
+V2.52 
+Autorestart can be set to low values if Autobackup is off. Otherwise it is set to AutoBackup interval + 0.5 hour to allow time for backup
+
 V2.51
 Forms remember their last moved-to position 
 
