@@ -62,10 +62,11 @@ Public Class NetServer
 
         LocalTCPListener.Start()
         Log("Info:Listener Started")
+        Dim myReadBuffer(8192) As Byte
+        Dim L = myReadBuffer.Length
 
         While listen
-            Dim myReadBuffer(8192) As Byte
-            Dim L = myReadBuffer.Length
+
             Dim myCompleteMessage As StringBuilder = New StringBuilder()
             Dim numberOfBytesRead As Integer = 0
 
@@ -93,8 +94,7 @@ Public Class NetServer
                 ' Print out the received message to the console.
                 ' Log("Received:" + myCompleteMessage.ToString())
                 Response = RegionClass.ParsePost(myCompleteMessage.ToString(), Setting)
-            Else
-                Log("Error:Cannot read from this Network Stream.")
+
             End If
 
             Try
