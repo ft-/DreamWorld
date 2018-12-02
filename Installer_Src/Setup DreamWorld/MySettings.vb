@@ -457,7 +457,7 @@ Public Class MySettings
         parser.Parser.Configuration.AssigmentSpacer = ""
         parser.Parser.Configuration.CommentString = comment ' Opensim uses semicolons
         Try
-            Form1.Log("Loading " + arg)
+            'Form1.Log("Loading " + arg)
             Data = parser.ReadFile(arg, System.Text.Encoding.ASCII)
         Catch ex As Exception
             Form1.Log(ex.Message)
