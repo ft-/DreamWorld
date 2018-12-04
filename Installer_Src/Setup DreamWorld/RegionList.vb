@@ -190,25 +190,28 @@ Public Class RegionList
             End If
 
             If TheView = 2 Then
+
+
+
                 If RegionClass.Booted(X) Then
-                    Dim img As String = "http://127.0.0.1:" + RegionClass.GroupPort(X).ToString + "/" + "index.php?method=regionImage" + RegionClass.UUID(X).Replace("-", "")
-                    Debug.Print(img)
+                        Dim img As String = "http://127.0.0.1:" + RegionClass.GroupPort(X).ToString + "/" + "index.php?method=regionImage" + RegionClass.UUID(X).Replace("-", "")
+                        Debug.Print(img)
 
-                    Dim bmp As Image = LoadImage(img)
-                    If bmp Is Nothing Then
-                        imageListLarge.Images.Add(My.Resources.ResourceManager.GetObject("OfflineMap"))
+                        Dim bmp As Image = LoadImage(img)
+                        If bmp Is Nothing Then
+                            imageListLarge.Images.Add(My.Resources.ResourceManager.GetObject("OfflineMap"))
+                        Else
+                            imageListLarge.Images.Add(bmp)
+
+                        End If
                     Else
-                        imageListLarge.Images.Add(bmp)
-
+                        imageListLarge.Images.Add(My.Resources.ResourceManager.GetObject("OfflineMap"))
                     End If
-                Else
-                    imageListLarge.Images.Add(My.Resources.ResourceManager.GetObject("OfflineMap"))
+                    Num = X
                 End If
-                Num = X
-            End If
 
-            ' Create  items and subitems for each item.
-            Dim item1 As New ListViewItem(RegionClass.RegionName(X), Num)
+                ' Create  items and subitems for each item.
+                Dim item1 As New ListViewItem(RegionClass.RegionName(X), Num)
             ' Place a check mark next to the item.
             item1.Checked = RegionClass.RegionEnabled(X)
             item1.SubItems.Add(RegionClass.GroupName(X).ToString)
@@ -444,6 +447,8 @@ Public Class RegionList
             Application.DoEvents()
         End While
 
+        Debug.Print(Form1.MySetting.MapType)
+        If Form1.MySetting.MapType = "None" And TheView = 1 Then TheView = 2
 
         If TheView = 0 Then
             ListView1.CheckBoxes = False
@@ -458,7 +463,11 @@ Public Class RegionList
             ListView1.View = View.Details
             Timer1.Interval = 30000
         End If
+
         TheView = TheView + 1
+
+
+
         If TheView > 2 Then TheView = 0
 
         LoadMyListView()
