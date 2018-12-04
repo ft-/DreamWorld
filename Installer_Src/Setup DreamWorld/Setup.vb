@@ -3013,8 +3013,15 @@ Public Class Form1
         ' Handle Opensim Exited
 
         Dim n As Integer = RegionClass.FindRegionByProcessID(CType(sender.Id, Integer))
-        If n < 0 Then Return
+
+        If n < 0 Then
+            Log("Error, N < 0. Sender.id = " + sender.Id.ToString)
+            Return
+        End If
+
+        Dim Groupname = RegionClass.GroupName(n)
         Dim ShouldIRestart = RegionClass.Timer(n)
+        Log(Groupname + " Exited with status " + ShouldIRestart.ToString)
 
         ' skip prompt if auto restarting
         If RegionClass.WarmingUp(n) = True And RegionClass.Timer(n) >= 0 Then
@@ -3023,9 +3030,6 @@ Public Class Form1
                 System.Diagnostics.Process.Start("notepad.exe", RegionClass.IniPath(n) + "Opensim.log")
             End If
         End If
-
-        Dim Groupname = RegionClass.GroupName(n)
-        Log(Groupname + " Exited")
 
         For Each X In RegionClass.RegionListByGroupNum(Groupname)
             Log(RegionClass.RegionName(X) + " Exited")
