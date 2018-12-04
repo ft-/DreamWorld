@@ -2,7 +2,10 @@
 echo Upgrading MySql Database
 mysql_upgrade.exe --port=%1
 
-pause
+myisamchk --force --fast --update-state ..\data\mysql\*.MYI
+myisamchk --force --fast --update-state ..\data\opensim\*.MYI
+myisamchk --force --fast --update-state ..\data\robust\*.MYI
+
 echo Checking Database
 mysqlcheck.exe --port %1 -u root -A 
 set /p fixmysql=Repair and Optimize [y/n]?:

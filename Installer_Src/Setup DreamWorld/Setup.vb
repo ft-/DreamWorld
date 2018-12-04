@@ -38,7 +38,7 @@ Public Class Form1
     Dim gSimVersion As String = "0.9.1"
 
     ' edit this to compile and run in the correct folder root
-    Dim gDebugPath As String = "\Opensim\Outworldz DreamGrid Source"  ' no slash at end
+    Dim gDebugPath As String = "F:\Opensim\Outworldz DreamGrid Source"  ' no slash at end
 
     ' not https
     Public gDomain As String = "http://www.outworldz.com"
@@ -51,7 +51,7 @@ Public Class Form1
     Dim gCurSlashDir As String '  holds the current directory info in Unix format for MySQL
     Public gIsRunning As Boolean = False ' used in OpensimIsRunning property
     Dim Arnd As Random = New Random()
-    Public gChatTime As Integer     'amlunt of coffee the fairy had. time for the chatty fairy to be read
+    Public gChatTime As Integer     'amount of coffee the fairy had. T ime for the chatty fairy to be read
     Dim client As New System.Net.WebClient ' downloadclient for web pages
     Public Shared MysqlConn As Mysql
 
@@ -140,10 +140,6 @@ Public Class Form1
     End Sub
 
 #End Region
-
-
-
-
 
 #Region "Events"
     Private WithEvents MyProcess1 As New Process()
@@ -388,7 +384,7 @@ Public Class Form1
 
         If MyFolder.Contains("Source") Then
             ' for debugging when compiling
-            gDebug = False ' set to true to fail all kinds of tests :-)
+            gDebug = True ' set to true to fail all kinds of tests :-)
             MyFolder = gDebugPath ' for testing, as the compiler buries itself in ../../../debug
         End If
         gCurSlashDir = MyFolder.Replace("\", "/")    ' because Mysql uses unix like slashes, that's why
@@ -411,11 +407,11 @@ Public Class Form1
         Catch
         End Try
 
-        Try
-            'My.Computer.FileSystem.DeleteFile(gPath + "\bin\OpenSimBirds.Module.dll")
-            'My.Computer.FileSystem.DeleteFile(gPath + "\bin\OpenSimBirds.Module.pdb")
-        Catch
-        End Try
+        'Try
+        'My.Computer.FileSystem.DeleteFile(gPath + "\bin\OpenSimBirds.Module.dll")
+        'My.Computer.FileSystem.DeleteFile(gPath + "\bin\OpenSimBirds.Module.pdb")
+        'Catch
+        'End Try
 
 
         MySetting.Init(MyFolder)
