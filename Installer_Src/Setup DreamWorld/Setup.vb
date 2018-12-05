@@ -382,6 +382,8 @@ Public Class Form1
 
         Application.EnableVisualStyles()
 
+        PictureBox1.Size = TextBox1.Size
+
         MyFolder = My.Application.Info.DirectoryPath
 
         If MyFolder.Contains("Source") Then
@@ -645,6 +647,36 @@ Public Class Form1
 
     Private Sub Form1_Closed(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Closed
 
+        If OpensimIsRunning Then
+            Dim result = MsgBox("Leave Opensim Running?", vbYesNo)
+            If result = vbYes Then
+                Print("Zzzz...")
+                End
+            End If
+        End If
+
+        Shutdown()
+
+        End
+
+    End Sub
+
+    Private Sub MnuExit_Click(sender As System.Object, e As System.EventArgs) Handles mnuExit.Click
+
+        If OpensimIsRunning Then
+            Dim result = MsgBox("Leave Opensim Running?", vbYesNo)
+            If result = vbYes Then
+                Print("Zzzz...")
+                End
+            End If
+        End If
+
+        Shutdown()
+
+        End
+
+    End Sub
+    Private Sub Shutdown()
         Dim p As Point
         p = Me.Location
 
@@ -669,14 +701,7 @@ Public Class Form1
         ProgressBar1.Value = 5
         Print("Zzzz...")
         ProgressBar1.Value = 0
-
     End Sub
-
-    Private Sub MnuExit_Click(sender As System.Object, e As System.EventArgs) Handles mnuExit.Click
-        Log("Info:Exiting")
-        End
-    End Sub
-
     Private Sub ShutdownNowToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs)
         Print("Stopping")
         Application.DoEvents()

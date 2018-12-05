@@ -1,8 +1,11 @@
 V2.52 
 Autorestart can be set to low values if Autobackup is off. Otherwise it is set to AutoBackup interval + 0.5 hour to allow time for backup
+Fixed issue where Auto restart did not always restart a region
+Prompt at exit to leave Opensim running.
+Gifs should resize on large font machines
 
 V2.51
-Forms remember their last moved-to position 
+Forms remember their last moved-to position. 
 
 V2.50
 Form Region now set to full size - no more [More] Button
