@@ -37,6 +37,7 @@ Public Class AdvancedForm
     Private Sub Loaded(sender As Object, e As EventArgs) Handles Me.Load
 
         AutoBackupKeepFilesForDays.Text = Form1.MySetting.KeepForDays.ToString
+
         If CType(Form1.MySetting.AutobackupInterval, Double) = 60 Then
             AutoBackupInterval.SelectedIndex = 0
         ElseIf CType(Form1.MySetting.AutobackupInterval, Double) = 12 * 60 Then
