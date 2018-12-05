@@ -3013,6 +3013,8 @@ Public Class Form1
     Private Sub DoExitHandlers()
 
         ' Delet off end of list so we don't skip over one
+        If ExitList.Count = 0 Then Return
+
         For LOOPVAR = ExitList.Count - 1 To 0 Step -1
             Dim ProcessID As Integer = ExitList(LOOPVAR) ' recover the PIDas integer
 
@@ -3058,11 +3060,16 @@ Public Class Form1
                 RegionClass.Timer(n) = -2 ' signal a restart is needed
             End If
 
-            ExitList.RemoveAt(LOOPVAR)
+            Try
+                ExitList.RemoveAt(LOOPVAR)
+            Catch
+                Log("Something fucky in region exit")
+            End Try
+
 
         Next
 
-
+        Application.DoEvents()
         RegionRestart() ' check for reboot 
 
     End Sub
@@ -3579,7 +3586,6 @@ Public Class Form1
             If RegionClass.Timer(X) = -2 Then
                 RegionClass.Timer(X) = 0
                 Boot(RegionClass.RegionName(X))
-
             End If
         Next
     End Sub
