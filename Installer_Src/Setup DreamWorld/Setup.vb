@@ -97,7 +97,6 @@ Public Class Form1
     Dim gContentAvailable As Boolean = False ' assume there is no OAR and IAR data available
     Public MyUPnpMap As UPnp        ' UPNP Declaration
     Dim ws As NetServer             ' Port 8001 Webserver
-    Public RegionClass As RegionMaker   ' Global RegionClass
     Dim gStopping As Boolean = False    ' Allows an Abort when Stopping is clicked
     Dim Timertick As Integer        ' counts the seconds until wallpaper changes
     Private gDiagsrunning As Boolean = False
@@ -111,8 +110,11 @@ Public Class Form1
     Dim gIcecastProcID As Integer = 0
     Private WithEvents IcecastProcess As New Process()
 
-    ' Region Exit
+    ' Region 
+    Public RegionClass As RegionMaker   ' Global RegionClass
+
     Dim ExitList As New List(Of Integer)
+
 
     <CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA2101:SpecifyMarshalingForPInvokeStringArguments", MessageId:="1")>
     <CodeAnalysis.SuppressMessage("Microsoft.Interoperability", "CA1401:PInvokesShouldNotBeVisible")>
@@ -411,13 +413,6 @@ Public Class Form1
         Catch
         End Try
 
-        'Try
-        'My.Computer.FileSystem.DeleteFile(gPath + "\bin\OpenSimBirds.Module.dll")
-        'My.Computer.FileSystem.DeleteFile(gPath + "\bin\OpenSimBirds.Module.pdb")
-        'Catch
-        'End Try
-
-
         MySetting.Init(MyFolder)
 
         MySetting.Myfolder = MyFolder
@@ -432,17 +427,6 @@ Public Class Form1
         ProgressBar1.Minimum = 0
         ProgressBar1.Maximum = 100
         ProgressBar1.Value = 0
-
-
-        If MySetting.AutobackupInterval.Length > 0 Then
-            ' add 30 minutes to allow time to auto backup and then restart
-            Dim BTime As Int16 = CType(MySetting.AutobackupInterval, Int16)
-            If MySetting.AutoRestartInterval > 0 And MySetting.AutoRestartInterval < BTime Then
-                MySetting.AutoRestartInterval = BTime + 30
-                Print("Upping AutoRestart Time to " + BTime.ToString + " + 30 Minutes so backups have time to run.")
-            End If
-        End If
-
 
         TextBox1.BackColor = Me.BackColor
         TextBox1.AllowDrop = True
@@ -588,12 +572,24 @@ Public Class Form1
     ''' Called by Start Buttomn or by AutoStart
     ''' </summary>
     Private Sub Startup()
+
+
         gExiting = False  ' suppress exit warning messages
         ProgressBar1.Value = 0
         ProgressBar1.Visible = True
         Buttons(BusyButton)
 
         RegionClass.UpdateAllRegionPorts() ' must be donbe before we are running
+
+        If MySetting.AutoBackup Then
+            ' add 30 minutes to allow time to auto backup and then restart
+            Dim BTime As Int16 = CType(MySetting.AutobackupInterval, Int16)
+            If MySetting.AutoRestartInterval > 0 And MySetting.AutoRestartInterval < BTime Then
+                MySetting.AutoRestartInterval = BTime + 30
+                Print("Upping AutoRestart Time to " + BTime.ToString + " + 30 Minutes.")
+            End If
+        End If
+
 
         OpensimIsRunning() = True
 
@@ -616,6 +612,18 @@ Public Class Form1
             MySetting.RunOnce = True
             MySetting.SaveSettings()
         End If
+
+        Try
+            If MySetting.BirdsEnabled Then
+                My.Computer.FileSystem.RenameFile(gPath + "\bin\OpenSimBirds.Module.bak", "OpenSimBirds.Module.dll")
+            Else
+                My.Computer.FileSystem.RenameFile(gPath + "\bin\OpenSimBirds.Module.dll", "OpenSimBirds.Module.bak")
+            End If
+
+        Catch ex As Exception
+            Log(ex.Message)
+        End Try
+
 
         If Not Start_Opensimulator() Then ' Launch the rockets
             Return
@@ -2100,6 +2108,7 @@ Public Class Form1
         End If
 
     End Sub
+
     Private Sub Mysql_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles ProcessMySql.Exited
 
         If gExiting Then Return
@@ -2111,9 +2120,9 @@ Public Class Form1
             For Each FileName As String In files
                 System.Diagnostics.Process.Start("notepad.exe", FileName)
             Next
-
         End If
     End Sub
+
     Private Sub IceCast_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles IcecastProcess.Exited
 
         If gExiting Then Return
@@ -3056,29 +3065,25 @@ Public Class Form1
 
             ' Maybe we crashed during warmup.  Skip prompt if auto restarting
             If RegionClass.WarmingUp(n) = True And RegionClass.Timer(n) >= 0 Then
+                StopGroup(Groupname)
                 Dim yesno = MsgBox(RegionClass.RegionName(n) + " did not start. Do you want to see the log file?", vbYesNo, "Error")
                 If (yesno = vbYes) Then
                     System.Diagnostics.Process.Start("notepad.exe", RegionClass.IniPath(n) + "Opensim.log")
+                    ShouldIRestart = 0
                 End If
             End If
 
             ' prompt if crashed.  Skip prompt if auto restarting
             If RegionClass.Booted(n) = True And RegionClass.Timer(n) >= 0 Then
+                StopGroup(Groupname)
                 Dim yesno = MsgBox(RegionClass.RegionName(n) + " quit unexpectedly. Do you want to see the log file?", vbYesNo, "Error")
                 If (yesno = vbYes) Then
                     System.Diagnostics.Process.Start("notepad.exe", RegionClass.IniPath(n) + "Opensim.log")
+                    ShouldIRestart = 0
                 End If
             End If
 
-
-            For Each X In RegionClass.RegionListByGroupNum(Groupname)
-                Log(RegionClass.RegionName(X) + " Exited")
-                RegionClass.Booted(X) = False
-                RegionClass.WarmingUp(X) = False
-                RegionClass.ShuttingDown(X) = False
-                RegionClass.ProcessID(X) = 0
-                RegionClass.Timer(X) = 0            ' no longer has running time
-            Next
+            StopGroup(Groupname)
 
             ' Auto restart if negative
             If ShouldIRestart = -1 Then
@@ -3088,17 +3093,29 @@ Public Class Form1
             Try
                 ExitList.RemoveAt(LOOPVAR)
             Catch
-                Log("Something fucky in region exit")
+                ' Log("Something fucky in region exit")
             End Try
 
 
         Next
 
-        Application.DoEvents()
-        RegionRestart() ' check for reboot 
+
 
     End Sub
 
+    Private Sub StopGroup(Groupname As String)
+
+        For Each X In RegionClass.RegionListByGroupNum(Groupname)
+            Log(RegionClass.RegionName(X) + " Exited")
+            RegionClass.Booted(X) = False
+            RegionClass.WarmingUp(X) = False
+            RegionClass.ShuttingDown(X) = False
+            RegionClass.ProcessID(X) = 0
+            RegionClass.Timer(X) = 0            ' no longer has running time
+        Next
+
+
+    End Sub
 
     Private Function GetNewProcess() As Process
 
@@ -3312,6 +3329,7 @@ Public Class Form1
                     RegionClass.ProcessID(num) = myProcess.Id
                 Next
 
+                Application.DoEvents()
                 Sleep(2000)
 
                 SetWindowText(myProcess.MainWindowHandle, RegionClass.GroupName(n))
@@ -3551,16 +3569,14 @@ Public Class Form1
         If gDNSSTimer Mod 10 = 0 Then
             DoExitHandlers() ' see if any regions have exited and set it up for Region Restart 
             Reboot()
+            Application.DoEvents()
         End If
 
         ' check for avatars and Regions to restart every minute
         If gDNSSTimer Mod 60 = 0 Then
-
             If MySetting.StandAlone() Then LoadRegionsStatsBar()   ' fill in menu once a minute
-
             ScanAgents() ' update agent count
-
-
+            RegionRestart() ' check for reboot 
             RegionListHTML()
         End If
 
@@ -3616,41 +3632,30 @@ Public Class Form1
     End Sub
 
     Private Sub RegionRestart()
-
+        ' runs once per minute
         If MySetting.AutoRestartInterval() = 0 Then Return
 
         For Each X As Integer In RegionClass.RegionNumbers
 
-            If OpensimIsRunning() And RegionClass.RegionEnabled(X) And RegionClass.Booted(X) Then
+            If OpensimIsRunning() And RegionClass.RegionEnabled(X) Then
 
                 Dim timervalue As Integer = RegionClass.Timer(X)
                 Dim Groupname = RegionClass.GroupName(X)
 
                 ' if its past time and no one is in the sim...
                 If timervalue >= MySetting.AutoRestartInterval() And Not AvatarsIsInGroup(Groupname) Then
-
                     ' shut down the group
-
                     ConsoleCommand(RegionClass.ProcessID(X), "{ENTER}q{ENTER}")
                     Print("AutoRestarting " + Groupname)
-
-                    RegionClass.Timer(X) = -1
-
                     For Each RegionNum As Integer In RegionClass.RegionListByGroupNum(Groupname)
-
-                        ' if enabled and running, stopit
-
-                        If OpensimIsRunning() And RegionClass.RegionEnabled(RegionNum) And RegionClass.Booted(RegionNum) Then
-                            Print("AutoRestart is shutting down " + RegionClass.RegionName(RegionNum))
-                            RegionClass.Booted(RegionNum) = False
-                            RegionClass.WarmingUp(RegionNum) = False
-                            RegionClass.ShuttingDown(RegionNum) = True
-                            RegionClass.Timer(RegionNum) = -1 ' -1 means restart on exit
-                        End If
-
+                        RegionClass.Booted(RegionNum) = False
+                        RegionClass.WarmingUp(RegionNum) = False
+                        RegionClass.ShuttingDown(RegionNum) = True
+                        RegionClass.Timer(RegionNum) = -1 ' -1 means restart on exit
                     Next
-
                 End If
+
+                ' cxount up to auto restart , when high enought, restart the sim
                 If RegionClass.Timer(X) > -1 Then
                     RegionClass.Timer(X) = RegionClass.Timer(X) + 1
                 End If
@@ -5152,9 +5157,12 @@ Public Class Form1
     End Sub
 
     Private Sub RegionsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles RegionsToolStripMenuItem.Click
-
+        Dim RegionForm As New RegionList
         If RegionList.InstanceExists = False Then
-            Dim RegionForm As New RegionList
+
+            RegionForm.Show()
+            RegionForm.Activate()
+        Else
             RegionForm.Show()
             RegionForm.Activate()
         End If
