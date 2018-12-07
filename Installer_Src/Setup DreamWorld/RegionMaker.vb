@@ -8,7 +8,6 @@ Public Class RegionMaker
 
 #Region "Declarations"
     Private MysqlConn As Mysql    ' object lets us query Mysql database
-
     Public RegionList As New ArrayList()
     Public Grouplist As New Dictionary(Of String, Integer)
 
@@ -16,6 +15,8 @@ Public Class RegionMaker
     Private Shared FInstance As RegionMaker = Nothing
     Dim Backup As New ArrayList()
     Dim json As JSON_result
+
+    Dim WebserverList As New List(Of String)
 
     Public Sub DebugGroup()
         For Each pair In Grouplist
@@ -558,7 +559,7 @@ Public Class RegionMaker
                     Dim inis = Directory.GetFiles(FileName, "*.ini", SearchOption.TopDirectoryOnly)
 
                     For Each ini As String In inis
-                        fName = Path.GetFileName(ini)
+                        fName = System.IO.Path.GetFileName(ini)
                         fName = Mid(fName, 1, Len(fName) - 4)
 
                         'If (fName.Contains("Alpha")) Then
@@ -579,7 +580,7 @@ Public Class RegionMaker
                         End Try
 
                         RegionPath(n) = ini ' save the path
-                        FolderPath(n) = Path.GetDirectoryName(ini)
+                        FolderPath(n) = System.IO.Path.GetDirectoryName(ini)
 
                         Dim theEnd As Integer = FolderPath(n).LastIndexOf("\")
                         IniPath(n) = FolderPath(n).Substring(0, theEnd + 1)
@@ -828,6 +829,63 @@ Public Class RegionMaker
         Next
 
     End Sub
+
+    Public Sub CheckPost()
+
+        ' Delete off end of list so we don't skip over one
+        If WebserverList.Count = 0 Then Return
+
+        For LOOPVAR = WebserverList.Count - 1 To 0 Step -1
+
+            Dim ProcessString As String = WebserverList(LOOPVAR) ' recover the PID as string
+
+            ' This search returns the substring between two strings, so 
+            ' the first index Is moved to the character just after the first string.
+            Dim POST As String = Uri.UnescapeDataString(ProcessString)
+            Dim first As Integer = POST.IndexOf("{")
+            Dim last As Integer = POST.LastIndexOf("}")
+            Dim rawJSON = POST.Substring(first, last - first + 1)
+
+            Try
+                json = JsonConvert.DeserializeObject(Of JSON_result)(rawJSON)
+            Catch ex As Exception
+                Debug.Print(ex.Message)
+                Return
+            End Try
+
+            If json.login = "enabled" Then
+                'Debug.Print("Region " & json.region_name & " is ready for logins")
+
+                Dim n = FindRegionByName(json.region_name)
+                If n < 0 Then
+                    Return
+                End If
+
+                RegionEnabled(n) = True
+                Booted(n) = True
+                WarmingUp(n) = False
+                ShuttingDown(n) = False
+                UUID(n) = json.region_id
+
+            ElseIf json.login = "shutdown" Then
+                'Debug.Print("Region " & json.region_name & " shut down")
+
+                Dim n = FindRegionByName(json.region_name)
+                If n < 0 Then
+                    Return
+                End If
+
+                Booted(n) = False
+                WarmingUp(n) = False
+                ShuttingDown(n) = True
+                UUID(n) = ""
+
+            End If
+        Next
+
+
+    End Sub
+
 #End Region
 
 #Region "POST"
@@ -874,51 +932,12 @@ Public Class RegionMaker
         ' WarmingUp(0) = True
         ' ShuttingDown(1) = True
 
+        ' alerts need to be fast so we stash them on a list and process them on a 10 second timer.
 
         If (POST.Contains("alert")) Then
-            'Debug.Print(POST)
-            ' This search returns the substring between two strings, so 
-            ' the first index Is moved to the character just after the first string.
-            POST = Uri.UnescapeDataString(POST)
-            Dim first As Integer = POST.IndexOf("{")
-            Dim last As Integer = POST.LastIndexOf("}")
-            Dim rawJSON = POST.Substring(first, last - first + 1)
 
-            Try
-                json = JsonConvert.DeserializeObject(Of JSON_result)(rawJSON)
-            Catch ex As Exception
-                Debug.Print(ex.Message)
-                Return ""
-            End Try
+            WebserverList.Add(POST)
 
-            If json.login = "enabled" Then
-                'Debug.Print("Region " & json.region_name & " is ready for logins")
-
-                Dim n = FindRegionByName(json.region_name)
-                If n < 0 Then
-                    Return ""
-                End If
-
-                RegionEnabled(n) = True
-
-                Booted(n) = True
-                WarmingUp(n) = False
-                ShuttingDown(n) = False
-                UUID(n) = json.region_id
-
-            ElseIf json.login = "shutdown" Then
-                'Debug.Print("Region " & json.region_name & " shut down")
-
-                Dim n = FindRegionByName(json.region_name)
-                If n < 0 Then
-                    Return ""
-                End If
-
-                Booted(n) = False
-                WarmingUp(n) = False
-                ShuttingDown(n) = True
-
-            End If
         ElseIf POST.Contains("UUID") Then
             Debug.Print("UUID:" + POST)
             Return POST
@@ -982,78 +1001,78 @@ Public Class RegionMaker
                 End If
 
             Catch ex As Exception
-                    Return "<html><head></head><body>Error</html>"
-                End Try
+                Return "<html><head></head><body>Error</html>"
+            End Try
 
-            ElseIf POST.Contains("get_partner") Then
+        ElseIf POST.Contains("get_partner") Then
 
-                Dim PWok As Boolean = CheckPassword(POST, MySetting.Machine().ToLower)
-                If Not PWok Then Return ""
+            Dim PWok As Boolean = CheckPassword(POST, MySetting.Machine().ToLower)
+            If Not PWok Then Return ""
 
-                Dim pattern1 As Regex = New Regex("User=(.*?) ")
-                Dim match1 As Match = pattern1.Match(POST)
+            Dim pattern1 As Regex = New Regex("User=(.*?) ")
+            Dim match1 As Match = pattern1.Match(POST)
+            Dim p1 As String = ""
+            If match1.Success Then
+                p1 = match1.Groups(1).Value
+            End If
+
+            Return GetPartner(p1, MySetting)
+
+        ElseIf POST.Contains("set_partner") Then
+
+            Dim PWok As Boolean = CheckPassword(POST, MySetting.Machine().ToLower)
+            If Not PWok Then Return ""
+
+
+            Dim pattern1 As Regex = New Regex("User=(.*?)&")
+            Dim match1 As Match = pattern1.Match(POST)
+            If match1.Success Then
                 Dim p1 As String = ""
-                If match1.Success Then
-                    p1 = match1.Groups(1).Value
+                Dim p2 As String = ""
+                p1 = match1.Groups(1).Value
+                Dim pattern2 As Regex = New Regex("Partner=(.*)")
+                Dim match2 As Match = pattern2.Match(POST)
+                If match2.Success Then
+                    p2 = match2.Groups(1).Value
                 End If
+                Dim result As New Guid
+                If Guid.TryParse(p1, result) And Guid.TryParse(p1, result) Then
+                    Try
 
-                Return GetPartner(p1, MySetting)
+                        Dim Partner = GetPartner(p1, MySetting)
+                        Debug.Print("Partner=" + p2)
 
-            ElseIf POST.Contains("set_partner") Then
+                        Dim Str As String = "server=" + MySetting.RobustServer _
+                            + ";database=" + MySetting.RobustDataBaseName _
+                            + ";port=" + MySetting.MySqlPort _
+                            + ";user=" + MySetting.RobustUsername _
+                            + ";password=" + MySetting.RobustPassword _
+                            + ";Old Guids=true;Allow Zero Datetime=true;"
 
-                Dim PWok As Boolean = CheckPassword(POST, MySetting.Machine().ToLower)
-                If Not PWok Then Return ""
+                        Dim myConnection As MySqlConnection = New MySqlConnection(Str)
 
+                        Dim Query1 = "update robust.userprofile set profilepartner=@p2 where userUUID = @p1; "
+                        Dim myCommand1 As MySqlCommand = New MySqlCommand(Query1)
+                        myCommand1.Connection = myConnection
+                        myConnection.Open()
+                        myCommand1.Prepare()
 
-                Dim pattern1 As Regex = New Regex("User=(.*?)&")
-                Dim match1 As Match = pattern1.Match(POST)
-                If match1.Success Then
-                    Dim p1 As String = ""
-                    Dim p2 As String = ""
-                    p1 = match1.Groups(1).Value
-                    Dim pattern2 As Regex = New Regex("Partner=(.*)")
-                    Dim match2 As Match = pattern2.Match(POST)
-                    If match2.Success Then
-                        p2 = match2.Groups(1).Value
-                    End If
-                    Dim result As New Guid
-                    If Guid.TryParse(p1, result) And Guid.TryParse(p1, result) Then
-                        Try
+                        myCommand1.Parameters.AddWithValue("p1", p1)
+                        myCommand1.Parameters.AddWithValue("p2", p2)
 
-                            Dim Partner = GetPartner(p1, MySetting)
-                            Debug.Print("Partner=" + p2)
+                        myCommand1.ExecuteScalar()
+                        myConnection.Close()
 
-                            Dim Str As String = "server=" + MySetting.RobustServer _
-                                + ";database=" + MySetting.RobustDataBaseName _
-                                + ";port=" + MySetting.MySqlPort _
-                                + ";user=" + MySetting.RobustUsername _
-                                + ";password=" + MySetting.RobustPassword _
-                                + ";Old Guids=true;Allow Zero Datetime=true;"
-
-                            Dim myConnection As MySqlConnection = New MySqlConnection(Str)
-
-                            Dim Query1 = "update robust.userprofile set profilepartner=@p2 where userUUID = @p1; "
-                            Dim myCommand1 As MySqlCommand = New MySqlCommand(Query1)
-                            myCommand1.Connection = myConnection
-                            myConnection.Open()
-                            myCommand1.Prepare()
-
-                            myCommand1.Parameters.AddWithValue("p1", p1)
-                            myCommand1.Parameters.AddWithValue("p2", p2)
-
-                            myCommand1.ExecuteScalar()
-                            myConnection.Close()
-
-                            Return Partner
-                        Catch ex As Exception
-                            Debug.Print(ex.Message)
-                        End Try
-                    End If
+                        Return Partner
+                    Catch ex As Exception
+                        Debug.Print(ex.Message)
+                    End Try
                 End If
-                Return ""
+            End If
+            Return ""
 
-            Else
-                Return "Test Completed"
+        Else
+            Return "Test Completed"
         End If
 
         Return ""

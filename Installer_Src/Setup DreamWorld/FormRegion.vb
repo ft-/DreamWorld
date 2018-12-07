@@ -229,7 +229,7 @@ Public Class FormRegion
                     WriteRegion()
 
                     Form1.CopyOpensimProto()
-                    RegionClass.GetAllRegions()
+
                     If RegionList.InstanceExists Then
                         RegionClass.GetAllRegions()
                         RegionList.LoadMyListView()

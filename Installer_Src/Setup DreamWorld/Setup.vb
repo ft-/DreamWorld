@@ -112,7 +112,7 @@ Public Class Form1
 
     ' Region 
     Public RegionClass As RegionMaker   ' Global RegionClass
-
+    Dim RegionForm As RegionList
     Dim ExitList As New List(Of Integer)
 
 
@@ -3044,18 +3044,18 @@ Public Class Form1
 
     End Sub
 
-    Private Sub DoExitHandlers()
+    Private Sub DoExitHandlerPoll()
 
-        ' Delet off end of list so we don't skip over one
+        ' Delete off end of list so we don't skip over one
         If ExitList.Count = 0 Then Return
 
         For LOOPVAR = ExitList.Count - 1 To 0 Step -1
-            Dim ProcessID As Integer = ExitList(LOOPVAR) ' recover the PIDas integer
+            Dim ProcessID As Integer = ExitList(LOOPVAR) ' recover the PID as integer
 
             Dim n As Integer = RegionClass.FindRegionByProcessID(ProcessID) ' get the region handle
 
             If n < 0 Then
-                Log("ExitHandler error: N Should be >=0, was " + n.ToString + ", Sender.id = " + ProcessID.ToString)
+                Log("ExitHandler error: N Should be >=0, was " + n.ToString + ",ProcessID = " + ProcessID.ToString)
                 Return
             End If
 
@@ -3567,8 +3567,10 @@ Public Class Form1
 
         ' 10 seconds check for a restart
         If gDNSSTimer Mod 10 = 0 Then
-            DoExitHandlers() ' see if any regions have exited and set it up for Region Restart 
-            Reboot()
+            DoExitHandlerPoll() ' see if any regions have exited and set it up for Region Restart 
+            RebootPoll()
+            RegionClass.CheckPost()
+
             Application.DoEvents()
         End If
 
@@ -3621,7 +3623,7 @@ Public Class Form1
 
     End Sub
 
-    Private Sub Reboot()
+    Private Sub RebootPoll()
         For Each X As Integer In RegionClass.RegionNumbers
             ' if a restart is signalled, boot it up
             If RegionClass.Timer(X) = -2 Then
@@ -5157,13 +5159,14 @@ Public Class Form1
     End Sub
 
     Private Sub RegionsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles RegionsToolStripMenuItem.Click
-        Dim RegionForm As New RegionList
-        If RegionList.InstanceExists = False Then
 
+        If RegionList.InstanceExists = False Then
+            RegionForm = New RegionList
             RegionForm.Show()
             RegionForm.Activate()
         Else
             RegionForm.Show()
+
             RegionForm.Activate()
         End If
 

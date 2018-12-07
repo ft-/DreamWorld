@@ -117,6 +117,7 @@ Public Class RegionList
         Timer1.Start() 'Timer starts functioning
         SetScreen()
     End Sub
+
     Private Sub SingletonForm_FormClosed(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles Me.FormClosed
 
         RegionList.FormExists = False
