@@ -852,6 +852,8 @@ Public Class RegionMaker
                 json = JsonConvert.DeserializeObject(Of JSON_result)(rawJSON)
             Catch ex As Exception
                 Debug.Print(ex.Message)
+                WebserverList.RemoveAt(LOOPVAR)
+                Continue For
                 Return
             End Try
 

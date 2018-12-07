@@ -614,14 +614,14 @@ Public Class Form1
         End If
 
         Try
-            If MySetting.BirdsEnabled Then
+            If MySetting.BirdsModuleStartup Then
                 My.Computer.FileSystem.RenameFile(gPath + "\bin\OpenSimBirds.Module.bak", "OpenSimBirds.Module.dll")
             Else
                 My.Computer.FileSystem.RenameFile(gPath + "\bin\OpenSimBirds.Module.dll", "OpenSimBirds.Module.bak")
             End If
 
         Catch ex As Exception
-            Log(ex.Message)
+            'Log(ex.Message)
         End Try
 
 
@@ -3057,8 +3057,8 @@ Public Class Form1
             Dim n As Integer = RegionClass.FindRegionByProcessID(ProcessID) ' get the region handle
 
             If n < 0 Then
-                Log("ExitHandler error: N Should be >=0, was " + n.ToString + ",ProcessID = " + ProcessID.ToString)
-                Return
+                ExitList.RemoveAt(LOOPVAR)
+                Continue For
             End If
 
             Dim Groupname = RegionClass.GroupName(n)
