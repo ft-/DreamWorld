@@ -835,6 +835,8 @@ Public Class RegionMaker
         ' Delete off end of list so we don't skip over one
         If WebserverList.Count = 0 Then Return
 
+        WebserverList.Reverse()
+
         For LOOPVAR = WebserverList.Count - 1 To 0 Step -1
 
             Dim ProcessString As String = WebserverList(LOOPVAR) ' recover the PID as string
@@ -854,7 +856,7 @@ Public Class RegionMaker
             End Try
 
             If json.login = "enabled" Then
-                'Debug.Print("Region " & json.region_name & " is ready for logins")
+                Form1.PrintFast("Region " & json.region_name & " is ready for logins")
 
                 Dim n = FindRegionByName(json.region_name)
                 If n < 0 Then
@@ -868,7 +870,7 @@ Public Class RegionMaker
                 UUID(n) = json.region_id
 
             ElseIf json.login = "shutdown" Then
-                'Debug.Print("Region " & json.region_name & " shut down")
+                    Form1.PrintFast("Region " & json.region_name & " shut down")
 
                 Dim n = FindRegionByName(json.region_name)
                 If n < 0 Then
@@ -880,7 +882,14 @@ Public Class RegionMaker
                 ShuttingDown(n) = True
                 UUID(n) = ""
 
+
             End If
+            Try
+                WebserverList.RemoveAt(LOOPVAR)
+            Catch
+                Debug.Print("Something fucky in region exit")
+            End Try
+
         Next
 
 

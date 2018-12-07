@@ -112,7 +112,7 @@ Public Class Form1
 
     ' Region 
     Public RegionClass As RegionMaker   ' Global RegionClass
-    Dim RegionForm As RegionList
+    Public RegionForm As RegionList
     Dim ExitList As New List(Of Integer)
 
 
@@ -564,7 +564,7 @@ Public Class Form1
     ''' </summary>
     Private Sub StartButton_Click(sender As System.Object, e As System.EventArgs) Handles StartButton.Click
         Startup()
-        Print("")
+        'Print("")
     End Sub
 
     ''' <summary>
@@ -640,7 +640,7 @@ Public Class Form1
 
         Buttons(StopButton)
         ProgressBar1.Value = 100
-        Print("Outworldz is almost ready for you to log in.  Wait for INITIALIZATION COMPLETE - LOGINS ENABLED to appear in the console, and you can log in." + vbCrLf _
+        Print("Outworldz is almost ready for you to log in." + vbCrLf _
               + "Grid address is" + vbCrLf + "http://" + MySetting.PublicIP + ":" + MySetting.HttpPort)
 
         ' done with bootup
@@ -3049,6 +3049,8 @@ Public Class Form1
         ' Delete off end of list so we don't skip over one
         If ExitList.Count = 0 Then Return
 
+        ExitList.Reverse()
+
         For LOOPVAR = ExitList.Count - 1 To 0 Step -1
             Dim ProcessID As Integer = ExitList(LOOPVAR) ' recover the PID as integer
 
@@ -3087,13 +3089,14 @@ Public Class Form1
 
             ' Auto restart if negative
             If ShouldIRestart = -1 Then
+                PrintFast("Restart Queued for " + Groupname)
                 RegionClass.Timer(n) = -2 ' signal a restart is needed
             End If
 
             Try
                 ExitList.RemoveAt(LOOPVAR)
             Catch
-                ' Log("Something fucky in region exit")
+                Log("Something fucky in region exit")
             End Try
 
 
@@ -3114,6 +3117,9 @@ Public Class Form1
             RegionClass.Timer(X) = 0            ' no longer has running time
         Next
 
+        If RegionList.InstanceExists Then
+            RegionList.LoadMyListView()
+        End If
 
     End Sub
 
@@ -3565,12 +3571,12 @@ Public Class Form1
             RegisterDNS()
         End If
 
+        RegionClass.CheckPost()
+
         ' 10 seconds check for a restart
         If gDNSSTimer Mod 10 = 0 Then
             DoExitHandlerPoll() ' see if any regions have exited and set it up for Region Restart 
             RebootPoll()
-            RegionClass.CheckPost()
-
             Application.DoEvents()
         End If
 
@@ -3578,7 +3584,9 @@ Public Class Form1
         If gDNSSTimer Mod 60 = 0 Then
             If MySetting.StandAlone() Then LoadRegionsStatsBar()   ' fill in menu once a minute
             ScanAgents() ' update agent count
+            Application.DoEvents()
             RegionRestart() ' check for reboot 
+            Application.DoEvents()
             RegionListHTML()
         End If
 
@@ -3629,6 +3637,9 @@ Public Class Form1
             If RegionClass.Timer(X) = -2 Then
                 RegionClass.Timer(X) = 0
                 Boot(RegionClass.RegionName(X))
+                If RegionList.InstanceExists Then
+                    RegionList.LoadMyListView()
+                End If
             End If
         Next
     End Sub
