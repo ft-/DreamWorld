@@ -1,8 +1,11 @@
 V2.52 
+Click Ctrl R or Settings->Region brings the regions panel to the front unless it is minimized.
 Autorestart can be set to low values if Autobackup is off. Otherwise it is set to AutoBackup interval + 0.5 hour to allow time for backup
-Fixed issue where Auto restart did not always restart a region
+Fixed issue where Autorestart did not always restart a region by running websever and exit handlers on a timer
 Prompt at exit to leave Opensim running.
-Gifs should resize on large font machines
+Gifs should resize on large font machines.
+Birds crash prevented on some sims by renaming OpenSimBirds.Module.dll to .bak.
+Recompiled and signed all files
 
 V2.51
 Forms remember their last moved-to position. 

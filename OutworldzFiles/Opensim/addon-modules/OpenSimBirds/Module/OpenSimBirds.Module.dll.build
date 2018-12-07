@@ -10,9 +10,9 @@
 				  <include name="BirdsModule/Birds.cs" />
 				  <include name="BirdsModule/BirdsUtil.cs" />
 				  <include name="BirdsModule/FlockingModel.cs" />
+				  <include name="BirdsModule/FlockingModule.cs" />
 				  <include name="BirdsModule/FlockingView.cs" />
 				  <include name="BirdsModule/FlowMap.cs" />
-				  <include name="BirdsModule/FlockingModule.cs" />
 			  </sources>
 			  <references basedir="${project::get-base-directory()}">
 				  <lib>
