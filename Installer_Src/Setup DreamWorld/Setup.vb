@@ -4246,7 +4246,44 @@ Public Class Form1
 
     End Sub
 
+    Private Function MakeBackup() As Boolean
+
+        Dim Foldername = "Full_backup" + "_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss")   ' Set default folder
+        Dim Dest As String
+        If MySetting.BackupFolder = "AutoBackup" Then
+            Dest = MyFolder + "\OutworldzFiles\AutoBackup\" + Foldername
+        Else
+            Dest = MySetting.BackupFolder + "FolderName"
+        End If
+        Print("Making a backup at " + Dest)
+        Print("Backing up Regions Folder")
+        Try
+            My.Computer.FileSystem.CopyDirectory(MyFolder + "\Outworldzfiles\Opensim\bin\Regions", Dest + "\Regions")
+            Print("Backing up MySql\Data Folder")
+            My.Computer.FileSystem.CopyDirectory(MyFolder + "\Outworldzfiles\Mysql\Data\", Dest + "\Mysql_Data")
+            Print("Backing up Wifi Folders")
+            My.Computer.FileSystem.CopyDirectory(MyFolder + "\Outworldzfiles\Opensim\WifiPages\", Dest + "\Opensim_Wifi")
+            My.Computer.FileSystem.CopyDirectory(MyFolder + "\Outworldzfiles\Opensim\bin\WifiPages\", Dest + "\Opensim_bin_Wifi")
+        Catch ex As Exception
+            Print(ex.Message)
+            Return False
+        End Try
+
+        Return True
+
+    End Function
+
     Private Sub UpdaterGo_Click(sender As Object, e As EventArgs) Handles UpdaterGo.Click
+
+        Dim msg = MsgBox("Make a backup of important files and the database first? ", vbYesNo)
+        Dim okay As Boolean
+        If msg = vbYes Then
+            okay = MakeBackup()
+        End If
+
+        If Not okay Then Return
+
+        StopMysql()
 
         UpdaterGo.Enabled = False
         UpdaterCancel.Visible = False
