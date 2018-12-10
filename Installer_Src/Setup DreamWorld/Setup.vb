@@ -4258,14 +4258,15 @@ Public Class Form1
         Print("Making a backup at " + Dest)
         Print("Backing up Regions Folder")
         Try
-            My.Computer.FileSystem.CopyDirectory(MyFolder + "\Outworldzfiles\Opensim\bin\Regions", Dest + "\Regions")
+            My.Computer.FileSystem.CopyDirectory(MyFolder + "\OutworldzFiles\Opensim\bin\Regions", Dest + "\Regions")
             Print("Backing up MySql\Data Folder")
-            My.Computer.FileSystem.CopyDirectory(MyFolder + "\Outworldzfiles\Mysql\Data\", Dest + "\Mysql_Data")
+            My.Computer.FileSystem.CopyDirectory(MyFolder + "\OutworldzFiles\Mysql\Data\", Dest + "\Mysql_Data")
             Print("Backing up Wifi Folders")
-            My.Computer.FileSystem.CopyDirectory(MyFolder + "\Outworldzfiles\Opensim\WifiPages\", Dest + "\Opensim_Wifi")
-            My.Computer.FileSystem.CopyDirectory(MyFolder + "\Outworldzfiles\Opensim\bin\WifiPages\", Dest + "\Opensim_bin_Wifi")
+            My.Computer.FileSystem.CopyDirectory(MyFolder + "\OutworldzFiles\Opensim\WifiPages\", Dest + "\Opensim_Wifi")
+            My.Computer.FileSystem.CopyDirectory(MyFolder + "\OutworldzFiles\Opensim\bin\WifiPages\", Dest + "\Opensim_bin_Wifi")
+            My.Computer.FileSystem.CopyFile(MyFolder + "\OutworldzFiles\Settings.ini", Dest + "\Settings.ini")
         Catch ex As Exception
-            Print(ex.Message)
+            Print("Err:" + ex.Message)
             Return False
         End Try
 
@@ -5634,6 +5635,19 @@ Public Class Form1
     Private Sub HelpOnIARSToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles HelpOnIARSToolStripMenuItem.Click
         Dim webAddress As String = "http://opensimulator.org/wiki/Inventory_Archives"
         Process.Start(webAddress)
+    End Sub
+
+    Private Sub BackupCriticalFilesToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles BackupCriticalFilesToolStripMenuItem.Click
+
+        Dim msg = MsgBox("Make a backup of important files and the database? ", vbYesNo)
+        Dim okay As Boolean
+        If msg = vbYes Then
+            okay = MakeBackup()
+        End If
+        If Not okay Then Return
+
+        MakeBackup()
+
     End Sub
 
 
