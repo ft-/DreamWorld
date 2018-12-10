@@ -4269,7 +4269,7 @@ Public Class Form1
             Print("Err:" + ex.Message)
             Return False
         End Try
-
+        PrintFast("Finished with backup at " + Dest)
         Return True
 
     End Function
@@ -4786,6 +4786,23 @@ Public Class Form1
 
 #Region "MySQl"
 
+    Private Sub CheckAndRepairDatbaseToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CheckAndRepairDatbaseToolStripMenuItem.Click
+        If Not StartMySQL() Then Return
+
+        Dim pi As ProcessStartInfo = New ProcessStartInfo()
+
+        ChDir(MyFolder & "\OutworldzFiles\mysql\bin")
+        pi.WindowStyle = ProcessWindowStyle.Normal
+        pi.Arguments = MySetting.MySqlPort
+        pi.FileName = "CheckAndRepair.bat"
+        Dim pMySqlDiag As Process = New Process()
+        pMySqlDiag.StartInfo = pi
+        pMySqlDiag.Start()
+        pMySqlDiag.WaitForExit()
+        ChDir(MyFolder)
+    End Sub
+
+
     Private Sub RestoreDatabaseToolStripMenuItem1_Click(sender As Object, e As EventArgs) Handles RestoreDatabaseToolStripMenuItem1.Click
 
         If OpensimIsRunning() Then
@@ -5157,23 +5174,6 @@ Public Class Form1
 
     End Sub
 
-    Private Sub CheckDatabaseToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CheckDatabaseToolStripMenuItem.Click
-
-        If Not StartMySQL() Then Return
-
-        Dim pi As ProcessStartInfo = New ProcessStartInfo()
-
-        ChDir(MyFolder & "\OutworldzFiles\mysql\bin")
-        pi.WindowStyle = ProcessWindowStyle.Normal
-        pi.Arguments = MySetting.MySqlPort
-        pi.FileName = "CheckAndRepair.bat"
-        Dim pMySqlDiag As Process = New Process()
-        pMySqlDiag.StartInfo = pi
-        pMySqlDiag.Start()
-        pMySqlDiag.WaitForExit()
-        ChDir(MyFolder)
-
-    End Sub
 
 #End Region
 
@@ -5644,11 +5644,19 @@ Public Class Form1
         If msg = vbYes Then
             okay = MakeBackup()
         End If
-        If Not okay Then Return
-
-        MakeBackup()
 
     End Sub
+
+    Private Sub TechnicalInfoToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles TechnicalInfoToolStripMenuItem.Click
+        Dim webAddress As String = "https://www.outworldz.com/Outworldz_installer/technical.htm"
+        Process.Start(webAddress)
+    End Sub
+
+    Private Sub TroubleshootingToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles TroubleshootingToolStripMenuItem.Click
+        Dim webAddress As String = "https://www.outworldz.com/Outworldz_installer/Manual_TroubleShooting.htm"
+        Process.Start(webAddress)
+    End Sub
+
 
 
 #End Region
