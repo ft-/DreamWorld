@@ -1,5 +1,5 @@
 
-my $type  = '-V2.52' ;  # '-Beta-V1.5';
+my $type  = '-V2.53' ;  # '-Beta-V1.5';
 my $dir = "E:/Opensim/Outworldz Dreamgrid Source";
 
 chdir ($dir);
@@ -33,10 +33,11 @@ foreach my $path ( @deletions) {
 	rm($path);
 }
 
-#clean up opensim
+say("clean up opensim");
 unlink "$dir/OutworldzFiles/Opensim/bin/Opensim.log" ;
 unlink "$dir/OutworldzFiles/Opensim/bin/Opensimstats.log" ;
 unlink "$dir/OutworldzFiles/Photo.png";
+unlink "$dir/OutworldzFiles/XYSettings.ini";
 unlink "$dir/Icecast/error.log" ;
 unlink "$dir/Icecast/access.log" ;
 
@@ -85,7 +86,7 @@ foreach my $file (@files) {
     }
 }
 
-# mysql
+say("Mysql");
 chdir(qq!$dir/OutworldzFiles/mysql/bin/!);
 print `mysqladmin.exe --port 3309 -u root shutdown`;
 
@@ -110,7 +111,6 @@ unlink "$dir/OutworldzFiles/mysql/data/Alienware.err" ;
 unlink "$dir/OutworldzFiles/mysql/data/Alienware.pid" ;
 
 chdir ($dir);
-
 
 print "Processing Main Zip\n";
 
