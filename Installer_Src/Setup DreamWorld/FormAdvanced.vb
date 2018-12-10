@@ -8,7 +8,13 @@ Public Class AdvancedForm
     Dim Coffee As Integer = 500
     Dim Toomuch As Integer = 0
     Dim RegionClass As RegionMaker = RegionMaker.Instance(Form1.MysqlConn)
-
+    Dim Tos As New TosForm
+    Dim Gloebits As New Gloebits
+    Dim Icecast As New Icecast
+    Dim Voice As New FormVoice
+    Dim Bird As New BirdForm
+    Dim Tide As New Tides
+    Dim Expert As New Expert
 #End Region
 
 
@@ -159,11 +165,11 @@ Public Class AdvancedForm
         For Each Z As Integer In RegionClass.RegionNumbers
             Try
                 Dim RegionName = RegionClass.RegionName(Z)
-                Dim ActualForm As New FormRegion
+                Dim RegionForm As New FormRegion
 
-                ActualForm.Init(RegionName)
-                ActualForm.Activate()
-                ActualForm.Visible = True
+                RegionForm.Init(RegionName)
+                RegionForm.Activate()
+                RegionForm.Visible = True
                 Application.DoEvents()
             Catch ex As Exception
                 Form1.Log("Info:" + ex.Message)
@@ -182,17 +188,20 @@ Public Class AdvancedForm
         Dim Y As Integer = 200
 
         RegionClass.CreateRegion("")
-        Dim ActualForm As New FormRegion
 
-        ActualForm.Init("")
-        ActualForm.Activate()
-        ActualForm.Visible = True
+        Dim RegionForm As New FormRegion
+
+
+        RegionForm.Init("")
+        RegionForm.Activate()
+        RegionForm.Visible = True
 
     End Sub
 
     Private Sub VoiceButton1_Click(sender As Object, e As EventArgs) Handles VoiceButton1.Click
-        Dim Voice As New FormVoice
 
+        Voice.Close()
+        Voice = New FormVoice
         Voice.Activate()
         Voice.Visible = True
     End Sub
@@ -286,10 +295,11 @@ Public Class AdvancedForm
 
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles GloebitsButton.Click
-        Dim Gloebits As New Gloebits
+
         ' Set the new form's desktop location so it appears below and
         ' to the right of the current form.
-
+        Gloebits.Close()
+        Gloebits = New Gloebits
         Gloebits.Activate()
         Gloebits.Visible = True
     End Sub
@@ -319,41 +329,51 @@ Public Class AdvancedForm
     End Sub
 
     Private Sub ExpertButton1_Click(sender As Object, e As EventArgs) Handles ExpertButton1.Click
-        Dim ActualForm As New Expert
-        ActualForm.Visible = True
-        ActualForm.Activate()
+
+        Expert.Close()
+        Expert = New Expert
+        Expert.Visible = True
+        Expert.Activate()
         Application.DoEvents()
+
     End Sub
 
     Private Sub Shoutcast_Click(sender As Object, e As EventArgs) Handles Shoutcast.Click
-        Dim ActualForm As New Icecast
-        ActualForm.Visible = True
-        ActualForm.Activate()
+
+        Icecast.Close()
+        Icecast = New Icecast
+        Icecast.Visible = True
+        Icecast.Activate()
         Application.DoEvents()
+
     End Sub
 
     Private Sub TOSButton_Click(sender As Object, e As EventArgs) Handles TOSButton.Click
 
-        Dim Tos As New TosForm
-
+        Tos.Close()
+        Tos = New TosForm
         Tos.Activate()
         Tos.Visible = True
 
     End Sub
 
     Private Sub Birds_Click(sender As Object, e As EventArgs) Handles Birds.Click
-        Dim Bird As New BirdForm
+
+        Bird.Close()
+        Bird = New BirdForm
         Bird.Activate()
         Bird.Visible = True
+
     End Sub
 
     Private Sub TideButton_Click(sender As Object, e As EventArgs) Handles TideButton.Click
-        Dim Tide As New Tides
+
+        Tide.Close()
+        Tide = New Tides
         Tide.Activate()
         Tide.Visible = True
+
     End Sub
-
-
 
 #End Region
 

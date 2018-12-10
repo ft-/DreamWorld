@@ -93,7 +93,7 @@ Public Class Form1
                              My.Resources.wp_54, My.Resources.wp_55, My.Resources.wp_56,
                              My.Resources.wp_57, My.Resources.fairy
                             }
-    Dim gDebug As Boolean = False       ' toggled by -debug flag on command line
+
     Dim gContentAvailable As Boolean = False ' assume there is no OAR and IAR data available
     Public MyUPnpMap As UPnp        ' UPNP Declaration
     Dim ws As NetServer             ' Port 8001 Webserver
@@ -390,7 +390,7 @@ Public Class Form1
 
         If MyFolder.Contains("Source") Then
             ' for debugging when compiling
-            gDebug = True ' set to true to fail all kinds of tests :-)
+
             MyFolder = gDebugPath ' for testing, as the compiler buries itself in ../../../debug
         End If
         gCurSlashDir = MyFolder.Replace("\", "/")    ' because Mysql uses unix like slashes, that's why
@@ -498,10 +498,12 @@ Public Class Form1
         ws.StartServer(MySetting, MySetting.PrivateURL, CType(MySetting.DiagnosticPort, Integer))
 
         ' Run diagnostics, maybe
-        If Not MySetting.RanAllDiags Or gDebug Then
+        If Not MySetting.RanAllDiags Then
             DoDiag()
             MySetting.RanAllDiags = True
         End If
+
+        OpenPorts()
 
         If Not SetIniData() Then Return
 
@@ -520,6 +522,7 @@ Public Class Form1
         ' Find out if the viewer is installed
         If System.IO.File.Exists(MyFolder & "\OutworldzFiles\Init.txt") Then
 
+
             Buttons(StartButton)
             ProgressBar1.Value = 100
 
@@ -536,9 +539,7 @@ Public Class Form1
             Create_ShortCut(MyFolder & "\Start.exe")
             BumpProgress10()
 
-            If SetPublicIP() Then
-                OpenPorts()
-            End If
+
 
             Try
                 ' mark the system as ready
@@ -1821,7 +1822,7 @@ Public Class Form1
         If Not OpensimIsRunning() Then
 
             Dim folders() As String = IO.Directory.GetDirectories(gPath & "bin\ScriptEngines\")
-
+            Print("Clearing Script cache")
             For Each folder As String In folders
                 Dim scripts() As String = IO.Directory.GetFiles(folder)
 
@@ -1829,20 +1830,24 @@ Public Class Form1
                     Dim ext = Path.GetExtension(script)
                     If ext <> ".state" Then
                         My.Computer.FileSystem.DeleteFile(script)
+                        Application.DoEvents()
                     End If
 
                 Next
             Next
-
+            Print("Clearing bakes")
             Try
                 My.Computer.FileSystem.DeleteDirectory(gPath & "bin\bakes\", FileIO.DeleteDirectoryOption.DeleteAllContents)
             Catch
             End Try
         End If
 
+        Print("Clearing Asset cache")
         Try
             My.Computer.FileSystem.DeleteDirectory(gPath & "bin\assetcache\", FileIO.DeleteDirectoryOption.DeleteAllContents)
+            Print("Clearing Image cache")
             My.Computer.FileSystem.DeleteDirectory(gPath & "bin\j2kDecodeCache\", FileIO.DeleteDirectoryOption.DeleteAllContents)
+            Print("Clearing Mesh cache")
             My.Computer.FileSystem.DeleteDirectory(gPath & "bin\MeshCache\", FileIO.DeleteDirectoryOption.DeleteAllContents)
         Catch
         End Try
@@ -1850,7 +1855,7 @@ Public Class Form1
         If Not OpensimIsRunning() Then
             Print("All Server Caches cleared")
         Else
-            Print("All Server Caches except scripts and bakes were cleared. Opensim must be stopped to clear script and bake caches.")
+            Print("All Server Caches except scripts and Avatar bakes were cleared. Opensim must be stopped to clear script and bake caches.")
         End If
 
 
@@ -1925,9 +1930,9 @@ Public Class Form1
 
     Private Sub AdvancedSettingsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AdvancedSettingsToolStripMenuItem.Click
 
-        Dim ActualForm As New AdvancedForm
-        ActualForm.Activate()
-        ActualForm.Visible = True
+        Dim Adv As New AdvancedForm
+        Adv.Activate()
+        Adv.Visible = True
 
     End Sub
 
@@ -3973,7 +3978,7 @@ Public Class Form1
                 Dim GName = RegionClass.GroupName(d)
                 Dim RNUm = RegionClass.FindRegionByName(GName)
                 If RegionClass.Booted(d) And r = 0 Then
-                    ConsoleCommand(RegionClass.ProcessID(d), "save iar " + Name + " " + """" + itemName + """" + " " + Password + " " + """" + BackupPath() + backupName + """" + "{ENTER}")
+                    ConsoleCommand(RegionClass.ProcessID(d), "save iar " + Name + " """ + itemName + """" + " " + Password + " " + """" + BackupPath() + backupName + """" + "{ENTER}")
                     r = r + 1
                     Me.Focus()
                     Print("Saving " + backupName + " to " + BackupPath())
@@ -3981,7 +3986,7 @@ Public Class Form1
             Next
 
         Else
-            Print("Opensim is not running. Cannot make a backup now.")
+            Print("Opensim Is Not running. Cannot make a backup now.")
         End If
 
     End Sub
@@ -3999,7 +4004,7 @@ Public Class Form1
             ' Read the chosen sim name
             chosen = Chooseform.DataGridView.CurrentCell.Value.ToString()
         Catch ex As Exception
-            Log("Warn:Could not chose a displayed region. " + ex.Message)
+            Log("Warn: Could not chose a displayed region. " + ex.Message)
             chosen = ""
         End Try
         Return chosen
@@ -4376,7 +4381,7 @@ Public Class Form1
         End If
 
         '  HG USE
-        If MySetting.DNSName.Length > 0 Then
+        If IsPrivateIP(MySetting.DNSName) Then
             BumpProgress10()
             MySetting.PublicIP = MySetting.DNSName
             MySetting.SaveSettings()
@@ -4427,8 +4432,12 @@ Public Class Form1
 
     Private Function TestPublicLoopback() As Boolean
 
+        'If IsPrivateIP(MySetting.PublicIP) Then
+        ' MySetting.DiagFailed = True
+        'Return False
+        'End If
 
-        Print("Running Loopback Test")
+        'Print("Running Loopback Test")
         Dim result As String = ""
         Dim loopbacktest As String = "http://" + MySetting.PublicIP + ":" + MySetting.DiagnosticPort + "/?_TestLoopback=" + Random()
         Try
@@ -4443,7 +4452,7 @@ Public Class Form1
 
         If MySetting.PublicIP = MyUPnpMap.LocalIP() Then Return False
 
-        If result = "Test Completed" And Not gDebug Then
+        If result = "Test Completed" Then
             Log("Passed:" + result)
             MySetting.LoopBackDiag = True
             MySetting.SaveSettings()
@@ -4471,7 +4480,7 @@ Public Class Form1
         ProgressBar1.Value = 0
         DoDiag()
         If MySetting.DiagFailed = True Then
-            Print("Hypergrid Diagnostics failed. These can be re-run at any time. See Help->Network Diagnostics', 'Loopback', and 'Port Forwards'")
+            Print("Hypergrid Diagnostics failed. These can be re-run at any time. Ip is set for LAN use only. See Help->Network Diagnostics', 'Loopback', and 'Port Forwards'")
         Else
             Print("Tests passed, Hypergrid should be working.")
         End If
@@ -4481,7 +4490,7 @@ Public Class Form1
 
     Private Function ProbePublicPort() As Boolean
 
-        If MySetting.PublicIP = "localhost" Or MySetting.PublicIP = "127.0.0.1" Or MySetting.PublicIP = MySetting.PrivateURL Then
+        If IsPrivateIP(MySetting.DNSName) Then
             Return True
         End If
         Print("Checking Network Connectivity")
@@ -4502,7 +4511,7 @@ Public Class Form1
 
         BumpProgress10()
 
-        If isPortOpen = "yes" And Not gDebug Then
+        If isPortOpen = "yes" Then
             MySetting.PublicIP = MySetting.PublicIP
             Log("Public IP set to " + MySetting.PublicIP)
             MySetting.SaveSettings()
@@ -4523,7 +4532,9 @@ Public Class Form1
 
     Private Sub DoDiag()
 
-        If MySetting.PublicIP = "127.0.0.1" Or MySetting.PublicIP = "localhost" Then Return
+        If IsPrivateIP(MySetting.DNSName) Then
+            Return
+        End If
 
         Print("Running Network Diagnostics, please wait")
         gDiagsrunning = True
@@ -4595,13 +4606,15 @@ Public Class Form1
     Function OpenRouterPorts() As Boolean
 
 
-        If Not MyUPnpMap.UPnpEnabled Then
-            Log("UPnP is not enabled in the router")
+        If Not MyUPnpMap.UPnpEnabled And MySetting.UPnPEnabled Then
+            Print("UPnP is not working in the router")
+            MySetting.UPnPEnabled = False
+            MySetting.SaveSettings()
             Return False
         End If
 
         If Not MySetting.UPnPEnabled Then
-            Log("UPnP is not enabled in the menu")
+            Print("UPnP is not enabled in the menu")
             Return True
         End If
 
@@ -4668,9 +4681,6 @@ Public Class Form1
 
 
             BumpProgress10()
-
-
-
 
         Catch e As Exception
             Log("UPnP: UPnP Exception caught:  " + e.Message)
@@ -5577,6 +5587,16 @@ Public Class Form1
         LoadIARContent(File)
         Print("Opensimulator will load " + sender.text.ToString + ".  This may take time to load.")
 
+    End Sub
+
+    Private Sub HelpOnOARsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles HelpOnOARsToolStripMenuItem.Click
+        Dim webAddress As String = "http://opensimulator.org/wiki/Load_Oar_0.9.0%2B"
+        Process.Start(webAddress)
+    End Sub
+
+    Private Sub HelpOnIARSToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles HelpOnIARSToolStripMenuItem.Click
+        Dim webAddress As String = "http://opensimulator.org/wiki/Inventory_Archives"
+        Process.Start(webAddress)
     End Sub
 
 

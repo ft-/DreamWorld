@@ -705,7 +705,8 @@ Public Class RegionMaker
         + "ManagerGod = " + ManagerGod(n) + vbCrLf _
         + "Birds = " + Birds(n) + vbCrLf _
         + "Tides = " + Tides(n) + vbCrLf _
-        + "Teleport = " + Teleport(n) + vbCrLf
+        + "Teleport = " + Teleport(n) + vbCrLf _
+        + "RegionType = MainLand" + vbCrLf
 
         Try
             My.Computer.FileSystem.DeleteFile(fname)

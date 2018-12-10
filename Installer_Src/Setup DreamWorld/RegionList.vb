@@ -315,11 +315,12 @@ Public Class RegionList
         ' End If
         Form1.Log("Clicked " + RegionClass.RegionName(n))
         If Not checked Then
-            Dim ActualForm As New FormRegion
-            ActualForm.Init(RegionClass.RegionName(n))
-            ActualForm.Activate()
-            ActualForm.Visible = True
-            ActualForm.Select()
+            Dim RegionForm As New FormRegion
+
+            RegionForm.Init(RegionClass.RegionName(n))
+            RegionForm.Activate()
+            RegionForm.Visible = True
+            RegionForm.Select()
             Return
         End If
 
@@ -477,12 +478,10 @@ Public Class RegionList
 
     Private Sub Addregion_Click(sender As Object, e As EventArgs) Handles Addregion.Click
 
-        Dim ActualForm As New FormRegion
-        'Dim RegionClass As RegionMaker = RegionMaker.Instance
-        'RegionClass.CreateRegion("")
-        ActualForm.Init("")
-        ActualForm.Activate()
-        ActualForm.Visible = True
+        Dim RegionForm As New FormRegion
+        RegionForm.Init("")
+        RegionForm.Activate()
+        RegionForm.Visible = True
 
     End Sub
 
