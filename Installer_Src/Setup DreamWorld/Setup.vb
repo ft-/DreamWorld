@@ -615,7 +615,7 @@ Public Class Form1
 
         Try
             If MySetting.BirdsModuleStartup Then
-                My.Computer.FileSystem.CopyFile(gPath + "\bin\OpenSimBirds.Module.bak", "OpenSimBirds.Module.dll")
+                My.Computer.FileSystem.CopyFile(gPath + "\bin\OpenSimBirds.Module.bak", gPath + "\bin\OpenSimBirds.Module.dll")
             Else
                 My.Computer.FileSystem.DeleteFile(gPath + "\bin\OpenSimBirds.Module.dll")
             End If
