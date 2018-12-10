@@ -1,3 +1,6 @@
+V2.53  
+Stop crash in CheckPost
+
 V2.52 
 Click Ctrl R or Settings->Region brings the regions panel to the front unless it is minimized.
 Autorestart can be set to low values if Autobackup is off. Otherwise it is set to AutoBackup interval + 0.5 hour to allow time for backup

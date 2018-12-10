@@ -34,7 +34,7 @@ Public Class Form1
 
 #Region "Declarations"
 
-    Dim gMyVersion As String = "2.52"
+    Dim gMyVersion As String = "2.53"
     Dim gSimVersion As String = "0.9.1"
 
     ' edit this to compile and run in the correct folder root
@@ -615,9 +615,9 @@ Public Class Form1
 
         Try
             If MySetting.BirdsModuleStartup Then
-                My.Computer.FileSystem.RenameFile(gPath + "\bin\OpenSimBirds.Module.bak", "OpenSimBirds.Module.dll")
+                My.Computer.FileSystem.CopyFile(gPath + "\bin\OpenSimBirds.Module.bak", "OpenSimBirds.Module.dll")
             Else
-                My.Computer.FileSystem.RenameFile(gPath + "\bin\OpenSimBirds.Module.dll", "OpenSimBirds.Module.bak")
+                My.Computer.FileSystem.DeleteFile(gPath + "\bin\OpenSimBirds.Module.dll")
             End If
 
         Catch ex As Exception
