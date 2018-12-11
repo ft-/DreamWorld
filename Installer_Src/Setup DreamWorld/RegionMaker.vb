@@ -838,7 +838,7 @@ Public Class RegionMaker
         WebserverList.Reverse()
 
         For LOOPVAR = WebserverList.Count - 1 To 0 Step -1
-
+            If WebserverList.Count = 0 Then Return
             Dim ProcessString As String = WebserverList(LOOPVAR) ' recover the PID as string
 
             ' This search returns the substring between two strings, so 
