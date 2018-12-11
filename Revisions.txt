@@ -1,3 +1,13 @@
+V2.54
+Can have only one form of each type, except regions.
+Updater prompts you to make a critical files backup first.
+Added a backup critical files to the Content menu - copies both Wifi folders, all Regions and Mysql\data folder plus Settings.ini to Autobackup in a new folder by Date/Time
+Add Help for OAS and IARS, and Technical Information
+
+
+V2.53  
+Stop crash in CheckPost, make birds be REALLY disabled when it is off by renaming the DLL
+
 V2.52 
 Click Ctrl R or Settings->Region brings the regions panel to the front unless it is minimized.
 Autorestart can be set to low values if Autobackup is off. Otherwise it is set to AutoBackup interval + 0.5 hour to allow time for backup

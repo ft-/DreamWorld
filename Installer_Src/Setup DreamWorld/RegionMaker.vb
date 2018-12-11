@@ -705,7 +705,8 @@ Public Class RegionMaker
         + "ManagerGod = " + ManagerGod(n) + vbCrLf _
         + "Birds = " + Birds(n) + vbCrLf _
         + "Tides = " + Tides(n) + vbCrLf _
-        + "Teleport = " + Teleport(n) + vbCrLf
+        + "Teleport = " + Teleport(n) + vbCrLf _
+        + "RegionType = MainLand" + vbCrLf
 
         Try
             My.Computer.FileSystem.DeleteFile(fname)
@@ -838,58 +839,63 @@ Public Class RegionMaker
         WebserverList.Reverse()
 
         For LOOPVAR = WebserverList.Count - 1 To 0 Step -1
-            If WebserverList.Count = 0 Then Return
-            Dim ProcessString As String = WebserverList(LOOPVAR) ' recover the PID as string
 
-            ' This search returns the substring between two strings, so 
-            ' the first index Is moved to the character just after the first string.
-            Dim POST As String = Uri.UnescapeDataString(ProcessString)
-            Dim first As Integer = POST.IndexOf("{")
-            Dim last As Integer = POST.LastIndexOf("}")
-            Dim rawJSON = POST.Substring(first, last - first + 1)
+            If WebserverList.Count = 0 Then Return
 
             Try
-                json = JsonConvert.DeserializeObject(Of JSON_result)(rawJSON)
-            Catch ex As Exception
-                Debug.Print(ex.Message)
-                WebserverList.RemoveAt(LOOPVAR)
-                Continue For
-                Return
-            End Try
+                Dim ProcessString As String = WebserverList(LOOPVAR) ' recover the PID as string
 
-            If json.login = "enabled" Then
-                Form1.PrintFast("Region " & json.region_name & " is ready for logins")
+                ' This search returns the substring between two strings, so 
+                ' the first index Is moved to the character just after the first string.
+                Dim POST As String = Uri.UnescapeDataString(ProcessString)
+                Dim first As Integer = POST.IndexOf("{")
+                Dim last As Integer = POST.LastIndexOf("}")
+                Dim rawJSON = POST.Substring(first, last - first + 1)
 
-                Dim n = FindRegionByName(json.region_name)
-                If n < 0 Then
+                Try
+                    json = JsonConvert.DeserializeObject(Of JSON_result)(rawJSON)
+                Catch ex As Exception
+                    Debug.Print(ex.Message)
+                    WebserverList.RemoveAt(LOOPVAR)
+                    Continue For
                     Return
-                End If
+                End Try
 
-                RegionEnabled(n) = True
-                Booted(n) = True
-                WarmingUp(n) = False
-                ShuttingDown(n) = False
-                UUID(n) = json.region_id
+                If json.login = "enabled" Then
+                    Form1.PrintFast("Region " & json.region_name & " is ready for logins")
 
-            ElseIf json.login = "shutdown" Then
+                    Dim n = FindRegionByName(json.region_name)
+                    If n < 0 Then
+                        Return
+                    End If
+
+                    RegionEnabled(n) = True
+                    Booted(n) = True
+                    WarmingUp(n) = False
+                    ShuttingDown(n) = False
+                    UUID(n) = json.region_id
+
+                ElseIf json.login = "shutdown" Then
                     Form1.PrintFast("Region " & json.region_name & " shut down")
 
-                Dim n = FindRegionByName(json.region_name)
-                If n < 0 Then
-                    Return
+                    Dim n = FindRegionByName(json.region_name)
+                    If n < 0 Then
+                        Return
+                    End If
+
+                    Booted(n) = False
+                    WarmingUp(n) = False
+                    ShuttingDown(n) = True
+                    UUID(n) = ""
+
+
                 End If
-
-                Booted(n) = False
-                WarmingUp(n) = False
-                ShuttingDown(n) = True
-                UUID(n) = ""
-
-
-            End If
-            Try
-                WebserverList.RemoveAt(LOOPVAR)
+                Try
+                    WebserverList.RemoveAt(LOOPVAR)
+                Catch
+                    Debug.Print("Something fucky in region exit")
+                End Try
             Catch
-                Debug.Print("Something fucky in region exit")
             End Try
 
         Next

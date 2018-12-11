@@ -21,10 +21,11 @@
 #End Region
 
 
-    Public Sub New()
+    Private Sub Loaded(sender As Object, e As EventArgs) Handles Me.Load
+
 
         ' This call is required by the designer.
-        InitializeComponent()
+        'InitializeComponent()
 
         ' Add any initialization after the InitializeComponent() call.
         SetScreen()

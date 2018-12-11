@@ -292,6 +292,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Expert.resx">
       <DependentUpon>Expert.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="FormAdvanced.resx">
       <DependentUpon>FormAdvanced.vb</DependentUpon>
