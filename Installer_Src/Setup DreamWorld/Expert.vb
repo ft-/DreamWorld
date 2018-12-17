@@ -63,6 +63,7 @@ Public Class Expert
         AdminFirst.Text = Form1.MySetting.AdminFirst
 
         'gods
+        AllowGods.Checked = Form1.MySetting.Allow_grid_gods
         RegionGod.Checked = Form1.MySetting.region_owner_is_god
         ManagerGod.Checked = Form1.MySetting.region_manager_is_god
 
