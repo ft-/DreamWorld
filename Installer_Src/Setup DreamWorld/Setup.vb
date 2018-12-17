@@ -3073,7 +3073,7 @@ Public Class Form1
             ' Maybe we crashed during warmup.  Skip prompt if auto restarting
             If RegionClass.WarmingUp(n) = True And RegionClass.Timer(n) >= 0 Then
                 StopGroup(Groupname)
-                Dim yesno = MsgBox(RegionClass.RegionName(n) + " did not start. Do you want to see the log file?", vbYesNo, "Error")
+                Dim yesno = MsgBox(RegionClass.RegionName(n) + " in DOS Box " + Groupname + " quit while booting up. Do you want to see the log file?", vbYesNo, "Error")
                 If (yesno = vbYes) Then
                     System.Diagnostics.Process.Start("notepad.exe", RegionClass.IniPath(n) + "Opensim.log")
                     ShouldIRestart = 0
@@ -3083,7 +3083,7 @@ Public Class Form1
             ' prompt if crashed.  Skip prompt if auto restarting
             If RegionClass.Booted(n) = True And RegionClass.Timer(n) >= 0 Then
                 StopGroup(Groupname)
-                Dim yesno = MsgBox(RegionClass.RegionName(n) + " quit unexpectedly. Do you want to see the log file?", vbYesNo, "Error")
+                Dim yesno = MsgBox(RegionClass.RegionName(n) + " in DOS Box " + Groupname + " quit unexpectedly. Do you want to see the log file?", vbYesNo, "Error")
                 If (yesno = vbYes) Then
                     System.Diagnostics.Process.Start("notepad.exe", RegionClass.IniPath(n) + "Opensim.log")
                     ShouldIRestart = 0
@@ -3093,7 +3093,7 @@ Public Class Form1
             StopGroup(Groupname)
 
             ' Auto restart if negative
-            If ShouldIRestart = -1 Then
+            If ShouldIRestart = -1 And OpensimIsRunning() Then
                 PrintFast("Restart Queued for " + Groupname)
                 RegionClass.Timer(n) = -2 ' signal a restart is needed
             End If
@@ -3352,7 +3352,7 @@ Public Class Form1
             If ex.Message.Contains("Process has exited") Then Return False
             Print("Oops! " + BootName + " did Not start")
             Log(ex.Message)
-            Dim yesno = MsgBox("Oops! " + BootName + " did Not start. Do you want to see the log file?", vbYesNo, "Error")
+            Dim yesno = MsgBox("Oops! " + BootName + " in DOS box " + Groupname + " did not boot. Do you want to see the log file?", vbYesNo, "Error")
             If (yesno = vbYes) Then
                 System.Diagnostics.Process.Start("notepad.exe", RegionClass.IniPath(n) + "Opensim.log")
             End If
@@ -3567,6 +3567,11 @@ Public Class Form1
 
 
     Private Sub Timer1_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Timer1.Tick
+
+        If Not OpensimIsRunning() Then
+            Timer1.Stop()
+            Return
+        End If
 
         PaintImage()
         gDNSSTimer = gDNSSTimer + 1

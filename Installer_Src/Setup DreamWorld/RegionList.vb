@@ -73,6 +73,8 @@ Public Class RegionList
 
         Me.Size = New System.Drawing.Size(410, 410)
 
+
+
         pixels = 70
 
         RegionList.FormExists = True
@@ -131,6 +133,11 @@ Public Class RegionList
 
     Public Sub LoadMyListView()
 
+        While Not ViewBusy
+            Form1.Sleep(100)
+            Application.DoEvents()
+        End While
+
         ViewBusy = False
 
         ListView1.BeginUpdate()
@@ -150,22 +157,11 @@ Public Class RegionList
 
         Dim Num As Integer = 0
 
-        'Dim L As New List(Of String)
-
         ' have to get maps by http port + region UUID, not region port + uuid
         RegionClass.DebugGroup() ' show the list of groups and http ports.
 
         For Each X In RegionClass.RegionNumbers
 
-            Application.DoEvents()
-
-            'If Not L.Contains(RegionClass.RegionName(X)) Then ' ????
-
-            'L.Add(RegionClass.RegionName(X))
-
-            ' If RegionClass.RegionName(X) = "Deliverance" Then
-            '   Debug.Print("Deliverance")
-            ' End If
 
             Dim Letter As String = ""
             If RegionClass.WarmingUp(X) Then
@@ -191,8 +187,6 @@ Public Class RegionList
             End If
 
             If TheView = 2 Then
-
-
 
                 If RegionClass.Booted(X) Then
                         Dim img As String = "http://127.0.0.1:" + RegionClass.GroupPort(X).ToString + "/" + "index.php?method=regionImage" + RegionClass.UUID(X).Replace("-", "")
@@ -220,7 +214,7 @@ Public Class RegionList
 
             item1.SubItems.Add(Letter)
             ListView1.Items.AddRange(New ListViewItem() {item1})
-            Application.DoEvents()
+
 
         Next
 
@@ -233,8 +227,18 @@ Public Class RegionList
         ListView1.EndUpdate()
         ListView1.Show()
         ViewBusy = True
+
+        For i As Integer = 0 To ListView1.Items.Count - 1
+            If ListView1.Items(i).Checked Then
+                ListView1.Items(i).ForeColor = SystemColors.ControlText
+            Else
+                ListView1.Items(i).ForeColor = SystemColors.GrayText
+            End If
+        Next i
+
+
         Timer1.Interval = 30000
-        Application.DoEvents()
+
 
     End Sub 'listView1
 
@@ -281,7 +285,7 @@ Public Class RegionList
 
         Next
 
-
+        Timer1.Interval = 1
     End Sub
 
 
@@ -315,6 +319,8 @@ Public Class RegionList
         ' End If
         Form1.Log("Clicked " + RegionClass.RegionName(n))
         If Not checked Then
+
+
             Dim RegionForm As New FormRegion
 
             RegionForm.Init(RegionClass.RegionName(n))
@@ -424,7 +430,7 @@ Public Class RegionList
             End If
         End If
 
-        Application.DoEvents()
+        Timer1.Interval = 100
 
     End Sub
 
@@ -448,6 +454,8 @@ Public Class RegionList
             Form1.Sleep(100)
             Application.DoEvents()
         End While
+
+
 
         Debug.Print(Form1.MySetting.MapType)
         If Form1.MySetting.MapType = "None" And TheView = 1 Then TheView = 2
