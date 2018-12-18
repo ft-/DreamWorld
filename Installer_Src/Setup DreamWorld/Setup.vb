@@ -1842,7 +1842,7 @@ Public Class Form1
             End Try
         End If
 
-        Print("Clearing Asset cache")
+        Print("Clearing Asset cache. This may take a long time!")
         Try
             My.Computer.FileSystem.DeleteDirectory(gPath & "bin\assetcache\", FileIO.DeleteDirectoryOption.DeleteAllContents)
             Print("Clearing Image cache")

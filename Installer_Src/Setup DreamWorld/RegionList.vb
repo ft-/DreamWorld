@@ -133,10 +133,7 @@ Public Class RegionList
 
     Public Sub LoadMyListView()
 
-        While Not ViewBusy
-            Form1.Sleep(100)
-            Application.DoEvents()
-        End While
+
 
         ViewBusy = False
 
