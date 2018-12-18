@@ -4240,6 +4240,8 @@ Public Class Form1
 
     Private Sub CheckForUpdatesToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CHeckForUpdatesToolStripMenuItem.Click
         CheckForUpdates()
+        MySetting.SkipUpdateCheck = False
+        ' check for updates is on if we ever check for updates 
     End Sub
 
     Private Sub UpdaterCancel_Click(sender As Object, e As EventArgs) Handles UpdaterCancel.Click
@@ -4405,12 +4407,12 @@ Public Class Form1
     Public Function SetPublicIP() As Boolean
 
         ' LAN USE
-        If Not MySetting.EnableHypergrid Then
+        If MySetting.EnableHypergrid Then
             BumpProgress10()
             If MySetting.DNSName.Length > 0 Then
                 MySetting.PublicIP = MySetting.DNSName
                 MySetting.SaveSettings()
-                Return False
+                Return True
             Else
 
 #Disable Warning BC42025 ' Access of shared member, constant member, enum member or nested type through an instance
@@ -4424,7 +4426,7 @@ Public Class Form1
         End If
 
         '  HG USE
-        If IsPrivateIP(MySetting.DNSName) Then
+        If Not IsPrivateIP(MySetting.DNSName) Then
             BumpProgress10()
             MySetting.PublicIP = MySetting.DNSName
             MySetting.SaveSettings()
