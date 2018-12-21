@@ -34,7 +34,7 @@ Public Class Form1
 
 #Region "Declarations"
 
-    Dim gMyVersion As String = "2.54"
+    Dim gMyVersion As String = "2.55"
     Dim gSimVersion As String = "0.9.1"
 
     ' edit this to compile and run in the correct folder root
@@ -114,6 +114,8 @@ Public Class Form1
     Public RegionClass As RegionMaker   ' Global RegionClass
     Public RegionForm As RegionList
     Dim ExitList As New List(Of Integer)
+
+    Dim gStopMysql As Boolean = True
 
 
     <CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA2101:SpecifyMarshalingForPInvokeStringArguments", MessageId:="1")>
@@ -554,8 +556,13 @@ Public Class Form1
             Buttons(StartButton)
         End If
 
+
+        Dim isMySqlRunning = CheckPort("127.0.0.1", CType(MySetting.MySqlPort, Integer))
+
+        If isMySqlRunning Then gStopMysql = False
+
         ProgressBar1.Value = 100
-        Application.DoEvents()
+
 
 
     End Sub
@@ -656,33 +663,15 @@ Public Class Form1
 
     Private Sub Form1_Closed(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Closed
 
-        If OpensimIsRunning Then
-            Dim result = MsgBox("Leave Opensim Running?", vbYesNo)
-            If result = vbYes Then
-                Print("Zzzz...")
-                End
-            End If
-        End If
-
+        Print("Zzzz...")
         Shutdown()
-
-        End
 
     End Sub
 
     Private Sub MnuExit_Click(sender As System.Object, e As System.EventArgs) Handles mnuExit.Click
 
-        If OpensimIsRunning Then
-            Dim result = MsgBox("Leave Opensim Running?", vbYesNo)
-            If result = vbYes Then
-                Print("Zzzz...")
-                End
-            End If
-        End If
-
+        Print("Zzzz...")
         Shutdown()
-
-        End
 
     End Sub
     Private Sub Shutdown()
@@ -703,17 +692,19 @@ Public Class Form1
 
         Print("Hold fast to your dreams ...")
 
-        'KillAll()
+
         ProgressBar1.Value = 10
-        Print("I'll tell you my next dream when I wake up.")
+
         StopMysql()
+
+        Print("I'll tell you my next dream when I wake up.")
         ProgressBar1.Value = 5
         Print("Zzzz...")
         ProgressBar1.Value = 0
     End Sub
     Private Sub ShutdownNowToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs)
         Print("Stopping")
-        Application.DoEvents()
+
         KillAll()
         Buttons(StartButton)
         Print("Stopped")
@@ -749,7 +740,7 @@ Public Class Form1
         ProgressBar1.Visible = True
         ' close everything as gracefully as possible.
 
-        Application.DoEvents()
+
 
         StopIcecast()
 
@@ -807,7 +798,11 @@ Public Class Form1
                         If CheckPort("127.0.0.1", RegionClass.GroupPort(X)) Then
                             CountisRunning = CountisRunning + 1
                         Else
-                            RegionClass.ShuttingDown(X) = False
+                            ' close down all regions in ther Instance
+                            Dim gname = RegionClass.GroupName(X)
+                            For Each Y In RegionClass.RegionListByGroupNum(gname)
+                                RegionClass.ShuttingDown(Y) = False
+                            Next
                         End If
                     End If
                     Application.DoEvents()
@@ -842,7 +837,6 @@ Public Class Form1
 
         If gRobustProcID > 0 Then
             ConsoleCommand(gRobustProcID, "{ENTER}q{ENTER}")
-            Me.Focus()
         End If
 
         ' cannot load OAR or IAR, either
@@ -853,7 +847,7 @@ Public Class Form1
         Me.AllowDrop = False
 
         ProgressBar1.Value = 0
-        Application.DoEvents()
+
 
         gStopping = False
 
@@ -930,7 +924,7 @@ Public Class Form1
         TextBox1.Visible = True
         Application.DoEvents()
         Sleep(gChatTime)  ' time to read
-        Application.DoEvents()
+
 
     End Sub
     Public Sub PrintFast(Value As String)
@@ -939,8 +933,6 @@ Public Class Form1
         PictureBox1.Visible = False
         TextBox1.Visible = True
         TextBox1.Text = Value
-        Sleep(100)
-        Application.DoEvents()
 
     End Sub
 
@@ -1059,7 +1051,7 @@ Public Class Form1
                     Else
                         outputFile.WriteLine(line)
                     End If
-                    Application.DoEvents()
+
                 End While
             End Using
             'close your reader
@@ -1821,18 +1813,19 @@ Public Class Form1
 
         If Not OpensimIsRunning() Then
 
-            Dim folders() As String = IO.Directory.GetDirectories(gPath & "bin\ScriptEngines\")
-            Print("Clearing Script cache")
+            Dim folders() = IO.Directory.GetDirectories(gPath & "bin\ScriptEngines\")
+            Print("Clearing Script cache. This may take a long time!")
             For Each folder As String In folders
                 Dim scripts() As String = IO.Directory.GetFiles(folder)
-
+                Dim ctr As Integer = 0
                 For Each script As String In scripts
                     Dim ext = Path.GetExtension(script)
                     If ext <> ".state" Then
                         My.Computer.FileSystem.DeleteFile(script)
+                        ctr = ctr + 1
+                        PrintFast(ctr.ToString)
                         Application.DoEvents()
                     End If
-
                 Next
             Next
             Print("Clearing bakes")
@@ -1844,13 +1837,44 @@ Public Class Form1
 
         Print("Clearing Asset cache. This may take a long time!")
         Try
-            My.Computer.FileSystem.DeleteDirectory(gPath & "bin\assetcache\", FileIO.DeleteDirectoryOption.DeleteAllContents)
-            Print("Clearing Image cache")
-            My.Computer.FileSystem.DeleteDirectory(gPath & "bin\j2kDecodeCache\", FileIO.DeleteDirectoryOption.DeleteAllContents)
-            Print("Clearing Mesh cache")
-            My.Computer.FileSystem.DeleteDirectory(gPath & "bin\MeshCache\", FileIO.DeleteDirectoryOption.DeleteAllContents)
+            Dim folders() = IO.Directory.GetDirectories(gPath & "bin\Assetcache\")
+            Print("Clearing Asset cache.")
+            Dim ctr As Integer = 0
+            For Each folder As String In Folders
+                My.Computer.FileSystem.DeleteDirectory(folder, FileIO.DeleteDirectoryOption.DeleteAllContents)
+                ctr = ctr + 1
+                PrintFast(ctr.ToString)
+                Application.DoEvents()
+            Next
         Catch
         End Try
+        Try
+            Print("Clearing Image cache")
+            Dim folders() = IO.Directory.GetDirectories(gPath & "bin\j2kDecodeCache\")
+            Dim ctr = 0
+            For Each folder As String In folders
+                My.Computer.FileSystem.DeleteDirectory(gPath & "bin\j2kDecodeCache\", FileIO.DeleteDirectoryOption.DeleteAllContents)
+                ctr = ctr + 1
+                PrintFast(ctr.ToString)
+                Application.DoEvents()
+            Next
+
+        Catch
+        End Try
+
+        Try
+            Print("Clearing Mesh cache")
+            Dim folders() = IO.Directory.GetDirectories(gPath & "bin\MeshCache\")
+            Dim ctr As Integer = 0
+            For Each folder As String In folders
+                My.Computer.FileSystem.DeleteDirectory(gPath & "bin\MeshCache\", FileIO.DeleteDirectoryOption.DeleteAllContents)
+                ctr = ctr + 1
+                PrintFast(ctr.ToString)
+                Application.DoEvents()
+            Next
+        Catch
+        End Try
+
 
         If Not OpensimIsRunning() Then
             Print("All Server Caches cleared")
@@ -3469,6 +3493,8 @@ Public Class Form1
             Log("Warn:" + ex.Message)
             Return False
         End Try
+        Me.Focus()
+        Application.DoEvents()
         Return True
 
     End Function
@@ -3668,7 +3694,7 @@ Public Class Form1
                 ' if its past time and no one is in the sim...
                 If timervalue >= MySetting.AutoRestartInterval() And Not AvatarsIsInGroup(Groupname) Then
                     ' shut down the group
-                    ConsoleCommand(RegionClass.ProcessID(X), "{ENTER}q{ENTER}")
+                    ConsoleCommand(RegionClass.ProcessID(X), "q{ENTER}q{ENTER}")
                     Print("AutoRestarting " + Groupname)
                     For Each RegionNum As Integer In RegionClass.RegionListByGroupNum(Groupname)
                         RegionClass.Booted(RegionNum) = False
@@ -3721,10 +3747,10 @@ Public Class Form1
     Private Sub BumpProgress(bump As Integer)
 
         Dim nextval As Integer = ProgressBar1.Value + bump
-            If nextval > 100 Then
-                nextval = 100
-            End If
-            ProgressBar1.Value = nextval
+        If nextval > 100 Then
+            nextval = 100
+        End If
+        ProgressBar1.Value = nextval
 
         Application.DoEvents()
     End Sub
@@ -3776,7 +3802,6 @@ Public Class Form1
                     ConsoleCommand(RegionClass.ProcessID(Y), "alert CPU Intensive Backup Started{ENTER}")
                     ConsoleCommand(RegionClass.ProcessID(Y), "change region " + """" + chosen + """" + "{ENTER}")
                     ConsoleCommand(RegionClass.ProcessID(Y), "save oar " + """" + BackupPath() + RegionClass.RegionName(Y) + "_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
-                    Application.DoEvents()
                 Next
             End If
             Me.Focus()
@@ -3824,7 +3849,7 @@ Public Class Form1
                         ConsoleCommand(RegionClass.ProcessID(Y), "alert New content Is loading..{ENTER}")
                         ConsoleCommand(RegionClass.ProcessID(Y), "load oar --force-terrain --force-parcels " + """" + thing + """" + "{ENTER}")
                         ConsoleCommand(RegionClass.ProcessID(Y), "alert New content just loaded." + "{ENTER}")
-                        Application.DoEvents()
+
                     Next
                 End If
             End If
@@ -3884,7 +3909,7 @@ Public Class Form1
                     If Not L.Contains(RegionClass.RegionName(Y)) Then
                         ConsoleCommand(RegionClass.ProcessID(n), "change region " + """" + RegionClass.RegionName(Y) + """" + "{Enter}")
                         ConsoleCommand(RegionClass.ProcessID(n), "save oar  " + """" + BackupPath() + RegionClass.RegionName(Y) + "_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
-                        Application.DoEvents()
+
                         L.Add(RegionClass.RegionName(Y))
                     End If
                 Next
@@ -4027,33 +4052,32 @@ Public Class Form1
         If region.Length = 0 Then Return
 
         Dim backMeUp = MsgBox("Make a backup first?", vbYesNo, "Backup?")
-            Dim num = RegionClass.FindRegionByName(region)
-            Dim GroupName = RegionClass.GroupName(num)
-            Dim once As Boolean = False
-            For Each Y In RegionClass.RegionListByGroupNum(GroupName)
-                Try
-                    If Not once Then
-                        Print("Opensimulator will load " + thing + ". This may take some time.")
-                        thing = thing.Replace("\", "/")    ' because Opensim uses unix-like slashes, that's why
+        Dim num = RegionClass.FindRegionByName(region)
+        Dim GroupName = RegionClass.GroupName(num)
+        Dim once As Boolean = False
+        For Each Y In RegionClass.RegionListByGroupNum(GroupName)
+            Try
+                If Not once Then
+                    Print("Opensimulator will load " + thing + ". This may take some time.")
+                    thing = thing.Replace("\", "/")    ' because Opensim uses unix-like slashes, that's why
 
-                        ConsoleCommand(RegionClass.ProcessID(Y), "change region " + region + "{ENTER}")
-                        If backMeUp = vbYes Then
-                            ConsoleCommand(RegionClass.ProcessID(Y), "alert CPU Intensive Backup Started {ENTER}")
-                            ConsoleCommand(RegionClass.ProcessID(Y), "save oar " + """" + BackupPath() + "Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
-                        End If
-                        ConsoleCommand(RegionClass.ProcessID(Y), "alert New content Is loading ...{ENTER}")
-                        ConsoleCommand(RegionClass.ProcessID(Y), "load oar --force-terrain --force-parcels " + """" + thing + """" + "{ENTER}")
-                        ConsoleCommand(RegionClass.ProcessID(Y), "alert New content just loaded. {ENTER}")
-                        Application.DoEvents()
-                        once = True
+                    ConsoleCommand(RegionClass.ProcessID(Y), "change region " + region + "{ENTER}")
+                    If backMeUp = vbYes Then
+                        ConsoleCommand(RegionClass.ProcessID(Y), "alert CPU Intensive Backup Started {ENTER}")
+                        ConsoleCommand(RegionClass.ProcessID(Y), "save oar " + """" + BackupPath() + "Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
                     End If
+                    ConsoleCommand(RegionClass.ProcessID(Y), "alert New content Is loading ...{ENTER}")
+                    ConsoleCommand(RegionClass.ProcessID(Y), "load oar --force-terrain --force-parcels " + """" + thing + """" + "{ENTER}")
+                    ConsoleCommand(RegionClass.ProcessID(Y), "alert New content just loaded. {ENTER}")
+                    once = True
+                End If
 
-                Catch ex As Exception
-                    Log("Error: " + ex.Message)
-                End Try
-            Next
+            Catch ex As Exception
+                Log("Error: " + ex.Message)
+            End Try
+        Next
 
-            Me.Focus()
+        Me.Focus()
 
     End Sub
 
@@ -4650,7 +4674,6 @@ Public Class Form1
 
     Function OpenRouterPorts() As Boolean
 
-
         If Not MyUPnpMap.UPnpEnabled And MySetting.UPnPEnabled Then
             Print("UPnP is not working in the router")
             MySetting.UPnPEnabled = False
@@ -4659,7 +4682,7 @@ Public Class Form1
         End If
 
         If Not MySetting.UPnPEnabled Then
-            Print("UPnP is not enabled in the menu")
+
             Return True
         End If
 
@@ -5055,6 +5078,16 @@ Public Class Form1
 
     Private Sub StopMysql()
 
+        If Not gStopMysql Then
+            Print("MySQL was running when I woke up, so I am leaving MySQL on.")
+            Return
+        End If
+
+        Dim isMySqlRunning = CheckPort("127.0.0.1", CType(MySetting.MySqlPort, Integer))
+
+        If Not isMySqlRunning Then Return
+
+
         Print("Stopping MySql")
 
         Try
@@ -5339,7 +5372,7 @@ Public Class Form1
             If RegionClass.Booted(X) Then
                 ConsoleCommand(RegionClass.ProcessID(X), "set log level " + msg + "{ENTER}")
             End If
-            Application.DoEvents()
+
         Next
 
     End Sub
@@ -5464,7 +5497,7 @@ Public Class Form1
                     ConsoleCommand(RegionClass.ProcessID(X), "change region  " + RegionClass.RegionName(X) + "{ENTER}")
                     ConsoleCommand(RegionClass.ProcessID(X), "alert " + Message + "{ENTER}")
                 End If
-                Application.DoEvents()
+
             Next
             If HowManyAreOnline = 0 Then
                 Print("Nobody is online")

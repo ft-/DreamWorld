@@ -1,3 +1,8 @@
+V2.55
+Faster exit of app when regions are combined
+Print count of things cleared from caches
+Do not stop MySQL if already running
+
 V2.54
 Suppress clutter - only one Dreamgrid form of each type
 Added a "backup critical files" to the Content menu - copies both Wifi folders, all Regions and Mysql\data folder plus Settings.ini to Autobackup in a new folder by Date/Time

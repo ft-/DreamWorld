@@ -64,14 +64,16 @@ Public Class NetServer
         Log("Info:Listener Started")
         Dim myReadBuffer(8192) As Byte
         Dim L = myReadBuffer.Length
-
+        Dim myCompleteMessage As StringBuilder = New StringBuilder()
+        Dim numberOfBytesRead As Integer = 0
+        Dim msg As Byte()
         While listen
 
-            Dim myCompleteMessage As StringBuilder = New StringBuilder()
-            Dim numberOfBytesRead As Integer = 0
+            myCompleteMessage.Clear()
+            numberOfBytesRead = 0
 
             If Not LocalTCPListener.Pending() Then
-                Thread.Sleep(50) ' choose a number (In milliseconds) that makes sense
+                Thread.Sleep(10) ' choose a number (In milliseconds) that makes sense
                 Continue While  ' skip To Next iteration Of Loop
             End If
 
@@ -84,10 +86,10 @@ Public Class NetServer
 
                 ' Incoming message may be larger than the buffer size.
                 Do
-                    Try
-                        numberOfBytesRead = stream.Read(myReadBuffer, 0, L)
-                    Catch
-                    End Try
+                    'Try
+                    numberOfBytesRead = stream.Read(myReadBuffer, 0, L)
+                    'Catch
+                    'End Try
                     myCompleteMessage.AppendFormat("{0}", Encoding.ASCII.GetString(myReadBuffer, 0, numberOfBytesRead))
                 Loop While stream.DataAvailable
 
@@ -98,7 +100,7 @@ Public Class NetServer
             End If
 
             Try
-                Dim msg As Byte() = System.Text.Encoding.ASCII.GetBytes("HTTP/1.0 200 OK" + vbCrLf + vbCrLf + Response)
+                msg = System.Text.Encoding.ASCII.GetBytes("HTTP/1.0 200 OK" + vbCrLf + vbCrLf + Response)
                 stream.Write(msg, 0, msg.Length) ' Send back a response.
                 'Log([String].Format("Response:{0}", Data))
             Catch
