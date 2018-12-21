@@ -115,6 +115,8 @@ Public Class Form1
     Public RegionForm As RegionList
     Dim ExitList As New List(Of Integer)
 
+    Dim gStopMysql As Boolean = True
+
 
     <CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA2101:SpecifyMarshalingForPInvokeStringArguments", MessageId:="1")>
     <CodeAnalysis.SuppressMessage("Microsoft.Interoperability", "CA1401:PInvokesShouldNotBeVisible")>
@@ -554,6 +556,11 @@ Public Class Form1
             Buttons(StartButton)
         End If
 
+
+        Dim isMySqlRunning = CheckPort("127.0.0.1", CType(MySetting.MySqlPort, Integer))
+
+        If isMySqlRunning Then gStopMysql = False
+
         ProgressBar1.Value = 100
 
 
@@ -656,33 +663,15 @@ Public Class Form1
 
     Private Sub Form1_Closed(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Closed
 
-        If OpensimIsRunning Then
-            Dim result = MsgBox("Leave Opensim Running?", vbYesNo)
-            If result = vbYes Then
-                Print("Zzzz...")
-                End
-            End If
-        End If
-
+        Print("Zzzz...")
         Shutdown()
-
-        End
 
     End Sub
 
     Private Sub MnuExit_Click(sender As System.Object, e As System.EventArgs) Handles mnuExit.Click
 
-        If OpensimIsRunning Then
-            Dim result = MsgBox("Leave Opensim Running?", vbYesNo)
-            If result = vbYes Then
-                Print("Zzzz...")
-                End
-            End If
-        End If
-
+        Print("Zzzz...")
         Shutdown()
-
-        End
 
     End Sub
     Private Sub Shutdown()
@@ -703,10 +692,12 @@ Public Class Form1
 
         Print("Hold fast to your dreams ...")
 
-        'KillAll()
+
         ProgressBar1.Value = 10
-        Print("I'll tell you my next dream when I wake up.")
+
         StopMysql()
+
+        Print("I'll tell you my next dream when I wake up.")
         ProgressBar1.Value = 5
         Print("Zzzz...")
         ProgressBar1.Value = 0
@@ -4683,7 +4674,6 @@ Public Class Form1
 
     Function OpenRouterPorts() As Boolean
 
-
         If Not MyUPnpMap.UPnpEnabled And MySetting.UPnPEnabled Then
             Print("UPnP is not working in the router")
             MySetting.UPnPEnabled = False
@@ -4692,7 +4682,7 @@ Public Class Form1
         End If
 
         If Not MySetting.UPnPEnabled Then
-            Print("UPnP is not enabled in the menu")
+
             Return True
         End If
 
@@ -5087,6 +5077,16 @@ Public Class Form1
     End Sub
 
     Private Sub StopMysql()
+
+        If Not gStopMysql Then
+            Print("MySQL was running when I woke up, so I am leaving MySQL on.")
+            Return
+        End If
+
+        Dim isMySqlRunning = CheckPort("127.0.0.1", CType(MySetting.MySqlPort, Integer))
+
+        If Not isMySqlRunning Then Return
+
 
         Print("Stopping MySql")
 
