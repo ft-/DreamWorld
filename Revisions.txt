@@ -1,10 +1,11 @@
 V2.54
-Can have only one form of each type, except Advanced.
-Added a backup critical files to the Content menu - copies both Wifi folders, all Regions and Mysql\data folder plus Settings.ini to Autobackup in a new folder by Date/Time
-Update prompts to make a critical files backup first.
-Add Help Links for OAS and IARS, and Technical Information
-Fixed Region_Gods switch not being read and displayed in Expert mode.
+Suppress clutter - only one Dreamgrid form of each type
+Added a "backup critical files" to the Content menu - copies both Wifi folders, all Regions and Mysql\data folder plus Settings.ini to Autobackup in a new folder by Date/Time
+An Update prompts to make a critical files backup first.
+Add Help Links for OAS and IARS and Technical Information
+Fixed Region_Gods switch not being displayed in Expert menu
 Cache adjusted to save disk space and use a 1 minute RAM cache
+Check for Updates sets Check flag back on.
 
 V2.53  
 Stop crash in CheckPost, make birds be REALLY disabled when it is off by renaming the DLL
