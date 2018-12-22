@@ -2,6 +2,8 @@ V2.55
 Faster exit of app when regions are combined
 Print count of things cleared from caches
 Do not stop MySQL if already running
+Updates re-enable check for updates
+Faster refresh of Region Form when something changes
 
 V2.54
 Suppress clutter - only one Dreamgrid form of each type
