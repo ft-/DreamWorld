@@ -897,9 +897,7 @@ Public Class RegionMaker
                 End Try
             Catch
             End Try
-
         Next
-
 
     End Sub
 

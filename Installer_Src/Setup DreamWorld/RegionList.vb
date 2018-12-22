@@ -4,7 +4,7 @@ Imports System.IO
 
 Public Class RegionList
 
-    Dim ViewBusy As Boolean
+    Dim ViewNotBusy As Boolean
     Dim TheView As Integer = 0
     Private Shared FormExists As Boolean = False
     Dim pixels As Integer = 70
@@ -45,7 +45,7 @@ Public Class RegionList
 
     Private Sub Panel1_MouseWheel(sender As Object, e As System.Windows.Forms.MouseEventArgs) Handles ListView1.MouseWheel
 
-        If TheView = 2 And ViewBusy Then
+        If TheView = 2 And ViewNotBusy Then
             ' Update the drawing based upon the mouse wheel scrolling.
             Dim numberOfTextLinesToMove As Integer = CInt(e.Delta * SystemInformation.MouseWheelScrollLines / 120)
 
@@ -133,7 +133,7 @@ Public Class RegionList
 
     Public Sub LoadMyListView()
 
-        ViewBusy = False
+        ViewNotBusy = False
 
         ListView1.BeginUpdate()
 
@@ -220,7 +220,7 @@ Public Class RegionList
 
         ListView1.EndUpdate()
         ListView1.Show()
-        ViewBusy = True
+        ViewNotBusy = True
 
         For i As Integer = 0 To ListView1.Items.Count - 1
             If ListView1.Items(i).Checked Then
@@ -276,7 +276,6 @@ Public Class RegionList
             If R >= 0 Then
                 StartStopEdit(checked, R)
             End If
-
         Next
 
         Timer1.Interval = 1
@@ -311,7 +310,7 @@ Public Class RegionList
         ' If RegionClass.ShuttingDown(n) Then
         ' RegionClass.ShuttingDown(n) = False
         ' End If
-        Form1.Log("Clicked " + RegionClass.RegionName(n))
+        'Form1.Log("Clicked " + RegionClass.RegionName(n))
         If Not checked Then
             Dim RegionForm As New FormRegion
             RegionForm.Init(RegionClass.RegionName(n))
@@ -320,7 +319,6 @@ Public Class RegionList
             RegionForm.Select()
             Return
         End If
-
 
         If (RegionClass.Booted(n) Or RegionClass.WarmingUp(n)) Or RegionClass.ShuttingDown(n) Then
             ' if enabled and running, even partly up, stop it.
@@ -368,7 +366,7 @@ Public Class RegionList
             Form1.Log("Starting " + RegionClass.RegionName(n))
             Form1.CopyOpensimProto()
             Form1.Boot(RegionClass.RegionName(n))
-            Timer1.Interval = 5000 ' force a refresh
+            Timer1.Interval = 1000 ' force a refresh
             Return
         End If
 
@@ -405,7 +403,7 @@ Public Class RegionList
         Dim Item As ListViewItem = ListView1.Items.Item(e.Index)
         Dim n As Integer = RegionClass.FindRegionByName(Item.Text)
         If n = -1 Then Return
-        If ViewBusy Then
+        If ViewNotBusy Then
             If (e.CurrentValue = CheckState.Unchecked) Then
                 RegionClass.RegionEnabled(n) = True
                 ' and region file on disk
@@ -441,7 +439,7 @@ Public Class RegionList
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles ViewButton.Click
 
         ' It may be busy refreshing so lets wait
-        While Not ViewBusy
+        While Not ViewNotBusy
             Form1.Sleep(100)
             Application.DoEvents()
         End While
