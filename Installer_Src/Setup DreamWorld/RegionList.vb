@@ -108,10 +108,10 @@ Public Class RegionList
         imageListSmall.Images.Add(My.Resources.ResourceManager.GetObject("navigate_up2"))   ' 0 booting up
         imageListSmall.Images.Add(My.Resources.ResourceManager.GetObject("navigate_down2")) ' 1 shutting down
         imageListSmall.Images.Add(My.Resources.ResourceManager.GetObject("check2")) ' 2 okay, up
-        imageListSmall.Images.Add(My.Resources.ResourceManager.GetObject("navigate_plus")) ' 3 disabled
-        imageListSmall.Images.Add(My.Resources.ResourceManager.GetObject("media_stop_red")) ' 4 disabled
-        imageListSmall.Images.Add(My.Resources.ResourceManager.GetObject("media_stop"))  ' 5 enabled, stopped
-        imageListSmall.Images.Add(My.Resources.ResourceManager.GetObject("media_stop"))  ' 6 
+        imageListSmall.Images.Add(My.Resources.ResourceManager.GetObject("media_stop_red")) ' 3 disabled
+        imageListSmall.Images.Add(My.Resources.ResourceManager.GetObject("media_stop"))  ' 4 enabled, stopped
+        imageListSmall.Images.Add(My.Resources.ResourceManager.GetObject("replace2"))  ' 5 Restarting
+        imageListSmall.Images.Add(My.Resources.ResourceManager.GetObject("warning"))  ' 6 Unknown
 
         LoadMyListView()
         ListView1.Show()
@@ -132,8 +132,6 @@ Public Class RegionList
     End Sub
 
     Public Sub LoadMyListView()
-
-
 
         ViewBusy = False
 
@@ -159,9 +157,11 @@ Public Class RegionList
 
         For Each X In RegionClass.RegionNumbers
 
-
             Dim Letter As String = ""
-            If RegionClass.WarmingUp(X) Then
+            If RegionClass.Timer(X) < 0 Then
+                Letter = "Restarting"
+                Num = 5
+            ElseIf RegionClass.WarmingUp(X) Then
                 Letter = "Booting"
                 Num = 0
             ElseIf RegionClass.ShuttingDown(X) Then
@@ -170,17 +170,14 @@ Public Class RegionList
             ElseIf RegionClass.Booted(X) Then
                 Letter = "Running"
                 Num = 2
-            ElseIf RegionClass.ProcessID(X) > 0 And RegionClass.ShuttingDown(X) Then
-                Letter = "Exiting"
-                Num = 3
             ElseIf Not RegionClass.RegionEnabled(X) Then
                 Letter = "Disabled"
-                Num = 4
+                Num = 3
             ElseIf RegionClass.RegionEnabled(X) Then
                 Letter = "Stopped"
-                Num = 5
+                Num = 4
             Else
-                Num = 5
+                Num = 6 ' warning
             End If
 
             If TheView = 2 Then
@@ -316,10 +313,7 @@ Public Class RegionList
         ' End If
         Form1.Log("Clicked " + RegionClass.RegionName(n))
         If Not checked Then
-
-
             Dim RegionForm As New FormRegion
-
             RegionForm.Init(RegionClass.RegionName(n))
             RegionForm.Activate()
             RegionForm.Visible = True
@@ -452,8 +446,6 @@ Public Class RegionList
             Application.DoEvents()
         End While
 
-
-
         Debug.Print(Form1.MySetting.MapType)
         If Form1.MySetting.MapType = "None" And TheView = 1 Then TheView = 2
 
@@ -472,7 +464,6 @@ Public Class RegionList
         End If
 
         TheView = TheView + 1
-
 
 
         If TheView > 2 Then TheView = 0
