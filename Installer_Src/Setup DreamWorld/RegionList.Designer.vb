@@ -41,6 +41,8 @@ Partial Class RegionList
         '
         'ListView1
         '
+        Me.ListView1.AllowColumnReorder = True
+        Me.ListView1.FullRowSelect = True
         Me.ListView1.GridLines = True
         Me.ListView1.HideSelection = False
         ListViewItem1.ToolTipText = "Click to Start or Stop Robust"

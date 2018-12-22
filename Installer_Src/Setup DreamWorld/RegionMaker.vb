@@ -874,6 +874,7 @@ Public Class RegionMaker
                     WarmingUp(n) = False
                     ShuttingDown(n) = False
                     UUID(n) = json.region_id
+                    Form1.UpdateView() = True
 
                 ElseIf json.login = "shutdown" Then
                     Form1.PrintFast("Region " & json.region_name & " shut down")
@@ -887,7 +888,7 @@ Public Class RegionMaker
                     WarmingUp(n) = False
                     ShuttingDown(n) = True
                     UUID(n) = ""
-
+                    Form1.UpdateView() = True
 
                 End If
                 Try
@@ -897,9 +898,7 @@ Public Class RegionMaker
                 End Try
             Catch
             End Try
-
         Next
-
 
     End Sub
 
@@ -988,7 +987,6 @@ Public Class RegionMaker
 
                 If match.Success And match2.Success Then
 
-                    ' Unfinished has SQL injection - do not use. Meeds parameterization
                     ' Only works in Standalone, anyway.
                     ' Not implemented at all in Grid mode - the Diva DLL Diva is stubbed off.
                     Dim result As Integer = 1

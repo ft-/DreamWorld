@@ -4,7 +4,7 @@ Imports System.IO
 
 Public Class RegionList
 
-    Dim ViewBusy As Boolean
+    Dim ViewNotBusy As Boolean
     Dim TheView As Integer = 0
     Private Shared FormExists As Boolean = False
     Dim pixels As Integer = 70
@@ -12,8 +12,16 @@ Public Class RegionList
     Dim imageListLarge As ImageList
     Dim ItemsAreChecked As Boolean = False
     Dim RegionClass As RegionMaker = RegionMaker.Instance(Form1.MysqlConn)
+    Dim Timertick As Integer = 0
 
-
+    Public Property UpdateView() As Boolean
+        Get
+            Return Form1.UpdateView
+        End Get
+        Set(ByVal Value As Boolean)
+            Form1.UpdateView = Value
+        End Set
+    End Property
     ' property exposing FormExists
     Public Shared ReadOnly Property InstanceExists() As Boolean
         Get
@@ -45,7 +53,7 @@ Public Class RegionList
 
     Private Sub Panel1_MouseWheel(sender As Object, e As System.Windows.Forms.MouseEventArgs) Handles ListView1.MouseWheel
 
-        If TheView = 2 And ViewBusy Then
+        If TheView = 2 And ViewNotBusy Then
             ' Update the drawing based upon the mouse wheel scrolling.
             Dim numberOfTextLinesToMove As Integer = CInt(e.Delta * SystemInformation.MouseWheelScrollLines / 120)
 
@@ -58,7 +66,6 @@ Public Class RegionList
         End If
 
     End Sub
-
 
     Private Sub RegionList_Layout(sender As Object, e As LayoutEventArgs) Handles Me.Layout
 
@@ -106,16 +113,18 @@ Public Class RegionList
         imageListSmall.Images.Add(My.Resources.ResourceManager.GetObject("navigate_up2"))   ' 0 booting up
         imageListSmall.Images.Add(My.Resources.ResourceManager.GetObject("navigate_down2")) ' 1 shutting down
         imageListSmall.Images.Add(My.Resources.ResourceManager.GetObject("check2")) ' 2 okay, up
-        imageListSmall.Images.Add(My.Resources.ResourceManager.GetObject("navigate_plus")) ' 3 disabled
-        imageListSmall.Images.Add(My.Resources.ResourceManager.GetObject("media_stop_red")) ' 4 disabled
-        imageListSmall.Images.Add(My.Resources.ResourceManager.GetObject("media_stop"))  ' 5 enabled, stopped
-        imageListSmall.Images.Add(My.Resources.ResourceManager.GetObject("media_stop"))  ' 6 
+        imageListSmall.Images.Add(My.Resources.ResourceManager.GetObject("media_stop_red")) ' 3 disabled
+        imageListSmall.Images.Add(My.Resources.ResourceManager.GetObject("media_stop"))  ' 4 enabled, stopped
+        imageListSmall.Images.Add(My.Resources.ResourceManager.GetObject("replace2"))  ' 5 Restarting
+        imageListSmall.Images.Add(My.Resources.ResourceManager.GetObject("warning"))  ' 6 Unknown
 
+        Form1.UpdateView = True ' make form refresh
         LoadMyListView()
         ListView1.Show()
-        Timer1.Interval = 30000
+        Timer1.Interval = 1000 ' check for Form1.UpdateView every second
         Timer1.Start() 'Timer starts functioning
         SetScreen()
+
     End Sub
 
     Private Sub SingletonForm_FormClosed(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles Me.FormClosed
@@ -125,13 +134,16 @@ Public Class RegionList
     End Sub
 
     Private Sub Timer1_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Timer1.Tick
-        LoadMyListView()
-        Timer1.Interval = 30000
+
+        If UpdateView() Or Timertick Mod 30 = 0 Then ' force a refresh
+            LoadMyListView()
+        End If
+        Timertick = Timertick + 1
     End Sub
 
     Public Sub LoadMyListView()
 
-        ViewBusy = False
+        ViewNotBusy = False
 
         ListView1.BeginUpdate()
 
@@ -150,25 +162,16 @@ Public Class RegionList
 
         Dim Num As Integer = 0
 
-        'Dim L As New List(Of String)
-
         ' have to get maps by http port + region UUID, not region port + uuid
         RegionClass.DebugGroup() ' show the list of groups and http ports.
 
         For Each X In RegionClass.RegionNumbers
 
-            Application.DoEvents()
-
-            'If Not L.Contains(RegionClass.RegionName(X)) Then ' ????
-
-            'L.Add(RegionClass.RegionName(X))
-
-            ' If RegionClass.RegionName(X) = "Deliverance" Then
-            '   Debug.Print("Deliverance")
-            ' End If
-
             Dim Letter As String = ""
-            If RegionClass.WarmingUp(X) Then
+            If RegionClass.Timer(X) < 0 Then
+                Letter = "Restarting"
+                Num = 5
+            ElseIf RegionClass.WarmingUp(X) Then
                 Letter = "Booting"
                 Num = 0
             ElseIf RegionClass.ShuttingDown(X) Then
@@ -177,22 +180,17 @@ Public Class RegionList
             ElseIf RegionClass.Booted(X) Then
                 Letter = "Running"
                 Num = 2
-            ElseIf RegionClass.ProcessID(X) > 0 And RegionClass.ShuttingDown(X) Then
-                Letter = "Exiting"
-                Num = 3
             ElseIf Not RegionClass.RegionEnabled(X) Then
                 Letter = "Disabled"
-                Num = 4
+                Num = 3
             ElseIf RegionClass.RegionEnabled(X) Then
                 Letter = "Stopped"
-                Num = 5
+                Num = 4
             Else
-                Num = 5
+                Num = 6 ' warning
             End If
 
             If TheView = 2 Then
-
-
 
                 If RegionClass.Booted(X) Then
                         Dim img As String = "http://127.0.0.1:" + RegionClass.GroupPort(X).ToString + "/" + "index.php?method=regionImage" + RegionClass.UUID(X).Replace("-", "")
@@ -220,7 +218,7 @@ Public Class RegionList
 
             item1.SubItems.Add(Letter)
             ListView1.Items.AddRange(New ListViewItem() {item1})
-            Application.DoEvents()
+
 
         Next
 
@@ -232,9 +230,17 @@ Public Class RegionList
 
         ListView1.EndUpdate()
         ListView1.Show()
-        ViewBusy = True
-        Timer1.Interval = 30000
-        Application.DoEvents()
+        ViewNotBusy = True
+
+        For i As Integer = 0 To ListView1.Items.Count - 1
+            If ListView1.Items(i).Checked Then
+                ListView1.Items(i).ForeColor = SystemColors.ControlText
+            Else
+                ListView1.Items(i).ForeColor = SystemColors.GrayText
+            End If
+        Next i
+
+        UpdateView() = False
 
     End Sub 'listView1
 
@@ -278,10 +284,9 @@ Public Class RegionList
             If R >= 0 Then
                 StartStopEdit(checked, R)
             End If
-
         Next
 
-
+        UpdateView() = True
     End Sub
 
 
@@ -313,17 +318,15 @@ Public Class RegionList
         ' If RegionClass.ShuttingDown(n) Then
         ' RegionClass.ShuttingDown(n) = False
         ' End If
-        Form1.Log("Clicked " + RegionClass.RegionName(n))
+        'Form1.Log("Clicked " + RegionClass.RegionName(n))
         If Not checked Then
             Dim RegionForm As New FormRegion
-
             RegionForm.Init(RegionClass.RegionName(n))
             RegionForm.Activate()
             RegionForm.Visible = True
             RegionForm.Select()
             Return
         End If
-
 
         If (RegionClass.Booted(n) Or RegionClass.WarmingUp(n)) Or RegionClass.ShuttingDown(n) Then
             ' if enabled and running, even partly up, stop it.
@@ -357,7 +360,7 @@ Public Class RegionList
             Catch ex As Exception
                 Form1.Log("Region:Could not stop " + RegionClass.RegionName(n))
             End Try
-            Timer1.Interval = 1000 ' force a refresh
+            UpdateView() = True
             Return
 
         ElseIf Not (RegionClass.Booted(n) Or RegionClass.WarmingUp(n) Or RegionClass.ShuttingDown(n)) Then
@@ -371,7 +374,7 @@ Public Class RegionList
             Form1.Log("Starting " + RegionClass.RegionName(n))
             Form1.CopyOpensimProto()
             Form1.Boot(RegionClass.RegionName(n))
-            Timer1.Interval = 5000 ' force a refresh
+            UpdateView() = True ' force a refresh
             Return
         End If
 
@@ -385,7 +388,7 @@ Public Class RegionList
                 RegionClass.ProcessID(n) = 0
                 Form1.Log("Aborting " + RegionClass.RegionName(n))
             Next
-            Timer1.Interval = 1000 ' force a refresh
+            UpdateView() = True ' force a refresh
         End If
 
     End Sub
@@ -408,7 +411,7 @@ Public Class RegionList
         Dim Item As ListViewItem = ListView1.Items.Item(e.Index)
         Dim n As Integer = RegionClass.FindRegionByName(Item.Text)
         If n = -1 Then Return
-        If ViewBusy Then
+        If ViewNotBusy Then
             If (e.CurrentValue = CheckState.Unchecked) Then
                 RegionClass.RegionEnabled(n) = True
                 ' and region file on disk
@@ -424,7 +427,7 @@ Public Class RegionList
             End If
         End If
 
-        Application.DoEvents()
+        UpdateView() = True ' force a refresh
 
     End Sub
 
@@ -444,7 +447,7 @@ Public Class RegionList
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles ViewButton.Click
 
         ' It may be busy refreshing so lets wait
-        While Not ViewBusy
+        While Not ViewNotBusy
             Form1.Sleep(100)
             Application.DoEvents()
         End While
@@ -455,7 +458,7 @@ Public Class RegionList
         If TheView = 0 Then
             ListView1.CheckBoxes = False
             ListView1.View = View.List
-            Timer1.Interval = 30000
+
         ElseIf TheView = 1 Then
             ListView1.CheckBoxes = False
             ListView1.View = View.LargeIcon
@@ -463,11 +466,10 @@ Public Class RegionList
         ElseIf TheView = 2 Then
             ListView1.CheckBoxes = True
             ListView1.View = View.Details
-            Timer1.Interval = 30000
+
         End If
 
         TheView = TheView + 1
-
 
 
         If TheView > 2 Then TheView = 0
