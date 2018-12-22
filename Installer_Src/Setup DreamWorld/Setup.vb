@@ -126,7 +126,6 @@ Public Class Form1
     End Function
 #End Region
 
-
 #Region "ScreenSize"
     Public ScreenPosition As ScreenPos
     Private Handler As New EventHandler(AddressOf resize_page)
@@ -616,7 +615,8 @@ Public Class Form1
         End If
 
         If Not MySetting.RunOnce Then
-            MsgBox("Please type 'create user<ret>' to make the system owner's account in the ROBUST console, and then answer any questions.", vbInformation, "Info")
+            RobustCommand("create user{ENTER}")
+            MsgBox("Please type the Grid Owner's name into the Robust window. Press <enter> for UUID and Model name. Then press this OK button", vbInformation, "Info")
             MySetting.RunOnce = True
             MySetting.SaveSettings()
         End If
@@ -648,7 +648,7 @@ Public Class Form1
 
         Buttons(StopButton)
         ProgressBar1.Value = 100
-        Print("Outworldz is almost ready for you to log in." + vbCrLf _
+        Print(MySetting.SimName + " is almost ready for you to log in." + vbCrLf _
               + "Grid address is" + vbCrLf + "http://" + MySetting.PublicIP + ":" + MySetting.HttpPort)
 
         ' done with bootup
@@ -5359,8 +5359,6 @@ Public Class Form1
     End Sub
 
 #End Region
-
-
 
 #Region "Alerts"
 
