@@ -3102,11 +3102,11 @@ Public Class Form1
             Dim Groupname = RegionClass.GroupName(n)
             Dim ShouldIRestart = RegionClass.Timer(n)
             Log(Groupname + " Exited with status " + ShouldIRestart.ToString)
-
+            UpdateView = True ' make form refresh
             ' Maybe we crashed during warmup.  Skip prompt if auto restarting
             If RegionClass.WarmingUp(n) = True And RegionClass.Timer(n) >= 0 Then
                 StopGroup(Groupname)
-                UpdateView = True ' make form refresh
+
                 Dim yesno = MsgBox(RegionClass.RegionName(n) + " in DOS Box " + Groupname + " quit while booting up. Do you want to see the log file?", vbYesNo, "Error")
                 If (yesno = vbYes) Then
                     System.Diagnostics.Process.Start("notepad.exe", RegionClass.IniPath(n) + "Opensim.log")
@@ -3117,7 +3117,7 @@ Public Class Form1
             ' prompt if crashed.  Skip prompt if auto restarting
             If RegionClass.Booted(n) = True And RegionClass.Timer(n) >= 0 Then
                 StopGroup(Groupname)
-                UpdateView = True ' make form refresh
+
                 Dim yesno = MsgBox(RegionClass.RegionName(n) + " in DOS Box " + Groupname + " quit unexpectedly. Do you want to see the log file?", vbYesNo, "Error")
                 If (yesno = vbYes) Then
                     System.Diagnostics.Process.Start("notepad.exe", RegionClass.IniPath(n) + "Opensim.log")
