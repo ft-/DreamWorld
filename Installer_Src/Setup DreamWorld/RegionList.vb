@@ -12,8 +12,16 @@ Public Class RegionList
     Dim imageListLarge As ImageList
     Dim ItemsAreChecked As Boolean = False
     Dim RegionClass As RegionMaker = RegionMaker.Instance(Form1.MysqlConn)
+    Dim Timertick As Integer = 0
 
-
+    Public Property UpdateView() As Boolean
+        Get
+            Return Form1.UpdateView
+        End Get
+        Set(ByVal Value As Boolean)
+            Form1.UpdateView = Value
+        End Set
+    End Property
     ' property exposing FormExists
     Public Shared ReadOnly Property InstanceExists() As Boolean
         Get
@@ -59,7 +67,6 @@ Public Class RegionList
 
     End Sub
 
-
     Private Sub RegionList_Layout(sender As Object, e As LayoutEventArgs) Handles Me.Layout
 
         Dim X = Me.Width - 45
@@ -72,8 +79,6 @@ Public Class RegionList
     Private Sub _Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 
         Me.Size = New System.Drawing.Size(410, 410)
-
-
 
         pixels = 70
 
@@ -113,11 +118,13 @@ Public Class RegionList
         imageListSmall.Images.Add(My.Resources.ResourceManager.GetObject("replace2"))  ' 5 Restarting
         imageListSmall.Images.Add(My.Resources.ResourceManager.GetObject("warning"))  ' 6 Unknown
 
+        Form1.UpdateView = True ' make form refresh
         LoadMyListView()
         ListView1.Show()
-        Timer1.Interval = 30000
+        Timer1.Interval = 1000 ' check for Form1.UpdateView every second
         Timer1.Start() 'Timer starts functioning
         SetScreen()
+
     End Sub
 
     Private Sub SingletonForm_FormClosed(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles Me.FormClosed
@@ -127,8 +134,11 @@ Public Class RegionList
     End Sub
 
     Private Sub Timer1_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Timer1.Tick
-        LoadMyListView()
-        Timer1.Interval = 30000
+
+        If UpdateView() Or Timertick Mod 30 = 0 Then ' force a refresh
+            LoadMyListView()
+        End If
+        Timertick = Timertick + 1
     End Sub
 
     Public Sub LoadMyListView()
@@ -230,9 +240,7 @@ Public Class RegionList
             End If
         Next i
 
-
-        Timer1.Interval = 30000
-
+        UpdateView() = False
 
     End Sub 'listView1
 
@@ -278,7 +286,7 @@ Public Class RegionList
             End If
         Next
 
-        Timer1.Interval = 1
+        UpdateView() = True
     End Sub
 
 
@@ -352,7 +360,7 @@ Public Class RegionList
             Catch ex As Exception
                 Form1.Log("Region:Could not stop " + RegionClass.RegionName(n))
             End Try
-            Timer1.Interval = 1000 ' force a refresh
+            UpdateView() = True
             Return
 
         ElseIf Not (RegionClass.Booted(n) Or RegionClass.WarmingUp(n) Or RegionClass.ShuttingDown(n)) Then
@@ -366,7 +374,7 @@ Public Class RegionList
             Form1.Log("Starting " + RegionClass.RegionName(n))
             Form1.CopyOpensimProto()
             Form1.Boot(RegionClass.RegionName(n))
-            Timer1.Interval = 1000 ' force a refresh
+            UpdateView() = True ' force a refresh
             Return
         End If
 
@@ -380,7 +388,7 @@ Public Class RegionList
                 RegionClass.ProcessID(n) = 0
                 Form1.Log("Aborting " + RegionClass.RegionName(n))
             Next
-            Timer1.Interval = 1000 ' force a refresh
+            UpdateView() = True ' force a refresh
         End If
 
     End Sub
@@ -419,7 +427,7 @@ Public Class RegionList
             End If
         End If
 
-        Timer1.Interval = 100
+        UpdateView() = True ' force a refresh
 
     End Sub
 
@@ -450,7 +458,7 @@ Public Class RegionList
         If TheView = 0 Then
             ListView1.CheckBoxes = False
             ListView1.View = View.List
-            Timer1.Interval = 30000
+
         ElseIf TheView = 1 Then
             ListView1.CheckBoxes = False
             ListView1.View = View.LargeIcon
@@ -458,7 +466,7 @@ Public Class RegionList
         ElseIf TheView = 2 Then
             ListView1.CheckBoxes = True
             ListView1.View = View.Details
-            Timer1.Interval = 30000
+
         End If
 
         TheView = TheView + 1
