@@ -115,7 +115,11 @@ Public Class Form1
     Public RegionForm As RegionList
     Dim ExitList As New List(Of Integer)
 
+    ' Mysql
     Dim gStopMysql As Boolean = True
+
+    'Region Form Refresh
+    Public gUpdateView As Boolean = True
 
 
     <CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA2101:SpecifyMarshalingForPInvokeStringArguments", MessageId:="1")>
@@ -353,6 +357,15 @@ Public Class Form1
 
 #Region "Properties"
 
+    Public Property UpdateView() As Boolean
+        Get
+            Return gUpdateView
+        End Get
+        Set(ByVal Value As Boolean)
+            gUpdateView = Value
+        End Set
+    End Property
+
     Public Property IPv4Address() As String
         Get
             Return gIPv4Address
@@ -562,8 +575,6 @@ Public Class Form1
 
         ProgressBar1.Value = 100
 
-
-
     End Sub
 
     ''' <summary>
@@ -579,7 +590,6 @@ Public Class Form1
     ''' Called by Start Buttomn or by AutoStart
     ''' </summary>
     Private Sub Startup()
-
 
         gExiting = False  ' suppress exit warning messages
         ProgressBar1.Value = 0
@@ -740,8 +750,6 @@ Public Class Form1
         ProgressBar1.Visible = True
         ' close everything as gracefully as possible.
 
-
-
         StopIcecast()
 
         Dim n As Integer = RegionClass.RegionCount()
@@ -752,33 +760,33 @@ Public Class Form1
         For Each X As Integer In RegionClass.RegionNumbers
             If RegionClass.RegionEnabled(X) Then
                 TotalRunningRegions = TotalRunningRegions + 1
+            End If
+        Next
+        Log("TotalRunningRegions=" + TotalRunningRegions.ToString)
+
+
+        For Each X As Integer In RegionClass.RegionNumbers
+            If RegionClass.RegionEnabled(X) Then
+                PrintFast("Shutting down " + RegionClass.RegionName(X))
                 Dim pID = RegionClass.ProcessID(X)
                 Try
                     Dim p = Process.GetProcessById(pID)
                     ShowWindow(p.MainWindowHandle, SHOW_WINDOW.SW_RESTORE)
                 Catch
                 End Try
-            End If
-
-        Next
-        Log("TotalRunningRegions=" + TotalRunningRegions.ToString)
-
-        ' show robust last, try-catch in case it crashed.
-        Try
-            ShowWindow(Process.GetProcessById(gRobustProcID).MainWindowHandle, SHOW_WINDOW.SW_RESTORE)
-        Catch
-        End Try
-
-        For Each X As Integer In RegionClass.RegionNumbers
-            If RegionClass.RegionEnabled(X) Then
-                PrintFast("Shutting down " + RegionClass.RegionName(X))
-                ConsoleCommand(RegionClass.ProcessID(X), "{ENTER}q{ENTER}")
+                ConsoleCommand(RegionClass.ProcessID(X), "quit{ENTER}")
             End If
 
             RegionClass.Booted(X) = False
             RegionClass.ShuttingDown(X) = True
             RegionClass.WarmingUp(X) = False
         Next
+
+        ' show robust last, try-catch in case it crashed.
+        Try
+            ShowWindow(Process.GetProcessById(gRobustProcID).MainWindowHandle, SHOW_WINDOW.SW_RESTORE)
+        Catch
+        End Try
 
         Dim counter = 600 ' 10 minutes to quit all regions
 
@@ -807,6 +815,7 @@ Public Class Form1
                     End If
                     Application.DoEvents()
                 Next
+
                 If CountisRunning = 0 Then
                     counter = 0
                     ProgressBar1.Value = 0
@@ -3097,6 +3106,7 @@ Public Class Form1
             ' Maybe we crashed during warmup.  Skip prompt if auto restarting
             If RegionClass.WarmingUp(n) = True And RegionClass.Timer(n) >= 0 Then
                 StopGroup(Groupname)
+                UpdateView = True ' make form refresh
                 Dim yesno = MsgBox(RegionClass.RegionName(n) + " in DOS Box " + Groupname + " quit while booting up. Do you want to see the log file?", vbYesNo, "Error")
                 If (yesno = vbYes) Then
                     System.Diagnostics.Process.Start("notepad.exe", RegionClass.IniPath(n) + "Opensim.log")
@@ -3107,6 +3117,7 @@ Public Class Form1
             ' prompt if crashed.  Skip prompt if auto restarting
             If RegionClass.Booted(n) = True And RegionClass.Timer(n) >= 0 Then
                 StopGroup(Groupname)
+                UpdateView = True ' make form refresh
                 Dim yesno = MsgBox(RegionClass.RegionName(n) + " in DOS Box " + Groupname + " quit unexpectedly. Do you want to see the log file?", vbYesNo, "Error")
                 If (yesno = vbYes) Then
                     System.Diagnostics.Process.Start("notepad.exe", RegionClass.IniPath(n) + "Opensim.log")
@@ -3118,6 +3129,7 @@ Public Class Form1
 
             ' Auto restart if negative
             If ShouldIRestart = -1 And OpensimIsRunning() Then
+                UpdateView = True ' make form refresh
                 PrintFast("Restart Queued for " + Groupname)
                 RegionClass.Timer(n) = -2 ' signal a restart is needed
             End If
@@ -3127,11 +3139,7 @@ Public Class Form1
             Catch
                 Log("Something fucky in region exit")
             End Try
-
-
         Next
-
-
 
     End Sub
 
@@ -3146,9 +3154,7 @@ Public Class Form1
             RegionClass.Timer(X) = 0            ' no longer has running time
         Next
 
-        If RegionList.InstanceExists Then
-            RegionList.LoadMyListView()
-        End If
+        UpdateView = True ' make form refresh
 
     End Sub
 
@@ -3355,7 +3361,7 @@ Public Class Form1
             myProcess.Start()
             Diagnostics.Debug.Print("PID=" + myProcess.Id.ToString)
             If myProcess.Id > 0 Then
-
+                UpdateView = True ' make form refresh
                 For Each num In RegionClass.RegionListByGroupNum(Groupname)
                     Diagnostics.Debug.Print("Booting " + RegionClass.RegionName(num))
                     RegionClass.WarmingUp(num) = True
@@ -3376,6 +3382,7 @@ Public Class Form1
             If ex.Message.Contains("Process has exited") Then Return False
             Print("Oops! " + BootName + " did Not start")
             Log(ex.Message)
+            UpdateView = True ' make form refresh
             Dim yesno = MsgBox("Oops! " + BootName + " in DOS box " + Groupname + " did not boot. Do you want to see the log file?", vbYesNo, "Error")
             If (yesno = vbYes) Then
                 System.Diagnostics.Process.Start("notepad.exe", RegionClass.IniPath(n) + "Opensim.log")
@@ -3673,9 +3680,7 @@ Public Class Form1
             If RegionClass.Timer(X) = -2 Then
                 RegionClass.Timer(X) = 0
                 Boot(RegionClass.RegionName(X))
-                If RegionList.InstanceExists Then
-                    RegionList.LoadMyListView()
-                End If
+                UpdateView = True ' make form refresh
             End If
         Next
     End Sub
@@ -3694,6 +3699,7 @@ Public Class Form1
                 ' if its past time and no one is in the sim...
                 If timervalue >= MySetting.AutoRestartInterval() And Not AvatarsIsInGroup(Groupname) Then
                     ' shut down the group
+
                     ConsoleCommand(RegionClass.ProcessID(X), "q{ENTER}q{ENTER}")
                     Print("AutoRestarting " + Groupname)
                     For Each RegionNum As Integer In RegionClass.RegionListByGroupNum(Groupname)
@@ -3702,9 +3708,10 @@ Public Class Form1
                         RegionClass.ShuttingDown(RegionNum) = True
                         RegionClass.Timer(RegionNum) = -1 ' -1 means restart on exit
                     Next
+                    UpdateView = True ' make form refresh
                 End If
 
-                ' cxount up to auto restart , when high enought, restart the sim
+                ' count up to auto restart , when high enought, restart the sim
                 If RegionClass.Timer(X) > -1 Then
                     RegionClass.Timer(X) = RegionClass.Timer(X) + 1
                 End If
@@ -4409,7 +4416,6 @@ Public Class Form1
 
     Private Function CheckPort(ServerAddress As String, Port As Integer) As Boolean
 
-
         Dim ClientSocket As New TcpClient
 
         Try
@@ -4814,9 +4820,10 @@ Public Class Form1
 
 #End Region
 
-#Region "MySQl"
+#Region "MySQL"
 
     Private Sub CheckAndRepairDatbaseToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CheckAndRepairDatbaseToolStripMenuItem.Click
+
         If Not StartMySQL() Then Return
 
         Dim pi As ProcessStartInfo = New ProcessStartInfo()
@@ -4830,8 +4837,8 @@ Public Class Form1
         pMySqlDiag.Start()
         pMySqlDiag.WaitForExit()
         ChDir(MyFolder)
-    End Sub
 
+    End Sub
 
     Private Sub RestoreDatabaseToolStripMenuItem1_Click(sender As Object, e As EventArgs) Handles RestoreDatabaseToolStripMenuItem1.Click
 
@@ -5046,7 +5053,7 @@ Public Class Form1
         Try
             Using outputFile As New StreamWriter(testProgram, True)
                 outputFile.WriteLine("@REM Program to Stop Mysql" + vbCrLf +
-                "mysqldadmin.exe -u root --port " + MySetting.MySqlPort + " shutdown" + vbCrLf)
+                "mysqladmin.exe -u root --port " + MySetting.MySqlPort + " shutdown" + vbCrLf)
             End Using
         Catch ex As Exception
             Log("Error:StopMySQL.bat" + ex.Message)
@@ -5264,81 +5271,9 @@ Public Class Form1
             RegionForm.Show()
             RegionForm.Activate()
         Else
+            UpdateView = True ' make form refresh
             RegionForm.Show()
-
             RegionForm.Activate()
-        End If
-
-    End Sub
-
-
-    Private Sub RegionClick(sender As ToolStripMenuItem, e As EventArgs)
-
-        Dim num As Integer = RegionClass.FindRegionByName(sender.Text)
-
-        ' Handle robust clicking
-        If sender.Text = "Robust" Then
-            If gRobustProcID > 0 Then
-                ConsoleCommand(gRobustProcID, "{ENTER}q{ENTER}")
-                Me.Focus()
-                Log("Region:Stopped Robust")
-                sender.Checked = True
-                Return
-            Else
-                Print("Starting Robust")
-                If Not StartMySQL() Then Return
-                Start_Robust()
-                sender.Checked = False
-            End If
-
-            Return
-
-        Else ' had to be a region that was clicked
-
-            Diagnostics.Debug.Print("Region:Clicked region " & sender.Text)
-
-            If RegionClass.AvatarCount(num) > 0 Then
-                Dim response = MsgBox("That region has people in it. Are you sure you want to stop it?", vbYesNo)
-                If response = vbNo Then Return
-            End If
-
-            ' OpensimIsRunning, stop it
-            If RegionClass.RegionEnabled(num) And (RegionClass.Booted(num) Or RegionClass.WarmingUp(num)) Then
-
-                ' if enabled and running, even partly up, stop it.
-                sender.Checked = False
-                If OpensimIsRunning() Then
-                    Try
-                        ConsoleCommand(RegionClass.ProcessID(num), "{ENTER}q{ENTER}")
-                        Me.Focus()
-
-                        RegionClass.RegionEnabled(num) = False
-                        RegionClass.Booted(num) = False
-                        RegionClass.WarmingUp(num) = False
-                        RegionClass.ShuttingDown(num) = True
-
-                        MySetting.LoadOtherIni(RegionClass.RegionPath(num), ";")
-                        MySetting.SetOtherIni(sender.Text, "Enabled", "false")
-                        MySetting.SaveOtherINI()
-
-                        Diagnostics.Debug.Print("Region:Stopped Region " + RegionClass.RegionName(num))
-                    Catch ex As Exception
-                        Diagnostics.Debug.Print("Region:Could not stop Opensim")
-                    End Try
-                End If
-
-            ElseIf Not (RegionClass.Booted(num) Or RegionClass.WarmingUp(num) Or RegionClass.ShuttingDown(num)) Then
-                ' it was stopped, and disabled, so we toggle the enable, and start up
-                sender.Checked = True
-
-                ' and region file on disk
-                MySetting.LoadOtherIni(RegionClass.RegionPath(num), ";")
-                MySetting.SetOtherIni(sender.Text, "Enabled", "true")
-                MySetting.SaveOtherINI()
-
-                Boot(RegionClass.RegionName(num))
-
-            End If
         End If
 
     End Sub
@@ -5354,7 +5289,6 @@ Public Class Form1
                 RegionClass.AvatarCount(X) = 0
             End If
         Next
-
 
     End Sub
 
@@ -5418,6 +5352,7 @@ Public Class Form1
         If X > -1 Then
             ConsoleCommand(RegionClass.ProcessID(X), "change region " + name + "{ENTER}")
             ConsoleCommand(RegionClass.ProcessID(X), "restart region " + name + "{ENTER}")
+            UpdateView = True ' make form refresh
         End If
 
     End Sub
@@ -5431,9 +5366,11 @@ Public Class Form1
         Dim X = RegionClass.FindRegionByName(name)
         If X > -1 Then
             ConsoleCommand(RegionClass.ProcessID(X), "restart{ENTER}")
+            UpdateView = True ' make form refresh
         End If
 
     End Sub
+
     Private Sub SendScriptCmd(cmd As String)
         If Not OpensimIsRunning() Then
             Print("Opensim is not running")
@@ -5447,6 +5384,7 @@ Public Class Form1
         End If
 
     End Sub
+
     Private Sub ScriptsStopToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ScriptsStopToolStripMenuItem.Click
         SendScriptCmd("scripts stop")
     End Sub
@@ -5503,6 +5441,7 @@ Public Class Form1
                 Print("Message sent to " + HowManyAreOnline.ToString() + " regions")
             End If
         End If
+
     End Sub
 
     Private Sub AddUserToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AddUserToolStripMenuItem.Click
@@ -5524,7 +5463,6 @@ Public Class Form1
 #End Region
 
 #Region "LocalOARIAR"
-
 
     Private Sub LoadLocalIAROAR()
         ''' <summary>
