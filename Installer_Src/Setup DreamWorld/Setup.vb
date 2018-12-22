@@ -3621,10 +3621,8 @@ Public Class Form1
             DoExitHandlerPoll() ' see if any regions have exited and set it up for Region Restart 
             RebootPoll()
             Application.DoEvents()
-        End If
 
-        ' check for avatars and Regions to restart every minute
-        If gDNSSTimer Mod 60 = 0 Then
+            ' check for avatars and Regions to restart every minute
             If MySetting.StandAlone() Then LoadRegionsStatsBar()   ' fill in menu once a minute
             ScanAgents() ' update agent count
             Application.DoEvents()

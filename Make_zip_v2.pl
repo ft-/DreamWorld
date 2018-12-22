@@ -1,6 +1,6 @@
 
-my $type  = '-V2.54' ;  # '-Beta-V1.5';
-my $dir = "E:/Opensim/Outworldz Dreamgrid Source";
+my $type  = '-V2.55' ;  # '-Beta-V1.5';
+my $dir = "F:/Opensim/Outworldz Dreamgrid Source";
 
 chdir ($dir);
 use Cwd;
