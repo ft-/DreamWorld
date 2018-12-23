@@ -34,7 +34,7 @@ Public Class Form1
 
 #Region "Declarations"
 
-    Dim gMyVersion As String = "2.55"
+    Dim gMyVersion As String = "2.56"
     Dim gSimVersion As String = "0.9.1"
 
     ' edit this to compile and run in the correct folder root
