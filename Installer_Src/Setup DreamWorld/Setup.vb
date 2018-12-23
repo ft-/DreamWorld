@@ -3090,55 +3090,62 @@ Public Class Form1
         ExitList.Reverse()
 
         For LOOPVAR = ExitList.Count - 1 To 0 Step -1
-            Dim ProcessID As Integer = ExitList(LOOPVAR) ' recover the PID as integer
-
-            Dim n As Integer = RegionClass.FindRegionByProcessID(ProcessID) ' get the region handle
-
-            If n < 0 Then
-                ExitList.RemoveAt(LOOPVAR)
-                Continue For
-            End If
-
-            Dim Groupname = RegionClass.GroupName(n)
-            Dim ShouldIRestart = RegionClass.Timer(n)
-            Log(Groupname + " Exited with status " + ShouldIRestart.ToString)
-            UpdateView = True ' make form refresh
-            ' Maybe we crashed during warmup.  Skip prompt if auto restarting
-            If RegionClass.WarmingUp(n) = True And RegionClass.Timer(n) >= 0 Then
-                StopGroup(Groupname)
-
-                Dim yesno = MsgBox(RegionClass.RegionName(n) + " in DOS Box " + Groupname + " quit while booting up. Do you want to see the log file?", vbYesNo, "Error")
-                If (yesno = vbYes) Then
-                    System.Diagnostics.Process.Start("notepad.exe", RegionClass.IniPath(n) + "Opensim.log")
-                    ShouldIRestart = 0
-                End If
-            End If
-
-            ' prompt if crashed.  Skip prompt if auto restarting
-            If RegionClass.Booted(n) = True And RegionClass.Timer(n) >= 0 Then
-                StopGroup(Groupname)
-
-                Dim yesno = MsgBox(RegionClass.RegionName(n) + " in DOS Box " + Groupname + " quit unexpectedly. Do you want to see the log file?", vbYesNo, "Error")
-                If (yesno = vbYes) Then
-                    System.Diagnostics.Process.Start("notepad.exe", RegionClass.IniPath(n) + "Opensim.log")
-                    ShouldIRestart = 0
-                End If
-            End If
-
-            StopGroup(Groupname)
-
-            ' Auto restart if negative
-            If ShouldIRestart = -1 And OpensimIsRunning() Then
-                UpdateView = True ' make form refresh
-                PrintFast("Restart Queued for " + Groupname)
-                RegionClass.Timer(n) = -2 ' signal a restart is needed
-            End If
 
             Try
-                ExitList.RemoveAt(LOOPVAR)
-            Catch
-                Log("Something fucky in region exit")
+                Dim ProcessID As Integer = ExitList(LOOPVAR) ' recover the PID as integer
+
+                Dim n As Integer = RegionClass.FindRegionByProcessID(ProcessID) ' get the region handle
+
+                If n < 0 Then
+                    ExitList.RemoveAt(LOOPVAR)
+                    Continue For
+                End If
+
+                Dim Groupname = RegionClass.GroupName(n)
+                Dim ShouldIRestart = RegionClass.Timer(n)
+                Log(Groupname + " Exited with status " + ShouldIRestart.ToString)
+                UpdateView = True ' make form refresh
+                ' Maybe we crashed during warmup.  Skip prompt if auto restarting
+                If RegionClass.WarmingUp(n) = True And RegionClass.Timer(n) >= 0 Then
+                    StopGroup(Groupname)
+
+                    Dim yesno = MsgBox(RegionClass.RegionName(n) + " in DOS Box " + Groupname + " quit while booting up. Do you want to see the log file?", vbYesNo, "Error")
+                    If (yesno = vbYes) Then
+                        System.Diagnostics.Process.Start("notepad.exe", RegionClass.IniPath(n) + "Opensim.log")
+                        ShouldIRestart = 0
+                    End If
+                End If
+
+                ' prompt if crashed.  Skip prompt if auto restarting
+                If RegionClass.Booted(n) = True And RegionClass.Timer(n) >= 0 Then
+                    StopGroup(Groupname)
+
+                    Dim yesno = MsgBox(RegionClass.RegionName(n) + " in DOS Box " + Groupname + " quit unexpectedly. Do you want to see the log file?", vbYesNo, "Error")
+                    If (yesno = vbYes) Then
+                        System.Diagnostics.Process.Start("notepad.exe", RegionClass.IniPath(n) + "Opensim.log")
+                        ShouldIRestart = 0
+                    End If
+                End If
+
+                StopGroup(Groupname)
+
+                ' Auto restart if negative
+                If ShouldIRestart = -1 And OpensimIsRunning() Then
+                    UpdateView = True ' make form refresh
+                    PrintFast("Restart Queued for " + Groupname)
+                    RegionClass.Timer(n) = -2 ' signal a restart is needed
+                End If
+
+                Try
+                    ExitList.RemoveAt(LOOPVAR)
+                Catch ex As Exception
+                    Log("Something fucky in region RemoveAt:" + ex.Message)
+                End Try
+            Catch ex As Exception
+                Log("Something fucky in region exit:" + ex.Message)
+                ExitList.Clear()
             End Try
+
         Next
 
     End Sub

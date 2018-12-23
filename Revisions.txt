@@ -1,3 +1,6 @@
+V2.56
+Possible crash fix.
+
 V2.55
 Faster exit of app when regions are combined
 Print count of things cleared from caches
