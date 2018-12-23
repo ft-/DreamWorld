@@ -86,10 +86,10 @@ Public Class NetServer
 
                 ' Incoming message may be larger than the buffer size.
                 Do
-                    'Try
-                    numberOfBytesRead = stream.Read(myReadBuffer, 0, L)
-                    'Catch
-                    'End Try
+                    Try
+                        numberOfBytesRead = stream.Read(myReadBuffer, 0, L)
+                    Catch
+                    End Try
                     myCompleteMessage.AppendFormat("{0}", Encoding.ASCII.GetString(myReadBuffer, 0, numberOfBytesRead))
                 Loop While stream.DataAvailable
 

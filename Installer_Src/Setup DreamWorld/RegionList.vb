@@ -168,7 +168,7 @@ Public Class RegionList
         For Each X In RegionClass.RegionNumbers
 
             Dim Letter As String = ""
-            If RegionClass.Timer(X) < 0 Then
+            If RegionClass.Timer(X) = -2 Then
                 Letter = "Restarting"
                 Num = 5
             ElseIf RegionClass.WarmingUp(X) Then
