@@ -175,6 +175,30 @@
     <Compile Include="BirdForm.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="FormBackups.Designer.vb">
+      <DependentUpon>FormBackups.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormBackups.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormMaps.Designer.vb">
+      <DependentUpon>FormMaps.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormMaps.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormPersonality.Designer.vb">
+      <DependentUpon>FormPersonality.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormPersonality.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormRegions.Designer.vb">
+      <DependentUpon>FormRegions.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormRegions.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="GlobalSuppressions.vb" />
     <Compile Include="Screenpos.vb" />
     <Compile Include="Setup.Designer.vb">
@@ -278,6 +302,18 @@
   <ItemGroup>
     <EmbeddedResource Include="BirdForm.resx">
       <DependentUpon>BirdForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormBackups.resx">
+      <DependentUpon>FormBackups.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormMaps.resx">
+      <DependentUpon>FormMaps.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormPersonality.resx">
+      <DependentUpon>FormPersonality.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormRegions.resx">
+      <DependentUpon>FormRegions.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Setup.resx">
       <DependentUpon>Setup.vb</DependentUpon>
@@ -483,6 +519,7 @@
     <Content Include="cubes_blue.ico" />
     <None Include="Resources\cubes_blue.ico" />
     <None Include="Resources\map-1-9510-10006-objects.jpg" />
+    <None Include="Resources\folder.png" />
     <Content Include="Resources\wp_habitat.gif" />
     <Content Include="Resources\wp_Inside_in_shadows.gif" />
     <Content Include="Resources\wp_Mooferd.gif" />

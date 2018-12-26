@@ -25,228 +25,23 @@ Partial Class AdvancedForm
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(AdvancedForm))
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
-        Me.MapHelp = New System.Windows.Forms.PictureBox()
-        Me.MapNone = New System.Windows.Forms.RadioButton()
-        Me.MapSimple = New System.Windows.Forms.RadioButton()
-        Me.MapBetter = New System.Windows.Forms.RadioButton()
-        Me.MapBest = New System.Windows.Forms.RadioButton()
-        Me.MapGood = New System.Windows.Forms.RadioButton()
-        Me.PersonalityHelp = New System.Windows.Forms.PictureBox()
-        Me.TimerInterval = New System.Windows.Forms.TextBox()
-        Me.ChatSpeed = New System.Windows.Forms.ComboBox()
-        Me.AutoBackupHelp = New System.Windows.Forms.PictureBox()
-        Me.AutoBackupKeepFilesForDays = New System.Windows.Forms.TextBox()
-        Me.AutoBackupInterval = New System.Windows.Forms.ComboBox()
-        Me.AutoBackup = New System.Windows.Forms.CheckBox()
-        Me.WelcomeRegion = New System.Windows.Forms.Label()
-        Me.WelcomeBox1 = New System.Windows.Forms.ComboBox()
-        Me.RegionHelp = New System.Windows.Forms.PictureBox()
         Me.TOSButton = New System.Windows.Forms.Button()
-        Me.Birds = New System.Windows.Forms.Button()
         Me.TideButton = New System.Windows.Forms.Button()
         Me.GloebitsButton = New System.Windows.Forms.Button()
         Me.ExpertButton1 = New System.Windows.Forms.Button()
-        Me.MapBox = New System.Windows.Forms.GroupBox()
-        Me.MapPicture = New System.Windows.Forms.PictureBox()
-        Me.GroupBox5 = New System.Windows.Forms.GroupBox()
-        Me.Label15 = New System.Windows.Forms.Label()
         Me.VoiceButton1 = New System.Windows.Forms.Button()
-        Me.GroupBox3 = New System.Windows.Forms.GroupBox()
-        Me.Label6 = New System.Windows.Forms.Label()
-        Me.BackupFolder = New System.Windows.Forms.TextBox()
-        Me.Label9 = New System.Windows.Forms.Label()
-        Me.Label8 = New System.Windows.Forms.Label()
-        Me.GroupBox2 = New System.Windows.Forms.GroupBox()
-        Me.Label3 = New System.Windows.Forms.Label()
-        Me.AddRegion = New System.Windows.Forms.Button()
-        Me.RegionButton = New System.Windows.Forms.Button()
         Me.Shoutcast = New System.Windows.Forms.Button()
+        Me.MapsButton = New System.Windows.Forms.Button()
+        Me.Birds = New System.Windows.Forms.Button()
+        Me.BackupButton1 = New System.Windows.Forms.Button()
+        Me.RegionsButton1 = New System.Windows.Forms.Button()
         Me.GroupBox8 = New System.Windows.Forms.GroupBox()
-        CType(Me.MapHelp, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.PersonalityHelp, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.AutoBackupHelp, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.RegionHelp, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.MapBox.SuspendLayout()
-        CType(Me.MapPicture, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.GroupBox5.SuspendLayout()
-        Me.GroupBox3.SuspendLayout()
-        Me.GroupBox2.SuspendLayout()
         Me.GroupBox8.SuspendLayout()
         Me.SuspendLayout()
         '
-        'MapHelp
-        '
-        Me.MapHelp.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.MapHelp.Location = New System.Drawing.Point(112, 17)
-        Me.MapHelp.Name = "MapHelp"
-        Me.MapHelp.Size = New System.Drawing.Size(28, 27)
-        Me.MapHelp.TabIndex = 1857
-        Me.MapHelp.TabStop = False
-        Me.ToolTip1.SetToolTip(Me.MapHelp, "Click for Help on Maps")
-        '
-        'MapNone
-        '
-        Me.MapNone.AutoSize = True
-        Me.MapNone.Location = New System.Drawing.Point(6, 29)
-        Me.MapNone.Name = "MapNone"
-        Me.MapNone.Size = New System.Drawing.Size(51, 17)
-        Me.MapNone.TabIndex = 7
-        Me.MapNone.TabStop = True
-        Me.MapNone.Text = "None"
-        Me.ToolTip1.SetToolTip(Me.MapNone, "No Maps at all")
-        Me.MapNone.UseVisualStyleBackColor = True
-        '
-        'MapSimple
-        '
-        Me.MapSimple.AutoSize = True
-        Me.MapSimple.Location = New System.Drawing.Point(6, 48)
-        Me.MapSimple.Name = "MapSimple"
-        Me.MapSimple.Size = New System.Drawing.Size(94, 17)
-        Me.MapSimple.TabIndex = 8
-        Me.MapSimple.TabStop = True
-        Me.MapSimple.Text = "Simple but fast"
-        Me.ToolTip1.SetToolTip(Me.MapSimple, "Simple - ")
-        Me.MapSimple.UseVisualStyleBackColor = True
-        '
-        'MapBetter
-        '
-        Me.MapBetter.AutoSize = True
-        Me.MapBetter.Location = New System.Drawing.Point(7, 87)
-        Me.MapBetter.Name = "MapBetter"
-        Me.MapBetter.Size = New System.Drawing.Size(116, 17)
-        Me.MapBetter.TabIndex = 10
-        Me.MapBetter.TabStop = True
-        Me.MapBetter.Text = "Better (Prims, Slow)"
-        Me.MapBetter.TextImageRelation = System.Windows.Forms.TextImageRelation.TextAboveImage
-        Me.ToolTip1.SetToolTip(Me.MapBetter, "Warp3DImageModule with Prims and Textures")
-        Me.MapBetter.UseVisualStyleBackColor = True
-        '
-        'MapBest
-        '
-        Me.MapBest.AutoSize = True
-        Me.MapBest.Location = New System.Drawing.Point(6, 109)
-        Me.MapBest.Name = "MapBest"
-        Me.MapBest.Size = New System.Drawing.Size(144, 17)
-        Me.MapBest.TabIndex = 11
-        Me.MapBest.TabStop = True
-        Me.MapBest.Text = "Best (Prims +Mesh, Slow)"
-        Me.ToolTip1.SetToolTip(Me.MapBest, "Slow, but has Prims and Mesh")
-        Me.MapBest.UseVisualStyleBackColor = True
-        '
-        'MapGood
-        '
-        Me.MapGood.AutoSize = True
-        Me.MapGood.Location = New System.Drawing.Point(7, 67)
-        Me.MapGood.Name = "MapGood"
-        Me.MapGood.Size = New System.Drawing.Size(100, 17)
-        Me.MapGood.TabIndex = 9
-        Me.MapGood.TabStop = True
-        Me.MapGood.Text = "Good (Warp3D)"
-        Me.ToolTip1.SetToolTip(Me.MapGood, "Fast and simple map using Warp3DImageModule")
-        Me.MapGood.UseVisualStyleBackColor = True
-        '
-        'PersonalityHelp
-        '
-        Me.PersonalityHelp.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.PersonalityHelp.Location = New System.Drawing.Point(141, 0)
-        Me.PersonalityHelp.Name = "PersonalityHelp"
-        Me.PersonalityHelp.Size = New System.Drawing.Size(28, 32)
-        Me.PersonalityHelp.TabIndex = 1858
-        Me.PersonalityHelp.TabStop = False
-        Me.ToolTip1.SetToolTip(Me.PersonalityHelp, "Click for Help on Personality")
-        '
-        'TimerInterval
-        '
-        Me.TimerInterval.Location = New System.Drawing.Point(135, 48)
-        Me.TimerInterval.Name = "TimerInterval"
-        Me.TimerInterval.Size = New System.Drawing.Size(39, 20)
-        Me.TimerInterval.TabIndex = 6
-        Me.ToolTip1.SetToolTip(Me.TimerInterval, "The cycle time for the wall paper - in seconds. 0 = Off")
-        '
-        'ChatSpeed
-        '
-        Me.ChatSpeed.FormattingEnabled = True
-        Me.ChatSpeed.Items.AddRange(New Object() {"Sleepy", "Awake", "After Coffee", "Too much Coffee"})
-        Me.ChatSpeed.Location = New System.Drawing.Point(9, 21)
-        Me.ChatSpeed.Name = "ChatSpeed"
-        Me.ChatSpeed.Size = New System.Drawing.Size(113, 21)
-        Me.ChatSpeed.TabIndex = 5
-        Me.ToolTip1.SetToolTip(Me.ChatSpeed, "The sleepy fairy chats at this rate.  ")
-        '
-        'AutoBackupHelp
-        '
-        Me.AutoBackupHelp.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.AutoBackupHelp.Location = New System.Drawing.Point(154, 17)
-        Me.AutoBackupHelp.Name = "AutoBackupHelp"
-        Me.AutoBackupHelp.Size = New System.Drawing.Size(28, 32)
-        Me.AutoBackupHelp.TabIndex = 1857
-        Me.AutoBackupHelp.TabStop = False
-        Me.ToolTip1.SetToolTip(Me.AutoBackupHelp, "Click for Help on Backup")
-        '
-        'AutoBackupKeepFilesForDays
-        '
-        Me.AutoBackupKeepFilesForDays.Location = New System.Drawing.Point(125, 85)
-        Me.AutoBackupKeepFilesForDays.Name = "AutoBackupKeepFilesForDays"
-        Me.AutoBackupKeepFilesForDays.Size = New System.Drawing.Size(47, 20)
-        Me.AutoBackupKeepFilesForDays.TabIndex = 3
-        Me.ToolTip1.SetToolTip(Me.AutoBackupKeepFilesForDays, "Backups older than this number will be deleted")
-        '
-        'AutoBackupInterval
-        '
-        Me.AutoBackupInterval.AutoCompleteCustomSource.AddRange(New String() {"1 Hour", "4 Hour", "12 Hour", "Daily", "Weekly"})
-        Me.AutoBackupInterval.FormattingEnabled = True
-        Me.AutoBackupInterval.Items.AddRange(New Object() {"Hourly", "12 Hour", "Daily", "Weekly"})
-        Me.AutoBackupInterval.Location = New System.Drawing.Point(80, 55)
-        Me.AutoBackupInterval.Name = "AutoBackupInterval"
-        Me.AutoBackupInterval.Size = New System.Drawing.Size(121, 21)
-        Me.AutoBackupInterval.TabIndex = 2
-        Me.ToolTip1.SetToolTip(Me.AutoBackupInterval, "The sim must run this long and then it will back up")
-        '
-        'AutoBackup
-        '
-        Me.AutoBackup.AutoSize = True
-        Me.AutoBackup.Location = New System.Drawing.Point(22, 24)
-        Me.AutoBackup.Name = "AutoBackup"
-        Me.AutoBackup.Size = New System.Drawing.Size(65, 17)
-        Me.AutoBackup.TabIndex = 1
-        Me.AutoBackup.Text = "Enabled"
-        Me.ToolTip1.SetToolTip(Me.AutoBackup, "Saves OAR files periodically")
-        Me.AutoBackup.UseVisualStyleBackColor = True
-        '
-        'WelcomeRegion
-        '
-        Me.WelcomeRegion.AutoSize = True
-        Me.WelcomeRegion.Location = New System.Drawing.Point(6, 22)
-        Me.WelcomeRegion.Name = "WelcomeRegion"
-        Me.WelcomeRegion.Size = New System.Drawing.Size(123, 13)
-        Me.WelcomeRegion.TabIndex = 32
-        Me.WelcomeRegion.Text = "Default region for visitors"
-        Me.ToolTip1.SetToolTip(Me.WelcomeRegion, "This region is where visitors first arrive")
-        '
-        'WelcomeBox1
-        '
-        Me.WelcomeBox1.AutoCompleteCustomSource.AddRange(New String() {"1 Hour", "4 Hour", "12 Hour", "Daily", "Weekly"})
-        Me.WelcomeBox1.FormattingEnabled = True
-        Me.WelcomeBox1.Items.AddRange(New Object() {"Hourly", "12 Hour", "Daily", "Weekly"})
-        Me.WelcomeBox1.Location = New System.Drawing.Point(4, 38)
-        Me.WelcomeBox1.Name = "WelcomeBox1"
-        Me.WelcomeBox1.Size = New System.Drawing.Size(148, 21)
-        Me.WelcomeBox1.TabIndex = 12
-        Me.ToolTip1.SetToolTip(Me.WelcomeBox1, "The first sim a visitor will arrive in")
-        '
-        'RegionHelp
-        '
-        Me.RegionHelp.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.RegionHelp.Location = New System.Drawing.Point(168, 14)
-        Me.RegionHelp.Name = "RegionHelp"
-        Me.RegionHelp.Size = New System.Drawing.Size(28, 27)
-        Me.RegionHelp.TabIndex = 1858
-        Me.RegionHelp.TabStop = False
-        Me.ToolTip1.SetToolTip(Me.RegionHelp, "Click for Help on Regions")
-        '
         'TOSButton
         '
-        Me.TOSButton.Location = New System.Drawing.Point(7, 130)
+        Me.TOSButton.Location = New System.Drawing.Point(4, 243)
         Me.TOSButton.Name = "TOSButton"
         Me.TOSButton.Size = New System.Drawing.Size(145, 23)
         Me.TOSButton.TabIndex = 19
@@ -254,214 +49,111 @@ Partial Class AdvancedForm
         Me.ToolTip1.SetToolTip(Me.TOSButton, "Click to set up your Terms of Service")
         Me.TOSButton.UseVisualStyleBackColor = True
         '
-        'Birds
-        '
-        Me.Birds.Location = New System.Drawing.Point(9, 160)
-        Me.Birds.Name = "Birds"
-        Me.Birds.Size = New System.Drawing.Size(145, 23)
-        Me.Birds.TabIndex = 20
-        Me.Birds.Text = "Bird Settings"
-        Me.ToolTip1.SetToolTip(Me.Birds, "Click to set up your Terms of Service")
-        Me.Birds.UseVisualStyleBackColor = True
-        '
         'TideButton
         '
-        Me.TideButton.Location = New System.Drawing.Point(6, 101)
+        Me.TideButton.Location = New System.Drawing.Point(4, 213)
         Me.TideButton.Name = "TideButton"
         Me.TideButton.Size = New System.Drawing.Size(145, 23)
         Me.TideButton.TabIndex = 18
         Me.TideButton.Text = "Tide Settings"
-        Me.ToolTip1.SetToolTip(Me.TideButton, "Click to set up your Terms of Service")
+        Me.ToolTip1.SetToolTip(Me.TideButton, "Click to set up  Tides")
         Me.TideButton.UseVisualStyleBackColor = True
         '
         'GloebitsButton
         '
-        Me.GloebitsButton.Location = New System.Drawing.Point(6, 19)
+        Me.GloebitsButton.Location = New System.Drawing.Point(8, 94)
         Me.GloebitsButton.Name = "GloebitsButton"
         Me.GloebitsButton.Size = New System.Drawing.Size(143, 23)
         Me.GloebitsButton.TabIndex = 15
         Me.GloebitsButton.Text = "Gloebits Currency Setup"
+        Me.ToolTip1.SetToolTip(Me.GloebitsButton, "Click to set up Currency")
         Me.GloebitsButton.UseVisualStyleBackColor = True
         '
         'ExpertButton1
         '
-        Me.ExpertButton1.Location = New System.Drawing.Point(9, 189)
+        Me.ExpertButton1.Location = New System.Drawing.Point(194, 38)
         Me.ExpertButton1.Name = "ExpertButton1"
         Me.ExpertButton1.Size = New System.Drawing.Size(143, 23)
         Me.ExpertButton1.TabIndex = 21
         Me.ExpertButton1.Text = "Expert Settings"
+        Me.ToolTip1.SetToolTip(Me.ExpertButton1, "Click to Set up Expert Settings")
         Me.ExpertButton1.UseVisualStyleBackColor = True
-        '
-        'MapBox
-        '
-        Me.MapBox.Controls.Add(Me.MapHelp)
-        Me.MapBox.Controls.Add(Me.MapPicture)
-        Me.MapBox.Controls.Add(Me.MapNone)
-        Me.MapBox.Controls.Add(Me.MapSimple)
-        Me.MapBox.Controls.Add(Me.MapBetter)
-        Me.MapBox.Controls.Add(Me.MapBest)
-        Me.MapBox.Controls.Add(Me.MapGood)
-        Me.MapBox.Location = New System.Drawing.Point(225, 13)
-        Me.MapBox.Name = "MapBox"
-        Me.MapBox.Size = New System.Drawing.Size(210, 267)
-        Me.MapBox.TabIndex = 1865
-        Me.MapBox.TabStop = False
-        Me.MapBox.Text = "Maps"
-        '
-        'MapPicture
-        '
-        Me.MapPicture.InitialImage = CType(resources.GetObject("MapPicture.InitialImage"), System.Drawing.Image)
-        Me.MapPicture.Location = New System.Drawing.Point(49, 154)
-        Me.MapPicture.Name = "MapPicture"
-        Me.MapPicture.Size = New System.Drawing.Size(100, 93)
-        Me.MapPicture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
-        Me.MapPicture.TabIndex = 138
-        Me.MapPicture.TabStop = False
-        '
-        'GroupBox5
-        '
-        Me.GroupBox5.Controls.Add(Me.PersonalityHelp)
-        Me.GroupBox5.Controls.Add(Me.Label15)
-        Me.GroupBox5.Controls.Add(Me.TimerInterval)
-        Me.GroupBox5.Controls.Add(Me.ChatSpeed)
-        Me.GroupBox5.Location = New System.Drawing.Point(12, 176)
-        Me.GroupBox5.Name = "GroupBox5"
-        Me.GroupBox5.Size = New System.Drawing.Size(182, 104)
-        Me.GroupBox5.TabIndex = 1863
-        Me.GroupBox5.TabStop = False
-        Me.GroupBox5.Text = "Personality"
-        '
-        'Label15
-        '
-        Me.Label15.AutoSize = True
-        Me.Label15.Location = New System.Drawing.Point(13, 51)
-        Me.Label15.Name = "Label15"
-        Me.Label15.Size = New System.Drawing.Size(116, 13)
-        Me.Label15.TabIndex = 25
-        Me.Label15.Text = "Wallpaper Time (0=Off)"
         '
         'VoiceButton1
         '
-        Me.VoiceButton1.Location = New System.Drawing.Point(6, 72)
+        Me.VoiceButton1.Location = New System.Drawing.Point(4, 272)
         Me.VoiceButton1.Name = "VoiceButton1"
         Me.VoiceButton1.Size = New System.Drawing.Size(143, 23)
         Me.VoiceButton1.TabIndex = 17
         Me.VoiceButton1.Text = "Voice Setup"
+        Me.ToolTip1.SetToolTip(Me.VoiceButton1, "Click to Set up Vivox Voice")
         Me.VoiceButton1.UseVisualStyleBackColor = True
-        '
-        'GroupBox3
-        '
-        Me.GroupBox3.Controls.Add(Me.AutoBackupHelp)
-        Me.GroupBox3.Controls.Add(Me.Label6)
-        Me.GroupBox3.Controls.Add(Me.BackupFolder)
-        Me.GroupBox3.Controls.Add(Me.Label9)
-        Me.GroupBox3.Controls.Add(Me.AutoBackupKeepFilesForDays)
-        Me.GroupBox3.Controls.Add(Me.Label8)
-        Me.GroupBox3.Controls.Add(Me.AutoBackupInterval)
-        Me.GroupBox3.Controls.Add(Me.AutoBackup)
-        Me.GroupBox3.Location = New System.Drawing.Point(12, 12)
-        Me.GroupBox3.Name = "GroupBox3"
-        Me.GroupBox3.Size = New System.Drawing.Size(207, 158)
-        Me.GroupBox3.TabIndex = 1862
-        Me.GroupBox3.TabStop = False
-        Me.GroupBox3.Text = "Auto Backup"
-        '
-        'Label6
-        '
-        Me.Label6.AutoSize = True
-        Me.Label6.Location = New System.Drawing.Point(6, 110)
-        Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(83, 13)
-        Me.Label6.TabIndex = 16
-        Me.Label6.Text = "Save To Folder:"
-        '
-        'BackupFolder
-        '
-        Me.BackupFolder.Location = New System.Drawing.Point(9, 133)
-        Me.BackupFolder.Name = "BackupFolder"
-        Me.BackupFolder.Size = New System.Drawing.Size(163, 20)
-        Me.BackupFolder.TabIndex = 4
-        '
-        'Label9
-        '
-        Me.Label9.AutoSize = True
-        Me.Label9.Location = New System.Drawing.Point(6, 88)
-        Me.Label9.Name = "Label9"
-        Me.Label9.Size = New System.Drawing.Size(74, 13)
-        Me.Label9.TabIndex = 14
-        Me.Label9.Text = "Keep for Days"
-        '
-        'Label8
-        '
-        Me.Label8.AutoSize = True
-        Me.Label8.Location = New System.Drawing.Point(6, 58)
-        Me.Label8.Name = "Label8"
-        Me.Label8.Size = New System.Drawing.Size(45, 13)
-        Me.Label8.TabIndex = 12
-        Me.Label8.Text = "Interval:"
-        '
-        'GroupBox2
-        '
-        Me.GroupBox2.Controls.Add(Me.RegionHelp)
-        Me.GroupBox2.Controls.Add(Me.WelcomeRegion)
-        Me.GroupBox2.Controls.Add(Me.WelcomeBox1)
-        Me.GroupBox2.Controls.Add(Me.Label3)
-        Me.GroupBox2.Controls.Add(Me.AddRegion)
-        Me.GroupBox2.Controls.Add(Me.RegionButton)
-        Me.GroupBox2.Location = New System.Drawing.Point(458, 13)
-        Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Size = New System.Drawing.Size(202, 131)
-        Me.GroupBox2.TabIndex = 1861
-        Me.GroupBox2.TabStop = False
-        Me.GroupBox2.Text = "Regions"
-        '
-        'Label3
-        '
-        Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(15, 31)
-        Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(0, 13)
-        Me.Label3.TabIndex = 28
-        '
-        'AddRegion
-        '
-        Me.AddRegion.Location = New System.Drawing.Point(4, 65)
-        Me.AddRegion.Name = "AddRegion"
-        Me.AddRegion.Size = New System.Drawing.Size(148, 23)
-        Me.AddRegion.TabIndex = 13
-        Me.AddRegion.Text = "Add Region"
-        Me.AddRegion.UseVisualStyleBackColor = True
-        '
-        'RegionButton
-        '
-        Me.RegionButton.Location = New System.Drawing.Point(4, 94)
-        Me.RegionButton.Name = "RegionButton"
-        Me.RegionButton.Size = New System.Drawing.Size(148, 23)
-        Me.RegionButton.TabIndex = 14
-        Me.RegionButton.Text = "Configure All Regions"
-        Me.RegionButton.UseVisualStyleBackColor = True
         '
         'Shoutcast
         '
-        Me.Shoutcast.Location = New System.Drawing.Point(6, 45)
+        Me.Shoutcast.Location = New System.Drawing.Point(6, 123)
         Me.Shoutcast.Name = "Shoutcast"
         Me.Shoutcast.Size = New System.Drawing.Size(143, 23)
         Me.Shoutcast.TabIndex = 16
         Me.Shoutcast.Text = "Icecast Setup"
+        Me.ToolTip1.SetToolTip(Me.Shoutcast, "Click to Setup Shoutcast/Icecast")
         Me.Shoutcast.UseVisualStyleBackColor = True
+        '
+        'MapsButton
+        '
+        Me.MapsButton.Location = New System.Drawing.Point(6, 152)
+        Me.MapsButton.Name = "MapsButton"
+        Me.MapsButton.Size = New System.Drawing.Size(143, 23)
+        Me.MapsButton.TabIndex = 22
+        Me.MapsButton.Text = "Maps Setup"
+        Me.ToolTip1.SetToolTip(Me.MapsButton, "Click to set up NMaps")
+        Me.MapsButton.UseVisualStyleBackColor = True
+        '
+        'Birds
+        '
+        Me.Birds.Location = New System.Drawing.Point(6, 65)
+        Me.Birds.Name = "Birds"
+        Me.Birds.Size = New System.Drawing.Size(145, 23)
+        Me.Birds.TabIndex = 20
+        Me.Birds.Text = "Bird Settings"
+        Me.ToolTip1.SetToolTip(Me.Birds, "Click to set up the Birds module")
+        Me.Birds.UseVisualStyleBackColor = True
+        '
+        'BackupButton1
+        '
+        Me.BackupButton1.Location = New System.Drawing.Point(8, 36)
+        Me.BackupButton1.Name = "BackupButton1"
+        Me.BackupButton1.Size = New System.Drawing.Size(145, 23)
+        Me.BackupButton1.TabIndex = 23
+        Me.BackupButton1.Text = "Backups"
+        Me.ToolTip1.SetToolTip(Me.BackupButton1, "Click to set up your Backup Schedule")
+        Me.BackupButton1.UseVisualStyleBackColor = True
+        '
+        'RegionsButton1
+        '
+        Me.RegionsButton1.Location = New System.Drawing.Point(4, 181)
+        Me.RegionsButton1.Name = "RegionsButton1"
+        Me.RegionsButton1.Size = New System.Drawing.Size(145, 23)
+        Me.RegionsButton1.TabIndex = 24
+        Me.RegionsButton1.Text = "Region Settings"
+        Me.ToolTip1.SetToolTip(Me.RegionsButton1, "Click to set up  Regions")
+        Me.RegionsButton1.UseVisualStyleBackColor = True
         '
         'GroupBox8
         '
+        Me.GroupBox8.Controls.Add(Me.RegionsButton1)
+        Me.GroupBox8.Controls.Add(Me.BackupButton1)
+        Me.GroupBox8.Controls.Add(Me.MapsButton)
         Me.GroupBox8.Controls.Add(Me.TideButton)
         Me.GroupBox8.Controls.Add(Me.Birds)
         Me.GroupBox8.Controls.Add(Me.GloebitsButton)
+        Me.GroupBox8.Controls.Add(Me.VoiceButton1)
         Me.GroupBox8.Controls.Add(Me.ExpertButton1)
         Me.GroupBox8.Controls.Add(Me.TOSButton)
-        Me.GroupBox8.Controls.Add(Me.VoiceButton1)
         Me.GroupBox8.Controls.Add(Me.Shoutcast)
-        Me.GroupBox8.Location = New System.Drawing.Point(458, 150)
+        Me.GroupBox8.Location = New System.Drawing.Point(23, 13)
         Me.GroupBox8.Name = "GroupBox8"
-        Me.GroupBox8.Size = New System.Drawing.Size(165, 223)
+        Me.GroupBox8.Size = New System.Drawing.Size(358, 341)
         Me.GroupBox8.TabIndex = 1870
         Me.GroupBox8.TabStop = False
         Me.GroupBox8.Text = "Global Settings"
@@ -472,30 +164,13 @@ Partial Class AdvancedForm
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.AutoSize = True
         Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-        Me.ClientSize = New System.Drawing.Size(705, 394)
+        Me.ClientSize = New System.Drawing.Size(399, 394)
         Me.Controls.Add(Me.GroupBox8)
-        Me.Controls.Add(Me.MapBox)
-        Me.Controls.Add(Me.GroupBox5)
-        Me.Controls.Add(Me.GroupBox3)
-        Me.Controls.Add(Me.GroupBox2)
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "AdvancedForm"
         Me.Text = "Common Settings"
-        CType(Me.MapHelp, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.PersonalityHelp, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.AutoBackupHelp, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.RegionHelp, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.MapBox.ResumeLayout(False)
-        Me.MapBox.PerformLayout()
-        CType(Me.MapPicture, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.GroupBox5.ResumeLayout(False)
-        Me.GroupBox5.PerformLayout()
-        Me.GroupBox3.ResumeLayout(False)
-        Me.GroupBox3.PerformLayout()
-        Me.GroupBox2.ResumeLayout(False)
-        Me.GroupBox2.PerformLayout()
         Me.GroupBox8.ResumeLayout(False)
         Me.ResumeLayout(False)
 
@@ -503,39 +178,13 @@ Partial Class AdvancedForm
     Friend WithEvents ToolTip1 As ToolTip
     Friend WithEvents GloebitsButton As Button
     Friend WithEvents ExpertButton1 As Button
-    Friend WithEvents MapBox As GroupBox
-    Friend WithEvents MapHelp As PictureBox
-    Friend WithEvents MapPicture As PictureBox
-    Friend WithEvents MapNone As RadioButton
-    Friend WithEvents MapSimple As RadioButton
-    Friend WithEvents MapBetter As RadioButton
-    Friend WithEvents MapBest As RadioButton
-    Friend WithEvents MapGood As RadioButton
-    Friend WithEvents GroupBox5 As GroupBox
-    Friend WithEvents PersonalityHelp As PictureBox
-    Friend WithEvents Label15 As Label
-    Friend WithEvents TimerInterval As TextBox
-    Friend WithEvents ChatSpeed As ComboBox
     Friend WithEvents VoiceButton1 As Button
-    Friend WithEvents GroupBox3 As GroupBox
-    Friend WithEvents AutoBackupHelp As PictureBox
-    Friend WithEvents Label6 As Label
-    Friend WithEvents BackupFolder As TextBox
-    Friend WithEvents Label9 As Label
-    Friend WithEvents AutoBackupKeepFilesForDays As TextBox
-    Friend WithEvents Label8 As Label
-    Friend WithEvents AutoBackupInterval As ComboBox
-    Friend WithEvents AutoBackup As CheckBox
-    Friend WithEvents GroupBox2 As GroupBox
-    Friend WithEvents WelcomeRegion As Label
-    Friend WithEvents WelcomeBox1 As ComboBox
-    Friend WithEvents Label3 As Label
-    Friend WithEvents AddRegion As Button
-    Friend WithEvents RegionButton As Button
-    Friend WithEvents RegionHelp As PictureBox
     Friend WithEvents Shoutcast As Button
     Friend WithEvents TOSButton As Button
     Friend WithEvents GroupBox8 As GroupBox
-    Friend WithEvents Birds As Button
     Friend WithEvents TideButton As Button
+    Friend WithEvents MapsButton As Button
+    Friend WithEvents BackupButton1 As Button
+    Friend WithEvents Birds As Button
+    Friend WithEvents RegionsButton1 As Button
 End Class
