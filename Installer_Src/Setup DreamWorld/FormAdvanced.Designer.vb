@@ -38,10 +38,10 @@ Partial Class AdvancedForm
         Me.PortsButton1 = New System.Windows.Forms.Button()
         Me.PhysicsButton1 = New System.Windows.Forms.Button()
         Me.DatabaseButton2 = New System.Windows.Forms.Button()
-        Me.GroupBox8 = New System.Windows.Forms.GroupBox()
         Me.Button3 = New System.Windows.Forms.Button()
         Me.Button2 = New System.Windows.Forms.Button()
         Me.DNSButton = New System.Windows.Forms.Button()
+        Me.GroupBox8 = New System.Windows.Forms.GroupBox()
         Me.GroupBox8.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -157,6 +157,7 @@ Partial Class AdvancedForm
         '
         'PhysicsButton1
         '
+        Me.PhysicsButton1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.PhysicsButton1.Location = New System.Drawing.Point(189, 123)
         Me.PhysicsButton1.Name = "PhysicsButton1"
         Me.PhysicsButton1.Size = New System.Drawing.Size(145, 23)
@@ -174,31 +175,6 @@ Partial Class AdvancedForm
         Me.DatabaseButton2.Text = "Database"
         Me.ToolTip1.SetToolTip(Me.DatabaseButton2, "Click to set up the Database")
         Me.DatabaseButton2.UseVisualStyleBackColor = True
-        '
-        'GroupBox8
-        '
-        Me.GroupBox8.Controls.Add(Me.Button3)
-        Me.GroupBox8.Controls.Add(Me.PhysicsButton1)
-        Me.GroupBox8.Controls.Add(Me.VoiceButton1)
-        Me.GroupBox8.Controls.Add(Me.Button2)
-        Me.GroupBox8.Controls.Add(Me.DNSButton)
-        Me.GroupBox8.Controls.Add(Me.DatabaseButton2)
-        Me.GroupBox8.Controls.Add(Me.PortsButton1)
-        Me.GroupBox8.Controls.Add(Me.DivaButton1)
-        Me.GroupBox8.Controls.Add(Me.RegionsButton1)
-        Me.GroupBox8.Controls.Add(Me.BackupButton1)
-        Me.GroupBox8.Controls.Add(Me.MapsButton)
-        Me.GroupBox8.Controls.Add(Me.TideButton)
-        Me.GroupBox8.Controls.Add(Me.Birds)
-        Me.GroupBox8.Controls.Add(Me.GloebitsButton)
-        Me.GroupBox8.Controls.Add(Me.TOSButton)
-        Me.GroupBox8.Controls.Add(Me.Shoutcast)
-        Me.GroupBox8.Location = New System.Drawing.Point(23, 13)
-        Me.GroupBox8.Name = "GroupBox8"
-        Me.GroupBox8.Size = New System.Drawing.Size(353, 280)
-        Me.GroupBox8.TabIndex = 1870
-        Me.GroupBox8.TabStop = False
-        Me.GroupBox8.Text = "Global Settings"
         '
         'Button3
         '
@@ -229,6 +205,31 @@ Partial Class AdvancedForm
         Me.DNSButton.Text = "Hypergrid "
         Me.ToolTip1.SetToolTip(Me.DNSButton, "Click to Enable Hypergrid or change DNS Name")
         Me.DNSButton.UseVisualStyleBackColor = True
+        '
+        'GroupBox8
+        '
+        Me.GroupBox8.Controls.Add(Me.Button3)
+        Me.GroupBox8.Controls.Add(Me.PhysicsButton1)
+        Me.GroupBox8.Controls.Add(Me.VoiceButton1)
+        Me.GroupBox8.Controls.Add(Me.Button2)
+        Me.GroupBox8.Controls.Add(Me.DNSButton)
+        Me.GroupBox8.Controls.Add(Me.DatabaseButton2)
+        Me.GroupBox8.Controls.Add(Me.PortsButton1)
+        Me.GroupBox8.Controls.Add(Me.DivaButton1)
+        Me.GroupBox8.Controls.Add(Me.RegionsButton1)
+        Me.GroupBox8.Controls.Add(Me.BackupButton1)
+        Me.GroupBox8.Controls.Add(Me.MapsButton)
+        Me.GroupBox8.Controls.Add(Me.TideButton)
+        Me.GroupBox8.Controls.Add(Me.Birds)
+        Me.GroupBox8.Controls.Add(Me.GloebitsButton)
+        Me.GroupBox8.Controls.Add(Me.TOSButton)
+        Me.GroupBox8.Controls.Add(Me.Shoutcast)
+        Me.GroupBox8.Location = New System.Drawing.Point(23, 13)
+        Me.GroupBox8.Name = "GroupBox8"
+        Me.GroupBox8.Size = New System.Drawing.Size(353, 280)
+        Me.GroupBox8.TabIndex = 1870
+        Me.GroupBox8.TabStop = False
+        Me.GroupBox8.Text = "Global Settings"
         '
         'AdvancedForm
         '

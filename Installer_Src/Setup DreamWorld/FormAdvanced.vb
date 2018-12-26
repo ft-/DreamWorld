@@ -17,9 +17,11 @@ Public Class AdvancedForm
     Dim FormDiva As New FormDiva
     Dim FormPhysics As New FormPhysics
     Dim FormDatabase As New FormDatabase
-    Dim DNSName As New DNSName
+    Dim DNSName As New FormDNSName
     Dim FormRestart As New FormRestart
     Dim FormPorts As New FormPorts
+    Dim FormPermissions As New FormPermissions
+    Dim FormDNSName As New FormDNSName
 
 #End Region
 
@@ -197,6 +199,7 @@ Public Class AdvancedForm
 
     Private Sub DatabaseButton2_Click(sender As Object, e As EventArgs) Handles DatabaseButton2.Click
 
+
         ' Set the new form's desktop location so it appears below and
         ' to the right of the current form.
         FormDatabase.Close()
@@ -210,10 +213,10 @@ Public Class AdvancedForm
 
         ' Set the new form's desktop location so it appears below and
         ' to the right of the current form.
-        FormDatabase.Close()
-        FormDatabase = New FormDatabase
-        FormDatabase.Activate()
-        FormDatabase.Visible = True
+        FormDNSName.Close()
+        FormDNSName = New FormDNSName
+        FormDNSName.Activate()
+        FormDNSName.Visible = True
 
     End Sub
 
@@ -225,6 +228,17 @@ Public Class AdvancedForm
         FormRestart = New FormRestart
         FormRestart.Activate()
         FormRestart.Visible = True
+
+    End Sub
+
+    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
+
+        ' Set the new form's desktop location so it appears below and
+        ' to the right of the current form.
+        FormPermissions.Close()
+        FormPermissions = New FormPermissions
+        FormPermissions.Activate()
+        FormPermissions.Visible = True
 
     End Sub
 

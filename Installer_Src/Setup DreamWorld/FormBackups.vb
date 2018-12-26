@@ -65,6 +65,8 @@
         BackupFolder.Text = Form1.MySetting.BackupFolder
         AutoBackup.Checked = Form1.MySetting.AutoBackup
 
+        SetScreen()
+
     End Sub
 
 #Region "Changes"

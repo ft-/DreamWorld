@@ -50,6 +50,8 @@ Partial Class FormRegion
         Me.TPCheckBox1 = New System.Windows.Forms.CheckBox()
         Me.MapHelp = New System.Windows.Forms.PictureBox()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.GodHelp = New System.Windows.Forms.PictureBox()
+        Me.PictureBox2 = New System.Windows.Forms.PictureBox()
         Me.Advanced = New System.Windows.Forms.GroupBox()
         Me.Label6 = New System.Windows.Forms.Label()
         Me.Label4 = New System.Windows.Forms.Label()
@@ -74,7 +76,6 @@ Partial Class FormRegion
         Me.GroupBox4 = New System.Windows.Forms.GroupBox()
         Me.Gods_Use_Default = New System.Windows.Forms.CheckBox()
         Me.AllowGods = New System.Windows.Forms.CheckBox()
-        Me.GodHelp = New System.Windows.Forms.PictureBox()
         Me.ManagerGod = New System.Windows.Forms.CheckBox()
         Me.RegionGod = New System.Windows.Forms.CheckBox()
         Me.MapBox = New System.Windows.Forms.GroupBox()
@@ -93,20 +94,19 @@ Partial Class FormRegion
         Me.PhysicsubODE = New System.Windows.Forms.RadioButton()
         Me.PhysicsBullet = New System.Windows.Forms.RadioButton()
         Me.PhysicsODE = New System.Windows.Forms.RadioButton()
-        Me.PictureBox2 = New System.Windows.Forms.PictureBox()
         CType(Me.MapHelp, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.GodHelp, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Advanced.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox6.SuspendLayout()
         Me.GroupBox7.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
-        CType(Me.GodHelp, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.MapBox.SuspendLayout()
         CType(Me.MapPicture, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox1.SuspendLayout()
-        CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'RegionPort
@@ -355,6 +355,26 @@ Partial Class FormRegion
         Me.PictureBox1.TabIndex = 1886
         Me.PictureBox1.TabStop = False
         Me.ToolTip1.SetToolTip(Me.PictureBox1, "Enables the setting if the global  Settings is checked")
+        '
+        'GodHelp
+        '
+        Me.GodHelp.Image = Global.Outworldz.My.Resources.Resources.about
+        Me.GodHelp.Location = New System.Drawing.Point(102, 19)
+        Me.GodHelp.Name = "GodHelp"
+        Me.GodHelp.Size = New System.Drawing.Size(30, 34)
+        Me.GodHelp.TabIndex = 1857
+        Me.GodHelp.TabStop = False
+        Me.ToolTip1.SetToolTip(Me.GodHelp, "Allow or disallow  Gods in the one region")
+        '
+        'PictureBox2
+        '
+        Me.PictureBox2.Image = Global.Outworldz.My.Resources.Resources.about
+        Me.PictureBox2.Location = New System.Drawing.Point(116, 19)
+        Me.PictureBox2.Name = "PictureBox2"
+        Me.PictureBox2.Size = New System.Drawing.Size(30, 34)
+        Me.PictureBox2.TabIndex = 1860
+        Me.PictureBox2.TabStop = False
+        Me.ToolTip1.SetToolTip(Me.PictureBox2, "You can choose a differentphysics for this one region ")
         '
         'Advanced
         '
@@ -626,16 +646,6 @@ Partial Class FormRegion
         Me.AllowGods.Text = "Allow Gods in this region"
         Me.AllowGods.UseVisualStyleBackColor = True
         '
-        'GodHelp
-        '
-        Me.GodHelp.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.GodHelp.Location = New System.Drawing.Point(102, 19)
-        Me.GodHelp.Name = "GodHelp"
-        Me.GodHelp.Size = New System.Drawing.Size(30, 34)
-        Me.GodHelp.TabIndex = 1857
-        Me.GodHelp.TabStop = False
-        Me.ToolTip1.SetToolTip(Me.GodHelp, "Allow or disallow  Gods in the one region")
-        '
         'ManagerGod
         '
         Me.ManagerGod.AutoSize = True
@@ -840,16 +850,6 @@ Partial Class FormRegion
         Me.PhysicsODE.Text = "Open Dynamics Engine"
         Me.PhysicsODE.UseVisualStyleBackColor = True
         '
-        'PictureBox2
-        '
-        Me.PictureBox2.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.PictureBox2.Location = New System.Drawing.Point(116, 19)
-        Me.PictureBox2.Name = "PictureBox2"
-        Me.PictureBox2.Size = New System.Drawing.Size(30, 34)
-        Me.PictureBox2.TabIndex = 1860
-        Me.PictureBox2.TabStop = False
-        Me.ToolTip1.SetToolTip(Me.PictureBox2, "You can choose a differentphysics for this one region ")
-        '
         'FormRegion
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
@@ -870,6 +870,8 @@ Partial Class FormRegion
         Me.Text = "Region"
         CType(Me.MapHelp, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.GodHelp, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Advanced.ResumeLayout(False)
         Me.Advanced.PerformLayout()
         Me.GroupBox2.ResumeLayout(False)
@@ -882,13 +884,11 @@ Partial Class FormRegion
         Me.GroupBox3.PerformLayout()
         Me.GroupBox4.ResumeLayout(False)
         Me.GroupBox4.PerformLayout()
-        CType(Me.GodHelp, System.ComponentModel.ISupportInitialize).EndInit()
         Me.MapBox.ResumeLayout(False)
         Me.MapBox.PerformLayout()
         CType(Me.MapPicture, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
-        CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 

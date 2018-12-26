@@ -102,12 +102,12 @@ Partial Class FormPhysics
         '
         'FormPhysics
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.ClientSize = New System.Drawing.Size(239, 160)
         Me.Controls.Add(Me.GroupBox1)
         Me.Name = "FormPhysics"
-        Me.Text = "FormPhysics"
+        Me.Text = "Physics"
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
         Me.ResumeLayout(False)

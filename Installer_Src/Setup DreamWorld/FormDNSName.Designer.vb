@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
-Partial Class DNSName
+Partial Class FormDNSName
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
@@ -23,7 +23,7 @@ Partial Class DNSName
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(DNSName))
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FormDNSName))
         Me.DNSNameBox = New System.Windows.Forms.TextBox()
         Me.SaveButton = New System.Windows.Forms.Button()
         Me.NextNameButton = New System.Windows.Forms.Button()
@@ -141,7 +141,7 @@ Partial Class DNSName
         Me.Label1.TabIndex = 1866
         Me.Label1.Text = "DynDns password"
         '
-        'DNSName
+        'FormDNSName
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
@@ -159,7 +159,7 @@ Partial Class DNSName
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
-        Me.Name = "DNSName"
+        Me.Name = "FormDNSName"
         Me.Text = "DNS Name"
         Me.ToolTip1.SetToolTip(Me, "Get Help")
         CType(Me.PictureBox4, System.ComponentModel.ISupportInitialize).EndInit()

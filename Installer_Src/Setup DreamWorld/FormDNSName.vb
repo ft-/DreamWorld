@@ -1,7 +1,7 @@
 ﻿Imports System.Text.RegularExpressions
 Imports System.Net
 
-Public Class DNSName
+Public Class FormDNSName
 
     Dim initted As Boolean = False
 

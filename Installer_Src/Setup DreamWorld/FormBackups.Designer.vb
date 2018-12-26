@@ -92,7 +92,8 @@ Partial Class FormBackups
         Me.BackupFolder.Name = "BackupFolder"
         Me.BackupFolder.Size = New System.Drawing.Size(163, 20)
         Me.BackupFolder.TabIndex = 4
-        Me.ToolTip1.SetToolTip(Me.BackupFolder, "Normally set to ""AutoBackup"" folder in OutworldzFiles.  Click to change the folder")
+        Me.ToolTip1.SetToolTip(Me.BackupFolder, "Normally set to ""AutoBackup"" folder in OutworldzFiles.  Click to change the folde" &
+        "r")
         '
         'Label9
         '
@@ -144,8 +145,8 @@ Partial Class FormBackups
         '
         'FormBackups
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.ClientSize = New System.Drawing.Size(278, 218)
         Me.Controls.Add(Me.GroupBox3)
         Me.Name = "FormBackups"

@@ -41,6 +41,8 @@
 
         RobustDBPassword.UseSystemPasswordChar = True
 
+        SetScreen()
+
         initted = True
 
     End Sub

@@ -26,8 +26,19 @@
         AllowGods.Checked = Form1.MySetting.Allow_grid_gods
         RegionGod.Checked = Form1.MySetting.Region_owner_is_god
         ManagerGod.Checked = Form1.MySetting.Region_manager_is_god
-
+        Clouds.Checked = Form1.MySetting.Clouds
         LSLCheckbox.Checked = Form1.MySetting.LSL_HTTP()
+
+        Dim var As Double = Form1.MySetting.Density
+
+        If var = -1 Then var = 5
+
+        Dim v = CInt(var * 10)
+        If (var > 9) Then var = 9
+        If (var < 0) Then var = 0
+        DomainUpDown1.SelectedIndex = v
+
+        SetScreen()
 
         initted = True
 
@@ -99,7 +110,9 @@
             Dim var As Double = CType(DomainUpDown1.SelectedIndex, Double)
 
             If var = -1 Then var = 0.5
-            var = (10 - var) / 10
+            var = var / 10
+            If (var > 1) Then var = 1
+            If (var < 0) Then var = 0
             Debug.Print(var.ToString)
 
             Form1.MySetting.Density = var

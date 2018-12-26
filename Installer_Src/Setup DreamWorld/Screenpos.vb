@@ -30,19 +30,10 @@ Public Class ScreenPos
 
     Public Sub SaveXY(ValueX As Integer, ValueY As Integer)
 
-        Dim screenWidth As Integer = Screen.PrimaryScreen.Bounds.Width
-        Dim screenHeight As Integer = Screen.PrimaryScreen.Bounds.Height
 
         Dim ValueXOld = CType(Data("Data")(Name + "_X"), Integer)
         Dim ValueYOld = CType(Data("Data")(Name + "_Y"), Integer)
 
-        If ValueX > screenWidth - 50 Then
-            ValueX = ValueXOld
-        End If
-
-        If ValueY > screenHeight - 50 Then
-            ValueY = ValueYOld
-        End If
 
         If ValueX < 0 Then
             ValueX = 0
@@ -68,11 +59,11 @@ Public Class ScreenPos
 
         Dim ValueXOld = CType(Data("Data")(Name + "_X"), Integer)
         Dim ValueYOld = CType(Data("Data")(Name + "_Y"), Integer)
-        If ValueXOld = 0 Then
-            ValueXOld = 100
+        If ValueXOld <= 0 Then
+            ValueXOld = 0
         End If
-        If ValueYOld = 0 Then
-            ValueYOld = 100
+        If ValueYOld <= 0 Then
+            ValueYOld = 0
         End If
         Dim r As New List(Of Integer)
         r.Add(ValueXOld)
