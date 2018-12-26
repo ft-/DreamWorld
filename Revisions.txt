@@ -1,5 +1,5 @@
 V2.57 
-Setting page changed to discrete Form Buttons
+Setting page changed to discrete Form Buttons - no more Expert screen
 Wifi pages has two themes: B&W or W&B with choosable theme image
 
 V2.56

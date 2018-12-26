@@ -1,9 +1,8 @@
 ﻿
 
 Public Class AdvancedForm
+
 #Region "Declarations"
-
-
 
     Dim Tos As New TosForm
     Dim Maps As New FormMaps
@@ -12,12 +11,17 @@ Public Class AdvancedForm
     Dim Voice As New FormVoice
     Dim Bird As New BirdForm
     Dim Tide As New Tides
-    Dim Expert As New Expert
+    
     Dim Backups As New FormBackups
     Dim FormRegions As New FormRegions
+    Dim FormDiva As New FormDiva
+    Dim FormPhysics As New FormPhysics
+    Dim FormDatabase As New FormDatabase
+    Dim DNSName As New DNSName
+    Dim FormRestart As New FormRestart
+    Dim FormPorts As New FormPorts
 
 #End Region
-
 
 #Region "ScreenSize"
     Public ScreenPosition As ScreenPos
@@ -39,18 +43,36 @@ Public Class AdvancedForm
 
 #End Region
 
-#Region "Clicks"
+    Private Sub Advanced_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 
+        SetScreen()
+
+    End Sub
+
+#Region "Help"
+
+    Private Sub PictureBox1_Click_1(sender As Object, e As EventArgs)
+
+        Dim webAddress As String = Form1.gDomain + "/Outworldz_installer/technical.htm#Regions"
+        Process.Start(webAddress)
+
+    End Sub
+
+
+#End Region
+
+#Region "Clicks"
 
     Private Sub VoiceButton1_Click(sender As Object, e As EventArgs) Handles VoiceButton1.Click
 
+        ' Set the new form's desktop location so it appears below and
+        ' to the right of the current form.
         Voice.Close()
         Voice = New FormVoice
         Voice.Activate()
         Voice.Visible = True
 
     End Sub
-
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles GloebitsButton.Click
 
@@ -60,21 +82,14 @@ Public Class AdvancedForm
         Gloebits = New Gloebits
         Gloebits.Activate()
         Gloebits.Visible = True
-    End Sub
-
-#End Region
-
-    Private Sub ExpertButton1_Click(sender As Object, e As EventArgs) Handles ExpertButton1.Click
-
-        Expert.Close()
-        Expert = New Expert
-        Expert.Visible = True
-        Expert.Activate()
 
     End Sub
+
 
     Private Sub Shoutcast_Click(sender As Object, e As EventArgs) Handles Shoutcast.Click
 
+        ' Set the new form's desktop location so it appears below and
+        ' to the right of the current form.
         Icecast.Close()
         Icecast = New Icecast
         Icecast.Visible = True
@@ -84,6 +99,8 @@ Public Class AdvancedForm
 
     Private Sub TOSButton_Click(sender As Object, e As EventArgs) Handles TOSButton.Click
 
+        ' Set the new form's desktop location so it appears below and
+        ' to the right of the current form.
         Tos.Close()
         Tos = New TosForm
         Tos.Activate()
@@ -93,6 +110,8 @@ Public Class AdvancedForm
 
     Private Sub Birds_Click(sender As Object, e As EventArgs) Handles Birds.Click
 
+        ' Set the new form's desktop location so it appears below and
+        ' to the right of the current form.
         Bird.Close()
         Bird = New BirdForm
         Bird.Activate()
@@ -102,6 +121,8 @@ Public Class AdvancedForm
 
     Private Sub TideButton_Click(sender As Object, e As EventArgs) Handles TideButton.Click
 
+        ' Set the new form's desktop location so it appears below and
+        ' to the right of the current form.
         Tide.Close()
         Tide = New Tides
         Tide.Activate()
@@ -140,17 +161,71 @@ Public Class AdvancedForm
         FormRegions.Activate()
         FormRegions.Visible = True
 
+    End Sub
+    Private Sub DivaButton1_Click(sender As Object, e As EventArgs) Handles DivaButton1.Click
+
+        ' Set the new form's desktop location so it appears below and
+        ' to the right of the current form.
+        FormDiva.Close()
+        FormDiva = New FormDiva
+        FormDiva.Activate()
+        FormDiva.Visible = True
 
     End Sub
 
+    Private Sub Button1_Click_1(sender As Object, e As EventArgs) Handles PortsButton1.Click
 
+        ' Set the new form's desktop location so it appears below and
+        ' to the right of the current form.
+        FormPorts.Close()
+        FormPorts = New FormPorts
+        FormPorts.Activate()
+        FormPorts.Visible = True
 
-#Region "Help"
+    End Sub
 
+    Private Sub PhysicsButton1_Click(sender As Object, e As EventArgs) Handles PhysicsButton1.Click
 
-    Private Sub PictureBox1_Click_1(sender As Object, e As EventArgs)
-        Dim webAddress As String = Form1.gDomain + "/Outworldz_installer/technical.htm#Regions"
-        Process.Start(webAddress)
+        ' Set the new form's desktop location so it appears below and
+        ' to the right of the current form.
+        FormPhysics.Close()
+        FormPhysics = New FormPhysics
+        FormPhysics.Activate()
+        FormPhysics.Visible = True
+
+    End Sub
+
+    Private Sub DatabaseButton2_Click(sender As Object, e As EventArgs) Handles DatabaseButton2.Click
+
+        ' Set the new form's desktop location so it appears below and
+        ' to the right of the current form.
+        FormDatabase.Close()
+        FormDatabase = New FormDatabase
+        FormDatabase.Activate()
+        FormDatabase.Visible = True
+
+    End Sub
+
+    Private Sub DNSButton_Click(sender As Object, e As EventArgs) Handles DNSButton.Click
+
+        ' Set the new form's desktop location so it appears below and
+        ' to the right of the current form.
+        FormDatabase.Close()
+        FormDatabase = New FormDatabase
+        FormDatabase.Activate()
+        FormDatabase.Visible = True
+
+    End Sub
+
+    Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
+
+        ' Set the new form's desktop location so it appears below and
+        ' to the right of the current form.
+        FormRestart.Close()
+        FormRestart = New FormRestart
+        FormRestart.Activate()
+        FormRestart.Visible = True
+
     End Sub
 
 

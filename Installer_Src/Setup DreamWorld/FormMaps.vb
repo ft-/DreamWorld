@@ -34,46 +34,54 @@ Public Class FormMaps
             MapPicture.Image = My.Resources.Best
         End If
 
+        SetScreen()
 
     End Sub
 
     Private Sub MapHelp_Click(sender As Object, e As EventArgs) Handles MapHelp.Click
-
 
         Dim webAddress As String = Form1.gDomain + "/Outworldz_installer/technical.htm#Maps"
         Process.Start(webAddress)
 
     End Sub
 
-    Private Sub MapNone_CheckedChanged(sender As Object, e As EventArgs)
+    Private Sub MapNone_CheckedChanged(sender As Object, e As EventArgs) Handles MapNone.CheckedChanged
+
         Form1.MySetting.MapType = "None"
         Form1.MySetting.SaveSettings()
         MapPicture.Image = My.Resources.blankbox
 
     End Sub
     Private Sub MapSimple_CheckedChanged(sender As Object, e As EventArgs) Handles MapSimple.CheckedChanged
+
         Form1.MySetting.MapType = "Simple"
         Form1.MySetting.SaveSettings()
         MapPicture.Image = My.Resources.Simple
+
     End Sub
 
     Private Sub MapGood_CheckedChanged(sender As Object, e As EventArgs) Handles MapGood.CheckedChanged
+
         Form1.MySetting.MapType = "Good"
         Form1.MySetting.SaveSettings()
         MapPicture.Image = My.Resources.Good
+
     End Sub
 
     Private Sub MapBetter_CheckedChanged(sender As Object, e As EventArgs) Handles MapBetter.CheckedChanged
+
         Form1.MySetting.MapType = "Better"
         Form1.MySetting.SaveSettings()
         MapPicture.Image = My.Resources.Better
+
     End Sub
 
     Private Sub MapBest_CheckedChanged(sender As Object, e As EventArgs) Handles MapBest.CheckedChanged
+
         Form1.MySetting.MapType = "Best"
         Form1.MySetting.SaveSettings()
         MapPicture.Image = My.Resources.Best
-    End Sub
 
+    End Sub
 
 End Class

@@ -181,10 +181,34 @@
     <Compile Include="FormBackups.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="FormDatabase.Designer.vb">
+      <DependentUpon>FormDatabase.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormDatabase.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormDiva.Designer.vb">
+      <DependentUpon>FormDiva.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormDiva.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormDNSName.Designer.vb">
+      <DependentUpon>FormDNSName.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormDNSName.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FormMaps.Designer.vb">
       <DependentUpon>FormMaps.vb</DependentUpon>
     </Compile>
     <Compile Include="FormMaps.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormPermissions.Designer.vb">
+      <DependentUpon>FormPermissions.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormPermissions.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FormPersonality.Designer.vb">
@@ -193,10 +217,34 @@
     <Compile Include="FormPersonality.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="FormPhysics.Designer.vb">
+      <DependentUpon>FormPhysics.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormPhysics.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormPorts.Designer.vb">
+      <DependentUpon>FormPorts.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormPorts.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormPublicity.Designer.vb">
+      <DependentUpon>FormPublicity.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormPublicity.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FormRegions.Designer.vb">
       <DependentUpon>FormRegions.vb</DependentUpon>
     </Compile>
     <Compile Include="FormRegions.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormRestart.Designer.vb">
+      <DependentUpon>FormRestart.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormRestart.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="GlobalSuppressions.vb" />
@@ -214,18 +262,6 @@
       <DependentUpon>Chooser.vb</DependentUpon>
     </Compile>
     <Compile Include="Chooser.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="DNSName.Designer.vb">
-      <DependentUpon>DNSName.vb</DependentUpon>
-    </Compile>
-    <Compile Include="DNSName.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Expert.Designer.vb">
-      <DependentUpon>Expert.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Expert.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FormRegion.Designer.vb">
@@ -306,14 +342,38 @@
     <EmbeddedResource Include="FormBackups.resx">
       <DependentUpon>FormBackups.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FormDatabase.resx">
+      <DependentUpon>FormDatabase.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormDiva.resx">
+      <DependentUpon>FormDiva.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormDNSName.resx">
+      <DependentUpon>FormDNSName.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormMaps.resx">
       <DependentUpon>FormMaps.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormPermissions.resx">
+      <DependentUpon>FormPermissions.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormPersonality.resx">
       <DependentUpon>FormPersonality.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FormPhysics.resx">
+      <DependentUpon>FormPhysics.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormPorts.resx">
+      <DependentUpon>FormPorts.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormPublicity.resx">
+      <DependentUpon>FormPublicity.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormRegions.resx">
       <DependentUpon>FormRegions.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormRestart.resx">
+      <DependentUpon>FormRestart.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Setup.resx">
       <DependentUpon>Setup.vb</DependentUpon>
@@ -321,13 +381,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Chooser.resx">
       <DependentUpon>Chooser.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DNSName.resx">
-      <DependentUpon>DNSName.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Expert.resx">
-      <DependentUpon>Expert.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="FormAdvanced.resx">

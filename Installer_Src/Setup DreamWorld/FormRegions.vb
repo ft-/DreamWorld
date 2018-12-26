@@ -27,6 +27,8 @@
         LoadWelcomeBox()
         LoadRegionBox()
 
+        SetScreen()
+
     End Sub
 
     Private Sub Form1_Closed(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Closed

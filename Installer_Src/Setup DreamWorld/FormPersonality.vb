@@ -36,6 +36,7 @@
 
         TimerInterval.Text = Str(Form1.MySetting.TimerInterval)
 
+        SetScreen()
 
     End Sub
 
