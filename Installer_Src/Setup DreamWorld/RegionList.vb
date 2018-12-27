@@ -394,7 +394,7 @@ Public Class RegionList
     End Sub
 
     Private Sub StopRegionNum(num As Integer)
-        If Form1.ConsoleCommand(RegionClass.ProcessID(num), "{ENTER}q{ENTER}") Then
+        If Form1.ConsoleCommand(RegionClass.ProcessID(num), "q{ENTER}q{ENTER}") Then
             RegionClass.Booted(num) = False
             RegionClass.WarmingUp(num) = False
             RegionClass.ShuttingDown(num) = True
