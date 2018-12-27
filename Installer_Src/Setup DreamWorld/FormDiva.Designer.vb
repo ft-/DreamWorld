@@ -34,7 +34,6 @@ Partial Class FormDiva
         Me.Label11 = New System.Windows.Forms.Label()
         Me.Label10 = New System.Windows.Forms.Label()
         Me.AdminPassword = New System.Windows.Forms.TextBox()
-        Me.ViewerSplash = New System.Windows.Forms.PictureBox()
         Me.GroupBox6 = New System.Windows.Forms.GroupBox()
         Me.SmtpPort = New System.Windows.Forms.TextBox()
         Me.Label24 = New System.Windows.Forms.Label()
@@ -50,12 +49,12 @@ Partial Class FormDiva
         Me.Label19 = New System.Windows.Forms.Label()
         Me.SplashPage = New System.Windows.Forms.TextBox()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
-        Me.BlackRadioButton = New System.Windows.Forms.RadioButton()
-        Me.WhiteRadioButton = New System.Windows.Forms.RadioButton()
         Me.Label1 = New System.Windows.Forms.Label()
+        Me.WhiteRadioButton = New System.Windows.Forms.RadioButton()
+        Me.BlackRadioButton = New System.Windows.Forms.RadioButton()
+        Me.CustomButton1 = New System.Windows.Forms.RadioButton()
         Me.Web.SuspendLayout()
         CType(Me.WiFi, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.ViewerSplash, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox6.SuspendLayout()
         CType(Me.FriendlyName, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox1.SuspendLayout()
@@ -175,15 +174,6 @@ Partial Class FormDiva
         Me.AdminPassword.TabIndex = 29
         Me.AdminPassword.UseSystemPasswordChar = True
         '
-        'ViewerSplash
-        '
-        Me.ViewerSplash.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.ViewerSplash.Location = New System.Drawing.Point(246, 106)
-        Me.ViewerSplash.Name = "ViewerSplash"
-        Me.ViewerSplash.Size = New System.Drawing.Size(30, 34)
-        Me.ViewerSplash.TabIndex = 1871
-        Me.ViewerSplash.TabStop = False
-        '
         'GroupBox6
         '
         Me.GroupBox6.Controls.Add(Me.SmtpPort)
@@ -269,7 +259,7 @@ Partial Class FormDiva
         'FriendlyName
         '
         Me.FriendlyName.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.FriendlyName.Location = New System.Drawing.Point(246, 47)
+        Me.FriendlyName.Location = New System.Drawing.Point(239, 16)
         Me.FriendlyName.Name = "FriendlyName"
         Me.FriendlyName.Size = New System.Drawing.Size(30, 34)
         Me.FriendlyName.TabIndex = 1870
@@ -278,7 +268,7 @@ Partial Class FormDiva
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(18, 62)
+        Me.Label2.Location = New System.Drawing.Point(18, 84)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(126, 13)
         Me.Label2.TabIndex = 1867
@@ -286,9 +276,9 @@ Partial Class FormDiva
         '
         'GridName
         '
-        Me.GridName.Location = New System.Drawing.Point(21, 80)
+        Me.GridName.Location = New System.Drawing.Point(21, 100)
         Me.GridName.Name = "GridName"
-        Me.GridName.Size = New System.Drawing.Size(255, 20)
+        Me.GridName.Size = New System.Drawing.Size(219, 20)
         Me.GridName.TabIndex = 1869
         '
         'Label19
@@ -304,16 +294,16 @@ Partial Class FormDiva
         '
         Me.SplashPage.Location = New System.Drawing.Point(18, 139)
         Me.SplashPage.Name = "SplashPage"
-        Me.SplashPage.Size = New System.Drawing.Size(258, 20)
+        Me.SplashPage.Size = New System.Drawing.Size(222, 20)
         Me.SplashPage.TabIndex = 1866
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.CustomButton1)
         Me.GroupBox1.Controls.Add(Me.Label1)
         Me.GroupBox1.Controls.Add(Me.WhiteRadioButton)
         Me.GroupBox1.Controls.Add(Me.BlackRadioButton)
         Me.GroupBox1.Controls.Add(Me.GridName)
-        Me.GroupBox1.Controls.Add(Me.ViewerSplash)
         Me.GroupBox1.Controls.Add(Me.Label19)
         Me.GroupBox1.Controls.Add(Me.SplashPage)
         Me.GroupBox1.Controls.Add(Me.FriendlyName)
@@ -325,28 +315,6 @@ Partial Class FormDiva
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Splash Screen"
         '
-        'BlackRadioButton
-        '
-        Me.BlackRadioButton.AutoSize = True
-        Me.BlackRadioButton.Location = New System.Drawing.Point(84, 30)
-        Me.BlackRadioButton.Name = "BlackRadioButton"
-        Me.BlackRadioButton.Size = New System.Drawing.Size(52, 17)
-        Me.BlackRadioButton.TabIndex = 1872
-        Me.BlackRadioButton.TabStop = True
-        Me.BlackRadioButton.Text = "Black"
-        Me.BlackRadioButton.UseVisualStyleBackColor = True
-        '
-        'WhiteRadioButton
-        '
-        Me.WhiteRadioButton.AutoSize = True
-        Me.WhiteRadioButton.Location = New System.Drawing.Point(142, 30)
-        Me.WhiteRadioButton.Name = "WhiteRadioButton"
-        Me.WhiteRadioButton.Size = New System.Drawing.Size(53, 17)
-        Me.WhiteRadioButton.TabIndex = 1873
-        Me.WhiteRadioButton.TabStop = True
-        Me.WhiteRadioButton.Text = "White"
-        Me.WhiteRadioButton.UseVisualStyleBackColor = True
-        '
         'Label1
         '
         Me.Label1.AutoSize = True
@@ -355,6 +323,39 @@ Partial Class FormDiva
         Me.Label1.Size = New System.Drawing.Size(43, 13)
         Me.Label1.TabIndex = 1859
         Me.Label1.Text = "Theme:"
+        '
+        'WhiteRadioButton
+        '
+        Me.WhiteRadioButton.AutoSize = True
+        Me.WhiteRadioButton.Location = New System.Drawing.Point(84, 18)
+        Me.WhiteRadioButton.Name = "WhiteRadioButton"
+        Me.WhiteRadioButton.Size = New System.Drawing.Size(53, 17)
+        Me.WhiteRadioButton.TabIndex = 1873
+        Me.WhiteRadioButton.TabStop = True
+        Me.WhiteRadioButton.Text = "White"
+        Me.WhiteRadioButton.UseVisualStyleBackColor = True
+        '
+        'BlackRadioButton
+        '
+        Me.BlackRadioButton.AutoSize = True
+        Me.BlackRadioButton.Location = New System.Drawing.Point(84, 37)
+        Me.BlackRadioButton.Name = "BlackRadioButton"
+        Me.BlackRadioButton.Size = New System.Drawing.Size(52, 17)
+        Me.BlackRadioButton.TabIndex = 1872
+        Me.BlackRadioButton.TabStop = True
+        Me.BlackRadioButton.Text = "Black"
+        Me.BlackRadioButton.UseVisualStyleBackColor = True
+        '
+        'CustomButton1
+        '
+        Me.CustomButton1.AutoSize = True
+        Me.CustomButton1.Location = New System.Drawing.Point(84, 58)
+        Me.CustomButton1.Name = "CustomButton1"
+        Me.CustomButton1.Size = New System.Drawing.Size(60, 17)
+        Me.CustomButton1.TabIndex = 1874
+        Me.CustomButton1.TabStop = True
+        Me.CustomButton1.Text = "Custom"
+        Me.CustomButton1.UseVisualStyleBackColor = True
         '
         'FormDiva
         '
@@ -369,7 +370,6 @@ Partial Class FormDiva
         Me.Web.ResumeLayout(False)
         Me.Web.PerformLayout()
         CType(Me.WiFi, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.ViewerSplash, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox6.ResumeLayout(False)
         Me.GroupBox6.PerformLayout()
         CType(Me.FriendlyName, System.ComponentModel.ISupportInitialize).EndInit()
@@ -400,7 +400,6 @@ Partial Class FormDiva
     Friend WithEvents Label18 As Label
     Friend WithEvents Label14 As Label
     Friend WithEvents GmailUsername As TextBox
-    Friend WithEvents ViewerSplash As PictureBox
     Friend WithEvents FriendlyName As PictureBox
     Friend WithEvents Label2 As Label
     Friend WithEvents GridName As TextBox
@@ -410,4 +409,5 @@ Partial Class FormDiva
     Friend WithEvents WhiteRadioButton As RadioButton
     Friend WithEvents BlackRadioButton As RadioButton
     Friend WithEvents Label1 As Label
+    Friend WithEvents CustomButton1 As RadioButton
 End Class

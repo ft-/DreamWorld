@@ -38,8 +38,9 @@ Public Class FormDiva
         SplashPage.Text = Form1.MySetting.SplashPage
         GridName.Text = Form1.MySetting.SimName
 
-        WhiteRadioButton.Checked = CType(Form1.MySetting.Theme, Boolean)
-        BlackRadioButton.Checked = Not WhiteRadioButton.Checked
+        If Form1.MySetting.Theme = "White" Then WhiteRadioButton.Checked = True
+        If Form1.MySetting.Theme = "Black" Then BlackRadioButton.Checked = True
+        If Form1.MySetting.Theme = "Custom" Then CustomButton1.Checked = True
 
         'Gmail
         'passwords are asterisks
@@ -216,7 +217,7 @@ Public Class FormDiva
 
     End Sub
 
-    Private Sub ViewerSplash_Click(sender As Object, e As EventArgs) Handles ViewerSplash.Click
+    Private Sub ViewerSplash_Click(sender As Object, e As EventArgs)
         '!!!
         Dim webAddress As String = Form1.gDomain + "/Outworldz_installer/technical.htm#ViewerSplash"
         Process.Start(webAddress)
@@ -226,9 +227,17 @@ Public Class FormDiva
     Private Sub BlackRadioButton_CheckedChanged(sender As Object, e As EventArgs) Handles BlackRadioButton.CheckedChanged
 
         If BlackRadioButton.Checked Then
-            Form1.MySetting.Theme = BlackRadioButton.Checked.ToString
+            Form1.MySetting.Theme = "Black"
             Form1.MySetting.SaveSettings()
             WhiteRadioButton.Checked = False
+            CustomButton1.Checked = False
+
+            System.IO.Directory.Delete(Form1.gPath + "WifiPages", True)
+            My.Computer.FileSystem.CopyDirectory(Form1.gPath + "WifiPages-Black", Form1.gPath + "WifiPages", True)
+
+            System.IO.Directory.Delete(Form1.gPath + "bin\WifiPages", True)
+            My.Computer.FileSystem.CopyDirectory(Form1.gPath + "bin\WifiPages-Black", Form1.gPath + "\bin\WifiPages", True)
+
         End If
 
 
@@ -237,12 +246,40 @@ Public Class FormDiva
     Private Sub WhiteRadioButton_CheckedChanged(sender As Object, e As EventArgs) Handles WhiteRadioButton.CheckedChanged
 
         If WhiteRadioButton.Checked Then
-            Form1.MySetting.Theme = WhiteRadioButton.Checked.ToString
+            Form1.MySetting.Theme = "White"
             Form1.MySetting.SaveSettings()
             BlackRadioButton.Checked = False
+            CustomButton1.Checked = False
+
+            System.IO.Directory.Delete(Form1.gPath + "WifiPages", True)
+            My.Computer.FileSystem.CopyDirectory(Form1.gPath + "WifiPages-White", Form1.gPath + "WifiPages", True)
+
+            System.IO.Directory.Delete(Form1.gPath + "\bin\WifiPages", True)
+            My.Computer.FileSystem.CopyDirectory(Form1.gPath + "\bin\WifiPages-White", Form1.gPath + "\bin\WifiPages", True)
+
+
         End If
 
 
+
+    End Sub
+
+    Private Sub RadioButton1_CheckedChanged(sender As Object, e As EventArgs) Handles CustomButton1.CheckedChanged
+
+        If CustomButton1.Checked Then
+            Form1.MySetting.Theme = "Custom"
+            Form1.MySetting.SaveSettings()
+
+            BlackRadioButton.Checked = False
+            WhiteRadioButton.Checked = False
+
+            System.IO.Directory.Delete(Form1.gPath + "WifiPages", True)
+            My.Computer.FileSystem.CopyDirectory(Form1.gPath + "WifiPages-Custom", Form1.gPath + "WifiPages", True)
+
+            System.IO.Directory.Delete(Form1.gPath + "\bin\WifiPages", True)
+            My.Computer.FileSystem.CopyDirectory(Form1.gPath + "\bin\WifiPages-Custom", Form1.gPath + "\bin\WifiPages", True)
+
+        End If
 
     End Sub
 
