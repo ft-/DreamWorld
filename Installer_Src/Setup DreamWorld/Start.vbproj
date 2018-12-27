@@ -169,20 +169,122 @@
     <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BirdForm.Designer.vb">
-      <DependentUpon>BirdForm.vb</DependentUpon>
+    <Compile Include="FormBackups.Designer.vb">
+      <DependentUpon>FormBackups.vb</DependentUpon>
     </Compile>
-    <Compile Include="BirdForm.vb">
+    <Compile Include="FormBackups.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormBird.Designer.vb">
+      <DependentUpon>FormBird.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormBird.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormDatabase.Designer.vb">
+      <DependentUpon>FormDatabase.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormDatabase.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormDiva.Designer.vb">
+      <DependentUpon>FormDiva.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormDiva.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormDNSName.Designer.vb">
+      <DependentUpon>FormDNSName.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormDNSName.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormGloebits.Designer.vb">
+      <DependentUpon>FormGloebits.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormGloebits.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormIceCast.Designer.vb">
+      <DependentUpon>FormIceCast.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormIceCast.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormMaps.Designer.vb">
+      <DependentUpon>FormMaps.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormMaps.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormPermissions.Designer.vb">
+      <DependentUpon>FormPermissions.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormPermissions.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormPersonality.Designer.vb">
+      <DependentUpon>FormPersonality.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormPersonality.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormPhysics.Designer.vb">
+      <DependentUpon>FormPhysics.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormPhysics.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormPorts.Designer.vb">
+      <DependentUpon>FormPorts.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormPorts.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormPublicity.Designer.vb">
+      <DependentUpon>FormPublicity.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormPublicity.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormRegionList.Designer.vb">
+      <DependentUpon>FormRegionList.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormRegionList.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormRegions.Designer.vb">
+      <DependentUpon>FormRegions.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormRegions.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormRestart.Designer.vb">
+      <DependentUpon>FormRestart.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormRestart.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormSetup.Designer.vb">
+      <DependentUpon>FormSetup.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormSetup.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormTide.Designer.vb">
+      <DependentUpon>FormTide.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormTide.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormTOS.designer.vb">
+      <DependentUpon>FormTOS.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormTOS.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="GlobalSuppressions.vb" />
     <Compile Include="Screenpos.vb" />
-    <Compile Include="Setup.Designer.vb">
-      <DependentUpon>Setup.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Setup.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="ApplicationEvents.vb" />
     <Compile Include="ClassUPnP.vb" />
     <Compile Include="ClassWebServer.vb" />
@@ -190,18 +292,6 @@
       <DependentUpon>Chooser.vb</DependentUpon>
     </Compile>
     <Compile Include="Chooser.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="DNSName.Designer.vb">
-      <DependentUpon>DNSName.vb</DependentUpon>
-    </Compile>
-    <Compile Include="DNSName.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Expert.Designer.vb">
-      <DependentUpon>Expert.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Expert.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FormRegion.Designer.vb">
@@ -217,12 +307,6 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Genpassword.vb" />
-    <Compile Include="Gloebits.Designer.vb">
-      <DependentUpon>Gloebits.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Gloebits.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -241,12 +325,6 @@
     <Compile Include="My Project\Uploadinfo.vb" />
     <Compile Include="MySettings.vb" />
     <Compile Include="Mysql.vb" />
-    <Compile Include="RegionList.Designer.vb">
-      <DependentUpon>RegionList.vb</DependentUpon>
-    </Compile>
-    <Compile Include="RegionList.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="RegionMaker.vb" />
     <Compile Include="Settings.vb" />
     <Compile Include="FormVoice.Designer.vb">
@@ -255,43 +333,63 @@
     <Compile Include="FormVoice.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="IceCast.Designer.vb">
-      <DependentUpon>IceCast.vb</DependentUpon>
-    </Compile>
-    <Compile Include="IceCast.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="TideForm.Designer.vb">
-      <DependentUpon>TideForm.vb</DependentUpon>
-    </Compile>
-    <Compile Include="TideForm.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="TosForm.designer.vb">
-      <DependentUpon>TosForm.vb</DependentUpon>
-    </Compile>
-    <Compile Include="TosForm.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="UploadImage.vb" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="BirdForm.resx">
-      <DependentUpon>BirdForm.vb</DependentUpon>
+    <EmbeddedResource Include="FormBackups.resx">
+      <DependentUpon>FormBackups.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Setup.resx">
-      <DependentUpon>Setup.vb</DependentUpon>
+    <EmbeddedResource Include="FormBird.resx">
+      <DependentUpon>FormBird.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormDatabase.resx">
+      <DependentUpon>FormDatabase.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormDiva.resx">
+      <DependentUpon>FormDiva.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormDNSName.resx">
+      <DependentUpon>FormDNSName.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormGloebits.resx">
+      <DependentUpon>FormGloebits.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormIceCast.resx">
+      <DependentUpon>FormIceCast.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormMaps.resx">
+      <DependentUpon>FormMaps.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormPermissions.resx">
+      <DependentUpon>FormPermissions.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormPersonality.resx">
+      <DependentUpon>FormPersonality.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormPhysics.resx">
+      <DependentUpon>FormPhysics.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormPorts.resx">
+      <DependentUpon>FormPorts.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormPublicity.resx">
+      <DependentUpon>FormPublicity.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormRegionList.resx">
+      <DependentUpon>FormRegionList.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormRegions.resx">
+      <DependentUpon>FormRegions.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormRestart.resx">
+      <DependentUpon>FormRestart.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormSetup.resx">
+      <DependentUpon>FormSetup.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Chooser.resx">
       <DependentUpon>Chooser.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DNSName.resx">
-      <DependentUpon>DNSName.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Expert.resx">
-      <DependentUpon>Expert.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="FormAdvanced.resx">
@@ -301,8 +399,11 @@
     <EmbeddedResource Include="FormRegion.resx">
       <DependentUpon>FormRegion.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Gloebits.resx">
-      <DependentUpon>Gloebits.vb</DependentUpon>
+    <EmbeddedResource Include="FormTide.resx">
+      <DependentUpon>FormTide.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormTOS.resx">
+      <DependentUpon>FormTOS.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
@@ -312,18 +413,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormVoice.resx">
       <DependentUpon>FormVoice.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="RegionList.resx">
-      <DependentUpon>RegionList.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="IceCast.resx">
-      <DependentUpon>IceCast.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TideForm.resx">
-      <DependentUpon>TideForm.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TosForm.resx">
-      <DependentUpon>TosForm.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -483,6 +572,7 @@
     <Content Include="cubes_blue.ico" />
     <None Include="Resources\cubes_blue.ico" />
     <None Include="Resources\map-1-9510-10006-objects.jpg" />
+    <None Include="Resources\folder.png" />
     <Content Include="Resources\wp_habitat.gif" />
     <Content Include="Resources\wp_Inside_in_shadows.gif" />
     <Content Include="Resources\wp_Mooferd.gif" />
