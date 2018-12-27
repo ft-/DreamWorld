@@ -1,6 +1,7 @@
 ﻿
 Imports System.IO
 Imports System.ComponentModel
+Imports System.Text.RegularExpressions
 
 Public Class FormRegion
 
@@ -416,10 +417,10 @@ Public Class FormRegion
             'Dim yesNo As MsgBoxResult = MsgBox("New regions can be combined with other regions in an existing DOS box (Yes), Or run in their own Dos Box (No)", vbYesNo, "Combine Regions?")
             'If yesNo = vbYes Then
             NewGroup = RegionChosen()
-                If NewGroup = "" Then
-                    Form1.PrintFast("Aborted")
-                    Return
-                End If
+            If NewGroup = "" Then
+                Form1.PrintFast("Aborted")
+                Return
+            End If
             'End If
 
             If Not Directory.Exists(Filepath) Or Filepath = "" Then
@@ -444,7 +445,7 @@ Public Class FormRegion
         Dim Map As String = ""
         If MapNone.Checked Then
             Map = ""
-        ElseIf MapNone.checked Then
+        ElseIf MapNone.Checked Then
             Map = "None"
         ElseIf MapSimple.Checked Then
             Map = "Simple"
@@ -586,7 +587,6 @@ Public Class FormRegion
             RegionList.LoadMyListView()
         End If
 
-
         Me.Close()
 
     End Sub
@@ -602,13 +602,16 @@ Public Class FormRegion
             If Not FilenameIsOK(RegionName.Text) Then
                 MsgBox("Region name can't use special characters such as < > : """" / \ | ? *", vbInformation, "Info")
                 Return
-        End If
-        changed = True
+            End If
+            changed = True
         End If
 
     End Sub
 
     Private Sub Coordy_TextChanged(sender As Object, e As EventArgs) Handles CoordY.TextChanged
+
+        Dim digitsOnly As Regex = New Regex("[^\d]")
+        CoordY.Text = digitsOnly.Replace(CoordY.Text, "")
         If initted And CoordY.Text <> "" Then
             Try
                 CoordY.Text = CoordY.Text
@@ -620,6 +623,9 @@ Public Class FormRegion
     End Sub
 
     Private Sub CoordX_TextChanged(sender As Object, e As EventArgs) Handles CoordX.TextChanged
+
+        Dim digitsOnly As Regex = New Regex("[^\d]")
+        CoordX.Text = digitsOnly.Replace(CoordX.Text, "")
 
         If initted And CoordX.Text <> "" Then
             Try
@@ -694,6 +700,9 @@ Public Class FormRegion
 
     Private Sub SizeX_Changed(sender As Object, e As EventArgs) Handles SizeX.LostFocus
 
+        Dim digitsOnly As Regex = New Regex("[^\d]")
+        SizeX.Text = digitsOnly.Replace(SizeX.Text, "")
+
         If initted And SizeX.Text <> "" Then
             If Not IsPowerOf256(CType(SizeX.Text, Integer)) Then
                 MsgBox("Must be a multiple of 256: 256,512,768,1024,1280,1536,1792,2048,2304,2560, ..", vbInformation, "Size X,Y")
@@ -718,6 +727,7 @@ Public Class FormRegion
 #Region "MoreExtras"
 
     Private Sub Maps_Use_Default_changed(sender As Object, e As EventArgs) Handles Maps_Use_Default.CheckedChanged
+
         If Maps_Use_Default.Checked Then
             Form1.Log("Region " + Name + " Map is set to Default")
             MapNone.Checked = False
@@ -740,46 +750,57 @@ Public Class FormRegion
         End If
 
         If initted Then changed = True
+
     End Sub
 
     Private Sub MapNone_CheckedChanged(sender As Object, e As EventArgs) Handles MapNone.CheckedChanged
+
         If MapNone.Checked Then
             Form1.Log("Region " + Name + " Map is set to None")
             MapPicture.Image = My.Resources.blankbox
         End If
         If initted Then changed = True
+
     End Sub
 
     Private Sub MapSimple_CheckedChanged(sender As Object, e As EventArgs) Handles MapSimple.CheckedChanged
+
         If MapSimple.Checked Then
             Form1.Log("Region " + Name + " Map is set to Simple")
             MapPicture.Image = My.Resources.Simple
         End If
         If initted Then changed = True
+
     End Sub
 
     Private Sub MapGood_CheckedChanged(sender As Object, e As EventArgs) Handles MapGood.CheckedChanged
+
         If MapGood.Checked Then
             Form1.Log("Region " + Name + " Map is set to Good")
             MapPicture.Image = My.Resources.Good
         End If
         If initted Then changed = True
+
     End Sub
 
     Private Sub MapBetter_CheckedChanged(sender As Object, e As EventArgs) Handles MapBetter.CheckedChanged
+
         If MapBetter.Checked Then
             Form1.Log("Region " + Name + " Map is set to Better")
             MapPicture.Image = My.Resources.Better
         End If
         If initted Then changed = True
+
     End Sub
 
     Private Sub MapBest_CheckedChanged(sender As Object, e As EventArgs) Handles MapBest.CheckedChanged
+
         If MapBest.Checked Then
             Form1.Log("Region " + Name + " Map is set to Best")
             MapPicture.Image = My.Resources.Best
         End If
         If initted Then changed = True
+
     End Sub
 
 
@@ -795,48 +816,64 @@ Public Class FormRegion
         End If
 
         If initted Then changed = True
+
     End Sub
 
     Private Sub PhysicsNone_CheckedChanged(sender As Object, e As EventArgs) Handles PhysicsNone.CheckedChanged
+
         If PhysicsNone.Checked Then
             Form1.Log("Region " + Name + " Physics is set to None")
         End If
         If initted Then changed = True
+
     End Sub
 
     Private Sub PhysicsODE_CheckedChanged(sender As Object, e As EventArgs) Handles PhysicsODE.CheckedChanged
+
         If PhysicsODE.Checked Then
             Form1.Log("Region " + Name + " Physics is set to ODE")
         End If
         If initted Then changed = True
+
     End Sub
 
     Private Sub PhysicsBullet_CheckedChanged(sender As Object, e As EventArgs) Handles PhysicsBullet.CheckedChanged
+
         If PhysicsBullet.Checked Then
             Form1.Log("Region " + Name + " Physics is set to Bullet")
         End If
         If initted Then changed = True
+
     End Sub
 
     Private Sub PhysicsSeparate_CheckedChanged(sender As Object, e As EventArgs) Handles PhysicsSeparate.CheckedChanged
+
         If PhysicsSeparate.Checked Then
             Form1.Log("Region " + Name + " Physics is set to Bullet in a Thread")
         End If
         If initted Then changed = True
+
     End Sub
 
     Private Sub PhysicsubODE_CheckedChanged(sender As Object, e As EventArgs) Handles PhysicsubODE.CheckedChanged
+
         If PhysicsubODE.Checked Then
             Form1.Log("Region " + Name + " Physics is set to Ubit's ODE")
         End If
         If initted Then changed = True
+
     End Sub
 
     Private Sub EnableMaxPrims_text(sender As Object, e As EventArgs) Handles MaxPrims.TextChanged
+
+        Dim digitsOnly As Regex = New Regex("[^\d]")
+        MaxPrims.Text = digitsOnly.Replace(MaxPrims.Text, "")
         If initted Then changed = True
+
     End Sub
 
     Private Sub Gods_Use_Default_CheckedChanged(sender As Object, e As EventArgs) Handles Gods_Use_Default.CheckedChanged
+
         If Gods_Use_Default.Checked Then
             AllowGods.Checked = False
             RegionGod.Checked = False
@@ -845,6 +882,7 @@ Public Class FormRegion
         End If
 
         If initted Then changed = True
+
     End Sub
 
     Private Sub AllowGods_CheckedChanged(sender As Object, e As EventArgs) Handles AllowGods.CheckedChanged
@@ -857,6 +895,7 @@ Public Class FormRegion
         End If
 
         If initted Then changed = True
+
     End Sub
 
     Private Sub RegionGod_CheckedChanged(sender As Object, e As EventArgs) Handles RegionGod.CheckedChanged
@@ -869,6 +908,7 @@ Public Class FormRegion
         End If
 
         If initted Then changed = True
+
     End Sub
 
     Private Sub ManagerGod_CheckedChanged(sender As Object, e As EventArgs) Handles ManagerGod.CheckedChanged
@@ -880,53 +920,104 @@ Public Class FormRegion
             Form1.Log("Region " + Name + " is not allowing Manager Gods")
         End If
         If initted Then changed = True
+
     End Sub
 
     Private Sub PublishDefault_CheckedChanged(sender As Object, e As EventArgs) Handles PublishDefault.CheckedChanged
+
         If PublishDefault.Checked Then
             Form1.Log("Region " + Name + " is set to default for snapshots")
         End If
         If initted Then changed = True
+
     End Sub
 
     Private Sub NoPublish_CheckedChanged(sender As Object, e As EventArgs) Handles NoPublish.CheckedChanged
+
         If NoPublish.Checked Then
             Form1.Log("Region " + Name + " is not set to publish snapshots")
         End If
         If initted Then changed = True
+
     End Sub
 
     Private Sub Publish_CheckedChanged(sender As Object, e As EventArgs) Handles Publish.CheckedChanged
+
         If Publish.Checked Then
             Form1.Log("Region " + Name + " is publishing snapshots")
         Else
             Form1.Log("Region " + Name + " is not publishing snapshots")
         End If
         If initted Then changed = True
+
     End Sub
 
     Private Sub BirdsCheckBox_CheckedChanged(sender As Object, e As EventArgs) Handles BirdsCheckBox.CheckedChanged
+
         If BirdsCheckBox.Checked Then
             Form1.Log("Region " + Name + " has birds enabled")
         End If
         If initted Then changed = True
+
     End Sub
 
     Private Sub TidesCheckbox_CheckedChanged(sender As Object, e As EventArgs) Handles TidesCheckbox.CheckedChanged
+
         If TidesCheckbox.Checked Then
             Form1.Log("Region " + Name + " has tides enabled")
         End If
         If initted Then changed = True
+
     End Sub
 
     Private Sub TPCheckBox1_CheckedChanged(sender As Object, e As EventArgs) Handles TPCheckBox1.CheckedChanged
+
         If TPCheckBox1.Checked Then
             Form1.Log("Region " + Name + " has Teleport Board enabled")
         End If
         If initted Then changed = True
+
     End Sub
 
+    Private Sub SizeY_TextChanged(sender As Object, e As EventArgs) Handles SizeY.TextChanged
 
+        Dim digitsOnly As Regex = New Regex("[^\d]")
+        SizeY.Text = digitsOnly.Replace(SizeY.Text, "")
+        If initted Then changed = True
+
+    End Sub
+
+    Private Sub NonphysicalPrimMax_TextChanged(sender As Object, e As EventArgs) Handles NonphysicalPrimMax.TextChanged
+
+        Dim digitsOnly As Regex = New Regex("[^\d]")
+        NonphysicalPrimMax.Text = digitsOnly.Replace(NonphysicalPrimMax.Text, "")
+        If initted Then changed = True
+
+    End Sub
+
+    Private Sub SizeX_TextChanged(sender As Object, e As EventArgs) Handles SizeX.TextChanged
+
+        Dim digitsOnly As Regex = New Regex("[^\d]")
+        SizeX.Text = digitsOnly.Replace(SizeX.Text, "")
+        If initted Then changed = True
+
+    End Sub
+
+    Private Sub PhysicalPrimMax_TextChanged(sender As Object, e As EventArgs) Handles PhysicalPrimMax.TextChanged
+
+        Dim digitsOnly As Regex = New Regex("[^\d]")
+        PhysicalPrimMax.Text = digitsOnly.Replace(PhysicalPrimMax.Text, "")
+        If initted Then changed = True
+
+    End Sub
+
+    Private Sub MaxAgents_TextChanged(sender As Object, e As EventArgs) Handles MaxAgents.TextChanged
+
+        Dim digitsOnly As Regex = New Regex("[^\d]")
+        MaxAgents.Text = digitsOnly.Replace(MaxAgents.Text, "")
+        If initted Then changed = True
+
+    End Sub
 
 #End Region
 End Class

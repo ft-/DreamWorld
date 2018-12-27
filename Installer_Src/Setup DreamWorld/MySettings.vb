@@ -110,7 +110,7 @@ Public Class MySettings
             SC_PortBase() = 8080
             SC_PortBase1() = 8081
             SC_Password() = "A password"
-            SC_AdminPassword() = ""
+            SC_AdminPassword() = "Admin Password"
             SC_Show() = True
 
             SizeX() = My.Settings.SizeX
@@ -146,94 +146,79 @@ Public Class MySettings
         Catch ex As Exception
             Clouds() = False
             Density() = 0.5
-            SaveSettings()
         End Try
 
         Try
             Dim x = Allow_grid_gods()
         Catch ex As Exception
             Allow_grid_gods() = False
-            SaveSettings()
         End Try
 
         Try
             Dim x = GDPR()
         Catch ex As Exception
             GDPR() = False
-            SaveSettings()
         End Try
 
         Try
             Dim x = Suitcase()
         Catch ex As Exception
             Suitcase() = True
-            SaveSettings()
         End Try
 
         Try
             Dim x = Primlimits()
         Catch ex As Exception
             Primlimits() = False
-            SaveSettings()
         End Try
 
         Try
             Dim x = ShowToLocalUsers()
         Catch ex As Exception
             ShowToLocalUsers() = False
-            SaveSettings()
         End Try
 
         Try
             Dim x = ShowToForeignUsers()
         Catch ex As Exception
             ShowToForeignUsers() = False
-            SaveSettings()
         End Try
 
         Try
             Dim x = TOSEnabled()
         Catch ex As Exception
             TOSEnabled() = False
-            SaveSettings()
         End Try
 
         Try
             Dim x = StandAlone()
         Catch ex As Exception
             StandAlone() = False
-            SaveSettings()
         End Try
 
         Try
             Dim x = AutoRestartInterval()
         Catch ex As Exception
             AutoRestartInterval() = 0
-            SaveSettings()
         End Try
 
         Try
             Dim x = DataSnapshot()
         Catch ex As Exception
             DataSnapshot() = False
-            SaveSettings()
         End Try
 
         Try
             Dim x = LSL_HTTP()
         Catch ex As Exception
             LSL_HTTP() = False
-            SaveSettings()
         End Try
-
-
 
         '=============== Tides
         Try
             Dim x As Boolean = TideEnabled()
         Catch ex As Exception
             TideEnabled() = False
-            SaveSettings()
         End Try
 
         Try
@@ -241,7 +226,6 @@ Public Class MySettings
             If x = "" Then TideHighLevel() = "20"
         Catch ex As Exception
             TideHighLevel() = "20"
-            SaveSettings()
         End Try
 
         Try
@@ -249,14 +233,12 @@ Public Class MySettings
             If x = "" Then TideLowLevel() = "17"
         Catch ex As Exception
             TideLowLevel() = "17"
-            SaveSettings()
         End Try
 
         Try
             Dim x As Boolean = TideInfoDebug()
         Catch ex As Exception
             TideInfoDebug() = False
-            SaveSettings()
         End Try
 
         Try
@@ -264,14 +246,12 @@ Public Class MySettings
             If x = "" Then CycleTime() = "900"
         Catch ex As Exception
             CycleTime() = "900"
-            SaveSettings()
         End Try
 
         Try
             Dim x As Boolean = BroadcastTideInfo()
         Catch ex As Exception
             BroadcastTideInfo() = False
-            SaveSettings()
         End Try
 
         Try
@@ -279,7 +259,6 @@ Public Class MySettings
             If x = "" Then TideInfoChannel() = "5555"
         Catch ex As Exception
             TideInfoChannel() = "5555"
-            SaveSettings()
         End Try
 
         Try
@@ -287,24 +266,19 @@ Public Class MySettings
             If x = "" Then TideLevelChannel() = "5556"
         Catch ex As Exception
             TideLevelChannel() = "5556"
-            SaveSettings()
         End Try
-
-
 
         'Birds: this is the default and determines whether the module does anything
         Try
             Dim x = BirdsModuleStartup()
         Catch ex As Exception
             BirdsModuleStartup() = False
-            SaveSettings()
         End Try
 
         Try
             Dim x = BirdsEnabled()
         Catch ex As Exception
             BirdsEnabled() = False
-            SaveSettings()
         End Try
 
         'the number of birds to flock
@@ -313,7 +287,6 @@ Public Class MySettings
             If x = "" Then BirdsFlockSize() = "25"
         Catch ex As Exception
             BirdsFlockSize() = "25"
-            SaveSettings()
         End Try
 
         'which channel do we listen on for in world commands
@@ -322,7 +295,6 @@ Public Class MySettings
             If x = 0 Then BirdsChatChannel() = 118
         Catch ex As Exception
             BirdsChatChannel() = 118
-            SaveSettings()
         End Try
 
         'how far each bird can travel per update
@@ -331,7 +303,6 @@ Public Class MySettings
             If x = 0 Then BirdsMaxSpeed() = 1.0
         Catch ex As Exception
             BirdsMaxSpeed() = 1.0
-            SaveSettings()
         End Try
 
         'the maximum acceleration allowed to the current velocity of the bird
@@ -340,7 +311,6 @@ Public Class MySettings
             If x = 0 Then BirdsMaxForce() = 0.2
         Catch ex As Exception
             BirdsMaxForce() = 0.2
-            SaveSettings()
         End Try
 
         'max distance for other birds to be considered in the same flock as us
@@ -349,7 +319,6 @@ Public Class MySettings
             If x = 0 Then BirdsNeighbourDistance() = 25
         Catch ex As Exception
             BirdsNeighbourDistance() = 25
-            SaveSettings()
         End Try
 
         'how far away from other birds we would like to stay
@@ -358,7 +327,6 @@ Public Class MySettings
             If x = 0 Then BirdsDesiredSeparation() = 5
         Catch ex As Exception
             BirdsDesiredSeparation() = 5
-            SaveSettings()
         End Try
 
         'how close to the edges of things can we get without being worried
@@ -367,7 +335,6 @@ Public Class MySettings
             If x = 0 Then BirdsTolerance() = 25
         Catch ex As Exception
             BirdsTolerance() = 25
-            SaveSettings()
         End Try
 
         'how close to the edge of a region can we get?
@@ -376,7 +343,6 @@ Public Class MySettings
             If x = 0 Then BirdsBorderSize() = 25
         Catch ex As Exception
             BirdsBorderSize() = 25
-            SaveSettings()
         End Try
 
         'how high are we allowed to flock
@@ -385,7 +351,6 @@ Public Class MySettings
             If x = 0 Then BirdsMaxHeight() = 45
         Catch ex As Exception
             BirdsMaxHeight() = 45
-            SaveSettings()
         End Try
 
         'By default the module will create a flock of plain wooden spheres, however this can be overridden to the name of an existing prim that
@@ -398,6 +363,15 @@ Public Class MySettings
         ' check for default
         If (SmtpHost() = "") Then SmtpHost() = "smtp.gmail.com"
         If (SmtpPort() = "") Then SmtpPort() = "587"
+
+
+
+        Try
+            Dim x = Theme()
+        Catch ex As Exception
+            Theme() = False.ToString
+        End Try
+
 
         SaveSettings()
 
@@ -543,6 +517,15 @@ Public Class MySettings
 #End Region
 
 #Region "Properties"
+
+    Public Property Theme() As String
+        Get
+            Return GetMySetting("Theme", "False")
+        End Get
+        Set
+            SetMySetting("Theme", Value)
+        End Set
+    End Property
 
     ' Tides
     Public Property TideInfoDebug() As Boolean

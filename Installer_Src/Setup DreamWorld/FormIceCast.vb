@@ -40,6 +40,8 @@ Public Class Icecast
 
     Public Sub ShoutcastPort_TextChanged(sender As Object, e As EventArgs) Handles ShoutcastPort.TextChanged
 
+        Dim digitsOnly As Regex = New Regex("[^\d]")
+        ShoutcastPort.Text = digitsOnly.Replace(ShoutcastPort.Text, "")
         Form1.MySetting.SC_PortBase = CType(ShoutcastPort.Text, Integer)
 
     End Sub
@@ -156,6 +158,10 @@ Public Class Icecast
     End Sub
 
     Private Sub TextBox1_TextChanged(sender As Object, e As EventArgs) Handles ShoutcastPort1.TextChanged
+
+        Dim digitsOnly As Regex = New Regex("[^\d]")
+        ShoutcastPort1.Text = digitsOnly.Replace(ShoutcastPort1.Text, "")
         Form1.MySetting.SC_PortBase1 = CType(ShoutcastPort1.Text, Integer)
+
     End Sub
 End Class

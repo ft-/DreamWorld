@@ -819,7 +819,7 @@ Partial Class Form1
         Me.MinimumSize = New System.Drawing.Size(336, 245)
         Me.Name = "Form1"
         Me.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.Text = "Outworldz DreamGrid"
+        Me.Text = "DreamGrid"
         Me.MenuStrip1.ResumeLayout(False)
         Me.MenuStrip1.PerformLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()

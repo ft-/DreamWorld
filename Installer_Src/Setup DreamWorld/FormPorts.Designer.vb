@@ -157,7 +157,7 @@ Partial Class FormPorts
         Me.ClientSize = New System.Drawing.Size(240, 197)
         Me.Controls.Add(Me.GroupBox2)
         Me.Name = "FormPorts"
-        Me.Text = "FormPorts"
+        Me.Text = "Ports"
         Me.GroupBox2.ResumeLayout(False)
         Me.GroupBox2.PerformLayout()
         CType(Me.Upnp, System.ComponentModel.ISupportInitialize).EndInit()

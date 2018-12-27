@@ -1,4 +1,6 @@
-﻿Public Class FormDiva
+﻿Imports System.Text.RegularExpressions
+
+Public Class FormDiva
 
     Dim initted As Boolean = False
 
@@ -36,6 +38,8 @@
         SplashPage.Text = Form1.MySetting.SplashPage
         GridName.Text = Form1.MySetting.SimName
 
+        WhiteRadioButton.Checked = CType(Form1.MySetting.Theme, Boolean)
+        BlackRadioButton.Checked = Not WhiteRadioButton.Checked
 
         'Gmail
         'passwords are asterisks
@@ -178,6 +182,8 @@
 
     Private Sub SmtpPort_TextChanged(sender As Object, e As EventArgs) Handles SmtpPort.TextChanged
 
+        Dim digitsOnly As Regex = New Regex("[^\d]")
+        SmtpPort.Text = digitsOnly.Replace(SmtpPort.Text, "")
         If Not initted Then Return
         Form1.MySetting.SmtpPort = SmtpPort.Text
         Form1.MySetting.SaveSettings()
@@ -214,6 +220,29 @@
         '!!!
         Dim webAddress As String = Form1.gDomain + "/Outworldz_installer/technical.htm#ViewerSplash"
         Process.Start(webAddress)
+
+    End Sub
+
+    Private Sub BlackRadioButton_CheckedChanged(sender As Object, e As EventArgs) Handles BlackRadioButton.CheckedChanged
+
+        If BlackRadioButton.Checked Then
+            Form1.MySetting.Theme = BlackRadioButton.Checked.ToString
+            Form1.MySetting.SaveSettings()
+            WhiteRadioButton.Checked = False
+        End If
+
+
+    End Sub
+
+    Private Sub WhiteRadioButton_CheckedChanged(sender As Object, e As EventArgs) Handles WhiteRadioButton.CheckedChanged
+
+        If WhiteRadioButton.Checked Then
+            Form1.MySetting.Theme = WhiteRadioButton.Checked.ToString
+            Form1.MySetting.SaveSettings()
+            BlackRadioButton.Checked = False
+        End If
+
+
 
     End Sub
 

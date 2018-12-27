@@ -459,7 +459,7 @@ Public Class Form1
         ' WebUI
         ViewWebUI.Visible = MySetting.WifiEnabled
 
-        Me.Text = "Outworldz Dreamgrid V" + gMyVersion
+        Me.Text = "Dreamgrid V" + gMyVersion
 
         gChatTime = MySetting.ChatTime
 
@@ -534,7 +534,7 @@ Public Class Form1
         End If
 
         ' Find out if the viewer is installed
-        If System.IO.File.Exists(MyFolder & "\OutworldzFiles\Init.txt") Then
+        If System.IO.File.Exists(MyFolder & "\OutworldzFiles\Settings.txt") Then
 
 
             Buttons(StartButton)
@@ -553,24 +553,11 @@ Public Class Form1
             Create_ShortCut(MyFolder & "\Start.exe")
             BumpProgress10()
 
-
-
-            Try
-                ' mark the system as ready
-                Using outputFile As New StreamWriter(MyFolder & "\OutworldzFiles\Init.txt", True)
-                    outputFile.WriteLine("This file lets Outworldz know it has been installed")
-                End Using
-            Catch ex As Exception
-                Log("Error:Could not create Init.txt - no permissions to write it:" + ex.Message)
-            End Try
-
             Print("Ready to Launch!")
             Buttons(StartButton)
         End If
 
-
         Dim isMySqlRunning = CheckPort("127.0.0.1", CType(MySetting.MySqlPort, Integer))
-
         If isMySqlRunning Then gStopMysql = False
 
         ProgressBar1.Value = 100
@@ -699,10 +686,7 @@ Public Class Form1
         MySetting.SaveOtherINI()
 
         ProgressBar1.Value = 90
-
         Print("Hold fast to your dreams ...")
-
-
         ProgressBar1.Value = 10
 
         StopMysql()
@@ -946,7 +930,8 @@ Public Class Form1
     End Sub
 
     Private Sub MnuAbout_Click(sender As System.Object, e As System.EventArgs) Handles mnuAbout.Click
-        Print("(c) 2017 Outworldz,LLC")
+
+        Print("(c) 2017 Outworldz,LLC" + vbCrLf + "Version " + gMyVersion)
         Dim webAddress As String = gDomain + "/Outworldz_Installer"
         Process.Start(webAddress)
 

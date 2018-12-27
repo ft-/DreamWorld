@@ -1,4 +1,6 @@
-﻿Public Class BirdForm
+﻿Imports System.Text.RegularExpressions
+
+Public Class BirdForm
 
 #Region "ScreenSize"
     Public ScreenPosition As ScreenPos
@@ -53,8 +55,10 @@
     End Sub
 
     Private Sub Form1_Closed(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Closed
+
         Form1.MySetting.BirdsFlockSize = BirdsFlockSizeDomain.Text
         Form1.MySetting.SaveSettings()
+
     End Sub
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
@@ -68,71 +72,108 @@
     End Sub
 
     Private Sub BirdsModuleStartupbox_CheckedChanged(sender As Object, e As EventArgs) Handles BirdsModuleStartupbox.CheckedChanged
+
         If BirdsModuleStartupbox.Checked Then
             Form1.MySetting.BirdsModuleStartup = True
         Else
             Form1.MySetting.BirdsModuleStartup = False
         End If
+
     End Sub
 
     Private Sub ChatChanelTextBox_TextChanged(sender As Object, e As EventArgs) Handles ChatChanelTextBox.TextChanged
+
+        Dim digitsOnly As Regex = New Regex("[^\d]")
+        ChatChanelTextBox.Text = digitsOnly.Replace(ChatChanelTextBox.Text, "")
         Try
             Form1.MySetting.BirdsChatChannel = CInt(ChatChanelTextBox.Text)
         Catch
         End Try
+
     End Sub
 
     Private Sub MaxSpeedTextBox_TextChanged(sender As Object, e As EventArgs) Handles MaxSpeedTextBox.TextChanged
+
+        Dim digitsOnly As Regex = New Regex("[^\d]")
+        MaxSpeedTextBox.Text = digitsOnly.Replace(MaxSpeedTextBox.Text, "")
+
         Try
             Form1.MySetting.BirdsMaxSpeed = Convert.ToDouble(MaxSpeedTextBox.Text)
         Catch
         End Try
+
     End Sub
 
     Private Sub MaxForceTextBox_TextChanged(sender As Object, e As EventArgs) Handles MaxForceTextBox.TextChanged
+
+        Dim digitsOnly As Regex = New Regex("[^\d]")
+        MaxForceTextBox.Text = digitsOnly.Replace(MaxForceTextBox.Text, "")
         Try
             Form1.MySetting.BirdsMaxForce = Convert.ToDouble(MaxForceTextBox.Text)
         Catch
         End Try
+
     End Sub
 
     Private Sub BirdsNeighbourDistanceTextBox_TextChanged(sender As Object, e As EventArgs) Handles BirdsNeighbourDistanceTextBox.TextChanged
+
+        Dim digitsOnly As Regex = New Regex("[^\d]")
+        BirdsNeighbourDistanceTextBox.Text = digitsOnly.Replace(BirdsNeighbourDistanceTextBox.Text, "")
         Try
             Form1.MySetting.BirdsNeighbourDistance = Convert.ToDouble(BirdsNeighbourDistanceTextBox.Text)
         Catch
         End Try
+
     End Sub
 
     Private Sub DesiredSeparationTextBox_TextChanged(sender As Object, e As EventArgs) Handles DesiredSeparationTextBox.TextChanged
+
+        Dim digitsOnly As Regex = New Regex("[^\d]")
+        DesiredSeparationTextBox.Text = digitsOnly.Replace(DesiredSeparationTextBox.Text, "")
         Try
             Form1.MySetting.BirdsDesiredSeparation = Convert.ToDouble(DesiredSeparationTextBox.Text)
         Catch
         End Try
+
     End Sub
 
     Private Sub BirdsToleranceTextBox_TextChanged(sender As Object, e As EventArgs) Handles BirdsToleranceTextBox.TextChanged
+
+        Dim digitsOnly As Regex = New Regex("[^\d]")
+        BirdsToleranceTextBox.Text = digitsOnly.Replace(BirdsToleranceTextBox.Text, "")
         Try
             Form1.MySetting.BirdsTolerance = Convert.ToDouble(BirdsToleranceTextBox.Text)
         Catch
         End Try
+
     End Sub
 
     Private Sub BirdsBorderSizeTextBox_TextChanged(sender As Object, e As EventArgs) Handles BirdsBorderSizeTextBox.TextChanged
+
+        Dim digitsOnly As Regex = New Regex("[^\d]")
+        BirdsBorderSizeTextBox.Text = digitsOnly.Replace(BirdsBorderSizeTextBox.Text, "")
         Try
             Form1.MySetting.BirdsBorderSize = Convert.ToDouble(BirdsBorderSizeTextBox.Text)
         Catch
         End Try
+
     End Sub
 
     Private Sub BirdsMaxHeightTextBox_TextChanged(sender As Object, e As EventArgs) Handles BirdsMaxHeightTextBox.TextChanged
+
+        Dim digitsOnly As Regex = New Regex("[^\d]")
+        BirdsMaxHeightTextBox.Text = digitsOnly.Replace(BirdsMaxHeightTextBox.Text, "")
         Try
             Form1.MySetting.BirdsMaxHeight = Convert.ToDouble(BirdsMaxHeightTextBox.Text)
         Catch
         End Try
+
     End Sub
 
     Private Sub PrimNameTextBox_TextChanged(sender As Object, e As EventArgs) Handles PrimNameTextBox.TextChanged
+
         Form1.MySetting.BirdsPrim = PrimNameTextBox.Text
+
     End Sub
 
 

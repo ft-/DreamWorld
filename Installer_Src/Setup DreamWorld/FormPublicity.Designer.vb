@@ -22,7 +22,6 @@ Partial Class FormPublicity
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FormPublicity))
         Me.GroupBox11 = New System.Windows.Forms.GroupBox()
         Me.DataSnapshotCheckBox = New System.Windows.Forms.CheckBox()
         Me.PublicPhoto = New System.Windows.Forms.PictureBox()
@@ -77,7 +76,7 @@ Partial Class FormPublicity
         '
         'PictureBox9
         '
-        Me.PictureBox9.InitialImage = CType(resources.GetObject("PictureBox9.InitialImage"), System.Drawing.Image)
+        Me.PictureBox9.InitialImage = Global.Outworldz.My.Resources.Resources.blankbox
         Me.PictureBox9.Location = New System.Drawing.Point(12, 42)
         Me.PictureBox9.Name = "PictureBox9"
         Me.PictureBox9.Size = New System.Drawing.Size(180, 100)
@@ -92,7 +91,7 @@ Partial Class FormPublicity
         Me.ClientSize = New System.Drawing.Size(245, 207)
         Me.Controls.Add(Me.GroupBox11)
         Me.Name = "FormPublicity"
-        Me.Text = "FormPublicity"
+        Me.Text = "Publicity"
         Me.GroupBox11.ResumeLayout(False)
         Me.GroupBox11.PerformLayout()
         CType(Me.PublicPhoto, System.ComponentModel.ISupportInitialize).EndInit()

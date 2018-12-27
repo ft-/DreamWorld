@@ -132,7 +132,7 @@ Partial Class FormRestart
         Me.ClientSize = New System.Drawing.Size(284, 175)
         Me.Controls.Add(Me.AutoStart)
         Me.Name = "FormRestart"
-        Me.Text = "FormRestart"
+        Me.Text = "Restart"
         Me.AutoStart.ResumeLayout(False)
         Me.AutoStart.PerformLayout()
         CType(Me.AutoRestart, System.ComponentModel.ISupportInitialize).EndInit()

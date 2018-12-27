@@ -204,7 +204,7 @@ Partial Class FormPermissions
         Me.Controls.Add(Me.LimitsBox)
         Me.Controls.Add(Me.GroupBox4)
         Me.Name = "FormPermissions"
-        Me.Text = "FormPermissions"
+        Me.Text = "Permissions"
         Me.GroupBox4.ResumeLayout(False)
         Me.GroupBox4.PerformLayout()
         CType(Me.GodHelp, System.ComponentModel.ISupportInitialize).EndInit()

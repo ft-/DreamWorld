@@ -132,7 +132,7 @@ Partial Class FormRegions
         Me.ClientSize = New System.Drawing.Size(227, 223)
         Me.Controls.Add(Me.GroupBox2)
         Me.Name = "FormRegions"
-        Me.Text = "Region Setup"
+        Me.Text = "Region"
         Me.GroupBox2.ResumeLayout(False)
         Me.GroupBox2.PerformLayout()
         CType(Me.RegionHelp, System.ComponentModel.ISupportInitialize).EndInit()

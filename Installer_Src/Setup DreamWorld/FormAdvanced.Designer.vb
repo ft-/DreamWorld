@@ -172,7 +172,7 @@ Partial Class AdvancedForm
         Me.DatabaseButton2.Name = "DatabaseButton2"
         Me.DatabaseButton2.Size = New System.Drawing.Size(145, 23)
         Me.DatabaseButton2.TabIndex = 29
-        Me.DatabaseButton2.Text = "Database"
+        Me.DatabaseButton2.Text = "Database Setup"
         Me.ToolTip1.SetToolTip(Me.DatabaseButton2, "Click to set up the Database")
         Me.DatabaseButton2.UseVisualStyleBackColor = True
         '
@@ -202,7 +202,7 @@ Partial Class AdvancedForm
         Me.DNSButton.Name = "DNSButton"
         Me.DNSButton.Size = New System.Drawing.Size(143, 23)
         Me.DNSButton.TabIndex = 30
-        Me.DNSButton.Text = "Hypergrid "
+        Me.DNSButton.Text = "Hypergrid & DNS Name"
         Me.ToolTip1.SetToolTip(Me.DNSButton, "Click to Enable Hypergrid or change DNS Name")
         Me.DNSButton.UseVisualStyleBackColor = True
         '

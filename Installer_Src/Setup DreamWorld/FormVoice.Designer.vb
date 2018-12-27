@@ -109,7 +109,7 @@ Partial Class FormVoice
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
         Me.Name = "FormVoice"
-        Me.Text = "Form2"
+        Me.Text = "Vivox Voice"
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
         Me.ResumeLayout(False)

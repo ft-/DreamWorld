@@ -199,7 +199,6 @@ Public Class AdvancedForm
 
     Private Sub DatabaseButton2_Click(sender As Object, e As EventArgs) Handles DatabaseButton2.Click
 
-
         ' Set the new form's desktop location so it appears below and
         ' to the right of the current form.
         FormDatabase.Close()

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<RuleSet Name="Rules for Start" Description="Code analysis rules for Start.vbproj." ToolsVersion="14.0">
+<RuleSet Name="Rules for Start" Description="Code analysis rules for Start.vbproj." ToolsVersion="15.0">
   <Include Path="minimumrecommendedrules.ruleset" Action="Default" />
   <Rules AnalyzerId="Microsoft.Analyzers.ManagedCodeAnalysis" RuleNamespace="Microsoft.Rules.Managed">
     <Rule Id="CA1008" Action="Warning" />
