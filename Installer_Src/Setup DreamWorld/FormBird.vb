@@ -1,4 +1,6 @@
-﻿Public Class BirdForm
+﻿Imports System.Text.RegularExpressions
+
+Public Class BirdForm
 
 #Region "ScreenSize"
     Public ScreenPosition As ScreenPos
@@ -63,8 +65,7 @@
     End Sub
 
     Private Sub BirdHelp_Click(sender As Object, e As EventArgs) Handles BirdHelp.Click
-        Dim webAddress As String = Form1.gDomain + "/Outworldz_installer/Bird_Module.htm"
-        Process.Start(webAddress)
+        Form1.Help("Birds")
     End Sub
 
     Private Sub BirdsModuleStartupbox_CheckedChanged(sender As Object, e As EventArgs) Handles BirdsModuleStartupbox.CheckedChanged
@@ -77,6 +78,8 @@
 
     Private Sub ChatChanelTextBox_TextChanged(sender As Object, e As EventArgs) Handles ChatChanelTextBox.TextChanged
         Try
+            Dim rgx As New Regex("[^0-9]")
+            ChatChanelTextBox.Text = rgx.Replace(ChatChanelTextBox.Text, "")
             Form1.MySetting.BirdsChatChannel = CInt(ChatChanelTextBox.Text)
         Catch
         End Try
@@ -84,6 +87,8 @@
 
     Private Sub MaxSpeedTextBox_TextChanged(sender As Object, e As EventArgs) Handles MaxSpeedTextBox.TextChanged
         Try
+            Dim rgx As New Regex("[^0-9]")
+            MaxSpeedTextBox.Text = rgx.Replace(MaxSpeedTextBox.Text, "")
             Form1.MySetting.BirdsMaxSpeed = Convert.ToDouble(MaxSpeedTextBox.Text)
         Catch
         End Try
@@ -98,6 +103,8 @@
 
     Private Sub BirdsNeighbourDistanceTextBox_TextChanged(sender As Object, e As EventArgs) Handles BirdsNeighbourDistanceTextBox.TextChanged
         Try
+            Dim rgx As New Regex("[^0-9]")
+            BirdsNeighbourDistanceTextBox.Text = rgx.Replace(BirdsNeighbourDistanceTextBox.Text, "")
             Form1.MySetting.BirdsNeighbourDistance = Convert.ToDouble(BirdsNeighbourDistanceTextBox.Text)
         Catch
         End Try
@@ -105,6 +112,8 @@
 
     Private Sub DesiredSeparationTextBox_TextChanged(sender As Object, e As EventArgs) Handles DesiredSeparationTextBox.TextChanged
         Try
+            Dim rgx As New Regex("[^0-9]")
+            DesiredSeparationTextBox.Text = rgx.Replace(DesiredSeparationTextBox.Text, "")
             Form1.MySetting.BirdsDesiredSeparation = Convert.ToDouble(DesiredSeparationTextBox.Text)
         Catch
         End Try
@@ -112,6 +121,8 @@
 
     Private Sub BirdsToleranceTextBox_TextChanged(sender As Object, e As EventArgs) Handles BirdsToleranceTextBox.TextChanged
         Try
+            Dim rgx As New Regex("[^0-9]")
+            BirdsToleranceTextBox.Text = rgx.Replace(BirdsToleranceTextBox.Text, "")
             Form1.MySetting.BirdsTolerance = Convert.ToDouble(BirdsToleranceTextBox.Text)
         Catch
         End Try
@@ -119,6 +130,8 @@
 
     Private Sub BirdsBorderSizeTextBox_TextChanged(sender As Object, e As EventArgs) Handles BirdsBorderSizeTextBox.TextChanged
         Try
+            Dim rgx As New Regex("[^0-9]")
+            BirdsBorderSizeTextBox.Text = rgx.Replace(BirdsBorderSizeTextBox.Text, "")
             Form1.MySetting.BirdsBorderSize = Convert.ToDouble(BirdsBorderSizeTextBox.Text)
         Catch
         End Try
@@ -126,6 +139,8 @@
 
     Private Sub BirdsMaxHeightTextBox_TextChanged(sender As Object, e As EventArgs) Handles BirdsMaxHeightTextBox.TextChanged
         Try
+            Dim rgx As New Regex("[^0-9]")
+            BirdsMaxHeightTextBox.Text = rgx.Replace(BirdsMaxHeightTextBox.Text, "")
             Form1.MySetting.BirdsMaxHeight = Convert.ToDouble(BirdsMaxHeightTextBox.Text)
         Catch
         End Try

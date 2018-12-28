@@ -286,7 +286,7 @@ Partial Class BirdForm
         'BirdHelp
         '
         Me.BirdHelp.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.BirdHelp.Location = New System.Drawing.Point(151, 11)
+        Me.BirdHelp.Location = New System.Drawing.Point(151, 20)
         Me.BirdHelp.Name = "BirdHelp"
         Me.BirdHelp.Size = New System.Drawing.Size(28, 32)
         Me.BirdHelp.TabIndex = 1858
