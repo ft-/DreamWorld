@@ -121,6 +121,9 @@ Public Class Form1
     'Region Form Refresh
     Public gUpdateView As Boolean = True
 
+    ' Help Form for RTF files
+    Public FormHelp As New FormHelp
+
 
     <CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA2101:SpecifyMarshalingForPInvokeStringArguments", MessageId:="1")>
     <CodeAnalysis.SuppressMessage("Microsoft.Interoperability", "CA1401:PInvokesShouldNotBeVisible")>
@@ -2113,12 +2116,12 @@ Public Class Form1
             ' Boot them up
 
             For Each x In RegionClass.RegionNumbers
-                If RegionClass.RegionEnabled(x) Then '
+                If RegionClass.RegionEnabled(x) And Not gStopping Then '
                     If Not Boot(RegionClass.RegionName(x)) Then
                         Print("Boot skipped for " + RegionClass.RegionName(x))
                     End If
                 End If
-
+                Application.DoEvents()
             Next
         Catch ex As Exception
             Diagnostics.Debug.Print(ex.Message)
@@ -3287,6 +3290,8 @@ Public Class Form1
     End Function
 
     Public Function Boot(BootName As String) As Boolean
+
+        If gStopping Then Return True
 
         OpensimIsRunning() = True
         Buttons(StopButton)
@@ -5632,8 +5637,19 @@ Public Class Form1
     End Sub
 
 
-
 #End Region
 
+#Region "Help"
+    Public Sub Help(page As String)
+        ' Set the new form's desktop location so it appears below and
+        ' to the right of the current form.
+        FormHelp.Close()
+        FormHelp = New FormHelp
+        FormHelp.Activate()
+        FormHelp.Visible = True
+        FormHelp.Init(page)
+
+    End Sub
+#End Region
 
 End Class

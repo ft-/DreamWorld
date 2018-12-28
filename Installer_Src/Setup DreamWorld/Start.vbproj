@@ -582,6 +582,8 @@
     <None Include="Resources\cubes_blue.ico" />
     <None Include="Resources\map-1-9510-10006-objects.jpg" />
     <None Include="Resources\folder.png" />
+    <None Include="Resources\gear.png" />
+    <None Include="Resources\gear_run.png" />
     <Content Include="Resources\wp_habitat.gif" />
     <Content Include="Resources\wp_Inside_in_shadows.gif" />
     <Content Include="Resources\wp_Mooferd.gif" />

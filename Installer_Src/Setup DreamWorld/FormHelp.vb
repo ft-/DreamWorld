@@ -1,4 +1,33 @@
 ﻿Public Class FormHelp
+    Public ScreenPosition As ScreenPos
+    Private Handler As New EventHandler(AddressOf resize_page)
+    'The following detects  the location of the form in screen coordinates
+    Private Sub resize_page(ByVal sender As Object, ByVal e As System.EventArgs)
+        'Me.Text = "Form screen position = " + Me.Location.ToString
+        ScreenPosition.SaveXY(Me.Left, Me.Top)
+    End Sub
+    Private Sub SetScreen()
+        Me.Show()
+        ScreenPosition = New ScreenPos(Me.Name)
+        AddHandler ResizeEnd, Handler
+        Dim xy As List(Of Integer) = ScreenPosition.GetXY()
+        Me.Left = xy.Item(0)
+        Me.Top = xy.Item(1)
+    End Sub
+
+    Public Sub Init(Webpage As String)
+
+        SetScreen()
+
+        Try
+            Dim Page As String = Form1.MyFolder + "\Outworldzfiles\Help\" + Webpage + ".rtf"
+            RichTextBox1.LoadFile(Page)
+        Catch ex As Exception
+            MsgBox("Sorry, Help is not yet available for this.", vbInformation)
+            Form1.Log("Error:" + ex.Message)
+            Me.Close()
+        End Try
+    End Sub
     Private Sub HomeToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles HomeToolStripMenuItem.Click
         Dim webAddress As String = "https://www.outworldz.com"
         Process.Start(webAddress)

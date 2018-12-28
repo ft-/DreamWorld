@@ -24,6 +24,7 @@ Public Class AdvancedForm
     Dim FormDNSName As New FormDNSName
     Dim FormPersonality As New FormPersonality
 
+
 #End Region
 
 #Region "ScreenSize"

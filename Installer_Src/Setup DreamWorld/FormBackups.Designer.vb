@@ -63,7 +63,7 @@ Partial Class FormBackups
         Me.PictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center
         Me.PictureBox1.Location = New System.Drawing.Point(178, 120)
         Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(42, 42)
+        Me.PictureBox1.Size = New System.Drawing.Size(41, 33)
         Me.PictureBox1.TabIndex = 1858
         Me.PictureBox1.TabStop = False
         Me.ToolTip1.SetToolTip(Me.PictureBox1, "Click to change the folder")
@@ -71,7 +71,7 @@ Partial Class FormBackups
         'AutoBackupHelp
         '
         Me.AutoBackupHelp.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.AutoBackupHelp.Location = New System.Drawing.Point(154, 17)
+        Me.AutoBackupHelp.Location = New System.Drawing.Point(191, 17)
         Me.AutoBackupHelp.Name = "AutoBackupHelp"
         Me.AutoBackupHelp.Size = New System.Drawing.Size(28, 32)
         Me.AutoBackupHelp.TabIndex = 1857

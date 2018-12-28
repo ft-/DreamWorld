@@ -88,9 +88,9 @@
         End If
 
     End Sub
+
     Private Sub PictureBox4_Click(sender As Object, e As EventArgs) Handles PersonalityHelp.Click
-        Dim webAddress As String = Form1.gDomain + "/Outworldz_installer/technical.htm#Personality"
-        Process.Start(webAddress)
+        Form1.Help("Personality")
     End Sub
 
 End Class

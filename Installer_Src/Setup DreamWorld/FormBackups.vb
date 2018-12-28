@@ -129,8 +129,7 @@
 #Region "Help"
 
     Private Sub AutoBackupHelp_Click(sender As Object, e As EventArgs) Handles AutoBackupHelp.Click
-        Dim webAddress As String = Form1.gDomain + "/Outworldz_installer/technical.htm#Backup"
-        Process.Start(webAddress)
+        Form1.Help("Backup")
     End Sub
 
     Private Sub PictureBox1_Click(sender As Object, e As EventArgs) Handles PictureBox1.Click

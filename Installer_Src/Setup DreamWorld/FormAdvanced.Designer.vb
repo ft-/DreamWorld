@@ -48,17 +48,17 @@ Partial Class AdvancedForm
         '
         'TOSButton
         '
-        Me.TOSButton.Location = New System.Drawing.Point(191, 181)
+        Me.TOSButton.Location = New System.Drawing.Point(191, 152)
         Me.TOSButton.Name = "TOSButton"
         Me.TOSButton.Size = New System.Drawing.Size(145, 23)
         Me.TOSButton.TabIndex = 19
-        Me.TOSButton.Text = "TOS"
+        Me.TOSButton.Text = "Terms of Service"
         Me.ToolTip1.SetToolTip(Me.TOSButton, "Click to set up your Terms of Service")
         Me.TOSButton.UseVisualStyleBackColor = True
         '
         'TideButton
         '
-        Me.TideButton.Location = New System.Drawing.Point(191, 152)
+        Me.TideButton.Location = New System.Drawing.Point(191, 123)
         Me.TideButton.Name = "TideButton"
         Me.TideButton.Size = New System.Drawing.Size(145, 23)
         Me.TideButton.TabIndex = 18
@@ -78,7 +78,7 @@ Partial Class AdvancedForm
         '
         'VoiceButton1
         '
-        Me.VoiceButton1.Location = New System.Drawing.Point(191, 210)
+        Me.VoiceButton1.Location = New System.Drawing.Point(191, 181)
         Me.VoiceButton1.Name = "VoiceButton1"
         Me.VoiceButton1.Size = New System.Drawing.Size(143, 23)
         Me.VoiceButton1.TabIndex = 17
@@ -128,7 +128,7 @@ Partial Class AdvancedForm
         '
         'RegionsButton1
         '
-        Me.RegionsButton1.Location = New System.Drawing.Point(191, 36)
+        Me.RegionsButton1.Location = New System.Drawing.Point(191, 65)
         Me.RegionsButton1.Name = "RegionsButton1"
         Me.RegionsButton1.Size = New System.Drawing.Size(145, 23)
         Me.RegionsButton1.TabIndex = 24
@@ -138,7 +138,7 @@ Partial Class AdvancedForm
         '
         'DivaButton1
         '
-        Me.DivaButton1.Location = New System.Drawing.Point(191, 269)
+        Me.DivaButton1.Location = New System.Drawing.Point(191, 240)
         Me.DivaButton1.Name = "DivaButton1"
         Me.DivaButton1.Size = New System.Drawing.Size(145, 23)
         Me.DivaButton1.TabIndex = 25
@@ -159,7 +159,7 @@ Partial Class AdvancedForm
         'PhysicsButton1
         '
         Me.PhysicsButton1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.PhysicsButton1.Location = New System.Drawing.Point(189, 123)
+        Me.PhysicsButton1.Location = New System.Drawing.Point(191, 36)
         Me.PhysicsButton1.Name = "PhysicsButton1"
         Me.PhysicsButton1.Size = New System.Drawing.Size(145, 23)
         Me.PhysicsButton1.TabIndex = 27
@@ -179,7 +179,7 @@ Partial Class AdvancedForm
         '
         'Button3
         '
-        Me.Button3.Location = New System.Drawing.Point(191, 65)
+        Me.Button3.Location = New System.Drawing.Point(189, 94)
         Me.Button3.Name = "Button3"
         Me.Button3.Size = New System.Drawing.Size(143, 23)
         Me.Button3.TabIndex = 32
@@ -189,7 +189,7 @@ Partial Class AdvancedForm
         '
         'Button2
         '
-        Me.Button2.Location = New System.Drawing.Point(191, 94)
+        Me.Button2.Location = New System.Drawing.Point(4, 269)
         Me.Button2.Name = "Button2"
         Me.Button2.Size = New System.Drawing.Size(143, 23)
         Me.Button2.TabIndex = 31
@@ -209,7 +209,7 @@ Partial Class AdvancedForm
         '
         'Button1
         '
-        Me.Button1.Location = New System.Drawing.Point(191, 240)
+        Me.Button1.Location = New System.Drawing.Point(191, 211)
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(145, 23)
         Me.Button1.TabIndex = 33

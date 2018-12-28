@@ -30,9 +30,9 @@ Partial Class FormHelp
         Me.TechnicalInfoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.TroubleshootingToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.StepbyStepInstallationToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.DatabaseHelpToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.PortsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.LoopbackToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.DatabaseHelpToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.SourceCodeToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.RichTextBox1 = New System.Windows.Forms.RichTextBox()
         Me.MenuStrip1.SuspendLayout()
@@ -43,7 +43,7 @@ Partial Class FormHelp
         Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripMenuItem1, Me.WebSiteToolStripMenuItem})
         Me.MenuStrip1.Location = New System.Drawing.Point(0, 0)
         Me.MenuStrip1.Name = "MenuStrip1"
-        Me.MenuStrip1.Size = New System.Drawing.Size(676, 24)
+        Me.MenuStrip1.Size = New System.Drawing.Size(344, 24)
         Me.MenuStrip1.TabIndex = 0
         Me.MenuStrip1.Text = "MenuStrip1"
         '
@@ -55,60 +55,70 @@ Partial Class FormHelp
         'WebSiteToolStripMenuItem
         '
         Me.WebSiteToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.HomeToolStripMenuItem, Me.DreamgridToolStripMenuItem, Me.TechnicalInfoToolStripMenuItem, Me.TroubleshootingToolStripMenuItem, Me.StepbyStepInstallationToolStripMenuItem, Me.DatabaseHelpToolStripMenuItem, Me.PortsToolStripMenuItem, Me.LoopbackToolStripMenuItem, Me.SourceCodeToolStripMenuItem})
+        Me.WebSiteToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.about
         Me.WebSiteToolStripMenuItem.Name = "WebSiteToolStripMenuItem"
-        Me.WebSiteToolStripMenuItem.Size = New System.Drawing.Size(108, 20)
-        Me.WebSiteToolStripMenuItem.Text = "Help on the Web"
+        Me.WebSiteToolStripMenuItem.Size = New System.Drawing.Size(248, 20)
+        Me.WebSiteToolStripMenuItem.Text = "For More Help on the Website, click this."
         '
         'HomeToolStripMenuItem
         '
+        Me.HomeToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.about
         Me.HomeToolStripMenuItem.Name = "HomeToolStripMenuItem"
         Me.HomeToolStripMenuItem.Size = New System.Drawing.Size(202, 22)
         Me.HomeToolStripMenuItem.Text = "www.Outworldz.com"
         '
         'DreamgridToolStripMenuItem
         '
+        Me.DreamgridToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.cube_blue
         Me.DreamgridToolStripMenuItem.Name = "DreamgridToolStripMenuItem"
         Me.DreamgridToolStripMenuItem.Size = New System.Drawing.Size(202, 22)
         Me.DreamgridToolStripMenuItem.Text = "Dreamgrid Home"
         '
         'TechnicalInfoToolStripMenuItem
         '
+        Me.TechnicalInfoToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.gear
         Me.TechnicalInfoToolStripMenuItem.Name = "TechnicalInfoToolStripMenuItem"
-        Me.TechnicalInfoToolStripMenuItem.Size = New System.Drawing.Size(204, 22)
+        Me.TechnicalInfoToolStripMenuItem.Size = New System.Drawing.Size(202, 22)
         Me.TechnicalInfoToolStripMenuItem.Text = "Technical Info"
         '
         'TroubleshootingToolStripMenuItem
         '
+        Me.TroubleshootingToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.gear_run
         Me.TroubleshootingToolStripMenuItem.Name = "TroubleshootingToolStripMenuItem"
-        Me.TroubleshootingToolStripMenuItem.Size = New System.Drawing.Size(204, 22)
+        Me.TroubleshootingToolStripMenuItem.Size = New System.Drawing.Size(202, 22)
         Me.TroubleshootingToolStripMenuItem.Text = "Troubleshooting"
         '
         'StepbyStepInstallationToolStripMenuItem
         '
+        Me.StepbyStepInstallationToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.document_connection
         Me.StepbyStepInstallationToolStripMenuItem.Name = "StepbyStepInstallationToolStripMenuItem"
         Me.StepbyStepInstallationToolStripMenuItem.Size = New System.Drawing.Size(202, 22)
         Me.StepbyStepInstallationToolStripMenuItem.Text = "Starting up the first time"
         '
+        'DatabaseHelpToolStripMenuItem
+        '
+        Me.DatabaseHelpToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.data
+        Me.DatabaseHelpToolStripMenuItem.Name = "DatabaseHelpToolStripMenuItem"
+        Me.DatabaseHelpToolStripMenuItem.Size = New System.Drawing.Size(202, 22)
+        Me.DatabaseHelpToolStripMenuItem.Text = "Database Help"
+        '
         'PortsToolStripMenuItem
         '
+        Me.PortsToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.earth_network
         Me.PortsToolStripMenuItem.Name = "PortsToolStripMenuItem"
         Me.PortsToolStripMenuItem.Size = New System.Drawing.Size(202, 22)
         Me.PortsToolStripMenuItem.Text = "Port Forwarding Help"
         '
         'LoopbackToolStripMenuItem
         '
+        Me.LoopbackToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.replace2
         Me.LoopbackToolStripMenuItem.Name = "LoopbackToolStripMenuItem"
         Me.LoopbackToolStripMenuItem.Size = New System.Drawing.Size(202, 22)
         Me.LoopbackToolStripMenuItem.Text = "Loopback Help"
         '
-        'DatabaseHelpToolStripMenuItem
-        '
-        Me.DatabaseHelpToolStripMenuItem.Name = "DatabaseHelpToolStripMenuItem"
-        Me.DatabaseHelpToolStripMenuItem.Size = New System.Drawing.Size(202, 22)
-        Me.DatabaseHelpToolStripMenuItem.Text = "Database Help"
-        '
         'SourceCodeToolStripMenuItem
         '
+        Me.SourceCodeToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.transform
         Me.SourceCodeToolStripMenuItem.Name = "SourceCodeToolStripMenuItem"
         Me.SourceCodeToolStripMenuItem.Size = New System.Drawing.Size(202, 22)
         Me.SourceCodeToolStripMenuItem.Text = "Source Code"
@@ -118,7 +128,7 @@ Partial Class FormHelp
         Me.RichTextBox1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.RichTextBox1.Location = New System.Drawing.Point(0, 24)
         Me.RichTextBox1.Name = "RichTextBox1"
-        Me.RichTextBox1.Size = New System.Drawing.Size(676, 486)
+        Me.RichTextBox1.Size = New System.Drawing.Size(344, 449)
         Me.RichTextBox1.TabIndex = 1
         Me.RichTextBox1.Text = ""
         '
@@ -126,7 +136,7 @@ Partial Class FormHelp
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(676, 510)
+        Me.ClientSize = New System.Drawing.Size(344, 473)
         Me.Controls.Add(Me.RichTextBox1)
         Me.Controls.Add(Me.MenuStrip1)
         Me.MainMenuStrip = Me.MenuStrip1
