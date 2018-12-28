@@ -205,6 +205,12 @@
     <Compile Include="FormGloebits.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="FormHelp.Designer.vb">
+      <DependentUpon>FormHelp.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormHelp.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FormIceCast.Designer.vb">
       <DependentUpon>FormIceCast.vb</DependentUpon>
     </Compile>
@@ -353,6 +359,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormGloebits.resx">
       <DependentUpon>FormGloebits.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormHelp.resx">
+      <DependentUpon>FormHelp.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormIceCast.resx">
       <DependentUpon>FormIceCast.vb</DependentUpon>

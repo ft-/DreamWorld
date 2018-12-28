@@ -22,11 +22,13 @@ Partial Class FormPersonality
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Me.GroupBox5 = New System.Windows.Forms.GroupBox()
         Me.PersonalityHelp = New System.Windows.Forms.PictureBox()
         Me.Label15 = New System.Windows.Forms.Label()
         Me.TimerInterval = New System.Windows.Forms.TextBox()
         Me.ChatSpeed = New System.Windows.Forms.ComboBox()
+        Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         Me.GroupBox5.SuspendLayout()
         CType(Me.PersonalityHelp, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -39,7 +41,7 @@ Partial Class FormPersonality
         Me.GroupBox5.Controls.Add(Me.ChatSpeed)
         Me.GroupBox5.Location = New System.Drawing.Point(12, 12)
         Me.GroupBox5.Name = "GroupBox5"
-        Me.GroupBox5.Size = New System.Drawing.Size(257, 115)
+        Me.GroupBox5.Size = New System.Drawing.Size(212, 115)
         Me.GroupBox5.TabIndex = 1864
         Me.GroupBox5.TabStop = False
         Me.GroupBox5.Text = "Personality"
@@ -98,4 +100,5 @@ Partial Class FormPersonality
     Friend WithEvents Label15 As Label
     Friend WithEvents TimerInterval As TextBox
     Friend WithEvents ChatSpeed As ComboBox
+    Friend WithEvents Timer1 As Timer
 End Class

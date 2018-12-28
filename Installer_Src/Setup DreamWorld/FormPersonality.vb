@@ -41,6 +41,7 @@
     End Sub
 
     Private Sub ChatSpeed_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ChatSpeed.SelectedIndexChanged
+
         Dim text = ChatSpeed.SelectedItem.ToString()
         Dim ChatTime As Integer = 1500
 
@@ -52,6 +53,7 @@
         Form1.MySetting.ChatTime = ChatTime
         Form1.MySetting.SaveSettings()
         Form1.gChatTime = ChatTime
+
     End Sub
 
 
@@ -62,13 +64,16 @@
 
                 Form1.MySetting.TimerInterval = CInt(TimerInterval.Text)
                 If (Form1.MySetting.TimerInterval > 0) Then
+                    Timer1.Interval = CInt(TimerInterval.Text) * 1000
+                    Timer1.Enabled = True
                     Form1.PaintImage()
                 Else
+                    Timer1.Interval = 0
                     Form1.PictureBox1.Visible = False
                 End If
             Else
                 Form1.PictureBox1.Visible = False
-                Form1.MySetting.TimerInterval = 0
+                Timer1.Enabled = False
                 Form1.MySetting.SaveSettings()
             End If
         Catch
@@ -76,10 +81,13 @@
 
     End Sub
 
+    Private Sub Timer1_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Timer1.Tick
 
+        If (Form1.MySetting.TimerInterval > 0) Then
+            Form1.PaintImage()
+        End If
 
-
-
+    End Sub
     Private Sub PictureBox4_Click(sender As Object, e As EventArgs) Handles PersonalityHelp.Click
         Dim webAddress As String = Form1.gDomain + "/Outworldz_installer/technical.htm#Personality"
         Process.Start(webAddress)

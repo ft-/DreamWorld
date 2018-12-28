@@ -3585,23 +3585,17 @@ Public Class Form1
 
     Public Sub PaintImage()
 
-        Timertick = Timertick + 1
         If MySetting.TimerInterval > 0 Then  ' is it enabled?
 
-            If Timertick >= MySetting.TimerInterval And Not gDiagsrunning Then
-                Dim randomFruit = images(Arnd.Next(0, images.Count))
-                ProgressBar1.Visible = False
-                TextBox1.Visible = False
-                PictureBox1.Enabled = True
-                PictureBox1.Image = randomFruit
-                PictureBox1.Visible = True
-                Timertick = 0   ' rest for next pass
-            End If
-
+            Dim randomFruit = images(Arnd.Next(0, images.Count))
+            ProgressBar1.Visible = False
+            TextBox1.Visible = False
+            PictureBox1.Enabled = True
+            PictureBox1.Image = randomFruit
+            PictureBox1.Visible = True
         Else
             PictureBox1.Visible = False
         End If
-        Application.DoEvents()
 
     End Sub
 
@@ -3613,7 +3607,6 @@ Public Class Form1
             Return
         End If
 
-        PaintImage()
         gDNSSTimer = gDNSSTimer + 1
 
         ' hourly
