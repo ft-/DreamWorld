@@ -241,7 +241,6 @@ Partial Class AdvancedForm
         Me.Controls.Add(Me.GroupBox8)
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
-        Me.MinimizeBox = False
         Me.Name = "AdvancedForm"
         Me.Text = "Common Settings"
         Me.GroupBox8.ResumeLayout(False)

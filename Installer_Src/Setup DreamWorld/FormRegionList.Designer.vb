@@ -123,7 +123,6 @@ Partial Class RegionList
         Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.ListView1)
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
-        Me.MaximizeBox = False
         Me.Name = "RegionList"
         Me.Text = "Region List"
         CType(Me.RegionHelp, System.ComponentModel.ISupportInitialize).EndInit()

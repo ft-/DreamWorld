@@ -191,6 +191,7 @@ Partial Class Tides
         Me.ClientSize = New System.Drawing.Size(253, 254)
         Me.Controls.Add(Me.GroupBox1)
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
+        Me.MaximizeBox = False
         Me.Name = "Tides"
         Me.Text = "Tides"
         Me.GroupBox1.ResumeLayout(False)

@@ -134,6 +134,7 @@ Partial Class FormMaps
         Me.AutoSize = True
         Me.ClientSize = New System.Drawing.Size(201, 290)
         Me.Controls.Add(Me.MapBox)
+        Me.MaximizeBox = False
         Me.Name = "FormMaps"
         Me.Text = "Maps"
         Me.MapBox.ResumeLayout(False)

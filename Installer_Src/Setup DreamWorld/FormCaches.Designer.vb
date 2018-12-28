@@ -92,26 +92,27 @@ Partial Class FormCaches
         Me.GroupBox1.Controls.Add(Me.CheckBox3)
         Me.GroupBox1.Location = New System.Drawing.Point(12, 12)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(181, 205)
+        Me.GroupBox1.Size = New System.Drawing.Size(197, 205)
         Me.GroupBox1.TabIndex = 5
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Choose which cache to empty"
         '
         'Button1
         '
-        Me.Button1.Location = New System.Drawing.Point(44, 163)
+        Me.Button1.Location = New System.Drawing.Point(16, 165)
         Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(75, 23)
+        Me.Button1.Size = New System.Drawing.Size(161, 23)
         Me.Button1.TabIndex = 5
-        Me.Button1.Text = "Clear"
+        Me.Button1.Text = "Clear Selected Caches"
         Me.Button1.UseVisualStyleBackColor = True
         '
         'FormCaches
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
-        Me.ClientSize = New System.Drawing.Size(205, 230)
+        Me.ClientSize = New System.Drawing.Size(233, 230)
         Me.Controls.Add(Me.GroupBox1)
+        Me.MaximizeBox = False
         Me.Name = "FormCaches"
         Me.Text = "Clear Caches"
         Me.GroupBox1.ResumeLayout(False)

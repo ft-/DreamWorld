@@ -90,6 +90,7 @@ Partial Class FormPublicity
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.ClientSize = New System.Drawing.Size(245, 207)
         Me.Controls.Add(Me.GroupBox11)
+        Me.MaximizeBox = False
         Me.Name = "FormPublicity"
         Me.Text = "Publicity"
         Me.GroupBox11.ResumeLayout(False)

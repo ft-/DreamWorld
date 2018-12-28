@@ -33,7 +33,6 @@ Partial Class FormPermissions
         Me.GroupBox8 = New System.Windows.Forms.GroupBox()
         Me.LSLCheckbox = New System.Windows.Forms.CheckBox()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
-        Me.Cloudy = New System.Windows.Forms.PictureBox()
         Me.Clouds = New System.Windows.Forms.CheckBox()
         Me.GroupBox7 = New System.Windows.Forms.GroupBox()
         Me.DomainUpDown1 = New System.Windows.Forms.DomainUpDown()
@@ -41,7 +40,6 @@ Partial Class FormPermissions
         CType(Me.GodHelp, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.LimitsBox.SuspendLayout()
         Me.GroupBox8.SuspendLayout()
-        CType(Me.Cloudy, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox7.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -142,16 +140,6 @@ Partial Class FormPermissions
         "read web pages on your PC. ")
         Me.LSLCheckbox.UseVisualStyleBackColor = True
         '
-        'Cloudy
-        '
-        Me.Cloudy.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.Cloudy.Location = New System.Drawing.Point(149, 16)
-        Me.Cloudy.Name = "Cloudy"
-        Me.Cloudy.Size = New System.Drawing.Size(30, 34)
-        Me.Cloudy.TabIndex = 1858
-        Me.Cloudy.TabStop = False
-        Me.ToolTip1.SetToolTip(Me.Cloudy, "For singularity viewers. If set, you get 0% to 100% clouds on your sims")
-        '
         'Clouds
         '
         Me.Clouds.AutoSize = True
@@ -166,7 +154,6 @@ Partial Class FormPermissions
         'GroupBox7
         '
         Me.GroupBox7.Controls.Add(Me.DomainUpDown1)
-        Me.GroupBox7.Controls.Add(Me.Cloudy)
         Me.GroupBox7.Controls.Add(Me.Clouds)
         Me.GroupBox7.Location = New System.Drawing.Point(12, 255)
         Me.GroupBox7.Name = "GroupBox7"
@@ -203,6 +190,7 @@ Partial Class FormPermissions
         Me.Controls.Add(Me.GroupBox8)
         Me.Controls.Add(Me.LimitsBox)
         Me.Controls.Add(Me.GroupBox4)
+        Me.MaximizeBox = False
         Me.Name = "FormPermissions"
         Me.Text = "Permissions"
         Me.GroupBox4.ResumeLayout(False)
@@ -212,7 +200,6 @@ Partial Class FormPermissions
         Me.LimitsBox.PerformLayout()
         Me.GroupBox8.ResumeLayout(False)
         Me.GroupBox8.PerformLayout()
-        CType(Me.Cloudy, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox7.ResumeLayout(False)
         Me.GroupBox7.PerformLayout()
         Me.ResumeLayout(False)
@@ -231,6 +218,5 @@ Partial Class FormPermissions
     Friend WithEvents ToolTip1 As ToolTip
     Friend WithEvents GroupBox7 As GroupBox
     Friend WithEvents DomainUpDown1 As DomainUpDown
-    Friend WithEvents Cloudy As PictureBox
     Friend WithEvents Clouds As CheckBox
 End Class

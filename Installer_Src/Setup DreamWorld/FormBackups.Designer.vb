@@ -149,6 +149,7 @@ Partial Class FormBackups
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.ClientSize = New System.Drawing.Size(278, 218)
         Me.Controls.Add(Me.GroupBox3)
+        Me.MaximizeBox = False
         Me.Name = "FormBackups"
         Me.Text = "Backups"
         Me.GroupBox3.ResumeLayout(False)

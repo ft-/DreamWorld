@@ -310,6 +310,7 @@ Partial Class BirdForm
         Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.GroupBox1)
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
+        Me.MaximizeBox = False
         Me.Name = "BirdForm"
         Me.Text = "Bird Module"
         Me.GroupBox1.ResumeLayout(False)

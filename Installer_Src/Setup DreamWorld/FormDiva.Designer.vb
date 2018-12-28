@@ -49,10 +49,10 @@ Partial Class FormDiva
         Me.Label19 = New System.Windows.Forms.Label()
         Me.SplashPage = New System.Windows.Forms.TextBox()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.CustomButton1 = New System.Windows.Forms.RadioButton()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.WhiteRadioButton = New System.Windows.Forms.RadioButton()
         Me.BlackRadioButton = New System.Windows.Forms.RadioButton()
-        Me.CustomButton1 = New System.Windows.Forms.RadioButton()
         Me.Web.SuspendLayout()
         CType(Me.WiFi, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox6.SuspendLayout()
@@ -315,6 +315,17 @@ Partial Class FormDiva
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Splash Screen"
         '
+        'CustomButton1
+        '
+        Me.CustomButton1.AutoSize = True
+        Me.CustomButton1.Location = New System.Drawing.Point(84, 58)
+        Me.CustomButton1.Name = "CustomButton1"
+        Me.CustomButton1.Size = New System.Drawing.Size(60, 17)
+        Me.CustomButton1.TabIndex = 1874
+        Me.CustomButton1.TabStop = True
+        Me.CustomButton1.Text = "Custom"
+        Me.CustomButton1.UseVisualStyleBackColor = True
+        '
         'Label1
         '
         Me.Label1.AutoSize = True
@@ -346,17 +357,6 @@ Partial Class FormDiva
         Me.BlackRadioButton.Text = "Black"
         Me.BlackRadioButton.UseVisualStyleBackColor = True
         '
-        'CustomButton1
-        '
-        Me.CustomButton1.AutoSize = True
-        Me.CustomButton1.Location = New System.Drawing.Point(84, 58)
-        Me.CustomButton1.Name = "CustomButton1"
-        Me.CustomButton1.Size = New System.Drawing.Size(60, 17)
-        Me.CustomButton1.TabIndex = 1874
-        Me.CustomButton1.TabStop = True
-        Me.CustomButton1.Text = "Custom"
-        Me.CustomButton1.UseVisualStyleBackColor = True
-        '
         'FormDiva
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
@@ -365,6 +365,7 @@ Partial Class FormDiva
         Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.Web)
         Me.Controls.Add(Me.GroupBox6)
+        Me.MaximizeBox = False
         Me.Name = "FormDiva"
         Me.Text = "Diva Wifi Panel"
         Me.Web.ResumeLayout(False)
