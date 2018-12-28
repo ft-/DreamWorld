@@ -678,6 +678,7 @@ Public Class Form1
 
         Print("Zzzz...")
         Shutdown()
+        Exit
 
     End Sub
 
@@ -685,6 +686,7 @@ Public Class Form1
 
         Print("Zzzz...")
         Shutdown()
+        Exit
 
     End Sub
     Private Sub Shutdown()
