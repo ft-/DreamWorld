@@ -1,4 +1,6 @@
-﻿Public Class FormPorts
+﻿Imports System.Text.RegularExpressions
+
+Public Class FormPorts
 
     Dim initted As Boolean
 
@@ -54,6 +56,9 @@
     Private Sub PrivatePort_TextChanged(sender As Object, e As EventArgs) Handles PrivatePort.TextChanged
 
         If Not initted Then Return
+
+        Dim digitsOnly As Regex = New Regex("[^\d]")
+        PrivatePort.Text = digitsOnly.Replace(PrivatePort.Text, "")
         Form1.MySetting.PrivatePort = PrivatePort.Text
         Form1.MySetting.SaveSettings()
         Form1.CheckDefaultPorts()
@@ -64,6 +69,9 @@
     Private Sub HTTPPort_TextChanged(sender As Object, e As EventArgs) Handles HTTPPort.TextChanged
 
         If Not initted Then Return
+
+        Dim digitsOnly As Regex = New Regex("[^\d]")
+        HTTPPort.Text = digitsOnly.Replace(HTTPPort.Text, "")
         Form1.MySetting.HttpPort = HTTPPort.Text
         Form1.MySetting.SaveSettings()
         Form1.CheckDefaultPorts()
@@ -73,6 +81,10 @@
     Private Sub DiagnosticPort_TextChanged(sender As Object, e As EventArgs) Handles DiagnosticPort.TextChanged
 
         If Not initted Then Return
+
+        Dim digitsOnly As Regex = New Regex("[^\d]")
+        DiagnosticPort.Text = digitsOnly.Replace(DiagnosticPort.Text, "")
+
         Form1.MySetting.DiagnosticPort = DiagnosticPort.Text
         Form1.MySetting.SaveSettings()
         Form1.CheckDefaultPorts()
@@ -83,11 +95,8 @@
 
         If Not initted Then Return
 
-        If Form1.OpensimIsRunning() Then
-            MsgBox("Cannot change Ports while Opensimulator is running. Please stop the grid, and then change the starting port.")
-            Return
-        End If
-
+        Dim digitsOnly As Regex = New Regex("[^\d]")
+        FirstRegionPort.Text = digitsOnly.Replace(FirstRegionPort.Text, "")
         Form1.MySetting.FirstRegionPort() = FirstRegionPort.Text
         Form1.MySetting.SaveSettings()
         Form1.RegionClass.UpdateAllRegionPorts()
@@ -96,7 +105,6 @@
 
     Private Sub Upnp_Click(sender As Object, e As EventArgs) Handles Upnp.Click
 
-        '!!!
         Dim webAddress As String = Form1.gDomain + "/Outworldz_installer/technical.htm#Upnp"
         Process.Start(webAddress)
 

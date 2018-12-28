@@ -53,7 +53,7 @@ Partial Class FormPorts
         Me.GroupBox2.Controls.Add(Me.Label4)
         Me.GroupBox2.Location = New System.Drawing.Point(12, 12)
         Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Size = New System.Drawing.Size(199, 166)
+        Me.GroupBox2.Size = New System.Drawing.Size(199, 181)
         Me.GroupBox2.TabIndex = 45
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Ports"
@@ -61,7 +61,7 @@ Partial Class FormPorts
         'MaxP
         '
         Me.MaxP.AutoSize = True
-        Me.MaxP.Location = New System.Drawing.Point(71, 148)
+        Me.MaxP.Location = New System.Drawing.Point(19, 153)
         Me.MaxP.Name = "MaxP"
         Me.MaxP.Size = New System.Drawing.Size(99, 13)
         Me.MaxP.TabIndex = 1862

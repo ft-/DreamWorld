@@ -57,16 +57,16 @@ Partial Class FormRegions
         Me.Label1.AutoSize = True
         Me.Label1.Location = New System.Drawing.Point(6, 104)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(92, 13)
+        Me.Label1.Size = New System.Drawing.Size(65, 13)
         Me.Label1.TabIndex = 1860
-        Me.Label1.Text = "Configure Region:"
+        Me.Label1.Text = "Edit Region:"
         '
         'RegionButton
         '
         Me.RegionButton.Location = New System.Drawing.Point(6, 150)
         Me.RegionButton.Name = "RegionButton"
         Me.RegionButton.Size = New System.Drawing.Size(148, 23)
-        Me.RegionButton.TabIndex = 14
+        Me.RegionButton.TabIndex = 4
         Me.RegionButton.Text = "Configure All Regions"
         Me.RegionButton.UseVisualStyleBackColor = True
         '
@@ -74,11 +74,13 @@ Partial Class FormRegions
         '
         Me.RegionBox.AutoCompleteCustomSource.AddRange(New String() {"1 Hour", "4 Hour", "12 Hour", "Daily", "Weekly"})
         Me.RegionBox.FormattingEnabled = True
-        Me.RegionBox.Items.AddRange(New Object() {"Hourly", "12 Hour", "Daily", "Weekly"})
+        Me.RegionBox.Items.AddRange(New Object() {"Choose a region"})
         Me.RegionBox.Location = New System.Drawing.Point(6, 123)
+        Me.RegionBox.MaxDropDownItems = 15
         Me.RegionBox.Name = "RegionBox"
         Me.RegionBox.Size = New System.Drawing.Size(148, 21)
-        Me.RegionBox.TabIndex = 1859
+        Me.RegionBox.Sorted = True
+        Me.RegionBox.TabIndex = 3
         '
         'RegionHelp
         '
@@ -106,7 +108,7 @@ Partial Class FormRegions
         Me.WelcomeBox1.Location = New System.Drawing.Point(4, 38)
         Me.WelcomeBox1.Name = "WelcomeBox1"
         Me.WelcomeBox1.Size = New System.Drawing.Size(148, 21)
-        Me.WelcomeBox1.TabIndex = 12
+        Me.WelcomeBox1.TabIndex = 1
         '
         'Label3
         '
@@ -121,7 +123,7 @@ Partial Class FormRegions
         Me.AddRegion.Location = New System.Drawing.Point(4, 65)
         Me.AddRegion.Name = "AddRegion"
         Me.AddRegion.Size = New System.Drawing.Size(148, 23)
-        Me.AddRegion.TabIndex = 13
+        Me.AddRegion.TabIndex = 2
         Me.AddRegion.Text = "Add Region"
         Me.AddRegion.UseVisualStyleBackColor = True
         '
@@ -131,8 +133,9 @@ Partial Class FormRegions
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.ClientSize = New System.Drawing.Size(227, 223)
         Me.Controls.Add(Me.GroupBox2)
+        Me.MaximizeBox = False
         Me.Name = "FormRegions"
-        Me.Text = "Region Setup"
+        Me.Text = "Region"
         Me.GroupBox2.ResumeLayout(False)
         Me.GroupBox2.PerformLayout()
         CType(Me.RegionHelp, System.ComponentModel.ISupportInitialize).EndInit()

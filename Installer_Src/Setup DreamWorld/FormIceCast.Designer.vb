@@ -108,7 +108,7 @@ Partial Class Icecast
         'PictureBox1
         '
         Me.PictureBox1.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.PictureBox1.Location = New System.Drawing.Point(132, 20)
+        Me.PictureBox1.Location = New System.Drawing.Point(144, 41)
         Me.PictureBox1.Name = "PictureBox1"
         Me.PictureBox1.Size = New System.Drawing.Size(40, 27)
         Me.PictureBox1.TabIndex = 1859

@@ -118,6 +118,8 @@ Public Class Form1
     ' Mysql
     Dim gStopMysql As Boolean = True
 
+    Dim FormCaches As New FormCaches
+
     'Region Form Refresh
     Public gUpdateView As Boolean = True
 
@@ -462,7 +464,7 @@ Public Class Form1
         ' WebUI
         ViewWebUI.Visible = MySetting.WifiEnabled
 
-        Me.Text = "Outworldz Dreamgrid V" + gMyVersion
+        Me.Text = "Dreamgrid V" + gMyVersion
 
         gChatTime = MySetting.ChatTime
 
@@ -537,7 +539,7 @@ Public Class Form1
         End If
 
         ' Find out if the viewer is installed
-        If System.IO.File.Exists(MyFolder & "\OutworldzFiles\Init.txt") Then
+        If System.IO.File.Exists(MyFolder & "\OutworldzFiles\Settings.txt") Then
 
 
             Buttons(StartButton)
@@ -556,24 +558,11 @@ Public Class Form1
             Create_ShortCut(MyFolder & "\Start.exe")
             BumpProgress10()
 
-
-
-            Try
-                ' mark the system as ready
-                Using outputFile As New StreamWriter(MyFolder & "\OutworldzFiles\Init.txt", True)
-                    outputFile.WriteLine("This file lets Outworldz know it has been installed")
-                End Using
-            Catch ex As Exception
-                Log("Error:Could not create Init.txt - no permissions to write it:" + ex.Message)
-            End Try
-
             Print("Ready to Launch!")
             Buttons(StartButton)
         End If
 
-
         Dim isMySqlRunning = CheckPort("127.0.0.1", CType(MySetting.MySqlPort, Integer))
-
         If isMySqlRunning Then gStopMysql = False
 
         ProgressBar1.Value = 100
@@ -704,10 +693,7 @@ Public Class Form1
         MySetting.SaveOtherINI()
 
         ProgressBar1.Value = 90
-
         Print("Hold fast to your dreams ...")
-
-
         ProgressBar1.Value = 10
 
         StopMysql()
@@ -951,7 +937,8 @@ Public Class Form1
     End Sub
 
     Private Sub MnuAbout_Click(sender As System.Object, e As System.EventArgs) Handles mnuAbout.Click
-        Print("(c) 2017 Outworldz,LLC")
+
+        Print("(c) 2017 Outworldz,LLC" + vbCrLf + "Version " + gMyVersion)
         Dim webAddress As String = gDomain + "/Outworldz_Installer"
         Process.Start(webAddress)
 
@@ -1825,77 +1812,12 @@ Public Class Form1
 
     Private Sub ClearCachesToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ClearCachesToolStripMenuItem.Click
 
-        If Not OpensimIsRunning() Then
-
-            Dim folders() = IO.Directory.GetDirectories(gPath & "bin\ScriptEngines\")
-            Print("Clearing Script cache. This may take a long time!")
-            For Each folder As String In folders
-                Dim scripts() As String = IO.Directory.GetFiles(folder)
-                Dim ctr As Integer = 0
-                For Each script As String In scripts
-                    Dim ext = Path.GetExtension(script)
-                    If ext <> ".state" Then
-                        My.Computer.FileSystem.DeleteFile(script)
-                        ctr = ctr + 1
-                        PrintFast(ctr.ToString)
-                        Application.DoEvents()
-                    End If
-                Next
-            Next
-            Print("Clearing bakes")
-            Try
-                My.Computer.FileSystem.DeleteDirectory(gPath & "bin\bakes\", FileIO.DeleteDirectoryOption.DeleteAllContents)
-            Catch
-            End Try
-        End If
-
-        Print("Clearing Asset cache. This may take a long time!")
-        Try
-            Dim folders() = IO.Directory.GetDirectories(gPath & "bin\Assetcache\")
-            Print("Clearing Asset cache.")
-            Dim ctr As Integer = 0
-            For Each folder As String In Folders
-                My.Computer.FileSystem.DeleteDirectory(folder, FileIO.DeleteDirectoryOption.DeleteAllContents)
-                ctr = ctr + 1
-                PrintFast(ctr.ToString)
-                Application.DoEvents()
-            Next
-        Catch
-        End Try
-        Try
-            Print("Clearing Image cache")
-            Dim folders() = IO.Directory.GetDirectories(gPath & "bin\j2kDecodeCache\")
-            Dim ctr = 0
-            For Each folder As String In folders
-                My.Computer.FileSystem.DeleteDirectory(gPath & "bin\j2kDecodeCache\", FileIO.DeleteDirectoryOption.DeleteAllContents)
-                ctr = ctr + 1
-                PrintFast(ctr.ToString)
-                Application.DoEvents()
-            Next
-
-        Catch
-        End Try
-
-        Try
-            Print("Clearing Mesh cache")
-            Dim folders() = IO.Directory.GetDirectories(gPath & "bin\MeshCache\")
-            Dim ctr As Integer = 0
-            For Each folder As String In folders
-                My.Computer.FileSystem.DeleteDirectory(gPath & "bin\MeshCache\", FileIO.DeleteDirectoryOption.DeleteAllContents)
-                ctr = ctr + 1
-                PrintFast(ctr.ToString)
-                Application.DoEvents()
-            Next
-        Catch
-        End Try
-
-
-        If Not OpensimIsRunning() Then
-            Print("All Server Caches cleared")
-        Else
-            Print("All Server Caches except scripts and Avatar bakes were cleared. Opensim must be stopped to clear script and bake caches.")
-        End If
-
+        ' Set the new form's desktop location so it appears below and
+        ' to the right of the current form.
+        FormCaches.Close()
+        FormCaches = New FormCaches
+        FormCaches.Activate()
+        FormCaches.Visible = True
 
     End Sub
 

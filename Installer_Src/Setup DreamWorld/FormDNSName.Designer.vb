@@ -160,7 +160,7 @@ Partial Class FormDNSName
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
         Me.Name = "FormDNSName"
-        Me.Text = "DNS Name"
+        Me.Text = "DNS Name & Hypergrid"
         Me.ToolTip1.SetToolTip(Me, "Get Help")
         CType(Me.PictureBox4, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.DynDNSPassword, System.ComponentModel.ISupportInitialize).EndInit()

@@ -1,4 +1,6 @@
-﻿Public Class FormPersonality
+﻿Imports System.Text.RegularExpressions
+
+Public Class FormPersonality
 
     Dim Sleepy As Integer = 1500
     Dim Awake As Integer = 1000
@@ -59,6 +61,8 @@
 
     Private Sub TimerInterval_TextChanged(sender As Object, e As EventArgs) Handles TimerInterval.TextChanged
 
+        Dim digitsOnly As Regex = New Regex("[^\d]")
+        TimerInterval.Text = digitsOnly.Replace(TimerInterval.Text, "")
         Try
             If Len(TimerInterval.Text) > 0 Then
 
@@ -89,7 +93,8 @@
 
     End Sub
 
-    Private Sub PictureBox4_Click(sender As Object, e As EventArgs) Handles PersonalityHelp.Click
+
+ Private Sub PictureBox4_Click(sender As Object, e As EventArgs) Handles PersonalityHelp.Click
         Form1.Help("Personality")
     End Sub
 

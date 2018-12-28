@@ -42,7 +42,7 @@ Partial Class FormPersonality
         Me.GroupBox5.Controls.Add(Me.ChatSpeed)
         Me.GroupBox5.Location = New System.Drawing.Point(12, 12)
         Me.GroupBox5.Name = "GroupBox5"
-        Me.GroupBox5.Size = New System.Drawing.Size(194, 115)
+        Me.GroupBox5.Size = New System.Drawing.Size(214, 115)
         Me.GroupBox5.TabIndex = 1864
         Me.GroupBox5.TabStop = False
         Me.GroupBox5.Text = "Personality"
@@ -99,6 +99,7 @@ Partial Class FormPersonality
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.ClientSize = New System.Drawing.Size(221, 139)
         Me.Controls.Add(Me.GroupBox5)
+        Me.MaximizeBox = False
         Me.Name = "FormPersonality"
         Me.Text = "Wallpaper"
         Me.GroupBox5.ResumeLayout(False)

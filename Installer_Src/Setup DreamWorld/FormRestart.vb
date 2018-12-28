@@ -1,6 +1,8 @@
 ﻿Imports System.Diagnostics.Debug
 Imports System.Net
 Imports System.Security.Principal
+Imports System.Text.RegularExpressions
+
 Public Class FormRestart
 
     Dim initted As Boolean = False
@@ -105,6 +107,8 @@ Public Class FormRestart
 
     Private Sub AutoRestartBox_TextChanged(sender As Object, e As EventArgs) Handles AutoRestartBox.TextChanged
 
+        Dim digitsOnly As Regex = New Regex("[^\d]")
+        AutoRestartBox.Text = digitsOnly.Replace(AutoRestartBox.Text, "")
         If initted Then
             Try
                 Form1.MySetting.AutoRestartInterval = Convert.ToInt16(AutoRestartBox.Text)
@@ -112,10 +116,6 @@ Public Class FormRestart
             Catch
             End Try
         End If
-
-    End Sub
-
-    Private Sub AutoRestart_Click(sender As Object, e As EventArgs) Handles AutoRestart.Click
 
     End Sub
 

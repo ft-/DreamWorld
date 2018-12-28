@@ -1,4 +1,6 @@
-﻿Public Class FormBackups
+﻿Imports System.Text.RegularExpressions
+
+Public Class FormBackups
 
 #Region "FormPos"
 
@@ -105,6 +107,9 @@
     End Sub
 
     Private Sub AutoBackupKeepFilesForDays_TextChanged(sender As Object, e As EventArgs) Handles AutoBackupKeepFilesForDays.TextChanged
+
+        Dim digitsOnly As Regex = New Regex("[^\d]")
+        AutoBackupKeepFilesForDays.Text = digitsOnly.Replace(AutoBackupKeepFilesForDays.Text, "")
 
         Try
             If Convert.ToInt32(AutoBackupKeepFilesForDays.Text) > 0 Then

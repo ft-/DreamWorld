@@ -2,6 +2,7 @@ V2.57
 Setting page changed to discrete Form Buttons - no more Expert screen
 Wifi pages has two themes: B&W or W&B with choosable theme image
 Add built-in Help pages 
+UpdaterGridV3 released with progress reporting.
 
 V2.56
 Possible crash fix.

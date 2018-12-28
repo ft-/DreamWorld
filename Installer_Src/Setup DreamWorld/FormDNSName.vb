@@ -136,12 +136,13 @@ Public Class FormDNSName
 
     Private Sub TestButton1_Click(sender As Object, e As EventArgs) Handles TestButton1.Click
 
-        Dim IP = Form1.DoGetHostAddresses(Form1.MySetting.DNSName)
+        Form1.RegisterName(DNSNameBox.Text)
+        Dim IP = Form1.DoGetHostAddresses(DNSNameBox.Text)
         Dim address As IPAddress = Nothing
         If IPAddress.TryParse(IP, address) Then
-            MsgBox(Form1.MySetting.DNSName + " was resolved to " + IP, vbInformation, "Test Result")
+            MsgBox(DNSNameBox.Text + " was resolved to " + IP, vbInformation, "Test Result")
         Else
-            MsgBox("Cannot resolve " + Form1.MySetting.DNSName, vbInformation, "Error")
+            MsgBox("Cannot resolve " + DNSNameBox.Text, vbInformation, "Error")
         End If
 
     End Sub

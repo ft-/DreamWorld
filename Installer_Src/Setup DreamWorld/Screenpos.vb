@@ -36,11 +36,11 @@ Public Class ScreenPos
 
 
         If ValueX < 0 Then
-            ValueX = 0
+            ValueX = 100
         End If
 
         If ValueY < 0 Then
-            ValueY = 0
+            ValueY = 100
         End If
 
         LoadXYIni()
@@ -60,10 +60,10 @@ Public Class ScreenPos
         Dim ValueXOld = CType(Data("Data")(Name + "_X"), Integer)
         Dim ValueYOld = CType(Data("Data")(Name + "_Y"), Integer)
         If ValueXOld <= 0 Then
-            ValueXOld = 0
+            ValueXOld = 100
         End If
         If ValueYOld <= 0 Then
-            ValueYOld = 0
+            ValueYOld = 100
         End If
         Dim r As New List(Of Integer)
         r.Add(ValueXOld)

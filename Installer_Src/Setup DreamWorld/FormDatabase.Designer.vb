@@ -227,6 +227,7 @@ Partial Class FormDatabase
         Me.Controls.Add(Me.BirdHelp)
         Me.Controls.Add(Me.StandaloneGroup)
         Me.Controls.Add(Me.GridGroup)
+        Me.MaximizeBox = False
         Me.Name = "FormDatabase"
         Me.Text = "Database"
         Me.StandaloneGroup.ResumeLayout(False)

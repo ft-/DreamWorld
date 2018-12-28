@@ -106,6 +106,7 @@ Partial Class FormPhysics
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.ClientSize = New System.Drawing.Size(239, 160)
         Me.Controls.Add(Me.GroupBox1)
+        Me.MaximizeBox = False
         Me.Name = "FormPhysics"
         Me.Text = "Physics"
         Me.GroupBox1.ResumeLayout(False)

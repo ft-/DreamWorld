@@ -137,7 +137,6 @@ Partial Class BirdForm
         Me.BirdsBorderSizeTextBox.Name = "BirdsBorderSizeTextBox"
         Me.BirdsBorderSizeTextBox.Size = New System.Drawing.Size(43, 20)
         Me.BirdsBorderSizeTextBox.TabIndex = 9
-        Me.BirdsBorderSizeTextBox.Text = "10"
         Me.BirdsBorderSizeTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         Me.ToolTip1.SetToolTip(Me.BirdsBorderSizeTextBox, "How close to the edges of things can we get without being worried")
         '
@@ -311,8 +310,9 @@ Partial Class BirdForm
         Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.GroupBox1)
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
+        Me.MaximizeBox = False
         Me.Name = "BirdForm"
-        Me.Text = "Global Bird Module Settings"
+        Me.Text = "Bird Module"
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
         CType(Me.BirdHelp, System.ComponentModel.ISupportInitialize).EndInit()

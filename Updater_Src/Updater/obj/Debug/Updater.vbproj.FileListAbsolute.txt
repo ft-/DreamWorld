@@ -131,3 +131,14 @@ D:\Opensim\Outworldz Dreamgrid Source\Updater_Src\Updater\bin\Debug\UpdateGrid.e
 D:\Opensim\Outworldz Dreamgrid Source\Updater_Src\Updater\bin\Debug\UpdateGrid.pdb
 D:\Opensim\Outworldz Dreamgrid Source\Updater_Src\Updater\bin\Debug\DotNetZip.dll
 D:\Opensim\Outworldz Dreamgrid Source\Updater_Src\Updater\bin\Debug\DotNetZip.xml
+F:\Opensim\Outworldz Dreamgrid Source\Updater_Src\Updater\obj\Debug\Updater.vbprojResolveAssemblyReference.cache
+F:\Opensim\Outworldz Dreamgrid Source\Updater_Src\Updater\obj\Debug\Outworldz.Resources.resources
+F:\Opensim\Outworldz Dreamgrid Source\Updater_Src\Updater\obj\Debug\Outworldz.UpdateGrid.resources
+F:\Opensim\Outworldz Dreamgrid Source\Updater_Src\Updater\obj\Debug\Updater.vbproj.GenerateResource.Cache
+F:\Opensim\Outworldz Dreamgrid Source\Updater_Src\Updater\bin\Debug\DotNetZip.dll
+F:\Opensim\Outworldz Dreamgrid Source\Updater_Src\Updater\bin\Debug\DotNetZip.xml
+F:\Opensim\Outworldz Dreamgrid Source\Updater_Src\Updater\bin\Debug\UpdateGridV3.exe.config
+F:\Opensim\Outworldz Dreamgrid Source\Updater_Src\Updater\bin\Debug\UpdateGridV3.exe
+F:\Opensim\Outworldz Dreamgrid Source\Updater_Src\Updater\bin\Debug\UpdateGridV3.pdb
+F:\Opensim\Outworldz Dreamgrid Source\Updater_Src\Updater\obj\Debug\UpdateGridV3.exe
+F:\Opensim\Outworldz Dreamgrid Source\Updater_Src\Updater\obj\Debug\UpdateGridV3.pdb

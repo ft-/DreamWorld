@@ -181,6 +181,12 @@
     <Compile Include="FormBird.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="FormCaches.Designer.vb">
+      <DependentUpon>FormCaches.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormCaches.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FormDatabase.Designer.vb">
       <DependentUpon>FormDatabase.vb</DependentUpon>
     </Compile>
@@ -347,6 +353,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormBird.resx">
       <DependentUpon>FormBird.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormCaches.resx">
+      <DependentUpon>FormCaches.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormDatabase.resx">
       <DependentUpon>FormDatabase.vb</DependentUpon>

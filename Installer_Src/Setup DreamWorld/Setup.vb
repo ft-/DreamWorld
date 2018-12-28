@@ -774,7 +774,7 @@ Public Class Form1
                     ShowWindow(p.MainWindowHandle, SHOW_WINDOW.SW_RESTORE)
                 Catch
                 End Try
-                ConsoleCommand(RegionClass.ProcessID(X), "quit{ENTER}")
+                ConsoleCommand(RegionClass.ProcessID(X), "q{ENTER}q{ENTER}")
             End If
 
             RegionClass.Booted(X) = False
@@ -845,7 +845,7 @@ Public Class Form1
         Next
 
         If gRobustProcID > 0 Then
-            ConsoleCommand(gRobustProcID, "{ENTER}q{ENTER}")
+            ConsoleCommand(gRobustProcID, "q{ENTER}q{ENTER}")
         End If
 
         ' cannot load OAR or IAR, either
@@ -3501,6 +3501,7 @@ Public Class Form1
 
             AppActivate(ProcessID)
             SendKeys.SendWait("{ENTER}")
+            AppActivate(ProcessID)
             SendKeys.SendWait(command)
 
         Catch ex As Exception
@@ -4296,7 +4297,7 @@ Public Class Form1
         If MySetting.BackupFolder = "AutoBackup" Then
             Dest = MyFolder + "\OutworldzFiles\AutoBackup\" + Foldername
         Else
-            Dest = MySetting.BackupFolder + "FolderName"
+            Dest = MySetting.BackupFolder + "\" + Foldername
         End If
         Print("Making a backup at " + Dest)
         Print("Backing up Regions Folder")

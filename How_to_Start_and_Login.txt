@@ -1,14 +1,13 @@
 
-This application requires 1 to 2 GB of free disk space and a good 3-D graphics card.   
+This application requires 2 GB of free disk space minimum, and a good 3-D graphics card.   
 
 1) Unzip the application and save everything to a folder.  Navigate to the folder and run "Start.exe"
-2) The system will install Opensimulator, the Onlook Viewer and a desktop shortcut.
+2) The system will install Opensimulator and a desktop shortcut.
 3) After the programs are installed, click "Start".
 4) If your firewall is operating as it should, a series of requests to send data through the firewall will appear. No personal data is sent anywhere when you authorize this app.
    The firewall is being programmed so the viewer and server can connect to themselves.
-5) The Onlook Viewer will appear.
-6) Follow the prompts in the DOS box to create a new user account. Use those credentials to log in with Onlook.
-7) To exit, click "Stop".  You may then click Start again, or close the app.  
+5) Follow the prompts in the DOS box to create a new user account. Use those credentials to log in with a viewer.  You must add the Grid address it shows to the viewer to log in.
+6) To exit, click "Stop".  You may then click Start again, or close the app.  
 
 The next time you wish to log in, click the icon on your desktop and click "Start".
 
@@ -24,12 +23,12 @@ This application requires 2 GB of free disk space and a good 3-D graphics card.
 
 Windows                Minimum Requirements           Recommended
 Operating System:      Windows 7                      Windows 7, 8, or 10
-Computer Processor:    CPU with SSE2 support,         Quad core CPU at 2 GHZ
+Computer Processor:    CPU with SSE2 support,         Quad core CPU at 2-3 GHZ
                        including Intel Pentium 4, 
                        Pentium M, Core or Atom, 
                        AMD Athlon 64 or later.
                                                        
-Computer Memory:        2 GB or more                 8 GB 
+Computer Memory:        8 GB or more                 16 GB 
 Screen Resolution:      1024x768 pixels              1024x768 pixels or higher
 
 Nvidia GeForce 6600 or better
