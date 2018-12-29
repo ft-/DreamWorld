@@ -84,6 +84,10 @@
         End If
     End Sub
 
+    Private Sub GodHelp_Click(sender As Object, e As EventArgs) Handles GodHelp.Click
+        Form1.Help("Physics")
+    End Sub
+
 #End Region
 
 

@@ -45,8 +45,7 @@ Public Class FormRestart
 
     Private Sub RunOnBoot_Click_1(sender As Object, e As EventArgs) Handles RunOnBoot.Click
 
-        Dim webAddress As String = Form1.gDomain + "/Outworldz_installer/technical.htm#RunOnBoot"
-        Process.Start(webAddress)
+        Form1.Help("Restart")
 
     End Sub
 
@@ -71,7 +70,7 @@ Public Class FormRestart
                     Form1.MySetting.Autostart = True
                     Form1.MySetting.SaveSettings()
                 Catch ex As Exception
-                    Form1.Log("Error:Process Task failed to launch:" + ex.Message)
+                    Form1.Log("Error:Scheduled Task failed to launch:" + ex.Message)
                 End Try
             Else
                 pi.Arguments = "/Delete /TN DreamGrid"
@@ -79,13 +78,14 @@ Public Class FormRestart
                 Try
                     ProcessTask.Start()
                 Catch ex As Exception
-                    Form1.Log("Error:Process Task Delete failed to launch:" + ex.Message)
+                    Form1.Log("Error:Scheduled Task Delete failed:" + ex.Message)
                 End Try
 
             End If
 
         Else
             MsgBox("DreamGrid must be started in Administrator mode to setup a scheduled task. Right click the icon and select Run As Administrator.", vbInformation, "Escalation Needed")
+            BootStart.Checked = False
         End If
 
     End Sub

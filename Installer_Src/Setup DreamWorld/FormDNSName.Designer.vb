@@ -28,14 +28,13 @@ Partial Class FormDNSName
         Me.SaveButton = New System.Windows.Forms.Button()
         Me.NextNameButton = New System.Windows.Forms.Button()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
-        Me.PictureBox4 = New System.Windows.Forms.PictureBox()
         Me.TestButton1 = New System.Windows.Forms.Button()
         Me.EnableHypergrid = New System.Windows.Forms.CheckBox()
         Me.DynDNSPassword = New System.Windows.Forms.PictureBox()
         Me.UniqueId = New System.Windows.Forms.TextBox()
         Me.SuitcaseCheckbox = New System.Windows.Forms.CheckBox()
         Me.Label1 = New System.Windows.Forms.Label()
-        CType(Me.PictureBox4, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.Label2 = New System.Windows.Forms.Label()
         CType(Me.DynDNSPassword, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -72,16 +71,6 @@ Partial Class FormDNSName
         Me.ToolTip1.ToolTipTitle = "If marked Public, this sim will be published to an online directory so others peo" &
     "pkle on the hypergrid can find it."
         '
-        'PictureBox4
-        '
-        Me.PictureBox4.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.PictureBox4.Location = New System.Drawing.Point(287, 123)
-        Me.PictureBox4.Name = "PictureBox4"
-        Me.PictureBox4.Size = New System.Drawing.Size(28, 32)
-        Me.PictureBox4.TabIndex = 1859
-        Me.PictureBox4.TabStop = False
-        Me.ToolTip1.SetToolTip(Me.PictureBox4, "Click for Help on DNS Names")
-        '
         'TestButton1
         '
         Me.TestButton1.Location = New System.Drawing.Point(120, 167)
@@ -106,16 +95,16 @@ Partial Class FormDNSName
         'DynDNSPassword
         '
         Me.DynDNSPassword.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.DynDNSPassword.Location = New System.Drawing.Point(227, 61)
+        Me.DynDNSPassword.Location = New System.Drawing.Point(132, 6)
         Me.DynDNSPassword.Name = "DynDNSPassword"
         Me.DynDNSPassword.Size = New System.Drawing.Size(30, 34)
         Me.DynDNSPassword.TabIndex = 1864
         Me.DynDNSPassword.TabStop = False
-        Me.ToolTip1.SetToolTip(Me.DynDNSPassword, "This ID reserves your DYNDNS name. ")
+        Me.ToolTip1.SetToolTip(Me.DynDNSPassword, "Click for Help")
         '
         'UniqueId
         '
-        Me.UniqueId.Location = New System.Drawing.Point(120, 91)
+        Me.UniqueId.Location = New System.Drawing.Point(132, 91)
         Me.UniqueId.Name = "UniqueId"
         Me.UniqueId.Size = New System.Drawing.Size(101, 20)
         Me.UniqueId.TabIndex = 1865
@@ -135,24 +124,33 @@ Partial Class FormDNSName
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(12, 94)
+        Me.Label1.Location = New System.Drawing.Point(24, 94)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(93, 13)
+        Me.Label1.Size = New System.Drawing.Size(97, 13)
         Me.Label1.TabIndex = 1866
-        Me.Label1.Text = "DynDns password"
+        Me.Label1.Text = "DynDNS password"
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Location = New System.Drawing.Point(24, 119)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(61, 13)
+        Me.Label2.TabIndex = 1868
+        Me.Label2.Text = "DNS Name"
         '
         'FormDNSName
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.ClientSize = New System.Drawing.Size(327, 235)
+        Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.SuitcaseCheckbox)
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.EnableHypergrid)
         Me.Controls.Add(Me.DynDNSPassword)
         Me.Controls.Add(Me.UniqueId)
         Me.Controls.Add(Me.TestButton1)
-        Me.Controls.Add(Me.PictureBox4)
         Me.Controls.Add(Me.NextNameButton)
         Me.Controls.Add(Me.SaveButton)
         Me.Controls.Add(Me.DNSNameBox)
@@ -162,7 +160,6 @@ Partial Class FormDNSName
         Me.Name = "FormDNSName"
         Me.Text = "DNS Name & Hypergrid"
         Me.ToolTip1.SetToolTip(Me, "Get Help")
-        CType(Me.PictureBox4, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.DynDNSPassword, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
@@ -172,11 +169,11 @@ Partial Class FormDNSName
     Friend WithEvents SaveButton As Button
     Friend WithEvents NextNameButton As Button
     Friend WithEvents ToolTip1 As ToolTip
-    Friend WithEvents PictureBox4 As PictureBox
     Friend WithEvents TestButton1 As Button
     Friend WithEvents EnableHypergrid As CheckBox
     Friend WithEvents DynDNSPassword As PictureBox
     Friend WithEvents UniqueId As TextBox
     Friend WithEvents Label1 As Label
     Friend WithEvents SuitcaseCheckbox As CheckBox
+    Friend WithEvents Label2 As Label
 End Class

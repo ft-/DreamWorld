@@ -105,8 +105,7 @@ Public Class FormPorts
 
     Private Sub Upnp_Click(sender As Object, e As EventArgs) Handles Upnp.Click
 
-        Dim webAddress As String = Form1.gDomain + "/Outworldz_installer/technical.htm#Upnp"
-        Process.Start(webAddress)
+        Form1.Help("Ports")
 
     End Sub
 

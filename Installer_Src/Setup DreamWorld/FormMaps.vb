@@ -40,8 +40,7 @@ Public Class FormMaps
 
     Private Sub MapHelp_Click(sender As Object, e As EventArgs) Handles MapHelp.Click
 
-        Dim webAddress As String = Form1.gDomain + "/Outworldz_installer/technical.htm#Maps"
-        Process.Start(webAddress)
+        Form1.Help("Maps")
 
     End Sub
 
@@ -84,4 +83,15 @@ Public Class FormMaps
 
     End Sub
 
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+
+        Try
+            Form1.Print("Clearing Maptiles")
+            My.Computer.FileSystem.DeleteDirectory(Form1.gPath & "bin\Maptiles\", FileIO.DeleteDirectoryOption.DeleteAllContents)
+        Catch
+            Return
+        End Try
+        Form1.Print("Maptiles cleared. Set maps on and reboot to make new maps")
+
+    End Sub
 End Class

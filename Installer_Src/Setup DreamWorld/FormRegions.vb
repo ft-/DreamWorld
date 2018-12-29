@@ -133,5 +133,7 @@
 
     End Sub
 
-
+    Private Sub RegionHelp_Click(sender As Object, e As EventArgs) Handles RegionHelp.Click
+        Form1.Help("Regions")
+    End Sub
 End Class

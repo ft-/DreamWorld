@@ -147,7 +147,7 @@ Public Class FormDNSName
 
     End Sub
 
-    Private Sub PictureBox4_Click(sender As Object, e As EventArgs) Handles PictureBox4.Click
+    Private Sub PictureBox4_Click(sender As Object, e As EventArgs)
         '!!!
         Dim webAddress As String = Form1.gDomain + "/Outworldz_installer/technical.htm#DNSHelp"
         Process.Start(webAddress)
@@ -189,6 +189,11 @@ Public Class FormDNSName
         End If
 
     End Sub
+
+    Private Sub DynDNSPassword_Click(sender As Object, e As EventArgs) Handles DynDNSPassword.Click
+        Form1.Help("DNS")
+    End Sub
+
 
 
 

@@ -64,7 +64,7 @@ Public Class FormCaches
                     Dim ctr As Integer = 0
                     For Each script As String In scripts
                         Dim ext = Path.GetExtension(script)
-                        If ext <> ".state" Then
+                        If ext.ToLower <> ".state" Then
                             My.Computer.FileSystem.DeleteFile(script)
                             ctr = ctr + 1
                             Form1.PrintFast(ctr.ToString)
@@ -108,7 +108,7 @@ Public Class FormCaches
                 Dim folders() = IO.Directory.GetDirectories(Form1.gPath & "bin\j2kDecodeCache\")
                 Dim ctr = 0
                 For Each folder As String In folders
-                    My.Computer.FileSystem.DeleteDirectory(Form1.gPath & "bin\j2kDecodeCache\", FileIO.DeleteDirectoryOption.DeleteAllContents)
+                    My.Computer.FileSystem.DeleteDirectory(folder, FileIO.DeleteDirectoryOption.DeleteAllContents)
                     ctr = ctr + 1
                     Form1.PrintFast(ctr.ToString)
                     Application.DoEvents()

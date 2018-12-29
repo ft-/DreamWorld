@@ -28,11 +28,14 @@ Partial Class FormPhysics
         Me.PhysicsubODE = New System.Windows.Forms.RadioButton()
         Me.PhysicsBullet = New System.Windows.Forms.RadioButton()
         Me.PhysicsODE = New System.Windows.Forms.RadioButton()
+        Me.GodHelp = New System.Windows.Forms.PictureBox()
         Me.GroupBox1.SuspendLayout()
+        CType(Me.GodHelp, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.GodHelp)
         Me.GroupBox1.Controls.Add(Me.PhysicsSeparate)
         Me.GroupBox1.Controls.Add(Me.PhysicsNone)
         Me.GroupBox1.Controls.Add(Me.PhysicsubODE)
@@ -100,6 +103,15 @@ Partial Class FormPhysics
         Me.PhysicsODE.Text = "Open Dynamics Engine"
         Me.PhysicsODE.UseVisualStyleBackColor = True
         '
+        'GodHelp
+        '
+        Me.GodHelp.Image = Global.Outworldz.My.Resources.Resources.about
+        Me.GodHelp.Location = New System.Drawing.Point(148, 16)
+        Me.GodHelp.Name = "GodHelp"
+        Me.GodHelp.Size = New System.Drawing.Size(30, 34)
+        Me.GodHelp.TabIndex = 1858
+        Me.GodHelp.TabStop = False
+        '
         'FormPhysics
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
@@ -111,6 +123,7 @@ Partial Class FormPhysics
         Me.Text = "Physics"
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
+        CType(Me.GodHelp, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -121,4 +134,5 @@ Partial Class FormPhysics
     Friend WithEvents PhysicsubODE As RadioButton
     Friend WithEvents PhysicsBullet As RadioButton
     Friend WithEvents PhysicsODE As RadioButton
+    Friend WithEvents GodHelp As PictureBox
 End Class

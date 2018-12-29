@@ -98,7 +98,7 @@ Partial Class AdvancedForm
         '
         'MapsButton
         '
-        Me.MapsButton.Location = New System.Drawing.Point(6, 210)
+        Me.MapsButton.Location = New System.Drawing.Point(8, 210)
         Me.MapsButton.Name = "MapsButton"
         Me.MapsButton.Size = New System.Drawing.Size(143, 23)
         Me.MapsButton.TabIndex = 22
@@ -148,7 +148,7 @@ Partial Class AdvancedForm
         '
         'PortsButton1
         '
-        Me.PortsButton1.Location = New System.Drawing.Point(4, 239)
+        Me.PortsButton1.Location = New System.Drawing.Point(8, 239)
         Me.PortsButton1.Name = "PortsButton1"
         Me.PortsButton1.Size = New System.Drawing.Size(145, 23)
         Me.PortsButton1.TabIndex = 26
@@ -189,7 +189,7 @@ Partial Class AdvancedForm
         '
         'Button2
         '
-        Me.Button2.Location = New System.Drawing.Point(4, 269)
+        Me.Button2.Location = New System.Drawing.Point(8, 268)
         Me.Button2.Name = "Button2"
         Me.Button2.Size = New System.Drawing.Size(143, 23)
         Me.Button2.TabIndex = 31
@@ -199,7 +199,7 @@ Partial Class AdvancedForm
         '
         'DNSButton
         '
-        Me.DNSButton.Location = New System.Drawing.Point(6, 152)
+        Me.DNSButton.Location = New System.Drawing.Point(8, 152)
         Me.DNSButton.Name = "DNSButton"
         Me.DNSButton.Size = New System.Drawing.Size(143, 23)
         Me.DNSButton.TabIndex = 30

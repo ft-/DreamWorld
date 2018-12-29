@@ -73,5 +73,7 @@
         Form1.MySetting.SaveOtherINI()
     End Sub
 
-
+    Private Sub RunOnBoot_Click(sender As Object, e As EventArgs) Handles RunOnBoot.Click
+        Form1.Help("Tides")
+    End Sub
 End Class
