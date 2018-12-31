@@ -177,7 +177,7 @@ Public Class FormDiva
         Form1.MySetting.SaveSettings()
 
         If Form1.OpensimIsRunning() Then
-            Form1.ConsoleCommand(Form1.gRobustProcID, "reset user password Wifi Admin " + Form1.MySetting.Password + "{Enter}")
+            Form1.ConsoleCommand(Form1.gRobustProcID, "reset user password Wifi Admin " + Form1.MySetting.Password + "{ENTER}")
         End If
 
     End Sub

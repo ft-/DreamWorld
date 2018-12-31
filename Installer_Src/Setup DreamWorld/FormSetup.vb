@@ -772,7 +772,7 @@ Public Class Form1
                     ShowWindow(p.MainWindowHandle, SHOW_WINDOW.SW_RESTORE)
                 Catch
                 End Try
-                ConsoleCommand(RegionClass.ProcessID(X), "quit{ENTER}")
+                ConsoleCommand(RegionClass.ProcessID(X), "q{ENTER}")
             End If
 
             RegionClass.Booted(X) = False
@@ -3754,7 +3754,7 @@ Public Class Form1
                 For Each Y In RegionClass.RegionListByGroupNum(Group)
                     ConsoleCommand(RegionClass.ProcessID(Y), "alert CPU Intensive Backup Started{ENTER}")
                     ConsoleCommand(RegionClass.ProcessID(Y), "change region " + """" + chosen + """" + "{ENTER}")
-                    ConsoleCommand(RegionClass.ProcessID(Y), "save oar " + """" + BackupPath() + RegionClass.RegionName(Y) + "_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
+                    ConsoleCommand(RegionClass.ProcessID(Y), "save oar " + """" + BackupPath() + RegionClass.RegionName(Y) + "_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{ENTER}")
                 Next
             End If
             Me.Focus()
@@ -3794,10 +3794,10 @@ Public Class Form1
                     Dim Group = RegionClass.GroupName(n)
                     For Each Y In RegionClass.RegionListByGroupNum(Group)
 
-                        ConsoleCommand(RegionClass.ProcessID(Y), "change region " + chosen + "{Enter}")
+                        ConsoleCommand(RegionClass.ProcessID(Y), "change region " + chosen + "{ENTER}")
                         If backMeUp = vbYes Then
                             ConsoleCommand(RegionClass.ProcessID(Y), "alert CPU Intensive Backup Started{ENTER}")
-                            ConsoleCommand(RegionClass.ProcessID(Y), "save oar  " + """" + BackupPath() + "Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
+                            ConsoleCommand(RegionClass.ProcessID(Y), "save oar  " + """" + BackupPath() + "Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{ENTER}")
                         End If
                         ConsoleCommand(RegionClass.ProcessID(Y), "alert New content Is loading..{ENTER}")
                         ConsoleCommand(RegionClass.ProcessID(Y), "load oar --force-terrain --force-parcels " + """" + thing + """" + "{ENTER}")
@@ -3860,8 +3860,8 @@ Public Class Form1
 
                 For Each Y In RegionClass.RegionListByGroupNum(Group)
                     If Not L.Contains(RegionClass.RegionName(Y)) Then
-                        ConsoleCommand(RegionClass.ProcessID(n), "change region " + """" + RegionClass.RegionName(Y) + """" + "{Enter}")
-                        ConsoleCommand(RegionClass.ProcessID(n), "save oar  " + """" + BackupPath() + RegionClass.RegionName(Y) + "_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
+                        ConsoleCommand(RegionClass.ProcessID(n), "change region " + """" + RegionClass.RegionName(Y) + """" + "{ENTER}")
+                        ConsoleCommand(RegionClass.ProcessID(n), "save oar  " + """" + BackupPath() + RegionClass.RegionName(Y) + "_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{ENTER}")
 
                         L.Add(RegionClass.RegionName(Y))
                     End If
@@ -4017,7 +4017,7 @@ Public Class Form1
                     ConsoleCommand(RegionClass.ProcessID(Y), "change region " + region + "{ENTER}")
                     If backMeUp = vbYes Then
                         ConsoleCommand(RegionClass.ProcessID(Y), "alert CPU Intensive Backup Started {ENTER}")
-                        ConsoleCommand(RegionClass.ProcessID(Y), "save oar " + """" + BackupPath() + "Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
+                        ConsoleCommand(RegionClass.ProcessID(Y), "save oar " + """" + BackupPath() + "Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{ENTER}")
                     End If
                     ConsoleCommand(RegionClass.ProcessID(Y), "alert New content Is loading ...{ENTER}")
                     ConsoleCommand(RegionClass.ProcessID(Y), "load oar --force-terrain --force-parcels " + """" + thing + """" + "{ENTER}")
@@ -4438,10 +4438,10 @@ Public Class Form1
             End If
 
         Catch ex As Exception
-                Print("Hmm, I cannot reach the Internet? Uh. Okay, continuing." + ex.Message)
-                MySetting.DiagFailed = True
-                Log("Info:Public IP=" + "127.0.0.1")
-            End Try
+            Print("Hmm, I cannot reach the Internet? Uh. Okay, continuing." + ex.Message)
+            MySetting.DiagFailed = True
+            Log("Info:Public IP=" + "127.0.0.1")
+        End Try
 
         MySetting.PublicIP = MyUPnpMap.LocalIP
         MySetting.SaveSettings()
