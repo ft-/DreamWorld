@@ -118,6 +118,8 @@ Partial Class Form1
         Me.LogButton = New System.Windows.Forms.Button()
         Me.IgnoreButton = New System.Windows.Forms.Button()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.HelpStartingUpToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.HelpStartingUpToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuStrip1.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -228,7 +230,7 @@ Partial Class Form1
         '
         'HelpToolStripMenuItem
         '
-        Me.HelpToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ShowHyperGridAddressToolStripMenuItem, Me.ToolStripSeparator1, Me.ConsoleCOmmandsToolStripMenuItem1, Me.LoopBackToolStripMenuItem, Me.ToolStripMenuItem1, Me.HelpOnIARSToolStripMenuItem, Me.HelpOnOARsToolStripMenuItem, Me.TechnicalInfoToolStripMenuItem, Me.TroubleshootingToolStripMenuItem, Me.ToolStripSeparator2, Me.CommonConsoleCommandsToolStripMenuItem, Me.SimulatorStatsToolStripMenuItem, Me.ViewWebUI, Me.ViewIcecastWebPageToolStripMenuItem, Me.ToolStripSeparator4, Me.ClearCachesToolStripMenuItem, Me.DiagnosticsToolStripMenuItem, Me.ToolStripMenuItem2, Me.CHeckForUpdatesToolStripMenuItem, Me.ToolStripSeparator5, Me.mnuAbout})
+        Me.HelpToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ShowHyperGridAddressToolStripMenuItem, Me.ToolStripSeparator1, Me.ConsoleCOmmandsToolStripMenuItem1, Me.HelpStartingUpToolStripMenuItem1, Me.LoopBackToolStripMenuItem, Me.ToolStripMenuItem1, Me.HelpOnIARSToolStripMenuItem, Me.HelpOnOARsToolStripMenuItem, Me.TechnicalInfoToolStripMenuItem, Me.TroubleshootingToolStripMenuItem, Me.ToolStripSeparator2, Me.CommonConsoleCommandsToolStripMenuItem, Me.SimulatorStatsToolStripMenuItem, Me.ViewWebUI, Me.ViewIcecastWebPageToolStripMenuItem, Me.ToolStripSeparator4, Me.ClearCachesToolStripMenuItem, Me.DiagnosticsToolStripMenuItem, Me.ToolStripMenuItem2, Me.CHeckForUpdatesToolStripMenuItem, Me.ToolStripSeparator5, Me.mnuAbout, Me.HelpStartingUpToolStripMenuItem})
         Me.HelpToolStripMenuItem.Name = "HelpToolStripMenuItem"
         Me.HelpToolStripMenuItem.Size = New System.Drawing.Size(44, 20)
         Me.HelpToolStripMenuItem.Text = "Help"
@@ -790,6 +792,21 @@ Partial Class Form1
         Me.PictureBox1.TabIndex = 27
         Me.PictureBox1.TabStop = False
         '
+        'HelpStartingUpToolStripMenuItem
+        '
+        Me.HelpStartingUpToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.box_tall
+        Me.HelpStartingUpToolStripMenuItem.Name = "HelpStartingUpToolStripMenuItem"
+        Me.HelpStartingUpToolStripMenuItem.Size = New System.Drawing.Size(269, 26)
+        Me.HelpStartingUpToolStripMenuItem.Text = "Help Starting Up"
+        '
+        'HelpStartingUpToolStripMenuItem1
+        '
+        Me.HelpStartingUpToolStripMenuItem1.Image = Global.Outworldz.My.Resources.Resources.box_tall
+        Me.HelpStartingUpToolStripMenuItem1.Name = "HelpStartingUpToolStripMenuItem1"
+        Me.HelpStartingUpToolStripMenuItem1.ShortcutKeys = CType((System.Windows.Forms.Keys.Alt Or System.Windows.Forms.Keys.D1), System.Windows.Forms.Keys)
+        Me.HelpStartingUpToolStripMenuItem1.Size = New System.Drawing.Size(269, 26)
+        Me.HelpStartingUpToolStripMenuItem1.Text = "Help Starting Up"
+        '
         'Form1
         '
         Me.AllowDrop = True
@@ -930,4 +947,6 @@ Partial Class Form1
     Friend WithEvents TechnicalInfoToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents TroubleshootingToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents CheckAndRepairDatbaseToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents HelpStartingUpToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents HelpStartingUpToolStripMenuItem1 As ToolStripMenuItem
 End Class

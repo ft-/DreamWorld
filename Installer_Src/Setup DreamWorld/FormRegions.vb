@@ -25,7 +25,7 @@
 
         LoadWelcomeBox()
         LoadRegionBox()
-
+        Form1.HelpOnce("Regions")
         SetScreen()
 
     End Sub

@@ -23,6 +23,7 @@ Partial Class FormBackups
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FormBackups))
         Me.GroupBox3 = New System.Windows.Forms.GroupBox()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.AutoBackupHelp = New System.Windows.Forms.PictureBox()
@@ -149,6 +150,7 @@ Partial Class FormBackups
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.ClientSize = New System.Drawing.Size(278, 218)
         Me.Controls.Add(Me.GroupBox3)
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
         Me.Name = "FormBackups"
         Me.Text = "Backups"

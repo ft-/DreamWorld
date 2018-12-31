@@ -24,6 +24,7 @@ Partial Class FormVoice
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FormVoice))
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.RunOnBoot = New System.Windows.Forms.PictureBox()
         Me.RequestPassword = New System.Windows.Forms.Button()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
@@ -31,10 +32,12 @@ Partial Class FormVoice
         Me.VivoxPassword = New System.Windows.Forms.TextBox()
         Me.VivoxUserName = New System.Windows.Forms.TextBox()
         Me.GroupBox1.SuspendLayout()
+        CType(Me.RunOnBoot, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.RunOnBoot)
         Me.GroupBox1.Controls.Add(Me.RequestPassword)
         Me.GroupBox1.Controls.Add(Me.Label2)
         Me.GroupBox1.Controls.Add(Me.Label1)
@@ -48,13 +51,22 @@ Partial Class FormVoice
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Vivox Voice"
         '
+        'RunOnBoot
+        '
+        Me.RunOnBoot.Image = Global.Outworldz.My.Resources.Resources.about
+        Me.RunOnBoot.Location = New System.Drawing.Point(180, 7)
+        Me.RunOnBoot.Name = "RunOnBoot"
+        Me.RunOnBoot.Size = New System.Drawing.Size(30, 34)
+        Me.RunOnBoot.TabIndex = 1861
+        Me.RunOnBoot.TabStop = False
+        '
         'RequestPassword
         '
         Me.RequestPassword.Location = New System.Drawing.Point(6, 18)
         Me.RequestPassword.Name = "RequestPassword"
-        Me.RequestPassword.Size = New System.Drawing.Size(225, 23)
+        Me.RequestPassword.Size = New System.Drawing.Size(168, 23)
         Me.RequestPassword.TabIndex = 0
-        Me.RequestPassword.Text = "Click to Request a Free Voice Service"
+        Me.RequestPassword.Text = "Click to Request Voice Service"
         Me.RequestPassword.UseVisualStyleBackColor = True
         '
         'Label2
@@ -112,6 +124,7 @@ Partial Class FormVoice
         Me.Text = "Vivox Voice"
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
+        CType(Me.RunOnBoot, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -123,4 +136,5 @@ Partial Class FormVoice
     Friend WithEvents VivoxPassword As TextBox
     Friend WithEvents VivoxUserName As TextBox
     Friend WithEvents RequestPassword As Button
+    Friend WithEvents RunOnBoot As PictureBox
 End Class

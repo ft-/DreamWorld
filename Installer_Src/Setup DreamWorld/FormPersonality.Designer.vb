@@ -23,6 +23,7 @@ Partial Class FormPersonality
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FormPersonality))
         Me.GroupBox5 = New System.Windows.Forms.GroupBox()
         Me.PersonalityHelp = New System.Windows.Forms.PictureBox()
         Me.Label15 = New System.Windows.Forms.Label()
@@ -99,6 +100,7 @@ Partial Class FormPersonality
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.ClientSize = New System.Drawing.Size(221, 139)
         Me.Controls.Add(Me.GroupBox5)
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
         Me.Name = "FormPersonality"
         Me.Text = "Wallpaper"

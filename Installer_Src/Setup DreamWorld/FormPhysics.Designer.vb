@@ -22,13 +22,14 @@ Partial Class FormPhysics
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FormPhysics))
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.GodHelp = New System.Windows.Forms.PictureBox()
         Me.PhysicsSeparate = New System.Windows.Forms.RadioButton()
         Me.PhysicsNone = New System.Windows.Forms.RadioButton()
         Me.PhysicsubODE = New System.Windows.Forms.RadioButton()
         Me.PhysicsBullet = New System.Windows.Forms.RadioButton()
         Me.PhysicsODE = New System.Windows.Forms.RadioButton()
-        Me.GodHelp = New System.Windows.Forms.PictureBox()
         Me.GroupBox1.SuspendLayout()
         CType(Me.GodHelp, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -47,6 +48,15 @@ Partial Class FormPhysics
         Me.GroupBox1.TabIndex = 43
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Physics Engine"
+        '
+        'GodHelp
+        '
+        Me.GodHelp.Image = Global.Outworldz.My.Resources.Resources.about
+        Me.GodHelp.Location = New System.Drawing.Point(148, 16)
+        Me.GodHelp.Name = "GodHelp"
+        Me.GodHelp.Size = New System.Drawing.Size(30, 34)
+        Me.GodHelp.TabIndex = 1858
+        Me.GodHelp.TabStop = False
         '
         'PhysicsSeparate
         '
@@ -103,21 +113,13 @@ Partial Class FormPhysics
         Me.PhysicsODE.Text = "Open Dynamics Engine"
         Me.PhysicsODE.UseVisualStyleBackColor = True
         '
-        'GodHelp
-        '
-        Me.GodHelp.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.GodHelp.Location = New System.Drawing.Point(148, 16)
-        Me.GodHelp.Name = "GodHelp"
-        Me.GodHelp.Size = New System.Drawing.Size(30, 34)
-        Me.GodHelp.TabIndex = 1858
-        Me.GodHelp.TabStop = False
-        '
         'FormPhysics
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.ClientSize = New System.Drawing.Size(239, 160)
         Me.Controls.Add(Me.GroupBox1)
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
         Me.Name = "FormPhysics"
         Me.Text = "Physics"

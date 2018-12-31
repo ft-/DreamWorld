@@ -6,18 +6,19 @@
         'Me.Text = "Form screen position = " + Me.Location.ToString
         ScreenPosition.SaveXY(Me.Left, Me.Top)
     End Sub
-    Private Sub SetScreen()
+    Private Sub SetScreen(Webpage As String)
         Me.Show()
+        Me.Name = Webpage
         ScreenPosition = New ScreenPos(Me.Name)
         AddHandler ResizeEnd, Handler
         Dim xy As List(Of Integer) = ScreenPosition.GetXY()
-        Me.Left = xy.Item(0)
-        Me.Top = xy.Item(1)
+        Me.Left = xy.Item(0) + 25
+        Me.Top = xy.Item(1) + 25
     End Sub
 
     Public Sub Init(Webpage As String)
 
-        SetScreen()
+        SetScreen(Webpage)
 
         Try
             Dim Page As String = Form1.MyFolder + "\Outworldzfiles\Help\" + Webpage + ".rtf"

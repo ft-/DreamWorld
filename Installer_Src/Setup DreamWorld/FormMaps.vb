@@ -33,7 +33,7 @@ Public Class FormMaps
             MapBest.Checked = True
             MapPicture.Image = My.Resources.Best
         End If
-
+        Form1.HelpOnce("Maps")
         SetScreen()
 
     End Sub

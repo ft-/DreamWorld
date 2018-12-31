@@ -23,7 +23,7 @@
 
 #End Region
 
-    Private Sub Phuysics_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Private Sub Physics_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 
         SetScreen()
 
@@ -36,10 +36,11 @@
             Case Else : PhysicsSeparate.Checked = True
         End Select
 
-
+        Form1.HelpOnce("Physics")
         initted = True
 
     End Sub
+
 
 
 #Region "Physics"

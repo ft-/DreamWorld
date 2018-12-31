@@ -35,6 +35,7 @@ Public Class Icecast
         AdminPassword.UseSystemPasswordChar = True
         ShoutcastPassword.UseSystemPasswordChar = True
         SetScreen()
+        Form1.HelpOnce("Icecast")
 
     End Sub
 

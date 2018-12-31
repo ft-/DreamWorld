@@ -29,7 +29,7 @@ Public Class FormRestart
         AutoStartCheckbox.Checked = Form1.MySetting.Autostart
         BootStart.Checked = Form1.MySetting.BootStart
         SetScreen()
-
+        Form1.HelpOnce("Restart")
         initted = True ' suppress the install of the startup on formload
     End Sub
 

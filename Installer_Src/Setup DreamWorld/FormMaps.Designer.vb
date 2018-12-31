@@ -24,6 +24,7 @@ Partial Class FormMaps
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FormMaps))
         Me.MapBox = New System.Windows.Forms.GroupBox()
+        Me.Button1 = New System.Windows.Forms.Button()
         Me.MapHelp = New System.Windows.Forms.PictureBox()
         Me.MapPicture = New System.Windows.Forms.PictureBox()
         Me.MapNone = New System.Windows.Forms.RadioButton()
@@ -31,7 +32,6 @@ Partial Class FormMaps
         Me.MapBetter = New System.Windows.Forms.RadioButton()
         Me.MapBest = New System.Windows.Forms.RadioButton()
         Me.MapGood = New System.Windows.Forms.RadioButton()
-        Me.Button1 = New System.Windows.Forms.Button()
         Me.MapBox.SuspendLayout()
         CType(Me.MapHelp, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.MapPicture, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -53,6 +53,15 @@ Partial Class FormMaps
         Me.MapBox.TabIndex = 1866
         Me.MapBox.TabStop = False
         Me.MapBox.Text = "Maps"
+        '
+        'Button1
+        '
+        Me.Button1.Location = New System.Drawing.Point(25, 265)
+        Me.Button1.Name = "Button1"
+        Me.Button1.Size = New System.Drawing.Size(115, 23)
+        Me.Button1.TabIndex = 1858
+        Me.Button1.Text = "Delete All Maps"
+        Me.Button1.UseVisualStyleBackColor = True
         '
         'MapHelp
         '
@@ -129,15 +138,6 @@ Partial Class FormMaps
         Me.MapGood.Text = "Good (Warp3D)"
         Me.MapGood.UseVisualStyleBackColor = True
         '
-        'Button1
-        '
-        Me.Button1.Location = New System.Drawing.Point(25, 265)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(115, 23)
-        Me.Button1.TabIndex = 1858
-        Me.Button1.Text = "Delete All Maps"
-        Me.Button1.UseVisualStyleBackColor = True
-        '
         'FormMaps
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
@@ -145,6 +145,7 @@ Partial Class FormMaps
         Me.AutoSize = True
         Me.ClientSize = New System.Drawing.Size(201, 324)
         Me.Controls.Add(Me.MapBox)
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
         Me.Name = "FormMaps"
         Me.Text = "Maps"

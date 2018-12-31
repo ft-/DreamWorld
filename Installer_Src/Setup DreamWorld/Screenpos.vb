@@ -30,18 +30,8 @@ Public Class ScreenPos
 
     Public Sub SaveXY(ValueX As Integer, ValueY As Integer)
 
-
         Dim ValueXOld = CType(Data("Data")(Name + "_X"), Integer)
         Dim ValueYOld = CType(Data("Data")(Name + "_Y"), Integer)
-
-
-        If ValueX < 0 Then
-            ValueX = 100
-        End If
-
-        If ValueY < 0 Then
-            ValueY = 100
-        End If
 
         LoadXYIni()
         SetXYIni("Data", Name + "_X", ValueX.ToString)
@@ -51,7 +41,13 @@ Public Class ScreenPos
         Debug.Print("Y>" + ValueY.ToString)
 
     End Sub
-
+    Public Function Exists() As Boolean
+        Dim Value = CType(Data("Data")(Name + "_Initted"), Integer)
+        SetXYIni("Data", Name + "_Initted", "1")
+        SaveXYSettings()
+        If Value = 0 Then Return False
+        Return True
+    End Function
     Public Function GetXY() As List(Of Integer)
 
         Dim screenWidth As Integer = Screen.PrimaryScreen.Bounds.Width
@@ -62,9 +58,18 @@ Public Class ScreenPos
         If ValueXOld <= 0 Then
             ValueXOld = 100
         End If
+        If ValueXOld > screenWidth Then
+            ValueXOld = screenWidth - 100
+        End If
         If ValueYOld <= 0 Then
             ValueYOld = 100
         End If
+        If ValueYOld > screenHeight Then
+            ValueYOld = screenHeight - 100
+        End If
+
+        SaveXY(ValueXOld, ValueYOld)
+
         Dim r As New List(Of Integer)
         r.Add(ValueXOld)
         r.Add(ValueYOld)

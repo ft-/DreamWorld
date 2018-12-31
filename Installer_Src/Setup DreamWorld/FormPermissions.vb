@@ -39,7 +39,7 @@
         DomainUpDown1.SelectedIndex = v
 
         SetScreen()
-
+        Form1.HelpOnce("Permissions")
         initted = True
 
     End Sub

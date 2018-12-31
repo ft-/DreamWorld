@@ -37,7 +37,7 @@ Public Class FormPersonality
         End If
 
         TimerInterval.Text = Str(Form1.MySetting.TimerInterval)
-
+        Form1.HelpOnce("Personality")
         SetScreen()
 
     End Sub
@@ -95,7 +95,9 @@ Public Class FormPersonality
 
 
  Private Sub PictureBox4_Click(sender As Object, e As EventArgs) Handles PersonalityHelp.Click
+
         Form1.Help("Personality")
+
     End Sub
 
 End Class

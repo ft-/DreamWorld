@@ -22,6 +22,7 @@ Partial Class FormRestart
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FormRestart))
         Me.AutoStart = New System.Windows.Forms.GroupBox()
         Me.Label25 = New System.Windows.Forms.Label()
         Me.AutoRestartBox = New System.Windows.Forms.TextBox()
@@ -107,6 +108,7 @@ Partial Class FormRestart
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.ClientSize = New System.Drawing.Size(249, 207)
         Me.Controls.Add(Me.AutoStart)
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
         Me.Name = "FormRestart"
         Me.Text = "Restart"

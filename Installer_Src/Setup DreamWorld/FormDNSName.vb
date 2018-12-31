@@ -41,6 +41,9 @@ Public Class FormDNSName
         If DNSNameBox.Text = String.Empty Then
             MsgBox("Type in a 'name.Outworldz.net' for your grid, or just press 'Next' to get a suggested name. You can also use a DNS name.", vbInformation, "Name Needed")
         End If
+
+        Form1.HelpOnce("DNS")
+
         initted = True
 
     End Sub
@@ -147,12 +150,7 @@ Public Class FormDNSName
 
     End Sub
 
-    Private Sub PictureBox4_Click(sender As Object, e As EventArgs)
-        '!!!
-        Dim webAddress As String = Form1.gDomain + "/Outworldz_installer/technical.htm#DNSHelp"
-        Process.Start(webAddress)
 
-    End Sub
 
     Private Sub UniqueId_TextChanged(sender As Object, e As EventArgs)
 
@@ -191,7 +189,9 @@ Public Class FormDNSName
     End Sub
 
     Private Sub DynDNSPassword_Click(sender As Object, e As EventArgs) Handles DynDNSPassword.Click
+
         Form1.Help("DNS")
+
     End Sub
 
 

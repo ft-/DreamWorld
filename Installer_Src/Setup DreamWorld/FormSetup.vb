@@ -474,6 +474,9 @@ Public Class Form1
 
         RegionClass = RegionMaker.Instance(MysqlConn)
 
+        Adv = New AdvancedForm
+        initted = True
+
         SaySomething()
 
         ClearLogFiles() ' clear log fles
@@ -486,7 +489,6 @@ Public Class Form1
             System.IO.Directory.Delete(MyFolder + "\Outworldzfiles\Opensim\bin\config-include\Birds.ini", True)
         Catch
         End Try
-
 
         MyUPnpMap = New UPnp(MyFolder)
 
@@ -561,13 +563,14 @@ Public Class Form1
 
             Print("Ready to Launch!")
             Buttons(StartButton)
+
+            HelpOnce("Startup")
+
         End If
 
         Dim isMySqlRunning = CheckPort("127.0.0.1", CType(MySetting.MySqlPort, Integer))
         If isMySqlRunning Then gStopMysql = False
 
-        Adv = New AdvancedForm
-        initted = True
 
         ProgressBar1.Value = 100
 
@@ -1006,6 +1009,15 @@ Public Class Form1
 
 #Region "INI"
 
+    Public Sub CopyWifi(Page As String)
+
+        System.IO.Directory.Delete(gPath + "WifiPages", True)
+        My.Computer.FileSystem.CopyDirectory(gPath + "WifiPages-" + Page, gPath + "WifiPages", True)
+
+        System.IO.Directory.Delete(gPath + "bin\WifiPages", True)
+        My.Computer.FileSystem.CopyDirectory(gPath + "bin\WifiPages-" + Page, gPath + "\bin\WifiPages", True)
+
+    End Sub
 
     Private Sub SetDefaultSims()
 
@@ -1399,6 +1411,7 @@ Public Class Form1
         MySetting.SaveOtherINI()
 
     End Sub
+
 
     Private Sub DoWifi()
 
@@ -5580,6 +5593,30 @@ Public Class Form1
         FormHelp.Init(page)
 
     End Sub
+
+    Public Sub HelpOnce(Webpage As String)
+
+        ScreenPosition = New ScreenPos(Webpage)
+
+        If Not ScreenPosition.Exists() Then
+            ' Set the new form's desktop location so it appears below and
+            ' to the right of the current form.
+            FormHelp.Close()
+            FormHelp = New FormHelp
+            FormHelp.Activate()
+            FormHelp.Visible = True
+            FormHelp.Init(Webpage)
+
+        End If
+    End Sub
+
+    Private Sub HelpStartingUpToolStripMenuItem1_Click(sender As Object, e As EventArgs) Handles HelpStartingUpToolStripMenuItem1.Click
+
+        Help("Startup")
+
+    End Sub
+
+
 #End Region
 
 End Class

@@ -364,17 +364,13 @@ Public Class MySettings
         If (SmtpHost() = "") Then SmtpHost() = "smtp.gmail.com"
         If (SmtpPort() = "") Then SmtpPort() = "587"
 
-
-
         Try
             Dim x = Theme()
         Catch ex As Exception
             Theme() = False.ToString
         End Try
 
-
         SaveSettings()
-
 
     End Sub
 
