@@ -50,6 +50,7 @@ Public Class AdvancedForm
     Private Sub Advanced_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 
         SetScreen()
+        Me.Visible = True
 
     End Sub
 
@@ -64,6 +65,12 @@ Public Class AdvancedForm
 
 
 #End Region
+
+    Private Sub Form1_FormClosing(ByVal sender As System.Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
+        e.Cancel = True
+        Me.Visible = False
+    End Sub
+
 
 #Region "Clicks"
 
@@ -158,10 +165,6 @@ Public Class AdvancedForm
 
     Private Sub RegionsButton1_Click(sender As Object, e As EventArgs) Handles RegionsButton1.Click
 
-        ' Set the new form's desktop location so it appears below and
-        ' to the right of the current form.
-        FormRegions.Close()
-        FormRegions = New FormRegions
         FormRegions.Activate()
         FormRegions.Visible = True
 

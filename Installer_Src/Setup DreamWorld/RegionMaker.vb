@@ -55,6 +55,7 @@ Public Class RegionMaker
     End Property
 
     Private Sub New(conn As Mysql)
+
         MysqlConn = conn
         GetAllRegions()
         If RegionCount() = 0 Then

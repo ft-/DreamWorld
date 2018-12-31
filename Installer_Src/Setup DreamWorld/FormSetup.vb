@@ -125,7 +125,8 @@ Public Class Form1
 
     ' Help Form for RTF files
     Public FormHelp As New FormHelp
-
+    Dim Adv As AdvancedForm
+    Dim initted As Boolean = False
 
     <CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA2101:SpecifyMarshalingForPInvokeStringArguments", MessageId:="1")>
     <CodeAnalysis.SuppressMessage("Microsoft.Interoperability", "CA1401:PInvokesShouldNotBeVisible")>
@@ -564,6 +565,9 @@ Public Class Form1
 
         Dim isMySqlRunning = CheckPort("127.0.0.1", CType(MySetting.MySqlPort, Integer))
         If isMySqlRunning Then gStopMysql = False
+
+        Adv = New AdvancedForm
+        initted = True
 
         ProgressBar1.Value = 100
 
@@ -1890,9 +1894,11 @@ Public Class Form1
 
     Private Sub AdvancedSettingsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AdvancedSettingsToolStripMenuItem.Click
 
-        Dim Adv As New AdvancedForm
-        Adv.Activate()
-        Adv.Visible = True
+        If initted Then
+            Adv.Activate()
+            Adv.Visible = True
+        End If
+
 
     End Sub
 

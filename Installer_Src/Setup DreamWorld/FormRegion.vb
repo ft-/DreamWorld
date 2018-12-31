@@ -511,7 +511,8 @@ Public Class FormRegion
                         "PhysicalPrimMax = " & PhysicalPrimMax.Text & vbCrLf &
                         "ClampPrimSize = " & ClampPrimSize.Checked.ToString & vbCrLf &
                         "MaxAgents = " & MaxAgents.Text & vbCrLf &
-                        "MaxPrims = " & MaxPrims.Text & vbCrLf & vbCrLf &
+                        "MaxPrims = " & MaxPrims.Text & vbCrLf &
+                        "RegionType = Estate" & vbCrLf & vbCrLf &
                         ";# Extended region properties from Dreamgrid" & vbCrLf &
                         "RegionSnapShot = " & Snapshot & vbCrLf &
                         "MapType = " & Map & vbCrLf &
@@ -1017,6 +1018,10 @@ Public Class FormRegion
         MaxAgents.Text = digitsOnly.Replace(MaxAgents.Text, "")
         If initted Then changed = True
 
+    End Sub
+
+    Private Sub MapHelp_Click(sender As Object, e As EventArgs) Handles MapHelp.Click
+        Form1.Help("Region")
     End Sub
 
 #End Region

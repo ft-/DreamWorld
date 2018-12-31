@@ -125,7 +125,7 @@ Partial Class FormHelp
         '
         'RichTextBox1
         '
-        Me.RichTextBox1.BackColor = System.Drawing.SystemColors.MenuBar
+        Me.RichTextBox1.BackColor = System.Drawing.SystemColors.Window
         Me.RichTextBox1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.RichTextBox1.Location = New System.Drawing.Point(0, 24)
         Me.RichTextBox1.Name = "RichTextBox1"
