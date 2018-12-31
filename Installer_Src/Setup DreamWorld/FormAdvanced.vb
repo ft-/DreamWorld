@@ -165,6 +165,8 @@ Public Class AdvancedForm
 
     Private Sub RegionsButton1_Click(sender As Object, e As EventArgs) Handles RegionsButton1.Click
 
+        FormRegions.Close()
+        FormRegions = New FormRegions
         FormRegions.Activate()
         FormRegions.Visible = True
 
