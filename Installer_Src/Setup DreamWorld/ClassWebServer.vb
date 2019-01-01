@@ -73,7 +73,7 @@ Public Class NetServer
             numberOfBytesRead = 0
 
             If Not LocalTCPListener.Pending() Then
-                Thread.Sleep(10) ' choose a number (In milliseconds) that makes sense
+                Thread.Sleep(1) ' choose a number (In milliseconds) that makes sense
                 Continue While  ' skip To Next iteration Of Loop
             End If
 
