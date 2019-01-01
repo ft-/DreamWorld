@@ -23,7 +23,7 @@ Public Class AdvancedForm
     Dim FormPermissions As New FormPermissions
     Dim FormDNSName As New FormDNSName
     Dim FormPersonality As New FormPersonality
-
+    Dim FormPublicity As New FormPublicity
 
 #End Region
 
@@ -256,6 +256,17 @@ Public Class AdvancedForm
         FormPersonality = New FormPersonality
         FormPersonality.Activate()
         FormPersonality.Visible = True
+
+    End Sub
+
+    Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
+
+        ' Set the new form's desktop location so it appears below and
+        ' to the right of the current form.
+        FormPublicity.Close()
+        FormPublicity = New FormPublicity
+        FormPublicity.Activate()
+        FormPublicity.Visible = True
 
     End Sub
 

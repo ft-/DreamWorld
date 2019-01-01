@@ -43,12 +43,13 @@ Partial Class AdvancedForm
         Me.DNSButton = New System.Windows.Forms.Button()
         Me.Button1 = New System.Windows.Forms.Button()
         Me.GroupBox8 = New System.Windows.Forms.GroupBox()
+        Me.Button4 = New System.Windows.Forms.Button()
         Me.GroupBox8.SuspendLayout()
         Me.SuspendLayout()
         '
         'TOSButton
         '
-        Me.TOSButton.Location = New System.Drawing.Point(191, 152)
+        Me.TOSButton.Location = New System.Drawing.Point(189, 180)
         Me.TOSButton.Name = "TOSButton"
         Me.TOSButton.Size = New System.Drawing.Size(145, 23)
         Me.TOSButton.TabIndex = 19
@@ -58,7 +59,7 @@ Partial Class AdvancedForm
         '
         'TideButton
         '
-        Me.TideButton.Location = New System.Drawing.Point(191, 123)
+        Me.TideButton.Location = New System.Drawing.Point(189, 151)
         Me.TideButton.Name = "TideButton"
         Me.TideButton.Size = New System.Drawing.Size(145, 23)
         Me.TideButton.TabIndex = 18
@@ -78,7 +79,7 @@ Partial Class AdvancedForm
         '
         'VoiceButton1
         '
-        Me.VoiceButton1.Location = New System.Drawing.Point(191, 181)
+        Me.VoiceButton1.Location = New System.Drawing.Point(189, 209)
         Me.VoiceButton1.Name = "VoiceButton1"
         Me.VoiceButton1.Size = New System.Drawing.Size(143, 23)
         Me.VoiceButton1.TabIndex = 17
@@ -128,7 +129,7 @@ Partial Class AdvancedForm
         '
         'RegionsButton1
         '
-        Me.RegionsButton1.Location = New System.Drawing.Point(191, 65)
+        Me.RegionsButton1.Location = New System.Drawing.Point(189, 93)
         Me.RegionsButton1.Name = "RegionsButton1"
         Me.RegionsButton1.Size = New System.Drawing.Size(145, 23)
         Me.RegionsButton1.TabIndex = 24
@@ -138,7 +139,7 @@ Partial Class AdvancedForm
         '
         'DivaButton1
         '
-        Me.DivaButton1.Location = New System.Drawing.Point(191, 240)
+        Me.DivaButton1.Location = New System.Drawing.Point(189, 267)
         Me.DivaButton1.Name = "DivaButton1"
         Me.DivaButton1.Size = New System.Drawing.Size(145, 23)
         Me.DivaButton1.TabIndex = 25
@@ -159,7 +160,7 @@ Partial Class AdvancedForm
         'PhysicsButton1
         '
         Me.PhysicsButton1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.PhysicsButton1.Location = New System.Drawing.Point(191, 36)
+        Me.PhysicsButton1.Location = New System.Drawing.Point(189, 36)
         Me.PhysicsButton1.Name = "PhysicsButton1"
         Me.PhysicsButton1.Size = New System.Drawing.Size(145, 23)
         Me.PhysicsButton1.TabIndex = 27
@@ -179,7 +180,7 @@ Partial Class AdvancedForm
         '
         'Button3
         '
-        Me.Button3.Location = New System.Drawing.Point(189, 94)
+        Me.Button3.Location = New System.Drawing.Point(189, 122)
         Me.Button3.Name = "Button3"
         Me.Button3.Size = New System.Drawing.Size(143, 23)
         Me.Button3.TabIndex = 32
@@ -209,7 +210,7 @@ Partial Class AdvancedForm
         '
         'Button1
         '
-        Me.Button1.Location = New System.Drawing.Point(191, 211)
+        Me.Button1.Location = New System.Drawing.Point(189, 238)
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(145, 23)
         Me.Button1.TabIndex = 33
@@ -219,6 +220,7 @@ Partial Class AdvancedForm
         '
         'GroupBox8
         '
+        Me.GroupBox8.Controls.Add(Me.Button4)
         Me.GroupBox8.Controls.Add(Me.Button1)
         Me.GroupBox8.Controls.Add(Me.Button3)
         Me.GroupBox8.Controls.Add(Me.PhysicsButton1)
@@ -242,6 +244,16 @@ Partial Class AdvancedForm
         Me.GroupBox8.TabIndex = 1870
         Me.GroupBox8.TabStop = False
         Me.GroupBox8.Text = "Global Settings"
+        '
+        'Button4
+        '
+        Me.Button4.Location = New System.Drawing.Point(189, 64)
+        Me.Button4.Name = "Button4"
+        Me.Button4.Size = New System.Drawing.Size(145, 23)
+        Me.Button4.TabIndex = 34
+        Me.Button4.Text = "Publicity"
+        Me.ToolTip1.SetToolTip(Me.Button4, "Click to set up  Regions")
+        Me.Button4.UseVisualStyleBackColor = True
         '
         'AdvancedForm
         '
@@ -278,4 +290,5 @@ Partial Class AdvancedForm
     Friend WithEvents Button2 As Button
     Friend WithEvents Button3 As Button
     Friend WithEvents Button1 As Button
+    Friend WithEvents Button4 As Button
 End Class
