@@ -34,7 +34,7 @@ Public Class Form1
 
 #Region "Declarations"
 
-    Dim gMyVersion As String = "2.59"
+    Dim gMyVersion As String = "2.50"
     Dim gSimVersion As String = "0.9.1"
 
     ' edit this to compile and run in the correct folder root
@@ -778,6 +778,7 @@ Public Class Form1
             RegionClass.Booted(X) = False
             RegionClass.ShuttingDown(X) = True
             RegionClass.WarmingUp(X) = False
+            Sleep(5000)
         Next
 
         ' show robust last, try-catch in case it crashed.
@@ -3326,7 +3327,7 @@ Public Class Form1
                 Next
 
                 Application.DoEvents()
-                Sleep(2000)
+                Sleep(5000)
 
                 SetWindowText(myProcess.MainWindowHandle, RegionClass.GroupName(n))
 
