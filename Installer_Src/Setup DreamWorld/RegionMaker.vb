@@ -892,28 +892,30 @@ Public Class RegionMaker
                     UUID(n) = json.region_id
                     Form1.UpdateView() = True
 
-                    Dim pID = ProcessID(n)
-                    Dim p = Process.GetProcessById(pID)
-                    ShowWindow(p.MainWindowHandle, SHOW_WINDOW.SW_MINIMIZE)
+                    If Form1.MySetting.ConsoleShow = False Then
+                        Dim pID = ProcessID(n)
+                        Dim p = Process.GetProcessById(pID)
+                        ShowWindow(p.MainWindowHandle, SHOW_WINDOW.SW_MINIMIZE)
+                    End If
 
 
                 ElseIf json.login = "shutdown" Then
 
-                    ' does not work as expected - get this during bootup!
-                    'Form1.PrintFast("Region " & json.region_name & " shut down")
+                        ' does not work as expected - get this during bootup!
+                        'Form1.PrintFast("Region " & json.region_name & " shut down")
 
-                    'Dim n = FindRegionByName(json.region_name)
-                    'If n < 0 Then
-                    'Return
-                    'End If
+                        'Dim n = FindRegionByName(json.region_name)
+                        'If n < 0 Then
+                        'Return
+                        'End If
 
-                    'Booted(n) = False
-                    'WarmingUp(n) = False
-                    'ShuttingDown(n) = True
-                    'UUID(n) = ""
-                    'Form1.UpdateView() = True
+                        'Booted(n) = False
+                        'WarmingUp(n) = False
+                        'ShuttingDown(n) = True
+                        'UUID(n) = ""
+                        'Form1.UpdateView() = True
 
-                End If
+                    End If
                 Try
                     WebserverList.RemoveAt(LOOPVAR)
                 Catch

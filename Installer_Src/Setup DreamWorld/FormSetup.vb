@@ -1156,8 +1156,6 @@ Public Class Form1
         MySetting.SetOtherIni("DatabaseService", "ConnectionString", ConnectionString)
         MySetting.SaveOtherINI()
 
-
-
         ''''''''''''''''''''''''''''''''''''''''''
         ' Robust Process
         MySetting.LoadOtherIni(gPath + "bin\Robust.HG.ini", ";")
@@ -2058,8 +2056,10 @@ Public Class Form1
 
         End While
 
-        Dim p = Process.GetProcessById(gRobustProcID)
-        ShowWindow(p.MainWindowHandle, SHOW_WINDOW.SW_MINIMIZE)
+        If MySetting.ConsoleShow = False Then
+            Dim p = Process.GetProcessById(gRobustProcID)
+            ShowWindow(p.MainWindowHandle, SHOW_WINDOW.SW_MINIMIZE)
+        End If
 
         Log("Info:Robust is running")
         Return True
@@ -3305,11 +3305,7 @@ Public Class Form1
             myProcess.StartInfo.FileName = """" + gPath + "bin\OpenSim.exe" + """"
             myProcess.StartInfo.CreateNoWindow = False
 
-            If mnuShow.Checked Then
-                myProcess.StartInfo.WindowStyle = ProcessWindowStyle.Normal
-            Else
-                myProcess.StartInfo.WindowStyle = ProcessWindowStyle.Minimized
-            End If
+            myProcess.StartInfo.WindowStyle = ProcessWindowStyle.Normal
 
             myProcess.StartInfo.Arguments = " -inidirectory=" & """" & "./Regions/" & RegionClass.GroupName(n) + """"
 
