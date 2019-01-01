@@ -22,7 +22,7 @@ Public Class FormPersonality
         Me.Left = xy.Item(0)
         Me.Top = xy.Item(1)
     End Sub
-    Private Sub Loaded(sender As Object, e As EventArgs) Handles Me.Load
+    Public Sub Init()
 
         Dim Chattime = Form1.MySetting.ChatTime
 

@@ -127,6 +127,7 @@ Public Class Form1
     Public FormHelp As New FormHelp
     Dim Adv As AdvancedForm
     Dim initted As Boolean = False
+    Public FormPersonality As New FormPersonality
 
     <CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA2101:SpecifyMarshalingForPInvokeStringArguments", MessageId:="1")>
     <CodeAnalysis.SuppressMessage("Microsoft.Interoperability", "CA1401:PInvokesShouldNotBeVisible")>
@@ -680,7 +681,10 @@ Public Class Form1
 
         Timer1.Interval = 1000
         Timer1.Start() 'Timer starts functioning
-
+        FormPersonality.Close()
+        FormPersonality = New FormPersonality
+        FormPersonality.Init()
+        FormPersonality.Visible = False
         Me.AllowDrop = True
 
     End Sub
@@ -793,6 +797,9 @@ Public Class Form1
             RegionClass.Booted(X) = False
             RegionClass.ShuttingDown(X) = True
             RegionClass.WarmingUp(X) = False
+
+            UpdateView = True ' make form refresh
+
             Sleep(2000)
         Next
 
@@ -840,6 +847,9 @@ Public Class Form1
                     ProgressBar1.Value = CType(v, Integer)
                     Diagnostics.Debug.Print("V=" + ProgressBar1.Value.ToString)
                 End If
+
+                UpdateView = True ' make form refresh
+
                 Application.DoEvents()
 
             End While
@@ -857,7 +867,7 @@ Public Class Form1
             RegionClass.WarmingUp(X) = False
             RegionClass.ProcessID(X) = 0
         Next
-
+        UpdateView = True ' make form refresh
         If gRobustProcID > 0 Then
             ConsoleCommand(gRobustProcID, "{ENTER}q{ENTER}")
         End If
@@ -2010,13 +2020,7 @@ Public Class Form1
 
             RobustProcess.StartInfo.CreateNoWindow = False
             RobustProcess.StartInfo.WorkingDirectory = gPath + "bin"
-
-            If mnuShow.Checked Then
-                RobustProcess.StartInfo.WindowStyle = ProcessWindowStyle.Normal
-            Else
-                RobustProcess.StartInfo.WindowStyle = ProcessWindowStyle.Minimized
-            End If
-
+            RobustProcess.StartInfo.WindowStyle = ProcessWindowStyle.Normal
             RobustProcess.StartInfo.Arguments = "-inifile Robust.HG.ini"
             RobustProcess.Start()
             gRobustProcID = RobustProcess.Id
@@ -3332,7 +3336,7 @@ Public Class Form1
             myProcess.Start()
             Diagnostics.Debug.Print("PID=" + myProcess.Id.ToString)
             If myProcess.Id > 0 Then
-                UpdateView = True ' make form refresh
+
                 For Each num In RegionClass.RegionListByGroupNum(Groupname)
                     Diagnostics.Debug.Print("Booting " + RegionClass.RegionName(num))
                     RegionClass.WarmingUp(num) = True
@@ -3340,7 +3344,7 @@ Public Class Form1
                     RegionClass.ShuttingDown(num) = False
                     RegionClass.ProcessID(num) = myProcess.Id
                 Next
-
+                UpdateView = True ' make form refresh
                 Application.DoEvents()
                 Sleep(5000)
 
@@ -3642,7 +3646,6 @@ Public Class Form1
             If RegionClass.Timer(X) = -2 Then
                 RegionClass.Timer(X) = 0
                 Boot(RegionClass.RegionName(X))
-                UpdateView = True ' make form refresh
             End If
         Next
     End Sub
@@ -5239,7 +5242,6 @@ Public Class Form1
             RegionForm.Show()
             RegionForm.Activate()
         Else
-            UpdateView = True ' make form refresh
             RegionForm.Show()
             RegionForm.Activate()
         End If
