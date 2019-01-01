@@ -551,12 +551,7 @@ Public Class RegionMaker
                     Dim inis = Directory.GetFiles(FileName, "*.ini", SearchOption.TopDirectoryOnly)
 
                     For Each ini As String In inis
-                        fName = System.IO.Path.GetFileName(ini)
-                        fName = Mid(fName, 1, Len(fName) - 4)
-
-                        'If (fName.Contains("Alpha")) Then
-                        'Dim x = 1
-                        'End If
+                        fName = System.IO.Path.GetFileNameWithoutExtension(ini)
 
                         ' make a slot to hold the region data 
                         CreateRegion(fName)

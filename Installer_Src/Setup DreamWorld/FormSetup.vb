@@ -3059,6 +3059,8 @@ Public Class Form1
 
         ExitList.Reverse()
 
+
+
         For LOOPVAR = ExitList.Count - 1 To 0 Step -1
 
             Try
