@@ -403,15 +403,6 @@ Public Class RegionMaker
 
 #Region "Functions"
 
-    Private Function CheckN(n As Integer) As Integer
-
-        If n > RegionList.Count Or n < 0 Then
-            Form1.Log("Error: Bad N in Region List " + n.ToString)
-            Return 0
-        End If
-        Return n
-
-    End Function
 
     Public Sub RegionDump()
 
@@ -628,12 +619,12 @@ Public Class RegionMaker
                                 Dim o = FindBackupByName(fName)
 
                                 If o >= 0 Then
-                                    AvatarCount(n) = CType(Backup(CheckN(o))._AvatarCount, Integer)
-                                    ProcessID(n) = CType(Backup(CheckN(o))._ProcessID, Integer)
-                                    Booted(n) = CType(Backup(CheckN(o))._Ready, Boolean)
-                                    WarmingUp(n) = CType(Backup(CheckN(o))._WarmingUp, Boolean)
-                                    ShuttingDown(n) = CType(Backup(CheckN(o))._ShuttingDown, Boolean)
-                                    Timer(n) = CType(Backup(CheckN(o))._Timer, Integer)
+                                    AvatarCount(n) = CType(Backup(o)._AvatarCount, Integer)
+                                    ProcessID(n) = CType(Backup(o)._ProcessID, Integer)
+                                    Booted(n) = CType(Backup(o)._Ready, Boolean)
+                                    WarmingUp(n) = CType(Backup(o)._WarmingUp, Boolean)
+                                    ShuttingDown(n) = CType(Backup(o)._ShuttingDown, Boolean)
+                                    Timer(n) = CType(Backup(o)._Timer, Integer)
                                 End If
 
                             Catch
