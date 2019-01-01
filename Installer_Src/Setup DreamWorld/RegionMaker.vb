@@ -1046,7 +1046,7 @@ Public Class RegionMaker
 
         ElseIf POST.Contains("get_partner") Then
 
-            Dim PWok As Boolean = CheckPassword(POST, MySetting.Machine().ToLower)
+            Dim PWok As Boolean = CheckPassword(POST, MySetting.MachineID().ToLower)
             If Not PWok Then Return ""
 
             Dim pattern1 As Regex = New Regex("User=(.*?) ")
@@ -1060,7 +1060,7 @@ Public Class RegionMaker
 
         ElseIf POST.Contains("set_partner") Then
 
-            Dim PWok As Boolean = CheckPassword(POST, MySetting.Machine().ToLower)
+            Dim PWok As Boolean = CheckPassword(POST, MySetting.MachineID().ToLower)
             If Not PWok Then Return ""
 
 
