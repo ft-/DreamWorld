@@ -4237,9 +4237,15 @@ Public Class Form1
         If MySetting.BackupFolder = "AutoBackup" Then
             Dest = MyFolder + "\OutworldzFiles\AutoBackup\" + Foldername
         Else
-            Dest = MySetting.BackupFolder + "FolderName"
+            Dest = MySetting.BackupFolder + "\" + Foldername
         End If
         Print("Making a backup at " + Dest)
+        My.Computer.FileSystem.CreateDirectory(Dest)
+        My.Computer.FileSystem.CreateDirectory(Dest + "\Regions")
+        My.Computer.FileSystem.CreateDirectory(Dest + "\Mysql_Data")
+        My.Computer.FileSystem.CreateDirectory(Dest + "\Opensim_Wifi")
+        My.Computer.FileSystem.CreateDirectory(Dest + "\Opensim_bin_Wifi")
+
         Print("Backing up Regions Folder")
         Try
             My.Computer.FileSystem.CopyDirectory(MyFolder + "\OutworldzFiles\Opensim\bin\Regions", Dest + "\Regions")
