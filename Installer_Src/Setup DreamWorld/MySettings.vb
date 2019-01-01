@@ -1445,15 +1445,7 @@ Public Class MySettings
         End Set
     End Property
 
-    'Save a random machine ID - we don't want any data to be sent that's personal or identifiable,  but it needs to be unique
-    Public Property Machine() As String
-        Get
-            Return GetMySetting("MachineID")
-        End Get
-        Set(ByVal Value As String)
-            SetMySetting("MachineID", Value)
-        End Set
-    End Property
+
 End Class
 
 #End Region

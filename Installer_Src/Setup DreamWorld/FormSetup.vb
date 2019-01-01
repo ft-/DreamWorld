@@ -439,7 +439,7 @@ Public Class Form1
 
         ' Save a random machine ID - we don't want any data to be sent that's personal or identifiable,  but it needs to be unique
         Randomize()
-        If MySetting.Machine() = "" Then MySetting.Machine() = Random()  ' a random machine ID may be generated.  Happens only once
+        If MySetting.MachineID() = "" Then MySetting.MachineID() = Random()  ' a random machine ID may be generated.  Happens only once
 
 
         'hide progress
@@ -793,7 +793,7 @@ Public Class Form1
             RegionClass.Booted(X) = False
             RegionClass.ShuttingDown(X) = True
             RegionClass.WarmingUp(X) = False
-            Sleep(5000)
+            Sleep(2000)
         Next
 
         ' show robust last, try-catch in case it crashed.
@@ -3263,17 +3263,17 @@ Public Class Form1
 
         Dim n = RegionClass.FindRegionByName(BootName)
         If RegionClass.Booted(n) Then
-            Log("Region " + BootName + "failed to start as it is already booted")
+            Log("Region " + BootName + " failed to start as it is already booted")
             Return True
         End If
 
         If RegionClass.WarmingUp(n) Then
-            Log("Region " + BootName + "failed to start as it is already WarmingUp")
+            Log("Region " + BootName + " failed to start as it is already WarmingUp")
             Return True
         End If
 
         If RegionClass.ShuttingDown(n) Then
-            Log("Region " + BootName + "failed to start as it is already ShuttingDown")
+            Log("Region " + BootName + " failed to start as it is already ShuttingDown")
             Return True
         End If
 
@@ -4747,7 +4747,7 @@ Public Class Form1
         Dim Grid As String = "Grid"
         If MySetting.StandAlone() Then Grid = "Standalone"
 
-        Dim data As String = "&MachineID=" + MySetting.Machine() _
+        Dim data As String = "&MachineID=" + MySetting.MachineID() _
             + "&V=" + gMyVersion _
             + "&OV=" + gSimVersion _
             + "&uPnp=" + UPnp _
