@@ -822,6 +822,26 @@ Public Class RegionMaker
         Next
 
     End Sub
+    Private Declare Function ShowWindow Lib "user32.dll" (ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
+
+    <Flags()>
+    Private Enum SHOW_WINDOW As Integer
+        SW_HIDE = 0
+        SW_SHOWNORMAL = 1
+        SW_NORMAL = 1
+        SW_SHOWMINIMIZED = 2
+        SW_SHOWMAXIMIZED = 3
+        SW_MAXIMIZE = 3
+        SW_SHOWNOACTIVATE = 4
+        SW_SHOW = 5
+        SW_MINIMIZE = 6
+        SW_SHOWMINNOACTIVE = 7
+        SW_SHOWNA = 8
+        SW_RESTORE = 9
+        SW_SHOWDEFAULT = 10
+        SW_FORCEMINIMIZE = 11
+        SW_MAX = 11
+    End Enum
 
     Public Sub CheckPost()
 
@@ -853,6 +873,10 @@ Public Class RegionMaker
                     Return
                 End Try
 
+                '		rawJSON	"{""alert"":""region_ready"",""login"":""disabled"",""region_name"":""Welcome"",""region_id"":""365d804a-0df1-46cf-8acf-4320a3df3fca""}"	String
+                '       rawJSON "{""alert"":""region_ready"",""login"":""enabled"",""region_name"":""Welcome"",""region_id"":""365d804a-0df1-46cf-8acf-4320a3df3fca""}"	String
+                '		rawJSON	"{""alert"":""region_ready"",""login"":""shutdown"",""region_name"":""Welcome"",""region_id"":""365d804a-0df1-46cf-8acf-4320a3df3fca""}"	String
+
                 If json.login = "enabled" Then
                     Form1.PrintFast("Region " & json.region_name & " is ready for logins")
 
@@ -868,19 +892,26 @@ Public Class RegionMaker
                     UUID(n) = json.region_id
                     Form1.UpdateView() = True
 
+                    Dim pID = ProcessID(n)
+                    Dim p = Process.GetProcessById(pID)
+                    ShowWindow(p.MainWindowHandle, SHOW_WINDOW.SW_MINIMIZE)
+
+
                 ElseIf json.login = "shutdown" Then
-                    Form1.PrintFast("Region " & json.region_name & " shut down")
 
-                    Dim n = FindRegionByName(json.region_name)
-                    If n < 0 Then
-                        Return
-                    End If
+                    ' does not work as expected - get this during bootup!
+                    'Form1.PrintFast("Region " & json.region_name & " shut down")
 
-                    Booted(n) = False
-                    WarmingUp(n) = False
-                    ShuttingDown(n) = True
-                    UUID(n) = ""
-                    Form1.UpdateView() = True
+                    'Dim n = FindRegionByName(json.region_name)
+                    'If n < 0 Then
+                    'Return
+                    'End If
+
+                    'Booted(n) = False
+                    'WarmingUp(n) = False
+                    'ShuttingDown(n) = True
+                    'UUID(n) = ""
+                    'Form1.UpdateView() = True
 
                 End If
                 Try

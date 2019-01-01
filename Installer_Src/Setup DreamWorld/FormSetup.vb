@@ -542,8 +542,9 @@ Public Class Form1
         End If
 
         ' Find out if the viewer is installed
-        If System.IO.File.Exists(MyFolder & "\OutworldzFiles\Settings.txt") Then
+        If System.IO.File.Exists(MyFolder & "\OutworldzFiles\Settings.ini") Then
 
+            UploadPhoto()
 
             Buttons(StartButton)
             ProgressBar1.Value = 100
@@ -576,6 +577,20 @@ Public Class Form1
 
     End Sub
 
+    Private Sub UploadPhoto()
+        If System.IO.File.Exists(MyFolder & "\OutworldzFiles\Photo.png") Then
+            Dim params As New Specialized.NameValueCollection
+            params.Add("MachineID", MySetting.MachineID())
+            params.Add("DnsName", MySetting.PublicIP)
+
+            Dim Myupload As New UploadImage
+            Dim URL = New Uri("https://www.outworldz.com/cgi/uploadphoto.plx")
+
+            Myupload.PostContent_UploadFile(URL, MyFolder & "\OutworldzFiles\Photo.png", params)
+
+        End If
+
+    End Sub
     ''' <summary>
     ''' Start Button on main form
     ''' </summary>
@@ -2042,6 +2057,10 @@ Public Class Form1
             Sleep(100)
 
         End While
+
+        Dim p = Process.GetProcessById(gRobustProcID)
+        ShowWindow(p.MainWindowHandle, SHOW_WINDOW.SW_MINIMIZE)
+
         Log("Info:Robust is running")
         Return True
 
@@ -3644,7 +3663,7 @@ Public Class Form1
                 Dim Groupname = RegionClass.GroupName(X)
 
                 ' if its past time and no one is in the sim...
-                If timervalue >= MySetting.AutoRestartInterval() And Not AvatarsIsInGroup(Groupname) Then
+                If timervalue >= MySetting.AutoRestartInterval() And MySetting.AutoRestartInterval() > 0 And Not AvatarsIsInGroup(Groupname) Then
                     ' shut down the group
 
                     ConsoleCommand(RegionClass.ProcessID(X), "q{ENTER}q{ENTER}")
