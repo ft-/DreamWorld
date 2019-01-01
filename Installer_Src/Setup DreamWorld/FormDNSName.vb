@@ -32,7 +32,7 @@ Public Class FormDNSName
 
         DNSNameBox.Text = Form1.MySetting.DNSName
         DNSNameBox.Text = Form1.MySetting.DNSName
-        UniqueId.Text = Form1.MySetting.Machine()
+        UniqueId.Text = Form1.MySetting.MachineID()
         EnableHypergrid.Checked = Form1.MySetting.EnableHypergrid
         SuitcaseCheckbox.Checked = Form1.MySetting.Suitcase
 
@@ -152,18 +152,10 @@ Public Class FormDNSName
 
 
 
-    Private Sub UniqueId_TextChanged(sender As Object, e As EventArgs)
-
-        If Not initted Then Return
-        Form1.MySetting.Machine() = UniqueId.Text
-        Form1.MySetting.SaveSettings()
-
-    End Sub
-
     Private Sub UniqueId_TextChanged_1(sender As Object, e As EventArgs) Handles UniqueId.TextChanged
 
         If Not initted Then Return
-        Form1.MySetting.Machine() = UniqueId.Text
+        Form1.MySetting.MachineID() = UniqueId.Text
         Form1.MySetting.SaveSettings()
 
     End Sub
