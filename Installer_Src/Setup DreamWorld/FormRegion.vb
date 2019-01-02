@@ -522,8 +522,8 @@ Public Class FormRegion
                         "ManagerGod = " & AManagerGod & vbCrLf &
                         "Birds = " & BirdsCheckBox.Checked.ToString & vbCrLf &
                         "Tides = " & TidesCheckbox.Checked.ToString & vbCrLf &
-                        "Teleport = " & TPCheckBox1.Checked.ToString & vbCrLf &
-                        "RegionType = MainLand" & vbCrLf
+                        "Teleport = " & TPCheckBox1.Checked.ToString & vbCrLf
+
 
 
         Debug.Print(Region)
