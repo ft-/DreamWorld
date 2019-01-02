@@ -625,6 +625,8 @@ Public Class RegionMaker
                                     WarmingUp(n) = CType(Backup(o)._WarmingUp, Boolean)
                                     ShuttingDown(n) = CType(Backup(o)._ShuttingDown, Boolean)
                                     Timer(n) = CType(Backup(o)._Timer, Integer)
+                                Else
+                                    Form1.Log("Error: Could not find backup name:" + fName)
                                 End If
 
                             Catch
@@ -687,7 +689,8 @@ Public Class RegionMaker
         + "NonPhysicalPrimMax = " + NonPhysicalPrimMax(n).ToString + vbCrLf _
         + "PhysicalPrimMax = " + PhysicalPrimMax(n).ToString + vbCrLf _
         + "ClampPrimSize = " + ClampPrimSize(n).ToString + vbCrLf _
-        + "MaxPrims = " + MaxPrims(n) + vbCrLf + vbCrLf _
+        + "MaxPrims = " + MaxPrims(n) + vbCrLf _
+        + "RegionType = Estate" + vbCrLf + vbCrLf _
         + ";# Dreamgrid extended properties" + vbCrLf _
         + "RegionSnapShot = " + RegionSnapShot(n) + vbCrLf _
         + "MapType = " + MapType(n) + vbCrLf _
@@ -697,8 +700,8 @@ Public Class RegionMaker
         + "ManagerGod = " + ManagerGod(n) + vbCrLf _
         + "Birds = " + Birds(n) + vbCrLf _
         + "Tides = " + Tides(n) + vbCrLf _
-        + "Teleport = " + Teleport(n) + vbCrLf _
-        + "RegionType = MainLand" + vbCrLf
+        + "Teleport = " + Teleport(n) + vbCrLf
+
 
         Try
             My.Computer.FileSystem.DeleteFile(fname)
