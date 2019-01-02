@@ -367,7 +367,7 @@ Public Class MySettings
         Try
             Dim x = Theme()
         Catch ex As Exception
-            Theme() = False.ToString
+            Theme() = "Black" ' 2.61 forece default to black
         End Try
 
         SaveSettings()
