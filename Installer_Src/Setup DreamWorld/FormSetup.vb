@@ -104,7 +104,7 @@ Public Class Form1
     Dim gUseIcons As Boolean = True
     Dim gIPv4Address As String
     Public MySetting As New MySettings
-    Dim gExiting As Boolean = False
+    Public gExiting As Boolean = False
 
     ' Shoutcast
     Dim gIcecastProcID As Integer = 0
