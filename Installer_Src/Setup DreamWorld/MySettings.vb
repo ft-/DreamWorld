@@ -364,13 +364,17 @@ Public Class MySettings
         If (SmtpHost() = "") Then SmtpHost() = "smtp.gmail.com"
         If (SmtpPort() = "") Then SmtpPort() = "587"
 
-        Try
-            Dim x = Theme()
-        Catch ex As Exception
-            Theme() = "Black" ' 2.61 forece default to black
-        End Try
 
-        SaveSettings()
+        If Theme() = "" Then
+            Theme() = "Black"
+            Form1.CopyWifi("Black")
+        ElseIf Theme() = "Black" Then
+            Form1.CopyWifi("Black")
+        ElseIf Theme() = "White" Then
+            Form1.CopyWifi("White")
+        ElseIf Theme() = "Custom" Then
+            Form1.CopyWifi("Custom")
+        End If
 
     End Sub
 
@@ -516,7 +520,7 @@ Public Class MySettings
 
     Public Property Theme() As String
         Get
-            Return GetMySetting("Theme", "False")
+            Return GetMySetting("Theme")
         End Get
         Set
             SetMySetting("Theme", Value)
