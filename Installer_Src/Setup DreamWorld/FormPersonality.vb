@@ -37,11 +37,14 @@ Public Class FormPersonality
         End If
 
         TimerInterval.Text = Str(Form1.MySetting.TimerInterval)
-        Form1.HelpOnce("Personality")
+
         SetScreen()
 
     End Sub
+    Public Sub Help()
+        Form1.HelpOnce("Personality")
 
+    End Sub
     Private Sub ChatSpeed_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ChatSpeed.SelectedIndexChanged
 
         Dim text = ChatSpeed.SelectedItem.ToString()

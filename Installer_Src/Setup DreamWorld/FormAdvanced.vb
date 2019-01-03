@@ -255,6 +255,7 @@ Public Class AdvancedForm
         Form1.FormPersonality.Close()
         Form1.FormPersonality = New FormPersonality
         Form1.FormPersonality.Init()
+        Form1.FormPersonality.Help()
         Form1.FormPersonality.Activate()
         Form1.FormPersonality.Visible = True
 
