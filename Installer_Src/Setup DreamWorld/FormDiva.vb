@@ -3,7 +3,7 @@
 Public Class FormDiva
 
     Dim initted As Boolean = False
-
+    Dim setpassword As Boolean = False
 #Region "FormPos"
 
     Public ScreenPosition As ScreenPos
@@ -69,11 +69,25 @@ Public Class FormDiva
             CustomButton1.Checked = True
         End If
 
+        If Form1.OpensimIsRunning Then
+            AdminPassword.Enabled = True
+        Else
+            AdminPassword.Enabled = False
+        End If
 
 
         initted = True
 
     End Sub
+
+    Private Sub Close_form(sender As Object, e As EventArgs) Handles Me.Closed
+
+        If setpassword And Form1.OpensimIsRunning() Then
+            Form1.ConsoleCommand(Form1.gRobustProcID, "reset user password Wifi Admin " + Form1.MySetting.Password + "{ENTER}")
+        End If
+
+    End Sub
+
 #Region "Wifi"
 
     Private Sub WifiEnabled_CheckedChanged(sender As Object, e As EventArgs) Handles WifiEnabled.CheckedChanged
@@ -170,15 +184,13 @@ Public Class FormDiva
 
     End Sub
 
-    Private Sub Password_TextChanged(sender As Object, e As EventArgs) Handles AdminPassword.LostFocus
+    Private Sub Password_TextChanged(sender As Object, e As EventArgs) Handles AdminPassword.TextChanged
 
         If Not initted Then Return
         Form1.MySetting.Password = AdminPassword.Text
         Form1.MySetting.SaveSettings()
 
-        If Form1.OpensimIsRunning() Then
-            Form1.ConsoleCommand(Form1.gRobustProcID, "reset user password Wifi Admin " + Form1.MySetting.Password + "{ENTER}")
-        End If
+        Setpassword = True
 
     End Sub
 

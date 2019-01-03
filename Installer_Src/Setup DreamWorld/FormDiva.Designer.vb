@@ -22,6 +22,7 @@ Partial Class FormDiva
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FormDiva))
         Me.Web = New System.Windows.Forms.GroupBox()
         Me.WiFi = New System.Windows.Forms.PictureBox()
@@ -53,6 +54,7 @@ Partial Class FormDiva
         Me.Label1 = New System.Windows.Forms.Label()
         Me.WhiteRadioButton = New System.Windows.Forms.RadioButton()
         Me.BlackRadioButton = New System.Windows.Forms.RadioButton()
+        Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.Web.SuspendLayout()
         CType(Me.WiFi, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox6.SuspendLayout()
@@ -171,6 +173,7 @@ Partial Class FormDiva
         Me.AdminPassword.Name = "AdminPassword"
         Me.AdminPassword.Size = New System.Drawing.Size(100, 20)
         Me.AdminPassword.TabIndex = 29
+        Me.ToolTip1.SetToolTip(Me.AdminPassword, "Can only change when Opensim is running")
         Me.AdminPassword.UseSystemPasswordChar = True
         '
         'GroupBox6
@@ -399,4 +402,5 @@ Partial Class FormDiva
     Friend WithEvents BlackRadioButton As RadioButton
     Friend WithEvents Label1 As Label
     Friend WithEvents CustomButton1 As RadioButton
+    Friend WithEvents ToolTip1 As ToolTip
 End Class
