@@ -3,7 +3,6 @@ echo Upgrading MySql Database
 mysql_upgrade.exe --port=%1
 
 myisamchk --force --fast --update-state ..\data\mysql\*.MYI
-myisamchk --force --fast --update-state ..\data\opensim\*.MYI
 myisamchk --force --fast --update-state ..\data\robust\*.MYI
 
 echo Checking Database
