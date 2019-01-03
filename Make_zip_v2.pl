@@ -1,5 +1,5 @@
 
-my $type  = '-V2.59' ;  # '-Beta-V1.5';
+my $type  = '-V2.61' ;  # '-Beta-V1.5';
 my $dir = "F:/Opensim/Outworldz Dreamgrid Source";
 
 chdir ($dir);
@@ -15,7 +15,9 @@ use 5.010;
 
 
 
-my @deletions = (
+my @
+deletions = (
+	"$dir/OutworldzFiles/Opensim/bin/datasnapshot",
 	"$dir/OutworldzFiles/Opensim/bin/assetcache",
 	"$dir/OutworldzFiles/Opensim/bin/j2kDecodeCache",
 	"$dir/OutworldzFiles/Opensim/bin/MeshCache",
@@ -31,6 +33,8 @@ my @deletions = (
 
 foreach my $path ( @deletions) {
 	rm($path);
+	mkdir $path
+	
 }
 
 say("clean up opensim");
