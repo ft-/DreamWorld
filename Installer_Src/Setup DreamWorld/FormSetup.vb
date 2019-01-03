@@ -554,6 +554,7 @@ Public Class Form1
                 Print("Auto Startup")
                 Startup()
             Else
+                MySetting.SaveSettings()
                 Print("Ready to Launch! Click 'Start' to begin your adventure in Opensimulator.")
             End If
 
@@ -562,7 +563,7 @@ Public Class Form1
             Print("Installing Desktop icon clicky thingy")
             Create_ShortCut(MyFolder & "\Start.exe")
             BumpProgress10()
-
+            MySetting.SaveSettings()
             Print("Ready to Launch!")
             Buttons(StartButton)
 
@@ -684,6 +685,7 @@ Public Class Form1
         FormPersonality.Close()
         FormPersonality = New FormPersonality
         FormPersonality.Init()
+        ' no Help()
         FormPersonality.Visible = False
         Me.AllowDrop = True
 
@@ -1036,12 +1038,14 @@ Public Class Form1
 #Region "INI"
 
     Public Sub CopyWifi(Page As String)
+        Try
+            System.IO.Directory.Delete(gPath + "WifiPages", True)
+            My.Computer.FileSystem.CopyDirectory(gPath + "WifiPages-" + Page, gPath + "WifiPages", True)
 
-        System.IO.Directory.Delete(gPath + "WifiPages", True)
-        My.Computer.FileSystem.CopyDirectory(gPath + "WifiPages-" + Page, gPath + "WifiPages", True)
-
-        System.IO.Directory.Delete(gPath + "bin\WifiPages", True)
-        My.Computer.FileSystem.CopyDirectory(gPath + "bin\WifiPages-" + Page, gPath + "\bin\WifiPages", True)
+            System.IO.Directory.Delete(gPath + "bin\WifiPages", True)
+            My.Computer.FileSystem.CopyDirectory(gPath + "bin\WifiPages-" + Page, gPath + "\bin\WifiPages", True)
+        Catch
+        End Try
 
     End Sub
 
@@ -1131,9 +1135,6 @@ Public Class Form1
             Log("Info:Console will not be shown")
         End If
 
-        PrintFast("Saving all settings")
-
-        MySetting.SaveSettings()
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
         ' set the defaults in the INI for the viewer to use. Painful to do as it's a Left hand side edit 
 
