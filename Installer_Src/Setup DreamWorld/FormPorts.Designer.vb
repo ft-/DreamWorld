@@ -22,6 +22,7 @@ Partial Class FormPorts
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FormPorts))
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
         Me.MaxP = New System.Windows.Forms.Label()
         Me.Label26 = New System.Windows.Forms.Label()
@@ -156,6 +157,7 @@ Partial Class FormPorts
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.ClientSize = New System.Drawing.Size(240, 197)
         Me.Controls.Add(Me.GroupBox2)
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Name = "FormPorts"
         Me.Text = "Ports"
         Me.GroupBox2.ResumeLayout(False)

@@ -22,7 +22,7 @@ Public Class FormPersonality
         Me.Left = xy.Item(0)
         Me.Top = xy.Item(1)
     End Sub
-    Private Sub Loaded(sender As Object, e As EventArgs) Handles Me.Load
+    Public Sub Init()
 
         Dim Chattime = Form1.MySetting.ChatTime
 
@@ -41,7 +41,10 @@ Public Class FormPersonality
         SetScreen()
 
     End Sub
+    Public Sub Help()
+        Form1.HelpOnce("Personality")
 
+    End Sub
     Private Sub ChatSpeed_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ChatSpeed.SelectedIndexChanged
 
         Dim text = ChatSpeed.SelectedItem.ToString()
@@ -87,7 +90,7 @@ Public Class FormPersonality
 
     Private Sub Timer1_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Timer1.Tick
 
-        If (Form1.MySetting.TimerInterval > 0) Then
+        If (Form1.MySetting.TimerInterval > 0) And Form1.OpensimIsRunning And Not Form1.gExiting Then
             Form1.PaintImage()
         End If
 
@@ -95,7 +98,9 @@ Public Class FormPersonality
 
 
  Private Sub PictureBox4_Click(sender As Object, e As EventArgs) Handles PersonalityHelp.Click
+
         Form1.Help("Personality")
+
     End Sub
 
 End Class

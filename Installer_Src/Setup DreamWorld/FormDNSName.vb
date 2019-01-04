@@ -32,7 +32,7 @@ Public Class FormDNSName
 
         DNSNameBox.Text = Form1.MySetting.DNSName
         DNSNameBox.Text = Form1.MySetting.DNSName
-        UniqueId.Text = Form1.MySetting.Machine()
+        UniqueId.Text = Form1.MySetting.MachineID()
         EnableHypergrid.Checked = Form1.MySetting.EnableHypergrid
         SuitcaseCheckbox.Checked = Form1.MySetting.Suitcase
 
@@ -41,6 +41,9 @@ Public Class FormDNSName
         If DNSNameBox.Text = String.Empty Then
             MsgBox("Type in a 'name.Outworldz.net' for your grid, or just press 'Next' to get a suggested name. You can also use a DNS name.", vbInformation, "Name Needed")
         End If
+
+        Form1.HelpOnce("DNS")
+
         initted = True
 
     End Sub
@@ -147,25 +150,12 @@ Public Class FormDNSName
 
     End Sub
 
-    Private Sub PictureBox4_Click(sender As Object, e As EventArgs) Handles PictureBox4.Click
-        '!!!
-        Dim webAddress As String = Form1.gDomain + "/Outworldz_installer/technical.htm#DNSHelp"
-        Process.Start(webAddress)
 
-    End Sub
-
-    Private Sub UniqueId_TextChanged(sender As Object, e As EventArgs)
-
-        If Not initted Then Return
-        Form1.MySetting.Machine() = UniqueId.Text
-        Form1.MySetting.SaveSettings()
-
-    End Sub
 
     Private Sub UniqueId_TextChanged_1(sender As Object, e As EventArgs) Handles UniqueId.TextChanged
 
         If Not initted Then Return
-        Form1.MySetting.Machine() = UniqueId.Text
+        Form1.MySetting.MachineID() = UniqueId.Text
         Form1.MySetting.SaveSettings()
 
     End Sub
@@ -189,6 +179,13 @@ Public Class FormDNSName
         End If
 
     End Sub
+
+    Private Sub DynDNSPassword_Click(sender As Object, e As EventArgs) Handles DynDNSPassword.Click
+
+        Form1.Help("DNS")
+
+    End Sub
+
 
 
 

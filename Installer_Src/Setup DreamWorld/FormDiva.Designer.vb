@@ -22,6 +22,8 @@ Partial Class FormDiva
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FormDiva))
         Me.Web = New System.Windows.Forms.GroupBox()
         Me.WiFi = New System.Windows.Forms.PictureBox()
         Me.WifiEnabled = New System.Windows.Forms.CheckBox()
@@ -43,7 +45,6 @@ Partial Class FormDiva
         Me.Label18 = New System.Windows.Forms.Label()
         Me.Label14 = New System.Windows.Forms.Label()
         Me.GmailUsername = New System.Windows.Forms.TextBox()
-        Me.FriendlyName = New System.Windows.Forms.PictureBox()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.GridName = New System.Windows.Forms.TextBox()
         Me.Label19 = New System.Windows.Forms.Label()
@@ -53,10 +54,10 @@ Partial Class FormDiva
         Me.Label1 = New System.Windows.Forms.Label()
         Me.WhiteRadioButton = New System.Windows.Forms.RadioButton()
         Me.BlackRadioButton = New System.Windows.Forms.RadioButton()
+        Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.Web.SuspendLayout()
         CType(Me.WiFi, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox6.SuspendLayout()
-        CType(Me.FriendlyName, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -172,6 +173,7 @@ Partial Class FormDiva
         Me.AdminPassword.Name = "AdminPassword"
         Me.AdminPassword.Size = New System.Drawing.Size(100, 20)
         Me.AdminPassword.TabIndex = 29
+        Me.ToolTip1.SetToolTip(Me.AdminPassword, "Can only change when Opensim is running")
         Me.AdminPassword.UseSystemPasswordChar = True
         '
         'GroupBox6
@@ -184,7 +186,7 @@ Partial Class FormDiva
         Me.GroupBox6.Controls.Add(Me.Label18)
         Me.GroupBox6.Controls.Add(Me.Label14)
         Me.GroupBox6.Controls.Add(Me.GmailUsername)
-        Me.GroupBox6.Location = New System.Drawing.Point(529, 12)
+        Me.GroupBox6.Location = New System.Drawing.Point(504, 18)
         Me.GroupBox6.Name = "GroupBox6"
         Me.GroupBox6.Size = New System.Drawing.Size(200, 132)
         Me.GroupBox6.TabIndex = 1862
@@ -256,15 +258,6 @@ Partial Class FormDiva
         Me.GmailUsername.Size = New System.Drawing.Size(95, 20)
         Me.GmailUsername.TabIndex = 33
         '
-        'FriendlyName
-        '
-        Me.FriendlyName.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.FriendlyName.Location = New System.Drawing.Point(239, 16)
-        Me.FriendlyName.Name = "FriendlyName"
-        Me.FriendlyName.Size = New System.Drawing.Size(30, 34)
-        Me.FriendlyName.TabIndex = 1870
-        Me.FriendlyName.TabStop = False
-        '
         'Label2
         '
         Me.Label2.AutoSize = True
@@ -306,11 +299,10 @@ Partial Class FormDiva
         Me.GroupBox1.Controls.Add(Me.GridName)
         Me.GroupBox1.Controls.Add(Me.Label19)
         Me.GroupBox1.Controls.Add(Me.SplashPage)
-        Me.GroupBox1.Controls.Add(Me.FriendlyName)
         Me.GroupBox1.Controls.Add(Me.Label2)
         Me.GroupBox1.Location = New System.Drawing.Point(230, 12)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(293, 173)
+        Me.GroupBox1.Size = New System.Drawing.Size(259, 173)
         Me.GroupBox1.TabIndex = 186736
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Splash Screen"
@@ -365,6 +357,7 @@ Partial Class FormDiva
         Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.Web)
         Me.Controls.Add(Me.GroupBox6)
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
         Me.Name = "FormDiva"
         Me.Text = "Diva Wifi Panel"
@@ -373,7 +366,6 @@ Partial Class FormDiva
         CType(Me.WiFi, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox6.ResumeLayout(False)
         Me.GroupBox6.PerformLayout()
-        CType(Me.FriendlyName, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
         Me.ResumeLayout(False)
@@ -401,7 +393,6 @@ Partial Class FormDiva
     Friend WithEvents Label18 As Label
     Friend WithEvents Label14 As Label
     Friend WithEvents GmailUsername As TextBox
-    Friend WithEvents FriendlyName As PictureBox
     Friend WithEvents Label2 As Label
     Friend WithEvents GridName As TextBox
     Friend WithEvents Label19 As Label
@@ -411,4 +402,5 @@ Partial Class FormDiva
     Friend WithEvents BlackRadioButton As RadioButton
     Friend WithEvents Label1 As Label
     Friend WithEvents CustomButton1 As RadioButton
+    Friend WithEvents ToolTip1 As ToolTip
 End Class

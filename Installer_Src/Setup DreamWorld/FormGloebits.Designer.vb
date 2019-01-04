@@ -78,7 +78,7 @@ Partial Class Gloebits
         'PictureBox3
         '
         Me.PictureBox3.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.PictureBox3.Location = New System.Drawing.Point(442, 12)
+        Me.PictureBox3.Location = New System.Drawing.Point(442, 25)
         Me.PictureBox3.Name = "PictureBox3"
         Me.PictureBox3.Size = New System.Drawing.Size(28, 27)
         Me.PictureBox3.TabIndex = 1864

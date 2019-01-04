@@ -55,6 +55,7 @@ Public Class RegionMaker
     End Property
 
     Private Sub New(conn As Mysql)
+
         MysqlConn = conn
         GetAllRegions()
         If RegionCount() = 0 Then
@@ -402,15 +403,6 @@ Public Class RegionMaker
 
 #Region "Functions"
 
-    Private Function CheckN(n As Integer) As Integer
-
-        If n > RegionList.Count Or n < 0 Then
-            Form1.Log("Error: Bad N in Region List " + n.ToString)
-            Return 0
-        End If
-        Return n
-
-    End Function
 
     Public Sub RegionDump()
 
@@ -559,12 +551,7 @@ Public Class RegionMaker
                     Dim inis = Directory.GetFiles(FileName, "*.ini", SearchOption.TopDirectoryOnly)
 
                     For Each ini As String In inis
-                        fName = System.IO.Path.GetFileName(ini)
-                        fName = Mid(fName, 1, Len(fName) - 4)
-
-                        'If (fName.Contains("Alpha")) Then
-                        'Dim x = 1
-                        'End If
+                        fName = System.IO.Path.GetFileNameWithoutExtension(ini)
 
                         ' make a slot to hold the region data 
                         CreateRegion(fName)
@@ -627,12 +614,14 @@ Public Class RegionMaker
                                 Dim o = FindBackupByName(fName)
 
                                 If o >= 0 Then
-                                    AvatarCount(n) = CType(Backup(CheckN(o))._AvatarCount, Integer)
-                                    ProcessID(n) = CType(Backup(CheckN(o))._ProcessID, Integer)
-                                    Booted(n) = CType(Backup(CheckN(o))._Ready, Boolean)
-                                    WarmingUp(n) = CType(Backup(CheckN(o))._WarmingUp, Boolean)
-                                    ShuttingDown(n) = CType(Backup(CheckN(o))._ShuttingDown, Boolean)
-                                    Timer(n) = CType(Backup(CheckN(o))._Timer, Integer)
+                                    AvatarCount(n) = CType(Backup(o)._AvatarCount, Integer)
+                                    ProcessID(n) = CType(Backup(o)._ProcessID, Integer)
+                                    Booted(n) = CType(Backup(o)._Ready, Boolean)
+                                    WarmingUp(n) = CType(Backup(o)._WarmingUp, Boolean)
+                                    ShuttingDown(n) = CType(Backup(o)._ShuttingDown, Boolean)
+                                    Timer(n) = CType(Backup(o)._Timer, Integer)
+                                Else
+                                    Form1.Log("Error: Could not find backup name:" + fName)
                                 End If
 
                             Catch
@@ -695,7 +684,8 @@ Public Class RegionMaker
         + "NonPhysicalPrimMax = " + NonPhysicalPrimMax(n).ToString + vbCrLf _
         + "PhysicalPrimMax = " + PhysicalPrimMax(n).ToString + vbCrLf _
         + "ClampPrimSize = " + ClampPrimSize(n).ToString + vbCrLf _
-        + "MaxPrims = " + MaxPrims(n) + vbCrLf + vbCrLf _
+        + "MaxPrims = " + MaxPrims(n) + vbCrLf _
+        + "RegionType = Estate" + vbCrLf + vbCrLf _
         + ";# Dreamgrid extended properties" + vbCrLf _
         + "RegionSnapShot = " + RegionSnapShot(n) + vbCrLf _
         + "MapType = " + MapType(n) + vbCrLf _
@@ -705,8 +695,8 @@ Public Class RegionMaker
         + "ManagerGod = " + ManagerGod(n) + vbCrLf _
         + "Birds = " + Birds(n) + vbCrLf _
         + "Tides = " + Tides(n) + vbCrLf _
-        + "Teleport = " + Teleport(n) + vbCrLf _
-        + "RegionType = MainLand" + vbCrLf
+        + "Teleport = " + Teleport(n) + vbCrLf
+
 
         Try
             My.Computer.FileSystem.DeleteFile(fname)
@@ -830,6 +820,26 @@ Public Class RegionMaker
         Next
 
     End Sub
+    Private Declare Function ShowWindow Lib "user32.dll" (ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
+
+    <Flags()>
+    Private Enum SHOW_WINDOW As Integer
+        SW_HIDE = 0
+        SW_SHOWNORMAL = 1
+        SW_NORMAL = 1
+        SW_SHOWMINIMIZED = 2
+        SW_SHOWMAXIMIZED = 3
+        SW_MAXIMIZE = 3
+        SW_SHOWNOACTIVATE = 4
+        SW_SHOW = 5
+        SW_MINIMIZE = 6
+        SW_SHOWMINNOACTIVE = 7
+        SW_SHOWNA = 8
+        SW_RESTORE = 9
+        SW_SHOWDEFAULT = 10
+        SW_FORCEMINIMIZE = 11
+        SW_MAX = 11
+    End Enum
 
     Public Sub CheckPost()
 
@@ -861,6 +871,10 @@ Public Class RegionMaker
                     Return
                 End Try
 
+                '		rawJSON	"{""alert"":""region_ready"",""login"":""disabled"",""region_name"":""Welcome"",""region_id"":""365d804a-0df1-46cf-8acf-4320a3df3fca""}"	String
+                '       rawJSON "{""alert"":""region_ready"",""login"":""enabled"",""region_name"":""Welcome"",""region_id"":""365d804a-0df1-46cf-8acf-4320a3df3fca""}"	String
+                '		rawJSON	"{""alert"":""region_ready"",""login"":""shutdown"",""region_name"":""Welcome"",""region_id"":""365d804a-0df1-46cf-8acf-4320a3df3fca""}"	String
+
                 If json.login = "enabled" Then
                     Form1.PrintFast("Region " & json.region_name & " is ready for logins")
 
@@ -876,21 +890,30 @@ Public Class RegionMaker
                     UUID(n) = json.region_id
                     Form1.UpdateView() = True
 
-                ElseIf json.login = "shutdown" Then
-                    Form1.PrintFast("Region " & json.region_name & " shut down")
-
-                    Dim n = FindRegionByName(json.region_name)
-                    If n < 0 Then
-                        Return
+                    If Form1.MySetting.ConsoleShow = False Then
+                        Dim pID = ProcessID(n)
+                        Dim p = Process.GetProcessById(pID)
+                        ShowWindow(p.MainWindowHandle, SHOW_WINDOW.SW_MINIMIZE)
                     End If
 
-                    Booted(n) = False
-                    WarmingUp(n) = False
-                    ShuttingDown(n) = True
-                    UUID(n) = ""
-                    Form1.UpdateView() = True
 
-                End If
+                ElseIf json.login = "shutdown" Then
+
+                        ' does not work as expected - get this during bootup!
+                        'Form1.PrintFast("Region " & json.region_name & " shut down")
+
+                        'Dim n = FindRegionByName(json.region_name)
+                        'If n < 0 Then
+                        'Return
+                        'End If
+
+                        'Booted(n) = False
+                        'WarmingUp(n) = False
+                        'ShuttingDown(n) = True
+                        'UUID(n) = ""
+                        'Form1.UpdateView() = True
+
+                    End If
                 Try
                     WebserverList.RemoveAt(LOOPVAR)
                 Catch
@@ -1021,7 +1044,7 @@ Public Class RegionMaker
 
         ElseIf POST.Contains("get_partner") Then
 
-            Dim PWok As Boolean = CheckPassword(POST, MySetting.Machine().ToLower)
+            Dim PWok As Boolean = CheckPassword(POST, MySetting.MachineID().ToLower)
             If Not PWok Then Return ""
 
             Dim pattern1 As Regex = New Regex("User=(.*?) ")
@@ -1035,7 +1058,7 @@ Public Class RegionMaker
 
         ElseIf POST.Contains("set_partner") Then
 
-            Dim PWok As Boolean = CheckPassword(POST, MySetting.Machine().ToLower)
+            Dim PWok As Boolean = CheckPassword(POST, MySetting.MachineID().ToLower)
             If Not PWok Then Return ""
 
 

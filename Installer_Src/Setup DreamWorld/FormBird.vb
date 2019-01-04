@@ -52,6 +52,8 @@ Public Class BirdForm
         BirdsMaxHeightTextBox.Text = Form1.MySetting.BirdsMaxHeight.ToString
         PrimNameTextBox.Text = Form1.MySetting.BirdsPrim
 
+        Form1.HelpOnce("Birds")
+
     End Sub
 
     Private Sub Form1_Closed(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Closed

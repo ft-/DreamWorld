@@ -37,7 +37,7 @@ Public Class FormPorts
         PrivatePort.Text = Form1.MySetting.PrivatePort
         HTTPPort.Text = Form1.MySetting.HttpPort
         DiagnosticPort.Text = Form1.MySetting.DiagnosticPort
-
+        Form1.HelpOnce("Ports")
         initted = True
 
     End Sub
@@ -105,8 +105,7 @@ Public Class FormPorts
 
     Private Sub Upnp_Click(sender As Object, e As EventArgs) Handles Upnp.Click
 
-        Dim webAddress As String = Form1.gDomain + "/Outworldz_installer/technical.htm#Upnp"
-        Process.Start(webAddress)
+        Form1.Help("Ports")
 
     End Sub
 

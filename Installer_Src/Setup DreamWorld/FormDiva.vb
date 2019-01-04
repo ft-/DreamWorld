@@ -3,7 +3,7 @@
 Public Class FormDiva
 
     Dim initted As Boolean = False
-
+    Dim setpassword As Boolean = False
 #Region "FormPos"
 
     Public ScreenPosition As ScreenPos
@@ -53,9 +53,41 @@ Public Class FormDiva
         AdminFirst.Text = Form1.MySetting.AdminFirst
 
         SetScreen()
+        Form1.HelpOnce("Diva")
+
+        If Form1.MySetting.Theme = "White" Then
+            BlackRadioButton.Checked = False
+            WhiteRadioButton.Checked = True
+            CustomButton1.Checked = False
+        ElseIf Form1.MySetting.Theme = "Black" Then
+            BlackRadioButton.Checked = True
+            WhiteRadioButton.Checked = False
+            CustomButton1.Checked = False
+        ElseIf Form1.MySetting.Theme = "Custom" Then
+            BlackRadioButton.Checked = False
+            WhiteRadioButton.Checked = False
+            CustomButton1.Checked = True
+        End If
+
+        If Form1.OpensimIsRunning Then
+            AdminPassword.Enabled = True
+        Else
+            AdminPassword.Enabled = False
+        End If
+
+
         initted = True
 
     End Sub
+
+    Private Sub Close_form(sender As Object, e As EventArgs) Handles Me.Closed
+
+        If setpassword And Form1.OpensimIsRunning() Then
+            Form1.ConsoleCommand(Form1.gRobustProcID, "reset user password Wifi Admin " + Form1.MySetting.Password + "{ENTER}")
+        End If
+
+    End Sub
+
 #Region "Wifi"
 
     Private Sub WifiEnabled_CheckedChanged(sender As Object, e As EventArgs) Handles WifiEnabled.CheckedChanged
@@ -94,8 +126,7 @@ Public Class FormDiva
 
     Private Sub PictureBox4_Click(sender As Object, e As EventArgs) Handles WiFi.Click
 
-        Dim webAddress As String = Form1.gDomain + "/Outworldz_installer/technical.htm#WiFi"
-        Process.Start(webAddress)
+        Form1.Help("Diva")
 
     End Sub
 
@@ -153,15 +184,13 @@ Public Class FormDiva
 
     End Sub
 
-    Private Sub Password_TextChanged(sender As Object, e As EventArgs) Handles AdminPassword.LostFocus
+    Private Sub Password_TextChanged(sender As Object, e As EventArgs) Handles AdminPassword.TextChanged
 
         If Not initted Then Return
         Form1.MySetting.Password = AdminPassword.Text
         Form1.MySetting.SaveSettings()
 
-        If Form1.OpensimIsRunning() Then
-            Form1.ConsoleCommand(Form1.gRobustProcID, "reset user password Wifi Admin " + Form1.MySetting.Password + "{Enter}")
-        End If
+        Setpassword = True
 
     End Sub
 
@@ -191,12 +220,6 @@ Public Class FormDiva
 
     End Sub
 
-    Private Sub PictureBox6_Click(sender As Object, e As EventArgs) Handles FriendlyName.Click
-
-        Dim webAddress As String = Form1.gDomain + "/Outworldz_installer/technical.htm#Grid"
-        Process.Start(webAddress)
-
-    End Sub
 
 #End Region
 
@@ -217,27 +240,14 @@ Public Class FormDiva
 
     End Sub
 
-    Private Sub ViewerSplash_Click(sender As Object, e As EventArgs)
-        '!!!
-        Dim webAddress As String = Form1.gDomain + "/Outworldz_installer/technical.htm#ViewerSplash"
-        Process.Start(webAddress)
 
-    End Sub
 
     Private Sub BlackRadioButton_CheckedChanged(sender As Object, e As EventArgs) Handles BlackRadioButton.CheckedChanged
 
         If BlackRadioButton.Checked Then
+            Form1.CopyWifi("Black")
             Form1.MySetting.Theme = "Black"
             Form1.MySetting.SaveSettings()
-            WhiteRadioButton.Checked = False
-            CustomButton1.Checked = False
-
-            System.IO.Directory.Delete(Form1.gPath + "WifiPages", True)
-            My.Computer.FileSystem.CopyDirectory(Form1.gPath + "WifiPages-Black", Form1.gPath + "WifiPages", True)
-
-            System.IO.Directory.Delete(Form1.gPath + "bin\WifiPages", True)
-            My.Computer.FileSystem.CopyDirectory(Form1.gPath + "bin\WifiPages-Black", Form1.gPath + "\bin\WifiPages", True)
-
         End If
 
 
@@ -246,39 +256,19 @@ Public Class FormDiva
     Private Sub WhiteRadioButton_CheckedChanged(sender As Object, e As EventArgs) Handles WhiteRadioButton.CheckedChanged
 
         If WhiteRadioButton.Checked Then
+            Form1.CopyWifi("White")
             Form1.MySetting.Theme = "White"
             Form1.MySetting.SaveSettings()
-            BlackRadioButton.Checked = False
-            CustomButton1.Checked = False
-
-            System.IO.Directory.Delete(Form1.gPath + "WifiPages", True)
-            My.Computer.FileSystem.CopyDirectory(Form1.gPath + "WifiPages-White", Form1.gPath + "WifiPages", True)
-
-            System.IO.Directory.Delete(Form1.gPath + "\bin\WifiPages", True)
-            My.Computer.FileSystem.CopyDirectory(Form1.gPath + "\bin\WifiPages-White", Form1.gPath + "\bin\WifiPages", True)
-
-
         End If
-
-
 
     End Sub
 
     Private Sub RadioButton1_CheckedChanged(sender As Object, e As EventArgs) Handles CustomButton1.CheckedChanged
 
         If CustomButton1.Checked Then
+            Form1.CopyWifi("Custom")
             Form1.MySetting.Theme = "Custom"
             Form1.MySetting.SaveSettings()
-
-            BlackRadioButton.Checked = False
-            WhiteRadioButton.Checked = False
-
-            System.IO.Directory.Delete(Form1.gPath + "WifiPages", True)
-            My.Computer.FileSystem.CopyDirectory(Form1.gPath + "WifiPages-Custom", Form1.gPath + "WifiPages", True)
-
-            System.IO.Directory.Delete(Form1.gPath + "\bin\WifiPages", True)
-            My.Computer.FileSystem.CopyDirectory(Form1.gPath + "\bin\WifiPages-Custom", Form1.gPath + "\bin\WifiPages", True)
-
         End If
 
     End Sub

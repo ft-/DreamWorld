@@ -23,6 +23,7 @@ Partial Class FormPermissions
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FormPermissions))
         Me.GroupBox4 = New System.Windows.Forms.GroupBox()
         Me.AllowGods = New System.Windows.Forms.CheckBox()
         Me.GodHelp = New System.Windows.Forms.PictureBox()
@@ -190,6 +191,7 @@ Partial Class FormPermissions
         Me.Controls.Add(Me.GroupBox8)
         Me.Controls.Add(Me.LimitsBox)
         Me.Controls.Add(Me.GroupBox4)
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
         Me.Name = "FormPermissions"
         Me.Text = "Permissions"

@@ -27,6 +27,7 @@
         VivoxUserName.Text = Form1.MySetting.Vivox_UserName
         VivoxPassword.UseSystemPasswordChar = True
         SetScreen()
+        Form1.HelpOnce("Vivox")
     End Sub
     Private Sub CheckBox1_CheckedChanged(sender As Object, e As EventArgs) Handles VivoxEnable.CheckedChanged
         Form1.MySetting.VivoxEnabled = VivoxEnable.Checked
@@ -50,5 +51,9 @@
     End Sub
     Private Sub VivoxPassword_Clicked(sender As Object, e As EventArgs) Handles VivoxPassword.Click
         VivoxPassword.UseSystemPasswordChar = False
+    End Sub
+
+    Private Sub RunOnBoot_Click(sender As Object, e As EventArgs) Handles RunOnBoot.Click
+        Form1.Help("Vivox")
     End Sub
 End Class

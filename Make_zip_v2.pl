@@ -1,5 +1,5 @@
 
-my $type  = '-V2.56' ;  # '-Beta-V1.5';
+my $type  = '-V2.61' ;  # '-Beta-V1.5';
 my $dir = "F:/Opensim/Outworldz Dreamgrid Source";
 
 chdir ($dir);
@@ -15,7 +15,9 @@ use 5.010;
 
 
 
-my @deletions = (
+my @
+deletions = (
+	"$dir/OutworldzFiles/Opensim/bin/datasnapshot",
 	"$dir/OutworldzFiles/Opensim/bin/assetcache",
 	"$dir/OutworldzFiles/Opensim/bin/j2kDecodeCache",
 	"$dir/OutworldzFiles/Opensim/bin/MeshCache",
@@ -31,6 +33,8 @@ my @deletions = (
 
 foreach my $path ( @deletions) {
 	rm($path);
+	mkdir $path
+	
 }
 
 say("clean up opensim");
@@ -165,7 +169,7 @@ unlink "y:/Inetpub/Secondlife/Outworldz_Installer/Grid/DreamGrid-Update$type.zip
 if (!copy ("../Zips/DreamGrid-Update$type.zip", "y:/Inetpub/Secondlife/Outworldz_Installer/Grid/DreamGrid-Update$type.zip"))  {die $!;}
 
 print "Server Publish?\n";
-#<stdin>;
+<stdin>;
 
 unlink "y:/Inetpub/Secondlife/Outworldz_Installer/Grid/DreamGrid.zip";
 if (!copy ("../Zips/DreamGrid$type.zip", "y:/Inetpub/Secondlife/Outworldz_Installer/Grid/DreamGrid.zip"))  {die $!;}

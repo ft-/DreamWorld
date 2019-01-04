@@ -1,3 +1,23 @@
+2.60
+Console hideable when booted
+Fix settings bug making a shortcut each boot
+Don't auto restart if MySetting.AutoRestartInterval() = 0
+Don't process login shutdown message in JSON - doesn't work and irritates the icons
+Suppress possible error in Upload Image
+Personality timer now running
+Always upload photo if there is one 
+Doubled estate bug fixed in regions.
+
+2.59
+Web timer set to 1 ms for speedier response
+Added Publicity Form
+
+2.58
+Help files pop up on form load, once.
+Regiontype = Estate in viewer
+Added many Help files 
+Autobackup went to wrong folder on Key files backup
+
 V2.57 
 Setting page changed to discrete Form Buttons - no more Expert screen
 Wifi pages has two themes: B&W or W&B with choosable theme image
@@ -13,7 +33,7 @@ Print count of things cleared from caches
 Do not stop MySQL if already running
 Updates re-enable check for updates
 Faster refresh of Region Form when something changes
-
+ 
 V2.54
 Suppress clutter - only one Dreamgrid form of each type
 Added a "backup critical files" to the Content menu - copies both Wifi folders, all Regions and Mysql\data folder plus Settings.ini to Autobackup in a new folder by Date/Time

@@ -135,8 +135,10 @@ Public Class UpdateGrid
         Dim theRequest As HttpWebRequest
         Try 'Checks if the file exist
             theRequest = WebRequest.Create(gFileName)
+            theRequest.Proxy = Nothing
             Debug.Print(gFileName)
             theResponse = theRequest.GetResponse
+
         Catch ex As Exception
             Log(ex.Message)
             MessageBox.Show("An error occurred while downloading file. Possible causes:" & ControlChars.CrLf &
@@ -160,6 +162,7 @@ Public Class UpdateGrid
         Log("Saving to " + whereToSave)
 
         Dim writeStream As New IO.FileStream(whereToSave, IO.FileMode.Create)
+
         'Replacement for Stream.Position (webResponse stream doesn't support seek)
 
         'To calculate the download speed

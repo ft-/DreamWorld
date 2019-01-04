@@ -22,8 +22,8 @@ Public Class AdvancedForm
     Dim FormPorts As New FormPorts
     Dim FormPermissions As New FormPermissions
     Dim FormDNSName As New FormDNSName
-    Dim FormPersonality As New FormPersonality
 
+    Dim FormPublicity As New FormPublicity
 
 #End Region
 
@@ -50,6 +50,7 @@ Public Class AdvancedForm
     Private Sub Advanced_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 
         SetScreen()
+        Me.Visible = True
 
     End Sub
 
@@ -64,6 +65,12 @@ Public Class AdvancedForm
 
 
 #End Region
+
+    Private Sub Form1_FormClosing(ByVal sender As System.Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
+        e.Cancel = True
+        Me.Visible = False
+    End Sub
+
 
 #Region "Clicks"
 
@@ -158,8 +165,6 @@ Public Class AdvancedForm
 
     Private Sub RegionsButton1_Click(sender As Object, e As EventArgs) Handles RegionsButton1.Click
 
-        ' Set the new form's desktop location so it appears below and
-        ' to the right of the current form.
         FormRegions.Close()
         FormRegions = New FormRegions
         FormRegions.Activate()
@@ -247,10 +252,23 @@ Public Class AdvancedForm
 
         ' Set the new form's desktop location so it appears below and
         ' to the right of the current form.
-        FormPersonality.Close()
-        FormPersonality = New FormPersonality
-        FormPersonality.Activate()
-        FormPersonality.Visible = True
+        Form1.FormPersonality.Close()
+        Form1.FormPersonality = New FormPersonality
+        Form1.FormPersonality.Init()
+        Form1.FormPersonality.Help()
+        Form1.FormPersonality.Activate()
+        Form1.FormPersonality.Visible = True
+
+    End Sub
+
+    Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
+
+        ' Set the new form's desktop location so it appears below and
+        ' to the right of the current form.
+        FormPublicity.Close()
+        FormPublicity = New FormPublicity
+        FormPublicity.Activate()
+        FormPublicity.Visible = True
 
     End Sub
 

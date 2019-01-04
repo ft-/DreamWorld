@@ -39,11 +39,14 @@ Partial Class Tides
         Me.TideHighLevelTextBox = New System.Windows.Forms.TextBox()
         Me.TideEnabledCheckbox = New System.Windows.Forms.CheckBox()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
+        Me.RunOnBoot = New System.Windows.Forms.PictureBox()
         Me.GroupBox1.SuspendLayout()
+        CType(Me.RunOnBoot, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.RunOnBoot)
         Me.GroupBox1.Controls.Add(Me.TideInfoDebugCheckBox)
         Me.GroupBox1.Controls.Add(Me.BroadcastTideInfo)
         Me.GroupBox1.Controls.Add(Me.Label5)
@@ -184,6 +187,15 @@ Partial Class Tides
         Me.ToolTip1.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info
         Me.ToolTip1.ToolTipTitle = "Enable the tide to come in and out?"
         '
+        'RunOnBoot
+        '
+        Me.RunOnBoot.Image = Global.Outworldz.My.Resources.Resources.about
+        Me.RunOnBoot.Location = New System.Drawing.Point(191, 0)
+        Me.RunOnBoot.Name = "RunOnBoot"
+        Me.RunOnBoot.Size = New System.Drawing.Size(30, 34)
+        Me.RunOnBoot.TabIndex = 1860
+        Me.RunOnBoot.TabStop = False
+        '
         'Tides
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
@@ -196,6 +208,7 @@ Partial Class Tides
         Me.Text = "Tides"
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
+        CType(Me.RunOnBoot, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -215,4 +228,5 @@ Partial Class Tides
     Friend WithEvents BroadcastTideInfo As CheckBox
     Friend WithEvents ToolTip1 As ToolTip
     Friend WithEvents TideInfoDebugCheckBox As CheckBox
+    Friend WithEvents RunOnBoot As PictureBox
 End Class

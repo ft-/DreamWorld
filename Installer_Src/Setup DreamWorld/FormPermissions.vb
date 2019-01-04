@@ -39,7 +39,7 @@
         DomainUpDown1.SelectedIndex = v
 
         SetScreen()
-
+        Form1.HelpOnce("Permissions")
         initted = True
 
     End Sub
@@ -47,8 +47,7 @@
 #Region "Subs"
     Private Sub PictureBox1_Click(sender As Object, e As EventArgs) Handles GodHelp.Click
 
-        Dim webAddress As String = Form1.gDomain + "/Outworldz_installer/technical.htm#GridGod"
-        Process.Start(webAddress)
+        Form1.Help("Permissions")
 
     End Sub
 

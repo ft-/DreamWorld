@@ -35,6 +35,7 @@ Public Class Icecast
         AdminPassword.UseSystemPasswordChar = True
         ShoutcastPassword.UseSystemPasswordChar = True
         SetScreen()
+        Form1.HelpOnce("Icecast")
 
     End Sub
 
@@ -153,8 +154,7 @@ Public Class Icecast
     End Sub
 
     Private Sub PictureBox1_Click(sender As Object, e As EventArgs) Handles PictureBox1.Click
-        Dim webAddress As String = Form1.gDomain + "/Outworldz_installer/Shoutcast.htm"
-        Process.Start(webAddress)
+        Form1.Help("Icecast")
     End Sub
 
     Private Sub TextBox1_TextChanged(sender As Object, e As EventArgs) Handles ShoutcastPort1.TextChanged

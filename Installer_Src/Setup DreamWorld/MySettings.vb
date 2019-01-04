@@ -365,16 +365,16 @@ Public Class MySettings
         If (SmtpPort() = "") Then SmtpPort() = "587"
 
 
-
-        Try
-            Dim x = Theme()
-        Catch ex As Exception
-            Theme() = False.ToString
-        End Try
-
-
-        SaveSettings()
-
+        If Theme() = "" Then
+            Theme() = "Black"
+            Form1.CopyWifi("Black")
+        ElseIf Theme() = "Black" Then
+            Form1.CopyWifi("Black")
+        ElseIf Theme() = "White" Then
+            Form1.CopyWifi("White")
+        ElseIf Theme() = "Custom" Then
+            Form1.CopyWifi("Custom")
+        End If
 
     End Sub
 
@@ -520,7 +520,7 @@ Public Class MySettings
 
     Public Property Theme() As String
         Get
-            Return GetMySetting("Theme", "False")
+            Return GetMySetting("Theme")
         End Get
         Set
             SetMySetting("Theme", Value)
@@ -1449,15 +1449,7 @@ Public Class MySettings
         End Set
     End Property
 
-    'Save a random machine ID - we don't want any data to be sent that's personal or identifiable,  but it needs to be unique
-    Public Property Machine() As String
-        Get
-            Return GetMySetting("MachineID")
-        End Get
-        Set(ByVal Value As String)
-            SetMySetting("MachineID", Value)
-        End Set
-    End Property
+
 End Class
 
 #End Region

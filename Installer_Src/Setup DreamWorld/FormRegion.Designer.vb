@@ -1,9 +1,9 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class FormRegion
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -20,7 +20,7 @@ Partial Class FormRegion
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FormRegion))
@@ -49,9 +49,7 @@ Partial Class FormRegion
         Me.TidesCheckbox = New System.Windows.Forms.CheckBox()
         Me.TPCheckBox1 = New System.Windows.Forms.CheckBox()
         Me.MapHelp = New System.Windows.Forms.PictureBox()
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.GodHelp = New System.Windows.Forms.PictureBox()
-        Me.PictureBox2 = New System.Windows.Forms.PictureBox()
         Me.Advanced = New System.Windows.Forms.GroupBox()
         Me.Label6 = New System.Windows.Forms.Label()
         Me.Label4 = New System.Windows.Forms.Label()
@@ -95,9 +93,7 @@ Partial Class FormRegion
         Me.PhysicsBullet = New System.Windows.Forms.RadioButton()
         Me.PhysicsODE = New System.Windows.Forms.RadioButton()
         CType(Me.MapHelp, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.GodHelp, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Advanced.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox6.SuspendLayout()
@@ -339,22 +335,12 @@ Partial Class FormRegion
         'MapHelp
         '
         Me.MapHelp.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.MapHelp.Location = New System.Drawing.Point(112, 17)
+        Me.MapHelp.Location = New System.Drawing.Point(197, 62)
         Me.MapHelp.Name = "MapHelp"
         Me.MapHelp.Size = New System.Drawing.Size(28, 27)
         Me.MapHelp.TabIndex = 1857
         Me.MapHelp.TabStop = False
         Me.ToolTip1.SetToolTip(Me.MapHelp, "Overrides the global Map Settings for this one region")
-        '
-        'PictureBox1
-        '
-        Me.PictureBox1.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.PictureBox1.Location = New System.Drawing.Point(125, 15)
-        Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(28, 27)
-        Me.PictureBox1.TabIndex = 1886
-        Me.PictureBox1.TabStop = False
-        Me.ToolTip1.SetToolTip(Me.PictureBox1, "Enables the setting if the global  Settings is checked")
         '
         'GodHelp
         '
@@ -365,16 +351,6 @@ Partial Class FormRegion
         Me.GodHelp.TabIndex = 1857
         Me.GodHelp.TabStop = False
         Me.ToolTip1.SetToolTip(Me.GodHelp, "Allow or disallow  Gods in the one region")
-        '
-        'PictureBox2
-        '
-        Me.PictureBox2.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.PictureBox2.Location = New System.Drawing.Point(116, 19)
-        Me.PictureBox2.Name = "PictureBox2"
-        Me.PictureBox2.Size = New System.Drawing.Size(30, 34)
-        Me.PictureBox2.TabIndex = 1860
-        Me.PictureBox2.TabStop = False
-        Me.ToolTip1.SetToolTip(Me.PictureBox2, "You can choose a differentphysics for this one region ")
         '
         'Advanced
         '
@@ -547,7 +523,6 @@ Partial Class FormRegion
         '
         'GroupBox7
         '
-        Me.GroupBox7.Controls.Add(Me.PictureBox1)
         Me.GroupBox7.Controls.Add(Me.TPCheckBox1)
         Me.GroupBox7.Controls.Add(Me.TidesCheckbox)
         Me.GroupBox7.Controls.Add(Me.BirdsCheckBox)
@@ -669,7 +644,6 @@ Partial Class FormRegion
         'MapBox
         '
         Me.MapBox.Controls.Add(Me.Maps_Use_Default)
-        Me.MapBox.Controls.Add(Me.MapHelp)
         Me.MapBox.Controls.Add(Me.MapPicture)
         Me.MapBox.Controls.Add(Me.MapNone)
         Me.MapBox.Controls.Add(Me.MapSimple)
@@ -770,7 +744,6 @@ Partial Class FormRegion
         '
         'GroupBox1
         '
-        Me.GroupBox1.Controls.Add(Me.PictureBox2)
         Me.GroupBox1.Controls.Add(Me.Physics_Default)
         Me.GroupBox1.Controls.Add(Me.PhysicsSeparate)
         Me.GroupBox1.Controls.Add(Me.PhysicsNone)
@@ -857,6 +830,7 @@ Partial Class FormRegion
         Me.BackColor = System.Drawing.SystemColors.Control
         Me.ClientSize = New System.Drawing.Size(700, 516)
         Me.Controls.Add(Me.GroupBox6)
+        Me.Controls.Add(Me.MapHelp)
         Me.Controls.Add(Me.EnabledCheckBox)
         Me.Controls.Add(Me.DeleteButton)
         Me.Controls.Add(Me.Button1)
@@ -869,9 +843,7 @@ Partial Class FormRegion
         Me.Name = "FormRegion"
         Me.Text = "Region"
         CType(Me.MapHelp, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.GodHelp, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Advanced.ResumeLayout(False)
         Me.Advanced.PerformLayout()
         Me.GroupBox2.ResumeLayout(False)
@@ -962,6 +934,4 @@ Partial Class FormRegion
     Friend WithEvents BirdsCheckBox As CheckBox
     Friend WithEvents TidesCheckbox As CheckBox
     Friend WithEvents TPCheckBox1 As CheckBox
-    Friend WithEvents PictureBox1 As PictureBox
-    Friend WithEvents PictureBox2 As PictureBox
 End Class

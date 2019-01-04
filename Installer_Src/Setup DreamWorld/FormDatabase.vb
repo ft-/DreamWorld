@@ -46,8 +46,8 @@ Public Class FormDatabase
         SetScreen()
 
         initted = True
-
-        MsgBox("Changes to this area require special changes to MySQL.  If you change these, you will probaly break things.", vbInformation)
+        Form1.HelpOnce("Database")
+        MsgBox("Changes to this area require special changes to MySQL.  If you change these, you will probably break things.", vbInformation)
 
     End Sub
 

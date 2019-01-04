@@ -22,6 +22,7 @@ Partial Class FormPublicity
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FormPublicity))
         Me.GroupBox11 = New System.Windows.Forms.GroupBox()
         Me.DataSnapshotCheckBox = New System.Windows.Forms.CheckBox()
         Me.PublicPhoto = New System.Windows.Forms.PictureBox()
@@ -90,6 +91,7 @@ Partial Class FormPublicity
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.ClientSize = New System.Drawing.Size(245, 207)
         Me.Controls.Add(Me.GroupBox11)
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
         Me.Name = "FormPublicity"
         Me.Text = "Publicity"

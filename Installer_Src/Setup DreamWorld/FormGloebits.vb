@@ -172,7 +172,7 @@
     End Sub
 
     Private Sub PictureBox3_Click(sender As Object, e As EventArgs) Handles PictureBox3.Click
-        Dim webAddress As String = "http://dev.gloebit.com/opensim/"
+        Dim webAddress As String = "http://dev.gloebit.com/monetize/"
         Process.Start(webAddress)
     End Sub
 

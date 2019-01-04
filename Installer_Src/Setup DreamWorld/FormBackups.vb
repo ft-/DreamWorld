@@ -66,7 +66,7 @@ Public Class FormBackups
 
         BackupFolder.Text = Form1.MySetting.BackupFolder
         AutoBackup.Checked = Form1.MySetting.AutoBackup
-
+        Form1.HelpOnce("Backup")
         SetScreen()
 
     End Sub
@@ -76,6 +76,7 @@ Public Class FormBackups
 
         Form1.MySetting.AutoBackup = AutoBackup.Checked
         Form1.MySetting.SaveSettings()
+
     End Sub
 
     Private Sub AutoBackupInterval_SelectedIndexChanged(sender As Object, e As EventArgs) Handles AutoBackupInterval.SelectedIndexChanged
@@ -134,11 +135,15 @@ Public Class FormBackups
 #Region "Help"
 
     Private Sub AutoBackupHelp_Click(sender As Object, e As EventArgs) Handles AutoBackupHelp.Click
+
         Form1.Help("Backup")
+
     End Sub
 
     Private Sub PictureBox1_Click(sender As Object, e As EventArgs) Handles PictureBox1.Click
+
         Backup()
+
     End Sub
 
     Private Sub Backup()

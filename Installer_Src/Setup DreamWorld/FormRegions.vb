@@ -2,7 +2,6 @@
 
     Dim RegionClass As RegionMaker = RegionMaker.Instance(Form1.MysqlConn)
 
-
 #Region "ScreenSize"
     Public ScreenPosition As ScreenPos
     Private Handler As New EventHandler(AddressOf resize_page)
@@ -26,7 +25,7 @@
 
         LoadWelcomeBox()
         LoadRegionBox()
-
+        Form1.HelpOnce("Regions")
         SetScreen()
 
     End Sub
@@ -133,5 +132,7 @@
 
     End Sub
 
-
+    Private Sub RegionHelp_Click(sender As Object, e As EventArgs) Handles RegionHelp.Click
+        Form1.Help("Regions")
+    End Sub
 End Class

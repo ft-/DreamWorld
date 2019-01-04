@@ -34,7 +34,7 @@ Public Class Form1
 
 #Region "Declarations"
 
-    Dim gMyVersion As String = "2.57"
+    Dim gMyVersion As String = "2.61"
     Dim gSimVersion As String = "0.9.1"
 
     ' edit this to compile and run in the correct folder root
@@ -104,7 +104,7 @@ Public Class Form1
     Dim gUseIcons As Boolean = True
     Dim gIPv4Address As String
     Public MySetting As New MySettings
-    Dim gExiting As Boolean = False
+    Public gExiting As Boolean = False
 
     ' Shoutcast
     Dim gIcecastProcID As Integer = 0
@@ -125,7 +125,9 @@ Public Class Form1
 
     ' Help Form for RTF files
     Public FormHelp As New FormHelp
-
+    Dim Adv As AdvancedForm
+    Dim initted As Boolean = False
+    Public FormPersonality As New FormPersonality
 
     <CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA2101:SpecifyMarshalingForPInvokeStringArguments", MessageId:="1")>
     <CodeAnalysis.SuppressMessage("Microsoft.Interoperability", "CA1401:PInvokesShouldNotBeVisible")>
@@ -438,7 +440,7 @@ Public Class Form1
 
         ' Save a random machine ID - we don't want any data to be sent that's personal or identifiable,  but it needs to be unique
         Randomize()
-        If MySetting.Machine() = "" Then MySetting.Machine() = Random()  ' a random machine ID may be generated.  Happens only once
+        If MySetting.MachineID() = "" Then MySetting.MachineID() = Random()  ' a random machine ID may be generated.  Happens only once
 
 
         'hide progress
@@ -473,6 +475,9 @@ Public Class Form1
 
         RegionClass = RegionMaker.Instance(MysqlConn)
 
+        Adv = New AdvancedForm
+        initted = True
+
         SaySomething()
 
         ClearLogFiles() ' clear log fles
@@ -485,7 +490,6 @@ Public Class Form1
             System.IO.Directory.Delete(MyFolder + "\Outworldzfiles\Opensim\bin\config-include\Birds.ini", True)
         Catch
         End Try
-
 
         MyUPnpMap = New UPnp(MyFolder)
 
@@ -539,8 +543,9 @@ Public Class Form1
         End If
 
         ' Find out if the viewer is installed
-        If System.IO.File.Exists(MyFolder & "\OutworldzFiles\Settings.txt") Then
+        If System.IO.File.Exists(MyFolder & "\OutworldzFiles\Settings.ini") Then
 
+            UploadPhoto()
 
             Buttons(StartButton)
             ProgressBar1.Value = 100
@@ -549,6 +554,7 @@ Public Class Form1
                 Print("Auto Startup")
                 Startup()
             Else
+                MySetting.SaveSettings()
                 Print("Ready to Launch! Click 'Start' to begin your adventure in Opensimulator.")
             End If
 
@@ -557,18 +563,36 @@ Public Class Form1
             Print("Installing Desktop icon clicky thingy")
             Create_ShortCut(MyFolder & "\Start.exe")
             BumpProgress10()
-
+            MySetting.SaveSettings()
             Print("Ready to Launch!")
             Buttons(StartButton)
+
+            HelpOnce("Startup")
+
         End If
 
         Dim isMySqlRunning = CheckPort("127.0.0.1", CType(MySetting.MySqlPort, Integer))
         If isMySqlRunning Then gStopMysql = False
 
+
         ProgressBar1.Value = 100
 
     End Sub
 
+    Private Sub UploadPhoto()
+        If System.IO.File.Exists(MyFolder & "\OutworldzFiles\Photo.png") Then
+            Dim params As New Specialized.NameValueCollection
+            params.Add("MachineID", MySetting.MachineID())
+            params.Add("DnsName", MySetting.PublicIP)
+
+            Dim Myupload As New UploadImage
+            Dim URL = New Uri("https://www.outworldz.com/cgi/uploadphoto.plx")
+
+            Myupload.PostContent_UploadFile(URL, MyFolder & "\OutworldzFiles\Photo.png", params)
+
+        End If
+
+    End Sub
     ''' <summary>
     ''' Start Button on main form
     ''' </summary>
@@ -658,7 +682,11 @@ Public Class Form1
 
         Timer1.Interval = 1000
         Timer1.Start() 'Timer starts functioning
-
+        FormPersonality.Close()
+        FormPersonality = New FormPersonality
+        FormPersonality.Init()
+        ' no Help()
+        FormPersonality.Visible = False
         Me.AllowDrop = True
 
     End Sub
@@ -767,12 +795,16 @@ Public Class Form1
                     ShowWindow(p.MainWindowHandle, SHOW_WINDOW.SW_RESTORE)
                 Catch
                 End Try
-                ConsoleCommand(RegionClass.ProcessID(X), "quit{ENTER}")
+                ConsoleCommand(RegionClass.ProcessID(X), "q{ENTER}")
             End If
 
             RegionClass.Booted(X) = False
             RegionClass.ShuttingDown(X) = True
             RegionClass.WarmingUp(X) = False
+
+            UpdateView = True ' make form refresh
+
+            Sleep(2000)
         Next
 
         ' show robust last, try-catch in case it crashed.
@@ -819,6 +851,9 @@ Public Class Form1
                     ProgressBar1.Value = CType(v, Integer)
                     Diagnostics.Debug.Print("V=" + ProgressBar1.Value.ToString)
                 End If
+
+                UpdateView = True ' make form refresh
+
                 Application.DoEvents()
 
             End While
@@ -836,7 +871,7 @@ Public Class Form1
             RegionClass.WarmingUp(X) = False
             RegionClass.ProcessID(X) = 0
         Next
-
+        UpdateView = True ' make form refresh
         If gRobustProcID > 0 Then
             ConsoleCommand(gRobustProcID, "{ENTER}q{ENTER}")
         End If
@@ -1004,6 +1039,17 @@ Public Class Form1
 
 #Region "INI"
 
+    Public Sub CopyWifi(Page As String)
+        Try
+            System.IO.Directory.Delete(gPath + "WifiPages", True)
+            My.Computer.FileSystem.CopyDirectory(gPath + "WifiPages-" + Page, gPath + "WifiPages", True)
+
+            System.IO.Directory.Delete(gPath + "bin\WifiPages", True)
+            My.Computer.FileSystem.CopyDirectory(gPath + "bin\WifiPages-" + Page, gPath + "\bin\WifiPages", True)
+        Catch
+        End Try
+
+    End Sub
 
     Private Sub SetDefaultSims()
 
@@ -1091,9 +1137,6 @@ Public Class Form1
             Log("Info:Console will not be shown")
         End If
 
-        PrintFast("Saving all settings")
-
-        MySetting.SaveSettings()
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
         ' set the defaults in the INI for the viewer to use. Painful to do as it's a Left hand side edit 
 
@@ -1125,8 +1168,6 @@ Public Class Form1
             + """"
         MySetting.SetOtherIni("DatabaseService", "ConnectionString", ConnectionString)
         MySetting.SaveOtherINI()
-
-
 
         ''''''''''''''''''''''''''''''''''''''''''
         ' Robust Process
@@ -1397,6 +1438,7 @@ Public Class Form1
         MySetting.SaveOtherINI()
 
     End Sub
+
 
     Private Sub DoWifi()
 
@@ -1892,9 +1934,11 @@ Public Class Form1
 
     Private Sub AdvancedSettingsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AdvancedSettingsToolStripMenuItem.Click
 
-        Dim Adv As New AdvancedForm
-        Adv.Activate()
-        Adv.Visible = True
+        If initted Then
+            Adv.Activate()
+            Adv.Visible = True
+        End If
+
 
     End Sub
 
@@ -1979,13 +2023,7 @@ Public Class Form1
 
             RobustProcess.StartInfo.CreateNoWindow = False
             RobustProcess.StartInfo.WorkingDirectory = gPath + "bin"
-
-            If mnuShow.Checked Then
-                RobustProcess.StartInfo.WindowStyle = ProcessWindowStyle.Normal
-            Else
-                RobustProcess.StartInfo.WindowStyle = ProcessWindowStyle.Minimized
-            End If
-
+            RobustProcess.StartInfo.WindowStyle = ProcessWindowStyle.Normal
             RobustProcess.StartInfo.Arguments = "-inifile Robust.HG.ini"
             RobustProcess.Start()
             gRobustProcID = RobustProcess.Id
@@ -2024,6 +2062,12 @@ Public Class Form1
             Sleep(100)
 
         End While
+
+        If MySetting.ConsoleShow = False Then
+            Dim p = Process.GetProcessById(gRobustProcID)
+            ShowWindow(p.MainWindowHandle, SHOW_WINDOW.SW_MINIMIZE)
+        End If
+
         Log("Info:Robust is running")
         Return True
 
@@ -3018,6 +3062,8 @@ Public Class Form1
 
         ExitList.Reverse()
 
+
+
         For LOOPVAR = ExitList.Count - 1 To 0 Step -1
 
             Try
@@ -3226,17 +3272,17 @@ Public Class Form1
 
         Dim n = RegionClass.FindRegionByName(BootName)
         If RegionClass.Booted(n) Then
-            Log("Region " + BootName + "failed to start as it is already booted")
+            Log("Region " + BootName + " failed to start as it is already booted")
             Return True
         End If
 
         If RegionClass.WarmingUp(n) Then
-            Log("Region " + BootName + "failed to start as it is already WarmingUp")
+            Log("Region " + BootName + " failed to start as it is already WarmingUp")
             Return True
         End If
 
         If RegionClass.ShuttingDown(n) Then
-            Log("Region " + BootName + "failed to start as it is already ShuttingDown")
+            Log("Region " + BootName + " failed to start as it is already ShuttingDown")
             Return True
         End If
 
@@ -3268,11 +3314,7 @@ Public Class Form1
             myProcess.StartInfo.FileName = """" + gPath + "bin\OpenSim.exe" + """"
             myProcess.StartInfo.CreateNoWindow = False
 
-            If mnuShow.Checked Then
-                myProcess.StartInfo.WindowStyle = ProcessWindowStyle.Normal
-            Else
-                myProcess.StartInfo.WindowStyle = ProcessWindowStyle.Minimized
-            End If
+            myProcess.StartInfo.WindowStyle = ProcessWindowStyle.Normal
 
             myProcess.StartInfo.Arguments = " -inidirectory=" & """" & "./Regions/" & RegionClass.GroupName(n) + """"
 
@@ -3299,7 +3341,7 @@ Public Class Form1
             myProcess.Start()
             Diagnostics.Debug.Print("PID=" + myProcess.Id.ToString)
             If myProcess.Id > 0 Then
-                UpdateView = True ' make form refresh
+
                 For Each num In RegionClass.RegionListByGroupNum(Groupname)
                     Diagnostics.Debug.Print("Booting " + RegionClass.RegionName(num))
                     RegionClass.WarmingUp(num) = True
@@ -3307,9 +3349,9 @@ Public Class Form1
                     RegionClass.ShuttingDown(num) = False
                     RegionClass.ProcessID(num) = myProcess.Id
                 Next
-
+                UpdateView = True ' make form refresh
                 Application.DoEvents()
-                Sleep(2000)
+                Sleep(5000)
 
                 SetWindowText(myProcess.MainWindowHandle, RegionClass.GroupName(n))
 
@@ -3609,7 +3651,6 @@ Public Class Form1
             If RegionClass.Timer(X) = -2 Then
                 RegionClass.Timer(X) = 0
                 Boot(RegionClass.RegionName(X))
-                UpdateView = True ' make form refresh
             End If
         Next
     End Sub
@@ -3626,7 +3667,7 @@ Public Class Form1
                 Dim Groupname = RegionClass.GroupName(X)
 
                 ' if its past time and no one is in the sim...
-                If timervalue >= MySetting.AutoRestartInterval() And Not AvatarsIsInGroup(Groupname) Then
+                If timervalue >= MySetting.AutoRestartInterval() And MySetting.AutoRestartInterval() > 0 And Not AvatarsIsInGroup(Groupname) Then
                     ' shut down the group
 
                     ConsoleCommand(RegionClass.ProcessID(X), "q{ENTER}q{ENTER}")
@@ -3737,7 +3778,7 @@ Public Class Form1
                 For Each Y In RegionClass.RegionListByGroupNum(Group)
                     ConsoleCommand(RegionClass.ProcessID(Y), "alert CPU Intensive Backup Started{ENTER}")
                     ConsoleCommand(RegionClass.ProcessID(Y), "change region " + """" + chosen + """" + "{ENTER}")
-                    ConsoleCommand(RegionClass.ProcessID(Y), "save oar " + """" + BackupPath() + RegionClass.RegionName(Y) + "_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
+                    ConsoleCommand(RegionClass.ProcessID(Y), "save oar " + """" + BackupPath() + RegionClass.RegionName(Y) + "_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{ENTER}")
                 Next
             End If
             Me.Focus()
@@ -3777,10 +3818,10 @@ Public Class Form1
                     Dim Group = RegionClass.GroupName(n)
                     For Each Y In RegionClass.RegionListByGroupNum(Group)
 
-                        ConsoleCommand(RegionClass.ProcessID(Y), "change region " + chosen + "{Enter}")
+                        ConsoleCommand(RegionClass.ProcessID(Y), "change region " + chosen + "{ENTER}")
                         If backMeUp = vbYes Then
                             ConsoleCommand(RegionClass.ProcessID(Y), "alert CPU Intensive Backup Started{ENTER}")
-                            ConsoleCommand(RegionClass.ProcessID(Y), "save oar  " + """" + BackupPath() + "Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
+                            ConsoleCommand(RegionClass.ProcessID(Y), "save oar  " + """" + BackupPath() + "Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{ENTER}")
                         End If
                         ConsoleCommand(RegionClass.ProcessID(Y), "alert New content Is loading..{ENTER}")
                         ConsoleCommand(RegionClass.ProcessID(Y), "load oar --force-terrain --force-parcels " + """" + thing + """" + "{ENTER}")
@@ -3843,8 +3884,8 @@ Public Class Form1
 
                 For Each Y In RegionClass.RegionListByGroupNum(Group)
                     If Not L.Contains(RegionClass.RegionName(Y)) Then
-                        ConsoleCommand(RegionClass.ProcessID(n), "change region " + """" + RegionClass.RegionName(Y) + """" + "{Enter}")
-                        ConsoleCommand(RegionClass.ProcessID(n), "save oar  " + """" + BackupPath() + RegionClass.RegionName(Y) + "_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
+                        ConsoleCommand(RegionClass.ProcessID(n), "change region " + """" + RegionClass.RegionName(Y) + """" + "{ENTER}")
+                        ConsoleCommand(RegionClass.ProcessID(n), "save oar  " + """" + BackupPath() + RegionClass.RegionName(Y) + "_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{ENTER}")
 
                         L.Add(RegionClass.RegionName(Y))
                     End If
@@ -4000,7 +4041,7 @@ Public Class Form1
                     ConsoleCommand(RegionClass.ProcessID(Y), "change region " + region + "{ENTER}")
                     If backMeUp = vbYes Then
                         ConsoleCommand(RegionClass.ProcessID(Y), "alert CPU Intensive Backup Started {ENTER}")
-                        ConsoleCommand(RegionClass.ProcessID(Y), "save oar " + """" + BackupPath() + "Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{Enter}")
+                        ConsoleCommand(RegionClass.ProcessID(Y), "save oar " + """" + BackupPath() + "Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{ENTER}")
                     End If
                     ConsoleCommand(RegionClass.ProcessID(Y), "alert New content Is loading ...{ENTER}")
                     ConsoleCommand(RegionClass.ProcessID(Y), "load oar --force-terrain --force-parcels " + """" + thing + """" + "{ENTER}")
@@ -4220,9 +4261,15 @@ Public Class Form1
         If MySetting.BackupFolder = "AutoBackup" Then
             Dest = MyFolder + "\OutworldzFiles\AutoBackup\" + Foldername
         Else
-            Dest = MySetting.BackupFolder + "FolderName"
+            Dest = MySetting.BackupFolder + "\" + Foldername
         End If
         Print("Making a backup at " + Dest)
+        My.Computer.FileSystem.CreateDirectory(Dest)
+        My.Computer.FileSystem.CreateDirectory(Dest + "\Regions")
+        My.Computer.FileSystem.CreateDirectory(Dest + "\Mysql_Data")
+        My.Computer.FileSystem.CreateDirectory(Dest + "\Opensim_Wifi")
+        My.Computer.FileSystem.CreateDirectory(Dest + "\Opensim_bin_Wifi")
+
         Print("Backing up Regions Folder")
         Try
             My.Computer.FileSystem.CopyDirectory(MyFolder + "\OutworldzFiles\Opensim\bin\Regions", Dest + "\Regions")
@@ -4421,10 +4468,10 @@ Public Class Form1
             End If
 
         Catch ex As Exception
-                Print("Hmm, I cannot reach the Internet? Uh. Okay, continuing." + ex.Message)
-                MySetting.DiagFailed = True
-                Log("Info:Public IP=" + "127.0.0.1")
-            End Try
+            Print("Hmm, I cannot reach the Internet? Uh. Okay, continuing." + ex.Message)
+            MySetting.DiagFailed = True
+            Log("Info:Public IP=" + "127.0.0.1")
+        End Try
 
         MySetting.PublicIP = MyUPnpMap.LocalIP
         MySetting.SaveSettings()
@@ -4708,7 +4755,7 @@ Public Class Form1
         Dim Grid As String = "Grid"
         If MySetting.StandAlone() Then Grid = "Standalone"
 
-        Dim data As String = "&MachineID=" + MySetting.Machine() _
+        Dim data As String = "&MachineID=" + MySetting.MachineID() _
             + "&V=" + gMyVersion _
             + "&OV=" + gSimVersion _
             + "&uPnp=" + UPnp _
@@ -5200,7 +5247,6 @@ Public Class Form1
             RegionForm.Show()
             RegionForm.Activate()
         Else
-            UpdateView = True ' make form refresh
             RegionForm.Show()
             RegionForm.Activate()
         End If
@@ -5576,6 +5622,30 @@ Public Class Form1
         FormHelp.Init(page)
 
     End Sub
+
+    Public Sub HelpOnce(Webpage As String)
+
+        ScreenPosition = New ScreenPos(Webpage)
+
+        If Not ScreenPosition.Exists() Then
+            ' Set the new form's desktop location so it appears below and
+            ' to the right of the current form.
+            FormHelp.Close()
+            FormHelp = New FormHelp
+            FormHelp.Activate()
+            FormHelp.Visible = True
+            FormHelp.Init(Webpage)
+
+        End If
+    End Sub
+
+    Private Sub HelpStartingUpToolStripMenuItem1_Click(sender As Object, e As EventArgs) Handles HelpStartingUpToolStripMenuItem1.Click
+
+        Help("Startup")
+
+    End Sub
+
+
 #End Region
 
 End Class
