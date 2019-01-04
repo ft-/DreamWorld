@@ -1,22 +1,29 @@
-
-my $type  = '-V2.61' ;  # '-Beta-V1.5';
-my $dir = "F:/Opensim/Outworldz Dreamgrid Source";
-
-chdir ($dir);
-use Cwd;
-my $curdir =getcwd;
-
-print $curdir . ' ' .  $type . "\n";
-die if $curdir ne $dir ;
+use strict;
+use warnings;
+use 5.010;
 
 use File::Copy;
 use File::Path;
-use 5.010;
+
+my $type  = '-V2.62' ;  # '-Beta-V1.5';
+
+use Cwd;
+my $dir = getcwd;
+
+say ('Making ' . $dir . ' ' .  $type);
 
 
 
-my @
-deletions = (
+
+say ('Server Publish? <enter for no>');
+my $publish = <stdin>;
+chomp $publish;
+
+say("Clean up opensim");
+my @deletions = (
+	"$dir/OutworldzFiles/Opensim/WifiPages-Custom",
+	"$dir/OutworldzFiles/Opensim/bin/WifiPages-Custom",
+	"$dir/OutworldzFiles/Opensim/bin/datasnapshot",
 	"$dir/OutworldzFiles/Opensim/bin/datasnapshot",
 	"$dir/OutworldzFiles/Opensim/bin/assetcache",
 	"$dir/OutworldzFiles/Opensim/bin/j2kDecodeCache",
@@ -32,12 +39,10 @@ deletions = (
 );
 
 foreach my $path ( @deletions) {
-	rm($path);
-	mkdir $path
-	
+	DeleteandKeep($path);
 }
 
-say("clean up opensim");
+
 unlink "$dir/OutworldzFiles/Opensim/bin/Opensim.log" ;
 unlink "$dir/OutworldzFiles/Opensim/bin/Opensimstats.log" ;
 unlink "$dir/OutworldzFiles/Photo.png";
@@ -46,7 +51,6 @@ unlink "$dir/Icecast/error.log" ;
 unlink "$dir/Icecast/access.log" ;
 
 unlink "$dir/OutworldzFiles/Opensim/bin/OpensimConsoleHistory.txt" ;
-unlink "$dir/OutworldzFiles/Opensim-0.9/bin/OpensimConsoleHistory.txt" ;
 unlink "$dir/OutworldzFiles/Opensim/bin/LocalUserStatistics.db" ;
 
 #Setting
@@ -85,7 +89,8 @@ foreach my $file (@files) {
         my $result = `$f`;
         print $result. "\n";
         if ($result !~ /success/) {
-            die;
+            say ("***** Failed to sign!");
+			
         }
     }
 }
@@ -93,28 +98,10 @@ foreach my $file (@files) {
 say("Mysql");
 chdir(qq!$dir/OutworldzFiles/mysql/bin/!);
 print `mysqladmin.exe --port 3309 -u root shutdown`;
-
-unlink	"$dir/OutworldzFiles/mysql/data/ib_logfile0" || die;
-unlink	"$dir/OutworldzFiles/mysql/data/ib_logfile1" || die;
-unlink	"$dir/OutworldzFiles/mysql/data/ibdata1" || die;
-
-#say ("Start Mysql and wait for it to come up:");
-#<STDIN>;
-#
-#print `mysqlcheck.exe --port 3309 -u root -r mysql`;
-#print `mysqlcheck.exe --port 3309 -u root -r opensim`;
-#print `mysqlcheck.exe --port 3309 -u root -r robust`;
-#print `mysqladmin.exe --port 3309 -u root shutdown`;
-
-
-#mysql
-unlink "$dir/OutworldzFiles/mysql/data/Mach.err" ;
-unlink "$dir/OutworldzFiles/mysql/data/Mach.pid" ;
-
-unlink "$dir/OutworldzFiles/mysql/data/Alienware.err" ;
-unlink "$dir/OutworldzFiles/mysql/data/Alienware.pid" ;
-
 chdir ($dir);
+DeleteandKeep("$dir/OutworldzFiles/mysql/data");
+
+
 
 print "Processing Main Zip\n";
 
@@ -168,21 +155,19 @@ print "Server Copy Update\n";
 unlink "y:/Inetpub/Secondlife/Outworldz_Installer/Grid/DreamGrid-Update$type.zip";
 if (!copy ("../Zips/DreamGrid-Update$type.zip", "y:/Inetpub/Secondlife/Outworldz_Installer/Grid/DreamGrid-Update$type.zip"))  {die $!;}
 
-print "Server Publish?\n";
-<stdin>;
+if ($publish)
+{
 
 unlink "y:/Inetpub/Secondlife/Outworldz_Installer/Grid/DreamGrid.zip";
 if (!copy ("../Zips/DreamGrid$type.zip", "y:/Inetpub/Secondlife/Outworldz_Installer/Grid/DreamGrid.zip"))  {die $!;}
 unlink "y:/Inetpub/Secondlife/Outworldz_Installer/Grid/DreamGrid-Update.zip";
 if (!copy ("../Zips/DreamGrid-Update$type.zip", "y:/Inetpub/Secondlife/Outworldz_Installer/Grid/DreamGrid-Update.zip"))  {die $!;}
 
-
 # lastly revisions file
 if (!copy ('Revisions.txt', 'y:/Inetpub/Secondlife/Outworldz_Installer/Revisions.txt'))  {die $!;}
 if (!copy ('Revisions.txt', 'y:/Inetpub/Secondlife/Outworldz_Installer/Grid/Revisions.txt'))  {die $!;}
 
-
-
+}
 
 
 print "Done!";
@@ -220,4 +205,16 @@ my $path = shift;
 	}
 	
 	#exit(1) if $errors;
+}
+
+sub DeleteandKeep {
+
+	my $path = shift;
+	
+	rm $path;
+	mkdir $path ;
+	open (FILE, '>', $path . '/.keep') or die;
+	print FILE 'git will not save empty folders unless there is a file in it.';
+	close FILE;
+	
 }
