@@ -101,7 +101,10 @@ print `mysqladmin.exe --port 3309 -u root shutdown`;
 chdir ($dir);
 DeleteandKeep("$dir/OutworldzFiles/mysql/data");
 
+use IO::Uncompress::Unzip qw(unzip $UnzipError  );
+use IO::File ;
 
+Perlunzip( "mysql/Blank-Mysql-Data-folder.zip", 'mysql');
 
 print "Processing Main Zip\n";
 
@@ -217,4 +220,22 @@ sub DeleteandKeep {
 	print FILE 'git will not save empty folders unless there is a file in it.';
 	close FILE;
 	
+}
+
+
+# for importers
+sub Perlunzip {
+	
+	
+	use Archive::Zip qw(:ERROR_CODES :CONSTANTS);
+	use Exporter 'import';
+	
+	my ($zip_file , $out_file, $filter) = @_;
+	$zip_file = $dir . '/Outworldzfiles/'. $zip_file;
+	$out_file = $dir . '/Outworldzfiles/'. $out_file;
+	
+	my $zip = Archive::Zip->new($zip_file);
+	unless ($zip->extractTree($filter || '', $out_file) == AZ_OK) {
+		warn "unzip not successful: $!\n";
+	}
 }
