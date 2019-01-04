@@ -270,8 +270,8 @@ Partial Class FormRegion
         Me.MaxPrims.Name = "MaxPrims"
         Me.MaxPrims.Size = New System.Drawing.Size(40, 20)
         Me.MaxPrims.TabIndex = 19
-        Me.ToolTip1.SetToolTip(Me.MaxPrims, "Not normally enforced by Opensim.  Viewer will nto show more than 45K. Setting th" &
-        "is here and enabling this in Expert settings will enforce the limit and may  ret" &
+        Me.ToolTip1.SetToolTip(Me.MaxPrims, "Not normally enforced by Opensim.  Viewer will not show more than 45K. Setting th" &
+        "is here and enabling this in settings will enforce the limit and may ret" &
         "urn prims!")
         '
         'NonphysicalPrimMax

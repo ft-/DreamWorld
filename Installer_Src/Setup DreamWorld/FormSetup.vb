@@ -668,6 +668,8 @@ Public Class Form1
         Print("Zzzz...")
         Shutdown()
         End
+        End
+
 
     End Sub
 
@@ -5140,7 +5142,7 @@ Public Class Form1
                     MySetting.DNSName = newname
                     MySetting.PublicIP = newname
                     MySetting.SaveSettings()
-                    MsgBox("Your system's name has been set to " + newname + ". You can change the name in the Expert menu at any time", vbInformation, "Info")
+                    MsgBox("Your system's name has been set to " + newname + ". You can change the name in the DNS menu at any time", vbInformation, "Info")
                 End If
             End If
             BumpProgress10()
