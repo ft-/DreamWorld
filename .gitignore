@@ -1,5 +1,8 @@
 *.pid
-Outworldzfiles\Photo.png
+
+OutworldzFiles/mysql/data/mysql/*.*
+
+Outworldzfiles/Photo.png
 UDProxy
 /OutworldzFiles/mysql/data/*.err
 /OutworldzFiles/Opensim/bin/addin-db-002/*
