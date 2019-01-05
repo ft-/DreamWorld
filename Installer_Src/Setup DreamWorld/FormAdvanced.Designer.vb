@@ -42,8 +42,8 @@ Partial Class AdvancedForm
         Me.Button2 = New System.Windows.Forms.Button()
         Me.DNSButton = New System.Windows.Forms.Button()
         Me.Button1 = New System.Windows.Forms.Button()
-        Me.GroupBox8 = New System.Windows.Forms.GroupBox()
         Me.Button4 = New System.Windows.Forms.Button()
+        Me.GroupBox8 = New System.Windows.Forms.GroupBox()
         Me.GroupBox8.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -218,6 +218,16 @@ Partial Class AdvancedForm
         Me.ToolTip1.SetToolTip(Me.Button1, "Click to set up the Fairy chat & wallpaper")
         Me.Button1.UseVisualStyleBackColor = True
         '
+        'Button4
+        '
+        Me.Button4.Location = New System.Drawing.Point(189, 64)
+        Me.Button4.Name = "Button4"
+        Me.Button4.Size = New System.Drawing.Size(145, 23)
+        Me.Button4.TabIndex = 34
+        Me.Button4.Text = "Publicity"
+        Me.ToolTip1.SetToolTip(Me.Button4, "Click to set up  Regions")
+        Me.Button4.UseVisualStyleBackColor = True
+        '
         'GroupBox8
         '
         Me.GroupBox8.Controls.Add(Me.Button4)
@@ -244,16 +254,6 @@ Partial Class AdvancedForm
         Me.GroupBox8.TabIndex = 1870
         Me.GroupBox8.TabStop = False
         Me.GroupBox8.Text = "Global Settings"
-        '
-        'Button4
-        '
-        Me.Button4.Location = New System.Drawing.Point(189, 64)
-        Me.Button4.Name = "Button4"
-        Me.Button4.Size = New System.Drawing.Size(145, 23)
-        Me.Button4.TabIndex = 34
-        Me.Button4.Text = "Publicity"
-        Me.ToolTip1.SetToolTip(Me.Button4, "Click to set up  Regions")
-        Me.Button4.UseVisualStyleBackColor = True
         '
         'AdvancedForm
         '

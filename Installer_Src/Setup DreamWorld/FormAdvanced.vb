@@ -52,6 +52,7 @@ Public Class AdvancedForm
         SetScreen()
         Me.Visible = True
 
+
     End Sub
 
 #Region "Help"
@@ -271,6 +272,7 @@ Public Class AdvancedForm
         FormPublicity.Visible = True
 
     End Sub
+
 
 
 #End Region

@@ -125,6 +125,8 @@ Public Class RegionList
         Timer1.Start() 'Timer starts functioning
         SetScreen()
 
+        Form1.HelpOnce("RegionList")
+
     End Sub
 
     Private Sub SingletonForm_FormClosed(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles Me.FormClosed
@@ -139,6 +141,7 @@ Public Class RegionList
             LoadMyListView()
         End If
         Timertick = Timertick + 1
+
     End Sub
 
     Public Sub LoadMyListView()
@@ -567,7 +570,7 @@ Public Class RegionList
 
     Private Sub RegionHelp_Click(sender As Object, e As EventArgs) Handles RegionHelp.Click
 
-        Process.Start(Form1.gDomain + "/Outworldz_Installer/RegionHelp.htm") ' !!!
+        Form1.Help("RegionList")
 
     End Sub
 

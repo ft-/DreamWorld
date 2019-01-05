@@ -1,4 +1,10 @@
-2.60
+2.62
+Help for RegionList and many other modules
+Speed up crashrecovery in Mysql
+Zip builder cleanup 
+Blank Database changes
+
+2.61
 Console hideable when booted
 Fix settings bug making a shortcut each boot
 Don't auto restart if MySetting.AutoRestartInterval() = 0
