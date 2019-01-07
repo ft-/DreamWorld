@@ -12,9 +12,6 @@ my $dir = getcwd;
 
 say ('Making ' . $dir . ' ' .  $type);
 
-
-
-
 say ('Server Publish? <enter for no>');
 my $publish = <stdin>;
 chomp $publish;
@@ -136,12 +133,6 @@ say("Drop mysql files from update");
 # now delete the mysql from the UPDATE
 Process ("../7z.exe -tzip d ..\\Zips\\DreamGrid-Update$type.zip Outworldzfiles\\mysql\\data\\ -r ");
 
-say ("Dropping Setting.ini from update");
-Process ("../7z.exe -tzip d ..\\Zips\\DreamGrid-Update$type.zip Outworldzfiles\\Settings.ini -r ");
-
-say ("Dropping Perl  from both");
-Process ("../7z.exe -tzip d ..\\Zips\\DreamGrid-Update$type.zip Make_zip_v2.pl -r ");
-Process ("../7z.exe -tzip d ..\\Zips\\DreamGrid$type.zip Make_zip_v2.pl -r ");
 
 # del Dot net because we cannot overwrite an open file
 Process ("../7z.exe -tzip d ..\\Zips\\DreamGrid-Update$type.zip DotNetZip.dll ");
