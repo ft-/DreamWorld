@@ -8,7 +8,7 @@ body {
   font-family: Arial,'Lucida Grande',Verdana,sans-serif;
   text-align:center;
   background:#fff repeat-y top center;
-  color:#929292;
+  color:#111111;
 }
 
 table th {
@@ -69,10 +69,10 @@ img {display:inline-block;}
   padding:0 2.25em;
 }
 .box a {color:#000; text-decoration:underline;}
-.box a:hover {color:#BD6B54; text-decoration:none;}
+.box a:hover {color:#0000ff; text-decoration:none;}
 .box p {padding:0.4em 0;}
 .box li {list-style-position:inside;}
-.box h1,h2,h3,h4,h5 {font:36px Georgia, Arial, "Times New Roman", Times; color:#FFF; text-align:center;}
+.box h1,h2,h3,h4,h5 {font:36px Georgia, Arial, "Times New Roman", Times; color:#fff; text-align:center;}
 .box-top {background:#000000; margin:0px 24px; height:24px;}
 .box-top-left {background:url(images/box-top.gif) no-repeat 0% 0%; margin-left:-24px; height:24px; width:24px; float:left;}
 .box-top-right {background:url(images/box-top.gif) no-repeat 100% 0%; margin-right:-24px; height:24px; width:24px; float:right;}
@@ -223,7 +223,7 @@ td.userlevel {
 #main-menu li a:hover,
 #gridusers-menu li a:hover,
 #addons-menu li a:hover {
-  color:#8C8D94;
+  color:#000000;
   text-decoration: underline;
 }
   
@@ -252,7 +252,7 @@ td.userlevel {
 }
   
 #posts li a:hover {
-  color:#8C8D94;
+  color:#0000ff;
   background:#FFF;
   text-decoration: none;
 }
@@ -320,16 +320,16 @@ td.userlevel {
 
 #footer p {
   font:14px Arial, "Times New Roman", Times;
-  color:#929292;
+  color:#222222;
 }
 
 #footer a {
-  color:#FFF;
+  color:#000;
   text-decoration:underline;
 }
 
 #footer a:hover {
-  color:#BD6B54;
+  color:#000000;
   text-decoration:none;
 }
 
@@ -423,3 +423,6 @@ td.userlevel {
 }
 
 
+#iarlink a {
+  color :white;
+}
