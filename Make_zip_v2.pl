@@ -5,7 +5,7 @@ use 5.010;
 use File::Copy;
 use File::Path;
 
-my $type  = '-V2.62' ;  # '-Beta-V1.5';
+my $type  = '-V2.63' ;  # '-Beta-V1.5';
 
 use Cwd;
 my $dir = getcwd;
@@ -87,7 +87,7 @@ foreach my $file (@files) {
         print $result. "\n";
         if ($result !~ /success/) {
             say ("***** Failed to sign!");
-			
+			die;
         }
     }
 }
@@ -208,7 +208,7 @@ sub DeleteandKeep {
 	rm $path;
 	mkdir $path ;
 	open (FILE, '>', $path . '/.keep') or die;
-	print FILE 'git will not save empty folders unless there is a file in it.';
+	print FILE "git will not save empty folders unless there is a file in it. This is a placeholder only\n";
 	close FILE;
 	
 }

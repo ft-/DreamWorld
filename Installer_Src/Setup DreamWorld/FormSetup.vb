@@ -34,7 +34,7 @@ Public Class Form1
 
 #Region "Declarations"
 
-    Dim gMyVersion As String = "2.62"
+    Dim gMyVersion As String = "2.63"
     Dim gSimVersion As String = "0.9.1"
 
     ' edit this to compile and run in the correct folder root
@@ -4178,6 +4178,23 @@ Public Class Form1
             End If
         End While
         BumpProgress10()
+
+        ' read help files for menu
+        line = ""
+        Dim folders() = IO.Directory.GetFiles(MyFolder & "\Outworldzfiles\Help")
+
+        For Each aline As String In folders
+            aline = System.IO.Path.GetFileNameWithoutExtension(aline)
+            Log("Loading Help:" + aline)
+            Dim HelpMenu As New ToolStripMenuItem
+            HelpMenu.Text = aline
+            HelpMenu.ToolTipText = "Click to load this content"
+            HelpMenu.DisplayStyle = ToolStripItemDisplayStyle.Text
+            HelpMenu.Image = My.Resources.question_and_answer
+            AddHandler HelpMenu.Click, New EventHandler(AddressOf HelpClick)
+            HelpOnSettingsToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {HelpMenu})
+        Next
+
         Log("Info:OARS loaded")
         Print("Dreaming up some clothes and items for your avatar")
         Dim iars As String = ""
@@ -5645,6 +5662,11 @@ Public Class Form1
 
     End Sub
 
+    Private Sub HelpClick(sender As Object, e As EventArgs)
+
+        Help(sender.text.ToString)
+
+    End Sub
 
 #End Region
 
