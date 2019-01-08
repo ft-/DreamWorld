@@ -4313,7 +4313,6 @@ Public Class Form1
             okay = MakeBackup()
         End If
 
-        If Not okay Then Return
 
         StopMysql()
 
