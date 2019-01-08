@@ -34,7 +34,7 @@ Public Class Form1
 
 #Region "Declarations"
 
-    Dim gMyVersion As String = "2.63"
+    Dim gMyVersion As String = "2.64"
     Dim gSimVersion As String = "0.9.1"
 
     ' edit this to compile and run in the correct folder root
@@ -4313,7 +4313,6 @@ Public Class Form1
             okay = MakeBackup()
         End If
 
-        If Not okay Then Return
 
         StopMysql()
 
