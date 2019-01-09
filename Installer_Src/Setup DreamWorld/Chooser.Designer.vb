@@ -26,6 +26,7 @@ Partial Class Choice
         Me.DataGridView = New System.Windows.Forms.DataGridView()
         Me.Group = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.OKButton1 = New System.Windows.Forms.Button()
+        Me.CancelButton1 = New System.Windows.Forms.Button()
         CType(Me.DataGridView, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -56,7 +57,7 @@ Partial Class Choice
         '
         'OKButton1
         '
-        Me.OKButton1.Location = New System.Drawing.Point(86, 195)
+        Me.OKButton1.Location = New System.Drawing.Point(32, 193)
         Me.OKButton1.Margin = New System.Windows.Forms.Padding(2)
         Me.OKButton1.Name = "OKButton1"
         Me.OKButton1.Size = New System.Drawing.Size(56, 24)
@@ -64,11 +65,22 @@ Partial Class Choice
         Me.OKButton1.Text = "OK"
         Me.OKButton1.UseVisualStyleBackColor = True
         '
+        'CancelButton1
+        '
+        Me.CancelButton1.Location = New System.Drawing.Point(124, 193)
+        Me.CancelButton1.Margin = New System.Windows.Forms.Padding(2)
+        Me.CancelButton1.Name = "CancelButton1"
+        Me.CancelButton1.Size = New System.Drawing.Size(56, 24)
+        Me.CancelButton1.TabIndex = 4
+        Me.CancelButton1.Text = "Cancel"
+        Me.CancelButton1.UseVisualStyleBackColor = True
+        '
         'Choice
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.ClientSize = New System.Drawing.Size(217, 225)
+        Me.Controls.Add(Me.CancelButton1)
         Me.Controls.Add(Me.OKButton1)
         Me.Controls.Add(Me.DataGridView)
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
@@ -81,4 +93,5 @@ Partial Class Choice
     Friend WithEvents DataGridView As DataGridView
     Friend WithEvents Group As DataGridViewTextBoxColumn
     Friend WithEvents OKButton1 As Button
+    Friend WithEvents CancelButton1 As Button
 End Class

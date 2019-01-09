@@ -35,6 +35,7 @@ Partial Class FormDNSName
         Me.SuitcaseCheckbox = New System.Windows.Forms.CheckBox()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Label2 = New System.Windows.Forms.Label()
+
         CType(Me.DynDNSPassword, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '

@@ -97,4 +97,8 @@
     Private Sub CellClick(ByVal sender As Object, ByVal e As DataGridViewCellEventArgs) Handles DataGridView.CellClick
         OKButton1.Enabled = True
     End Sub
+
+    Private Sub CancelButton1_Click(sender As Object, e As EventArgs) Handles CancelButton1.Click
+        Me.Close()
+    End Sub
 End Class
