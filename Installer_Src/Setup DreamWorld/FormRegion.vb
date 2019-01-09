@@ -180,9 +180,9 @@ Public Class FormRegion
             RegionGod.Checked = False
             ManagerGod.Checked = False
         Else
-            AllowGods.Checked = CBool(RegionClass.AllowGods(n))
-            RegionGod.Checked = CBool(RegionClass.RegionGod(n))
-            ManagerGod.Checked = CBool(RegionClass.ManagerGod(n))
+            If Not Boolean.TryParse(RegionClass.AllowGods(n), AllowGods.Checked) Then AllowGods.Checked = False
+            If Not Boolean.TryParse(RegionClass.RegionGod(n), RegionGod.Checked) Then RegionGod.Checked = False
+            If Not Boolean.TryParse(RegionClass.ManagerGod(n), ManagerGod.Checked) Then ManagerGod.Checked = False
         End If
 
         If RegionClass.RegionSnapShot(n) = "" Then
