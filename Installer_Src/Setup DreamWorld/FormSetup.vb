@@ -580,6 +580,7 @@ Public Class Form1
     End Sub
 
     Private Sub UploadPhoto()
+
         If System.IO.File.Exists(MyFolder & "\OutworldzFiles\Photo.png") Then
             Dim params As New Specialized.NameValueCollection
             params.Add("MachineID", MySetting.MachineID())
@@ -589,7 +590,6 @@ Public Class Form1
             Dim URL = New Uri("https://www.outworldz.com/cgi/uploadphoto.plx")
 
             Myupload.PostContent_UploadFile(URL, MyFolder & "\OutworldzFiles\Photo.png", params)
-
         End If
 
     End Sub
@@ -664,11 +664,9 @@ Public Class Form1
             'Log(ex.Message)
         End Try
 
-
         If Not Start_Opensimulator() Then ' Launch the rockets
             Return
         End If
-
 
         StartIcecast()
 
@@ -699,24 +697,18 @@ Public Class Form1
 
     Private Sub Form1_Closed(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Closed
 
-        Print("Zzzz...")
         Shutdown()
         End
-        End
-
 
     End Sub
 
     Private Sub MnuExit_Click(sender As System.Object, e As System.EventArgs) Handles mnuExit.Click
 
-        Print("Zzzz...")
         Shutdown()
         End
 
     End Sub
     Private Sub Shutdown()
-        Dim p As Point
-        p = Me.Location
 
         Try
             Log("Stopping Webserver")
@@ -724,27 +716,15 @@ Public Class Form1
         Catch
         End Try
 
-        MySetting.MyX = p.X
-        MySetting.MyY = p.Y
-        MySetting.SaveOtherINI()
-
-        ProgressBar1.Value = 90
-        Print("Hold fast to your dreams ...")
+        ProgressBar1.Value = 95
+        KillAll()
         ProgressBar1.Value = 10
-
         StopMysql()
-
         Print("I'll tell you my next dream when I wake up.")
         ProgressBar1.Value = 5
         Print("Zzzz...")
         ProgressBar1.Value = 0
-    End Sub
-    Private Sub ShutdownNowToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs)
-        Print("Stopping")
 
-        KillAll()
-        Buttons(StartButton)
-        Print("Stopped")
     End Sub
 
     Private Declare Function ShowWindow Lib "user32.dll" (ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
@@ -793,7 +773,7 @@ Public Class Form1
 
 
         For Each X As Integer In RegionClass.RegionNumbers
-            If RegionClass.RegionEnabled(X) Then
+            If RegionClass.RegionEnabled(X) And OpensimIsRunning Then
                 PrintFast("Shutting down " + RegionClass.RegionName(X))
                 Dim pID = RegionClass.ProcessID(X)
                 Try
@@ -823,16 +803,16 @@ Public Class Form1
 
         ' only wait if the port 8001 is working
         If gUseIcons Then
-            Print("Waiting for all regions to exit")
+            If OpensimIsRunning Then Print("Waiting for all regions to exit")
 
-            While (counter > 0)
+            While (counter > 0 And OpensimIsRunning())
                 ' decrement progress bar according to the ratio of what we had / what we have now
 
                 counter = counter - 1
                 Dim CountisRunning As Integer = 0
                 Sleep(1000)
                 For Each X In RegionClass.RegionNumbers
-                    If RegionClass.ShuttingDown(X) = True And OpensimIsRunning() Then
+                    If RegionClass.ShuttingDown(X) = True Then
                         PrintFast("Checking " + RegionClass.RegionName(X))
                         If CheckPort("127.0.0.1", RegionClass.GroupPort(X)) Then
                             CountisRunning = CountisRunning + 1
@@ -4836,11 +4816,19 @@ Public Class Form1
         ChDir(MyFolder & "\OutworldzFiles\mysql\bin")
         pi.WindowStyle = ProcessWindowStyle.Normal
         pi.Arguments = MySetting.MySqlPort
-        pi.FileName = "CheckAndRepair.bat"
+        pi.FileName = "Repair_ISAM.bat"
         Dim pMySqlDiag As Process = New Process()
         pMySqlDiag.StartInfo = pi
         pMySqlDiag.Start()
         pMySqlDiag.WaitForExit()
+
+        pi.FileName = "CheckAndRepair.bat"
+        Dim pMySqlDiag1 As Process = New Process()
+        pMySqlDiag1.StartInfo = pi
+        pMySqlDiag1.Start()
+        pMySqlDiag1.WaitForExit()
+
+
         ChDir(MyFolder)
 
     End Sub
@@ -5051,7 +5039,7 @@ Public Class Form1
         Try
             Using outputFile As New StreamWriter(testProgram, True)
                 outputFile.WriteLine("@REM Program to run Mysql as a Service" + vbCrLf +
-                "mysqld.exe --install Mysql --defaults-file=" + """" + gCurSlashDir + "/OutworldzFiles/mysql/my.ini" + """")
+                "mysqld.exe --install Mysql --defaults-file=" + """" + gCurSlashDir + "/OutworldzFiles/mysql/my.ini" + """" + vbCrLf + "net start Mysql" + vbCrLf)
             End Using
         Catch ex As Exception
             Log("Error:Install As A Service" + ex.Message)
@@ -5072,7 +5060,7 @@ Public Class Form1
         Try
             Using outputFile As New StreamWriter(testProgram, True)
                 outputFile.WriteLine("@REM Program to Stop Mysql" + vbCrLf +
-                "mysqladmin.exe -u root --port " + MySetting.MySqlPort + " shutdown" + vbCrLf)
+                "mysqladmin.exe -u root --port " + MySetting.MySqlPort + " shutdown" + vbCrLf + "@pause" + vbCrLf)
             End Using
         Catch ex As Exception
             Log("Error:StopMySQL.bat" + ex.Message)

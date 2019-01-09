@@ -593,6 +593,10 @@
     <None Include="Resources\folder.png" />
     <None Include="Resources\gear.png" />
     <None Include="Resources\gear_run.png" />
+    <None Include="Resources\delete2.png" />
+    <None Include="Resources\document_dirty.png" />
+    <None Include="Resources\disks.png" />
+    <None Include="Resources\text_marked.png" />
     <Content Include="Resources\wp_habitat.gif" />
     <Content Include="Resources\wp_Inside_in_shadows.gif" />
     <Content Include="Resources\wp_Mooferd.gif" />
