@@ -1,8 +1,9 @@
 2.64 
-Set mysql Log size = 10M, not 2M
+Oops, reset mysql Log size = 10M, not 2M, tweaks to buffers and threads
+Stop trying to run if Mysql fails
 
 2.63
-White pages look more like Black, only whiter
+White pages look more like Black, only whiter!
 Added a Help Menu for all internal help files
 Help for RegionList and many other modules
 Speed up crashrecovery in Mysql
