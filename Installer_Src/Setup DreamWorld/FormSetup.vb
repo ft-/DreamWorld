@@ -34,7 +34,7 @@ Public Class Form1
 
 #Region "Declarations"
 
-    Dim gMyVersion As String = "2.64"
+    Dim gMyVersion As String = "2.65"
     Dim gSimVersion As String = "0.9.1"
 
     ' edit this to compile and run in the correct folder root
@@ -3906,7 +3906,9 @@ Public Class Form1
                 Dim thing = openFileDialog1.FileName
                 If thing.Length > 0 Then
                     thing = thing.Replace("\", "/")    ' because Opensim uses unix-like slashes, that's why
-                    LoadIARContent(thing)
+                    If LoadIARContent(thing) Then
+                        Print("Opensimulator will load " + thing + ".  This may take time to load.")
+                    End If
                 End If
             End If
         Else
@@ -3993,7 +3995,8 @@ Public Class Form1
         Chooseform.FillGrid("Region", JustRunning)  ' populate the grid with either Group or RegionName
 
         Dim chosen As String
-        Chooseform.ShowDialog()
+        Dim ret = Chooseform.ShowDialog()
+
         Try
             ' Read the chosen sim name
             chosen = Chooseform.DataGridView.CurrentCell.Value.ToString()
@@ -4001,19 +4004,20 @@ Public Class Form1
             Log("Warn: Could not chose a displayed region. " + ex.Message)
             chosen = ""
         End Try
+        If ret = DialogResult.Cancel Then Return ""
         Return chosen
 
     End Function
 
-    Private Sub LoadOARContent(thing As String)
+    Private Function LoadOARContent(thing As String) As Boolean
 
         If Not OpensimIsRunning() Then
             Print("Opensim has to be started to load an OAR file.")
-            Return
+            Return False
         End If
 
         Dim region = ChooseRegion(True)
-        If region.Length = 0 Then Return
+        If region.Length = 0 Then Return False
 
         Dim backMeUp = MsgBox("Make a backup first?", vbYesNo, "Backup?")
         Dim num = RegionClass.FindRegionByName(region)
@@ -4042,14 +4046,15 @@ Public Class Form1
         Next
 
         Me.Focus()
+        Return True
 
-    End Sub
+    End Function
 
-    Public Sub LoadIARContent(thing As String)
+    Public Function LoadIARContent(thing As String) As Boolean
 
         If Not OpensimIsRunning() Then
             Print("Opensim is not running. Cannot load an IAR at this time.")
-            Return
+            Return False
         End If
 
         Dim num As Integer = -1
@@ -4062,7 +4067,7 @@ Public Class Form1
         Next
         If num = -1 Then
             MsgBox("No regions are ready, so cannot load the IAR", vbInformation, "Info")
-            Return
+            Return False
         End If
 
         Dim user = InputBox("User name that will get this IAR?")
@@ -4077,7 +4082,9 @@ Public Class Form1
             Print("Load IAR cancelled - must use the full user name and password.")
         End If
         Me.Focus()
-    End Sub
+        Return True
+
+    End Function
 
     Private Sub TextBox1_DragDrop(sender As System.Object, e As System.Windows.Forms.DragEventArgs) Handles TextBox1.DragDrop
 
@@ -4087,9 +4094,13 @@ Public Class Form1
             Dim extension = Path.GetExtension(pathname)
             extension = Mid(extension, 2, 5)
             If extension.ToLower = "iar" Then
-                LoadIARContent(pathname)
+                If LoadIARContent(pathname) Then
+                    Print("Opensimulator will load " + pathname + ".  This may take time to load.")
+                End If
             ElseIf extension.ToLower = "oar" Or extension.ToLower = "gz" Or extension.ToLower = "tgz" Then
-                LoadOARContent(pathname)
+                If LoadOARContent(pathname) Then
+                    Print("Opensimulator will load " + pathname + ".  This may take time to load.")
+                End If
             Else
                 Print("Unrecognized file type:" + extension + ".  Drag and drop any OAR, GZ, TGZ, or IAR files to load them when the sim starts")
             End If
@@ -4113,9 +4124,13 @@ Public Class Form1
             Dim extension = Path.GetExtension(pathname)
             extension = Mid(extension, 2, 5)
             If extension.ToLower = "iar" Then
-                LoadIARContent(pathname)
+                If LoadIARContent(pathname) Then
+                    Print("Opensimulator will load " + pathname + ".  This may take time to load.")
+                End If
             ElseIf extension.ToLower = "oar" Or extension.ToLower = "gz" Or extension.ToLower = "tgz" Then
-                LoadOARContent(pathname)
+                If LoadOARContent(pathname) Then
+                    Print("Opensimulator will load " + pathname + ".  This may take time to load.")
+                End If
             Else
                 Print("Unrecognized file type:" + extension + ".  Drag and drop any OAR, GZ, TGZ, or IAR files to load them when the sim starts")
             End If
@@ -4233,9 +4248,10 @@ Public Class Form1
 
         Dim file As String = Mid(CType(sender.text, String), 1, InStr(CType(sender.text, String), "|") - 2)
         file = gDomain + "/Outworldz_Installer/IAR/" + file 'make a real URL
-        LoadIARContent(file)
+        If LoadIARContent(file) Then
+            Print("Opensimulator will load " + file + ".  This may take time to load.")
+        End If
         sender.checked = True
-        Print("Opensimulator will load " + file + ".  This may take time to load.")
 
     End Sub
 
@@ -5581,31 +5597,36 @@ Public Class Form1
     Private Sub LocalOarClick(sender As Object, e As EventArgs)
 
         Dim File = MyFolder + "/OutworldzFiles/OAR/" + sender.text.ToString 'make a real URL
-        LoadOARContent(File)
-        Print("Opensimulator will load " + sender.text.ToString + ".  This may take time to load.")
+        If LoadOARContent(File) Then
+            Print("Opensimulator will load " + sender.text.ToString + ".  This may take time to load.")
+        End If
 
     End Sub
     Private Sub BackupOarClick(sender As Object, e As EventArgs)
 
         Dim File = MyFolder + "/OutworldzFiles/AutoBackup/" + sender.text.ToString 'make a real URL
-        LoadOARContent(File)
-        Print("Opensimulator will load " + sender.text.ToString + ".  This may take time to load.")
+        If LoadOARContent(File) Then
+            Print("Opensimulator will load " + sender.text.ToString + ".  This may take time to load.")
+        End If
 
     End Sub
 
     Private Sub LocalIarClick(sender As Object, e As EventArgs)
 
         Dim File As String = MyFolder + "/OutworldzFiles/IAR/" + sender.text.ToString 'make a real URL
-        LoadIARContent(File)
-        Print("Opensimulator will load " + sender.text.ToString + ".  This may take time to load.")
+        If LoadIARContent(File) Then
+            Print("Opensimulator will load " + sender.text.ToString + ".  This may take time to load.")
+        End If
 
     End Sub
 
     Private Sub BackupIarClick(sender As Object, e As EventArgs)
 
         Dim File As String = MyFolder + "/OutworldzFiles/AutoBackup/" + sender.text.ToString 'make a real URL
-        LoadIARContent(File)
-        Print("Opensimulator will load " + sender.text.ToString + ".  This may take time to load.")
+        If LoadIARContent(File) Then
+            Print("Opensimulator will load " + sender.text.ToString + ".  This may take time to load.")
+        End If
+
 
     End Sub
 
