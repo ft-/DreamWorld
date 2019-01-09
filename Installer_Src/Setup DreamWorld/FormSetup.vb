@@ -634,7 +634,13 @@ Public Class Form1
 
         If Not SetIniData() Then Return   ' set up the INI files
 
-        If Not StartMySQL() Then Return
+        If Not StartMySQL() Then
+            ProgressBar1.Value = 0
+            ProgressBar1.Visible = True
+            Buttons(StartButton)
+            Print("Stopped")
+            Return
+        End If
 
         If Not Start_Robust() Then
             Return
@@ -920,7 +926,6 @@ Public Class Form1
         Dim result As Integer = MessageBox.Show("Do you want to Abort?", "caption", MessageBoxButtons.YesNo)
         If result = DialogResult.Yes Then
             Print("Stopping")
-
             Buttons(StartButton)
             Print("Stopped")
             OpensimIsRunning() = False
@@ -928,15 +933,14 @@ Public Class Form1
         End If
     End Sub
 
-    Private Function Buttons(button As System.Object) As Boolean
+    Public Sub Buttons(button As System.Object)
         ' Turns off all 4 stacked buttons, then enables one of them
         BusyButton.Visible = False
         StopButton.Visible = False
         StartButton.Visible = False
         InstallButton.Visible = False
         button.Visible = True
-        Buttons = True
-    End Function
+    End Sub
 
     Private Sub Create_ShortCut(ByVal sTargetPath As String)
         ' Requires reference to Windows Script Host Object Model
@@ -2123,6 +2127,9 @@ Public Class Form1
     Private Sub Mysql_Exited(ByVal sender As Object, ByVal e As System.EventArgs) Handles ProcessMySql.Exited
 
         If gExiting Then Return
+
+        OpensimIsRunning = False
+
         Dim yesno = MsgBox("Mysql exited. Do you want to see the error log file?", vbYesNo, "Error")
         If (yesno = vbYes) Then
             Dim MysqlLog As String = MyFolder + "\OutworldzFiles\mysql\data"
@@ -4293,8 +4300,8 @@ Public Class Form1
             Print("Backing up MySql\Data Folder")
             My.Computer.FileSystem.CopyDirectory(MyFolder + "\OutworldzFiles\Mysql\Data\", Dest + "\Mysql_Data")
             Print("Backing up Wifi Folders")
-            My.Computer.FileSystem.CopyDirectory(MyFolder + "\OutworldzFiles\Opensim\WifiPages\", Dest + "\Opensim_Wifi")
-            My.Computer.FileSystem.CopyDirectory(MyFolder + "\OutworldzFiles\Opensim\bin\WifiPages\", Dest + "\Opensim_bin_Wifi")
+            My.Computer.FileSystem.CopyDirectory(MyFolder + "\OutworldzFiles\Opensim\WifiPages\", Dest + "\Opensim_WifiPages-Custom")
+            My.Computer.FileSystem.CopyDirectory(MyFolder + "\OutworldzFiles\Opensim\bin\WifiPages\", Dest + "\Opensim_bin_WifiPages-Custom")
             My.Computer.FileSystem.CopyFile(MyFolder + "\OutworldzFiles\Settings.ini", Dest + "\Settings.ini")
         Catch ex As Exception
             Print("Err:" + ex.Message)
@@ -4816,7 +4823,13 @@ Public Class Form1
 
     Private Sub CheckAndRepairDatbaseToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CheckAndRepairDatbaseToolStripMenuItem.Click
 
-        If Not StartMySQL() Then Return
+        If Not StartMySQL() Then
+            ProgressBar1.Value = 0
+            ProgressBar1.Visible = True
+            Buttons(StartButton)
+            Print("Stopped")
+            Return
+        End If
 
         Dim pi As ProcessStartInfo = New ProcessStartInfo()
 
@@ -4839,7 +4852,13 @@ Public Class Form1
             Return
         End If
 
-        If Not StartMySQL() Then Return
+        If Not StartMySQL() Then
+            ProgressBar1.Value = 0
+            ProgressBar1.Visible = True
+            Buttons(StartButton)
+            Print("Stopped")
+            Return
+        End If
 
         ' Create an instance of the open file dialog box.
         Dim openFileDialog1 As OpenFileDialog = New OpenFileDialog
@@ -4899,7 +4918,13 @@ Public Class Form1
 
     Private Sub BackupDatabaseToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles BackupDatabaseToolStripMenuItem.Click
 
-        If Not StartMySQL() Then Return
+        If Not StartMySQL() Then
+            ProgressBar1.Value = 0
+            ProgressBar1.Visible = True
+            Buttons(StartButton)
+            Print("Stopped")
+            Return
+        End If
 
         Print("Starting a slow but extensive Database Backup => Autobackup folder")
         Dim pMySqlBackup As Process = New Process()
@@ -5006,6 +5031,8 @@ Public Class Form1
             Sleep(2000)
             MysqlOk = CheckMysql()
         End While
+
+        If Not OpensimIsRunning Then Return False
 
         Return True
 

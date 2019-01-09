@@ -372,7 +372,12 @@ Public Class RegionList
             If V = vbNo Then Return
 
             ' it was stopped, and off, so we start up
-            If Not Form1.StartMySQL() Then Return
+            If Not Form1.StartMySQL() Then
+                Form1.ProgressBar1.Value = 0
+                Form1.ProgressBar1.Visible = True
+                Form1.Print("Stopped")
+                Return
+            End If
             Form1.Start_Robust()
             Form1.Log("Starting " + RegionClass.RegionName(n))
             Form1.CopyOpensimProto()
