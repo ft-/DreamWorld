@@ -206,6 +206,7 @@ Public Class FormRegion
         Me.Focus()
         initted = True
         Form1.HelpOnce("Region")
+
     End Sub
 
     Private Sub FormRegion_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing

@@ -99,6 +99,6 @@
     End Sub
 
     Private Sub CancelButton1_Click(sender As Object, e As EventArgs) Handles CancelButton1.Click
-        Me.Close()
+        DialogResult = DialogResult.Cancel
     End Sub
 End Class
