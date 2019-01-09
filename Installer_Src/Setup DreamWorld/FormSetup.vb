@@ -4282,10 +4282,10 @@ Public Class Form1
         End If
         Print("Making a backup at " + Dest)
         My.Computer.FileSystem.CreateDirectory(Dest)
-        My.Computer.FileSystem.CreateDirectory(Dest + "\Regions")
+        My.Computer.FileSystem.CreateDirectory(Dest + "\Opensim_bin_Regions")
         My.Computer.FileSystem.CreateDirectory(Dest + "\Mysql_Data")
-        My.Computer.FileSystem.CreateDirectory(Dest + "\Opensim_Wifi")
-        My.Computer.FileSystem.CreateDirectory(Dest + "\Opensim_bin_Wifi")
+        My.Computer.FileSystem.CreateDirectory(Dest + "\Opensim_WifiPages-Custom")
+        My.Computer.FileSystem.CreateDirectory(Dest + "\Opensim_bin_WifiPages-Custom")
 
         Print("Backing up Regions Folder")
         Try
