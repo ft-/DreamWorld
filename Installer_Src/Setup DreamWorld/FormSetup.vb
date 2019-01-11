@@ -782,6 +782,7 @@ Public Class Form1
                 Catch
                 End Try
                 ConsoleCommand(RegionClass.ProcessID(X), "q{ENTER}")
+                Sleep(2000)
             End If
 
             RegionClass.Booted(X) = False
@@ -790,7 +791,7 @@ Public Class Form1
 
             UpdateView = True ' make form refresh
 
-            Sleep(2000)
+
         Next
 
         ' show robust last, try-catch in case it crashed.
