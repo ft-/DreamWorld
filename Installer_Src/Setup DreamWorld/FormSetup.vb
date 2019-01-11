@@ -34,7 +34,7 @@ Public Class Form1
 
 #Region "Declarations"
 
-    Dim gMyVersion As String = "2.65"
+    Dim gMyVersion As String = "2.66"
     Dim gSimVersion As String = "0.9.1"
 
     ' edit this to compile and run in the correct folder root
@@ -642,6 +642,10 @@ Public Class Form1
             Return
         End If
 
+
+        Timer1.Interval = 1000
+        Timer1.Start() 'Timer starts functioning
+
         If Not Start_Robust() Then
             Return
         End If
@@ -684,8 +688,7 @@ Public Class Form1
         ' done with bootup
         ProgressBar1.Visible = False
 
-        Timer1.Interval = 1000
-        Timer1.Start() 'Timer starts functioning
+
         FormPersonality.Close()
         FormPersonality = New FormPersonality
         FormPersonality.Init()
@@ -751,7 +754,7 @@ Public Class Form1
     Private Sub KillAll()
 
         gExiting = True ' force msgbox is anything exists
-        Timer1.Stop()
+
         gStopping = True
         ProgressBar1.Value = 100
         ProgressBar1.Visible = True
@@ -773,25 +776,25 @@ Public Class Form1
 
 
         For Each X As Integer In RegionClass.RegionNumbers
-            If RegionClass.RegionEnabled(X) And OpensimIsRunning Then
-                PrintFast("Shutting down " + RegionClass.RegionName(X))
+            If OpensimIsRunning() And RegionClass.RegionEnabled(X) And Not RegionClass.ShuttingDown(X) Then
                 Dim pID = RegionClass.ProcessID(X)
                 Try
                     Dim p = Process.GetProcessById(pID)
                     ShowWindow(p.MainWindowHandle, SHOW_WINDOW.SW_RESTORE)
                 Catch
                 End Try
+
                 ConsoleCommand(RegionClass.ProcessID(X), "q{ENTER}")
+
+                RegionClass.Booted(X) = False
+                RegionClass.ShuttingDown(X) = True
+                RegionClass.WarmingUp(X) = False
+                UpdateView = True ' make form refresh
+
                 Sleep(2000)
             End If
 
-            RegionClass.Booted(X) = False
-            RegionClass.ShuttingDown(X) = True
-            RegionClass.WarmingUp(X) = False
-
             UpdateView = True ' make form refresh
-
-
         Next
 
         ' show robust last, try-catch in case it crashed.
@@ -815,7 +818,7 @@ Public Class Form1
                 For Each X In RegionClass.RegionNumbers
                     If RegionClass.ShuttingDown(X) = True Then
                         PrintFast("Checking " + RegionClass.RegionName(X))
-                        If CheckPort("127.0.0.1", RegionClass.GroupPort(X)) Then
+                        If CheckPort(MySetting.PrivateURL, RegionClass.GroupPort(X)) Then
                             CountisRunning = CountisRunning + 1
                         Else
                             ' close down all regions in ther Instance
@@ -869,7 +872,7 @@ Public Class Form1
         ' cannot load OAR or IAR, either
         IslandToolStripMenuItem.Visible = False
         ClothingInventoryToolStripMenuItem.Visible = False
-
+        Timer1.Stop()
         OpensimIsRunning() = False
         Me.AllowDrop = False
 
@@ -3587,20 +3590,24 @@ Public Class Form1
         RegionClass.CheckPost()
 
         ' 10 seconds check for a restart
-        If gDNSSTimer Mod 60 = 0 Then
+        ' RegionRestart requires this MOD 10 as it changed there to one minute
+        If gDNSSTimer Mod 10 = 0 Then
             DoExitHandlerPoll() ' see if any regions have exited and set it up for Region Restart 
-            RebootPoll()
-            Application.DoEvents()
 
-            ' check for avatars and Regions to restart every minute
-            If MySetting.StandAlone() Then LoadRegionsStatsBar()   ' fill in menu once a minute
-            ScanAgents() ' update agent count
-            Application.DoEvents()
-            RegionRestart() ' check for reboot 
-            Application.DoEvents()
-            RegionListHTML()
+            If Not gExiting Then
+                RebootPoll()
+                ScanAgents() ' update agent count
+                Application.DoEvents()
+                RegionRestart() ' check for reboot 
+                Application.DoEvents()
+                RegionListHTML()
+            End If
         End If
 
+        If gDNSSTimer Mod 60 = 0 Then
+            ' check for avatars and Regions to restart every minute
+            If MySetting.StandAlone() Then LoadRegionsStatsBar()   ' fill in menu once a minute
+        End If
 
     End Sub
 
@@ -3663,9 +3670,10 @@ Public Class Form1
                 Dim timervalue As Integer = RegionClass.Timer(X)
                 Dim Groupname = RegionClass.GroupName(X)
 
-                ' if its past time and no one is in the sim...
-                If timervalue >= MySetting.AutoRestartInterval() And MySetting.AutoRestartInterval() > 0 And Not AvatarsIsInGroup(Groupname) Then
-                    ' shut down the group
+                ' if it is past time and no one is in the sim...
+                If timervalue >= MySetting.AutoRestartInterval() * 6 And MySetting.AutoRestartInterval() > 0 And Not AvatarsIsInGroup(Groupname) Then
+
+                    ' shut down the group when one minute has gione by, or multiple thereof.
 
                     ConsoleCommand(RegionClass.ProcessID(X), "q{ENTER}q{ENTER}")
                     Print("AutoRestarting " + Groupname)
