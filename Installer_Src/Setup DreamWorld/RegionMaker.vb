@@ -899,22 +899,22 @@ Public Class RegionMaker
 
                 ElseIf json.login = "shutdown" Then
 
-                        ' does not work as expected - get this during bootup!
-                        'Form1.PrintFast("Region " & json.region_name & " shut down")
+                    ' does not work as expected - get this during bootup!
+                    Form1.PrintFast("Region " & json.region_name & " shut down")
 
-                        'Dim n = FindRegionByName(json.region_name)
-                        'If n < 0 Then
-                        'Return
-                        'End If
-
-                        'Booted(n) = False
-                        'WarmingUp(n) = False
-                        'ShuttingDown(n) = True
-                        'UUID(n) = ""
-                        'Form1.UpdateView() = True
-
+                    Dim n = FindRegionByName(json.region_name)
+                    If n < 0 Then
+                        Return
                     End If
-                Try
+
+                    Booted(n) = False
+                    WarmingUp(n) = False
+                    ShuttingDown(n) = True
+                    UUID(n) = ""
+                    Form1.UpdateView() = True
+
+                End If
+                    Try
                     WebserverList.RemoveAt(LOOPVAR)
                 Catch
                     Debug.Print("Something fucky in region exit")
