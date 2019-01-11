@@ -518,7 +518,7 @@ Public Class Form1
         ws = NetServer.GetWebServer
         Log("Info:Starting Web Server ")
 
-        ws.StartServer(MySetting, MySetting.PrivateURL, CType(MySetting.DiagnosticPort, Integer))
+        ws.StartServer(MyFolder, MySetting, MySetting.PrivateURL, CType(MySetting.DiagnosticPort, Integer))
 
         ' Run diagnostics, maybe
         If Not MySetting.RanAllDiags Then
