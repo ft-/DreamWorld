@@ -822,6 +822,9 @@ Public Class Form1
                             Dim gname = RegionClass.GroupName(X)
                             For Each Y In RegionClass.RegionListByGroupNum(gname)
                                 RegionClass.ShuttingDown(Y) = False
+                                RegionClass.Booted(Y) = False
+                                RegionClass.WarmingUp(Y) = True
+                                UpdateView = True ' make form refresh
                             Next
                         End If
                     End If
@@ -1984,6 +1987,8 @@ Public Class Form1
 
             Sleep(2000)
             SetWindowText(IcecastProcess.MainWindowHandle, "Icecast")
+            Sleep(100)
+            SetWindowText(IcecastProcess.MainWindowHandle, "Icecast")
 
         Catch ex As Exception
             Print("Error: Icecast did not start: " + ex.Message)
@@ -2014,6 +2019,8 @@ Public Class Form1
             gRobustProcID = RobustProcess.Id
 
             Sleep(1000)
+            SetWindowText(RobustProcess.MainWindowHandle, "Robust")
+            Sleep(100)
             SetWindowText(RobustProcess.MainWindowHandle, "Robust")
 
         Catch ex As Exception
@@ -3342,6 +3349,8 @@ Public Class Form1
                 Sleep(5000)
 
                 SetWindowText(myProcess.MainWindowHandle, RegionClass.GroupName(n))
+                Sleep(100)
+                SetWindowText(myProcess.MainWindowHandle, RegionClass.GroupName(n))
 
                 Return True
             End If
@@ -3578,7 +3587,7 @@ Public Class Form1
         RegionClass.CheckPost()
 
         ' 10 seconds check for a restart
-        If gDNSSTimer Mod 10 = 0 Then
+        If gDNSSTimer Mod 60 = 0 Then
             DoExitHandlerPoll() ' see if any regions have exited and set it up for Region Restart 
             RebootPoll()
             Application.DoEvents()
