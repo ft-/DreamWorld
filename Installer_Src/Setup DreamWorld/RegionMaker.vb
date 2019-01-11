@@ -909,7 +909,7 @@ Public Class RegionMaker
 
                     Booted(n) = False
                     WarmingUp(n) = False
-                    ShuttingDown(n) = True
+                    ShuttingDown(n) = False
                     UUID(n) = ""
                     Form1.UpdateView() = True
 
