@@ -466,7 +466,7 @@ Public Class RegionList
         If TheView = 0 Then
             ListView1.CheckBoxes = False
             ListView1.View = View.List
-
+            Timer1.Start()
         ElseIf TheView = 1 Then
             ListView1.CheckBoxes = False
             ListView1.View = View.LargeIcon
@@ -474,7 +474,7 @@ Public Class RegionList
         ElseIf TheView = 2 Then
             ListView1.CheckBoxes = True
             ListView1.View = View.Details
-
+            Timer1.Start()
         End If
 
         TheView = TheView + 1
