@@ -3060,8 +3060,6 @@ Public Class Form1
 
         ExitList.Reverse()
 
-
-
         For LOOPVAR = ExitList.Count - 1 To 0 Step -1
 
             Try
@@ -3107,6 +3105,8 @@ Public Class Form1
                     UpdateView = True ' make form refresh
                     PrintFast("Restart Queued for " + Groupname)
                     RegionClass.Timer(n) = -2 ' signal a restart is needed
+                Else
+                    PrintFast(Groupname + " stopped")
                 End If
 
                 Try

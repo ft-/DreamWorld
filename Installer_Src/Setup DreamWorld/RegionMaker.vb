@@ -900,7 +900,7 @@ Public Class RegionMaker
                 ElseIf json.login = "shutdown" Then
 
                     ' does not work as expected - get this during bootup!
-                    Form1.PrintFast("Region " & json.region_name & " shut down")
+                    Form1.PrintFast("Region " & json.region_name & " shutting down")
 
                     Dim n = FindRegionByName(json.region_name)
                     If n < 0 Then
