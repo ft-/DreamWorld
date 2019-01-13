@@ -789,7 +789,7 @@ Public Class Form1
                 RegionClass.Booted(X) = False
                 RegionClass.ShuttingDown(X) = True
                 RegionClass.WarmingUp(X) = False
-                RegionClass.Timer(X) = 0
+                RegionClass.Timer(X) = -3
                 UpdateView = True ' make form refresh
 
                 Sleep(2000)
@@ -822,13 +822,13 @@ Public Class Form1
                         If CheckPort(MySetting.PrivateURL, RegionClass.GroupPort(X)) Then
                             CountisRunning = CountisRunning + 1
                         Else
-                            ' close down all regions in ther Instance
+                            ' close down all regions in the Instance
                             Dim gname = RegionClass.GroupName(X)
                             For Each Y In RegionClass.RegionListByGroupNum(gname)
                                 RegionClass.ShuttingDown(Y) = False
                                 RegionClass.Booted(Y) = False
                                 RegionClass.WarmingUp(Y) = False
-                                RegionClass.Timer(Y) = 0
+                                RegionClass.Timer(Y) = -3
                                 RegionClass.ProcessID(Y) = 0
 
                             Next
@@ -3135,7 +3135,7 @@ Public Class Form1
             RegionClass.WarmingUp(X) = False
             RegionClass.ShuttingDown(X) = False
             RegionClass.ProcessID(X) = 0
-            RegionClass.Timer(X) = 0            ' no longer has running time
+            RegionClass.Timer(X) = -3           ' no longer has running time
         Next
 
         UpdateView = True ' make form refresh
@@ -3352,6 +3352,7 @@ Public Class Form1
                     RegionClass.ProcessID(num) = myProcess.Id
                     RegionClass.Timer(num) = 0
                 Next
+
                 UpdateView = True ' make form refresh
                 Application.DoEvents()
                 Sleep(5000)
@@ -3692,7 +3693,7 @@ Public Class Form1
                 End If
 
                 ' count up to auto restart , when high enought, restart the sim
-                If RegionClass.Timer(X) > -1 Then
+                If RegionClass.Timer(X) >= 0 Then
                     RegionClass.Timer(X) = RegionClass.Timer(X) + 1
                 End If
 
