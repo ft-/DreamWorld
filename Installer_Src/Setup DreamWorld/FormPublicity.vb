@@ -34,7 +34,7 @@
         Catch
             PictureBox9.Image = My.Resources.blankbox
         End Try
-
+        Form1.HelpOnce("Publicity")
         initted = True
 
     End Sub
@@ -90,4 +90,7 @@
 
     End Sub
 
+    Private Sub PublicPhoto_Click(sender As Object, e As EventArgs) Handles PublicPhoto.Click
+        Form1.Help("Publicity")
+    End Sub
 End Class
