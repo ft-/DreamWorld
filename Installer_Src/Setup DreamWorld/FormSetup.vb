@@ -135,6 +135,16 @@ Public Class Form1
     <DllImport("user32.dll")>
     Shared Function SetWindowText(ByVal hwnd As IntPtr, ByVal windowName As String) As Boolean
     End Function
+
+
+    <Flags()>
+    Private Enum REGION_TIMER As Integer
+        STOPPED = -3
+        RESTARTING = -2
+        RESTART_PENDING = -1
+        START_COUNTING = 0
+    End Enum
+
 #End Region
 
 #Region "ScreenSize"
@@ -789,7 +799,7 @@ Public Class Form1
                 RegionClass.Booted(X) = False
                 RegionClass.ShuttingDown(X) = True
                 RegionClass.WarmingUp(X) = False
-                RegionClass.Timer(X) = -3
+                RegionClass.Timer(X) = REGION_TIMER.STOPPED
                 UpdateView = True ' make form refresh
 
                 Sleep(2000)
@@ -828,7 +838,7 @@ Public Class Form1
                                 RegionClass.ShuttingDown(Y) = False
                                 RegionClass.Booted(Y) = False
                                 RegionClass.WarmingUp(Y) = False
-                                RegionClass.Timer(Y) = -3
+                                RegionClass.Timer(Y) = REGION_TIMER.STOPPED
                                 RegionClass.ProcessID(Y) = 0
 
                             Next
@@ -3087,7 +3097,7 @@ Public Class Form1
                     Dim yesno = MsgBox(RegionClass.RegionName(n) + " in DOS Box " + Groupname + " quit while booting up. Do you want to see the log file?", vbYesNo, "Error")
                     If (yesno = vbYes) Then
                         System.Diagnostics.Process.Start("notepad.exe", RegionClass.IniPath(n) + "Opensim.log")
-                        ShouldIRestart = 0
+                        ShouldIRestart = REGION_TIMER.START_COUNTING
                     End If
                 End If
 
@@ -3098,17 +3108,17 @@ Public Class Form1
                     Dim yesno = MsgBox(RegionClass.RegionName(n) + " in DOS Box " + Groupname + " quit unexpectedly. Do you want to see the log file?", vbYesNo, "Error")
                     If (yesno = vbYes) Then
                         System.Diagnostics.Process.Start("notepad.exe", RegionClass.IniPath(n) + "Opensim.log")
-                        ShouldIRestart = 0
+                        ShouldIRestart = REGION_TIMER.START_COUNTING
                     End If
                 End If
 
                 StopGroup(Groupname)
 
                 ' Auto restart if negative
-                If ShouldIRestart = -1 And OpensimIsRunning() Then
+                If ShouldIRestart = REGION_TIMER.RESTART_PENDING And OpensimIsRunning() Then
                     UpdateView = True ' make form refresh
                     PrintFast("Restart Queued for " + Groupname)
-                    RegionClass.Timer(n) = -2 ' signal a restart is needed
+                    RegionClass.Timer(n) = REGION_TIMER.RESTARTING ' signal a restart is needed
                 Else
                     PrintFast(Groupname + " stopped")
                 End If
@@ -3135,7 +3145,7 @@ Public Class Form1
             RegionClass.WarmingUp(X) = False
             RegionClass.ShuttingDown(X) = False
             RegionClass.ProcessID(X) = 0
-            RegionClass.Timer(X) = -3           ' no longer has running time
+            RegionClass.Timer(X) = REGION_TIMER.STOPPED          ' no longer has running time
         Next
 
         UpdateView = True ' make form refresh
@@ -3350,7 +3360,7 @@ Public Class Form1
                     RegionClass.Booted(num) = False
                     RegionClass.ShuttingDown(num) = False
                     RegionClass.ProcessID(num) = myProcess.Id
-                    RegionClass.Timer(num) = 0
+                    RegionClass.Timer(num) = REGION_TIMER.START_COUNTING
                 Next
 
                 UpdateView = True ' make form refresh
@@ -3658,8 +3668,8 @@ Public Class Form1
     Private Sub RebootPoll()
         For Each X As Integer In RegionClass.RegionNumbers
             ' if a restart is signalled, boot it up
-            If RegionClass.Timer(X) = -2 Then
-                RegionClass.Timer(X) = 0
+            If RegionClass.Timer(X) = REGION_TIMER.RESTARTING Then
+                RegionClass.Timer(X) = REGION_TIMER.START_COUNTING
                 Boot(RegionClass.RegionName(X))
             End If
         Next
@@ -3687,7 +3697,7 @@ Public Class Form1
                         RegionClass.Booted(RegionNum) = False
                         RegionClass.WarmingUp(RegionNum) = False
                         RegionClass.ShuttingDown(RegionNum) = True
-                        RegionClass.Timer(RegionNum) = -1 ' -1 means restart on exit
+                        RegionClass.Timer(RegionNum) = REGION_TIMER.RESTART_PENDING ' restart on exit
                     Next
                     UpdateView = True ' make form refresh
                 End If
