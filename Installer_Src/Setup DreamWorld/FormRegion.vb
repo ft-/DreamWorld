@@ -394,21 +394,13 @@ Public Class FormRegion
         ' rename is possible
         If oldname <> RegionName.Text And Not isNew Then
             Try
-                My.Computer.FileSystem.RenameFile(Filepath, RegionName.Text + ".bak")
+                My.Computer.FileSystem.RenameFile(Filepath, RegionName.Text + ".ini")
+                Filepath = Folderpath + "\" + RegionName.Text + ".ini"
+                RegionClass.RegionPath(n) = Filepath
             Catch ex As Exception
                 Debug.Print(ex.Message)
             End Try
 
-            Try
-                Dim NewFilepath = Form1.gPath & "bin\Regions\" + RegionName.Text + "\Region\"
-                Directory.CreateDirectory(NewFilepath)
-                Filepath = NewFilepath + RegionName.Text + ".ini"
-                RegionClass.RegionPath(n) = Filepath
-            Catch
-                MsgBox("Cannot create New region. It seems to already exist", vbInformation, "Info")
-                Form1.PrintFast("Aborted")
-                Return
-            End Try
         End If
 
         ' might be a new region, so give them a choice
@@ -537,6 +529,8 @@ Public Class FormRegion
             Form1.Log("Cannot write region:" + ex.Message)
         End Try
 
+        Form1.UpdateView = True
+
         oldname = RegionName.Text
 
     End Sub
@@ -584,10 +578,7 @@ Public Class FormRegion
             End Try
         End If
 
-        If RegionList.InstanceExists Then
-            RegionClass.GetAllRegions()
-            RegionList.LoadMyListView()
-        End If
+        Form1.UpdateView = True
 
         Me.Close()
 
