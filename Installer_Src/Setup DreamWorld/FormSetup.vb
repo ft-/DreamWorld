@@ -3302,6 +3302,10 @@ Public Class Form1
         Dim isRegionRunning = CheckPort("127.0.0.1", RegionClass.GroupPort(n))
         If isRegionRunning Then
             Log("Region " + BootName + "failed to start as it is already running")
+            RegionClass.WarmingUp(n) = False
+            RegionClass.Booted(n) = True
+            RegionClass.ShuttingDown(n) = False
+            RegionClass.Timer(n) = REGION_TIMER.START_COUNTING
             Return False
         End If
 
