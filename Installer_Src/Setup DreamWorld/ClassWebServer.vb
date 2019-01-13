@@ -156,8 +156,9 @@ Public Class NetServer
         Dim s As String = reader.ReadToEnd()
         Debug.Print(s)
         Debug.Print("End of client data:")
+        'reader.Close()
         body.Close()
-        reader.Close()
+
         'If you are finished with the request, it should be closed also.
 
         Return s
