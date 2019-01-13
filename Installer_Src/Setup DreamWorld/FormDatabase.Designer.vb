@@ -41,10 +41,10 @@ Partial Class FormDatabase
         Me.Label8 = New System.Windows.Forms.Label()
         Me.RobustDBPassword = New System.Windows.Forms.TextBox()
         Me.RobustDBUsername = New System.Windows.Forms.TextBox()
-        Me.BirdHelp = New System.Windows.Forms.PictureBox()
+        Me.DBHelp = New System.Windows.Forms.PictureBox()
         Me.StandaloneGroup.SuspendLayout()
         Me.GridGroup.SuspendLayout()
-        CType(Me.BirdHelp, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.DBHelp, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'StandaloneGroup
@@ -211,21 +211,21 @@ Partial Class FormDatabase
         Me.RobustDBUsername.Size = New System.Drawing.Size(107, 20)
         Me.RobustDBUsername.TabIndex = 39
         '
-        'BirdHelp
+        'DBHelp
         '
-        Me.BirdHelp.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.BirdHelp.Location = New System.Drawing.Point(291, 10)
-        Me.BirdHelp.Name = "BirdHelp"
-        Me.BirdHelp.Size = New System.Drawing.Size(28, 32)
-        Me.BirdHelp.TabIndex = 1859
-        Me.BirdHelp.TabStop = False
+        Me.DBHelp.Image = Global.Outworldz.My.Resources.Resources.about
+        Me.DBHelp.Location = New System.Drawing.Point(291, 10)
+        Me.DBHelp.Name = "DBHelp"
+        Me.DBHelp.Size = New System.Drawing.Size(28, 32)
+        Me.DBHelp.TabIndex = 1859
+        Me.DBHelp.TabStop = False
         '
         'FormDatabase
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.ClientSize = New System.Drawing.Size(543, 182)
-        Me.Controls.Add(Me.BirdHelp)
+        Me.Controls.Add(Me.DBHelp)
         Me.Controls.Add(Me.StandaloneGroup)
         Me.Controls.Add(Me.GridGroup)
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
@@ -236,7 +236,7 @@ Partial Class FormDatabase
         Me.StandaloneGroup.PerformLayout()
         Me.GridGroup.ResumeLayout(False)
         Me.GridGroup.PerformLayout()
-        CType(Me.BirdHelp, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.DBHelp, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -259,5 +259,5 @@ Partial Class FormDatabase
     Friend WithEvents Label8 As Label
     Friend WithEvents RobustDBPassword As TextBox
     Friend WithEvents RobustDBUsername As TextBox
-    Friend WithEvents BirdHelp As PictureBox
+    Friend WithEvents DBHelp As PictureBox
 End Class
