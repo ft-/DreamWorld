@@ -789,6 +789,7 @@ Public Class Form1
                 RegionClass.Booted(X) = False
                 RegionClass.ShuttingDown(X) = True
                 RegionClass.WarmingUp(X) = False
+                RegionClass.Timer(X) = 0
                 UpdateView = True ' make form refresh
 
                 Sleep(2000)
@@ -826,10 +827,13 @@ Public Class Form1
                             For Each Y In RegionClass.RegionListByGroupNum(gname)
                                 RegionClass.ShuttingDown(Y) = False
                                 RegionClass.Booted(Y) = False
-                                RegionClass.WarmingUp(Y) = True
-                                UpdateView = True ' make form refresh
+                                RegionClass.WarmingUp(Y) = False
+                                RegionClass.Timer(Y) = 0
+                                RegionClass.ProcessID(Y) = 0
+
                             Next
                         End If
+                        UpdateView = True ' make form refresh
                     End If
                     Application.DoEvents()
                 Next
@@ -3346,6 +3350,7 @@ Public Class Form1
                     RegionClass.Booted(num) = False
                     RegionClass.ShuttingDown(num) = False
                     RegionClass.ProcessID(num) = myProcess.Id
+                    RegionClass.Timer(num) = 0
                 Next
                 UpdateView = True ' make form refresh
                 Application.DoEvents()
