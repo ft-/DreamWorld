@@ -31,7 +31,6 @@ Public Class FormDNSName
         Me.Text = "DynDNS"
 
         DNSNameBox.Text = Form1.MySetting.DNSName
-        DNSNameBox.Text = Form1.MySetting.DNSName
         UniqueId.Text = Form1.MySetting.MachineID()
         EnableHypergrid.Checked = Form1.MySetting.EnableHypergrid
         SuitcaseCheckbox.Checked = Form1.MySetting.Suitcase
