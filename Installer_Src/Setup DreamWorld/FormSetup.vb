@@ -795,6 +795,7 @@ Public Class Form1
                 End Try
 
                 ConsoleCommand(RegionClass.ProcessID(X), "q{ENTER}")
+                ConsoleCommand(RegionClass.ProcessID(X), "q{ENTER}")
 
                 RegionClass.Booted(X) = False
                 RegionClass.ShuttingDown(X) = True
@@ -880,7 +881,8 @@ Public Class Form1
         Next
         UpdateView = True ' make form refresh
         If gRobustProcID > 0 Then
-            ConsoleCommand(gRobustProcID, "{ENTER}q{ENTER}")
+            ConsoleCommand(gRobustProcID, "q{ENTER}")
+            ConsoleCommand(gRobustProcID, "q{ENTER}")
         End If
 
         ' cannot load OAR or IAR, either
@@ -3693,9 +3695,10 @@ Public Class Form1
                 ' if it is past time and no one is in the sim...
                 If timervalue >= MySetting.AutoRestartInterval() * 6 And MySetting.AutoRestartInterval() > 0 And Not AvatarsIsInGroup(Groupname) Then
 
-                    ' shut down the group when one minute has gione by, or multiple thereof.
+                    ' shut down the group when one minute has gone by, or multiple thereof.
 
-                    ConsoleCommand(RegionClass.ProcessID(X), "q{ENTER}q{ENTER}")
+                    ConsoleCommand(RegionClass.ProcessID(X), "q{ENTER}")
+                    ConsoleCommand(RegionClass.ProcessID(X), "q{ENTER}")
                     Print("AutoRestarting " + Groupname)
                     For Each RegionNum As Integer In RegionClass.RegionListByGroupNum(Groupname)
                         RegionClass.Booted(RegionNum) = False

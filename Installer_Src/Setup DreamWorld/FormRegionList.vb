@@ -380,7 +380,7 @@ Public Class RegionList
             End If
             Form1.Start_Robust()
             Form1.Log("Starting " + RegionClass.RegionName(n))
-            Form1.CopyOpensimProto()
+            Form1.CopyOpensimProto() ' !!! make this region specific for speed
             Form1.Boot(RegionClass.RegionName(n))
             UpdateView() = True ' force a refresh
             Return
