@@ -3085,6 +3085,7 @@ Public Class Form1
 
                 If n < 0 Then
                     ExitList.RemoveAt(LOOPVAR)
+                    Log("Something Exited with a index of " + n.ToString)
                     Continue For
                 End If
 
@@ -3614,13 +3615,13 @@ Public Class Form1
         ' 10 seconds check for a restart
         ' RegionRestart requires this MOD 10 as it changed there to one minute
         If gDNSSTimer Mod 10 = 0 Then
-            DoExitHandlerPoll() ' see if any regions have exited and set it up for Region Restart 
+
 
             If Not gExiting Then
-                RebootPoll()
+                RegionRestart() ' check for reboot 
+                DoExitHandlerPoll() ' see if any regions have exited and set it up for Region Restart 
                 ScanAgents() ' update agent count
                 Application.DoEvents()
-                RegionRestart() ' check for reboot 
                 Application.DoEvents()
                 RegionListHTML()
             End If
@@ -3671,15 +3672,7 @@ Public Class Form1
 
     End Sub
 
-    Private Sub RebootPoll()
-        For Each X As Integer In RegionClass.RegionNumbers
-            ' if a restart is signalled, boot it up
-            If RegionClass.Timer(X) = REGION_TIMER.RESTARTING Then
-                RegionClass.Timer(X) = REGION_TIMER.START_COUNTING
-                Boot(RegionClass.RegionName(X))
-            End If
-        Next
-    End Sub
+
 
     Private Sub RegionRestart()
         ' runs once per minute
@@ -3716,6 +3709,13 @@ Public Class Form1
 
             End If
 
+        Next
+
+        For Each X As Integer In RegionClass.RegionNumbers
+            ' if a restart is signalled, boot it up
+            If RegionClass.Timer(X) = REGION_TIMER.RESTARTING Then
+                Boot(RegionClass.RegionName(X))
+            End If
         Next
 
     End Sub
