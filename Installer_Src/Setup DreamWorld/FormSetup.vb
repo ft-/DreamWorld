@@ -4775,13 +4775,14 @@ Public Class Form1
         If MySetting.StandAlone() Then Grid = "Standalone"
 
         Dim data As String = "&MachineID=" + MySetting.MachineID() _
-            + "&V=" + gMyVersion _
-            + "&OV=" + gSimVersion _
-            + "&uPnp=" + UPnp _
-            + "&Loop=" + Loopb _
-            + "&Type=" + Grid _
-            + "&Ver=" + gMyVersion _
-            + "&r=" + Random()
+            + "&V=" + gMyVersion.ToString _
+            + "&OV=" + gSimVersion.ToString _
+            + "&uPnp=" + UPnp.ToString _
+            + "&Loop=" + Loopb.ToString _
+            + "&Type=" + Grid.ToString _
+            + "&Ver=" + gMyVersion.ToString _
+            + "&isPublic=" + MySetting.GDPR().ToString _
+            + "&r = " + Random()
         Return data
 
     End Function
