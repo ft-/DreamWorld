@@ -120,12 +120,6 @@
 
     End Sub
 
-    Private Sub Cloudy_Click(sender As Object, e As EventArgs) 
-
-        Dim webAddress As String = Form1.gDomain + "/Outworldz_installer/technical.htm#Cloudy"
-        Process.Start(webAddress)
-
-    End Sub
 
 
 

@@ -61,7 +61,7 @@ Public Class FormRestart
         pi.FileName = "schtasks.exe"
         If IsUserAdministrator() Then
             If BootStart.Checked Then
-                pi.Arguments = "/Create /TN DreamGrid /SC ONSTART /TR " & Form1.MyFolder & "\Start.exe"
+                pi.Arguments = "/Create /TN DreamGrid /SC ONSTART /TR " & """" + Form1.MyFolder & "\Start.exe" + """"
 
                 ProcessTask.StartInfo = pi
                 Try

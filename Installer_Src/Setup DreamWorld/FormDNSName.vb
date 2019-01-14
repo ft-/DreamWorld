@@ -71,7 +71,6 @@ Public Class FormDNSName
 
             DNSNameBox.Text = Regex.Replace(DNSNameBox.Text, ":\d+", "") ' no :8002 on end.
 
-
             Dim client As New System.Net.WebClient
             Dim Checkname As String = String.Empty
             Try
@@ -93,27 +92,12 @@ Public Class FormDNSName
 
             NextNameButton.Text = "Next Name"
 
-            Dim IP = Form1.DoGetHostAddresses(DNSNameBox.Text)
-            Dim address As IPAddress = Nothing
-            If IPAddress.TryParse(IP, address) Then
-                Form1.MySetting.DNSName = DNSNameBox.Text
-                Form1.MySetting.PublicIP = DNSNameBox.Text
-                Form1.MySetting.SaveSettings()
-                Me.Close()
-                Return
-            End If
-            MsgBox("Could not use that name.  Must be valid domain name, a 'XYZ'.Outworldz.net name, the IP address of this machine or the router, a static or dynamic DNS name.", vbInformation, "Name Needed")
             Form1.MySetting.DNSName = DNSNameBox.Text
             Form1.MySetting.PublicIP = DNSNameBox.Text
             Form1.MySetting.SaveSettings()
 
-        Else
-            Form1.MySetting.DNSName = DNSNameBox.Text
-            Form1.MySetting.PublicIP = DNSNameBox.Text
-            Form1.MySetting.SaveSettings()
-
-            Me.Close()
         End If
+        Me.Close()
 
     End Sub
 

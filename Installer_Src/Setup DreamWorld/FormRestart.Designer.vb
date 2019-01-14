@@ -91,6 +91,7 @@ Partial Class FormRestart
         Me.BootStart.TabIndex = 46
         Me.BootStart.Text = "Install Task to Run on PC Boot"
         Me.BootStart.UseVisualStyleBackColor = True
+        Me.BootStart.Visible = False
         '
         'AutoStartCheckbox
         '

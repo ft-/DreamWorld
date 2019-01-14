@@ -20,18 +20,14 @@ Public Class NetServer
     Dim RegionClass As RegionMaker = RegionMaker.Instance(Form1.MysqlConn)
     Dim Setting As MySettings
 
-    Private Sub New()
-
-        'create a singleton
-
-    End Sub
 
 
-    Public Sub StartServer(MySetting As MySettings, IP As String, Port As Integer)
+    Public Sub StartServer(pathinfo As String, MySetting As MySettings, IP As String, Port As Integer)
 
         ' stash some globs
         Setting = MySetting
         MyPort = Port
+        Myfolder = pathinfo
         LocalAddress = IPAddress.Parse(IP)
 
         If running Then Return
@@ -50,70 +46,24 @@ Public Class NetServer
 
     Private Sub Looper()
 
-
         Log("Info:IP:" + LocalAddress.ToString)
         listen = True
-        Try
-            LocalTCPListener = New TcpListener(LocalAddress, MyPort)
-        Catch ex As Exception
-            Log(ex.Message)
-            Return
-        End Try
 
-        LocalTCPListener.Start()
-        Log("Info:Listener Started")
-        Dim myReadBuffer(8192) As Byte
-        Dim L = myReadBuffer.Length
-        Dim myCompleteMessage As StringBuilder = New StringBuilder()
-        Dim numberOfBytesRead As Integer = 0
-        Dim msg As Byte()
+        Dim listener = New System.Net.HttpListener()
+        listener.Start()
+        Dim prefixes(0) As String
+        prefixes(0) = "http://" + LocalAddress.ToString + ":" + MyPort.ToString + "/"
+
+        For Each s As String In prefixes
+            listener.Prefixes.Add(s)
+        Next
+        Dim result As IAsyncResult
         While listen
-
-            If Not LocalTCPListener.Pending() Then
-                Thread.Sleep(1) ' choose a number (In milliseconds) that makes sense
-                Continue While  ' skip To Next iteration Of Loop
-            End If
-
-            myCompleteMessage.Clear()
-            numberOfBytesRead = 0
-
-            Dim client As TcpClient = LocalTCPListener.AcceptTcpClient()
-            'Log("DiagnosticPort:Accepted client")
-
-            Dim stream As NetworkStream = client.GetStream() ' Get a stream object for reading and writing
-            Dim Response As String = ""
-            If stream.CanRead Then
-
-                ' Incoming message may be larger than the buffer size.
-                Do
-                    Try
-                        numberOfBytesRead = stream.Read(myReadBuffer, 0, L)
-                    Catch
-                    End Try
-                    myCompleteMessage.AppendFormat("{0}", Encoding.ASCII.GetString(myReadBuffer, 0, numberOfBytesRead))
-                Loop While stream.DataAvailable
-
-                ' Print out the received message to the console.
-                ' Log("Received:" + myCompleteMessage.ToString())
-                Response = RegionClass.ParsePost(myCompleteMessage.ToString(), Setting)
-
-            End If
-
-            Try
-                msg = System.Text.Encoding.ASCII.GetBytes("HTTP/1.0 200 OK" + vbCrLf + vbCrLf + Response)
-                stream.Write(msg, 0, msg.Length) ' Send back a response.
-                'Log([String].Format("Response:{0}", Data))
-            Catch
-            End Try
-
-            'Shutdown And end connection
-            client.Close()
-            ' Log("Info:Connection Closed")
-
+            result = listener.BeginGetContext((AddressOf ListenerCallback), listener)
+            result.AsyncWaitHandle.WaitOne()
         End While
 
-        LocalTCPListener.Stop()
-        Log("Info:Webthread ending")
+        listener.Close()
         running = False
 
     End Sub
@@ -123,8 +73,8 @@ Public Class NetServer
         Log("Info:Stopping Webserver")
         listen = False
         Application.DoEvents()
-
-        WebThread.Join()
+        WebThread.Abort()
+        'WebThread.Join()
         Log("Info:Shutdown Complete")
 
     End Sub
@@ -152,4 +102,69 @@ Public Class NetServer
         End Try
     End Sub
 
+    Public Sub ListenerCallback(ByVal result As IAsyncResult)
+
+        Try
+            Dim listener As HttpListener = CType(result.AsyncState, HttpListener)
+            ' Call EndGetContext to signal the completion of the asynchronous operation.
+            Dim context As HttpListenerContext = listener.EndGetContext(result)
+            Dim request As HttpListenerRequest = context.Request
+
+            Dim data As String = ShowRequestData(request)
+            Log(data)
+            ' Get the response object to send our confirmation.
+            Dim response As HttpListenerResponse = context.Response
+            ' Construct a minimal response string.
+            Dim responseString As String = RegionClass.ParsePost(data.ToString(), Setting)
+            Log(responseString)
+            Dim buffer As Byte() = System.Text.Encoding.UTF8.GetBytes(responseString)
+            ' Get the response OutputStream and write the response to it.
+            response.ContentLength64 = buffer.Length
+            ' Identify the content type.
+            response.ContentType = "text/html"
+            Dim output As System.IO.Stream = response.OutputStream
+            output.Write(buffer, 0, buffer.Length)
+            ' Properly flush and close the output stream
+            output.Flush()
+            output.Close()
+        Catch ex As Exception
+            Application.Exit()
+        End Try
+
+    End Sub
+
+    Public Function ShowRequestData(request As HttpListenerRequest) As String
+
+        If (Not request.HasEntityBody) Then
+
+            Debug.Print("No client data was sent with the request.")
+            Return ""
+        End If
+
+        Dim body As System.IO.Stream = request.InputStream
+
+        Dim encoding As System.Text.Encoding = request.ContentEncoding
+        Dim reader As System.IO.StreamReader = New System.IO.StreamReader(body, encoding)
+        If (request.ContentType <> "") Then
+            Debug.Print("Client data content type {0}", request.ContentType)
+        End If
+
+        Debug.Print("Client data content length {0}", request.ContentLength64)
+
+        Debug.Print("Start of client data:")
+        'Convert the data to a string And display it on the console.
+        Dim s As String = reader.ReadToEnd()
+        Debug.Print(s)
+        Debug.Print("End of client data:")
+        'reader.Close()
+        body.Close()
+
+        'If you are finished with the request, it should be closed also.
+
+        Return s
+
+    End Function
+
 End Class
+
+

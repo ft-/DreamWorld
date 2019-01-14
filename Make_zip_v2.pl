@@ -5,7 +5,7 @@ use 5.010;
 use File::Copy;
 use File::Path;
 
-my $type  = '-V2.65' ;  # '-Beta-V1.5';
+my $type  = '-V2.66' ;  # '-Beta-V1.5';
 
 use Cwd;
 my $dir = getcwd;
@@ -151,7 +151,7 @@ if (!copy ("../Zips/DreamGrid-Update$type.zip", "y:/Inetpub/Secondlife/Outworldz
 
 if ($publish)
 {
-
+say ("publishing now");
 unlink "y:/Inetpub/Secondlife/Outworldz_Installer/Grid/DreamGrid.zip";
 if (!copy ("../Zips/DreamGrid$type.zip", "y:/Inetpub/Secondlife/Outworldz_Installer/Grid/DreamGrid.zip"))  {die $!;}
 unlink "y:/Inetpub/Secondlife/Outworldz_Installer/Grid/DreamGrid-Update.zip";

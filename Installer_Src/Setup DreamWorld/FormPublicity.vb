@@ -1,4 +1,6 @@
-﻿Public Class FormPublicity
+﻿Imports System.Text.RegularExpressions
+
+Public Class FormPublicity
 
     Dim initted As Boolean = False
 
@@ -34,12 +36,12 @@
         Catch
             PictureBox9.Image = My.Resources.blankbox
         End Try
-
+        Form1.HelpOnce("Publicity")
         initted = True
 
     End Sub
 
-    Private Sub DataSnapshotCheckBox_CheckedChanged(sender As Object, e As EventArgs)
+    Private Sub DataSnapshotCheckBox_CheckedChanged(sender As Object, e As EventArgs) Handles DataSnapshotCheckBox.CheckedChanged
 
         If initted Then
             Form1.MySetting.DataSnapshot() = DataSnapshotCheckBox.Checked
@@ -65,6 +67,15 @@
         ofd.Multiselect = False
         If ofd.ShowDialog = DialogResult.OK Then
             If ofd.FileName <> String.Empty Then
+
+                Dim pattern As Regex = New Regex("PNG$|png$")
+                Dim match As Match = pattern.Match(ofd.FileName)
+                If Not match.Success Then
+                    MsgBox("Must be a PNG file", vbInformation)
+                    Return
+                End If
+
+
                 PictureBox9.Image = Nothing
                 PictureBox9.Image = Bitmap.FromFile(ofd.FileName)
                 Try
@@ -90,4 +101,7 @@
 
     End Sub
 
+    Private Sub PublicPhoto_Click(sender As Object, e As EventArgs) Handles PublicPhoto.Click
+        Form1.Help("Publicity")
+    End Sub
 End Class

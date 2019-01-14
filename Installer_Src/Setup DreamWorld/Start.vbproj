@@ -92,7 +92,7 @@
     </ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <GenerateManifests>true</GenerateManifests>
+    <GenerateManifests>false</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
     <SignManifests>false</SignManifests>
@@ -437,7 +437,9 @@
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="app1.manifest" />
+    <None Include="app1.manifest">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="My Project\app.manifest" />
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>

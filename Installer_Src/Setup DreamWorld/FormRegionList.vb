@@ -171,7 +171,7 @@ Public Class RegionList
         For Each X In RegionClass.RegionNumbers
 
             Dim Letter As String = ""
-            If RegionClass.Timer(X) = -2 Then
+            If RegionClass.Timer(X) = -2 Or RegionClass.Timer(X) = -1 Then
                 Letter = "Restarting"
                 Num = 5
             ElseIf RegionClass.WarmingUp(X) Then
@@ -380,7 +380,7 @@ Public Class RegionList
             End If
             Form1.Start_Robust()
             Form1.Log("Starting " + RegionClass.RegionName(n))
-            Form1.CopyOpensimProto()
+            Form1.CopyOpensimProto() ' !!! make this region specific for speed
             Form1.Boot(RegionClass.RegionName(n))
             UpdateView() = True ' force a refresh
             Return
@@ -466,7 +466,7 @@ Public Class RegionList
         If TheView = 0 Then
             ListView1.CheckBoxes = False
             ListView1.View = View.List
-
+            Timer1.Start()
         ElseIf TheView = 1 Then
             ListView1.CheckBoxes = False
             ListView1.View = View.LargeIcon
@@ -474,7 +474,7 @@ Public Class RegionList
         ElseIf TheView = 2 Then
             ListView1.CheckBoxes = True
             ListView1.View = View.Details
-
+            Timer1.Start()
         End If
 
         TheView = TheView + 1

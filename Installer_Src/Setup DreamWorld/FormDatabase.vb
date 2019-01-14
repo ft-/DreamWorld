@@ -131,7 +131,7 @@ Public Class FormDatabase
     End Sub
 
 
-    Private Sub BirdHelp_Click(sender As Object, e As EventArgs) Handles BirdHelp.Click
+    Private Sub BirdHelp_Click(sender As Object, e As EventArgs) Handles DBHelp.Click
         Form1.Help("Database")
     End Sub
 

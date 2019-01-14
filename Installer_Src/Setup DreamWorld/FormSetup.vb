@@ -34,7 +34,7 @@ Public Class Form1
 
 #Region "Declarations"
 
-    Dim gMyVersion As String = "2.65"
+    Dim gMyVersion As String = "2.66"
     Dim gSimVersion As String = "0.9.1"
 
     ' edit this to compile and run in the correct folder root
@@ -135,6 +135,16 @@ Public Class Form1
     <DllImport("user32.dll")>
     Shared Function SetWindowText(ByVal hwnd As IntPtr, ByVal windowName As String) As Boolean
     End Function
+
+
+    <Flags()>
+    Private Enum REGION_TIMER As Integer
+        STOPPED = -3
+        RESTARTING = -2
+        RESTART_PENDING = -1
+        START_COUNTING = 0
+    End Enum
+
 #End Region
 
 #Region "ScreenSize"
@@ -518,7 +528,7 @@ Public Class Form1
         ws = NetServer.GetWebServer
         Log("Info:Starting Web Server ")
 
-        ws.StartServer(MySetting, MySetting.PrivateURL, CType(MySetting.DiagnosticPort, Integer))
+        ws.StartServer(MyFolder, MySetting, MySetting.PrivateURL, CType(MySetting.DiagnosticPort, Integer))
 
         ' Run diagnostics, maybe
         If Not MySetting.RanAllDiags Then
@@ -642,6 +652,10 @@ Public Class Form1
             Return
         End If
 
+
+        Timer1.Interval = 1000
+        Timer1.Start() 'Timer starts functioning
+
         If Not Start_Robust() Then
             Return
         End If
@@ -684,8 +698,7 @@ Public Class Form1
         ' done with bootup
         ProgressBar1.Visible = False
 
-        Timer1.Interval = 1000
-        Timer1.Start() 'Timer starts functioning
+
         FormPersonality.Close()
         FormPersonality = New FormPersonality
         FormPersonality.Init()
@@ -751,7 +764,7 @@ Public Class Form1
     Private Sub KillAll()
 
         gExiting = True ' force msgbox is anything exists
-        Timer1.Stop()
+
         gStopping = True
         ProgressBar1.Value = 100
         ProgressBar1.Visible = True
@@ -773,24 +786,27 @@ Public Class Form1
 
 
         For Each X As Integer In RegionClass.RegionNumbers
-            If RegionClass.RegionEnabled(X) And OpensimIsRunning Then
-                PrintFast("Shutting down " + RegionClass.RegionName(X))
+            If OpensimIsRunning() And RegionClass.RegionEnabled(X) And Not RegionClass.ShuttingDown(X) Then
                 Dim pID = RegionClass.ProcessID(X)
                 Try
                     Dim p = Process.GetProcessById(pID)
                     ShowWindow(p.MainWindowHandle, SHOW_WINDOW.SW_RESTORE)
                 Catch
                 End Try
+
                 ConsoleCommand(RegionClass.ProcessID(X), "q{ENTER}")
+                ConsoleCommand(RegionClass.ProcessID(X), "q{ENTER}")
+
+                RegionClass.Booted(X) = False
+                RegionClass.ShuttingDown(X) = True
+                RegionClass.WarmingUp(X) = False
+                RegionClass.Timer(X) = REGION_TIMER.STOPPED
+                UpdateView = True ' make form refresh
+
+                Sleep(2000)
             End If
 
-            RegionClass.Booted(X) = False
-            RegionClass.ShuttingDown(X) = True
-            RegionClass.WarmingUp(X) = False
-
             UpdateView = True ' make form refresh
-
-            Sleep(2000)
         Next
 
         ' show robust last, try-catch in case it crashed.
@@ -814,15 +830,21 @@ Public Class Form1
                 For Each X In RegionClass.RegionNumbers
                     If RegionClass.ShuttingDown(X) = True Then
                         PrintFast("Checking " + RegionClass.RegionName(X))
-                        If CheckPort("127.0.0.1", RegionClass.GroupPort(X)) Then
+                        If CheckPort(MySetting.PrivateURL, RegionClass.GroupPort(X)) Then
                             CountisRunning = CountisRunning + 1
                         Else
-                            ' close down all regions in ther Instance
+                            ' close down all regions in the Instance
                             Dim gname = RegionClass.GroupName(X)
                             For Each Y In RegionClass.RegionListByGroupNum(gname)
                                 RegionClass.ShuttingDown(Y) = False
+                                RegionClass.Booted(Y) = False
+                                RegionClass.WarmingUp(Y) = False
+                                RegionClass.Timer(Y) = REGION_TIMER.STOPPED
+                                RegionClass.ProcessID(Y) = 0
+
                             Next
                         End If
+                        UpdateView = True ' make form refresh
                     End If
                     Application.DoEvents()
                 Next
@@ -859,13 +881,14 @@ Public Class Form1
         Next
         UpdateView = True ' make form refresh
         If gRobustProcID > 0 Then
-            ConsoleCommand(gRobustProcID, "{ENTER}q{ENTER}")
+            ConsoleCommand(gRobustProcID, "q{ENTER}")
+            ConsoleCommand(gRobustProcID, "q{ENTER}")
         End If
 
         ' cannot load OAR or IAR, either
         IslandToolStripMenuItem.Visible = False
         ClothingInventoryToolStripMenuItem.Visible = False
-
+        Timer1.Stop()
         OpensimIsRunning() = False
         Me.AllowDrop = False
 
@@ -1983,6 +2006,8 @@ Public Class Form1
 
             Sleep(2000)
             SetWindowText(IcecastProcess.MainWindowHandle, "Icecast")
+            Sleep(100)
+            SetWindowText(IcecastProcess.MainWindowHandle, "Icecast")
 
         Catch ex As Exception
             Print("Error: Icecast did not start: " + ex.Message)
@@ -2013,6 +2038,8 @@ Public Class Form1
             gRobustProcID = RobustProcess.Id
 
             Sleep(1000)
+            SetWindowText(RobustProcess.MainWindowHandle, "Robust")
+            Sleep(100)
             SetWindowText(RobustProcess.MainWindowHandle, "Robust")
 
         Catch ex As Exception
@@ -3049,8 +3076,6 @@ Public Class Form1
 
         ExitList.Reverse()
 
-
-
         For LOOPVAR = ExitList.Count - 1 To 0 Step -1
 
             Try
@@ -3074,7 +3099,7 @@ Public Class Form1
                     Dim yesno = MsgBox(RegionClass.RegionName(n) + " in DOS Box " + Groupname + " quit while booting up. Do you want to see the log file?", vbYesNo, "Error")
                     If (yesno = vbYes) Then
                         System.Diagnostics.Process.Start("notepad.exe", RegionClass.IniPath(n) + "Opensim.log")
-                        ShouldIRestart = 0
+                        ShouldIRestart = REGION_TIMER.START_COUNTING
                     End If
                 End If
 
@@ -3085,17 +3110,19 @@ Public Class Form1
                     Dim yesno = MsgBox(RegionClass.RegionName(n) + " in DOS Box " + Groupname + " quit unexpectedly. Do you want to see the log file?", vbYesNo, "Error")
                     If (yesno = vbYes) Then
                         System.Diagnostics.Process.Start("notepad.exe", RegionClass.IniPath(n) + "Opensim.log")
-                        ShouldIRestart = 0
+                        ShouldIRestart = REGION_TIMER.START_COUNTING
                     End If
                 End If
 
                 StopGroup(Groupname)
 
                 ' Auto restart if negative
-                If ShouldIRestart = -1 And OpensimIsRunning() Then
+                If ShouldIRestart = REGION_TIMER.RESTART_PENDING And OpensimIsRunning() Then
                     UpdateView = True ' make form refresh
                     PrintFast("Restart Queued for " + Groupname)
-                    RegionClass.Timer(n) = -2 ' signal a restart is needed
+                    RegionClass.Timer(n) = REGION_TIMER.RESTARTING ' signal a restart is needed
+                Else
+                    PrintFast(Groupname + " stopped")
                 End If
 
                 Try
@@ -3120,7 +3147,7 @@ Public Class Form1
             RegionClass.WarmingUp(X) = False
             RegionClass.ShuttingDown(X) = False
             RegionClass.ProcessID(X) = 0
-            RegionClass.Timer(X) = 0            ' no longer has running time
+            RegionClass.Timer(X) = REGION_TIMER.STOPPED          ' no longer has running time
         Next
 
         UpdateView = True ' make form refresh
@@ -3277,6 +3304,10 @@ Public Class Form1
         Dim isRegionRunning = CheckPort("127.0.0.1", RegionClass.GroupPort(n))
         If isRegionRunning Then
             Log("Region " + BootName + "failed to start as it is already running")
+            RegionClass.WarmingUp(n) = False
+            RegionClass.Booted(n) = True
+            RegionClass.ShuttingDown(n) = False
+            RegionClass.Timer(n) = REGION_TIMER.START_COUNTING
             Return False
         End If
 
@@ -3335,11 +3366,15 @@ Public Class Form1
                     RegionClass.Booted(num) = False
                     RegionClass.ShuttingDown(num) = False
                     RegionClass.ProcessID(num) = myProcess.Id
+                    RegionClass.Timer(num) = REGION_TIMER.START_COUNTING
                 Next
+
                 UpdateView = True ' make form refresh
                 Application.DoEvents()
                 Sleep(5000)
 
+                SetWindowText(myProcess.MainWindowHandle, RegionClass.GroupName(n))
+                Sleep(100)
                 SetWindowText(myProcess.MainWindowHandle, RegionClass.GroupName(n))
 
                 Return True
@@ -3577,20 +3612,24 @@ Public Class Form1
         RegionClass.CheckPost()
 
         ' 10 seconds check for a restart
+        ' RegionRestart requires this MOD 10 as it changed there to one minute
         If gDNSSTimer Mod 10 = 0 Then
             DoExitHandlerPoll() ' see if any regions have exited and set it up for Region Restart 
-            RebootPoll()
-            Application.DoEvents()
 
-            ' check for avatars and Regions to restart every minute
-            If MySetting.StandAlone() Then LoadRegionsStatsBar()   ' fill in menu once a minute
-            ScanAgents() ' update agent count
-            Application.DoEvents()
-            RegionRestart() ' check for reboot 
-            Application.DoEvents()
-            RegionListHTML()
+            If Not gExiting Then
+                RebootPoll()
+                ScanAgents() ' update agent count
+                Application.DoEvents()
+                RegionRestart() ' check for reboot 
+                Application.DoEvents()
+                RegionListHTML()
+            End If
         End If
 
+        If gDNSSTimer Mod 60 = 0 Then
+            ' check for avatars and Regions to restart every minute
+            If MySetting.StandAlone() Then LoadRegionsStatsBar()   ' fill in menu once a minute
+        End If
 
     End Sub
 
@@ -3635,8 +3674,8 @@ Public Class Form1
     Private Sub RebootPoll()
         For Each X As Integer In RegionClass.RegionNumbers
             ' if a restart is signalled, boot it up
-            If RegionClass.Timer(X) = -2 Then
-                RegionClass.Timer(X) = 0
+            If RegionClass.Timer(X) = REGION_TIMER.RESTARTING Then
+                RegionClass.Timer(X) = REGION_TIMER.START_COUNTING
                 Boot(RegionClass.RegionName(X))
             End If
         Next
@@ -3653,23 +3692,25 @@ Public Class Form1
                 Dim timervalue As Integer = RegionClass.Timer(X)
                 Dim Groupname = RegionClass.GroupName(X)
 
-                ' if its past time and no one is in the sim...
-                If timervalue >= MySetting.AutoRestartInterval() And MySetting.AutoRestartInterval() > 0 And Not AvatarsIsInGroup(Groupname) Then
-                    ' shut down the group
+                ' if it is past time and no one is in the sim...
+                If timervalue >= MySetting.AutoRestartInterval() * 6 And MySetting.AutoRestartInterval() > 0 And Not AvatarsIsInGroup(Groupname) Then
 
-                    ConsoleCommand(RegionClass.ProcessID(X), "q{ENTER}q{ENTER}")
+                    ' shut down the group when one minute has gone by, or multiple thereof.
+
+                    ConsoleCommand(RegionClass.ProcessID(X), "q{ENTER}")
+                    ConsoleCommand(RegionClass.ProcessID(X), "q{ENTER}")
                     Print("AutoRestarting " + Groupname)
                     For Each RegionNum As Integer In RegionClass.RegionListByGroupNum(Groupname)
                         RegionClass.Booted(RegionNum) = False
                         RegionClass.WarmingUp(RegionNum) = False
                         RegionClass.ShuttingDown(RegionNum) = True
-                        RegionClass.Timer(RegionNum) = -1 ' -1 means restart on exit
+                        RegionClass.Timer(RegionNum) = REGION_TIMER.RESTART_PENDING ' restart on exit
                     Next
                     UpdateView = True ' make form refresh
                 End If
 
                 ' count up to auto restart , when high enought, restart the sim
-                If RegionClass.Timer(X) > -1 Then
+                If RegionClass.Timer(X) >= 0 Then
                     RegionClass.Timer(X) = RegionClass.Timer(X) + 1
                 End If
 
