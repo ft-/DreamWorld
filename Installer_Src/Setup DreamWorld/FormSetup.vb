@@ -34,7 +34,7 @@ Public Class Form1
 
 #Region "Declarations"
 
-    Dim gMyVersion As String = "2.68"
+    Dim gMyVersion As String = "2.69"
     Dim gSimVersion As String = "0.9.1"
 
     ' edit this to compile and run in the correct folder root
@@ -3102,7 +3102,7 @@ Public Class Form1
                 Log(Groupname + " Exited with status " + ShouldIRestart.ToString)
                 UpdateView = True ' make form refresh
                 ' Maybe we crashed during warmup.  Skip prompt if auto restarting
-                If RegionClass.WarmingUp(n) = True And RegionClass.Timer(n) >= 0 Then
+                If RegionClass.WarmingUp(n) = True And RegionClass.Timer(n) > 0 Then
                     StopGroup(Groupname)
 
                     Dim yesno = MsgBox(RegionClass.RegionName(n) + " in DOS Box " + Groupname + " quit while booting up. Do you want to see the log file?", vbYesNo, "Error")
@@ -3629,18 +3629,15 @@ Public Class Form1
 
             If Not gExiting Then
                 RegionRestart() ' check for reboot 
-                
                 ScanAgents() ' update agent count
-                Application.DoEvents()
-                Application.DoEvents()
                 RegionListHTML()
             End If
         End If
 
-        If gDNSSTimer Mod 60 = 0 Then
-            ' check for avatars and Regions to restart every minute
-            If MySetting.StandAlone() Then LoadRegionsStatsBar()   ' fill in menu once a minute
-        End If
+        'If gDNSSTimer Mod 60 = 0 Then
+        ' check for avatars and Regions to restart every minute
+        'If MySetting.StandAlone() Then LoadRegionsStatsBar()   ' fill in menu once a minute
+        'End If
 
     End Sub
 
@@ -4283,8 +4280,31 @@ Public Class Form1
 
         BumpProgress10()
 
+        AddLog("Robust")
+        AddLog("Outworldz")
+        AddLog("UPnP")
+        AddLog("Icecast")
+        AddLog("MySQL")
+        AddLog("All Settings")
+        AddLog("-------")
+        For Each X In RegionClass.RegionNumbers
+            Dim Name = RegionClass.RegionName(X)
+            Dim LogMenu As New ToolStripMenuItem
+            AddLog(Name)
+        Next
 
+        BumpProgress10()
 
+    End Sub
+
+    Private Sub AddLog(name As String)
+        Dim LogMenu As New ToolStripMenuItem
+        LogMenu.Text = name
+        LogMenu.ToolTipText = "Click to view this log"
+        LogMenu.DisplayStyle = ToolStripItemDisplayStyle.Text
+        AddHandler LogMenu.Click, New EventHandler(AddressOf LogViewClick)
+        ViewLogsToolStripMenuItem.Visible = True
+        ViewLogsToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {LogMenu})
     End Sub
 
     Private Sub OarClick(sender As Object, e As EventArgs)
@@ -5756,6 +5776,30 @@ Public Class Form1
 
     End Sub
 
+    Private Sub LogViewClick(sender As Object, e As EventArgs)
+        Dim name = sender.text.ToString()
+        Dim path = MyFolder + "\Outworldzfiles\Opensim\bin\Regions\" + name + "\Opensim.log"
+        If name = "Robust" Then path = MyFolder + "\Outworldzfiles\Opensim\bin\Robust.log"
+        If name = "Outworldz" Then path = MyFolder + "\Outworldzfiles\Outworldz.log"
+        If name = "UPnP" Then path = MyFolder + "\Outworldzfiles\Upnp.log"
+        If name = "Icecast" Then path = MyFolder + "\Outworldzfiles\Icecast\log\error.log"
+        If name = "All Settings" Then path = MyFolder + "\Outworldzfiles\Settings.ini"
+        If name = "-------" Then Return
+
+        If name = "MySQL" Then
+            Dim MysqlLog As String = MyFolder + "\OutworldzFiles\mysql\data"
+            Dim files() As String
+            files = Directory.GetFiles(MysqlLog, "*.err", SearchOption.TopDirectoryOnly)
+            For Each FileName As String In files
+                System.Diagnostics.Process.Start("notepad.exe", FileName)
+            Next
+            Return
+        End If
+
+        System.Diagnostics.Process.Start("notepad.exe", path)
+
+
+    End Sub
 #End Region
 
 End Class

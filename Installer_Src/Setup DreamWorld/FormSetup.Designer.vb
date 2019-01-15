@@ -44,7 +44,6 @@ Partial Class Form1
         Me.ShowHyperGridAddressToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
         Me.HelpOnSettingsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ConsoleCOmmandsToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
         Me.HelpStartingUpToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
         Me.LoopBackToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
@@ -53,6 +52,7 @@ Partial Class Form1
         Me.TechnicalInfoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.TroubleshootingToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator()
+        Me.ConsoleCOmmandsToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
         Me.CommonConsoleCommandsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.UsersToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.AddUserToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -77,11 +77,12 @@ Partial Class Form1
         Me.ScriptsStartToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ScriptsSuspendToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ScriptsResumeToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ClearCachesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripSeparator7 = New System.Windows.Forms.ToolStripSeparator()
         Me.SimulatorStatsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ViewWebUI = New System.Windows.Forms.ToolStripMenuItem()
         Me.ViewIcecastWebPageToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator4 = New System.Windows.Forms.ToolStripSeparator()
-        Me.ClearCachesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.DiagnosticsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripMenuItem2 = New System.Windows.Forms.ToolStripMenuItem()
         Me.CHeckForUpdatesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -120,7 +121,8 @@ Partial Class Form1
         Me.LogButton = New System.Windows.Forms.Button()
         Me.IgnoreButton = New System.Windows.Forms.Button()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
-        Me.ToolStripSeparator7 = New System.Windows.Forms.ToolStripSeparator()
+        Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
+        Me.ViewLogsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuStrip1.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -195,7 +197,7 @@ Partial Class Form1
         Me.RegionsToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.server_gWSCLient
         Me.RegionsToolStripMenuItem.Name = "RegionsToolStripMenuItem"
         Me.RegionsToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.R), System.Windows.Forms.Keys)
-        Me.RegionsToolStripMenuItem.Size = New System.Drawing.Size(161, 26)
+        Me.RegionsToolStripMenuItem.Size = New System.Drawing.Size(157, 22)
         Me.RegionsToolStripMenuItem.Text = "Regions"
         '
         'ConsoleToolStripMenuItem1
@@ -203,7 +205,7 @@ Partial Class Form1
         Me.ConsoleToolStripMenuItem1.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuHide, Me.mnuShow})
         Me.ConsoleToolStripMenuItem1.Image = Global.Outworldz.My.Resources.Resources.window_add
         Me.ConsoleToolStripMenuItem1.Name = "ConsoleToolStripMenuItem1"
-        Me.ConsoleToolStripMenuItem1.Size = New System.Drawing.Size(161, 26)
+        Me.ConsoleToolStripMenuItem1.Size = New System.Drawing.Size(157, 22)
         Me.ConsoleToolStripMenuItem1.Text = "Consoles"
         Me.ConsoleToolStripMenuItem1.ToolTipText = "The Opensim Dos Box can be minimized automatically"
         '
@@ -212,13 +214,13 @@ Partial Class Form1
         Me.mnuHide.Checked = True
         Me.mnuHide.CheckState = System.Windows.Forms.CheckState.Checked
         Me.mnuHide.Name = "mnuHide"
-        Me.mnuHide.Size = New System.Drawing.Size(152, 22)
+        Me.mnuHide.Size = New System.Drawing.Size(103, 22)
         Me.mnuHide.Text = "Hide"
         '
         'mnuShow
         '
         Me.mnuShow.Name = "mnuShow"
-        Me.mnuShow.Size = New System.Drawing.Size(152, 22)
+        Me.mnuShow.Size = New System.Drawing.Size(103, 22)
         Me.mnuShow.Text = "Show"
         '
         'AdvancedSettingsToolStripMenuItem
@@ -226,13 +228,13 @@ Partial Class Form1
         Me.AdvancedSettingsToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.earth_network
         Me.AdvancedSettingsToolStripMenuItem.Name = "AdvancedSettingsToolStripMenuItem"
         Me.AdvancedSettingsToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.S), System.Windows.Forms.Keys)
-        Me.AdvancedSettingsToolStripMenuItem.Size = New System.Drawing.Size(161, 26)
+        Me.AdvancedSettingsToolStripMenuItem.Size = New System.Drawing.Size(157, 22)
         Me.AdvancedSettingsToolStripMenuItem.Text = "Settings"
         Me.AdvancedSettingsToolStripMenuItem.ToolTipText = "Deep stuff."
         '
         'HelpToolStripMenuItem
         '
-        Me.HelpToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ShowHyperGridAddressToolStripMenuItem, Me.ToolStripSeparator1, Me.HelpOnSettingsToolStripMenuItem, Me.HelpStartingUpToolStripMenuItem1, Me.LoopBackToolStripMenuItem, Me.ToolStripMenuItem1, Me.HelpOnIARSToolStripMenuItem, Me.HelpOnOARsToolStripMenuItem, Me.TechnicalInfoToolStripMenuItem, Me.TroubleshootingToolStripMenuItem, Me.ToolStripSeparator2, Me.ConsoleCOmmandsToolStripMenuItem1, Me.CommonConsoleCommandsToolStripMenuItem, Me.ClearCachesToolStripMenuItem, Me.ToolStripSeparator7, Me.SimulatorStatsToolStripMenuItem, Me.ViewWebUI, Me.ViewIcecastWebPageToolStripMenuItem, Me.ToolStripSeparator4, Me.DiagnosticsToolStripMenuItem, Me.ToolStripMenuItem2, Me.CHeckForUpdatesToolStripMenuItem, Me.ToolStripSeparator5, Me.mnuAbout})
+        Me.HelpToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ShowHyperGridAddressToolStripMenuItem, Me.ToolStripSeparator1, Me.HelpOnSettingsToolStripMenuItem, Me.HelpStartingUpToolStripMenuItem1, Me.LoopBackToolStripMenuItem, Me.ToolStripMenuItem1, Me.HelpOnIARSToolStripMenuItem, Me.HelpOnOARsToolStripMenuItem, Me.TechnicalInfoToolStripMenuItem, Me.TroubleshootingToolStripMenuItem, Me.ToolStripSeparator2, Me.ConsoleCOmmandsToolStripMenuItem1, Me.CommonConsoleCommandsToolStripMenuItem, Me.ViewLogsToolStripMenuItem, Me.ClearCachesToolStripMenuItem, Me.ToolStripSeparator7, Me.SimulatorStatsToolStripMenuItem, Me.ViewWebUI, Me.ViewIcecastWebPageToolStripMenuItem, Me.ToolStripSeparator4, Me.DiagnosticsToolStripMenuItem, Me.ToolStripMenuItem2, Me.CHeckForUpdatesToolStripMenuItem, Me.ToolStripSeparator5, Me.mnuAbout})
         Me.HelpToolStripMenuItem.Name = "HelpToolStripMenuItem"
         Me.HelpToolStripMenuItem.Size = New System.Drawing.Size(44, 20)
         Me.HelpToolStripMenuItem.Text = "Help"
@@ -258,15 +260,6 @@ Partial Class Form1
         Me.HelpOnSettingsToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Alt Or System.Windows.Forms.Keys.E), System.Windows.Forms.Keys)
         Me.HelpOnSettingsToolStripMenuItem.Size = New System.Drawing.Size(269, 26)
         Me.HelpOnSettingsToolStripMenuItem.Text = "Help on Settings"
-        '
-        'ConsoleCOmmandsToolStripMenuItem1
-        '
-        Me.ConsoleCOmmandsToolStripMenuItem1.Image = Global.Outworldz.My.Resources.Resources.text_marked
-        Me.ConsoleCOmmandsToolStripMenuItem1.Name = "ConsoleCOmmandsToolStripMenuItem1"
-        Me.ConsoleCOmmandsToolStripMenuItem1.ShortcutKeys = CType((System.Windows.Forms.Keys.Alt Or System.Windows.Forms.Keys.C), System.Windows.Forms.Keys)
-        Me.ConsoleCOmmandsToolStripMenuItem1.Size = New System.Drawing.Size(269, 26)
-        Me.ConsoleCOmmandsToolStripMenuItem1.Text = "Help on Console Commands"
-        Me.ConsoleCOmmandsToolStripMenuItem1.ToolTipText = "Wiki Page on Console COmmands"
         '
         'HelpStartingUpToolStripMenuItem1
         '
@@ -333,6 +326,15 @@ Partial Class Form1
         '
         Me.ToolStripSeparator2.Name = "ToolStripSeparator2"
         Me.ToolStripSeparator2.Size = New System.Drawing.Size(266, 6)
+        '
+        'ConsoleCOmmandsToolStripMenuItem1
+        '
+        Me.ConsoleCOmmandsToolStripMenuItem1.Image = Global.Outworldz.My.Resources.Resources.text_marked
+        Me.ConsoleCOmmandsToolStripMenuItem1.Name = "ConsoleCOmmandsToolStripMenuItem1"
+        Me.ConsoleCOmmandsToolStripMenuItem1.ShortcutKeys = CType((System.Windows.Forms.Keys.Alt Or System.Windows.Forms.Keys.C), System.Windows.Forms.Keys)
+        Me.ConsoleCOmmandsToolStripMenuItem1.Size = New System.Drawing.Size(269, 26)
+        Me.ConsoleCOmmandsToolStripMenuItem1.Text = "Help on Console Commands"
+        Me.ConsoleCOmmandsToolStripMenuItem1.ToolTipText = "Wiki Page on Console COmmands"
         '
         'CommonConsoleCommandsToolStripMenuItem
         '
@@ -485,6 +487,18 @@ Partial Class Form1
         Me.ScriptsResumeToolStripMenuItem.Size = New System.Drawing.Size(157, 22)
         Me.ScriptsResumeToolStripMenuItem.Text = "Scripts Resume"
         '
+        'ClearCachesToolStripMenuItem
+        '
+        Me.ClearCachesToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.delete2
+        Me.ClearCachesToolStripMenuItem.Name = "ClearCachesToolStripMenuItem"
+        Me.ClearCachesToolStripMenuItem.Size = New System.Drawing.Size(269, 26)
+        Me.ClearCachesToolStripMenuItem.Text = "Clear Server Caches"
+        '
+        'ToolStripSeparator7
+        '
+        Me.ToolStripSeparator7.Name = "ToolStripSeparator7"
+        Me.ToolStripSeparator7.Size = New System.Drawing.Size(266, 6)
+        '
         'SimulatorStatsToolStripMenuItem
         '
         Me.SimulatorStatsToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.window_environment
@@ -514,13 +528,6 @@ Partial Class Form1
         '
         Me.ToolStripSeparator4.Name = "ToolStripSeparator4"
         Me.ToolStripSeparator4.Size = New System.Drawing.Size(266, 6)
-        '
-        'ClearCachesToolStripMenuItem
-        '
-        Me.ClearCachesToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.delete2
-        Me.ClearCachesToolStripMenuItem.Name = "ClearCachesToolStripMenuItem"
-        Me.ClearCachesToolStripMenuItem.Size = New System.Drawing.Size(269, 26)
-        Me.ClearCachesToolStripMenuItem.Text = "Clear Server Caches"
         '
         'DiagnosticsToolStripMenuItem
         '
@@ -636,14 +643,14 @@ Partial Class Form1
         Me.BackupDatabaseToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.disk_blue
         Me.BackupDatabaseToolStripMenuItem.Name = "BackupDatabaseToolStripMenuItem"
         Me.BackupDatabaseToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.B), System.Windows.Forms.Keys)
-        Me.BackupDatabaseToolStripMenuItem.Size = New System.Drawing.Size(214, 26)
+        Me.BackupDatabaseToolStripMenuItem.Size = New System.Drawing.Size(210, 22)
         Me.BackupDatabaseToolStripMenuItem.Text = "Backup Databases"
         '
         'RestoreDatabaseToolStripMenuItem1
         '
         Me.RestoreDatabaseToolStripMenuItem1.Image = Global.Outworldz.My.Resources.Resources.cube_blue
         Me.RestoreDatabaseToolStripMenuItem1.Name = "RestoreDatabaseToolStripMenuItem1"
-        Me.RestoreDatabaseToolStripMenuItem1.Size = New System.Drawing.Size(214, 26)
+        Me.RestoreDatabaseToolStripMenuItem1.Size = New System.Drawing.Size(210, 22)
         Me.RestoreDatabaseToolStripMenuItem1.Text = "Restore Database"
         '
         'BackupCriticalFilesToolStripMenuItem
@@ -809,10 +816,12 @@ Partial Class Form1
         Me.PictureBox1.TabIndex = 27
         Me.PictureBox1.TabStop = False
         '
-        'ToolStripSeparator7
+        'ViewLogsToolStripMenuItem
         '
-        Me.ToolStripSeparator7.Name = "ToolStripSeparator7"
-        Me.ToolStripSeparator7.Size = New System.Drawing.Size(266, 6)
+        Me.ViewLogsToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.document_view
+        Me.ViewLogsToolStripMenuItem.Name = "ViewLogsToolStripMenuItem"
+        Me.ViewLogsToolStripMenuItem.Size = New System.Drawing.Size(269, 26)
+        Me.ViewLogsToolStripMenuItem.Text = "View Logs"
         '
         'Form1
         '
@@ -957,4 +966,6 @@ Partial Class Form1
     Friend WithEvents HelpStartingUpToolStripMenuItem1 As ToolStripMenuItem
     Friend WithEvents HelpOnSettingsToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ToolStripSeparator7 As ToolStripSeparator
+    Friend WithEvents ViewLogsToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents ToolTip1 As ToolTip
 End Class
