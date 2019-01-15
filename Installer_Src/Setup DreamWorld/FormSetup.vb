@@ -436,11 +436,11 @@ Public Class Form1
         End Try
 
         Try
-            My.Computer.FileSystem.DeleteFile(gPath + "\bin\OpenSim.Addons.AutoRestart.dll")
+            My.Computer.FileSystem.DeleteFile(gPath + "\bin\OpenSim.Additional.AutoRestart.dll")
         Catch
         End Try
         Try
-            My.Computer.FileSystem.DeleteFile(gPath + "\bin\OpenSim.Addons.AutoRestart.pdb")
+            My.Computer.FileSystem.DeleteFile(gPath + "\bin\OpenSim.Additional.AutoRestart.pdb")
         Catch
         End Try
 
