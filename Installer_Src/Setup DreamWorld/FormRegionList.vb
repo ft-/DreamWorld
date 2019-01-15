@@ -166,12 +166,12 @@ Public Class RegionList
         Dim Num As Integer = 0
 
         ' have to get maps by http port + region UUID, not region port + uuid
-        RegionClass.DebugGroup() ' show the list of groups and http ports.
+        ' RegionClass.DebugGroup() ' show the list of groups and http ports.
 
         For Each X In RegionClass.RegionNumbers
 
             Dim Letter As String = ""
-            If RegionClass.Timer(X) = -2 Or RegionClass.Timer(X) = -1 Then
+            If RegionClass.Timer(X) < 0 Then
                 Letter = "Restarting"
                 Num = 5
             ElseIf RegionClass.WarmingUp(X) Then
@@ -196,24 +196,24 @@ Public Class RegionList
             If TheView = 2 Then
 
                 If RegionClass.Booted(X) Then
-                        Dim img As String = "http://127.0.0.1:" + RegionClass.GroupPort(X).ToString + "/" + "index.php?method=regionImage" + RegionClass.UUID(X).Replace("-", "")
-                        Debug.Print(img)
+                    Dim img As String = "http://127.0.0.1:" + RegionClass.GroupPort(X).ToString + "/" + "index.php?method=regionImage" + RegionClass.UUID(X).Replace("-", "")
+                    Debug.Print(img)
 
-                        Dim bmp As Image = LoadImage(img)
-                        If bmp Is Nothing Then
-                            imageListLarge.Images.Add(My.Resources.ResourceManager.GetObject("OfflineMap"))
-                        Else
-                            imageListLarge.Images.Add(bmp)
-
-                        End If
-                    Else
+                    Dim bmp As Image = LoadImage(img)
+                    If bmp Is Nothing Then
                         imageListLarge.Images.Add(My.Resources.ResourceManager.GetObject("OfflineMap"))
-                    End If
-                    Num = X
-                End If
+                    Else
+                        imageListLarge.Images.Add(bmp)
 
-                ' Create  items and subitems for each item.
-                Dim item1 As New ListViewItem(RegionClass.RegionName(X), Num)
+                    End If
+                Else
+                    imageListLarge.Images.Add(My.Resources.ResourceManager.GetObject("OfflineMap"))
+                End If
+                Num = X
+            End If
+
+            ' Create  items and subitems for each item.
+            Dim item1 As New ListViewItem(RegionClass.RegionName(X), Num)
             ' Place a check mark next to the item.
             item1.Checked = RegionClass.RegionEnabled(X)
             item1.SubItems.Add(RegionClass.GroupName(X).ToString)
