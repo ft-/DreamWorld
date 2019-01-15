@@ -2006,10 +2006,16 @@ Public Class Form1
             IcecastProcess.Start()
             gIcecastProcID = IcecastProcess.Id
 
+
             Sleep(2000)
             SetWindowText(IcecastProcess.MainWindowHandle, "Icecast")
             Sleep(100)
             SetWindowText(IcecastProcess.MainWindowHandle, "Icecast")
+
+            Try
+                ShowWindow(Process.GetProcessById(gRobustProcID).MainWindowHandle, SHOW_WINDOW.SW_HIDE)
+            Catch
+            End Try
 
         Catch ex As Exception
             Print("Error: Icecast did not start: " + ex.Message)
