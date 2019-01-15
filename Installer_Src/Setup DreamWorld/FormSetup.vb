@@ -2013,7 +2013,7 @@ Public Class Form1
             SetWindowText(IcecastProcess.MainWindowHandle, "Icecast")
 
             Try
-                ShowWindow(Process.GetProcessById(gRobustProcID).MainWindowHandle, SHOW_WINDOW.SW_HIDE)
+                ShowWindow(IcecastProcess.MainWindowHandle, SHOW_WINDOW.SW_MINIMIZE)
             Catch
             End Try
 
