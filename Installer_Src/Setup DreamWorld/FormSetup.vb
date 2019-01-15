@@ -1960,6 +1960,8 @@ Public Class Form1
     Public Sub RobustCommand(command As String)
 
         Try
+            Dim p = Process.GetProcessById(gRobustProcID)
+            ShowWindow(p.MainWindowHandle, SHOW_WINDOW.SW_RESTORE)
             AppActivate(gRobustProcID)
             SendKeys.SendWait(command)
         Catch ex As Exception
