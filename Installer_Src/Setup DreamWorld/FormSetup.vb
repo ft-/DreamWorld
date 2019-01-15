@@ -923,19 +923,6 @@ Public Class Form1
         Process.Start(webAddress)
     End Sub
 
-
-    Private Sub Busy_Click(sender As System.Object, e As System.EventArgs)
-        ' Busy click shuts us down
-        Dim result As Integer = MessageBox.Show("Do you want to Abort?", "caption", MessageBoxButtons.YesNo)
-        If result = DialogResult.Yes Then
-            Print("Stopping")
-            Buttons(StartButton)
-            Print("Stopped")
-            OpensimIsRunning() = False
-            ProgressBar1.Visible = False
-        End If
-    End Sub
-
     Public Sub Buttons(button As System.Object)
         ' Turns off all 4 stacked buttons, then enables one of them
         BusyButton.Visible = False
@@ -1909,9 +1896,9 @@ Public Class Form1
 
         Print("Stopping")
         Application.DoEvents()
-        KillAll()
+
         Buttons(StartButton)
-        Print("Opensim Is Stopped")
+        Print("Opensim Is Aborted")
         ProgressBar1.Value = 0
         ProgressBar1.Visible = False
         gStopping = False
@@ -2005,11 +1992,10 @@ Public Class Form1
             'IcecastProcess.StartInfo.Arguments = "-c .\icecast_run.xml"
             IcecastProcess.Start()
             gIcecastProcID = IcecastProcess.Id
-
-
+            SetWindowText(IcecastProcess.MainWindowHandle, "Icecast")
             Sleep(2000)
             SetWindowText(IcecastProcess.MainWindowHandle, "Icecast")
-            Sleep(100)
+            Sleep(1000)
             SetWindowText(IcecastProcess.MainWindowHandle, "Icecast")
 
             Try
@@ -4289,7 +4275,6 @@ Public Class Form1
         AddLog("-------")
         For Each X In RegionClass.RegionNumbers
             Dim Name = RegionClass.RegionName(X)
-            Dim LogMenu As New ToolStripMenuItem
             AddLog(Name)
         Next
 
