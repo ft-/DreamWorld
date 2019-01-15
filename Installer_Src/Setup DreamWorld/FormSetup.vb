@@ -4454,7 +4454,7 @@ Public Class Form1
 
 #Region "Diagnostics"
 
-    Private Function CheckPort(ServerAddress As String, Port As Integer) As Boolean
+    Public Function CheckPort(ServerAddress As String, Port As Integer) As Boolean
 
         Dim ClientSocket As New TcpClient
 

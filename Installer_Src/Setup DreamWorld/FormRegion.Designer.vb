@@ -92,6 +92,7 @@ Partial Class FormRegion
         Me.PhysicsubODE = New System.Windows.Forms.RadioButton()
         Me.PhysicsBullet = New System.Windows.Forms.RadioButton()
         Me.PhysicsODE = New System.Windows.Forms.RadioButton()
+        Me.Button2 = New System.Windows.Forms.Button()
         CType(Me.MapHelp, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.GodHelp, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Advanced.SuspendLayout()
@@ -267,8 +268,8 @@ Partial Class FormRegion
         Me.MaxPrims.Size = New System.Drawing.Size(40, 20)
         Me.MaxPrims.TabIndex = 19
         Me.ToolTip1.SetToolTip(Me.MaxPrims, "Not normally enforced by Opensim.  Viewer will not show more than 45K. Setting th" &
-        "is here and enabling this in settings will enforce the limit and may ret" &
-        "urn prims!")
+        "is here and enabling this in settings will enforce the limit and may return prim" &
+        "s!")
         '
         'NonphysicalPrimMax
         '
@@ -479,7 +480,7 @@ Partial Class FormRegion
         '
         'Button1
         '
-        Me.Button1.Location = New System.Drawing.Point(34, 206)
+        Me.Button1.Location = New System.Drawing.Point(23, 206)
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(59, 23)
         Me.Button1.TabIndex = 10
@@ -488,9 +489,9 @@ Partial Class FormRegion
         '
         'DeleteButton
         '
-        Me.DeleteButton.Location = New System.Drawing.Point(161, 208)
+        Me.DeleteButton.Location = New System.Drawing.Point(169, 207)
         Me.DeleteButton.Name = "DeleteButton"
-        Me.DeleteButton.Size = New System.Drawing.Size(75, 23)
+        Me.DeleteButton.Size = New System.Drawing.Size(58, 23)
         Me.DeleteButton.TabIndex = 11
         Me.DeleteButton.Text = "Delete"
         Me.DeleteButton.UseVisualStyleBackColor = True
@@ -823,12 +824,22 @@ Partial Class FormRegion
         Me.PhysicsODE.Text = "Open Dynamics Engine"
         Me.PhysicsODE.UseVisualStyleBackColor = True
         '
+        'Button2
+        '
+        Me.Button2.Location = New System.Drawing.Point(88, 207)
+        Me.Button2.Name = "Button2"
+        Me.Button2.Size = New System.Drawing.Size(75, 23)
+        Me.Button2.TabIndex = 1880
+        Me.Button2.Text = "Deregister"
+        Me.Button2.UseVisualStyleBackColor = True
+        '
         'FormRegion
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.BackColor = System.Drawing.SystemColors.Control
         Me.ClientSize = New System.Drawing.Size(700, 516)
+        Me.Controls.Add(Me.Button2)
         Me.Controls.Add(Me.GroupBox6)
         Me.Controls.Add(Me.MapHelp)
         Me.Controls.Add(Me.EnabledCheckBox)
@@ -934,4 +945,5 @@ Partial Class FormRegion
     Friend WithEvents BirdsCheckBox As CheckBox
     Friend WithEvents TidesCheckbox As CheckBox
     Friend WithEvents TPCheckBox1 As CheckBox
+    Friend WithEvents Button2 As Button
 End Class
