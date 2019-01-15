@@ -2137,7 +2137,7 @@ Public Class Form1
 
         If gExiting Then Return
 
-        OpensimIsRunning = False
+        OpensimIsRunning() = False
 
         Dim yesno = MsgBox("Mysql exited. Do you want to see the error log file?", vbYesNo, "Error")
         If (yesno = vbYes) Then
@@ -3119,7 +3119,7 @@ Public Class Form1
                 StopGroup(Groupname)
 
                 ' Auto restart if negative
-                If ShouldIRestart = REGION_TIMER.RESTART_PENDING And OpensimIsRunning() Then
+                If ShouldIRestart = REGION_TIMER.RESTART_PENDING And OpensimIsRunning() And Not gExiting Then
                     UpdateView = True ' make form refresh
                     PrintFast("Restart Queued for " + Groupname)
                     RegionClass.Timer(n) = REGION_TIMER.RESTARTING ' signal a restart is needed
@@ -3282,6 +3282,7 @@ Public Class Form1
         If gStopping Then Return True
 
         OpensimIsRunning() = True
+        gExiting = False
         Buttons(StopButton)
 
         Diagnostics.Debug.Print("Region:Starting Region " + BootName)
@@ -3616,7 +3617,8 @@ Public Class Form1
         ' 10 seconds check for a restart
         ' RegionRestart requires this MOD 10 as it changed there to one minute
         If gDNSSTimer Mod 10 = 0 Then
-            DoExitHandlerPoll() ' see if any regions have exited and set it up for Region Restart 
+
+            DoExitHandlerPoll() ' see if any regions have exited and set it up for Region Restart
 
             If Not gExiting Then
                 RebootPoll()
@@ -3689,7 +3691,7 @@ Public Class Form1
 
         For Each X As Integer In RegionClass.RegionNumbers
 
-            If OpensimIsRunning() And RegionClass.RegionEnabled(X) Then
+            If OpensimIsRunning() And Not gExiting And RegionClass.RegionEnabled(X) Then
 
                 Dim timervalue As Integer = RegionClass.Timer(X)
                 Dim Groupname = RegionClass.GroupName(X)
@@ -5054,7 +5056,7 @@ Public Class Form1
 
         ' wait for MySql to come up
         Dim MysqlOk As Boolean
-        While Not MysqlOk And OpensimIsRunning
+        While Not MysqlOk And OpensimIsRunning And Not gExiting
 
             BumpProgress(1)
             Application.DoEvents()
