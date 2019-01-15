@@ -1016,5 +1016,34 @@ Public Class FormRegion
         Form1.Help("Region")
     End Sub
 
+    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
+
+        Dim response As MsgBoxResult = MsgBox("This will allow another region to be placed at this spot. Continue?", vbYesNo)
+        If response = vbYes Then
+
+            Form1.StartMySQL()
+            Form1.Start_Robust()
+
+            Dim X = Form1.RegionClass.FindRegionByName(RegionName.Text)
+            If X > -1 Then
+
+                If Form1.CheckPort(Form1.MySetting.PrivateURL, RegionClass.GroupPort(X)) Then
+                    Form1.ConsoleCommand(RegionClass.ProcessID(X), "q{enter}")
+                End If
+                Dim loopctr = 60 ' wait a minute
+                While Form1.CheckPort(Form1.MySetting.PrivateURL, RegionClass.GroupPort(X)) And loopctr > 0
+                    Form1.Sleep(1000)
+                    loopctr = loopctr - 1
+                End While
+
+                If loopctr > 0 Then
+                    Form1.RobustCommand("deregister region id " + UUID.Text + "{enter}")
+                    Form1.Print("Region deregistered")
+                End If
+            End If
+
+        End If
+    End Sub
+
 #End Region
 End Class

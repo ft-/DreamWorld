@@ -34,7 +34,7 @@ Public Class Form1
 
 #Region "Declarations"
 
-    Dim gMyVersion As String = "2.67"
+    Dim gMyVersion As String = "2.69"
     Dim gSimVersion As String = "0.9.1"
 
     ' edit this to compile and run in the correct folder root
@@ -436,11 +436,11 @@ Public Class Form1
         End Try
 
         Try
-            My.Computer.FileSystem.DeleteFile(gPath + "\bin\OpenSim.Addons.AutoRestart.dll")
+            My.Computer.FileSystem.DeleteFile(gPath + "\bin\OpenSim.Additional.AutoRestart.dll")
         Catch
         End Try
         Try
-            My.Computer.FileSystem.DeleteFile(gPath + "\bin\OpenSim.Addons.AutoRestart.pdb")
+            My.Computer.FileSystem.DeleteFile(gPath + "\bin\OpenSim.Additional.AutoRestart.pdb")
         Catch
         End Try
 
@@ -921,19 +921,6 @@ Public Class Form1
     Private Sub ConsoleCOmmandsToolStripMenuItem1_Click(sender As Object, e As EventArgs) Handles ConsoleCOmmandsToolStripMenuItem1.Click
         Dim webAddress As String = "http://opensimulator.org/wiki/Server_Commands"
         Process.Start(webAddress)
-    End Sub
-
-
-    Private Sub Busy_Click(sender As System.Object, e As System.EventArgs)
-        ' Busy click shuts us down
-        Dim result As Integer = MessageBox.Show("Do you want to Abort?", "caption", MessageBoxButtons.YesNo)
-        If result = DialogResult.Yes Then
-            Print("Stopping")
-            Buttons(StartButton)
-            Print("Stopped")
-            OpensimIsRunning() = False
-            ProgressBar1.Visible = False
-        End If
     End Sub
 
     Public Sub Buttons(button As System.Object)
@@ -1909,9 +1896,9 @@ Public Class Form1
 
         Print("Stopping")
         Application.DoEvents()
-        KillAll()
+
         Buttons(StartButton)
-        Print("Opensim Is Stopped")
+        Print("Opensim Is Aborted")
         ProgressBar1.Value = 0
         ProgressBar1.Visible = False
         gStopping = False
@@ -1960,6 +1947,8 @@ Public Class Form1
     Public Sub RobustCommand(command As String)
 
         Try
+            Dim p = Process.GetProcessById(gRobustProcID)
+            ShowWindow(p.MainWindowHandle, SHOW_WINDOW.SW_RESTORE)
             AppActivate(gRobustProcID)
             SendKeys.SendWait(command)
         Catch ex As Exception
@@ -2003,11 +1992,16 @@ Public Class Form1
             'IcecastProcess.StartInfo.Arguments = "-c .\icecast_run.xml"
             IcecastProcess.Start()
             gIcecastProcID = IcecastProcess.Id
-
+            SetWindowText(IcecastProcess.MainWindowHandle, "Icecast")
             Sleep(2000)
             SetWindowText(IcecastProcess.MainWindowHandle, "Icecast")
-            Sleep(100)
+            Sleep(1000)
             SetWindowText(IcecastProcess.MainWindowHandle, "Icecast")
+
+            Try
+                ShowWindow(IcecastProcess.MainWindowHandle, SHOW_WINDOW.SW_MINIMIZE)
+            Catch
+            End Try
 
         Catch ex As Exception
             Print("Error: Icecast did not start: " + ex.Message)
@@ -2135,7 +2129,7 @@ Public Class Form1
 
         If gExiting Then Return
 
-        OpensimIsRunning = False
+        OpensimIsRunning() = False
 
         Dim yesno = MsgBox("Mysql exited. Do you want to see the error log file?", vbYesNo, "Error")
         If (yesno = vbYes) Then
@@ -3085,6 +3079,7 @@ Public Class Form1
 
                 If n < 0 Then
                     ExitList.RemoveAt(LOOPVAR)
+                    Log("Something Exited with a index of " + n.ToString)
                     Continue For
                 End If
 
@@ -3093,7 +3088,7 @@ Public Class Form1
                 Log(Groupname + " Exited with status " + ShouldIRestart.ToString)
                 UpdateView = True ' make form refresh
                 ' Maybe we crashed during warmup.  Skip prompt if auto restarting
-                If RegionClass.WarmingUp(n) = True And RegionClass.Timer(n) >= 0 Then
+                If RegionClass.WarmingUp(n) = True And RegionClass.Timer(n) > 0 Then
                     StopGroup(Groupname)
 
                     Dim yesno = MsgBox(RegionClass.RegionName(n) + " in DOS Box " + Groupname + " quit while booting up. Do you want to see the log file?", vbYesNo, "Error")
@@ -3117,7 +3112,7 @@ Public Class Form1
                 StopGroup(Groupname)
 
                 ' Auto restart if negative
-                If ShouldIRestart = REGION_TIMER.RESTART_PENDING And OpensimIsRunning() Then
+                If ShouldIRestart = REGION_TIMER.RESTART_PENDING And OpensimIsRunning() And Not gExiting Then
                     UpdateView = True ' make form refresh
                     PrintFast("Restart Queued for " + Groupname)
                     RegionClass.Timer(n) = REGION_TIMER.RESTARTING ' signal a restart is needed
@@ -3280,6 +3275,7 @@ Public Class Form1
         If gStopping Then Return True
 
         OpensimIsRunning() = True
+        gExiting = False
         Buttons(StopButton)
 
         Diagnostics.Debug.Print("Region:Starting Region " + BootName)
@@ -3609,27 +3605,25 @@ Public Class Form1
             RegisterDNS()
         End If
 
-        RegionClass.CheckPost()
+        if Not gExiting Then RegionClass.CheckPost()
+        
+        DoExitHandlerPoll() ' see if any regions have exited and set it up for Region Restart
 
         ' 10 seconds check for a restart
         ' RegionRestart requires this MOD 10 as it changed there to one minute
         If gDNSSTimer Mod 10 = 0 Then
-            DoExitHandlerPoll() ' see if any regions have exited and set it up for Region Restart 
 
             If Not gExiting Then
-                RebootPoll()
-                ScanAgents() ' update agent count
-                Application.DoEvents()
                 RegionRestart() ' check for reboot 
-                Application.DoEvents()
+                ScanAgents() ' update agent count
                 RegionListHTML()
             End If
         End If
 
-        If gDNSSTimer Mod 60 = 0 Then
-            ' check for avatars and Regions to restart every minute
-            If MySetting.StandAlone() Then LoadRegionsStatsBar()   ' fill in menu once a minute
-        End If
+        'If gDNSSTimer Mod 60 = 0 Then
+        ' check for avatars and Regions to restart every minute
+        'If MySetting.StandAlone() Then LoadRegionsStatsBar()   ' fill in menu once a minute
+        'End If
 
     End Sub
 
@@ -3671,15 +3665,7 @@ Public Class Form1
 
     End Sub
 
-    Private Sub RebootPoll()
-        For Each X As Integer In RegionClass.RegionNumbers
-            ' if a restart is signalled, boot it up
-            If RegionClass.Timer(X) = REGION_TIMER.RESTARTING Then
-                RegionClass.Timer(X) = REGION_TIMER.START_COUNTING
-                Boot(RegionClass.RegionName(X))
-            End If
-        Next
-    End Sub
+
 
     Private Sub RegionRestart()
         ' runs once per minute
@@ -3687,13 +3673,14 @@ Public Class Form1
 
         For Each X As Integer In RegionClass.RegionNumbers
 
-            If OpensimIsRunning() And RegionClass.RegionEnabled(X) Then
+            If OpensimIsRunning() And Not gExiting And RegionClass.RegionEnabled(X) Then
 
                 Dim timervalue As Integer = RegionClass.Timer(X)
                 Dim Groupname = RegionClass.GroupName(X)
 
                 ' if it is past time and no one is in the sim...
-                If timervalue >= MySetting.AutoRestartInterval() * 6 And MySetting.AutoRestartInterval() > 0 And Not AvatarsIsInGroup(Groupname) Then
+
+                If timervalue / 6 >= MySetting.AutoRestartInterval() And MySetting.AutoRestartInterval() > 0 And Not AvatarsIsInGroup(Groupname) Then
 
                     ' shut down the group when one minute has gone by, or multiple thereof.
 
@@ -3716,6 +3703,13 @@ Public Class Form1
 
             End If
 
+        Next
+
+        For Each X As Integer In RegionClass.RegionNumbers
+            ' if a restart is signalled, boot it up
+            If RegionClass.Timer(X) = REGION_TIMER.RESTARTING Then
+                Boot(RegionClass.RegionName(X))
+            End If
         Next
 
     End Sub
@@ -4272,8 +4266,30 @@ Public Class Form1
 
         BumpProgress10()
 
+        AddLog("Robust")
+        AddLog("Outworldz")
+        AddLog("UPnP")
+        AddLog("Icecast")
+        AddLog("MySQL")
+        AddLog("All Settings")
+        AddLog("-------")
+        For Each X In RegionClass.RegionNumbers
+            Dim Name = RegionClass.RegionName(X)
+            AddLog(Name)
+        Next
 
+        BumpProgress10()
 
+    End Sub
+
+    Private Sub AddLog(name As String)
+        Dim LogMenu As New ToolStripMenuItem
+        LogMenu.Text = name
+        LogMenu.ToolTipText = "Click to view this log"
+        LogMenu.DisplayStyle = ToolStripItemDisplayStyle.Text
+        AddHandler LogMenu.Click, New EventHandler(AddressOf LogViewClick)
+        ViewLogsToolStripMenuItem.Visible = True
+        ViewLogsToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {LogMenu})
     End Sub
 
     Private Sub OarClick(sender As Object, e As EventArgs)
@@ -4450,7 +4466,7 @@ Public Class Form1
 
 #Region "Diagnostics"
 
-    Private Function CheckPort(ServerAddress As String, Port As Integer) As Boolean
+    Public Function CheckPort(ServerAddress As String, Port As Integer) As Boolean
 
         Dim ClientSocket As New TcpClient
 
@@ -4816,13 +4832,14 @@ Public Class Form1
         If MySetting.StandAlone() Then Grid = "Standalone"
 
         Dim data As String = "&MachineID=" + MySetting.MachineID() _
-            + "&V=" + gMyVersion _
-            + "&OV=" + gSimVersion _
-            + "&uPnp=" + UPnp _
-            + "&Loop=" + Loopb _
-            + "&Type=" + Grid _
-            + "&Ver=" + gMyVersion _
-            + "&r=" + Random()
+            + "&V=" + gMyVersion.ToString _
+            + "&OV=" + gSimVersion.ToString _
+            + "&uPnp=" + UPnp.ToString _
+            + "&Loop=" + Loopb.ToString _
+            + "&Type=" + Grid.ToString _
+            + "&Ver=" + gMyVersion.ToString _
+            + "&isPublic=" + MySetting.GDPR().ToString _
+            + "&r = " + Random()
         Return data
 
     End Function
@@ -5052,7 +5069,7 @@ Public Class Form1
 
         ' wait for MySql to come up
         Dim MysqlOk As Boolean
-        While Not MysqlOk And OpensimIsRunning
+        While Not MysqlOk And OpensimIsRunning And Not gExiting
 
             BumpProgress(1)
             Application.DoEvents()
@@ -5116,7 +5133,7 @@ Public Class Form1
         End Try
         Try
             Using outputFile As New StreamWriter(testProgram, True)
-                outputFile.WriteLine("@REM Program to Stop Mysql" + vbCrLf +
+                outputFile.WriteLine("@REM Program to stop Mysql" + vbCrLf +
                 "mysqladmin.exe -u root --port " + MySetting.MySqlPort + " shutdown" + vbCrLf + "@pause" + vbCrLf)
             End Using
         Catch ex As Exception
@@ -5744,6 +5761,30 @@ Public Class Form1
 
     End Sub
 
+    Private Sub LogViewClick(sender As Object, e As EventArgs)
+        Dim name = sender.text.ToString()
+        Dim path = MyFolder + "\Outworldzfiles\Opensim\bin\Regions\" + name + "\Opensim.log"
+        If name = "Robust" Then path = MyFolder + "\Outworldzfiles\Opensim\bin\Robust.log"
+        If name = "Outworldz" Then path = MyFolder + "\Outworldzfiles\Outworldz.log"
+        If name = "UPnP" Then path = MyFolder + "\Outworldzfiles\Upnp.log"
+        If name = "Icecast" Then path = MyFolder + "\Outworldzfiles\Icecast\log\error.log"
+        If name = "All Settings" Then path = MyFolder + "\Outworldzfiles\Settings.ini"
+        If name = "-------" Then Return
+
+        If name = "MySQL" Then
+            Dim MysqlLog As String = MyFolder + "\OutworldzFiles\mysql\data"
+            Dim files() As String
+            files = Directory.GetFiles(MysqlLog, "*.err", SearchOption.TopDirectoryOnly)
+            For Each FileName As String In files
+                System.Diagnostics.Process.Start("notepad.exe", FileName)
+            Next
+            Return
+        End If
+
+        System.Diagnostics.Process.Start("notepad.exe", path)
+
+
+    End Sub
 #End Region
 
 End Class

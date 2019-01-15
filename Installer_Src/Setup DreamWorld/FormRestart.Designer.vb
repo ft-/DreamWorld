@@ -22,20 +22,24 @@ Partial Class FormRestart
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FormRestart))
         Me.AutoStart = New System.Windows.Forms.GroupBox()
+        Me.ARTimerBox = New System.Windows.Forms.CheckBox()
         Me.Label25 = New System.Windows.Forms.Label()
         Me.AutoRestartBox = New System.Windows.Forms.TextBox()
         Me.RunOnBoot = New System.Windows.Forms.PictureBox()
         Me.Label13 = New System.Windows.Forms.Label()
         Me.BootStart = New System.Windows.Forms.CheckBox()
         Me.AutoStartCheckbox = New System.Windows.Forms.CheckBox()
+        Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.AutoStart.SuspendLayout()
         CType(Me.RunOnBoot, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'AutoStart
         '
+        Me.AutoStart.Controls.Add(Me.ARTimerBox)
         Me.AutoStart.Controls.Add(Me.Label25)
         Me.AutoStart.Controls.Add(Me.AutoRestartBox)
         Me.AutoStart.Controls.Add(Me.RunOnBoot)
@@ -49,26 +53,39 @@ Partial Class FormRestart
         Me.AutoStart.TabStop = False
         Me.AutoStart.Text = "Auto Restart"
         '
+        'ARTimerBox
+        '
+        Me.ARTimerBox.AutoSize = True
+        Me.ARTimerBox.Location = New System.Drawing.Point(25, 38)
+        Me.ARTimerBox.Name = "ARTimerBox"
+        Me.ARTimerBox.Size = New System.Drawing.Size(65, 17)
+        Me.ARTimerBox.TabIndex = 1863
+        Me.ARTimerBox.Text = "Enabled"
+        Me.ToolTip1.SetToolTip(Me.ARTimerBox, "If enabled the Regions will all auto restart after Inteveral many minutes running" &
+        ".")
+        Me.ARTimerBox.UseVisualStyleBackColor = True
+        '
         'Label25
         '
         Me.Label25.AutoSize = True
-        Me.Label25.Location = New System.Drawing.Point(22, 40)
+        Me.Label25.Location = New System.Drawing.Point(22, 58)
         Me.Label25.Name = "Label25"
-        Me.Label25.Size = New System.Drawing.Size(104, 13)
+        Me.Label25.Size = New System.Drawing.Size(155, 13)
         Me.Label25.TabIndex = 1862
-        Me.Label25.Text = "Auto Restart Interval"
+        Me.Label25.Text = "Auto Restart Interval in Minutes"
         '
         'AutoRestartBox
         '
-        Me.AutoRestartBox.Location = New System.Drawing.Point(25, 57)
+        Me.AutoRestartBox.Location = New System.Drawing.Point(25, 74)
         Me.AutoRestartBox.Name = "AutoRestartBox"
         Me.AutoRestartBox.Size = New System.Drawing.Size(57, 20)
         Me.AutoRestartBox.TabIndex = 47
+        Me.ToolTip1.SetToolTip(Me.AutoRestartBox, "0 = off, expressed in minutes until auto restart occurs.")
         '
         'RunOnBoot
         '
         Me.RunOnBoot.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.RunOnBoot.Location = New System.Drawing.Point(132, 19)
+        Me.RunOnBoot.Location = New System.Drawing.Point(96, 19)
         Me.RunOnBoot.Name = "RunOnBoot"
         Me.RunOnBoot.Size = New System.Drawing.Size(30, 34)
         Me.RunOnBoot.TabIndex = 1859
@@ -85,7 +102,7 @@ Partial Class FormRestart
         'BootStart
         '
         Me.BootStart.AutoSize = True
-        Me.BootStart.Location = New System.Drawing.Point(25, 135)
+        Me.BootStart.Location = New System.Drawing.Point(25, 150)
         Me.BootStart.Name = "BootStart"
         Me.BootStart.Size = New System.Drawing.Size(172, 17)
         Me.BootStart.TabIndex = 46
@@ -96,11 +113,13 @@ Partial Class FormRestart
         'AutoStartCheckbox
         '
         Me.AutoStartCheckbox.AutoSize = True
-        Me.AutoStartCheckbox.Location = New System.Drawing.Point(25, 112)
+        Me.AutoStartCheckbox.Location = New System.Drawing.Point(25, 127)
         Me.AutoStartCheckbox.Name = "AutoStartCheckbox"
         Me.AutoStartCheckbox.Size = New System.Drawing.Size(133, 17)
         Me.AutoStartCheckbox.TabIndex = 45
         Me.AutoStartCheckbox.Text = "Enable One Click Start"
+        Me.ToolTip1.SetToolTip(Me.AutoStartCheckbox, "if enabled, there is no need to click the Start button. It will start when launch" &
+        "ed.")
         Me.AutoStartCheckbox.UseVisualStyleBackColor = True
         '
         'FormRestart
@@ -127,4 +146,6 @@ Partial Class FormRestart
     Friend WithEvents Label13 As Label
     Friend WithEvents BootStart As CheckBox
     Friend WithEvents AutoStartCheckbox As CheckBox
+    Friend WithEvents ARTimerBox As CheckBox
+    Friend WithEvents ToolTip1 As ToolTip
 End Class

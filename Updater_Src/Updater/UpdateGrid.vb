@@ -16,9 +16,9 @@ Public Class UpdateGrid
     Dim debugfolder = "f:/tmp" ''-debug' forces this to use the a different folder for testing 
 
     Dim Cancelled As Boolean = False
-    Dim Version As String = "3.3"
-    Dim Type As String = "DreamGrid-Update.zip"  ' possible server-side choices are "Update" and "Installer"
-    'Dim Type As String = "DreamGrid.zip"  ' possible server-side choices are "Update" and "Installer"
+    Dim Version As String = "4"
+    'Dim Type As String = "DreamGrid-Update.zip"  ' possible server-side choices are "Update" and "Installer"
+    Dim Type As String = "DreamGrid.zip"  ' possible server-side choices are "Update" and "Installer"
 
     Dim gCurDir = Nothing   ' Holds the current folder that we are running in
     Dim gFileName As String = Nothing
@@ -38,7 +38,7 @@ Public Class UpdateGrid
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
-        Me.Text = "Outworldz " + Type + " V " + Version
+        Me.Text = "Outworldz " + Type + " V" + Version
         MyFolder = My.Application.Info.DirectoryPath
         ' I would like to buy an argument
         Dim arguments As String() = Environment.GetCommandLineArgs()
@@ -251,17 +251,9 @@ Public Class UpdateGrid
         End Try
         Log("Extract Complete")
 
-        Invoke(safeprint, "Complete. Waking up the Dreamgrid...")
-        Dim newDream As New Process()
-        Try
-            newDream.StartInfo.UseShellExecute = False
-            newDream.StartInfo.FileName = "Start.exe"
-            newDream.Start()
-        Catch ex As Exception
-            Invoke(safeprint, "How odd, there seems to be nothing to run!")
-            Return
-        End Try
-        Thread.Sleep(2000)
+        Invoke(safeprint, "Completed!")
+
+        Thread.Sleep(5000)
         Log("Exit Done")
         End
 
