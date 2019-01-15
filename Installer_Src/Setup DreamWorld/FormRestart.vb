@@ -119,6 +119,26 @@ Public Class FormRestart
 
     End Sub
 
+    Private Sub ARTimerBox_CheckedChanged(sender As Object, e As EventArgs) Handles ARTimerBox.CheckedChanged
+
+        If ARTimerBox.Checked Then
+            Dim BTime As Int16 = CType(Form1.MySetting.AutobackupInterval, Int16)
+            If Form1.MySetting.AutoBackup And Form1.MySetting.AutoRestartInterval > 0 And Form1.MySetting.AutoRestartInterval < BTime Then
+                Form1.MySetting.AutoRestartInterval = BTime + 30
+                AutoRestartBox.Text = (BTime + 30).ToString
+                MsgBox("Upping AutoRestart Time to " + BTime.ToString + " + 30 Minutes for Autobackup to complete.", vbInformation)
+            Else
+                Form1.MySetting.AutoRestartInterval = 1440
+                AutoRestartBox.Text = "1440"
+            End If
+        Else
+            Form1.MySetting.AutoRestartInterval = 0
+            AutoRestartBox.Text = "0"
+        End If
+        Form1.MySetting.SaveSettings()
+
+    End Sub
+
 
 
 

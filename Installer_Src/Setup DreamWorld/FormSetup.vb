@@ -3696,7 +3696,8 @@ Public Class Form1
                 Dim Groupname = RegionClass.GroupName(X)
 
                 ' if it is past time and no one is in the sim...
-                If timervalue >= MySetting.AutoRestartInterval() * 6 And MySetting.AutoRestartInterval() > 0 And Not AvatarsIsInGroup(Groupname) Then
+
+                If timervalue / 6 >= MySetting.AutoRestartInterval() And MySetting.AutoRestartInterval() > 0 And Not AvatarsIsInGroup(Groupname) Then
 
                     ' shut down the group when one minute has gone by, or multiple thereof.
 
