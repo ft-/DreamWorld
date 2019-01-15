@@ -34,7 +34,7 @@ Public Class Form1
 
 #Region "Declarations"
 
-    Dim gMyVersion As String = "2.67"
+    Dim gMyVersion As String = "2.68"
     Dim gSimVersion As String = "0.9.1"
 
     ' edit this to compile and run in the correct folder root
@@ -436,11 +436,11 @@ Public Class Form1
         End Try
 
         Try
-            My.Computer.FileSystem.DeleteFile(gPath + "\bin\OpenSim.Addons.AutoRestart.dll")
+            My.Computer.FileSystem.DeleteFile(gPath + "\bin\OpenSim.Additional.AutoRestart.dll")
         Catch
         End Try
         Try
-            My.Computer.FileSystem.DeleteFile(gPath + "\bin\OpenSim.Addons.AutoRestart.pdb")
+            My.Computer.FileSystem.DeleteFile(gPath + "\bin\OpenSim.Additional.AutoRestart.pdb")
         Catch
         End Try
 
@@ -1960,6 +1960,8 @@ Public Class Form1
     Public Sub RobustCommand(command As String)
 
         Try
+            Dim p = Process.GetProcessById(gRobustProcID)
+            ShowWindow(p.MainWindowHandle, SHOW_WINDOW.SW_RESTORE)
             AppActivate(gRobustProcID)
             SendKeys.SendWait(command)
         Catch ex As Exception
@@ -2004,10 +2006,16 @@ Public Class Form1
             IcecastProcess.Start()
             gIcecastProcID = IcecastProcess.Id
 
+
             Sleep(2000)
             SetWindowText(IcecastProcess.MainWindowHandle, "Icecast")
             Sleep(100)
             SetWindowText(IcecastProcess.MainWindowHandle, "Icecast")
+
+            Try
+                ShowWindow(IcecastProcess.MainWindowHandle, SHOW_WINDOW.SW_MINIMIZE)
+            Catch
+            End Try
 
         Catch ex As Exception
             Print("Error: Icecast did not start: " + ex.Message)
@@ -2135,7 +2143,7 @@ Public Class Form1
 
         If gExiting Then Return
 
-        OpensimIsRunning = False
+        OpensimIsRunning() = False
 
         Dim yesno = MsgBox("Mysql exited. Do you want to see the error log file?", vbYesNo, "Error")
         If (yesno = vbYes) Then
@@ -3118,7 +3126,7 @@ Public Class Form1
                 StopGroup(Groupname)
 
                 ' Auto restart if negative
-                If ShouldIRestart = REGION_TIMER.RESTART_PENDING And OpensimIsRunning() Then
+                If ShouldIRestart = REGION_TIMER.RESTART_PENDING And OpensimIsRunning() And Not gExiting Then
                     UpdateView = True ' make form refresh
                     PrintFast("Restart Queued for " + Groupname)
                     RegionClass.Timer(n) = REGION_TIMER.RESTARTING ' signal a restart is needed
@@ -3281,6 +3289,7 @@ Public Class Form1
         If gStopping Then Return True
 
         OpensimIsRunning() = True
+        gExiting = False
         Buttons(StopButton)
 
         Diagnostics.Debug.Print("Region:Starting Region " + BootName)
@@ -3610,16 +3619,17 @@ Public Class Form1
             RegisterDNS()
         End If
 
-        RegionClass.CheckPost()
+        if Not gExiting Then RegionClass.CheckPost()
+        
+        DoExitHandlerPoll() ' see if any regions have exited and set it up for Region Restart
 
         ' 10 seconds check for a restart
         ' RegionRestart requires this MOD 10 as it changed there to one minute
         If gDNSSTimer Mod 10 = 0 Then
 
-
             If Not gExiting Then
                 RegionRestart() ' check for reboot 
-                DoExitHandlerPoll() ' see if any regions have exited and set it up for Region Restart 
+                
                 ScanAgents() ' update agent count
                 Application.DoEvents()
                 Application.DoEvents()
@@ -3680,7 +3690,7 @@ Public Class Form1
 
         For Each X As Integer In RegionClass.RegionNumbers
 
-            If OpensimIsRunning() And RegionClass.RegionEnabled(X) Then
+            If OpensimIsRunning() And Not gExiting And RegionClass.RegionEnabled(X) Then
 
                 Dim timervalue As Integer = RegionClass.Timer(X)
                 Dim Groupname = RegionClass.GroupName(X)
@@ -4450,7 +4460,7 @@ Public Class Form1
 
 #Region "Diagnostics"
 
-    Private Function CheckPort(ServerAddress As String, Port As Integer) As Boolean
+    Public Function CheckPort(ServerAddress As String, Port As Integer) As Boolean
 
         Dim ClientSocket As New TcpClient
 
@@ -5053,7 +5063,7 @@ Public Class Form1
 
         ' wait for MySql to come up
         Dim MysqlOk As Boolean
-        While Not MysqlOk And OpensimIsRunning
+        While Not MysqlOk And OpensimIsRunning And Not gExiting
 
             BumpProgress(1)
             Application.DoEvents()
@@ -5117,7 +5127,7 @@ Public Class Form1
         End Try
         Try
             Using outputFile As New StreamWriter(testProgram, True)
-                outputFile.WriteLine("@REM Program to Stop Mysql" + vbCrLf +
+                outputFile.WriteLine("@REM Program to stop Mysql" + vbCrLf +
                 "mysqladmin.exe -u root --port " + MySetting.MySqlPort + " shutdown" + vbCrLf + "@pause" + vbCrLf)
             End Using
         Catch ex As Exception
