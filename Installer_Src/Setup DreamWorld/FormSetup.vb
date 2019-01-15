@@ -34,7 +34,7 @@ Public Class Form1
 
 #Region "Declarations"
 
-    Dim gMyVersion As String = "2.67"
+    Dim gMyVersion As String = "2.68"
     Dim gSimVersion As String = "0.9.1"
 
     ' edit this to compile and run in the correct folder root
@@ -5120,7 +5120,7 @@ Public Class Form1
         End Try
         Try
             Using outputFile As New StreamWriter(testProgram, True)
-                outputFile.WriteLine("@REM Program to Stop Mysql" + vbCrLf +
+                outputFile.WriteLine("@REM Program to stop Mysql" + vbCrLf +
                 "mysqladmin.exe -u root --port " + MySetting.MySqlPort + " shutdown" + vbCrLf + "@pause" + vbCrLf)
             End Using
         Catch ex As Exception
