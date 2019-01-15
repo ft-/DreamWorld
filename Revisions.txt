@@ -1,3 +1,24 @@
+2.68
+V4 updater and installer 
+rm broken OpenSim.Addons.AutoRestart.dll
+Deregister region button in RegionForm
+Hide Icecast if consoles are hidden
+
+2.67
+Show robust Windows when console commands are sent.
+Show Recycle Icons all the way down when autorestarting
+
+2.66
+Recycle Icons when autorestarting
+Datasnapshot checkbox would not save
+Saving a region popped it into a new DOS box. 
+
+2.65
+Icon fixes for speed
+Console shows stats every 5 minutes
+White Web page had bad color on edit and delete user buttons
+Added help for publicity
+
 2.64 
 Oops, reset mysql Log size = 10M, not 2M, tweaks to buffers and threads
 Stop trying to run if Mysql fails
