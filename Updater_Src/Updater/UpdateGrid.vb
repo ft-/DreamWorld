@@ -17,8 +17,8 @@ Public Class UpdateGrid
 
     Dim Cancelled As Boolean = False
     Dim Version As String = "4"
-    Dim Type As String = "DreamGrid-Update.zip"  ' possible server-side choices are "Update" and "Installer"
-    'Dim Type As String = "DreamGrid.zip"  ' possible server-side choices are "Update" and "Installer"
+    'Dim Type As String = "DreamGrid-Update.zip"  ' possible server-side choices are "Update" and "Installer"
+    Dim Type As String = "DreamGrid.zip"  ' possible server-side choices are "Update" and "Installer"
 
     Dim gCurDir = Nothing   ' Holds the current folder that we are running in
     Dim gFileName As String = Nothing
