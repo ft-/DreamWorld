@@ -1884,6 +1884,8 @@ Public Class Form1
                 RegionClass.ShuttingDown(X) = False
                 RegionClass.Booted(X) = False
                 RegionClass.WarmingUp(X) = False
+                RegionClass.ProcessID(X) = 0
+                RegionClass.Timer(X) = -3
             Next
 
             Buttons(StartButton)
@@ -3094,22 +3096,23 @@ Public Class Form1
                     Dim yesno = MsgBox(RegionClass.RegionName(n) + " in DOS Box " + Groupname + " quit while booting up. Do you want to see the log file?", vbYesNo, "Error")
                     If (yesno = vbYes) Then
                         System.Diagnostics.Process.Start("notepad.exe", RegionClass.IniPath(n) + "Opensim.log")
-                        ShouldIRestart = REGION_TIMER.START_COUNTING
+                        ShouldIRestart = RegionClass.Timer(n)
                     End If
-                End If
 
-                ' prompt if crashed.  Skip prompt if auto restarting
-                If RegionClass.Booted(n) = True And RegionClass.Timer(n) >= 0 Then
+                ElseIf RegionClass.Booted(n) = True And RegionClass.Timer(n) >= 0 Then
+
+                    ' prompt if crashed.  Skip prompt if auto restarting
+
                     StopGroup(Groupname)
 
                     Dim yesno = MsgBox(RegionClass.RegionName(n) + " in DOS Box " + Groupname + " quit unexpectedly. Do you want to see the log file?", vbYesNo, "Error")
                     If (yesno = vbYes) Then
                         System.Diagnostics.Process.Start("notepad.exe", RegionClass.IniPath(n) + "Opensim.log")
-                        ShouldIRestart = REGION_TIMER.START_COUNTING
+                        ShouldIRestart = RegionClass.Timer(n)
                     End If
+                Else
+                    StopGroup(Groupname)
                 End If
-
-                StopGroup(Groupname)
 
                 ' Auto restart if negative
                 If ShouldIRestart = REGION_TIMER.RESTART_PENDING And OpensimIsRunning() And Not gExiting Then
