@@ -786,6 +786,8 @@ Public Class Form1
 
 
         For Each X As Integer In RegionClass.RegionNumbers
+            Application.DoEvents()
+
             If OpensimIsRunning() And RegionClass.RegionEnabled(X) And Not RegionClass.ShuttingDown(X) Then
                 Dim pID = RegionClass.ProcessID(X)
                 Try
@@ -798,14 +800,6 @@ Public Class Form1
                 ConsoleCommand(RegionClass.ProcessID(X), "Q{ENTER}")
                 ConsoleCommand(RegionClass.ProcessID(X), "q{ENTER}")
 
-                Dim Groupname = RegionClass.GroupName(X)
-                For Each y In RegionClass.RegionListByGroupNum(Groupname)
-
-                    RegionClass.Booted(y) = False
-                    RegionClass.WarmingUp(y) = False
-                    RegionClass.ShuttingDown(y) = True
-                    RegionClass.Timer(y) = REGION_TIMER.STOPPED          ' no longer has running time
-                Next
                 UpdateView = True ' make form refresh
                 Sleep(1000)
             End If
@@ -819,7 +813,7 @@ Public Class Form1
 
             While (counter > 0 And OpensimIsRunning())
                 ' decrement progress bar according to the ratio of what we had / what we have now
-
+                Application.DoEvents()
                 counter = counter - 1
                 Dim CountisRunning As Integer = 0
                 Sleep(1000)
@@ -833,17 +827,14 @@ Public Class Form1
                             ' close down all regions in the Instance
                             Dim gname = RegionClass.GroupName(X)
                             For Each Y In RegionClass.RegionListByGroupNum(gname)
-                                RegionClass.ShuttingDown(Y) = False
-                                RegionClass.Booted(Y) = False
-                                RegionClass.WarmingUp(Y) = False
-                                RegionClass.Timer(Y) = REGION_TIMER.STOPPED
-                                RegionClass.ProcessID(Y) = 0
+                                ConsoleCommand(RegionClass.ProcessID(X), "q{ENTER}")
+                                ConsoleCommand(RegionClass.ProcessID(X), "Q{ENTER}")
                             Next
                         End If
                         Sleep(100)
                         UpdateView = True ' make form refresh
                     End If
-                    Application.DoEvents()
+
                 Next
 
                 If CountisRunning = 0 Then
@@ -1888,7 +1879,7 @@ Public Class Form1
                 RegionClass.Booted(X) = False
                 RegionClass.WarmingUp(X) = False
                 RegionClass.ProcessID(X) = 0
-                RegionClass.Timer(X) = -3
+                RegionClass.Timer(X) = REGION_TIMER.STOPPED
             Next
 
             Buttons(StartButton)
@@ -2091,6 +2082,14 @@ Public Class Form1
 
         If OpensimIsRunning() = False Then Return True
         gStopping = False
+        For Each X As Integer In RegionClass.RegionNumbers
+            RegionClass.ShuttingDown(X) = False
+            RegionClass.Booted(X) = False
+            RegionClass.WarmingUp(X) = False
+            RegionClass.ProcessID(X) = 0
+            RegionClass.Timer(X) = REGION_TIMER.STOPPED
+        Next
+
         Try
             ' Boot them up
             For Each x In RegionClass.RegionNumbers()
@@ -3097,7 +3096,7 @@ Public Class Form1
                 Log(Groupname + " Exited with status " + ShouldIRestart.ToString)
                 UpdateView = True ' make form refresh
                 ' Maybe we crashed during warmup.  Skip prompt if auto restarting
-                If RegionClass.WarmingUp(n) = True And RegionClass.Timer(n) > 1 Then
+                If RegionClass.WarmingUp(n) = True And RegionClass.Timer(n) >= 0 Then
                     StopGroup(Groupname)
 
                     Dim yesno = MsgBox(RegionClass.RegionName(n) + " in DOS Box " + Groupname + " quit while booting up. Do you want to see the log file?", vbYesNo, "Error")
@@ -3152,7 +3151,6 @@ Public Class Form1
             RegionClass.WarmingUp(X) = False
             RegionClass.ShuttingDown(X) = False
             RegionClass.ProcessID(X) = 0
-            RegionClass.Timer(X) = REGION_TIMER.STOPPED          ' no longer has running time
         Next
 
         UpdateView = True ' make form refresh
@@ -3688,6 +3686,8 @@ Public Class Form1
 
         For Each X As Integer In RegionClass.RegionNumbers
 
+            Application.DoEvents()
+
             If OpensimIsRunning() And Not gExiting And RegionClass.RegionEnabled(X) Then
 
                 Dim timervalue As Integer = RegionClass.Timer(X)
@@ -3703,12 +3703,7 @@ Public Class Form1
                     ConsoleCommand(RegionClass.ProcessID(X), "Q{ENTER}")
                     ConsoleCommand(RegionClass.ProcessID(X), "q{ENTER}")
                     Print("AutoRestarting " + Groupname)
-                    For Each RegionNum As Integer In RegionClass.RegionListByGroupNum(Groupname)
-                        RegionClass.Booted(RegionNum) = False
-                        RegionClass.WarmingUp(RegionNum) = False
-                        RegionClass.ShuttingDown(RegionNum) = True
-                        RegionClass.Timer(RegionNum) = REGION_TIMER.RESTART_PENDING ' restart on exit
-                    Next
+
                     UpdateView = True ' make form refresh
                 End If
 
