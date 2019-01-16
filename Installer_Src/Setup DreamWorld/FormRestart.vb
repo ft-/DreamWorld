@@ -127,9 +127,6 @@ Public Class FormRestart
                 Form1.MySetting.AutoRestartInterval = BTime + 30
                 AutoRestartBox.Text = (BTime + 30).ToString
                 MsgBox("Upping AutoRestart Time to " + BTime.ToString + " + 30 Minutes for Autobackup to complete.", vbInformation)
-            Else
-                Form1.MySetting.AutoRestartInterval = 1440
-                AutoRestartBox.Text = "1440"
             End If
         Else
             Form1.MySetting.AutoRestartInterval = 0
