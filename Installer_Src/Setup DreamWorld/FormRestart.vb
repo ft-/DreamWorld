@@ -26,11 +26,15 @@ Public Class FormRestart
     Private Sub Loaded(sender As Object, e As EventArgs) Handles Me.Load
 
         AutoRestartBox.Text = Form1.MySetting.AutoRestartInterval.ToString
+        If AutoRestartBox.Text.Length > 0 Then
+            ARTimerBox.Checked = True
+        End If
         AutoStartCheckbox.Checked = Form1.MySetting.Autostart
         BootStart.Checked = Form1.MySetting.BootStart
         SetScreen()
         Form1.HelpOnce("Restart")
         initted = True ' suppress the install of the startup on formload
+
     End Sub
 
 #Region "AutoStart"

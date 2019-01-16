@@ -42,6 +42,7 @@ Public Class FormPersonality
 
     End Sub
     Public Sub Help()
+
         Form1.HelpOnce("Personality")
 
     End Sub
@@ -75,7 +76,6 @@ Public Class FormPersonality
                     Timer1.Enabled = True
                     Form1.PaintImage()
                 Else
-                    Timer1.Interval = 0
                     Form1.PictureBox1.Visible = False
                 End If
             Else
@@ -83,7 +83,8 @@ Public Class FormPersonality
                 Timer1.Enabled = False
                 Form1.MySetting.SaveSettings()
             End If
-        Catch
+        Catch ex As exception
+            Form1.PictureBox1.Visible = False
         End Try
 
     End Sub

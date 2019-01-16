@@ -171,7 +171,7 @@ Public Class RegionList
         For Each X In RegionClass.RegionNumbers
 
             Dim Letter As String = ""
-            If RegionClass.Timer(X) < 0 Then
+            If RegionClass.Timer(X) = -1 Or RegionClass.Timer(X) = -2 Then
                 Letter = "Restarting"
                 Num = 5
             ElseIf RegionClass.WarmingUp(X) Then
@@ -318,9 +318,6 @@ Public Class RegionList
     Private Sub StartStopEdit(checked As Boolean, n As Integer)
 
         ' stop it, start it, or edit it
-        ' If RegionClass.ShuttingDown(n) Then
-        ' RegionClass.ShuttingDown(n) = False
-        ' End If
         'Form1.Log("Clicked " + RegionClass.RegionName(n))
         If Not checked Then
             Dim RegionForm As New FormRegion

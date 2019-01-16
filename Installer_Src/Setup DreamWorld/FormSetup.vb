@@ -613,10 +613,11 @@ Public Class Form1
 
     ''' <summary>
     ''' Startup() Starts opensimulator system
-    ''' Called by Start Buttomn or by AutoStart
+    ''' Called by Start Button or by AutoStart
     ''' </summary>
     Private Sub Startup()
 
+        PrintFast("Starting...")
         gExiting = False  ' suppress exit warning messages
         ProgressBar1.Value = 0
         ProgressBar1.Visible = True
@@ -692,8 +693,7 @@ Public Class Form1
 
         Buttons(StopButton)
         ProgressBar1.Value = 100
-        Print(MySetting.SimName + " is almost ready for you to log in." + vbCrLf _
-              + "Grid address is" + vbCrLf + "http://" + MySetting.PublicIP + ":" + MySetting.HttpPort)
+        Print("Grid address is" + vbCrLf + "http://" + MySetting.PublicIP + ":" + MySetting.HttpPort)
 
         ' done with bootup
         ProgressBar1.Visible = False
@@ -782,7 +782,7 @@ Public Class Form1
                 TotalRunningRegions = TotalRunningRegions + 1
             End If
         Next
-        Log("TotalRunningRegions=" + TotalRunningRegions.ToString)
+        Log("Total Enabled Regions=" + TotalRunningRegions.ToString)
 
 
         For Each X As Integer In RegionClass.RegionNumbers
@@ -795,25 +795,21 @@ Public Class Form1
                 End Try
 
                 ConsoleCommand(RegionClass.ProcessID(X), "q{ENTER}")
+                ConsoleCommand(RegionClass.ProcessID(X), "Q{ENTER}")
                 ConsoleCommand(RegionClass.ProcessID(X), "q{ENTER}")
 
-                RegionClass.Booted(X) = False
-                RegionClass.ShuttingDown(X) = True
-                RegionClass.WarmingUp(X) = False
-                RegionClass.Timer(X) = REGION_TIMER.STOPPED
+                Dim Groupname = RegionClass.GroupName(X)
+                For Each y In RegionClass.RegionListByGroupNum(Groupname)
+
+                    RegionClass.Booted(y) = False
+                    RegionClass.WarmingUp(y) = False
+                    RegionClass.ShuttingDown(y) = True
+                    RegionClass.Timer(y) = REGION_TIMER.STOPPED          ' no longer has running time
+                Next
                 UpdateView = True ' make form refresh
-
-                Sleep(2000)
+                Sleep(1000)
             End If
-
-            UpdateView = True ' make form refresh
         Next
-
-        ' show robust last, try-catch in case it crashed.
-        Try
-            ShowWindow(Process.GetProcessById(gRobustProcID).MainWindowHandle, SHOW_WINDOW.SW_RESTORE)
-        Catch
-        End Try
 
         Dim counter = 600 ' 10 minutes to quit all regions
 
@@ -830,7 +826,8 @@ Public Class Form1
                 For Each X In RegionClass.RegionNumbers
                     If RegionClass.ShuttingDown(X) = True Then
                         PrintFast("Checking " + RegionClass.RegionName(X))
-                        If CheckPort(MySetting.PrivateURL, RegionClass.GroupPort(X)) Then
+                        'If CheckPort(MySetting.PrivateURL, RegionClass.GroupPort(X)) Then
+                        If RegionClass.ProcessID(X) > 0 Then
                             CountisRunning = CountisRunning + 1
                         Else
                             ' close down all regions in the Instance
@@ -841,9 +838,9 @@ Public Class Form1
                                 RegionClass.WarmingUp(Y) = False
                                 RegionClass.Timer(Y) = REGION_TIMER.STOPPED
                                 RegionClass.ProcessID(Y) = 0
-
                             Next
                         End If
+                        Sleep(100)
                         UpdateView = True ' make form refresh
                     End If
                     Application.DoEvents()
@@ -880,8 +877,16 @@ Public Class Form1
             RegionClass.ProcessID(X) = 0
         Next
         UpdateView = True ' make form refresh
+
+        ' show robust last, try-catch in case it crashed.
+        Try
+            ShowWindow(Process.GetProcessById(gRobustProcID).MainWindowHandle, SHOW_WINDOW.SW_RESTORE)
+        Catch
+        End Try
+
         If gRobustProcID > 0 Then
             ConsoleCommand(gRobustProcID, "q{ENTER}")
+            ConsoleCommand(gRobustProcID, "Q{ENTER}")
             ConsoleCommand(gRobustProcID, "q{ENTER}")
         End If
 
@@ -893,9 +898,6 @@ Public Class Form1
         Me.AllowDrop = False
 
         ProgressBar1.Value = 0
-
-
-        gStopping = False
 
     End Sub
 
@@ -980,6 +982,7 @@ Public Class Form1
         Print("Stopping")
         ProgressBar1.Value = 100
         Buttons(BusyButton)
+
         KillAll()
         Buttons(StartButton)
         Print("Stopped")
@@ -1878,7 +1881,7 @@ Public Class Form1
     Private Sub BusyButton_Click(sender As Object, e As EventArgs) Handles BusyButton.Click
 
         If gStopping = True Then
-            gStopping = False
+
             Print("Stopped")
             For Each X As Integer In RegionClass.RegionNumbers
                 RegionClass.ShuttingDown(X) = False
@@ -1903,7 +1906,7 @@ Public Class Form1
         Print("Opensim Is Aborted")
         ProgressBar1.Value = 0
         ProgressBar1.Visible = False
-        gStopping = False
+
 
     End Sub
 
@@ -1934,7 +1937,6 @@ Public Class Form1
             Adv.Activate()
             Adv.Visible = True
         End If
-
 
     End Sub
 
@@ -2088,11 +2090,10 @@ Public Class Form1
     Private Function Start_Opensimulator() As Boolean
 
         If OpensimIsRunning() = False Then Return True
-
+        gStopping = False
         Try
             ' Boot them up
-
-            For Each x In RegionClass.RegionNumbers
+            For Each x In RegionClass.RegionNumbers()
                 If RegionClass.RegionEnabled(x) And Not gStopping Then '
                     If Not Boot(RegionClass.RegionName(x)) Then
                         Print("Boot skipped for " + RegionClass.RegionName(x))
@@ -2100,6 +2101,8 @@ Public Class Form1
                 End If
                 Application.DoEvents()
             Next
+
+
         Catch ex As Exception
             Diagnostics.Debug.Print(ex.Message)
             Print("Unable to boot some regions")
@@ -3060,8 +3063,12 @@ Public Class Form1
 
     Private Sub DoExit(ByVal sender As Object)
         ' Handle Opensim Exited
+        Try
+            ExitList.Add(CType(sender.Id, Integer))
+        Catch ex As Exception
+            Log("DoExit:" + ex.Message)
+        End Try
 
-        ExitList.Add(CType(sender.Id, Integer))
 
     End Sub
 
@@ -3081,7 +3088,7 @@ Public Class Form1
 
                 If n < 0 Then
                     ExitList.RemoveAt(LOOPVAR)
-                    Log("Something Exited with a index of " + n.ToString)
+                    'Log("Something Exited with a index of " + n.ToString)
                     Continue For
                 End If
 
@@ -3090,7 +3097,7 @@ Public Class Form1
                 Log(Groupname + " Exited with status " + ShouldIRestart.ToString)
                 UpdateView = True ' make form refresh
                 ' Maybe we crashed during warmup.  Skip prompt if auto restarting
-                If RegionClass.WarmingUp(n) = True And RegionClass.Timer(n) > 0 Then
+                If RegionClass.WarmingUp(n) = True And RegionClass.Timer(n) > 1 Then
                     StopGroup(Groupname)
 
                     Dim yesno = MsgBox(RegionClass.RegionName(n) + " in DOS Box " + Groupname + " quit while booting up. Do you want to see the log file?", vbYesNo, "Error")
@@ -3116,7 +3123,7 @@ Public Class Form1
 
                 ' Auto restart if negative
                 If ShouldIRestart = REGION_TIMER.RESTART_PENDING And OpensimIsRunning() And Not gExiting Then
-                    UpdateView = True ' make form refresh
+                    UpdateView = True ' make form rSetWindowefresh
                     PrintFast("Restart Queued for " + Groupname)
                     RegionClass.Timer(n) = REGION_TIMER.RESTARTING ' signal a restart is needed
                 Else
@@ -3367,14 +3374,19 @@ Public Class Form1
                     RegionClass.ProcessID(num) = myProcess.Id
                     RegionClass.Timer(num) = REGION_TIMER.START_COUNTING
                 Next
-
                 UpdateView = True ' make form refresh
-                Application.DoEvents()
-                Sleep(5000)
+                ' flaky API crap does not always work.
+                Try
+                    SetWindowText(myProcess.MainWindowHandle, RegionClass.GroupName(n))
+                    Sleep(1000)
+                    SetWindowText(myProcess.MainWindowHandle, RegionClass.GroupName(n))
+                    Sleep(1000)
+                    SetWindowText(myProcess.MainWindowHandle, RegionClass.GroupName(n))
+                    Sleep(1000)
+                    SetWindowText(myProcess.MainWindowHandle, RegionClass.GroupName(n))
+                Catch
+                End Try
 
-                SetWindowText(myProcess.MainWindowHandle, RegionClass.GroupName(n))
-                Sleep(100)
-                SetWindowText(myProcess.MainWindowHandle, RegionClass.GroupName(n))
 
                 Return True
             End If
@@ -3688,6 +3700,7 @@ Public Class Form1
                     ' shut down the group when one minute has gone by, or multiple thereof.
 
                     ConsoleCommand(RegionClass.ProcessID(X), "q{ENTER}")
+                    ConsoleCommand(RegionClass.ProcessID(X), "Q{ENTER}")
                     ConsoleCommand(RegionClass.ProcessID(X), "q{ENTER}")
                     Print("AutoRestarting " + Groupname)
                     For Each RegionNum As Integer In RegionClass.RegionListByGroupNum(Groupname)
