@@ -92,7 +92,7 @@ Public Class FormBackups
         '8 = Weekly
         ' default= 1
 
-        Dim Interval As Integer
+        Dim Interval As Integer = 60 * 12
         If text = "Hourly" Then Interval = 60
         If text = "12 Hour" Then Interval = 60 * 12
         If text = "Daily" Then Interval = 60 * 24
