@@ -1,7 +1,6 @@
 ﻿
 Imports System.IO
 
-
 Public Class RegionList
 
     Dim ViewNotBusy As Boolean
@@ -76,6 +75,8 @@ Public Class RegionList
     End Sub
 #End Region
 
+#Region "Loader"
+
     Private Sub _Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 
         Me.Size = New System.Drawing.Size(410, 410)
@@ -129,12 +130,14 @@ Public Class RegionList
 
     End Sub
 
+
     Private Sub SingletonForm_FormClosed(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles Me.FormClosed
 
         RegionList.FormExists = False
 
     End Sub
-
+#End Region
+#Region "Timer"
     Private Sub Timer1_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Timer1.Tick
 
         If UpdateView() Or Timertick Mod 30 = 0 Then ' force a refresh
@@ -143,7 +146,9 @@ Public Class RegionList
         Timertick = Timertick + 1
 
     End Sub
+#End Region
 
+#Region "Load List View"
     Public Sub LoadMyListView()
 
         ViewNotBusy = False
@@ -266,6 +271,7 @@ Public Class RegionList
         Return bmp
 
     End Function
+
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
 
@@ -492,6 +498,7 @@ Public Class RegionList
 
     End Sub
 
+#End Region
 #Region "DragDrop"
 
     Private Sub ListView1_DragEnter(sender As System.Object, e As System.Windows.Forms.DragEventArgs) Handles ListView1.DragEnter
