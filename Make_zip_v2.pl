@@ -5,7 +5,6 @@ use 5.010;
 use File::Copy;
 use File::Path;
 
-
 my $type  = '-V2.69' ;  # '-Beta-V1.5';
 
 use Cwd;
@@ -64,6 +63,11 @@ unlink "$dir/OutworldzFiles/http.log" ;
 
 unlink "../Zips/DreamGrid$type.zip" ;
 unlink "../Zips/Outworldz-Update$type.zip" ;
+
+#unlink "$dir/Start.exe" ;
+#unlink "$dir/Interop.IWshRuntimeLibrary.dll";
+#if (!copy ("$dir/Installer_Src/Setup DreamWorld/bin/Start.exe", "$dir"))  {die $!;}
+#if (!copy ("$dir/Installer_Src/Setup DreamWorld/bin/Interop.IWshRuntimeLibrary.dll", "$dir/Interop.IWshRuntimeLibrary.dll"))  {die $!;}
 
 say("Signing");
 use IO::All;
