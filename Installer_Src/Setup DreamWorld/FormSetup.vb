@@ -39,19 +39,19 @@ Public Class Form1
 
     ' edit this to compile and run in the correct folder root
     Dim gDebugPath As String = "\Opensim\Outworldz DreamGrid Source"  ' no slash at end
-
-    ' not https
+    '
+    Dim gDebug As Boolean = False  ' set by code to log some events in when in a debugger
+    ' not https, which breaks stuff
     Public gDomain As String = "http://www.outworldz.com"
     Public gPath As String ' Holds path to Opensim folder
 
     Dim REGIONMAX As Integer = 200  ' Handles max of 200 events for regions.
-    Dim RegionHandles(REGIONMAX) As Boolean
-
+    Dim RegionHandles As New Dictionary(Of Integer, Boolean)
     Public MyFolder As String   ' Holds the current folder that we are running in
     Dim gCurSlashDir As String '  holds the current directory info in Unix format for MySQL
     Public gIsRunning As Boolean = False ' used in OpensimIsRunning property
     Dim Arnd As Random = New Random()
-    Public gChatTime As Integer     'amount of coffee the fairy had. T ime for the chatty fairy to be read
+    Public gChatTime As Integer     'amount of coffee the fairy had. Time for the chatty fairy to be read
     Dim client As New System.Net.WebClient ' downloadclient for web pages
     Public Shared MysqlConn As Mysql
 
@@ -421,7 +421,7 @@ Public Class Form1
 
         If MyFolder.Contains("Source") Then
             ' for debugging when compiling
-
+            gDebug = True
             MyFolder = gDebugPath ' for testing, as the compiler buries itself in ../../../debug
         End If
         gCurSlashDir = MyFolder.Replace("\", "/")    ' because Mysql uses unix like slashes, that's why
@@ -625,6 +625,10 @@ Public Class Form1
 
         RegionClass.UpdateAllRegionPorts() ' must be donbe before we are running
 
+        ' clear region error handlers
+
+        RegionHandles.Clear()
+
         If MySetting.AutoBackup Then
             ' add 30 minutes to allow time to auto backup and then restart
             Dim BTime As Int16 = CType(MySetting.AutobackupInterval, Int16)
@@ -663,7 +667,7 @@ Public Class Form1
 
         If Not MySetting.RunOnce Then
             RobustCommand("create user{ENTER}")
-            MsgBox("Please type the Grid Owner's name into the Robust window. Press <enter> for UUID and Model name. Then press this OK button", vbInformation, "Info")
+            MsgBox("Please type the Grid Owner's avatar name into the Robust window. Press <enter> for UUID and Model name. Then press this OK button", vbInformation, "Info")
             MySetting.RunOnce = True
             MySetting.SaveSettings()
         End If
@@ -855,11 +859,7 @@ Public Class Form1
             End While
         End If
 
-        counter = REGIONMAX
-        While counter >= 0
-            RegionHandles(counter) = False
-            counter = counter - 1
-        End While
+        RegionHandles.Clear()
 
         For Each X As Integer In RegionClass.RegionNumbers
             RegionClass.ShuttingDown(X) = False
@@ -2095,7 +2095,7 @@ Public Class Form1
             For Each x In RegionClass.RegionNumbers()
                 If RegionClass.RegionEnabled(x) And Not gStopping Then '
                     If Not Boot(RegionClass.RegionName(x)) Then
-                        Print("Boot skipped for " + RegionClass.RegionName(x))
+                        'Print("Boot skipped for " + RegionClass.RegionName(x))
                     End If
                 End If
                 Application.DoEvents()
@@ -3061,13 +3061,9 @@ Public Class Form1
 #Region "ExitHandlers"
 
     Private Sub DoExit(ByVal sender As Object)
-        ' Handle Opensim Exited
-        Try
-            ExitList.Add(CType(sender.Id, Integer))
-        Catch ex As Exception
-            Log("DoExit:" + ex.Message)
-        End Try
 
+        ' Handle any process that exits by stacking it. DoExitHandlerPoll will clean up stack
+        ExitList.Add(CType(sender.Id, Integer))
 
     End Sub
 
@@ -3078,22 +3074,23 @@ Public Class Form1
 
         ExitList.Reverse()
 
+        ' do first to last by counting backwards
         For LOOPVAR = ExitList.Count - 1 To 0 Step -1
 
             Try
                 Dim ProcessID As Integer = ExitList(LOOPVAR) ' recover the PID as integer
-
                 Dim n As Integer = RegionClass.FindRegionByProcessID(ProcessID) ' get the region handle
 
                 If n < 0 Then
                     ExitList.RemoveAt(LOOPVAR)
-                    'Log("Something Exited with a index of " + n.ToString)
+                    LogDebug("Error: Something exited with a index of " + n.ToString)
                     Continue For
                 End If
 
                 Dim Groupname = RegionClass.GroupName(n)
                 Dim ShouldIRestart = RegionClass.Timer(n)
-                Log(Groupname + " Exited with status " + ShouldIRestart.ToString)
+                LogDebug(Groupname + " Exited with Timer status " + ShouldIRestart.ToString)
+                Log(Groupname + " Exited with Timer status " + ShouldIRestart.ToString)
                 UpdateView = True ' make form refresh
                 ' Maybe we crashed during warmup.  Skip prompt if auto restarting
                 If RegionClass.WarmingUp(n) = True And RegionClass.Timer(n) >= 0 Then
@@ -3106,9 +3103,7 @@ Public Class Form1
                     End If
 
                 ElseIf RegionClass.Booted(n) = True And RegionClass.Timer(n) >= 0 Then
-
                     ' prompt if crashed.  Skip prompt if auto restarting
-
                     StopGroup(Groupname)
 
                     Dim yesno = MsgBox(RegionClass.RegionName(n) + " in DOS Box " + Groupname + " quit unexpectedly. Do you want to see the log file?", vbYesNo, "Error")
@@ -3120,11 +3115,12 @@ Public Class Form1
                     StopGroup(Groupname)
                 End If
 
-                ' Auto restart if negative
+                ' Auto restart if negative 1
                 If ShouldIRestart = REGION_TIMER.RESTART_PENDING And OpensimIsRunning() And Not gExiting Then
                     UpdateView = True ' make form rSetWindowefresh
                     PrintFast("Restart Queued for " + Groupname)
-                    RegionClass.Timer(n) = REGION_TIMER.RESTARTING ' signal a restart is needed
+                    LogDebug("Restart Queued for " + Groupname)
+                    RegionClass.Timer(n) = REGION_TIMER.RESTARTING ' signal a restart is needed (-2)
                 Else
                     PrintFast(Groupname + " stopped")
                 End If
@@ -3145,8 +3141,9 @@ Public Class Form1
 
     Private Sub StopGroup(Groupname As String)
 
+        Log(Groupname + " Group is now stopped, time is unchanged")
         For Each X In RegionClass.RegionListByGroupNum(Groupname)
-            Log(RegionClass.RegionName(X) + " Exited")
+            Log(RegionClass.RegionName(X) + " Stopped")
             RegionClass.Booted(X) = False
             RegionClass.WarmingUp(X) = False
             RegionClass.ShuttingDown(X) = False
@@ -3160,17 +3157,17 @@ Public Class Form1
     Private Function GetNewProcess() As Process
 
         ' find a empty regionhandle
-        Dim ProcessCount As Integer = 0
-        While ProcessCount < REGIONMAX
-            If Not RegionHandles(ProcessCount) Then
-                RegionHandles(ProcessCount) = True
-                Exit While
-            End If
-            ProcessCount = ProcessCount + 1
-        End While
+        Dim ProcessCount As Integer = RegionHandles.Count
+
+        RegionHandles(ProcessCount) = True
+
         If ProcessCount = REGIONMAX Then
             Return Nothing
         End If
+
+        LogDebug("Creating Process number " + ProcessCount.ToString)
+
+        ' 200 handles for errors
 
         If ProcessCount = 0 Then Return MyProcess1
         If ProcessCount = 1 Then Return MyProcess2
@@ -3222,7 +3219,6 @@ Public Class Form1
         If ProcessCount = 47 Then Return MyProcess48
         If ProcessCount = 48 Then Return MyProcess49
         If ProcessCount = 49 Then Return MyProcess50
-
         If ProcessCount = 50 Then Return MyProcess51
         If ProcessCount = 51 Then Return MyProcess52
         If ProcessCount = 52 Then Return MyProcess53
@@ -3273,6 +3269,106 @@ Public Class Form1
         If ProcessCount = 97 Then Return MyProcess98
         If ProcessCount = 98 Then Return MyProcess99
         If ProcessCount = 99 Then Return MyProcess100
+        If ProcessCount = 100 Then Return MyProcess101
+        If ProcessCount = 101 Then Return MyProcess102
+        If ProcessCount = 102 Then Return MyProcess103
+        If ProcessCount = 103 Then Return MyProcess104
+        If ProcessCount = 104 Then Return MyProcess105
+        If ProcessCount = 105 Then Return MyProcess106
+        If ProcessCount = 106 Then Return MyProcess107
+        If ProcessCount = 107 Then Return MyProcess108
+        If ProcessCount = 108 Then Return MyProcess109
+        If ProcessCount = 109 Then Return MyProcess110
+        If ProcessCount = 110 Then Return MyProcess111
+        If ProcessCount = 111 Then Return MyProcess112
+        If ProcessCount = 112 Then Return MyProcess113
+        If ProcessCount = 113 Then Return MyProcess114
+        If ProcessCount = 114 Then Return MyProcess115
+        If ProcessCount = 115 Then Return MyProcess116
+        If ProcessCount = 116 Then Return MyProcess117
+        If ProcessCount = 117 Then Return MyProcess118
+        If ProcessCount = 118 Then Return MyProcess119
+        If ProcessCount = 119 Then Return MyProcess120
+        If ProcessCount = 120 Then Return MyProcess121
+        If ProcessCount = 121 Then Return MyProcess122
+        If ProcessCount = 122 Then Return MyProcess123
+        If ProcessCount = 123 Then Return MyProcess124
+        If ProcessCount = 124 Then Return MyProcess125
+        If ProcessCount = 125 Then Return MyProcess126
+        If ProcessCount = 126 Then Return MyProcess127
+        If ProcessCount = 127 Then Return MyProcess128
+        If ProcessCount = 128 Then Return MyProcess129
+        If ProcessCount = 129 Then Return MyProcess130
+        If ProcessCount = 130 Then Return MyProcess131
+        If ProcessCount = 131 Then Return MyProcess132
+        If ProcessCount = 132 Then Return MyProcess133
+        If ProcessCount = 133 Then Return MyProcess134
+        If ProcessCount = 134 Then Return MyProcess135
+        If ProcessCount = 135 Then Return MyProcess136
+        If ProcessCount = 136 Then Return MyProcess137
+        If ProcessCount = 137 Then Return MyProcess138
+        If ProcessCount = 138 Then Return MyProcess139
+        If ProcessCount = 139 Then Return MyProcess140
+        If ProcessCount = 140 Then Return MyProcess141
+        If ProcessCount = 141 Then Return MyProcess142
+        If ProcessCount = 142 Then Return MyProcess143
+        If ProcessCount = 143 Then Return MyProcess144
+        If ProcessCount = 144 Then Return MyProcess145
+        If ProcessCount = 145 Then Return MyProcess146
+        If ProcessCount = 146 Then Return MyProcess147
+        If ProcessCount = 147 Then Return MyProcess148
+        If ProcessCount = 148 Then Return MyProcess149
+        If ProcessCount = 149 Then Return MyProcess150
+        If ProcessCount = 150 Then Return MyProcess151
+        If ProcessCount = 151 Then Return MyProcess152
+        If ProcessCount = 152 Then Return MyProcess153
+        If ProcessCount = 153 Then Return MyProcess154
+        If ProcessCount = 154 Then Return MyProcess155
+        If ProcessCount = 155 Then Return MyProcess156
+        If ProcessCount = 156 Then Return MyProcess157
+        If ProcessCount = 157 Then Return MyProcess158
+        If ProcessCount = 158 Then Return MyProcess159
+        If ProcessCount = 159 Then Return MyProcess160
+        If ProcessCount = 160 Then Return MyProcess161
+        If ProcessCount = 161 Then Return MyProcess162
+        If ProcessCount = 162 Then Return MyProcess163
+        If ProcessCount = 163 Then Return MyProcess164
+        If ProcessCount = 164 Then Return MyProcess165
+        If ProcessCount = 165 Then Return MyProcess166
+        If ProcessCount = 166 Then Return MyProcess167
+        If ProcessCount = 167 Then Return MyProcess168
+        If ProcessCount = 168 Then Return MyProcess169
+        If ProcessCount = 169 Then Return MyProcess170
+        If ProcessCount = 170 Then Return MyProcess171
+        If ProcessCount = 171 Then Return MyProcess172
+        If ProcessCount = 172 Then Return MyProcess173
+        If ProcessCount = 173 Then Return MyProcess174
+        If ProcessCount = 174 Then Return MyProcess175
+        If ProcessCount = 175 Then Return MyProcess176
+        If ProcessCount = 176 Then Return MyProcess177
+        If ProcessCount = 177 Then Return MyProcess178
+        If ProcessCount = 178 Then Return MyProcess179
+        If ProcessCount = 179 Then Return MyProcess180
+        If ProcessCount = 180 Then Return MyProcess181
+        If ProcessCount = 181 Then Return MyProcess182
+        If ProcessCount = 182 Then Return MyProcess183
+        If ProcessCount = 183 Then Return MyProcess184
+        If ProcessCount = 184 Then Return MyProcess185
+        If ProcessCount = 185 Then Return MyProcess186
+        If ProcessCount = 186 Then Return MyProcess187
+        If ProcessCount = 187 Then Return MyProcess188
+        If ProcessCount = 188 Then Return MyProcess189
+        If ProcessCount = 189 Then Return MyProcess190
+        If ProcessCount = 190 Then Return MyProcess191
+        If ProcessCount = 191 Then Return MyProcess192
+        If ProcessCount = 192 Then Return MyProcess193
+        If ProcessCount = 193 Then Return MyProcess194
+        If ProcessCount = 194 Then Return MyProcess195
+        If ProcessCount = 195 Then Return MyProcess196
+        If ProcessCount = 196 Then Return MyProcess197
+        If ProcessCount = 197 Then Return MyProcess198
+        If ProcessCount = 198 Then Return MyProcess199
+        If ProcessCount = 199 Then Return MyProcess200
 
         Return Nothing
 
@@ -3286,21 +3382,24 @@ Public Class Form1
         gExiting = False
         Buttons(StopButton)
 
-        Diagnostics.Debug.Print("Region:Starting Region " + BootName)
+        LogDebug("Region: Starting Region " + BootName)
 
         Dim n = RegionClass.FindRegionByName(BootName)
         If RegionClass.Booted(n) Then
             Log("Region " + BootName + " failed to start as it is already booted")
+            LogDebug("Region " + BootName + " failed to start as it is already booted")
             Return True
         End If
 
         If RegionClass.WarmingUp(n) Then
             Log("Region " + BootName + " failed to start as it is already WarmingUp")
+            LogDebug("Region " + BootName + " failed to start as it is already WarmingUp")
             Return True
         End If
 
         If RegionClass.ShuttingDown(n) Then
             Log("Region " + BootName + " failed to start as it is already ShuttingDown")
+            LogDebug("Region " + BootName + " failed to start as it is already ShuttingDown")
             Return True
         End If
 
@@ -3308,6 +3407,7 @@ Public Class Form1
         Dim isRegionRunning = CheckPort("127.0.0.1", RegionClass.GroupPort(n))
         If isRegionRunning Then
             Log("Region " + BootName + "failed to start as it is already running")
+            LogDebug("Region " + BootName + "failed to start as it is already running")
             RegionClass.WarmingUp(n) = False
             RegionClass.Booted(n) = True
             RegionClass.ShuttingDown(n) = False
@@ -3320,7 +3420,7 @@ Public Class Form1
         Dim myProcess As Process = GetNewProcess()
 
         If myProcess Is Nothing Then
-            Print("Exceeded max number of trackable regions (" + REGIONMAX.ToString + ") : " + RegionClass.RegionName(n))
+            Print("Exceeded max number of trackable regions (" + REGIONMAX.ToString + ")")
             'Return False
         End If
 
@@ -3371,6 +3471,7 @@ Public Class Form1
                     RegionClass.ShuttingDown(num) = False
                     RegionClass.ProcessID(num) = myProcess.Id
                     RegionClass.Timer(num) = REGION_TIMER.START_COUNTING
+                    LogDebug("Region is Booting")
                 Next
                 UpdateView = True ' make form refresh
                 ' flaky API crap does not always work.
@@ -3384,7 +3485,6 @@ Public Class Form1
                     SetWindowText(myProcess.MainWindowHandle, RegionClass.GroupName(n))
                 Catch
                 End Try
-
 
                 Return True
             End If
@@ -3460,6 +3560,20 @@ Public Class Form1
         End Try
 
     End Sub
+
+    Public Sub LogDebug(message As String)
+
+        If Not gDebug Then Return
+        Try
+            Using outputFile As New StreamWriter(MyFolder & "\OutworldzFiles\Debug.log", True)
+                outputFile.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + message)
+                Diagnostics.Debug.Print(message)
+            End Using
+        Catch
+        End Try
+
+    End Sub
+
 
     Private Sub ShowLog()
 
@@ -3691,10 +3805,8 @@ Public Class Form1
             If OpensimIsRunning() And Not gExiting And RegionClass.RegionEnabled(X) Then
 
                 Dim timervalue As Integer = RegionClass.Timer(X)
-                Dim Groupname = RegionClass.GroupName(X)
-
                 ' if it is past time and no one is in the sim...
-
+                Dim Groupname = RegionClass.GroupName(X)
                 If timervalue / 6 >= MySetting.AutoRestartInterval() And MySetting.AutoRestartInterval() > 0 And Not AvatarsIsInGroup(Groupname) Then
 
                     ' shut down the group when one minute has gone by, or multiple thereof.
@@ -3707,7 +3819,7 @@ Public Class Form1
                     UpdateView = True ' make form refresh
                 End If
 
-                ' count up to auto restart , when high enought, restart the sim
+                ' count up to auto restart , when high enough, restart the sim
                 If RegionClass.Timer(X) >= 0 Then
                     RegionClass.Timer(X) = RegionClass.Timer(X) + 1
                 End If
