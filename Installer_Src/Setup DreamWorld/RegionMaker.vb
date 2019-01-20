@@ -19,6 +19,15 @@ Public Class RegionMaker
 
     Dim WebserverList As New List(Of String)
 
+    <Flags()>
+    Private Enum REGION_TIMER As Integer
+        STOPPED = -3
+        RESTARTING = -2
+        RESTART_PENDING = -1
+        START_COUNTING = 0
+    End Enum
+
+
     Public Sub DebugGroup()
         For Each pair In Grouplist
             Debug.Print("Group name: {0}, httpport: {1}", pair.Key, pair.Value)
@@ -889,12 +898,19 @@ Public Class RegionMaker
                     WarmingUp(n) = False
                     ShuttingDown(n) = False
                     UUID(n) = json.region_id
+
+                    Timer(n) = REGION_TIMER.START_COUNTING
+
                     Form1.UpdateView() = True
 
                     If Form1.MySetting.ConsoleShow = False Then
                         Dim pID = ProcessID(n)
-                        Dim p = Process.GetProcessById(pID)
-                        ShowWindow(p.MainWindowHandle, SHOW_WINDOW.SW_MINIMIZE)
+                        Try
+                            Dim p = Process.GetProcessById(pID)
+                            ShowWindow(p.MainWindowHandle, SHOW_WINDOW.SW_MINIMIZE)
+                        Catch
+                        End Try
+
                     End If
 
 
@@ -920,7 +936,8 @@ Public Class RegionMaker
                 Catch
                     Debug.Print("Something fucky in region exit")
                 End Try
-            Catch
+            Catch ex As Exception
+                Debug.Print(ex.Message) '!!!
             End Try
         Next
 
