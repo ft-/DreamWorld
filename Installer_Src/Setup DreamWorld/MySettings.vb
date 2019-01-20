@@ -972,7 +972,12 @@ Public Class MySettings
     End Property
     Public Property ChatTime() As Integer
         Get
-            Return CType(GetMySetting("ChatTime"), Integer)
+            Try
+                Return CType(GetMySetting("ChatTime"), Integer)
+            Catch
+                Return 1000
+            End Try
+
         End Get
         Set
             SetMySetting("ChatTime", Value.ToString)
@@ -1020,7 +1025,12 @@ Public Class MySettings
     End Property
     Public Property TimerInterval() As Integer
         Get
-            Return CType(GetMySetting("TimerInterval"), Integer)
+            Try
+                Return CType(GetMySetting("TimerInterval"), Integer)
+            Catch
+                Return 1000
+            End Try
+
         End Get
         Set
             SetMySetting("TimerInterval", Value.ToString)

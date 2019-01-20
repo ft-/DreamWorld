@@ -52,6 +52,7 @@ Public Class NetServer
         Dim listener = New System.Net.HttpListener()
         listener.Start()
         Dim prefixes(0) As String
+
         prefixes(0) = "http://" + LocalAddress.ToString + ":" + MyPort.ToString + "/"
 
         For Each s As String In prefixes
@@ -108,15 +109,63 @@ Public Class NetServer
             Dim listener As HttpListener = CType(result.AsyncState, HttpListener)
             ' Call EndGetContext to signal the completion of the asynchronous operation.
             Dim context As HttpListenerContext = listener.EndGetContext(result)
+
+            ' The data sent by client
             Dim request As HttpListenerRequest = context.Request
 
-            Dim data As String = ShowRequestData(request)
-            Log(data)
+
+            ' Get Parameters:
+            Debug.Print("Client data content type:" + request.ContentType)
+
+            Dim baseUri = New Uri(request.Url.OriginalString)
+            Debug.Print("Query String:" + baseUri.Query)
+
+            Dim qs = request.QueryString
+
+            ' print out all name value pairs
+            For Each s In qs.AllKeys
+                Debug.Print(s + ":" + qs.Get(s))
+            Next
+
+            Dim body As System.IO.Stream = request.InputStream
+
+            Dim encoding As System.Text.Encoding = request.ContentEncoding
+            Dim reader As System.IO.StreamReader = New System.IO.StreamReader(body, encoding)
+            If (request.ContentType <> "") Then
+                Debug.Print("Client data content type {0}", request.ContentType)
+            End If
+
+            Debug.Print("Client data content length {0}", request.ContentLength64)
+            Dim responseString As String = ""
+            ' process the input
+            If (Not request.HasEntityBody) Then
+                Debug.Print("No client data was sent with the request.")
+                Dim Uri = request.Url.OriginalString
+                If Uri.Contains("teleports.htm") Then
+                    responseString = RegionClass.RegionListHTML(Setting)
+                Else
+                    responseString = "Test Passed"
+                End If
+            Else
+                Debug.Print("Start of client data:")
+                'Convert the data to a string And display it on the console.
+                Dim POST As String = reader.ReadToEnd()
+                Debug.Print(POST)
+                Debug.Print("End of client data:")
+                ' process the data
+                responseString = RegionClass.ParsePost(POST, Setting)
+            End If
+
+            body.Close()
+
+            ''''''''''''''''''''''''''''''''''''''''''''''
+
+            Log(responseString)
+
             ' Get the response object to send our confirmation.
             Dim response As HttpListenerResponse = context.Response
+
             ' Construct a minimal response string.
-            Dim responseString As String = RegionClass.ParsePost(data.ToString(), Setting)
-            Log(responseString)
             Dim buffer As Byte() = System.Text.Encoding.UTF8.GetBytes(responseString)
             ' Get the response OutputStream and write the response to it.
             response.ContentLength64 = buffer.Length
@@ -127,43 +176,16 @@ Public Class NetServer
             ' Properly flush and close the output stream
             output.Flush()
             output.Close()
+
+            'If you are finished with the request, it should be closed also.
+            response.Close()
+
         Catch ex As Exception
             Application.Exit()
         End Try
 
     End Sub
 
-    Public Function ShowRequestData(request As HttpListenerRequest) As String
-
-        If (Not request.HasEntityBody) Then
-
-            Debug.Print("No client data was sent with the request.")
-            Return ""
-        End If
-
-        Dim body As System.IO.Stream = request.InputStream
-
-        Dim encoding As System.Text.Encoding = request.ContentEncoding
-        Dim reader As System.IO.StreamReader = New System.IO.StreamReader(body, encoding)
-        If (request.ContentType <> "") Then
-            Debug.Print("Client data content type {0}", request.ContentType)
-        End If
-
-        Debug.Print("Client data content length {0}", request.ContentLength64)
-
-        Debug.Print("Start of client data:")
-        'Convert the data to a string And display it on the console.
-        Dim s As String = reader.ReadToEnd()
-        Debug.Print(s)
-        Debug.Print("End of client data:")
-        'reader.Close()
-        body.Close()
-
-        'If you are finished with the request, it should be closed also.
-
-        Return s
-
-    End Function
 
 End Class
 

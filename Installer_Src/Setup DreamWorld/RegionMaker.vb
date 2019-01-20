@@ -3,6 +3,7 @@
 Imports System.Text.RegularExpressions
 Imports System.IO
 Imports Newtonsoft.Json
+Imports System.Net
 
 Public Class RegionMaker
 
@@ -914,7 +915,7 @@ Public Class RegionMaker
                     Form1.UpdateView() = True
 
                 End If
-                    Try
+                Try
                     WebserverList.RemoveAt(LOOPVAR)
                 Catch
                     Debug.Print("Something fucky in region exit")
@@ -930,6 +931,8 @@ Public Class RegionMaker
 #Region "POST"
 
     Public Function ParsePost(POST As String, MySetting As MySettings) As String
+
+
         ' set Region.Booted to true if the POST from the region indicates it is online
         ' requires a section in Opensim.ini where [RegionReady] has this:
 
@@ -1117,6 +1120,32 @@ Public Class RegionMaker
 
     End Function
 
+    Public Function RegionListHTML(Setting As MySettings) As String
+
+        'redirect from http://localhost:8002/bin/data/teleports.htm
+        'to http://localhost:8001/teleports.htm
+        'Outworldz|Welcome||www.outworldz.com:9000:Welcome|128,128,96|
+        '*|Welcome||www.outworldz.com9000Welcome|128,128,96|
+        Dim HTML As String
+
+        HTML = "Welcome to |" + Setting.SimName + "||" + Setting.PublicIP + ":" + Setting.HttpPort + ":" + Setting.WelcomeRegion + "||" + vbCrLf
+        Dim ToSort As New List(Of String)
+        For Each X As Integer In RegionNumbers()
+            If Booted(X) And Teleport(X) = "True" Then
+                ToSort.Add(RegionName(X))
+            End If
+        Next
+
+        ToSort.Sort()
+
+        For Each S As String In ToSort
+            Dim X = FindRegionByName(S)
+            HTML = HTML + "*|" + RegionName(X) + "||" + Setting.PublicIP + ":" + Setting.HttpPort + ":" + RegionName(X) + "||" + vbCrLf
+        Next
+
+        Return HTML
+
+    End Function
     Function Right(value As String, length As Integer) As String
         ' Get rightmost characters of specified length.
         Return value.Substring(value.Length - length)

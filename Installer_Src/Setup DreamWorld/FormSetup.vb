@@ -128,7 +128,7 @@ Public Class Form1
     Public FormHelp As New FormHelp
     Dim Adv As AdvancedForm
     Dim initted As Boolean = False
-    Public FormPersonality As New FormPersonality
+    Public FormPersonality As FormPersonality
 
     <CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA2101:SpecifyMarshalingForPInvokeStringArguments", MessageId:="1")>
     <CodeAnalysis.SuppressMessage("Microsoft.Interoperability", "CA1401:PInvokesShouldNotBeVisible")>
@@ -541,6 +541,8 @@ Public Class Form1
 
         If Not SetIniData() Then Return
 
+        FormPersonality = New FormPersonality
+
         RegionClass.UpdateAllRegionPorts() ' must be after SetIniData
 
         mnuSettings.Visible = True
@@ -703,12 +705,6 @@ Public Class Form1
         ' done with bootup
         ProgressBar1.Visible = False
 
-
-        FormPersonality.Close()
-        FormPersonality = New FormPersonality
-        FormPersonality.Init()
-        ' no Help()
-        FormPersonality.Visible = False
         Me.AllowDrop = True
 
     End Sub
@@ -1826,8 +1822,6 @@ Public Class Form1
         If MySetting.DiagnosticPort = MySetting.HttpPort _
             Or MySetting.DiagnosticPort = MySetting.PrivatePort _
             Or MySetting.HttpPort = MySetting.PrivatePort _
-            Or CType(MySetting.DiagnosticPort, Double) < 1024 _
-            Or CType(MySetting.DiagnosticPort, Double) < 1024 _
             Or CType(MySetting.HttpPort, Double) < 1024 Then
             MySetting.DiagnosticPort = "8001"
             MySetting.HttpPort = "8002"
@@ -3744,19 +3738,16 @@ Public Class Form1
             If Not gExiting Then
                 RegionRestart() ' check for reboot 
                 ScanAgents() ' update agent count
-                RegionListHTML()
             End If
         End If
 
-        'If gDNSSTimer Mod 60 = 0 Then
-        ' check for avatars and Regions to restart every minute
-        'If MySetting.StandAlone() Then LoadRegionsStatsBar()   ' fill in menu once a minute
-        'End If
+        If gDNSSTimer Mod 60 = 0 Then
+            RegionListHTML() ' create HTML for region teleporters
+        End If
 
     End Sub
 
     Private Sub RegionListHTML()
-
 
         'http://localhost:8002/bin/data/teleports.htm
         'Outworldz|Welcome||www.outworldz.com:9000:Welcome|128,128,96|
@@ -3792,8 +3783,6 @@ Public Class Form1
         End Try
 
     End Sub
-
-
 
     Private Sub RegionRestart()
         ' runs once per minute
