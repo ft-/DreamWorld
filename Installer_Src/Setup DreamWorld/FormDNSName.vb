@@ -38,7 +38,7 @@ Public Class FormDNSName
         NextNameButton.Enabled = True
 
         If DNSNameBox.Text = String.Empty Then
-            MsgBox("Type in a 'name.Outworldz.net' for your grid, or just press 'Next' to get a suggested name. You can also use a DNS name.", vbInformation, "Name Needed")
+            MsgBox("Type in a 'name.outworldz.net' for a DYNDNS name, or press 'Next'. You can also use a regular DNS name. Blank is the LAN IP.", vbInformation, "Name Needed")
         End If
 
         Form1.HelpOnce("DNS")
@@ -62,7 +62,7 @@ Public Class FormDNSName
 #Region "Buttons"
 
 
-    Private Sub TextBox1_LostFocus(sender As Object, e As EventArgs) Handles DNSNameBox.LostFocus
+    Private Sub TextBox1_LostFocus(sender As Object, e As EventArgs) Handles DNSNameBox.TextChanged
 
         If DNSNameBox.Text <> String.Empty Then
 
@@ -86,17 +86,19 @@ Public Class FormDNSName
 
     Private Sub SaveButton_Click(sender As Object, e As EventArgs) Handles SaveButton.Click
 
-        If DNSNameBox.Text <> String.Empty Then
-            NextNameButton.Text = "Saving..."
-            Form1.RegisterName(DNSNameBox.Text)
+        NextNameButton.Text = "Saving..."
+        Form1.RegisterName(DNSNameBox.Text)
 
-            NextNameButton.Text = "Next Name"
+        Form1.MySetting.DNSName = DNSNameBox.Text
+        If DNSNameBox.Text = String.Empty Then
 
-            Form1.MySetting.DNSName = DNSNameBox.Text
+            Form1.MySetting.PublicIP = Form1.MySetting.PrivateURL
+        Else
             Form1.MySetting.PublicIP = DNSNameBox.Text
-            Form1.MySetting.SaveSettings()
-
         End If
+
+        Form1.MySetting.SaveSettings()
+
         Me.Close()
 
     End Sub
@@ -163,13 +165,11 @@ Public Class FormDNSName
 
     End Sub
 
-    Private Sub DynDNSPassword_Click(sender As Object, e As EventArgs) Handles DynDNSPassword.Click
+    Private Sub DynDNSPassword_Click(sender As Object, e As EventArgs) Handles DynDNSHelp.Click
 
         Form1.Help("DNS")
 
     End Sub
-
-
 
 
 #End Region
