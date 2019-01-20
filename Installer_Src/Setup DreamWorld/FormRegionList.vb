@@ -13,6 +13,15 @@ Public Class RegionList
     Dim RegionClass As RegionMaker = RegionMaker.Instance(Form1.MysqlConn)
     Dim Timertick As Integer = 0
 
+    <Flags()>
+    Private Enum REGION_TIMER As Integer
+        STOPPED = -3
+        RESTARTING = -2
+        RESTART_PENDING = -1
+        START_COUNTING = 0
+    End Enum
+
+
     Public Property UpdateView() As Boolean
         Get
             Return Form1.UpdateView
@@ -48,6 +57,7 @@ Public Class RegionList
     End Sub
 
 #End Region
+
 #Region "Layout"
 
     Private Sub Panel1_MouseWheel(sender As Object, e As System.Windows.Forms.MouseEventArgs) Handles ListView1.MouseWheel
@@ -137,6 +147,7 @@ Public Class RegionList
 
     End Sub
 #End Region
+
 #Region "Timer"
     Private Sub Timer1_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Timer1.Tick
 
@@ -176,7 +187,7 @@ Public Class RegionList
         For Each X In RegionClass.RegionNumbers
 
             Dim Letter As String = ""
-            If RegionClass.Timer(X) = -1 Or RegionClass.Timer(X) = -2 Then
+            If RegionClass.Timer(X) = REGION_TIMER.RESTART_PENDING Or RegionClass.Timer(X) = REGION_TIMER.RESTARTING Then
                 Letter = "Restarting"
                 Num = 5
             ElseIf RegionClass.WarmingUp(X) Then
@@ -499,6 +510,7 @@ Public Class RegionList
     End Sub
 
 #End Region
+
 #Region "DragDrop"
 
     Private Sub ListView1_DragEnter(sender As System.Object, e As System.Windows.Forms.DragEventArgs) Handles ListView1.DragEnter
