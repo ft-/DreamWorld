@@ -113,29 +113,27 @@ Public Class NetServer
             ' The data sent by client
             Dim request As HttpListenerRequest = context.Request
 
-
             ' Get Parameters:
-            Debug.Print("Client data content type:" + request.ContentType)
+            ' Debug.Print("Client data content type:" + request.ContentType)
 
             Dim baseUri = New Uri(request.Url.OriginalString)
-            Debug.Print("Query String:" + baseUri.Query)
+            ' Debug.Print("Query String:" + baseUri.Query)
 
-            Dim qs = request.QueryString
+            'Dim qs = request.QueryString
 
             ' print out all name value pairs
-            For Each s In qs.AllKeys
-                Debug.Print(s + ":" + qs.Get(s))
-            Next
+            ' For Each s In qs.AllKeys
+            'Debug.Print(s + ":" + qs.Get(s))
+            ' Next
 
             Dim body As System.IO.Stream = request.InputStream
-
             Dim encoding As System.Text.Encoding = request.ContentEncoding
             Dim reader As System.IO.StreamReader = New System.IO.StreamReader(body, encoding)
-            If (request.ContentType <> "") Then
-                Debug.Print("Client data content type {0}", request.ContentType)
-            End If
+            'If (request.ContentType <> "") Then
+            'Debug.Print("Client data content type {0}", request.ContentType)
+            'End If
 
-            Debug.Print("Client data content length {0}", request.ContentLength64)
+            'Debug.Print("Client data content length {0}", request.ContentLength64)
             Dim responseString As String = ""
             ' process the input
             If (Not request.HasEntityBody) Then
@@ -147,11 +145,11 @@ Public Class NetServer
                     responseString = "Test Passed"
                 End If
             Else
-                Debug.Print("Start of client data:")
+                'Debug.Print("Start of client data:")
                 'Convert the data to a string And display it on the console.
                 Dim POST As String = reader.ReadToEnd()
-                Debug.Print(POST)
-                Debug.Print("End of client data:")
+                ' Debug.Print(POST)
+                'Debug.Print("End of client data:")
                 ' process the data
                 responseString = RegionClass.ParsePost(POST, Setting)
             End If
@@ -160,7 +158,7 @@ Public Class NetServer
 
             ''''''''''''''''''''''''''''''''''''''''''''''
 
-            Log(responseString)
+            'Log(responseString)
 
             ' Get the response object to send our confirmation.
             Dim response As HttpListenerResponse = context.Response

@@ -313,6 +313,7 @@ Public Class RegionMaker
             Try
                 Return CType(RegionList(n)._RegionPort, Integer)
             Catch
+                Form1.Log("Bad region port:" + RegionList(n)._RegionPort.ToString)
             End Try
             Return 0
         End Get
@@ -416,6 +417,7 @@ Public Class RegionMaker
 
     Public Sub RegionDump()
 
+        If Not Form1.gDebug Then Return
         Dim ctr = 0
         For Each r As Region_data In RegionList
             DebugRegions(ctr)
@@ -426,12 +428,15 @@ Public Class RegionMaker
 
     Public Sub DebugRegions(n As Integer)
 
-        Debug.Print("RegionNumber:" + n.ToString +
-            " Region:" + RegionList(n)._RegionName.ToString +
-            " WarmingUp=" + RegionList(n)._WarmingUp.ToString +
-           " ShuttingDown=" + RegionList(n)._ShuttingDown.ToString +
-            " Ready=" + RegionList(n)._Ready.ToString +
-           " RegionEnabled=" + RegionList(n)._RegionEnabled.ToString)
+        Form1.Log("RegionNumber:" + n.ToString + vbCrLf +
+            " PID:" + RegionList(n)._ProcessID.ToString + vbCrLf +
+            " Group:" + RegionList(n)._Group.ToString + vbCrLf +
+            " Region:" + RegionList(n)._RegionName.ToString + vbCrLf +
+            " WarmingUp=" + RegionList(n)._WarmingUp.ToString + vbCrLf +
+           " ShuttingDown=" + RegionList(n)._ShuttingDown.ToString + vbCrLf +
+            " Ready=" + RegionList(n)._Ready.ToString + vbCrLf +
+           " RegionEnabled=" + RegionList(n)._RegionEnabled.ToString + vbCrLf +
+           " Timer=" + RegionList(n)._Timer.ToString)
 
     End Sub
 
@@ -483,6 +488,7 @@ Public Class RegionMaker
             End If
             i = i + 1
         Next
+        Form1.Log("PID not found:" + PID.ToString)
         Return -1
 
     End Function
@@ -859,9 +865,7 @@ Public Class RegionMaker
         WebserverList.Reverse()
 
         For LOOPVAR = WebserverList.Count - 1 To 0 Step -1
-
             If WebserverList.Count = 0 Then Return
-
             Try
                 Dim ProcessString As String = WebserverList(LOOPVAR) ' recover the PID as string
 
@@ -905,10 +909,12 @@ Public Class RegionMaker
 
                     If Form1.MySetting.ConsoleShow = False Then
                         Dim pID = ProcessID(n)
+                        Dim p As Process
                         Try
-                            Dim p = Process.GetProcessById(pID)
+                            p = Process.GetProcessById(pID)
                             ShowWindow(p.MainWindowHandle, SHOW_WINDOW.SW_MINIMIZE)
-                        Catch
+                        Catch ex As Exception
+                            Debug.Print("Bad PID: " + pID.ToString)
                         End Try
 
                     End If
@@ -937,7 +943,7 @@ Public Class RegionMaker
                     Debug.Print("Something fucky in region exit")
                 End Try
             Catch ex As Exception
-                Debug.Print(ex.Message) '!!!
+                Debug.Print(ex.Message)
             End Try
         Next
 

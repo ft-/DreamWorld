@@ -1,6 +1,4 @@
 ﻿
-
-
 #Region "Copyright"
 ' Copyright 2014 Fred Beckhusen for www.Outworldz.com
 ' https://opensource.org/licenses/AGPL
@@ -31,6 +29,7 @@ Imports System.Threading
 Imports System.Runtime.InteropServices
 Imports System.Text
 
+
 Public Class Form1
 
 #Region "Declarations"
@@ -40,8 +39,8 @@ Public Class Form1
 
     ' edit this to compile and run in the correct folder root
     Dim gDebugPath As String = "\Opensim\Outworldz DreamGrid Source"  ' no slash at end
-    '
-    Dim gDebug As Boolean = False  ' set by code to log some events in when in a debugger
+    Public gDebug As Boolean = False  ' set by code to log some events in when in a debugger
+
     ' not https, which breaks stuff
     Public gDomain As String = "http://www.outworldz.com"
     Public gPath As String ' Holds path to Opensim folder
@@ -200,7 +199,6 @@ Public Class Form1
     End Sub
 
 #End Region
-
 
 #Region "Properties"
 
@@ -630,7 +628,8 @@ Public Class Form1
                 Try
                     Dim p = Process.GetProcessById(pID)
                     ShowWindow(p.MainWindowHandle, SHOW_WINDOW.SW_RESTORE)
-                Catch
+                Catch ex As Exception
+                    Log("Cannot find Window for PID " + pID.ToString)
                 End Try
 
                 ConsoleCommand(RegionClass.ProcessID(X), "q{ENTER}")
@@ -665,11 +664,12 @@ Public Class Form1
 
                         If RegionClass.ProcessID(X) > 0 And CheckPort(MySetting.PrivateURL, RegionClass.GroupPort(X)) Then
                             CountisRunning = CountisRunning + 1
+                            ConsoleCommand(RegionClass.ProcessID(X), "q{ENTER}")
+                            ConsoleCommand(RegionClass.ProcessID(X), "Q{ENTER}")
                         Else
                             For Each Y In RegionClass.RegionListByGroupNum(RegionClass.RegionName(X))
                                 RegionClass.ShuttingDown(X) = False
                             Next
-
                         End If
                         Sleep(100)
                         UpdateView = True ' make form refresh
@@ -1998,7 +1998,6 @@ Public Class Form1
     End Sub
 #End Region
 
-
 #Region "ExitHandlers"
 
     Private Sub DoExitHandlerPoll()
@@ -2136,16 +2135,8 @@ Public Class Form1
         Environment.SetEnvironmentVariable("OSIM_LOGPATH", gPath + "bin\Regions\" + RegionClass.GroupName(RegionNumber))
 
         Dim myProcess As Process = GetNewProcess()
-
-        If myProcess Is Nothing Then
-            Print("Exceeded max number of trackable regions (" + REGIONMAX.ToString + ")")
-            'Return False
-        End If
-
         Dim Groupname = RegionClass.GroupName(RegionNumber)
-
         Print("Starting " + Groupname)
-
         Try
             myProcess.EnableRaisingEvents = True
             myProcess.StartInfo.UseShellExecute = True ' so we can redirect streams
@@ -2179,9 +2170,8 @@ Public Class Form1
             End Try
 
             If myProcess.Start() Then
-
                 For Each num In RegionClass.RegionListByGroupNum(Groupname)
-                    Diagnostics.Debug.Print("Booting " + RegionClass.RegionName(num))
+                    Log("Setting booted status for " + RegionClass.RegionName(num) + " PID=" + myProcess.Id.ToString + " Num:" + num.ToString)
                     RegionClass.WarmingUp(num) = True
                     RegionClass.Booted(num) = False
                     RegionClass.ShuttingDown(num) = False
@@ -2194,8 +2184,8 @@ Public Class Form1
                 While Not SetWindowTextCall(myProcess.MainWindowHandle, RegionClass.GroupName(RegionNumber))
                     Sleep(1000)
                 End While
-                Diagnostics.Debug.Print("PID=" + myProcess.Id.ToString)
-                Log("Created Process Number " + myProcess.Id.ToString + " in  RegionHandles(" + RegionHandles.Count.ToString + ")")
+
+                Log("Created Process Number " + myProcess.Id.ToString + " in  RegionHandles(" + RegionHandles.Count.ToString + ") " + "Group:" + Groupname)
                 RegionHandles.Add(myProcess.Id, Groupname) ' save in the list of exit events in case it crashes or exits
 
                 Return True
@@ -2310,6 +2300,17 @@ Public Class Form1
 
 #Region "Subs"
 
+    Function getHwnd(name As String) As IntPtr
+
+        For Each pList As Process In Process.GetProcesses()
+            If pList.MainWindowTitle.Contains(name) Then
+                Return pList.MainWindowHandle
+            End If
+        Next
+        Return IntPtr.Zero
+
+    End Function
+
     ''' <summary>
     ''' Sends keystrokes to Opensim.
     ''' Always sends and enter button before to clear and use keys
@@ -2318,13 +2319,25 @@ Public Class Form1
     ''' <param name="command">String</param>
     ''' <returns></returns>
     Public Function ConsoleCommand(ProcessID As Integer, command As String) As Boolean
-        Try
-            Dim p = Process.GetProcessById(ProcessID)
-            ShowWindow(p.MainWindowHandle, SHOW_WINDOW.SW_RESTORE)
-        Catch
-        End Try
+
+        Dim name = RegionClass.GroupName(RegionClass.FindRegionByProcessID(ProcessID))
+
 
         Try
+
+            Dim hwnd = getHwnd(name)
+            If hwnd <> IntPtr.Zero Then ShowWindow(hwnd, SHOW_WINDOW.SW_RESTORE)
+
+            ' Dim p = Process.GetProcessById(ProcessID)
+            ' Log("Process id is now " + p.id.ToString)
+            ' If (p IsNot Nothing) Then
+            'ShowWindow(p.MainWindowHandle, SHOW_WINDOW.SW_RESTORE)
+            'Else
+            ' Diagnostics.Debug.Print("Cannot find PID:" + ProcessID.ToString)
+            'RegionClass.RegionDump()
+            'End If
+
+
             'plus sign(+), caret(^), percent sign (%), tilde (~), And parentheses ()
             command = command.Replace("+", "{+}")
             command = command.Replace("^", "{^}")
@@ -2337,6 +2350,8 @@ Public Class Form1
 
         Catch ex As Exception
             Log("Warn:" + ex.Message)
+            Diagnostics.Debug.Print("Cannot find PID:" + ProcessID.ToString)
+            RegionClass.RegionDump()
             Return False
         End Try
         Me.Focus()
@@ -2537,6 +2552,17 @@ Public Class Form1
                 Dim Groupname = RegionClass.GroupName(X)
                 If timervalue / 6 >= MySetting.AutoRestartInterval() And MySetting.AutoRestartInterval() > 0 And Not AvatarsIsInGroup(Groupname) Then
                     ' shut down the group when one minute has gone by, or multiple thereof.
+                    Try
+                        AppActivate(Groupname)
+                    Catch ex As Exception
+                        Dim Y = RegionClass.FindRegionByProcessID(RegionClass.ProcessID(X))
+                        Log("Found Pid is " + Y.ToString)
+                        coca Log("No PID located for " + RegionClass.RegionName(X) + ":" + RegionClass.ProcessID(X).ToString)
+                        RegionClass.DebugRegions(X)
+
+                        RegionClass.RegionDump()
+                    End Try
+
                     ConsoleCommand(RegionClass.ProcessID(X), "q{ENTER}")
                     ConsoleCommand(RegionClass.ProcessID(X), "Q{ENTER}")
                     ConsoleCommand(RegionClass.ProcessID(X), "q{ENTER}")
