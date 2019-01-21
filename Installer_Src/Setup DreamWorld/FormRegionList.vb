@@ -177,7 +177,7 @@ Public Class RegionList
         ListView1.Columns.Add("Enabled", 120, HorizontalAlignment.Center)
         ListView1.Columns.Add("DOS Box", 100, HorizontalAlignment.Center)
         ListView1.Columns.Add("Agents", 60, HorizontalAlignment.Center)
-        ListView1.Columns.Add("Status", 60, HorizontalAlignment.Center)
+        ListView1.Columns.Add("Status", 120, HorizontalAlignment.Center)
 
         Dim Num As Integer = 0
 
@@ -188,13 +188,16 @@ Public Class RegionList
 
             Dim Letter As String = ""
             If RegionClass.Timer(X) = REGION_TIMER.RESTART_PENDING Or RegionClass.Timer(X) = REGION_TIMER.RESTARTING Then
-                Letter = "Restarting"
+                Letter = "Recycling Up"
                 Num = 5
+            ElseIf RegionClass.Timer(X) = REGION_TIMER.RESTART_PENDING Or RegionClass.Timer(X) = REGION_TIMER.RESTARTING Then
+                Letter = "Recycling down"
+                Num = 1
             ElseIf RegionClass.WarmingUp(X) Then
-                Letter = "Booting"
+                    Letter = "Booting"
                 Num = 0
             ElseIf RegionClass.ShuttingDown(X) Then
-                Letter = "Shutting Down"
+                Letter = "Stopping"
                 Num = 1
             ElseIf RegionClass.Booted(X) Then
                 Letter = "Running"

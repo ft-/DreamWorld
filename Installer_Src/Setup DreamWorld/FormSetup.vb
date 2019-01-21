@@ -2530,7 +2530,7 @@ Public Class Form1
 
             Application.DoEvents()
 
-            If OpensimIsRunning() And Not gExiting And RegionClass.RegionEnabled(X) Then
+            If OpensimIsRunning() And Not gExiting And RegionClass.Timer(X) >= 0 Then
 
                 Dim timervalue As Integer = RegionClass.Timer(X)
                 ' if it is past time and no one is in the sim...

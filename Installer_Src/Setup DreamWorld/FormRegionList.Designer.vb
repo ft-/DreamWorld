@@ -51,7 +51,7 @@ Partial Class RegionList
         Me.ListView1.MultiSelect = False
         Me.ListView1.Name = "ListView1"
         Me.ListView1.ShowItemToolTips = True
-        Me.ListView1.Size = New System.Drawing.Size(395, 316)
+        Me.ListView1.Size = New System.Drawing.Size(461, 316)
         Me.ListView1.TabIndex = 5
         Me.ToolTip1.SetToolTip(Me.ListView1, "Regions may start/stop in groups, depending upon how your bin\Regions folder is o" &
         "rganized.")
@@ -115,7 +115,7 @@ Partial Class RegionList
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
-        Me.ClientSize = New System.Drawing.Size(437, 395)
+        Me.ClientSize = New System.Drawing.Size(485, 395)
         Me.Controls.Add(Me.AllNome)
         Me.Controls.Add(Me.Addregion)
         Me.Controls.Add(Me.RegionHelp)
