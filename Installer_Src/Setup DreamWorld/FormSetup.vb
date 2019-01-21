@@ -129,6 +129,8 @@ Public Class Form1
     Dim Adv As AdvancedForm
     Dim initted As Boolean = False
     Public FormPersonality As FormPersonality
+    Dim gWindowCounter As Integer = 0
+    Dim WindowCtr As Boolean = True
 
     <CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA2101:SpecifyMarshalingForPInvokeStringArguments", MessageId:="1")>
     <CodeAnalysis.SuppressMessage("Microsoft.Interoperability", "CA1401:PInvokesShouldNotBeVisible")>
@@ -137,6 +139,45 @@ Public Class Form1
     Shared Function SetWindowText(ByVal hwnd As IntPtr, ByVal windowName As String) As Boolean
     End Function
 
+    <DllImport("kernel32.dll")>
+    Shared Function GetLastError() As Long
+    End Function
+
+    ''' <summary>
+    ''' SetWindowTextCall is here to wrap the SetWindowtext API call.  This call fails when there is no 
+    ''' hwnd as Windows takes its sweet time to get that. It has a global timer to make sure we do not get stuck
+    ''' </summary>
+    ''' <param name="hwnd">Handle to the window to change the text on</param>
+    ''' <param name="windowName">the name of the DOS Window such asRobust, or a region name</param>
+    ''' 
+    Private Function SetWindowTextCall(ByVal hwnd As IntPtr, ByVal windowName As String) As Boolean
+
+        Dim status As Boolean = False
+        Try
+            status = SetWindowText(hwnd, windowName)
+        Catch ex As Exception
+            ' can fail to be a window
+        End Try
+
+        ' in case we wanted to see that its a 1400
+        'Dim result = GetLastError().ToString
+
+        If Not status Then
+            Sleep(1000)
+            'Log("Windows exception:" + result)
+            gWindowCounter = gWindowCounter + 1
+            If gWindowCounter > 20 Then
+                WindowCtr = False ' abort, 20 seconds is pretty long
+                gWindowCounter = 0 ' prep for next window
+            End If
+        Else ' i true, we did it
+            WindowCtr = False
+            gWindowCounter = 0 ' prep for next window
+        End If
+
+        Return status
+
+    End Function
 
     <Flags()>
     Private Enum REGION_TIMER As Integer
@@ -964,7 +1005,7 @@ Public Class Form1
         PictureBox1.Visible = False
         TextBox1.Visible = True
         TextBox1.Text = Value
-        Application.DoEvents()
+        'Application.DoEvents()
 
     End Sub
 
@@ -1993,11 +2034,9 @@ Public Class Form1
             'IcecastProcess.StartInfo.Arguments = "-c .\icecast_run.xml"
             IcecastProcess.Start()
             gIcecastProcID = IcecastProcess.Id
-            SetWindowText(IcecastProcess.MainWindowHandle, "Icecast")
-            Sleep(2000)
-            SetWindowText(IcecastProcess.MainWindowHandle, "Icecast")
             Sleep(1000)
-            SetWindowText(IcecastProcess.MainWindowHandle, "Icecast")
+            While Not SetWindowTextCall(IcecastProcess.MainWindowHandle, "Icecast") And WindowCtr
+            End While
 
             Try
                 ShowWindow(IcecastProcess.MainWindowHandle, SHOW_WINDOW.SW_MINIMIZE)
@@ -2033,9 +2072,10 @@ Public Class Form1
             gRobustProcID = RobustProcess.Id
 
             Sleep(1000)
-            SetWindowText(RobustProcess.MainWindowHandle, "Robust")
-            Sleep(100)
-            SetWindowText(RobustProcess.MainWindowHandle, "Robust")
+
+            While Not SetWindowTextCall(RobustProcess.MainWindowHandle, "Robust") And WindowCtr
+            End While
+
 
         Catch ex As Exception
             Print("Error: Robust did not start: " + ex.Message)
@@ -3147,7 +3187,7 @@ Public Class Form1
                 End Try
             Catch ex As Exception
                 Log("Something fucky in region exit:" + ex.Message)
-                ExitList.Clear()
+                ExitList.RemoveAt(LOOPVAR)
             End Try
 
         Next
@@ -3489,17 +3529,10 @@ Public Class Form1
                 Next
 
                 UpdateView = True ' make form refresh
-                ' flaky API crap does not always work.
-                Try
-                    SetWindowText(myProcess.MainWindowHandle, RegionClass.GroupName(RegionNumber))
-                    Sleep(1000)
-                    SetWindowText(myProcess.MainWindowHandle, RegionClass.GroupName(RegionNumber))
-                    Sleep(1000)
-                    SetWindowText(myProcess.MainWindowHandle, RegionClass.GroupName(RegionNumber))
-                    Sleep(1000)
-                    SetWindowText(myProcess.MainWindowHandle, RegionClass.GroupName(RegionNumber))
-                Catch
-                End Try
+
+                Sleep(1000)
+                While Not SetWindowTextCall(myProcess.MainWindowHandle, RegionClass.GroupName(RegionNumber)) And WindowCtr
+                End While
 
                 Return True
             End If
@@ -5152,7 +5185,7 @@ Public Class Form1
 
         End If
 
-        Dim isMySqlRunning = CheckPort("127.0.0.1", CType(MySetting.MySqlPort, Integer))
+        Dim isMySqlRunning = CheckPort(MySetting.RobustServer(), CType(MySetting.MySqlPort, Integer))
 
         If isMySqlRunning Then Return True
         ' Start MySql in background.
@@ -5918,6 +5951,11 @@ Public Class Form1
         System.Diagnostics.Process.Start("notepad.exe", path)
 
 
+    End Sub
+
+    Private Sub RevisionHistoryToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles RevisionHistoryToolStripMenuItem.Click
+        Dim path = MyFolder + "/revisions.txt"
+        System.Diagnostics.Process.Start("notepad.exe", path)
     End Sub
 #End Region
 
