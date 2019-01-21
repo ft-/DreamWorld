@@ -1,3 +1,19 @@
+2.70
+Removed limit on number of regions.
+New rev 2.4 Teleports in the IAR that do not spam the console.
+Log at INFO level for production use.
+Many AutoRestart improvments.
+Console titles sometimes would not 'take'. 
+Allow blank DNS name which uses the LAN IP
+Vista, 7, 8, 10 compatible
+View All Logs link in Help
+Show Revisions link in Help
+
+2.69
+Run as Administrator for the webserver because Icons would not change reliably without it.
+Icons reworks when auto restarting
+Log at DEBUG level for debug 
+
 2.68
 V4 updater and installer 
 rm broken OpenSim.Addons.AutoRestart.dll
