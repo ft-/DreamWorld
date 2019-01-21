@@ -151,7 +151,7 @@ Public Class RegionList
 #Region "Timer"
     Private Sub Timer1_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Timer1.Tick
 
-        If UpdateView() Or Timertick Mod 30 = 0 Then ' force a refresh
+        If UpdateView() Or Timertick Mod 120 = 0 Then ' force a refresh
             LoadMyListView()
         End If
         Timertick = Timertick + 1
