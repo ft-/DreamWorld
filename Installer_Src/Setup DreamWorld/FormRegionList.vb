@@ -190,7 +190,7 @@ Public Class RegionList
             If RegionClass.Timer(X) = REGION_TIMER.RESTART_PENDING Then
                 Letter = "Recycling Down"
                 Num = 5
-            ElseIf RegionClass.Timer(X) = RegionClass.Timer(X) = REGION_TIMER.RESTARTING Then
+            ElseIf RegionClass.Timer(X) = REGION_TIMER.RESTARTING Then
                 Letter = "Recycling Up"
                 Num = 5
             ElseIf RegionClass.WarmingUp(X) Then
@@ -419,7 +419,7 @@ Public Class RegionList
     End Sub
 
     Private Sub StopRegionNum(num As Integer)
-        If Form1.ConsoleCommand(RegionClass.RegionName(num), "q{ENTER}q{ENTER}") Then
+        If Form1.ConsoleCommand(RegionClass.GroupName(num), "q{ENTER}q{ENTER}") Then
             RegionClass.Booted(num) = False
             RegionClass.WarmingUp(num) = False
             RegionClass.ShuttingDown(num) = True

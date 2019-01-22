@@ -187,7 +187,12 @@ Public Class RegionMaker
     End Property
     Public Property Timer(n As Integer) As Integer
         Get
-            Return CType(RegionList(n)._Timer, Integer)
+            Try
+                Return CType(RegionList(n)._Timer, Integer)
+            Catch
+                Return 0
+            End Try
+
         End Get
         Set(ByVal Value As Integer)
             RegionList(n)._Timer = Value.ToString
@@ -646,7 +651,7 @@ Public Class RegionMaker
                         End If
 
                         n = n + 1
-                        'Application.DoEvents()
+                        Application.DoEvents()
                     Next
 
                 Catch ex As Exception
