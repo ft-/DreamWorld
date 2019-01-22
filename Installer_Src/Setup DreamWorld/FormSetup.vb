@@ -113,7 +113,7 @@ Public Class Form1
     ' Region 
     Public RegionClass As RegionMaker   ' Global RegionClass
     Public RegionForm As RegionList
-    Dim ExitList As New List(Of Integer)
+    Dim ExitList As New List(Of String)
 
     ' Mysql
     Dim gStopMysql As Boolean = True
@@ -624,17 +624,12 @@ Public Class Form1
             Application.DoEvents()
 
             If OpensimIsRunning() And RegionClass.RegionEnabled(X) And Not RegionClass.ShuttingDown(X) Then
-                Dim pID = RegionClass.ProcessID(X)
-                Try
-                    Dim p = Process.GetProcessById(pID)
-                    ShowWindow(p.MainWindowHandle, SHOW_WINDOW.SW_RESTORE)
-                Catch ex As Exception
-                    Log("Cannot find Window for PID " + pID.ToString)
-                End Try
+                Dim hwnd = getHwnd(RegionClass.GroupName(X))
+                If hwnd <> IntPtr.Zero Then ShowWindow(hwnd, SHOW_WINDOW.SW_RESTORE)
 
-                ConsoleCommand(RegionClass.ProcessID(X), "q{ENTER}")
-                ConsoleCommand(RegionClass.ProcessID(X), "Q{ENTER}")
-                ConsoleCommand(RegionClass.ProcessID(X), "q{ENTER}")
+                ConsoleCommand(RegionClass.GroupName(X), "q{ENTER}")
+                ConsoleCommand(RegionClass.GroupName(X), "Q{ENTER}")
+                ConsoleCommand(RegionClass.GroupName(X), "q{ENTER}")
 
                 RegionClass.ShuttingDown(X) = True
                 RegionClass.Booted(X) = False
@@ -654,7 +649,6 @@ Public Class Form1
 
             While (counter > 0 And OpensimIsRunning())
                 ' decrement progress bar according to the ratio of what we had / what we have now
-                Application.DoEvents()
                 counter = counter - 1
                 Dim CountisRunning As Integer = 0
 
@@ -662,19 +656,17 @@ Public Class Form1
                     If RegionClass.ShuttingDown(X) = True Then
                         PrintFast("Checking " + RegionClass.RegionName(X))
 
-                        If RegionClass.ProcessID(X) > 0 And CheckPort(MySetting.PrivateURL, RegionClass.GroupPort(X)) Then
+                        If CheckPort(MySetting.PrivateURL, RegionClass.GroupPort(X)) Then
                             CountisRunning = CountisRunning + 1
-                            ConsoleCommand(RegionClass.ProcessID(X), "q{ENTER}")
-                            ConsoleCommand(RegionClass.ProcessID(X), "Q{ENTER}")
                         Else
                             For Each Y In RegionClass.RegionListByGroupNum(RegionClass.RegionName(X))
                                 RegionClass.ShuttingDown(X) = False
                             Next
                         End If
-                        Sleep(100)
+
                         UpdateView = True ' make form refresh
                     End If
-
+                    Application.DoEvents()
                 Next
 
                 If CountisRunning = 0 Then
@@ -712,9 +704,9 @@ Public Class Form1
         End Try
 
         If gRobustProcID > 0 Then
-            ConsoleCommand(gRobustProcID, "q{ENTER}")
-            ConsoleCommand(gRobustProcID, "Q{ENTER}")
-            ConsoleCommand(gRobustProcID, "q{ENTER}")
+            ConsoleCommand("Robust", "q{ENTER}")
+            ConsoleCommand("Robust", "Q{ENTER}")
+            ConsoleCommand("Robust", "q{ENTER}")
         End If
 
         ' cannot load OAR or IAR, either
@@ -2012,8 +2004,8 @@ Public Class Form1
         For LOOPVAR = ExitList.Count - 1 To 0 Step -1
 
             Try
-                Dim ProcessID As Integer = ExitList(LOOPVAR) ' recover the PID as integer
-                Dim RegionNumber As Integer = RegionClass.FindRegionByProcessID(ProcessID) ' get the region handle
+                Dim Name As String = ExitList(LOOPVAR) ' recover the PID as integer
+                Dim RegionNumber As Integer = RegionClass.FindRegionByName(Name) ' get the region handle
 
                 If RegionNumber < 0 Then
                     ExitList.RemoveAt(LOOPVAR)
@@ -2171,11 +2163,12 @@ Public Class Form1
 
             If myProcess.Start() Then
                 For Each num In RegionClass.RegionListByGroupNum(Groupname)
-                    Log("Setting booted status for " + RegionClass.RegionName(num) + " PID=" + myProcess.Id.ToString + " Num:" + num.ToString)
+                    Log("PID:Setting booted status for " + RegionClass.RegionName(num) + " PID=" + myProcess.Id.ToString + " Num:" + num.ToString)
                     RegionClass.WarmingUp(num) = True
                     RegionClass.Booted(num) = False
                     RegionClass.ShuttingDown(num) = False
                     RegionClass.ProcessID(num) = myProcess.Id
+                    RegionClass.Timer(num) = REGION_TIMER.START_COUNTING
                 Next
 
                 UpdateView = True ' make form refresh
@@ -2300,7 +2293,7 @@ Public Class Form1
 
 #Region "Subs"
 
-    Function getHwnd(name As String) As IntPtr
+    Public Function getHwnd(name As String) As IntPtr
 
         For Each pList As Process In Process.GetProcesses()
             If pList.MainWindowTitle.Contains(name) Then
@@ -2318,25 +2311,11 @@ Public Class Form1
     ''' <param name="ProcessID">PID of the DOS box</param>
     ''' <param name="command">String</param>
     ''' <returns></returns>
-    Public Function ConsoleCommand(ProcessID As Integer, command As String) As Boolean
-
-        Dim name = RegionClass.GroupName(RegionClass.FindRegionByProcessID(ProcessID))
-
+    Public Function ConsoleCommand(name As String, command As String) As Boolean
 
         Try
-
             Dim hwnd = getHwnd(name)
             If hwnd <> IntPtr.Zero Then ShowWindow(hwnd, SHOW_WINDOW.SW_RESTORE)
-
-            ' Dim p = Process.GetProcessById(ProcessID)
-            ' Log("Process id is now " + p.id.ToString)
-            ' If (p IsNot Nothing) Then
-            'ShowWindow(p.MainWindowHandle, SHOW_WINDOW.SW_RESTORE)
-            'Else
-            ' Diagnostics.Debug.Print("Cannot find PID:" + ProcessID.ToString)
-            'RegionClass.RegionDump()
-            'End If
-
 
             'plus sign(+), caret(^), percent sign (%), tilde (~), And parentheses ()
             command = command.Replace("+", "{+}")
@@ -2344,13 +2323,13 @@ Public Class Form1
             command = command.Replace("%", "{%}")
             command = command.Replace("(", "{(}")
             command = command.Replace(")", "{)}")
-            AppActivate(ProcessID)
+            AppActivate(name)
             SendKeys.SendWait("{ENTER}")
             SendKeys.SendWait(command)
 
         Catch ex As Exception
             Log("Warn:" + ex.Message)
-            Diagnostics.Debug.Print("Cannot find PID:" + ProcessID.ToString)
+            Diagnostics.Debug.Print("Cannot find window " + name)
             RegionClass.RegionDump()
             Return False
         End Try
@@ -2422,7 +2401,6 @@ Public Class Form1
     Sub Sleep(value As Integer)
 
         ' value is in milliseconds, but we do it in 10 passes so we can doevents() to free up console
-
         Dim sleeptime = value / 10  ' now in tenths
         Dim counter = 10
         While counter > 0
@@ -2475,7 +2453,6 @@ Public Class Form1
         End If
 
         if Not gExiting Then RegionClass.CheckPost()
-
 
         ' 10 seconds check for a restart
         ' RegionRestart requires this MOD 10 as it changed there to one minute
@@ -2545,7 +2522,7 @@ Public Class Form1
 
             Application.DoEvents()
 
-            If OpensimIsRunning() And Not gExiting And RegionClass.Timer(X) >= 0 Then
+            If OpensimIsRunning() And Not gExiting And RegionClass.Timer(X) >= REGION_TIMER.START_COUNTING Then
 
                 Dim timervalue As Integer = RegionClass.Timer(X)
                 ' if it is past time and no one is in the sim...
@@ -2553,26 +2530,25 @@ Public Class Form1
                 If timervalue / 6 >= MySetting.AutoRestartInterval() And MySetting.AutoRestartInterval() > 0 And Not AvatarsIsInGroup(Groupname) Then
                     ' shut down the group when one minute has gone by, or multiple thereof.
                     Try
-                        AppActivate(Groupname)
-                    Catch ex As Exception
-                        Dim Y = RegionClass.FindRegionByProcessID(RegionClass.ProcessID(X))
-                        Log("Found Pid is " + Y.ToString)
-                        coca Log("No PID located for " + RegionClass.RegionName(X) + ":" + RegionClass.ProcessID(X).ToString)
-                        RegionClass.DebugRegions(X)
+                        'AppActivate(Groupname)
+                        Dim hwnd = getHwnd(Groupname)
+                        If hwnd <> IntPtr.Zero Then ShowWindow(hwnd, SHOW_WINDOW.SW_RESTORE)
 
+                        ConsoleCommand(RegionClass.GroupName(X), "q{ENTER}")
+                        ConsoleCommand(RegionClass.GroupName(X), "Q{ENTER}")
+                        ConsoleCommand(RegionClass.GroupName(X), "q{ENTER}")
+                        Print("AutoRestarting " + Groupname)
+                        RegionClass.Timer(X) = REGION_TIMER.RESTART_PENDING
+                        UpdateView = True ' make form refresh
+                    Catch ex As Exception
+                        Log(ex.Message)
                         RegionClass.RegionDump()
                     End Try
 
-                    ConsoleCommand(RegionClass.ProcessID(X), "q{ENTER}")
-                    ConsoleCommand(RegionClass.ProcessID(X), "Q{ENTER}")
-                    ConsoleCommand(RegionClass.ProcessID(X), "q{ENTER}")
-                    Print("AutoRestarting " + Groupname)
-                    RegionClass.Timer(X) = REGION_TIMER.RESTART_PENDING
-                    UpdateView = True ' make form refresh
                 End If
 
                 ' count up to auto restart , when high enough, restart the sim
-                If RegionClass.Timer(X) >= 0 Then
+                If RegionClass.Timer(X) >= REGION_TIMER.START_COUNTING Then
                     RegionClass.Timer(X) = RegionClass.Timer(X) + 1
                 End If
 
@@ -2683,9 +2659,9 @@ Public Class Form1
             If RegionClass.Booted(RegionNumber) Then
                 Dim Group = RegionClass.GroupName(RegionNumber)
                 For Each Y In RegionClass.RegionListByGroupNum(Group)
-                    ConsoleCommand(RegionClass.ProcessID(Y), "alert CPU Intensive Backup Started{ENTER}")
-                    ConsoleCommand(RegionClass.ProcessID(Y), "change region " + """" + chosen + """" + "{ENTER}")
-                    ConsoleCommand(RegionClass.ProcessID(Y), "save oar " + """" + BackupPath() + RegionClass.RegionName(Y) + "_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{ENTER}")
+                    ConsoleCommand(RegionClass.GroupName(Y), "alert CPU Intensive Backup Started{ENTER}")
+                    ConsoleCommand(RegionClass.GroupName(Y), "change region " + """" + chosen + """" + "{ENTER}")
+                    ConsoleCommand(RegionClass.GroupName(Y), "save oar " + """" + BackupPath() + RegionClass.RegionName(Y) + "_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{ENTER}")
                 Next
             End If
             Me.Focus()
@@ -2725,14 +2701,14 @@ Public Class Form1
                     Dim Group = RegionClass.GroupName(RegionNumber)
                     For Each Y In RegionClass.RegionListByGroupNum(Group)
 
-                        ConsoleCommand(RegionClass.ProcessID(Y), "change region " + chosen + "{ENTER}")
+                        ConsoleCommand(RegionClass.GroupName(Y), "change region " + chosen + "{ENTER}")
                         If backMeUp = vbYes Then
-                            ConsoleCommand(RegionClass.ProcessID(Y), "alert CPU Intensive Backup Started{ENTER}")
-                            ConsoleCommand(RegionClass.ProcessID(Y), "save oar  " + """" + BackupPath() + "Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{ENTER}")
+                            ConsoleCommand(RegionClass.GroupName(Y), "alert CPU Intensive Backup Started{ENTER}")
+                            ConsoleCommand(RegionClass.GroupName(Y), "save oar  " + """" + BackupPath() + "Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{ENTER}")
                         End If
-                        ConsoleCommand(RegionClass.ProcessID(Y), "alert New content Is loading..{ENTER}")
-                        ConsoleCommand(RegionClass.ProcessID(Y), "load oar --force-terrain --force-parcels " + """" + thing + """" + "{ENTER}")
-                        ConsoleCommand(RegionClass.ProcessID(Y), "alert New content just loaded." + "{ENTER}")
+                        ConsoleCommand(RegionClass.GroupName(Y), "alert New content Is loading..{ENTER}")
+                        ConsoleCommand(RegionClass.GroupName(Y), "load oar --force-terrain --force-parcels " + """" + thing + """" + "{ENTER}")
+                        ConsoleCommand(RegionClass.GroupName(Y), "alert New content just loaded." + "{ENTER}")
 
                     Next
                 End If
@@ -2791,9 +2767,8 @@ Public Class Form1
 
                 For Each Y In RegionClass.RegionListByGroupNum(Group)
                     If Not L.Contains(RegionClass.RegionName(Y)) Then
-                        ConsoleCommand(RegionClass.ProcessID(RegionNumber), "change region " + """" + RegionClass.RegionName(Y) + """" + "{ENTER}")
-                        ConsoleCommand(RegionClass.ProcessID(RegionNumber), "save oar  " + """" + BackupPath() + RegionClass.RegionName(Y) + "_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{ENTER}")
-
+                        ConsoleCommand(RegionClass.GroupName(RegionNumber), "change region " + """" + RegionClass.RegionName(Y) + """" + "{ENTER}")
+                        ConsoleCommand(RegionClass.GroupName(RegionNumber), "save oar  " + """" + BackupPath() + RegionClass.RegionName(Y) + "_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{ENTER}")
                         L.Add(RegionClass.RegionName(Y))
                     End If
                 Next
@@ -2894,7 +2869,7 @@ Public Class Form1
                 Dim GName = RegionClass.GroupName(d)
                 Dim RNUm = RegionClass.FindRegionByName(GName)
                 If RegionClass.Booted(d) And r = 0 Then
-                    ConsoleCommand(RegionClass.ProcessID(d), "save iar " + Name + " """ + itemName + """" + " " + Password + " " + """" + BackupPath() + backupName + """" + "{ENTER}")
+                    ConsoleCommand(RegionClass.GroupName(d), "save iar " + Name + " """ + itemName + """" + " " + Password + " " + """" + BackupPath() + backupName + """" + "{ENTER}")
                     r = r + 1
                     Me.Focus()
                     Print("Saving " + backupName + " to " + BackupPath())
@@ -2949,14 +2924,14 @@ Public Class Form1
                     Print("Opensimulator will load " + thing + ". This may take some time.")
                     thing = thing.Replace("\", "/")    ' because Opensim uses unix-like slashes, that's why
 
-                    ConsoleCommand(RegionClass.ProcessID(Y), "change region " + region + "{ENTER}")
+                    ConsoleCommand(RegionClass.GroupName(Y), "change region " + region + "{ENTER}")
                     If backMeUp = vbYes Then
-                        ConsoleCommand(RegionClass.ProcessID(Y), "alert CPU Intensive Backup Started {ENTER}")
-                        ConsoleCommand(RegionClass.ProcessID(Y), "save oar " + """" + BackupPath() + "Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{ENTER}")
+                        ConsoleCommand(RegionClass.GroupName(Y), "alert CPU Intensive Backup Started {ENTER}")
+                        ConsoleCommand(RegionClass.GroupName(Y), "save oar " + """" + BackupPath() + "Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{ENTER}")
                     End If
-                    ConsoleCommand(RegionClass.ProcessID(Y), "alert New content Is loading ...{ENTER}")
-                    ConsoleCommand(RegionClass.ProcessID(Y), "load oar --force-terrain --force-parcels " + """" + thing + """" + "{ENTER}")
-                    ConsoleCommand(RegionClass.ProcessID(Y), "alert New content just loaded. {ENTER}")
+                    ConsoleCommand(RegionClass.GroupName(Y), "alert New content Is loading ...{ENTER}")
+                    ConsoleCommand(RegionClass.GroupName(Y), "load oar --force-terrain --force-parcels " + """" + thing + """" + "{ENTER}")
+                    ConsoleCommand(RegionClass.GroupName(Y), "alert New content just loaded. {ENTER}")
                     once = True
                 End If
 
@@ -2993,10 +2968,8 @@ Public Class Form1
         Dim user = InputBox("User name that will get this IAR?")
         Dim password = InputBox("Password for user " + user + "?")
         If user.Length > 0 And password.Length > 0 Then
-
-            ConsoleCommand(RegionClass.ProcessID(num), "load iar --merge " + user + " /Objects " + password + " " + """" + thing + """" + "{ENTER}")
-            ConsoleCommand(RegionClass.ProcessID(num), "alert IAR content Is loaded{ENTER}")
-
+            ConsoleCommand(RegionClass.GroupName(num), "load iar --merge " + user + " /Objects " + password + " " + """" + thing + """" + "{ENTER}")
+            ConsoleCommand(RegionClass.GroupName(num), "alert IAR content Is loaded{ENTER}")
             Print("Opensim is loading your item. You will find it in Inventory in /Objects soon.")
         Else
             Print("Load IAR cancelled - must use the full user name and password.")
@@ -4267,9 +4240,8 @@ Public Class Form1
 
         For Each X As Integer In RegionClass.RegionNumbers
             If RegionClass.Booted(X) Then
-                ConsoleCommand(RegionClass.ProcessID(X), "set log level " + msg + "{ENTER}")
+                ConsoleCommand(RegionClass.GroupName(X), "set log level " + msg + "{ENTER}")
             End If
-
         Next
 
     End Sub
@@ -4315,8 +4287,8 @@ Public Class Form1
         Dim name = ChooseRegion(True)
         Dim X = RegionClass.FindRegionByName(name)
         If X > -1 Then
-            ConsoleCommand(RegionClass.ProcessID(X), "change region " + name + "{ENTER}")
-            ConsoleCommand(RegionClass.ProcessID(X), "restart region " + name + "{ENTER}")
+            ConsoleCommand(RegionClass.GroupName(X), "change region " + name + "{ENTER}")
+            ConsoleCommand(RegionClass.GroupName(X), "restart region " + name + "{ENTER}")
             UpdateView = True ' make form refresh
         End If
 
@@ -4330,7 +4302,7 @@ Public Class Form1
         Dim name = ChooseRegion(True)
         Dim X = RegionClass.FindRegionByName(name)
         If X > -1 Then
-            ConsoleCommand(RegionClass.ProcessID(X), "restart{ENTER}")
+            ConsoleCommand(RegionClass.GroupName(X), "restart{ENTER}")
             UpdateView = True ' make form refresh
         End If
 
@@ -4344,8 +4316,8 @@ Public Class Form1
         Dim rname = ChooseRegion(True)
         Dim X = RegionClass.FindRegionByName(rname)
         If X > -1 Then
-            ConsoleCommand(RegionClass.ProcessID(X), "change region " + rname + "{ENTER}")
-            ConsoleCommand(RegionClass.ProcessID(X), cmd + "{ENTER}")
+            ConsoleCommand(RegionClass.GroupName(X), "change region " + rname + "{ENTER}")
+            ConsoleCommand(RegionClass.GroupName(X), cmd + "{ENTER}")
         End If
 
     End Sub
@@ -4376,8 +4348,8 @@ Public Class Form1
         If rname.Length > 0 Then
             Dim Message = InputBox("What do you want to say to this region?")
             Dim X = RegionClass.FindRegionByName(rname)
-            ConsoleCommand(RegionClass.ProcessID(X), "change region  " + RegionClass.RegionName(X) + "{ENTER}")
-            ConsoleCommand(RegionClass.ProcessID(X), "alert " + Message + "{ENTER}")
+            ConsoleCommand(RegionClass.GroupName(X), "change region  " + RegionClass.RegionName(X) + "{ENTER}")
+            ConsoleCommand(RegionClass.GroupName(X), "alert " + Message + "{ENTER}")
         End If
 
     End Sub
@@ -4395,8 +4367,8 @@ Public Class Form1
             For Each X As Integer In RegionClass.RegionNumbers
                 If RegionClass.AvatarCount(X) > 0 Then
                     HowManyAreOnline = HowManyAreOnline + 1
-                    ConsoleCommand(RegionClass.ProcessID(X), "change region  " + RegionClass.RegionName(X) + "{ENTER}")
-                    ConsoleCommand(RegionClass.ProcessID(X), "alert " + Message + "{ENTER}")
+                    ConsoleCommand(RegionClass.GroupName(X), "change region  " + RegionClass.RegionName(X) + "{ENTER}")
+                    ConsoleCommand(RegionClass.GroupName(X), "alert " + Message + "{ENTER}")
                 End If
 
             Next

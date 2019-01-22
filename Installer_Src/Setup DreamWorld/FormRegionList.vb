@@ -187,14 +187,14 @@ Public Class RegionList
         For Each X In RegionClass.RegionNumbers
 
             Dim Letter As String = ""
-            If RegionClass.Timer(X) = REGION_TIMER.RESTART_PENDING Or RegionClass.Timer(X) = REGION_TIMER.RESTARTING Then
+            If RegionClass.Timer(X) = REGION_TIMER.RESTART_PENDING Then
+                Letter = "Recycling Down"
+                Num = 5
+            ElseIf RegionClass.Timer(X) = RegionClass.Timer(X) = REGION_TIMER.RESTARTING Then
                 Letter = "Recycling Up"
                 Num = 5
-            ElseIf RegionClass.Timer(X) = REGION_TIMER.RESTART_PENDING Or RegionClass.Timer(X) = REGION_TIMER.RESTARTING Then
-                Letter = "Recycling down"
-                Num = 1
             ElseIf RegionClass.WarmingUp(X) Then
-                    Letter = "Booting"
+                Letter = "Booting"
                 Num = 0
             ElseIf RegionClass.ShuttingDown(X) Then
                 Letter = "Stopping"
@@ -350,10 +350,10 @@ Public Class RegionList
 
         If (RegionClass.Booted(n) Or RegionClass.WarmingUp(n)) Or RegionClass.ShuttingDown(n) Then
             ' if enabled and running, even partly up, stop it.
-            Try
-                ShowWindow(Process.GetProcessById(RegionClass.ProcessID(n)).MainWindowHandle, SHOW_WINDOW.SW_RESTORE)
-            Catch
-            End Try
+
+            Dim hwnd = Form1.getHwnd(RegionClass.RegionName(n))
+            If hwnd <> IntPtr.Zero Then ShowWindow(hwnd, SHOW_WINDOW.SW_RESTORE)
+
             Try
                 Dim V = MsgBox("Stop " + RegionClass.GroupName(n) + "?", vbYesNo)
                 If V = vbNo Then Return
@@ -419,7 +419,7 @@ Public Class RegionList
     End Sub
 
     Private Sub StopRegionNum(num As Integer)
-        If Form1.ConsoleCommand(RegionClass.ProcessID(num), "q{ENTER}q{ENTER}") Then
+        If Form1.ConsoleCommand(RegionClass.RegionName(num), "q{ENTER}q{ENTER}") Then
             RegionClass.Booted(num) = False
             RegionClass.WarmingUp(num) = False
             RegionClass.ShuttingDown(num) = True

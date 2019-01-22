@@ -646,7 +646,7 @@ Public Class RegionMaker
                         End If
 
                         n = n + 1
-                        Application.DoEvents()
+                        'Application.DoEvents()
                     Next
 
                 Catch ex As Exception
@@ -903,25 +903,15 @@ Public Class RegionMaker
                     ShuttingDown(n) = False
                     UUID(n) = json.region_id
 
-                    Timer(n) = REGION_TIMER.START_COUNTING
-
                     Form1.UpdateView() = True
 
                     If Form1.MySetting.ConsoleShow = False Then
-                        Dim pID = ProcessID(n)
-                        Dim p As Process
-                        Try
-                            p = Process.GetProcessById(pID)
-                            ShowWindow(p.MainWindowHandle, SHOW_WINDOW.SW_MINIMIZE)
-                        Catch ex As Exception
-                            Debug.Print("Bad PID: " + pID.ToString)
-                        End Try
+
+                        Dim hwnd = Form1.getHwnd(GroupName(n))
+                        If hwnd <> IntPtr.Zero Then ShowWindow(hwnd, SHOW_WINDOW.SW_MINIMIZE)
 
                     End If
-
-
-                ElseIf json.login = "shutdown" Then
-
+                ElseIf json.login = "shutdownXXX" Then  '' XXX added to disable
                     ' does not work as expected - get this during bootup!
                     Form1.PrintFast("Region " & json.region_name & " shutting down")
 

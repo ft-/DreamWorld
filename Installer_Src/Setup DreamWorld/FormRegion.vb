@@ -1028,7 +1028,7 @@ Public Class FormRegion
             If X > -1 Then
 
                 If Form1.CheckPort(Form1.MySetting.PrivateURL, RegionClass.GroupPort(X)) Then
-                    Form1.ConsoleCommand(RegionClass.ProcessID(X), "q{enter}")
+                    Form1.ConsoleCommand(RegionClass.GroupName(X), "q{enter}")
                 End If
                 Dim loopctr = 60 ' wait a minute
                 While Form1.CheckPort(Form1.MySetting.PrivateURL, RegionClass.GroupPort(X)) And loopctr > 0
