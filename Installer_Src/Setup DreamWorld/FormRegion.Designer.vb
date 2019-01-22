@@ -135,7 +135,7 @@ Partial Class FormRegion
         '
         Me.RegionName.Location = New System.Drawing.Point(14, 36)
         Me.RegionName.Name = "RegionName"
-        Me.RegionName.Size = New System.Drawing.Size(230, 20)
+        Me.RegionName.Size = New System.Drawing.Size(144, 20)
         Me.RegionName.TabIndex = 1
         Me.ToolTip1.SetToolTip(Me.RegionName, "Alpha-Numeric plus Spaces")
         '
@@ -336,7 +336,7 @@ Partial Class FormRegion
         'MapHelp
         '
         Me.MapHelp.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.MapHelp.Location = New System.Drawing.Point(197, 62)
+        Me.MapHelp.Location = New System.Drawing.Point(169, 29)
         Me.MapHelp.Name = "MapHelp"
         Me.MapHelp.Size = New System.Drawing.Size(28, 27)
         Me.MapHelp.TabIndex = 1857
@@ -355,6 +355,7 @@ Partial Class FormRegion
         '
         'Advanced
         '
+        Me.Advanced.BackColor = System.Drawing.SystemColors.ControlLight
         Me.Advanced.Controls.Add(Me.ClampPrimSize)
         Me.Advanced.Controls.Add(Me.Label12)
         Me.Advanced.Controls.Add(Me.Label10)
@@ -373,9 +374,9 @@ Partial Class FormRegion
         Me.Advanced.Controls.Add(Me.Label21)
         Me.Advanced.Controls.Add(Me.CoordY)
         Me.Advanced.Controls.Add(Me.CoordX)
-        Me.Advanced.Location = New System.Drawing.Point(15, 242)
+        Me.Advanced.Location = New System.Drawing.Point(14, 242)
         Me.Advanced.Name = "Advanced"
-        Me.Advanced.Size = New System.Drawing.Size(230, 256)
+        Me.Advanced.Size = New System.Drawing.Size(254, 256)
         Me.Advanced.TabIndex = 26
         Me.Advanced.TabStop = False
         Me.Advanced.Text = "Advanced"
@@ -508,6 +509,7 @@ Partial Class FormRegion
         '
         'GroupBox6
         '
+        Me.GroupBox6.BackColor = System.Drawing.SystemColors.ControlLight
         Me.GroupBox6.Controls.Add(Me.GroupBox7)
         Me.GroupBox6.Controls.Add(Me.Label13)
         Me.GroupBox6.Controls.Add(Me.GroupBox3)
