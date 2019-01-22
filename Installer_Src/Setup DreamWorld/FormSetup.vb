@@ -2315,7 +2315,12 @@ Public Class Form1
 
         Try
             Dim hwnd = getHwnd(name)
-            If hwnd <> IntPtr.Zero Then ShowWindow(hwnd, SHOW_WINDOW.SW_RESTORE)
+            If hwnd <> IntPtr.Zero Then
+                ShowWindow(hwnd, SHOW_WINDOW.SW_RESTORE)
+            Else
+                Return False
+            End If
+
 
             'plus sign(+), caret(^), percent sign (%), tilde (~), And parentheses ()
             command = command.Replace("+", "{+}")

@@ -169,6 +169,12 @@
     <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FormRegionPopup.Designer.vb">
+      <DependentUpon>FormRegionPopup.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormRegionPopup.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FormBackups.Designer.vb">
       <DependentUpon>FormBackups.vb</DependentUpon>
     </Compile>
@@ -349,6 +355,9 @@
     <Compile Include="UploadImage.vb" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="FormRegionPopup.resx">
+      <DependentUpon>FormRegionPopup.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormBackups.resx">
       <DependentUpon>FormBackups.vb</DependentUpon>
     </EmbeddedResource>
@@ -600,6 +609,9 @@
     <None Include="Resources\document_dirty.png" />
     <None Include="Resources\disks.png" />
     <None Include="Resources\text_marked.png" />
+    <None Include="Resources\media_play.png" />
+    <None Include="Resources\media_stop_red1.png" />
+    <None Include="Resources\recycle1.png" />
     <Content Include="Resources\wp_habitat.gif" />
     <Content Include="Resources\wp_Inside_in_shadows.gif" />
     <Content Include="Resources\wp_Mooferd.gif" />

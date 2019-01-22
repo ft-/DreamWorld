@@ -305,7 +305,7 @@ Public Class RegionList
             Debug.Print("Clicked row " + RegionName)
             Dim R = RegionClass.FindRegionByName(RegionName)
             If R >= 0 Then
-                StartStopEdit(checked, R)
+                StartStopEdit(checked, R, RegionName)
             End If
         Next
 
@@ -335,90 +335,84 @@ Public Class RegionList
     End Enum
 
 
-    Private Sub StartStopEdit(checked As Boolean, n As Integer)
+    Private Sub StartStopEdit(checked As Boolean, n As Integer, RegionName As String)
 
         ' stop it, start it, or edit it
-        'Form1.Log("Clicked " + RegionClass.RegionName(n))
-        If Not checked Then
-            Dim RegionForm As New FormRegion
-            RegionForm.Init(RegionClass.RegionName(n))
-            RegionForm.Activate()
-            RegionForm.Visible = True
-            RegionForm.Select()
-            Return
-        End If
 
-        If (RegionClass.Booted(n) Or RegionClass.WarmingUp(n)) Or RegionClass.ShuttingDown(n) Then
-            ' if enabled and running, even partly up, stop it.
+        Dim Choices As New FormRegionPopup
+        Dim chosen As String
+        Choices.init(RegionName)
+        Choices.ShowDialog()
+        Try
+            ' Read the chosen sim name
+            chosen = Choices.Choice()
+            If chosen = "Start" Then
 
-            Dim hwnd = Form1.getHwnd(RegionClass.RegionName(n))
-            If hwnd <> IntPtr.Zero Then ShowWindow(hwnd, SHOW_WINDOW.SW_RESTORE)
+                ' it was stopped, and off, so we start up
+                If Not Form1.StartMySQL() Then
+                    Form1.ProgressBar1.Value = 0
+                    Form1.ProgressBar1.Visible = True
+                    Form1.Print("Stopped")
+                    Return
+                End If
+                Form1.Start_Robust()
+                Form1.Log("Starting " + RegionClass.RegionName(n))
+                Form1.CopyOpensimProto() ' !!! make this region specific for speed
+                Form1.Boot(RegionClass.RegionName(n))
+                UpdateView() = True ' force a refresh
+                Return
 
-            Try
-                Dim V = MsgBox("Stop " + RegionClass.GroupName(n) + "?", vbYesNo)
-                If V = vbNo Then Return
+            ElseIf chosen = "Stop" Then
+
 
                 For Each num In RegionClass.RegionListByGroupNum(RegionClass.GroupName(n))
+                        ' Ask before killing any people
+                        If RegionClass.AvatarCount(num) > 0 Then
+                            Dim response As MsgBoxResult
 
-                    ' Ask before killing any people
-                    If RegionClass.AvatarCount(num) > 0 Then
-                        Dim response As MsgBoxResult
-
-                        If RegionClass.AvatarCount(num) = 1 Then
-                            response = MsgBox("There is one avatar in " + RegionClass.RegionName(num) + ".  Do you still want to stop it?", vbYesNo)
+                            If RegionClass.AvatarCount(num) = 1 Then
+                                response = MsgBox("There is one avatar in " + RegionClass.RegionName(num) + ".  Do you still want to stop it?", vbYesNo)
+                            Else
+                                response = MsgBox("There are " + RegionClass.AvatarCount(num).ToString + " avatars in " + RegionClass.RegionName(num) + ".  Do you still want to stop it?", vbYesNo)
+                            End If
+                            If response = vbYes Then
+                                StopRegionNum(num)
+                            End If
                         Else
-                            response = MsgBox("There are " + RegionClass.AvatarCount(num).ToString + " avatars in " + RegionClass.RegionName(num) + ".  Do you still want to stop it?", vbYesNo)
-                        End If
-                        If response = vbYes Then
                             StopRegionNum(num)
                         End If
-                    Else
-                        StopRegionNum(num)
-                    End If
-                Next
+                    Next
+                    UpdateView = True ' make form refresh
+                    Return
 
-            Catch ex As Exception
-                Form1.Log("Region:Could not stop " + RegionClass.RegionName(n))
-            End Try
-            UpdateView() = True
-            Return
+                ElseIf chosen = "Edit" Then
 
-        ElseIf Not (RegionClass.Booted(n) Or RegionClass.WarmingUp(n) Or RegionClass.ShuttingDown(n)) Then
+                    Dim RegionForm As New FormRegion
+                    RegionForm.Init(RegionClass.RegionName(n))
+                    RegionForm.Activate()
+                    RegionForm.Visible = True
+                    RegionForm.Select()
+                    UpdateView = True ' make form refresh
+                    Return
 
-            Dim V = MsgBox("Start " + RegionClass.GroupName(n) + "?", vbYesNo)
-            If V = vbNo Then Return
-
-            ' it was stopped, and off, so we start up
-            If Not Form1.StartMySQL() Then
-                Form1.ProgressBar1.Value = 0
-                Form1.ProgressBar1.Visible = True
-                Form1.Print("Stopped")
+                ElseIf chosen = "Recycle" Then
+                    RegionClass.Timer(n) = REGION_TIMER.RESTART_PENDING  ' request a recycle.
+                UpdateView = True ' make form refresh
                 Return
             End If
-            Form1.Start_Robust()
-            Form1.Log("Starting " + RegionClass.RegionName(n))
-            Form1.CopyOpensimProto() ' !!! make this region specific for speed
-            Form1.Boot(RegionClass.RegionName(n))
-            UpdateView() = True ' force a refresh
-            Return
-        End If
+            If chosen.Length > 0 Then
+                Choices.Dispose()
+            End If
+        Catch ex As Exception
+            chosen = ""
+        End Try
 
-        ' Do this last to avoid starting a region that was shutting down.
-
-        If RegionClass.WarmingUp(n) Or RegionClass.ShuttingDown(n) Then
-            For Each num In RegionClass.RegionListByGroupNum(RegionClass.GroupName(n))
-                RegionClass.Booted(num) = False
-                RegionClass.WarmingUp(num) = False
-                RegionClass.ShuttingDown(num) = False
-                RegionClass.ProcessID(n) = 0
-                Form1.Log("Aborting " + RegionClass.RegionName(n))
-            Next
-            UpdateView() = True ' force a refresh
-        End If
 
     End Sub
 
     Private Sub StopRegionNum(num As Integer)
+
+
         If Form1.ConsoleCommand(RegionClass.GroupName(num), "q{ENTER}q{ENTER}") Then
             RegionClass.Booted(num) = False
             RegionClass.WarmingUp(num) = False
@@ -495,10 +489,7 @@ Public Class RegionList
         End If
 
         TheView = TheView + 1
-
-
         If TheView > 2 Then TheView = 0
-
         LoadMyListView()
 
     End Sub
