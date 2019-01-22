@@ -83,7 +83,7 @@ Public Class FormDiva
     Private Sub Close_form(sender As Object, e As EventArgs) Handles Me.Closed
 
         If setpassword And Form1.OpensimIsRunning() Then
-            Form1.ConsoleCommand(Form1.gRobustProcID, "reset user password Wifi Admin " + Form1.MySetting.Password + "{ENTER}")
+            Form1.ConsoleCommand("Robust", "reset user password " & Form1.MySetting.AdminFirst & " " & Form1.MySetting.AdminLast & " " & Form1.MySetting.Password & "{ENTER}")
         End If
 
     End Sub
