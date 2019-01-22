@@ -49,6 +49,7 @@ Public Class FormCaches
             CheckBox4.Checked = True
             CheckBox5.Checked = True
         End If
+        Form1.HelpOnce("Cache")
     End Sub
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
@@ -56,25 +57,25 @@ Public Class FormCaches
         If CheckBox1.Checked Then
 
             If Not Form1.OpensimIsRunning() Then
-
-                Dim folders() = IO.Directory.GetDirectories(Form1.gPath & "bin\ScriptEngines\")
+                Dim fCount As Integer = Directory.GetFiles(Form1.gPath & "bin\ScriptEngines\", "*", SearchOption.AllDirectories).Length
+                Dim folders() = Directory.GetFiles(Form1.gPath & "bin\ScriptEngines\", "*", SearchOption.AllDirectories)
                 Form1.Print("Clearing Script cache. This may take a long time!")
-                For Each folder As String In folders
-                    Dim scripts() As String = IO.Directory.GetFiles(folder)
+                For Each script As String In folders
                     Dim ctr As Integer = 0
-                    For Each script As String In scripts
-                        Dim ext = Path.GetExtension(script)
-                        If ext.ToLower <> ".state" Then
-                            My.Computer.FileSystem.DeleteFile(script)
-                            ctr = ctr + 1
-                            Form1.PrintFast(ctr.ToString)
-                            Application.DoEvents()
-                        End If
-                    Next
+                    Dim ext = Path.GetExtension(script)
+                    If ext.ToLower <> ".state" And ext.ToLower <> ".keep" Then
+                        My.Computer.FileSystem.DeleteFile(script)
+                        ctr = ctr + 1
+                        Form1.PrintFast(ctr.ToString + " of " + fCount.ToString)
+                        Application.DoEvents()
+                    End If
+
+
                 Next
+
             End If
             If CheckBox2.Checked Then
-                Form1.Print("Clearing bakes")
+                Form1.Print("Clearing bake cache")
                 Try
                     My.Computer.FileSystem.DeleteDirectory(Form1.gPath & "bin\bakes\", FileIO.DeleteDirectoryOption.DeleteAllContents)
                 Catch
@@ -83,18 +84,18 @@ Public Class FormCaches
 
         End If
 
-
-
         If CheckBox3.Checked Then
             Form1.Print("Clearing Asset cache. This may take a long time!")
+            Dim fCount As Integer = Directory.GetFiles(Form1.gPath & "bin\Assetcache\", "*", SearchOption.AllDirectories).Length
+
             Try
-                Dim folders() = IO.Directory.GetDirectories(Form1.gPath & "bin\Assetcache\")
+                Dim folders() = Directory.GetDirectories(Form1.gPath & "bin\Assetcache\", "*", SearchOption.AllDirectories)
                 Form1.Print("Clearing Asset cache.")
                 Dim ctr As Integer = 0
                 For Each folder As String In folders
                     My.Computer.FileSystem.DeleteDirectory(folder, FileIO.DeleteDirectoryOption.DeleteAllContents)
                     ctr = ctr + 1
-                    Form1.PrintFast(ctr.ToString)
+                    Form1.PrintFast(ctr.ToString + " of " + fCount.ToString)
                     Application.DoEvents()
                 Next
             Catch
@@ -104,13 +105,15 @@ Public Class FormCaches
         If CheckBox4.Checked Then
 
             Try
-                Form1.Print("Clearing Image cache")
+                Form1.Print("Clearing Image cache.")
+                Dim fCount As Integer = Directory.GetFiles(Form1.gPath & "bin\j2kDecodeCache\", "*", SearchOption.AllDirectories).Length
+
                 Dim folders() = IO.Directory.GetDirectories(Form1.gPath & "bin\j2kDecodeCache\")
                 Dim ctr = 0
                 For Each folder As String In folders
                     My.Computer.FileSystem.DeleteDirectory(folder, FileIO.DeleteDirectoryOption.DeleteAllContents)
                     ctr = ctr + 1
-                    Form1.PrintFast(ctr.ToString)
+                    Form1.PrintFast(ctr.ToString + " of " + fCount.ToString)
                     Application.DoEvents()
                 Next
 
@@ -120,12 +123,14 @@ Public Class FormCaches
         If CheckBox5.Checked Then
             Try
                 Form1.Print("Clearing Mesh cache")
-                Dim folders() = IO.Directory.GetDirectories(Form1.gPath & "bin\MeshCache\")
+                Dim fCount As Integer = Directory.GetFiles(Form1.gPath & "bin\MeshCache\", "*", SearchOption.AllDirectories).Length
+
+                Dim folders() = Directory.GetFiles(Form1.gPath & "bin\MeshCache\", "*", SearchOption.AllDirectories)
                 Dim ctr As Integer = 0
                 For Each folder As String In folders
                     My.Computer.FileSystem.DeleteDirectory(Form1.gPath & "bin\MeshCache\", FileIO.DeleteDirectoryOption.DeleteAllContents)
                     ctr = ctr + 1
-                    Form1.PrintFast(ctr.ToString)
+                    Form1.PrintFast(ctr.ToString + " of " + fCount.ToString)
                     Application.DoEvents()
                 Next
             Catch
@@ -133,11 +138,10 @@ Public Class FormCaches
         End If
 
 
-
         If Not Form1.OpensimIsRunning() Then
             Form1.Print("All Server Caches cleared")
         Else
-            Form1.Print("All Server Caches except scripts and Avatar bakes were cleared. Opensim must be stopped to clear script and bake caches.")
+            Form1.Print("All Server Caches except Scripts and Avatar bakes were cleared. Opensim must be stopped to clear script and bake caches.")
         End If
 
         Me.Close()
@@ -145,5 +149,7 @@ Public Class FormCaches
 
     End Sub
 
-
+    Private Sub MapHelp_Click(sender As Object, e As EventArgs) Handles MapHelp.Click
+        Form1.Help("Cache")
+    End Sub
 End Class

@@ -30,7 +30,9 @@ Partial Class FormCaches
         Me.CheckBox5 = New System.Windows.Forms.CheckBox()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.Button1 = New System.Windows.Forms.Button()
+        Me.MapHelp = New System.Windows.Forms.PictureBox()
         Me.GroupBox1.SuspendLayout()
+        CType(Me.MapHelp, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'CheckBox1
@@ -85,6 +87,7 @@ Partial Class FormCaches
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.MapHelp)
         Me.GroupBox1.Controls.Add(Me.Button1)
         Me.GroupBox1.Controls.Add(Me.CheckBox2)
         Me.GroupBox1.Controls.Add(Me.CheckBox5)
@@ -107,6 +110,15 @@ Partial Class FormCaches
         Me.Button1.Text = "Clear Selected Caches"
         Me.Button1.UseVisualStyleBackColor = True
         '
+        'MapHelp
+        '
+        Me.MapHelp.Image = Global.Outworldz.My.Resources.Resources.about
+        Me.MapHelp.Location = New System.Drawing.Point(149, 132)
+        Me.MapHelp.Name = "MapHelp"
+        Me.MapHelp.Size = New System.Drawing.Size(28, 27)
+        Me.MapHelp.TabIndex = 1858
+        Me.MapHelp.TabStop = False
+        '
         'FormCaches
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
@@ -119,6 +131,7 @@ Partial Class FormCaches
         Me.Text = "Clear Caches"
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
+        CType(Me.MapHelp, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -130,4 +143,5 @@ Partial Class FormCaches
     Friend WithEvents CheckBox5 As CheckBox
     Friend WithEvents GroupBox1 As GroupBox
     Friend WithEvents Button1 As Button
+    Friend WithEvents MapHelp As PictureBox
 End Class
