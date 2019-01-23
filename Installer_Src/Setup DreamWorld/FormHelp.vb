@@ -25,7 +25,7 @@
             RichTextBox1.LoadFile(Page)
         Catch ex As Exception
             MsgBox("Sorry, Help is not yet available for this.", vbInformation)
-            Form1.Log("Error:" + ex.Message)
+            Form1.ErrorLog("Error:" + ex.Message)
             Me.Close()
         End Try
     End Sub

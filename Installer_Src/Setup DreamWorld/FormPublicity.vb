@@ -85,7 +85,7 @@ Public Class FormPublicity
                 Try
                     PictureBox9.Image.Save(Form1.MyFolder & "\OutworldzFiles\Photo.png", System.Drawing.Imaging.ImageFormat.Png)
                 Catch ex As Exception
-                    Form1.Log(ex.Message)
+                    Form1.ErrorLog(ex.Message)
                 End Try
 
                 Dim params As New Specialized.NameValueCollection

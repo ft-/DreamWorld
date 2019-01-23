@@ -31,7 +31,7 @@ Public Class PassGen
             Next
             Return builder.ToString()
         Catch ex As Exception
-            Form1.Log("exception on password:" + ex.Message)
+            Form1.ErrorLog("exception on password:" + ex.Message)
         End Try
         Return "secret"
     End Function

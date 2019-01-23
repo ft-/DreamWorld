@@ -139,6 +139,9 @@ Public Class RegionMaker
 
     Public Property GroupName(n As Integer) As String
         Get
+            If RegionList(n)._RegionPath.ToString = "" Then
+                Form1.ErrorLog("Error: Region name is null")
+            End If
             Return CType(RegionList(n)._Group, String)
         End Get
         Set(ByVal Value As String)
@@ -243,6 +246,7 @@ Public Class RegionMaker
     End Property
     Public Property RegionPath(n As Integer) As String
         Get
+
             Return RegionList(n)._RegionPath.ToString
         End Get
         Set(ByVal Value As String)
@@ -318,7 +322,7 @@ Public Class RegionMaker
             Try
                 Return CType(RegionList(n)._RegionPort, Integer)
             Catch
-                Form1.Log("Bad region port:" + RegionList(n)._RegionPort.ToString)
+                Form1.ErrorLog("Bad region port: " + RegionList(n)._RegionPort.ToString)
             End Try
             Return 0
         End Get
@@ -493,7 +497,7 @@ Public Class RegionMaker
             End If
             i = i + 1
         Next
-        Form1.Log("PID not found:" + PID.ToString)
+        Form1.ErrorLog("PID not found:" + PID.ToString)
         Return -1
 
     End Function
@@ -642,7 +646,7 @@ Public Class RegionMaker
                                     ShuttingDown(n) = CType(Backup(o)._ShuttingDown, Boolean)
                                     Timer(n) = CType(Backup(o)._Timer, Integer)
                                 Else
-                                    Form1.Log("Error: Could not find backup name:" + fName)
+                                    Form1.ErrorLog("Error: Could not find backup name:" + fName)
                                 End If
 
                             Catch
@@ -656,7 +660,7 @@ Public Class RegionMaker
 
                 Catch ex As Exception
                     MsgBox("Error: Cannot understand the contents of region file " + fName + " : " + ex.Message, vbInformation, "Error")
-                    Form1.Log("Err:Parse file " + fName + ":" + ex.Message)
+                    Form1.ErrorLog("Err:Parse file " + fName + ":" + ex.Message)
                 End Try
             Next
         Next
@@ -824,7 +828,7 @@ Public Class RegionMaker
     Public Sub UpdateAllRegionPorts()
 
         If Form1.OpensimIsRunning Then
-            Form1.Log("Trying to update all region ports while running')")
+            'Form1.Log("Trying to update all region ports while running')")
             Return
         End If
 

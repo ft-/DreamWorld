@@ -390,7 +390,7 @@ Public Class MySettings
             Form1.Log("Info:Writing section [" + section + "] " + key + "=" + value)
             Data(section)(key) = value ' replace it 
         Catch ex As Exception
-            Form1.Log(ex.Message)
+            Form1.ErrorLog(ex.Message)
         End Try
 
     End Sub
@@ -402,7 +402,7 @@ Public Class MySettings
             Form1.Log("Info:Writing section [" + section + "] " + key + "=" + value)
             MyData(section)(key) = value ' replace it 
         Catch ex As Exception
-            Form1.Log(ex.Message)
+            Form1.ErrorLog(ex.Message)
         End Try
 
     End Sub
@@ -418,7 +418,7 @@ Public Class MySettings
             Form1.Log("Loading Settings.ini")
             MyData = Myparser.ReadFile(gFolder + "\OutworldzFiles\Settings.ini", System.Text.Encoding.ASCII)
         Catch ex As Exception
-            Form1.Log("Failed to load Settings.ini")
+            Form1.ErrorLog("Failed to load Settings.ini")
         End Try
 
     End Sub
@@ -471,7 +471,7 @@ Public Class MySettings
         Try
             parser.WriteFile(INI, Data, System.Text.Encoding.ASCII)
         Catch ex As Exception
-            Form1.Log("Error:" + ex.Message)
+            Form1.ErrorLog("Error:" + ex.Message)
         End Try
 
     End Sub
@@ -482,7 +482,7 @@ Public Class MySettings
             Myparser.WriteFile(myINI, MyData, System.Text.Encoding.ASCII)
         Catch ex As Exception
             MsgBox("Unable to save settings to " + myINI)
-            Form1.Log("Error:" + ex.Message)
+            Form1.ErrorLog("Error:" + ex.Message)
         End Try
 
     End Sub

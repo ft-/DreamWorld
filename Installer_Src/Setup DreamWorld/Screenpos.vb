@@ -86,7 +86,7 @@ Public Class ScreenPos
             Form1.Log("Info:Writing section [" + section + "] " + key + "=" + value)
             Data(section)(key) = value ' replace it 
         Catch ex As Exception
-            Form1.Log(ex.Message)
+            Form1.ErrorLog(ex.Message)
         End Try
 
     End Sub
@@ -97,7 +97,7 @@ Public Class ScreenPos
             Form1.Log("Loading " + myINI)
             Data = parser.ReadFile(myINI, System.Text.Encoding.ASCII)
         Catch ex As Exception
-            Form1.Log(ex.Message)
+            Form1.ErrorLog(ex.Message)
         End Try
 
     End Sub
@@ -107,7 +107,7 @@ Public Class ScreenPos
         Try
             parser.WriteFile(myINI, Data, System.Text.Encoding.ASCII)
         Catch ex As Exception
-            Form1.Log("Error:" + ex.Message)
+            Form1.ErrorLog("Error:" + ex.Message)
         End Try
 
     End Sub

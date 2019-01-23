@@ -659,8 +659,13 @@ Public Class Form1
                         If CheckPort(MySetting.PrivateURL, RegionClass.GroupPort(X)) Then
                             CountisRunning = CountisRunning + 1
                         Else
-                            For Each Y In RegionClass.RegionListByGroupNum(RegionClass.RegionName(X))
-                                RegionClass.ShuttingDown(X) = False
+                            For Each Y In RegionClass.RegionListByGroupNum(RegionClass.GroupName(X))
+                                RegionClass.ShuttingDown(Y) = False
+                                RegionClass.Booted(Y) = False
+                                RegionClass.WarmingUp(Y) = False
+                                If RegionClass.Timer(Y) >= 0 Then
+                                    RegionClass.Timer(Y) = REGION_TIMER.STOPPED
+                                End If
                             Next
                         End If
 
@@ -933,7 +938,7 @@ Public Class Form1
                 My.Computer.FileSystem.RenameFile(gPath + "bin\Robust.HG.ini", "Robust.HG.ini.bak")
                 My.Computer.FileSystem.RenameFile(gPath + "bin\Robust.tmp", "Robust.HG.ini")
             Catch ex As Exception
-                Log("Error:Set Default sims could not rename the file:" + ex.Message)
+                ErrorLog("Error:Set Default sims could not rename the file:" + ex.Message)
                 My.Computer.FileSystem.RenameFile(gPath + "bin\Robust.HG.ini.bak", "Robust.HG.ini")
             End Try
 
@@ -1338,7 +1343,8 @@ Public Class Form1
                 My.Computer.FileSystem.CopyFile(gPath + "bin\Opensim.proto", pathname + "Opensim.ini", True)
 
             Catch ex As Exception
-                Print("ErrorFailed to set the Opensim.ini for sim " + regionName + ":" + ex.Message)
+                Print("Error:Failed to set the Opensim.ini for sim " + regionName + ":" + ex.Message)
+                ErrorLog("Error:Failed to set the Opensim.ini for sim " + regionName + ":" + ex.Message)
                 Return False
             End Try
 
@@ -1693,7 +1699,7 @@ Public Class Form1
         Try
             ProcessUpnp.Start()
         Catch ex As Exception
-            Log("ErrorUPnp failed to launch: " + ex.Message)
+            ErrorLog("ErrorUPnp failed to launch: " + ex.Message)
         End Try
     End Sub
 
@@ -1827,6 +1833,7 @@ Public Class Form1
 
         Catch ex As Exception
             Print("Error: Icecast did not start: " + ex.Message)
+            ErrorLog("Error: Icecast did not start: " + ex.Message)
         End Try
 
     End Sub
@@ -1862,6 +1869,7 @@ Public Class Form1
 
         Catch ex As Exception
             Print("Error: Robust did not start: " + ex.Message)
+            ErrorLog("Error: Robust did not start: " + ex.Message)
             KillAll()
             Buttons(StartButton)
             Return False
@@ -2006,12 +2014,18 @@ Public Class Form1
 
             Try
                 Dim Name As String = ExitList(LOOPVAR) ' recover the PID as integer
+                Log("Info:Shutdown of " & Name & " Detected")
+                If (Name = "!DWSims") Then
+                    Dim bp = 1
+                End If
                 Dim RegionNumber As Integer = RegionClass.FindRegionByName(Name) ' get the region handle
 
-                If RegionNumber < 0 Then
-                    ExitList.RemoveAt(LOOPVAR)
-                    Log("Error: Something exited with a index of " + RegionNumber.ToString)
-                    Continue For
+                If RegionNumber < 0 Then ' Must be a group
+                    Dim LNames As New List(Of Integer)
+                    LNames = RegionClass.RegionListByGroupNum(Name)
+                    For Each R In LNames
+                        RegionNumber = R
+                    Next
                 End If
 
                 Dim Groupname = RegionClass.GroupName(RegionNumber)
@@ -2051,10 +2065,10 @@ Public Class Form1
                 Try
                     ExitList.RemoveAt(LOOPVAR)
                 Catch ex As Exception
-                    Log("Something fucky in region RemoveAt:" + ex.Message)
+                    ErrorLog("Something fucky in region RemoveAt:" + ex.Message)
                 End Try
             Catch ex As Exception
-                Log("Something fucky in region exit:" + ex.Message)
+                ErrorLog("Something fucky in region exit:" + ex.Message)
                 ExitList.RemoveAt(LOOPVAR)
             End Try
 
@@ -2188,7 +2202,7 @@ Public Class Form1
         Catch ex As Exception
             If ex.Message.Contains("Process has exited") Then Return False
             Print("Oops! " + BootName + " did Not start")
-            Log(ex.Message)
+            ErrorLog(ex.Message)
             UpdateView = True ' make form refresh
             Dim yesno = MsgBox("Oops! " + BootName + " in DOS box " + Groupname + " did not boot. Do you want to see the log file?", vbYesNo, "Error")
             If (yesno = vbYes) Then
@@ -2231,6 +2245,7 @@ Public Class Form1
     Private Sub ClearLogFiles()
 
         Dim Logfiles = New List(Of String) From {
+            MyFolder + "\OutworldzFiles\Error.log",
             MyFolder + "\OutworldzFiles\Outworldz.log",
             MyFolder + "\OutworldzFiles\Opensim\bin\OpenSimConsoleHistory.txt",
             MyFolder + "\OutworldzFiles\Diagnostics.log",
@@ -2254,15 +2269,20 @@ Public Class Form1
     ''' </summary>
     ''' <param name="message"></param>
     Public Sub Log(message As String)
+        Logger(message, "Outworldz")
+    End Sub
+    Public Sub ErrorLog(message As String)
+        Logger(message, "Error")
+    End Sub
 
+    Sub Logger(message As String, file As String)
         Try
-            Using outputFile As New StreamWriter(MyFolder & "\OutworldzFiles\Outworldz.log", True)
+            Using outputFile As New StreamWriter(MyFolder & "\OutworldzFiles\" + file + ".log", True)
                 outputFile.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ":" + message)
                 Diagnostics.Debug.Print(message)
             End Using
         Catch
         End Try
-
     End Sub
     ''' <summary>
     ''' Shows the log buttons if diags fail
@@ -2334,7 +2354,7 @@ Public Class Form1
             SendKeys.SendWait(command)
 
         Catch ex As Exception
-            Log("Warn:" + ex.Message)
+            ErrorLog("Error:" + ex.Message)
             Diagnostics.Debug.Print("Cannot find window " + name)
             RegionClass.RegionDump()
             Return False
@@ -2512,7 +2532,7 @@ Public Class Form1
                 outputFile.WriteLine(HTML)
             End Using
         Catch ex As Exception
-            Log("Failed to create file:" + ex.Message)
+            ErrorLog("Error:Failed to create file:" + ex.Message)
         End Try
 
     End Sub
@@ -2536,7 +2556,7 @@ Public Class Form1
                 If timervalue / 6 >= MySetting.AutoRestartInterval() And MySetting.AutoRestartInterval() > 0 And Not AvatarsIsInGroup(Groupname) Then
                     ' shut down the group when one minute has gone by, or multiple thereof.
                     Try
-                        'AppActivate(Groupname)
+
                         Dim hwnd = getHwnd(Groupname)
                         If hwnd <> IntPtr.Zero Then ShowWindow(hwnd, SHOW_WINDOW.SW_RESTORE)
 
@@ -2544,10 +2564,18 @@ Public Class Form1
                         ConsoleCommand(RegionClass.GroupName(X), "Q{ENTER}")
                         ConsoleCommand(RegionClass.GroupName(X), "q{ENTER}")
                         Print("AutoRestarting " + Groupname)
-                        RegionClass.Timer(X) = REGION_TIMER.RESTART_PENDING
+
+                        ' shut down all regions in the DOS box
+                        For Each Y In RegionClass.RegionListByGroupNum(Groupname)
+                            RegionClass.Timer(Y) = REGION_TIMER.RESTART_PENDING
+                            RegionClass.Booted(Y) = False
+                            RegionClass.WarmingUp(Y) = False
+                            RegionClass.ShuttingDown(Y) = False
+                        Next
+
                         UpdateView = True ' make form refresh
                     Catch ex As Exception
-                        Log(ex.Message)
+                        ErrorLog(ex.Message)
                         RegionClass.RegionDump()
                     End Try
 
@@ -2902,7 +2930,7 @@ Public Class Form1
             ' Read the chosen sim name
             chosen = Chooseform.DataGridView.CurrentCell.Value.ToString()
         Catch ex As Exception
-            Log("Warn: Could not chose a displayed region. " + ex.Message)
+            ErrorLog("Warn: Could not chose a displayed region. " + ex.Message)
             chosen = ""
         End Try
         If ret = DialogResult.Cancel Then Return ""
@@ -2942,7 +2970,7 @@ Public Class Form1
                 End If
 
             Catch ex As Exception
-                Log("Error: " + ex.Message)
+                ErrorLog("Error: " + ex.Message)
             End Try
         Next
 
@@ -3055,7 +3083,7 @@ Public Class Form1
         Try
             oars = client.DownloadString(gDomain + "/Outworldz_Installer/Content.plx?type=OAR&r=" + Random())
         Catch ex As Exception
-            Log("No Oars, dang, something is wrong with the Internet :-(")
+            ErrorLog("No Oars, dang, something is wrong with the Internet :-(")
             Return
         End Try
         Application.DoEvents()
@@ -3102,7 +3130,7 @@ Public Class Form1
         Try
             iars = client.DownloadString(gDomain + "/Outworldz_Installer/Content.plx?type=IAR&r=" + Random())
         Catch ex As Exception
-            Log("Info:No IARS, dang, something is wrong with the Internet :-(")
+            ErrorLog("Info:No IARS, dang, something is wrong with the Internet :-(")
             Return
         End Try
 
@@ -3221,7 +3249,7 @@ Public Class Form1
             My.Computer.FileSystem.CopyDirectory(MyFolder + "\OutworldzFiles\Opensim\bin\WifiPages\", Dest + "\Opensim_bin_WifiPages-Custom")
             My.Computer.FileSystem.CopyFile(MyFolder + "\OutworldzFiles\Settings.ini", Dest + "\Settings.ini")
         Catch ex As Exception
-            Print("Err:" + ex.Message)
+            ErrorLog("Err:" + ex.Message)
             Return False
         End Try
         PrintFast("Finished with backup at " + Dest)
@@ -3254,8 +3282,8 @@ Public Class Form1
                 Log("Info:Launch Updater and exiting")
                 pUpdate.Start()
             Catch ex As Exception
-                Print("Error: Could not launch " + fileloaded + ". Perhaps you can can exit this program and launch it manually.")
-                Log("Error: installer failed to launch:" + ex.Message)
+                ErrorLog("Error: Could not launch " + fileloaded + ". Perhaps you can can exit this program and launch it manually.")
+
             End Try
             End ' program
         Else
@@ -3307,7 +3335,7 @@ Public Class Form1
         Try
             Update = client.DownloadString(gDomain + "/Outworldz_Installer/UpdateGrid.plx?fill=1" + GetPostData())
         Catch ex As Exception
-            Log("Dang:The Outworldz web site is down")
+            ErrorLog("Dang:The Outworldz web site is down")
         End Try
         If (Update = "") Then Update = "0"
 
@@ -3408,7 +3436,7 @@ Public Class Form1
             End If
 
         Catch ex As Exception
-            Print("Hmm, I cannot reach the Internet? Uh. Okay, continuing." + ex.Message)
+            ErrorLog("Hmm, I cannot reach the Internet? Uh. Okay, continuing." + ex.Message)
             MySetting.DiagFailed = True
             Log("Info:Public IP=" + "127.0.0.1")
         End Try
@@ -3435,7 +3463,7 @@ Public Class Form1
             Log(loopbacktest)
             result = client.DownloadString(loopbacktest)
         Catch ex As Exception
-            Log("Err:Loopback fail:" + result + ":" + ex.Message)
+            ErrorLog("Err:Loopback fail:" + result + ":" + ex.Message)
             Return False
         End Try
 
@@ -3496,7 +3524,7 @@ Public Class Form1
             'Log(Url)
             isPortOpen = client.DownloadString(Url)
         Catch ex As Exception
-            Log("Dang:The Outworldz web site cannot find a path back")
+            ErrorLog("Dang:The Outworldz web site cannot find a path back")
             MySetting.DiagFailed = True
         End Try
 
@@ -3819,7 +3847,7 @@ Public Class Form1
                                     + vbCrLf + "@pause" + vbCrLf)
                         End Using
                     Catch ex As Exception
-                        Print("Failed to create restore file:" + ex.Message)
+                        ErrorLog("Failed to create restore file:" + ex.Message)
                         Return
                     End Try
 
@@ -3905,7 +3933,7 @@ Public Class Form1
         Try
             My.Computer.FileSystem.DeleteFile(testProgram)
         Catch ex As Exception
-            Log("Delete File: " + ex.Message)
+            ErrorLog("Error: Cannot Delete File: " + ex.Message)
         End Try
         Try
             Using outputFile As New StreamWriter(testProgram, True)
@@ -3913,7 +3941,7 @@ Public Class Form1
                                      + "mysqld.exe --defaults-file=" + """" + gCurSlashDir + "/OutworldzFiles/mysql/my.ini" + """")
             End Using
         Catch ex As Exception
-            Log("Error:Start Manually" + ex.Message)
+            ErrorLog("Error:Cannot write:" + ex.Message)
         End Try
 
         CreateService()
@@ -3972,7 +4000,7 @@ Public Class Form1
         Try
             My.Computer.FileSystem.DeleteFile(testProgram)
         Catch ex As Exception
-            Log("Delete File: " + ex.Message)
+            ErrorLog("Delete File: " + ex.Message)
         End Try
         Try
             Using outputFile As New StreamWriter(testProgram, True)
@@ -3980,7 +4008,7 @@ Public Class Form1
                 "mysqld.exe --install Mysql --defaults-file=" + """" + gCurSlashDir + "/OutworldzFiles/mysql/my.ini" + """" + vbCrLf + "net start Mysql" + vbCrLf)
             End Using
         Catch ex As Exception
-            Log("Error:Install As A Service" + ex.Message)
+            ErrorLog("Error:Install As A Service" + ex.Message)
         End Try
 
     End Sub
@@ -3993,7 +4021,7 @@ Public Class Form1
         Try
             My.Computer.FileSystem.DeleteFile(testProgram)
         Catch ex As Exception
-            Log("Delete File: " + ex.Message)
+            ErrorLog("Delete File: " + ex.Message)
         End Try
         Try
             Using outputFile As New StreamWriter(testProgram, True)
@@ -4001,7 +4029,7 @@ Public Class Form1
                 "mysqladmin.exe -u root --port " + MySetting.MySqlPort + " shutdown" + vbCrLf + "@pause" + vbCrLf)
             End Using
         Catch ex As Exception
-            Log("Error:StopMySQL.bat" + ex.Message)
+            ErrorLog("Error:StopMySQL.bat" + ex.Message)
         End Try
 
     End Sub
@@ -4060,7 +4088,7 @@ Public Class Form1
             p.WaitForExit()
             p.Close()
         Catch ex As Exception
-            Log("Error: failed to stop MySQL:" + ex.Message)
+            ErrorLog("Error: failed to stop MySQL:" + ex.Message)
         End Try
 
     End Sub
@@ -4087,7 +4115,7 @@ Public Class Form1
         Try
             Checkname = client.DownloadString("http://outworldz.net/dns.plx?GridName=" + MySetting.DNSName + GetPostData())
         Catch ex As Exception
-            Log("Warn:Cannot check the DNS Name" + ex.Message)
+            ErrorLog("Warn:Cannot check the DNS Name" + ex.Message)
             Return False
         End Try
         If Checkname = "UPDATED" Then Return True
@@ -4109,7 +4137,7 @@ Public Class Form1
             Return String.Empty
 
         Catch ex As Exception
-            Log("Warn:Unable to resolve name:" + ex.Message)
+            ErrorLog("Warn:Unable to resolve name:" + ex.Message)
         End Try
         Return String.Empty
 
@@ -4122,7 +4150,7 @@ Public Class Form1
         Try
             Checkname = client.DownloadString("http://outworldz.net/getnewname.plx/?r=" + Random())
         Catch ex As Exception
-            Log("Warn:Cannot get new name:" + ex.Message)
+            ErrorLog("Error:Cannot get new name:" + ex.Message)
         End Try
         Return Checkname
 
@@ -4136,7 +4164,7 @@ Public Class Form1
             Checkname = client.DownloadString("http://outworldz.net/dns.plx/?GridName=" + name + GetPostData())
 
         Catch ex As Exception
-            Log("Warn: Cannot check the DNS Name" + ex.Message)
+            ErrorLog("Error: Cannot check the DNS Name" + ex.Message)
         End Try
         If Checkname = "NEW" Or Checkname = "UPDATED" Then
             Return name

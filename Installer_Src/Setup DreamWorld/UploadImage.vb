@@ -8,7 +8,7 @@ Public Class UploadImage
 
     Private Sub UploadError(ByVal Data As String)
         ' Your Upload failure Routine Goes here
-        Form1.Log("Upload Error:" + Data)
+        Form1.ErrorLog("Upload Error:" + Data)
     End Sub
 
     Private Sub UploadComplete(ByVal Data As String)

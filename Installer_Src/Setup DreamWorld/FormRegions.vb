@@ -60,7 +60,7 @@
                 RegionForm.Visible = True
                 Application.DoEvents()
             Catch ex As Exception
-                Form1.Log("Info:" + ex.Message)
+                Form1.ErrorLog("Error:" + ex.Message)
             End Try
             counter = counter + 1
             Y += 100

@@ -74,7 +74,7 @@ Public Class FormRestart
                     Form1.MySetting.Autostart = True
                     Form1.MySetting.SaveSettings()
                 Catch ex As Exception
-                    Form1.Log("Error:Scheduled Task failed to launch:" + ex.Message)
+                    Form1.ErrorLog("Error:Scheduled Task failed to launch:" + ex.Message)
                 End Try
             Else
                 pi.Arguments = "/Delete /TN DreamGrid"
@@ -82,7 +82,7 @@ Public Class FormRestart
                 Try
                     ProcessTask.Start()
                 Catch ex As Exception
-                    Form1.Log("Error:Scheduled Task Delete failed:" + ex.Message)
+                    Form1.ErrorLog("Error:Scheduled Task Delete failed:" + ex.Message)
                 End Try
 
             End If
