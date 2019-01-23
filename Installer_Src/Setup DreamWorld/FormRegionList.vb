@@ -430,8 +430,8 @@ Public Class RegionList
         Dim Item As ListViewItem = ListView1.Items.Item(e.Index)
         Dim n As Integer = RegionClass.FindRegionByName(Item.Text)
         If n = -1 Then Return
-
-        For Each X In RegionClass.RegionListByGroupNum(Item.Text)
+        Dim GroupName = RegionClass.GroupName(n)
+        For Each X In RegionClass.RegionListByGroupNum(GroupName)
             If ViewNotBusy Then
                 If (e.CurrentValue = CheckState.Unchecked) Then
                     RegionClass.RegionEnabled(X) = True
