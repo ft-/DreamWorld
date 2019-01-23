@@ -430,21 +430,25 @@ Public Class RegionList
         Dim Item As ListViewItem = ListView1.Items.Item(e.Index)
         Dim n As Integer = RegionClass.FindRegionByName(Item.Text)
         If n = -1 Then Return
-        If ViewNotBusy Then
-            If (e.CurrentValue = CheckState.Unchecked) Then
-                RegionClass.RegionEnabled(n) = True
-                ' and region file on disk
-                Form1.MySetting.LoadOtherIni(RegionClass.RegionPath(n), ";")
-                Form1.MySetting.SetOtherIni(RegionClass.RegionName(n), "Enabled", "true")
-                Form1.MySetting.SaveOtherINI()
-            ElseIf (e.CurrentValue = CheckState.Checked) Then
-                RegionClass.RegionEnabled(n) = False
-                ' and region file on disk
-                Form1.MySetting.LoadOtherIni(RegionClass.RegionPath(n), ";")
-                Form1.MySetting.SetOtherIni(RegionClass.RegionName(n), "Enabled", "false")
-                Form1.MySetting.SaveOtherINI()
+
+        For Each X In RegionClass.RegionListByGroupNum(Item.Text)
+            If ViewNotBusy Then
+                If (e.CurrentValue = CheckState.Unchecked) Then
+                    RegionClass.RegionEnabled(X) = True
+                    ' and region file on disk
+                    Form1.MySetting.LoadOtherIni(RegionClass.RegionPath(X), ";")
+                    Form1.MySetting.SetOtherIni(RegionClass.RegionName(X), "Enabled", "true")
+                    Form1.MySetting.SaveOtherINI()
+                ElseIf (e.CurrentValue = CheckState.Checked) Then
+                    RegionClass.RegionEnabled(X) = False
+                    ' and region file on disk
+                    Form1.MySetting.LoadOtherIni(RegionClass.RegionPath(X), ";")
+                    Form1.MySetting.SetOtherIni(RegionClass.RegionName(X), "Enabled", "false")
+                    Form1.MySetting.SaveOtherINI()
+                End If
             End If
-        End If
+        Next
+
 
         UpdateView() = True ' force a refresh
 

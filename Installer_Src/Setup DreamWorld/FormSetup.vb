@@ -694,6 +694,7 @@ Public Class Form1
             RegionClass.Booted(X) = False
             RegionClass.WarmingUp(X) = False
             RegionClass.ProcessID(X) = 0
+            RegionClass.Timer(X) = REGION_TIMER.STOPPED
         Next
         UpdateView = True ' make form refresh
 
