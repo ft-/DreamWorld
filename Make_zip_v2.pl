@@ -21,7 +21,6 @@ my @deletions = (
 	"$dir/OutworldzFiles/Opensim/WifiPages-Custom",
 	"$dir/OutworldzFiles/Opensim/bin/WifiPages-Custom",
 	"$dir/OutworldzFiles/Opensim/bin/datasnapshot",
-	"$dir/OutworldzFiles/Opensim/bin/datasnapshot",
 	"$dir/OutworldzFiles/Opensim/bin/assetcache",
 	"$dir/OutworldzFiles/Opensim/bin/j2kDecodeCache",
 	"$dir/OutworldzFiles/Opensim/bin/MeshCache",
@@ -36,10 +35,12 @@ my @deletions = (
 );
 
 foreach my $path ( @deletions) {
+	say ($path);
 	DeleteandKeep($path);
 }
 
 
+unlink "$dir/OutworldzFiles/Opensim/bin/Error.log" ;
 unlink "$dir/OutworldzFiles/Opensim/bin/Opensim.log" ;
 unlink "$dir/OutworldzFiles/Opensim/bin/Opensimstats.log" ;
 unlink "$dir/OutworldzFiles/Photo.png";
