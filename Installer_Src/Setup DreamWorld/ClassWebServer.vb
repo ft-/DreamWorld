@@ -116,7 +116,7 @@ Public Class NetServer
             ' Get Parameters:
             ' Debug.Print("Client data content type:" + request.ContentType)
 
-            Dim baseUri = New Uri(request.Url.OriginalString)
+            'Dim baseUri = New Uri(request.Url.OriginalString)
             ' Debug.Print("Query String:" + baseUri.Query)
 
             'Dim qs = request.QueryString
