@@ -1,18 +1,19 @@
-2.70
-Removed limit on number of regions.
-New rev 2.4 Teleports in the IAR that do not spam the console.
-Log at INFO level for production use.
-Many AutoRestart improvments.
-Console titles sometimes would not 'take'. 
-Allow blank DNS name which uses the LAN IP
-Vista, 7, 8, 10 compatible
-View All Logs link in Help
-Show Revisions link in Help
-
 2.69
-Run as Administrator for the webserver because Icons would not change reliably without it.
-Icons reworks when auto restarting
-Log at DEBUG level for debug 
+
+"Run as Administrator" for the webserver because Icons would not change reliably. Now uses a webserver class. 
+Removed limit on number of regions. Was 100 to 200 before.
+New "Deregister button" for region when two sims overlap.
+New Rev 2.4 Teleports in the Local IARs that do not spam the console.
+Log at INFO level for production use.
+Many AutoRestart improvements. Recycle icon added. 
+Clicking a Region gives a context sensitive Start/Stop/Recycle/Edit form.
+Console titles sometimes would not 'take'. Fixed for good.
+Allow blank DNS name which means to use the LAN IP.
+Add Vista compativility, also 7, 8, 10 compatible.
+Help-> "View All Logs" Menu .
+Help-> "View Revisions" link.
+Help-> "Clear Server Cache" sixes and informational messages.
+Help-> "Help on Settings" Menu
 
 2.68
 V4 updater and installer 
