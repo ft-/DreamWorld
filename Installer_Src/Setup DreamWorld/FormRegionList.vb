@@ -337,7 +337,9 @@ Public Class RegionList
 
     Private Sub StartStopEdit(checked As Boolean, n As Integer, RegionName As String)
 
-        ' stop it, start it, or edit it
+        ' show it, stop it, start it, or edit it
+        Dim hwnd = Form1.getHwnd(RegionClass.GroupName(n))
+        If hwnd <> IntPtr.Zero Then ShowWindow(hwnd, SHOW_WINDOW.SW_RESTORE)
 
         Dim Choices As New FormRegionPopup
         Dim chosen As String
