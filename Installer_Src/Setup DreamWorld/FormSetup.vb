@@ -406,13 +406,13 @@ Public Class Form1
             Print("Ready to Launch!")
             Buttons(StartButton)
 
-            HelpOnce("Startup")
-
         End If
 
         Dim isMySqlRunning = CheckPort("127.0.0.1", CType(MySetting.MySqlPort, Integer))
         If isMySqlRunning Then gStopMysql = False
 
+        HelpOnce("Startup")
+        HelpOnce("License")
 
         ProgressBar1.Value = 100
 
