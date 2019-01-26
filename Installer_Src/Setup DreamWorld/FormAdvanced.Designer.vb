@@ -52,7 +52,7 @@ Partial Class AdvancedForm
         Me.TOSButton.Location = New System.Drawing.Point(189, 180)
         Me.TOSButton.Name = "TOSButton"
         Me.TOSButton.Size = New System.Drawing.Size(145, 23)
-        Me.TOSButton.TabIndex = 19
+        Me.TOSButton.TabIndex = 15
         Me.TOSButton.Text = "Terms of Service"
         Me.ToolTip1.SetToolTip(Me.TOSButton, "Click to set up your Terms of Service")
         Me.TOSButton.UseVisualStyleBackColor = True
@@ -62,7 +62,7 @@ Partial Class AdvancedForm
         Me.TideButton.Location = New System.Drawing.Point(189, 151)
         Me.TideButton.Name = "TideButton"
         Me.TideButton.Size = New System.Drawing.Size(145, 23)
-        Me.TideButton.TabIndex = 18
+        Me.TideButton.TabIndex = 14
         Me.TideButton.Text = "Tides"
         Me.ToolTip1.SetToolTip(Me.TideButton, "Click to set up  Tides")
         Me.TideButton.UseVisualStyleBackColor = True
@@ -72,7 +72,7 @@ Partial Class AdvancedForm
         Me.GloebitsButton.Location = New System.Drawing.Point(6, 123)
         Me.GloebitsButton.Name = "GloebitsButton"
         Me.GloebitsButton.Size = New System.Drawing.Size(143, 23)
-        Me.GloebitsButton.TabIndex = 15
+        Me.GloebitsButton.TabIndex = 4
         Me.GloebitsButton.Text = "Gloebits Currency"
         Me.ToolTip1.SetToolTip(Me.GloebitsButton, "Click to set up Currency")
         Me.GloebitsButton.UseVisualStyleBackColor = True
@@ -82,7 +82,7 @@ Partial Class AdvancedForm
         Me.VoiceButton1.Location = New System.Drawing.Point(189, 209)
         Me.VoiceButton1.Name = "VoiceButton1"
         Me.VoiceButton1.Size = New System.Drawing.Size(143, 23)
-        Me.VoiceButton1.TabIndex = 17
+        Me.VoiceButton1.TabIndex = 16
         Me.VoiceButton1.Text = "Vivox Voice"
         Me.ToolTip1.SetToolTip(Me.VoiceButton1, "Click to Set up Vivox Voice")
         Me.VoiceButton1.UseVisualStyleBackColor = True
@@ -92,7 +92,7 @@ Partial Class AdvancedForm
         Me.Shoutcast.Location = New System.Drawing.Point(8, 181)
         Me.Shoutcast.Name = "Shoutcast"
         Me.Shoutcast.Size = New System.Drawing.Size(143, 23)
-        Me.Shoutcast.TabIndex = 16
+        Me.Shoutcast.TabIndex = 6
         Me.Shoutcast.Text = "Icecast/Shoutcase"
         Me.ToolTip1.SetToolTip(Me.Shoutcast, "Click to Setup Shoutcast/Icecast")
         Me.Shoutcast.UseVisualStyleBackColor = True
@@ -102,7 +102,7 @@ Partial Class AdvancedForm
         Me.MapsButton.Location = New System.Drawing.Point(8, 210)
         Me.MapsButton.Name = "MapsButton"
         Me.MapsButton.Size = New System.Drawing.Size(143, 23)
-        Me.MapsButton.TabIndex = 22
+        Me.MapsButton.TabIndex = 7
         Me.MapsButton.Text = "Maps"
         Me.ToolTip1.SetToolTip(Me.MapsButton, "Click to set up Maps")
         Me.MapsButton.UseVisualStyleBackColor = True
@@ -112,7 +112,7 @@ Partial Class AdvancedForm
         Me.Birds.Location = New System.Drawing.Point(6, 65)
         Me.Birds.Name = "Birds"
         Me.Birds.Size = New System.Drawing.Size(145, 23)
-        Me.Birds.TabIndex = 20
+        Me.Birds.TabIndex = 2
         Me.Birds.Text = "Bird Settings"
         Me.ToolTip1.SetToolTip(Me.Birds, "Click to set up the Birds module")
         Me.Birds.UseVisualStyleBackColor = True
@@ -122,7 +122,7 @@ Partial Class AdvancedForm
         Me.BackupButton1.Location = New System.Drawing.Point(8, 36)
         Me.BackupButton1.Name = "BackupButton1"
         Me.BackupButton1.Size = New System.Drawing.Size(145, 23)
-        Me.BackupButton1.TabIndex = 23
+        Me.BackupButton1.TabIndex = 1
         Me.BackupButton1.Text = "Backups"
         Me.ToolTip1.SetToolTip(Me.BackupButton1, "Click to set up your Backup Schedule")
         Me.BackupButton1.UseVisualStyleBackColor = True
@@ -132,7 +132,7 @@ Partial Class AdvancedForm
         Me.RegionsButton1.Location = New System.Drawing.Point(189, 93)
         Me.RegionsButton1.Name = "RegionsButton1"
         Me.RegionsButton1.Size = New System.Drawing.Size(145, 23)
-        Me.RegionsButton1.TabIndex = 24
+        Me.RegionsButton1.TabIndex = 12
         Me.RegionsButton1.Text = "Regions"
         Me.ToolTip1.SetToolTip(Me.RegionsButton1, "Click to set up  Regions")
         Me.RegionsButton1.UseVisualStyleBackColor = True
@@ -142,7 +142,7 @@ Partial Class AdvancedForm
         Me.DivaButton1.Location = New System.Drawing.Point(189, 267)
         Me.DivaButton1.Name = "DivaButton1"
         Me.DivaButton1.Size = New System.Drawing.Size(145, 23)
-        Me.DivaButton1.TabIndex = 25
+        Me.DivaButton1.TabIndex = 18
         Me.DivaButton1.Text = "Web Control Panel"
         Me.ToolTip1.SetToolTip(Me.DivaButton1, "Click to set up your Web Control Panel")
         Me.DivaButton1.UseVisualStyleBackColor = True
@@ -152,7 +152,7 @@ Partial Class AdvancedForm
         Me.PortsButton1.Location = New System.Drawing.Point(8, 239)
         Me.PortsButton1.Name = "PortsButton1"
         Me.PortsButton1.Size = New System.Drawing.Size(145, 23)
-        Me.PortsButton1.TabIndex = 26
+        Me.PortsButton1.TabIndex = 8
         Me.PortsButton1.Text = "Network Ports"
         Me.ToolTip1.SetToolTip(Me.PortsButton1, "Click to set up your Ports")
         Me.PortsButton1.UseVisualStyleBackColor = True
@@ -163,7 +163,7 @@ Partial Class AdvancedForm
         Me.PhysicsButton1.Location = New System.Drawing.Point(189, 36)
         Me.PhysicsButton1.Name = "PhysicsButton1"
         Me.PhysicsButton1.Size = New System.Drawing.Size(145, 23)
-        Me.PhysicsButton1.TabIndex = 27
+        Me.PhysicsButton1.TabIndex = 10
         Me.PhysicsButton1.Text = "Physics "
         Me.ToolTip1.SetToolTip(Me.PhysicsButton1, "Click to set up default Physics")
         Me.PhysicsButton1.UseVisualStyleBackColor = True
@@ -173,7 +173,7 @@ Partial Class AdvancedForm
         Me.DatabaseButton2.Location = New System.Drawing.Point(6, 94)
         Me.DatabaseButton2.Name = "DatabaseButton2"
         Me.DatabaseButton2.Size = New System.Drawing.Size(145, 23)
-        Me.DatabaseButton2.TabIndex = 29
+        Me.DatabaseButton2.TabIndex = 3
         Me.DatabaseButton2.Text = "Database Setup"
         Me.ToolTip1.SetToolTip(Me.DatabaseButton2, "Click to set up the Database")
         Me.DatabaseButton2.UseVisualStyleBackColor = True
@@ -183,7 +183,7 @@ Partial Class AdvancedForm
         Me.Button3.Location = New System.Drawing.Point(189, 122)
         Me.Button3.Name = "Button3"
         Me.Button3.Size = New System.Drawing.Size(143, 23)
-        Me.Button3.TabIndex = 32
+        Me.Button3.TabIndex = 13
         Me.Button3.Text = "Restart Settings"
         Me.ToolTip1.SetToolTip(Me.Button3, "Click to Set up Start/Stop")
         Me.Button3.UseVisualStyleBackColor = True
@@ -193,7 +193,7 @@ Partial Class AdvancedForm
         Me.Button2.Location = New System.Drawing.Point(8, 268)
         Me.Button2.Name = "Button2"
         Me.Button2.Size = New System.Drawing.Size(143, 23)
-        Me.Button2.TabIndex = 31
+        Me.Button2.TabIndex = 9
         Me.Button2.Text = "Permissions"
         Me.ToolTip1.SetToolTip(Me.Button2, "Click to set up God mode and other permissions")
         Me.Button2.UseVisualStyleBackColor = True
@@ -203,7 +203,7 @@ Partial Class AdvancedForm
         Me.DNSButton.Location = New System.Drawing.Point(8, 152)
         Me.DNSButton.Name = "DNSButton"
         Me.DNSButton.Size = New System.Drawing.Size(143, 23)
-        Me.DNSButton.TabIndex = 30
+        Me.DNSButton.TabIndex = 5
         Me.DNSButton.Text = "Hypergrid & DNS Name"
         Me.ToolTip1.SetToolTip(Me.DNSButton, "Click to Enable Hypergrid or change DNS Name")
         Me.DNSButton.UseVisualStyleBackColor = True
@@ -213,7 +213,7 @@ Partial Class AdvancedForm
         Me.Button1.Location = New System.Drawing.Point(189, 238)
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(145, 23)
-        Me.Button1.TabIndex = 33
+        Me.Button1.TabIndex = 17
         Me.Button1.Text = "WallPaper"
         Me.ToolTip1.SetToolTip(Me.Button1, "Click to set up the Fairy chat & wallpaper")
         Me.Button1.UseVisualStyleBackColor = True
@@ -223,7 +223,7 @@ Partial Class AdvancedForm
         Me.Button4.Location = New System.Drawing.Point(189, 64)
         Me.Button4.Name = "Button4"
         Me.Button4.Size = New System.Drawing.Size(145, 23)
-        Me.Button4.TabIndex = 34
+        Me.Button4.TabIndex = 11
         Me.Button4.Text = "Publicity"
         Me.ToolTip1.SetToolTip(Me.Button4, "Click to set up  Regions")
         Me.Button4.UseVisualStyleBackColor = True
