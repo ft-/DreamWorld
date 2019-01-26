@@ -981,9 +981,9 @@ Public Class Form1
 
         MySetting.LoadOtherIni(gPath + "bin\config-include\Gridcommon.ini", ";")
         Dim ConnectionString = """" _
-            + "Data Source=" + "127.0.0.1" _
+            + "Data Source=" + MySetting.RegionServer _
             + ";Database=" + MySetting.RegionDBName _
-            + ";Port=" + MySetting.MySqlPort _
+            + ";Port=" + MySetting.RegionPort _
             + ";User ID=" + MySetting.RegionDBUsername _
             + ";Password=" + MySetting.RegionDbPassword _
             + ";Old Guids=true;Allow Zero Datetime=true;" _

@@ -95,6 +95,7 @@ Public Class MySettings
             Region_manager_is_god() = My.Settings.region_manager_is_god
 
             RanAllDiags() = My.Settings.RanAllDiags
+
             RegionDBName() = My.Settings.RegionDBName
             RegionDbPassword() = My.Settings.RegionDbPassword
             RegionDBUsername() = My.Settings.RegionDBUsername
@@ -140,7 +141,8 @@ Public Class MySettings
 
         End If
 
-        ' new bool vars have to exist before we can read them, and this hack is the only way to set this is to test if they do exist
+        ' new  vars have to exist before we can read them, and this hack is the only way to set this is to test if they do exist
+
         Try
             Dim x = Clouds()
         Catch ex As Exception
@@ -517,6 +519,24 @@ Public Class MySettings
 #End Region
 
 #Region "Properties"
+
+    Public Property RegionPort() As String
+        Get
+            Return GetMySetting("RegionPort", "3309")
+        End Get
+        Set
+            SetMySetting("RegionPort", Value)
+        End Set
+    End Property
+
+    Public Property RegionServer() As String
+        Get
+            Return GetMySetting("RegionServer", "127.0.0.1")
+        End Get
+        Set
+            SetMySetting("RegionServer", Value)
+        End Set
+    End Property
 
     Public Property Theme() As String
         Get
