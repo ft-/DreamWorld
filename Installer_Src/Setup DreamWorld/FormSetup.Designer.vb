@@ -77,6 +77,10 @@ Partial Class Form1
         Me.ScriptsStartToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ScriptsSuspendToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ScriptsResumeToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ShowStatusToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ThreadpoolsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.XengineToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.JobEngineToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ViewLogsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ClearCachesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator7 = New System.Windows.Forms.ToolStripSeparator()
@@ -88,6 +92,7 @@ Partial Class Form1
         Me.ToolStripMenuItem2 = New System.Windows.Forms.ToolStripMenuItem()
         Me.CHeckForUpdatesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator5 = New System.Windows.Forms.ToolStripSeparator()
+        Me.RevisionHistoryToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuAbout = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
         Me.MnuContent = New System.Windows.Forms.ToolStripMenuItem()
@@ -123,7 +128,6 @@ Partial Class Form1
         Me.IgnoreButton = New System.Windows.Forms.Button()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
-        Me.RevisionHistoryToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuStrip1.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -339,7 +343,7 @@ Partial Class Form1
         '
         'CommonConsoleCommandsToolStripMenuItem
         '
-        Me.CommonConsoleCommandsToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.UsersToolStripMenuItem, Me.SendAlertToAllUsersToolStripMenuItem, Me.DebugToolStripMenuItem, Me.RestartRegionToolStripMenuItem, Me.ScriptsToolStripMenuItem})
+        Me.CommonConsoleCommandsToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.UsersToolStripMenuItem, Me.SendAlertToAllUsersToolStripMenuItem, Me.DebugToolStripMenuItem, Me.RestartRegionToolStripMenuItem, Me.ScriptsToolStripMenuItem, Me.ShowStatusToolStripMenuItem})
         Me.CommonConsoleCommandsToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.box_new
         Me.CommonConsoleCommandsToolStripMenuItem.Name = "CommonConsoleCommandsToolStripMenuItem"
         Me.CommonConsoleCommandsToolStripMenuItem.Size = New System.Drawing.Size(269, 26)
@@ -488,6 +492,31 @@ Partial Class Form1
         Me.ScriptsResumeToolStripMenuItem.Size = New System.Drawing.Size(157, 22)
         Me.ScriptsResumeToolStripMenuItem.Text = "Scripts Resume"
         '
+        'ShowStatusToolStripMenuItem
+        '
+        Me.ShowStatusToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ThreadpoolsToolStripMenuItem, Me.XengineToolStripMenuItem, Me.JobEngineToolStripMenuItem})
+        Me.ShowStatusToolStripMenuItem.Name = "ShowStatusToolStripMenuItem"
+        Me.ShowStatusToolStripMenuItem.Size = New System.Drawing.Size(177, 22)
+        Me.ShowStatusToolStripMenuItem.Text = "Show Status"
+        '
+        'ThreadpoolsToolStripMenuItem
+        '
+        Me.ThreadpoolsToolStripMenuItem.Name = "ThreadpoolsToolStripMenuItem"
+        Me.ThreadpoolsToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.ThreadpoolsToolStripMenuItem.Text = "Threadpools"
+        '
+        'XengineToolStripMenuItem
+        '
+        Me.XengineToolStripMenuItem.Name = "XengineToolStripMenuItem"
+        Me.XengineToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.XengineToolStripMenuItem.Text = "Xengine"
+        '
+        'JobEngineToolStripMenuItem
+        '
+        Me.JobEngineToolStripMenuItem.Name = "JobEngineToolStripMenuItem"
+        Me.JobEngineToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.JobEngineToolStripMenuItem.Text = "JobEngine"
+        '
         'ViewLogsToolStripMenuItem
         '
         Me.ViewLogsToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.document_view
@@ -563,6 +592,13 @@ Partial Class Form1
         '
         Me.ToolStripSeparator5.Name = "ToolStripSeparator5"
         Me.ToolStripSeparator5.Size = New System.Drawing.Size(266, 6)
+        '
+        'RevisionHistoryToolStripMenuItem
+        '
+        Me.RevisionHistoryToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.document_dirty
+        Me.RevisionHistoryToolStripMenuItem.Name = "RevisionHistoryToolStripMenuItem"
+        Me.RevisionHistoryToolStripMenuItem.Size = New System.Drawing.Size(269, 26)
+        Me.RevisionHistoryToolStripMenuItem.Text = "Revision History"
         '
         'mnuAbout
         '
@@ -824,13 +860,6 @@ Partial Class Form1
         Me.PictureBox1.TabIndex = 27
         Me.PictureBox1.TabStop = False
         '
-        'RevisionHistoryToolStripMenuItem
-        '
-        Me.RevisionHistoryToolStripMenuItem.Image = Global.Outworldz.My.Resources.Resources.document_dirty
-        Me.RevisionHistoryToolStripMenuItem.Name = "RevisionHistoryToolStripMenuItem"
-        Me.RevisionHistoryToolStripMenuItem.Size = New System.Drawing.Size(269, 26)
-        Me.RevisionHistoryToolStripMenuItem.Text = "Revision History"
-        '
         'Form1
         '
         Me.AllowDrop = True
@@ -977,4 +1006,8 @@ Partial Class Form1
     Friend WithEvents ViewLogsToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ToolTip1 As ToolTip
     Friend WithEvents RevisionHistoryToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents ShowStatusToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents ThreadpoolsToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents XengineToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents JobEngineToolStripMenuItem As ToolStripMenuItem
 End Class

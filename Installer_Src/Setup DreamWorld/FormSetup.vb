@@ -4669,13 +4669,31 @@ Public Class Form1
 
         System.Diagnostics.Process.Start("notepad.exe", path)
 
-
     End Sub
 
     Private Sub RevisionHistoryToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles RevisionHistoryToolStripMenuItem.Click
         Dim path = MyFolder + "/revisions.txt"
         System.Diagnostics.Process.Start("notepad.exe", path)
     End Sub
+
+    Private Sub ThreadpoolsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ThreadpoolsToolStripMenuItem.Click
+        For Each RegionNum As Integer In RegionClass.RegionListByGroupNum("*")
+            ConsoleCommand(RegionClass.RegionName(RegionNum), "show threads{ENTER}")
+        Next
+    End Sub
+
+    Private Sub XengineToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles XengineToolStripMenuItem.Click
+        For Each RegionNum As Integer In RegionClass.RegionListByGroupNum("*")
+            ConsoleCommand(RegionClass.RegionName(RegionNum), "xengine status{ENTER}")
+        Next
+    End Sub
+
+    Private Sub JobEngineToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles JobEngineToolStripMenuItem.Click
+        For Each RegionNum As Integer In RegionClass.RegionListByGroupNum("*")
+            ConsoleCommand(RegionClass.RegionName(RegionNum), "debug jobengine status{ENTER}")
+        Next
+    End Sub
+
 #End Region
 
 End Class
