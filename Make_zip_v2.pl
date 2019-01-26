@@ -5,7 +5,7 @@ use 5.010;
 use File::Copy;
 use File::Path;
 
-my $type  = '-V2.69' ;  # '-Beta-V1.5';
+my $type  = '-V2.7' ;  # '-Beta-V1.5';
 
 use Cwd;
 my $dir = getcwd;
@@ -124,9 +124,6 @@ foreach my $file (@files) {
 }
 
 say("Adding folders");
-#Process ("../7z.exe -tzip a ..\\Zips\\DreamGrid-Update$type.zip Licenses_to_Content");
-#Process ("../7z.exe -tzip a ..\\Zips\\DreamGrid-Update$type.zip OutworldzFiles");
-#Process ("../7z.exe -tzip a ..\\Zips\\DreamGrid-Update$type.zip Viewer");
 
 Process ("../7z.exe -tzip a ..\\Zips\\DreamGrid$type.zip Licenses_to_Content");
 Process ("../7z.exe -tzip a ..\\Zips\\DreamGrid$type.zip OutworldzFiles");
@@ -137,7 +134,7 @@ if (!copy ("../Zips/DreamGrid$type.zip", "../Zips/DreamGrid-Update$type.zip"))  
 
 say("Drop mysql files from update");
 # now delete the mysql from the UPDATE
-Process ("../7z.exe -tzip d ..\\Zips\\DreamGrid-Update$type.zip Outworldzfiles\\mysql\\data\\ -r ");
+
 
 
 # del Dot net because we cannot overwrite an open file

@@ -1,3 +1,11 @@
+2.7
+Added AGPL license popup on first start
+Added Startup Help on first run
+Region Database can be set to a different machine and port
+Clicking a region brings in region menu it to the foreground
+Tab indexes set for Common Settings
+Allow multi-instabces. This means you can run two different folders at the same time. You must use different ports.
+
 2.69
 
 "Run as Administrator" for the webserver because Icons would not change reliably. Now uses a webserver class. 
