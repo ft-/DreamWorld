@@ -109,7 +109,7 @@ use IO::File ;
 
 Perlunzip( "mysql/Blank-Mysql-Data-folder.zip", 'mysql');
 
-print "Processing Main Zip\n";
+	print "Processing Main Zip\n";
 
 
 @files =   `cmd /c dir /b `;
@@ -135,6 +135,7 @@ if (!copy ("../Zips/DreamGrid$type.zip", "../Zips/DreamGrid-Update$type.zip"))  
 say("Drop mysql files from update");
 # now delete the mysql from the UPDATE
 
+Process ("../7z.exe -tzip d ..\\Zips\\DreamGrid-Update$type.zip Outworldzfiles\\mysql\\data\\ -r ");
 
 
 # del Dot net because we cannot overwrite an open file
