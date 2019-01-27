@@ -522,7 +522,7 @@ Public Class MySettings
 
     Public Property RegionPort() As String
         Get
-            Return GetMySetting("RegionPort", "3309")
+            Return GetMySetting("RegionPort", MySqlPort())
         End Get
         Set
             SetMySetting("RegionPort", Value)
