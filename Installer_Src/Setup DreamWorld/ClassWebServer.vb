@@ -55,9 +55,13 @@ Public Class NetServer
 
         prefixes(0) = "http://" + LocalAddress.ToString + ":" + MyPort.ToString + "/"
 
-        For Each s As String In prefixes
-            listener.Prefixes.Add(s)
-        Next
+        Try
+            For Each s As String In prefixes
+                listener.Prefixes.Add(s)
+            Next
+        Catch
+        End Try
+
         Dim result As IAsyncResult
         While listen
             result = listener.BeginGetContext((AddressOf ListenerCallback), listener)
