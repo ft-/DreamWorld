@@ -611,7 +611,6 @@ C:\Opensim\OpensimV1.75 Source\Installer_Src\2010\SetupDreamWorld\Setup DreamWor
 C:\Opensim\OpensimV1.75 Source\Installer_Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Debug\Outworldz.Resources.resources
 C:\Opensim\OpensimV1.75 Source\Installer_Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Debug\Outworldz.Form2.resources
 C:\Opensim\OpensimV1.75 Source\Installer_Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Debug\Start.vbproj.GenerateResource.Cache
-C:\Opensim\OpensimV1.75 Source\Installer_Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Debug\Start.vbproj.CoreCompileInputs.cache
 C:\Opensim\Opensim DreamWorld Source\Installer_Src\2010\SetupDreamWorld\Setup DreamWorld\bin\Debug\Start.exe.config
 C:\Opensim\Opensim DreamWorld Source\Installer_Src\2010\SetupDreamWorld\Setup DreamWorld\bin\Debug\Start.exe
 C:\Opensim\Opensim DreamWorld Source\Installer_Src\2010\SetupDreamWorld\Setup DreamWorld\bin\Debug\Start.pdb
@@ -668,3 +667,4 @@ C:\Opensim\Outworldz DreamWorld Source\Installer_Src\2010\SetupDreamWorld\Setup 
 C:\Opensim\Outworldz DreamWorld Source\Installer_Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Debug\Start.exe
 C:\Opensim\Outworldz DreamWorld Source\Installer_Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Debug\Start.pdb
 C:\Opensim\Outworldz DreamWorld Source\Installer_Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Debug\Start.vbprojResolveAssemblyReference.cache
+C:\Opensim\OpensimV1.75 Source\Installer_Src\2010\SetupDreamWorld\Setup DreamWorld\obj\x86\Debug\Outworldz.TosForm.resources

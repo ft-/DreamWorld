@@ -33,7 +33,7 @@ Public Class Form1
 #Region "Declarations"
 
     Dim MyVersion As String = "1.77"
-    Dim DebugPath As String = "C:\Opensim\Outworldz DreamWorld Source"
+    Dim DebugPath As String = "C:\Opensim\OpensimV1.75 Source"
     Public Domain As String = "http://www.outworldz.com"
 
     Public MyFolder As String   ' Holds the current folder that we are running in
@@ -175,13 +175,12 @@ Public Class Form1
         ' I would like to buy an argument
         Dim arguments As String() = Environment.GetCommandLineArgs()
 
-        If arguments.Length > 1 Then
-            ' for debugging when compiling
-            If arguments(1) = "-debug" Then
-                gDebug = True
-                MyFolder = DebugPath ' for testing, as the compiler buries itself in ../../../debug
 
-            End If
+        ' for debugging when compiling
+        If MyFolder.Contains("Source") Then
+            gDebug = True
+            MyFolder = DebugPath ' for testing, as the compiler buries itself in ../../../debug
+
         End If
         gCurSlashDir = MyFolder.Replace("\", "/")    ' because Mysql uses unix like slashes, that's why
 

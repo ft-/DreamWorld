@@ -54,7 +54,6 @@ Public Class TosForm
         If Form1.Running Then
             Dim webAddress As String = My.Settings.DnsName + ":" + My.Settings.HttpPort + "/wifi/termsofservice.html"
             Process.Start(webAddress)
-            Process.Start(webAddress)
         Else
             MsgBox("Opensim must be running to show you the TOS.")
         End If
