@@ -33,6 +33,8 @@ Public Class FormDatabase
         RegionDbName.Text = Form1.MySetting.RegionDBName
         RegionDBUsername.Text = Form1.MySetting.RegionDBUsername
         RegionMySqlPassword.Text = Form1.MySetting.RegionDbPassword
+        RegionServer.Text = Form1.MySetting.RegionServer
+        RegionPort.Text = Form1.MySetting.RegionPort
 
         ' Robust DB
         RobustServer.Text = Form1.MySetting.RobustServer
@@ -40,7 +42,6 @@ Public Class FormDatabase
         RobustDBPassword.Text = Form1.MySetting.RobustPassword
         RobustDBUsername.Text = Form1.MySetting.RobustUsername
         RobustDbPort.Text = Form1.MySetting.MySqlPort.ToString
-
         RobustDBPassword.UseSystemPasswordChar = True
 
         SetScreen()
@@ -122,27 +123,30 @@ Public Class FormDatabase
 
     End Sub
 
+    Private Sub BirdHelp_Click(sender As Object, e As EventArgs) Handles DBHelp.Click
+        Form1.Help("Database")
+    End Sub
 
-    Private Sub RobustDbPortTextbox_TextChanged(sender As Object, e As EventArgs) Handles RobustDbPort.TextChanged
+    Private Sub RobustDbPort_TextChanged(sender As Object, e As EventArgs) Handles RobustDbPort.TextChanged
+
         If Not initted Then Return
         Form1.MySetting.MySqlPort = RobustDbPort.Text
         Form1.MySetting.SaveSettings()
 
     End Sub
 
+    Private Sub TextBox1_TextChanged(sender As Object, e As EventArgs) Handles RegionServer.TextChanged
 
-    Private Sub BirdHelp_Click(sender As Object, e As EventArgs) Handles DBHelp.Click
-        Form1.Help("Database")
-    End Sub
-
-
-    Private Sub RobustDbPort_TextChanged(sender As Object, e As EventArgs) Handles RobustDbPort.TextChanged
-
-        Dim digitsOnly As Regex = New Regex("[^\d]")
-        RobustDbPort.Text = digitsOnly.Replace(RobustDbPort.Text, "")
-        Form1.MySetting.MySqlPort = RobustDbPort.Text
+        If Not initted Then Return
+        Form1.MySetting.RegionServer = RegionServer.Text
         Form1.MySetting.SaveSettings()
 
+    End Sub
+
+    Private Sub TextBox1_TextChanged_2(sender As Object, e As EventArgs) Handles RegionPort.TextChanged
+        If Not initted Then Return
+        Form1.MySetting.RegionPort = RegionPort.Text
+        Form1.MySetting.SaveSettings()
     End Sub
 
 

@@ -34,7 +34,7 @@ Public Class Form1
 
 #Region "Declarations"
 
-    Dim gMyVersion As String = "2.69"
+    Dim gMyVersion As String = "2.7"
     Dim gSimVersion As String = "0.9.1"
 
     ' edit this to compile and run in the correct folder root
@@ -406,13 +406,13 @@ Public Class Form1
             Print("Ready to Launch!")
             Buttons(StartButton)
 
-            HelpOnce("Startup")
-
         End If
 
         Dim isMySqlRunning = CheckPort("127.0.0.1", CType(MySetting.MySqlPort, Integer))
         If isMySqlRunning Then gStopMysql = False
 
+        HelpOnce("Startup")
+        HelpOnce("License")
 
         ProgressBar1.Value = 100
 
@@ -981,9 +981,9 @@ Public Class Form1
 
         MySetting.LoadOtherIni(gPath + "bin\config-include\Gridcommon.ini", ";")
         Dim ConnectionString = """" _
-            + "Data Source=" + "127.0.0.1" _
+            + "Data Source=" + MySetting.RegionServer _
             + ";Database=" + MySetting.RegionDBName _
-            + ";Port=" + MySetting.MySqlPort _
+            + ";Port=" + MySetting.RegionPort _
             + ";User ID=" + MySetting.RegionDBUsername _
             + ";Password=" + MySetting.RegionDbPassword _
             + ";Old Guids=true;Allow Zero Datetime=true;" _
@@ -4669,13 +4669,31 @@ Public Class Form1
 
         System.Diagnostics.Process.Start("notepad.exe", path)
 
-
     End Sub
 
     Private Sub RevisionHistoryToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles RevisionHistoryToolStripMenuItem.Click
         Dim path = MyFolder + "/revisions.txt"
         System.Diagnostics.Process.Start("notepad.exe", path)
     End Sub
+
+    Private Sub ThreadpoolsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ThreadpoolsToolStripMenuItem.Click
+        For Each RegionNum As Integer In RegionClass.RegionListByGroupNum("*")
+            ConsoleCommand(RegionClass.RegionName(RegionNum), "show threads{ENTER}")
+        Next
+    End Sub
+
+    Private Sub XengineToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles XengineToolStripMenuItem.Click
+        For Each RegionNum As Integer In RegionClass.RegionListByGroupNum("*")
+            ConsoleCommand(RegionClass.RegionName(RegionNum), "xengine status{ENTER}")
+        Next
+    End Sub
+
+    Private Sub JobEngineToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles JobEngineToolStripMenuItem.Click
+        For Each RegionNum As Integer In RegionClass.RegionListByGroupNum("*")
+            ConsoleCommand(RegionClass.RegionName(RegionNum), "debug jobengine status{ENTER}")
+        Next
+    End Sub
+
 #End Region
 
 End Class

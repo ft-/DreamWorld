@@ -453,7 +453,7 @@ Public Class RegionMaker
         Dim L As New List(Of Integer)
         Dim ctr = 0
         For Each n As Region_data In RegionList
-            If n._Group = GroupName Then
+            If n._Group = GroupName Or GroupName = "*" Then
                 L.Add(ctr)
             End If
             ctr = ctr + 1
