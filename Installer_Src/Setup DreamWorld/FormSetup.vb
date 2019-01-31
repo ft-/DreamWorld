@@ -1656,17 +1656,21 @@ Public Class Form1
 
     End Sub
     Public Sub CheckDefaultPorts()
-
-        If MySetting.DiagnosticPort = MySetting.HttpPort _
+        Try
+            If MySetting.DiagnosticPort = MySetting.HttpPort _
             Or MySetting.DiagnosticPort = MySetting.PrivatePort _
             Or MySetting.HttpPort = MySetting.PrivatePort _
             Or CType(MySetting.HttpPort, Double) < 1024 Then
-            MySetting.DiagnosticPort = "8001"
-            MySetting.HttpPort = "8002"
-            MySetting.PrivatePort = "8003"
+                MySetting.DiagnosticPort = "8001"
+                MySetting.HttpPort = "8002"
+                MySetting.PrivatePort = "8003"
 
-            MsgBox("Port conflict detected. Sim Ports have been reset to the defaults", vbInformation, "Error")
-        End If
+                MsgBox("Port conflict detected. Sim Ports have been reset to the defaults", vbInformation, "Error")
+            End If
+
+        Catch
+        End Try
+
 
     End Sub
 
