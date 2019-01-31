@@ -66,7 +66,8 @@ Public Class Form1
     ' robust global PID
     Public gRobustProcID As Integer
     Public gRobustConnStr As String = ""
-    Public gMaxPortUsed As Integer = 0
+
+    Public gMaxPortUsed As Integer = 0  'Max number of port used past 8004
 
     Private images As List(Of Image) = New List(Of Image) From {My.Resources.tangled, My.Resources.wp_habitat, My.Resources.wp_Mooferd,
                              My.Resources.wp_To_Piers_Anthony,
@@ -98,16 +99,21 @@ Public Class Form1
     Dim ws As NetServer             ' Port 8001 Webserver
     Dim gStopping As Boolean = False    ' Allows an Abort when Stopping is clicked
     Dim Timertick As Integer        ' counts the seconds until wallpaper changes
-    Private gDiagsrunning As Boolean = False
-    Dim gDNSSTimer As Integer = 0
-    Dim gUseIcons As Boolean = True
-    Dim gIPv4Address As String
-    Public MySetting As New MySettings
-    Public gExiting As Boolean = False
+
+    Dim gDNSSTimer As Integer = 0    ' ping server every hour
+    Dim gUseIcons As Boolean = True     ' if 8001 is blocked
+    Dim gIPv4Address As String          ' global IPV4
+    Public MySetting As New MySettings  ' all settings from Settings.ini
+    Public gExiting As Boolean = False  ' we are quitting
 
     ' Shoutcast
     Dim gIcecastProcID As Integer = 0
     Private WithEvents IcecastProcess As New Process()
+    Dim Adv As AdvancedForm
+    ' Help Form for RTF files
+    Public FormHelp As New FormHelp
+    Dim FormCaches As New FormCaches
+    Public FormPersonality As FormPersonality
 
     ' Region 
     Public RegionClass As RegionMaker   ' Global RegionClass
@@ -115,20 +121,14 @@ Public Class Form1
     Dim ExitList As New List(Of String)
 
     ' Mysql
-    Dim gStopMysql As Boolean = True
+    Dim gStopMysql As Boolean = True    'lets us detct if Mysql is a service so we do not shut it down
 
-    Dim FormCaches As New FormCaches
+    Public gUpdateView As Boolean = True 'Region Form Refresh
 
-    'Region Form Refresh
-    Public gUpdateView As Boolean = True
+    Dim gInitted As Boolean = False
 
-    ' Help Form for RTF files
-    Public FormHelp As New FormHelp
-    Dim Adv As AdvancedForm
-    Dim initted As Boolean = False
-    Public FormPersonality As FormPersonality
     Dim gWindowCounter As Integer = 0
-
+    Public gRestartNow As Boolean = False ' set true if a person clicks a restart button to get a sim restarted when auto restart is off
 
     <CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA2101:SpecifyMarshalingForPInvokeStringArguments", MessageId:="1")>
     <CodeAnalysis.SuppressMessage("Microsoft.Interoperability", "CA1401:PInvokesShouldNotBeVisible")>
@@ -313,7 +313,7 @@ Public Class Form1
         RegionClass = RegionMaker.Instance(MysqlConn)
 
         Adv = New AdvancedForm
-        initted = True
+        gInitted = True
 
         SaySomething()
 
@@ -1761,7 +1761,7 @@ Public Class Form1
 
     Private Sub AdvancedSettingsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AdvancedSettingsToolStripMenuItem.Click
 
-        If initted Then
+        If gInitted Then
             Adv.Activate()
             Adv.Visible = True
         End If
@@ -2541,13 +2541,14 @@ Public Class Form1
     ''' </summary>
     Private Sub RegionRestart()
 
-        If MySetting.AutoRestartInterval() = 0 Then Return
+        If MySetting.AutoRestartInterval() = 0 And Not gRestartNow Then Return
 
         For Each X As Integer In RegionClass.RegionNumbers
 
             Application.DoEvents()
 
-            If OpensimIsRunning() And Not gExiting And RegionClass.Timer(X) >= REGION_TIMER.START_COUNTING Then
+            If OpensimIsRunning() And Not gExiting And RegionClass.Timer(X) >= REGION_TIMER.START_COUNTING _
+                And (RegionClass.Booted(X) Or RegionClass.WarmingUp(X) Or RegionClass.ShuttingDown(X)) Then
 
                 Dim timervalue As Integer = RegionClass.Timer(X)
                 ' if it is past time and no one is in the sim...
@@ -2576,6 +2577,15 @@ Public Class Form1
                     Catch ex As Exception
                         ErrorLog(ex.Message)
                         RegionClass.RegionDump()
+
+                        ' shut down all regions in the DOS box
+                        For Each Y In RegionClass.RegionListByGroupNum(Groupname)
+                            RegionClass.Timer(Y) = REGION_TIMER.RESTART_PENDING
+                            RegionClass.Booted(Y) = False
+                            RegionClass.WarmingUp(Y) = False
+                            RegionClass.ShuttingDown(Y) = False
+                        Next
+
                     End Try
 
                 End If
@@ -2595,6 +2605,7 @@ Public Class Form1
                 Boot(RegionClass.RegionName(X))
             End If
         Next
+        gRestartNow = False
 
     End Sub
 
@@ -3555,7 +3566,7 @@ Public Class Form1
         End If
 
         Print("Running Network Diagnostics, please wait")
-        gDiagsrunning = True
+
         MySetting.DiagFailed = False
 
         OpenPorts() ' Open router ports with UPnp
@@ -3569,7 +3580,6 @@ Public Class Form1
         End If
         Log("Diagnostics set the Grid address to " + MySetting.PublicIP)
 
-        gDiagsrunning = False
 
     End Sub
 
