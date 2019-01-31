@@ -293,8 +293,25 @@ Public Class RegionList
         LoadMyListView()
 
     End Sub
+    Private Sub ListCLick(sender As Object, e As EventArgs) Handles ListView1.Click
+        Dim regions As ListView.SelectedListViewItemCollection = Me.ListView1.SelectedItems
+        Dim item As ListViewItem
 
+        For Each item In regions
+            Dim RegionName = item.SubItems(0).Text
+            Dim checked As Boolean = item.Checked
+            Debug.Print("Clicked row " + RegionName)
+            Dim R = RegionClass.FindRegionByName(RegionName)
+            If R >= 0 Then
+                StartStopEdit(checked, R, RegionName)
+            End If
+        Next
+
+        UpdateView() = True
+    End Sub
     Private Sub ListView1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ListView1.SelectedIndexChanged
+
+        Return
 
         Dim regions As ListView.SelectedListViewItemCollection = Me.ListView1.SelectedItems
         Dim item As ListViewItem
@@ -355,53 +372,68 @@ Public Class RegionList
                     Form1.ProgressBar1.Value = 0
                     Form1.ProgressBar1.Visible = True
                     Form1.Print("Stopped")
-                    Return
                 End If
                 Form1.Start_Robust()
                 Form1.Log("Starting " + RegionClass.RegionName(n))
                 Form1.CopyOpensimProto() ' !!! make this region specific for speed
                 Form1.Boot(RegionClass.RegionName(n))
                 UpdateView() = True ' force a refresh
-                Return
 
             ElseIf chosen = "Stop" Then
 
-
                 For Each num In RegionClass.RegionListByGroupNum(RegionClass.GroupName(n))
-                        ' Ask before killing any people
-                        If RegionClass.AvatarCount(num) > 0 Then
-                            Dim response As MsgBoxResult
+                    ' Ask before killing any people
+                    If RegionClass.AvatarCount(num) > 0 Then
+                        Dim response As MsgBoxResult
 
-                            If RegionClass.AvatarCount(num) = 1 Then
-                                response = MsgBox("There is one avatar in " + RegionClass.RegionName(num) + ".  Do you still want to stop it?", vbYesNo)
-                            Else
-                                response = MsgBox("There are " + RegionClass.AvatarCount(num).ToString + " avatars in " + RegionClass.RegionName(num) + ".  Do you still want to stop it?", vbYesNo)
-                            End If
-                            If response = vbYes Then
-                                StopRegionNum(num)
-                            End If
+                        If RegionClass.AvatarCount(num) = 1 Then
+                            response = MsgBox("There is one avatar in " + RegionClass.RegionName(num) + ".  Do you still want to stop it?", vbYesNo)
                         Else
+                            response = MsgBox("There are " + RegionClass.AvatarCount(num).ToString + " avatars in " + RegionClass.RegionName(num) + ".  Do you still want to stop it?", vbYesNo)
+                        End If
+                        If response = vbYes Then
                             StopRegionNum(num)
                         End If
-                    Next
-                    UpdateView = True ' make form refresh
-                    Return
-
-                ElseIf chosen = "Edit" Then
-
-                    Dim RegionForm As New FormRegion
-                    RegionForm.Init(RegionClass.RegionName(n))
-                    RegionForm.Activate()
-                    RegionForm.Visible = True
-                    RegionForm.Select()
-                    UpdateView = True ' make form refresh
-                    Return
-
-                ElseIf chosen = "Recycle" Then
-                    RegionClass.Timer(n) = REGION_TIMER.RESTART_PENDING  ' request a recycle.
+                    Else
+                        StopRegionNum(num)
+                    End If
+                Next
                 UpdateView = True ' make form refresh
-                Return
+
+
+            ElseIf chosen = "Edit" Then
+
+                Dim RegionForm As New FormRegion
+                RegionForm.Init(RegionClass.RegionName(n))
+                RegionForm.Activate()
+                RegionForm.Visible = True
+                RegionForm.Select()
+                UpdateView = True ' make form refresh
+
+            ElseIf chosen = "Recycle" Then
+                RegionClass.Timer(n) = REGION_TIMER.RESTART_PENDING  ' request a recycle.
+                UpdateView = True ' make form refresh
+
+                Dim h As IntPtr = Form1.getHwnd(RegionClass.GroupName(n))
+                If h <> IntPtr.Zero Then ShowWindow(hwnd, SHOW_WINDOW.SW_RESTORE)
+
+                Form1.ConsoleCommand(RegionClass.GroupName(n), "q{ENTER}")
+                Form1.ConsoleCommand(RegionClass.GroupName(n), "Q{ENTER}")
+                Form1.ConsoleCommand(RegionClass.GroupName(n), "q{ENTER}")
+                Form1.Print("AutoRestarting " + RegionClass.GroupName(n))
+
+                Form1.gRestartNow = True
+
+                ' shut down all regions in the DOS box
+                For Each Y In RegionClass.RegionListByGroupNum(RegionClass.GroupName(n))
+                    RegionClass.Timer(Y) = REGION_TIMER.RESTART_PENDING
+                    RegionClass.Booted(Y) = False
+                    RegionClass.WarmingUp(Y) = False
+                    RegionClass.ShuttingDown(Y) = False
+                Next
+
             End If
+
             If chosen.Length > 0 Then
                 Choices.Dispose()
             End If
