@@ -34,7 +34,7 @@ Public Class Form1
 
 #Region "Declarations"
 
-    Dim gMyVersion As String = "2.7"
+    Dim gMyVersion As String = "2.71"
     Dim gSimVersion As String = "0.9.1"
 
     ' edit this to compile and run in the correct folder root
@@ -426,9 +426,12 @@ Public Class Form1
             params.Add("DnsName", MySetting.PublicIP)
 
             Dim Myupload As New UploadImage
-            Dim URL = New Uri("https://www.outworldz.com/cgi/uploadphoto.plx")
+            Dim URL = New Uri(gDomain & "/cgi/uploadphoto.plx")
+            Try
+                Myupload.PostContent_UploadFile(URL, MyFolder & "\OutworldzFiles\Photo.png", params)
+            Catch
+            End Try
 
-            Myupload.PostContent_UploadFile(URL, MyFolder & "\OutworldzFiles\Photo.png", params)
         End If
 
     End Sub
@@ -2481,14 +2484,13 @@ Public Class Form1
 
         ' 10 seconds check for a restart
         ' RegionRestart requires this MOD 10 as it changed there to one minute
-        If gDNSSTimer Mod 10 = 0 Then
+        If gDNSSTimer Mod 5 = 0 Then
 
+            DoExitHandlerPoll() ' see if any regions have exited and set it up for Region Restart
             If Not gExiting Then
                 RegionRestart() ' check for reboot 
                 ScanAgents() ' update agent count
             End If
-
-            DoExitHandlerPoll() ' see if any regions have exited and set it up for Region Restart
 
         End If
 
@@ -2603,9 +2605,11 @@ Public Class Form1
             ' if a restart is signalled, boot it up
             If RegionClass.Timer(X) = REGION_TIMER.RESTARTING Then
                 Boot(RegionClass.RegionName(X))
+                gRestartNow = False
             End If
+
         Next
-        gRestartNow = False
+
 
     End Sub
 
