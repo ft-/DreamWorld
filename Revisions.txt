@@ -1,13 +1,19 @@
+2.71
+Improvements to Start/Stop/Edit/Restart popup - no more double clicking effect
+Try catch on photo upload in case Outworldz.com is offline.
+Try catch in case any ports were blanked out
+Mysql Region port set to same as Mysql robust port on initial startup.
+Removed several duplicated licenses.
+
 2.7
 Added AGPL license popup on first start
 Added Startup Help on first run
 Region Database can be set to a different machine and port
 Clicking a region brings in region menu it to the foreground
 Tab indexes set for Common Settings
-Allow multi-instabces. This means you can run two different folders at the same time. You must use different ports.
+Allow multi-instances. This means you can run two different folders at the same time. You must use different ports.
 
 2.69
-
 "Run as Administrator" for the webserver because Icons would not change reliably. Now uses a webserver class. 
 Removed limit on number of regions. Was 100 to 200 before.
 New "Deregister button" for region when two sims overlap.
