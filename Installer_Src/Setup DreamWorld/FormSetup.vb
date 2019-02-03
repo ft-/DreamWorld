@@ -2484,7 +2484,7 @@ Public Class Form1
 
         ' 10 seconds check for a restart
         ' RegionRestart requires this MOD 10 as it changed there to one minute
-        If gDNSSTimer Mod 5 = 0 Then
+        If gDNSSTimer Mod 10 = 0 Then
 
             DoExitHandlerPoll() ' see if any regions have exited and set it up for Region Restart
             If Not gExiting Then
