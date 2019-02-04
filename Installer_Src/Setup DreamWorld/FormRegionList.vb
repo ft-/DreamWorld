@@ -420,7 +420,7 @@ Public Class RegionList
                 Form1.ConsoleCommand(RegionClass.GroupName(n), "q{ENTER}")
                 Form1.ConsoleCommand(RegionClass.GroupName(n), "Q{ENTER}")
                 Form1.ConsoleCommand(RegionClass.GroupName(n), "q{ENTER}")
-                Form1.Print("AutoRestarting " + RegionClass.GroupName(n))
+                Form1.Print("Shutdown " + RegionClass.GroupName(n))
 
                 Form1.gRestartNow = True
 
