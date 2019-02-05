@@ -14,7 +14,7 @@ Public Class UploadImage
     Private Sub UploadComplete(ByVal Data As String)
         ' Your Upload Success Routine Goes here
         If Data <> "1" Then
-            MsgBox("Upload Failed. Please try again later.")
+            MsgBox("Upload Failed. " & Data)
         End If
 
     End Sub
