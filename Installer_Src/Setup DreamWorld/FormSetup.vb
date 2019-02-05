@@ -29,12 +29,11 @@ Imports System.Threading
 Imports System.Runtime.InteropServices
 Imports System.Text
 
-
 Public Class Form1
 
 #Region "Declarations"
 
-    Dim gMyVersion As String = "2.71"
+    Dim gMyVersion As String = "2.72"
     Dim gSimVersion As String = "0.9.1"
 
     ' edit this to compile and run in the correct folder root
@@ -422,6 +421,8 @@ Public Class Form1
 
         If System.IO.File.Exists(MyFolder & "\OutworldzFiles\Photo.png") Then
             Dim params As New Specialized.NameValueCollection
+
+
             params.Add("MachineID", MySetting.MachineID())
             params.Add("DnsName", MySetting.PublicIP)
 
@@ -2480,7 +2481,7 @@ Public Class Form1
             RegisterDNS()
         End If
 
-        if Not gExiting Then RegionClass.CheckPost()
+        If Not gExiting Then RegionClass.CheckPost()
 
         ' 10 seconds check for a restart
         ' RegionRestart requires this MOD 10 as it changed there to one minute

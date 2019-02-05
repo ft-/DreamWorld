@@ -109,7 +109,7 @@ use IO::File ;
 
 Perlunzip( "mysql/Blank-Mysql-Data-folder.zip", 'mysql');
 
-	print "Processing Main Zip\n";
+print "Processing Main Zip\n";
 
 
 @files =   `cmd /c dir /b `;

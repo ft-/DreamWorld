@@ -64,12 +64,17 @@ Public Class FormDNSName
 
     Private Sub TextBox1_LostFocus(sender As Object, e As EventArgs) Handles DNSNameBox.TextChanged
 
+
+
         If DNSNameBox.Text <> String.Empty Then
 
             DNSNameBox.Text = DNSNameBox.Text.Replace("http://", "")
             DNSNameBox.Text = DNSNameBox.Text.Replace("https://", "")
 
             DNSNameBox.Text = Regex.Replace(DNSNameBox.Text, ":\d+", "") ' no :8002 on end.
+
+            Dim rgx As New Regex("[^a-zA-Z0-9\.\-]")
+            DNSNameBox.Text = rgx.Replace(DNSNameBox.Text, "")
 
             Dim client As New System.Net.WebClient
             Dim Checkname As String = String.Empty
