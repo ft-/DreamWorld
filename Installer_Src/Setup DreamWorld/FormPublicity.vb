@@ -1,4 +1,5 @@
 ﻿Imports System.Text.RegularExpressions
+Imports System.Web
 
 Public Class FormPublicity
 
@@ -87,6 +88,7 @@ Public Class FormPublicity
                 Catch ex As Exception
                     Form1.ErrorLog(ex.Message)
                 End Try
+
 
                 Dim params As New Specialized.NameValueCollection
                 params.Add("MachineID", Form1.MySetting.MachineID())

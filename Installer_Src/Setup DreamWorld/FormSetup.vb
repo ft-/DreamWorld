@@ -29,7 +29,6 @@ Imports System.Threading
 Imports System.Runtime.InteropServices
 Imports System.Text
 
-
 Public Class Form1
 
 #Region "Declarations"
@@ -422,6 +421,8 @@ Public Class Form1
 
         If System.IO.File.Exists(MyFolder & "\OutworldzFiles\Photo.png") Then
             Dim params As New Specialized.NameValueCollection
+
+
             params.Add("MachineID", MySetting.MachineID())
             params.Add("DnsName", MySetting.PublicIP)
 
@@ -2480,11 +2481,11 @@ Public Class Form1
             RegisterDNS()
         End If
 
-        if Not gExiting Then RegionClass.CheckPost()
+        If Not gExiting Then RegionClass.CheckPost()
 
         ' 10 seconds check for a restart
         ' RegionRestart requires this MOD 10 as it changed there to one minute
-        If gDNSSTimer Mod 5 = 0 Then
+        If gDNSSTimer Mod 10 = 0 Then
 
             DoExitHandlerPoll() ' see if any regions have exited and set it up for Region Restart
             If Not gExiting Then
