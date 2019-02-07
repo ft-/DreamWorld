@@ -2567,6 +2567,7 @@ Public Class Form1
                         ConsoleCommand(RegionClass.GroupName(X), "Q{ENTER}")
                         ConsoleCommand(RegionClass.GroupName(X), "q{ENTER}")
                         Print("AutoRestarting " + Groupname)
+                        RegionClass.Timer(X) = REGION_TIMER.RESTART_PENDING
 
                         ' shut down all regions in the DOS box
                         For Each Y In RegionClass.RegionListByGroupNum(Groupname)
