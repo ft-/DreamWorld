@@ -1011,6 +1011,7 @@ Public Class Form1
         MySetting.SetOtherIni("DatabaseService", "ConnectionString", ConnectionString)
         MySetting.SetOtherIni("Const", "GridName", MySetting.SimName)
         MySetting.SetOtherIni("Const", "BaseURL", "http://" + MySetting.PublicIP)
+        MySetting.SetOtherIni("Const", "PrivURL", "http://" + MySetting.PrivateURL)
         MySetting.SetOtherIni("Const", "PublicPort", MySetting.HttpPort) ' 8002
         MySetting.SetOtherIni("Const", "PrivatePort", MySetting.PrivatePort)
         MySetting.SetOtherIni("Const", "http_listener_port", MySetting.HttpPort)
@@ -1329,8 +1330,7 @@ Public Class Form1
 
             Try
                 MySetting.LoadOtherIni(gPath + "bin\Opensim.proto", ";")
-                MySetting.SetOtherIni("Const", "BaseURL", "http://" + MySetting.PublicIP)
-                MySetting.SetOtherIni("Const", "PrivURL", "http://" + MySetting.PrivateURL)
+                MySetting.SetOtherIni("Const", "BaseHostname", "http://" + MySetting.PublicIP)
                 MySetting.SetOtherIni("Const", "PublicPort", MySetting.HttpPort) ' 8002
                 MySetting.SetOtherIni("Const", "http_listener_port", RegionClass.RegionPort(X).ToString) ' varies with region
                 Dim name = RegionClass.RegionName(X)

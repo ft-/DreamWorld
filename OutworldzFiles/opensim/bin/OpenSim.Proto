@@ -31,7 +31,7 @@
 ;;    {option} {depends on} {question to ask} {choices} default value
 ;;    Any text comments following the declaration, up to the next blank line.
 ;;    will be copied to the generated file (NOTE: generation is not yet
-;;    implemented)
+;;   implemented)
 ;;
 ;;    A * in the choices list will allow an empty entry.
 ;;    An empty question will set the default if the dependencies are
@@ -49,9 +49,12 @@ http_listener_port=8004
 ;# used by the one-exe-per-instance logic. This becomes the folder for the regions file.
 RegionFolderName=Welcome
 
+;# {BaseHostname} {} {BaseHostname} {"example.com" "127.0.0.1"} "127.0.0.1"
+BaseHostname = "127.0.0.1"
+	
 ; Automatically changed by Dreamworld - do not change this
-;# {BaseURL} {} {BaseURL} {"http://example.com","http://127.0.0.1"} "http://127.0.0.1"
-BaseURL=http://Radulf.Outworldz.net
+;# {BaseURL} {} {BaseURL} {"http://${Const|BaseHostname}} "http://${Const|BaseHostname}"
+BaseURL = http://${Const|BaseHostname}
 
 ; Automatically changed by Dreamworld - do not change this
 ;# {PublicPort} {} {PublicPort} {8002} "8002"
@@ -61,8 +64,8 @@ PublicPort=8002
 ;# {PrivatePort} {} {PrivatePort} {8003} "8003"
 PrivatePort=8003
 
-;# so localhost can be changed if necessary
-PrivURL=http://192.168.2.155
+;# {PrivURL} {} {PrivURL} {"http://${Const|BaseHostname}} "http://${Const|BaseHostname}"
+PrivURL = ${Const|BaseURL}
 
 ; Automatically changed by Dreamworld - do not change this
 ;# Grid Name for Wifi to show
@@ -476,7 +479,7 @@ enabled=true
 ;# {internal_object_host} {[Startup]emailmodule:DefaultEmailModule enabled:true} {Host name to treat as internal (object to object) email?} {} lsl.opensim.local
 ; internal_object_host = lsl.opensim.local
 ;# {host_domain_header_from} {[Startup]emailmodule:DefaultEmailModule enabled:true} {From address to use in the sent email header?} {} 127.0.0.1
-host_domain_header_from=Radulf.Outworldz.net
+host_domain_header_from=Alienware.Outworldz.net
 
 ;# {email_pause_time} {[Startup]emailmodule:DefaultEmailModule enabled:true} {Period in seconds to delay after an email is sent.} {} 20
 ; email_pause_time = 20
@@ -557,11 +560,12 @@ OutboundDisallowForUserScriptsExcept=192.168.2.155:8001
 ;; the highest value that is actually needed by existing applications!
 ;; 16384 is the SL compatible value.
 ; HttpBodyMaxLenMAX=16384
+
 ;# {ExternalHostNameForLSL} {} {Hostname to use for HTTP-IN URLs. This should be reachable from the internet.} {}
 ;; Hostname to use in llRequestURL/llRequestSecureURL
 ;; if not defined - default machine name is being used
 ;; (on Windows this mean NETBIOS name - useably only inside local network)
-ExternalHostNameForLSL=Radulf.Outworldz.net
+ExternalHostNameForLSL=http://${Const|BaseHostname}
 
 ;# {shard} {} {Name to use for X-Secondlife-Shard header? (press enter if unsure)} {} OpenSim
 ;; What is reported as the "X-Secondlife-Shard"
@@ -822,7 +826,7 @@ enable_windlight=true
 ;; searchable data.
 ;; If false, no data will be exposed, DataSnapshot module will be off,
 ;; and you can ignore the rest of these search-related configs.
-index_sims=False
+index_sims=True
 
 ;# {data_exposure} {index_sims:true} {How much data should be exposed?} {minimum all} minimum
 ;; The variable data_exposure controls what the regions expose:
@@ -854,7 +858,7 @@ snapshot_cache_directory="./Regions/${Const|RegionFolderName}/DataSnapshot"
 ;; New way of specifying data services, one per service
 DATA_SRV_MISearch=http://www.hyperica.com/Search/register.php
 data_services=http://www.hyperica.com/Search/register.php
-indexsims=false
+indexsims=true
 
 [Search]
 Module=OpenSimSearch
@@ -1113,6 +1117,8 @@ LocalService=remote
 ;; or http://mygridserver.com:82/Grid/ for SimianGrid
 ;; or ${Const|PrivURL}:${Const|PrivatePort} for robust, V2
 ;; Leave it commented for standalones, V2
+
+#!!! blank   !!!???
 GroupsServerURI=${Const|PrivURL}:${Const|PrivatePort}
 
 ;# {HomeURI} {ServicesConnectorModule:Groups HG Service Connector} {What's the home address of this world?} {}
@@ -1150,7 +1156,6 @@ MessageOnlineUsersOnly=true
 ;# {UpdatePrioritizationScheme} {} {Update prioritization scheme?} {BestAvatarResponsiveness Time Distance SimpleAngularDistance FrontBack} BestAvatarResponsiveness
 ;; This section controls how state updates are prioritized for each client
 ;; Valid values are BestAvatarResponsiveness, Time, Distance,
-;; SimpleAngularDistance, FrontBack
 UpdatePrioritizationScheme=FrontBack
 
 ; TEST OPTION KEEP AS FALSE
