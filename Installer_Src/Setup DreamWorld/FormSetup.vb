@@ -384,6 +384,7 @@ Public Class Form1
         If System.IO.File.Exists(MyFolder & "\OutworldzFiles\Settings.ini") Then
 
             UploadPhoto()
+            Application.DoEvents()
 
             Buttons(StartButton)
             ProgressBar1.Value = 100
@@ -420,18 +421,9 @@ Public Class Form1
     Private Sub UploadPhoto()
 
         If System.IO.File.Exists(MyFolder & "\OutworldzFiles\Photo.png") Then
-            Dim params As New Specialized.NameValueCollection
-
-
-            params.Add("MachineID", MySetting.MachineID())
-            params.Add("DnsName", MySetting.PublicIP)
 
             Dim Myupload As New UploadImage
-            Dim URL = New Uri(gDomain & "/cgi/uploadphoto.plx")
-            Try
-                Myupload.PostContent_UploadFile(URL, MyFolder & "\OutworldzFiles\Photo.png", params)
-            Catch
-            End Try
+            Myupload.PostContent_UploadFile()
 
         End If
 

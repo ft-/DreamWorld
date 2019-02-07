@@ -35,6 +35,7 @@ Public Class UploadImage
         Dim r_State As HttpRequestState = TryCast(ar.AsyncState, HttpRequestState)
         Dim boundary As String = StrDup(20, "-"c) & Date.Now.ToString("yyyyMMdd-hhmm")
         r_State.Request.ContentType = "multipart/form-data; boundary=" & boundary
+        Debug.Print("multipart/form-data; boundary=" & boundary)
 
         Dim reqStream As Stream
         Try
@@ -46,25 +47,38 @@ Public Class UploadImage
 
         Dim sw As StreamWriter = New StreamWriter(reqStream)
 
+        ' blank line
+        sw.WriteLine()
+        Debug.Print("")
+
         For Each key As String In r_State.Params.Keys
+
             sw.WriteLine("--" & boundary)
-            sw.WriteLine(String.Format("Content-Disposition: form-data; name=""{0}"";", key))
+            Debug.Print("--" & boundary)
+
+            sw.WriteLine(String.Format("Content-Disposition: form-data; name=""{0}""", key))
+            Debug.Print(String.Format("Content-Disposition: form-data; name=""{0}""", key))
             sw.WriteLine()
+            Debug.Print("")
             sw.WriteLine(WebUtility.UrlEncode(r_State.Params(key)))
+            Debug.Print(WebUtility.UrlEncode(r_State.Params(key)))
         Next
 
         sw.WriteLine("--" & boundary)
         Debug.Print("--" & boundary)
 
-        sw.WriteLine(String.Format("Content-Disposition: form-data; name=""{0}"";", "FILE1"))
-        Debug.Print(String.Format("Content-Disposition: form-data; name=""{0}"";", "FILE1"))
+        sw.WriteLine(String.Format("Content-Disposition: form-data; name=""{0}""", "FILE1"))
+        Debug.Print(String.Format("Content-Disposition: form-data; name=""{0}""", "FILE1"))
 
-        sw.Write(String.Format(" filename=""{0}""", WebUtility.UrlEncode(IO.Path.GetFileName(r_State.FileName))))
-        Debug.Print(String.Format(" filename=""{0}""", WebUtility.UrlEncode(IO.Path.GetFileName(r_State.FileName))))
+        sw.Write(String.Format("filename=""{0}""", WebUtility.UrlEncode(IO.Path.GetFileName(r_State.FileName))))
+        Debug.Print(String.Format("filename=""{0}""", WebUtility.UrlEncode(IO.Path.GetFileName(r_State.FileName))))
 
         sw.WriteLine()
+        Debug.Print("")
         sw.WriteLine("Content-Type: application/octet-stream")
+        Debug.Print("Content-Type: application/octet-stream")
         sw.WriteLine()
+        Debug.Print("")
 
         Dim fileStream As FileStream = New FileStream(r_State.FileName, FileMode.Open, FileAccess.Read)
         Dim buffer(1024) As Byte, bytesRead As Integer
@@ -80,6 +94,8 @@ Public Class UploadImage
 
         sw.BaseStream.Flush()
         sw.Write(vbNewLine & "--" & boundary & "--" & vbNewLine)
+        Debug.Print(vbNewLine & "--" & boundary & "--" & vbNewLine)
+
         sw.Flush() : sw.Close()
 
         r_State.Request.BeginGetResponse(AddressOf ResponseAvailable, r_State)
@@ -114,14 +130,47 @@ Public Class UploadImage
         webResp = Nothing
     End Sub
 
-    Public Sub PostContent_UploadFile(ByVal url As Uri, ByVal file As String, ByVal params As Specialized.NameValueCollection)
-        Dim req As Net.HttpWebRequest = CType(HttpWebRequest.Create(url), HttpWebRequest)
-        req.Method = "POST"
-        req.KeepAlive = True
-        req.ReadWriteTimeout = System.Threading.Timeout.Infinite
-        req.Credentials = System.Net.CredentialCache.DefaultCredentials
+    Public Sub PostContent_UploadFile()
 
-        Dim ar As IAsyncResult = req.BeginGetRequestStream(AddressOf RequestStreamAvailable,
-          New HttpRequestState(req, params, file))
+        Try
+            Dim URL = New Uri("https://www.outworldz.com/cgi/uploadphoto.plx")
+            Dim File = Form1.MyFolder & "\OutworldzFiles\Photo.png"
+            Dim params As New Specialized.NameValueCollection
+            params.Add("MachineID", Form1.MySetting.MachineID())
+            params.Add("DnsName", Form1.MySetting.PublicIP)
+
+            Dim req As Net.HttpWebRequest = CType(HttpWebRequest.Create(URL), HttpWebRequest)
+            req.Method = "POST"
+            req.KeepAlive = True
+            req.ReadWriteTimeout = System.Threading.Timeout.Infinite
+            req.Credentials = System.Net.CredentialCache.DefaultCredentials
+
+            Dim ar As IAsyncResult = req.BeginGetRequestStream(AddressOf RequestStreamAvailable,
+                New HttpRequestState(req, params, File))
+
+        Catch ex As Exception
+            Form1.Log("Error: & ex.message")
+        End Try
+
     End Sub
 End Class
+
+
+'multipart/form-data; boundary=--------------------20190207-0157
+'----------------------20190207-0157
+'Content-Disposition: form-data; name="MachineID";
+
+'548435328
+'----------------------20190207-0157
+'Content-Disposition: form-data; name="DnsName";
+'
+'10.6.1.103
+'----------------------20190207-0157
+'Content-Disposition: form-data; name="FILE1";
+'filename = "Photo.png"
+'
+'Content-Type: application/ octet - stream
+'
+'
+'----------------------20190207-0157--
+
