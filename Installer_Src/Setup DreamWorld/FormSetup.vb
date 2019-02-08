@@ -990,7 +990,7 @@ Public Class Form1
 
         MySetting.SetOtherIni("DatabaseService", "ConnectionString", ConnectionString)
         MySetting.SetOtherIni("Const", "GridName", MySetting.SimName)
-        MySetting.SetOtherIni("Const", "BaseHostname", MySetting.PublicIP)
+        MySetting.SetOtherIni("Const", "BaseURL", MySetting.PublicIP)
         MySetting.SetOtherIni("Const", "PrivURL", "http://" + MySetting.PrivateURL)
         MySetting.SetOtherIni("Const", "PublicPort", MySetting.HttpPort) ' 8002
         MySetting.SetOtherIni("Const", "PrivatePort", MySetting.PrivatePort)
