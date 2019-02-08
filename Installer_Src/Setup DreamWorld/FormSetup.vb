@@ -382,8 +382,6 @@ Public Class Form1
 
         ' Find out if the viewer is installed
         If System.IO.File.Exists(MyFolder & "\OutworldzFiles\Settings.ini") Then
-
-            UploadPhoto()
             Application.DoEvents()
 
             Buttons(StartButton)
@@ -418,16 +416,6 @@ Public Class Form1
 
     End Sub
 
-    Private Sub UploadPhoto()
-
-        If System.IO.File.Exists(MyFolder & "\OutworldzFiles\Photo.png") Then
-
-            Dim Myupload As New UploadImage
-            Myupload.PostContent_UploadFile()
-
-        End If
-
-    End Sub
     ''' <summary>
     ''' Start Button on main form
     ''' </summary>
@@ -1002,7 +990,7 @@ Public Class Form1
 
         MySetting.SetOtherIni("DatabaseService", "ConnectionString", ConnectionString)
         MySetting.SetOtherIni("Const", "GridName", MySetting.SimName)
-        MySetting.SetOtherIni("Const", "BaseHostname", MySetting.PublicIP)
+        MySetting.SetOtherIni("Const", "BaseURL", "http://" & MySetting.PublicIP)
         MySetting.SetOtherIni("Const", "PrivURL", "http://" + MySetting.PrivateURL)
         MySetting.SetOtherIni("Const", "PublicPort", MySetting.HttpPort) ' 8002
         MySetting.SetOtherIni("Const", "PrivatePort", MySetting.PrivatePort)
@@ -3097,6 +3085,9 @@ Public Class Form1
             ErrorLog("No Oars, dang, something is wrong with the Internet :-(")
             Return
         End Try
+
+        UploadPhoto()
+
         Application.DoEvents()
         Dim oarreader = New System.IO.StringReader(oars)
         Dim line As String = ""
@@ -3182,6 +3173,18 @@ Public Class Form1
         Next
 
         BumpProgress10()
+
+    End Sub
+
+    ''' <summary>
+    ''' Upload in a sperate tyhred the photo, if any.  Cannot be called unless main web server is known to be online.
+    ''' </summary>
+    Private Sub UploadPhoto()
+
+        If System.IO.File.Exists(MyFolder & "\OutworldzFiles\Photo.png") Then
+            Dim Myupload As New UploadImage
+            Myupload.PostContent_UploadFile()
+        End If
 
     End Sub
 

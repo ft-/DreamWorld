@@ -20,8 +20,6 @@ Public Class NetServer
     Dim RegionClass As RegionMaker = RegionMaker.Instance(Form1.MysqlConn)
     Dim Setting As MySettings
 
-
-
     Public Sub StartServer(pathinfo As String, MySetting As MySettings, IP As String, Port As Integer)
 
         ' stash some globs
