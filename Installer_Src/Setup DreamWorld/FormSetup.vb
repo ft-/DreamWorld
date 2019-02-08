@@ -1325,6 +1325,7 @@ Public Class Form1
             Try
                 MySetting.LoadOtherIni(gPath + "bin\Opensim.proto", ";")
                 MySetting.SetOtherIni("Const", "BaseHostname", MySetting.PublicIP)
+                MySetting.SetOtherIni("Const", "PrivURL", "http://" + MySetting.PrivateURL)
                 MySetting.SetOtherIni("Const", "PublicPort", MySetting.HttpPort) ' 8002
                 MySetting.SetOtherIni("Const", "http_listener_port", RegionClass.RegionPort(X).ToString) ' varies with region
                 Dim name = RegionClass.RegionName(X)
