@@ -1,4 +1,5 @@
 2.72
+Simple Google HTML Map added to http://localhost:8002/wifi/map.html
 Allow only letters, numbers '.' and '-' in DNS names/IP Addresses
 New User Home X,Y,Z:  Users that create accounts on the web page will land at this spot on your Welcome region with their home set here so they can hypergrid back home.
 Simplified INI constants updated from Jeff Kelly, thanks!
