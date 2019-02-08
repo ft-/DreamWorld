@@ -366,7 +366,6 @@ Public Class MySettings
         If (SmtpHost() = "") Then SmtpHost() = "smtp.gmail.com"
         If (SmtpPort() = "") Then SmtpPort() = "587"
 
-
         If Theme() = "" Then
             Theme() = "Black"
             Form1.CopyWifi("Black")
@@ -519,6 +518,31 @@ Public Class MySettings
 #End Region
 
 #Region "Properties"
+
+    Public Property HomeVectorX() As String
+        Get
+            Return GetMySetting("HomeVectorX", "128")
+        End Get
+        Set
+            SetMySetting("HomeVectorX", Value)
+        End Set
+    End Property
+    Public Property HomeVectorY() As String
+        Get
+            Return GetMySetting("HomeVectorY", "128")
+        End Get
+        Set
+            SetMySetting("HomeVectorY", Value)
+        End Set
+    End Property
+    Public Property HomeVectorZ() As String
+        Get
+            Return GetMySetting("HomeVectorY", "24")
+        End Get
+        Set
+            SetMySetting("HomeVectorY", Value)
+        End Set
+    End Property
 
     Public Property RegionPort() As String
         Get

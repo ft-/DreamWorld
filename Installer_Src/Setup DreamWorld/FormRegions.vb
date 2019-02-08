@@ -25,13 +25,20 @@
 
         LoadWelcomeBox()
         LoadRegionBox()
+
+        X.Text = Form1.MySetting.HomeVectorX
+        Y.Text = Form1.MySetting.HomeVectorY
+        Z.Text = Form1.MySetting.HomeVectorZ
+
         Form1.HelpOnce("Regions")
         SetScreen()
 
     End Sub
 
     Private Sub Form1_Closed(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Closed
-        ' nothing
+
+        Form1.MySetting.SaveSettings()
+
     End Sub
 
     Private Sub ComboBox1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles WelcomeBox1.SelectedIndexChanged
@@ -40,7 +47,6 @@
         Form1.MySetting.WelcomeRegion = value
 
         Debug.Print("Selected " + value)
-        Form1.MySetting.SaveSettings()
 
     End Sub
 
@@ -118,8 +124,6 @@
 
     End Sub
 
-
-
     Private Sub RegionBox_SelectedIndexChanged(sender As Object, e As EventArgs) Handles RegionBox.SelectedIndexChanged
 
 
@@ -135,4 +139,17 @@
     Private Sub RegionHelp_Click(sender As Object, e As EventArgs) Handles RegionHelp.Click
         Form1.Help("Regions")
     End Sub
+
+    Private Sub TextBox1_TextChanged(sender As Object, e As EventArgs) Handles X.TextChanged
+        Form1.MySetting.HomeVectorX = X.Text
+    End Sub
+
+    Private Sub Y_TextChanged(sender As Object, e As EventArgs) Handles Y.TextChanged
+        Form1.MySetting.HomeVectorY = Y.Text
+    End Sub
+
+    Private Sub Z_TextChanged(sender As Object, e As EventArgs) Handles Z.TextChanged
+        Form1.MySetting.HomeVectorZ = Z.Text
+    End Sub
+
 End Class
