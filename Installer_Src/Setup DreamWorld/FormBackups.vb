@@ -57,7 +57,7 @@ Public Class FormBackups
         ElseIf CType(Form1.MySetting.AutobackupInterval, Double) = 5 * 24 * 60 Then
             AutoBackupInterval.SelectedIndex = 6
         ElseIf CType(Form1.MySetting.AutobackupInterval, Double) = 6 * 24 * 60 Then
-            AutoBackupInterval.SelectedIndex = 8
+            AutoBackupInterval.SelectedIndex = 7
         ElseIf CType(Form1.MySetting.AutobackupInterval, Double) = 7 * 60 Then
             AutoBackupInterval.SelectedIndex = 8
         Else

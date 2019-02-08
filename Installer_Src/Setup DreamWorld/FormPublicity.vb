@@ -89,14 +89,8 @@ Public Class FormPublicity
                     Form1.ErrorLog(ex.Message)
                 End Try
 
-
-                Dim params As New Specialized.NameValueCollection
-                params.Add("MachineID", Form1.MySetting.MachineID())
-                params.Add("DnsName", Form1.MySetting.PublicIP)
-
                 Dim Myupload As New UploadImage
-                Dim URL = New Uri("https://www.outworldz.com/cgi/uploadphoto.plx")
-                Myupload.PostContent_UploadFile(URL, Form1.MyFolder & "\OutworldzFiles\Photo.png", params)
+                Myupload.PostContent_UploadFile()
 
             End If
         End If

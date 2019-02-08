@@ -384,6 +384,7 @@ Public Class Form1
         If System.IO.File.Exists(MyFolder & "\OutworldzFiles\Settings.ini") Then
 
             UploadPhoto()
+            Application.DoEvents()
 
             Buttons(StartButton)
             ProgressBar1.Value = 100
@@ -420,18 +421,9 @@ Public Class Form1
     Private Sub UploadPhoto()
 
         If System.IO.File.Exists(MyFolder & "\OutworldzFiles\Photo.png") Then
-            Dim params As New Specialized.NameValueCollection
-
-
-            params.Add("MachineID", MySetting.MachineID())
-            params.Add("DnsName", MySetting.PublicIP)
 
             Dim Myupload As New UploadImage
-            Dim URL = New Uri(gDomain & "/cgi/uploadphoto.plx")
-            Try
-                Myupload.PostContent_UploadFile(URL, MyFolder & "\OutworldzFiles\Photo.png", params)
-            Catch
-            End Try
+            Myupload.PostContent_UploadFile()
 
         End If
 
@@ -1308,6 +1300,8 @@ Public Class Form1
         MySetting.SetOtherIni("WifiService", "SmtpPassword", MySetting.SmtpPassword)
 
 
+        MySetting.SetOtherIni("WifiService", "HomeLocation", MySetting.WelcomeRegion & "/" + MySetting.HomeVectorX & "/" & MySetting.HomeVectorY & "/" & MySetting.HomeVectorZ)
+
         If MySetting.AccountConfirmationRequired Then
             MySetting.SetOtherIni("WifiService", "AccountConfirmationRequired", "true")
         Else
@@ -1330,7 +1324,7 @@ Public Class Form1
 
             Try
                 MySetting.LoadOtherIni(gPath + "bin\Opensim.proto", ";")
-                MySetting.SetOtherIni("Const", "BaseHostname", "http://" + MySetting.PublicIP)
+                MySetting.SetOtherIni("Const", "BaseHostname", MySetting.PublicIP)
                 MySetting.SetOtherIni("Const", "PublicPort", MySetting.HttpPort) ' 8002
                 MySetting.SetOtherIni("Const", "http_listener_port", RegionClass.RegionPort(X).ToString) ' varies with region
                 Dim name = RegionClass.RegionName(X)

@@ -43,29 +43,29 @@
 [Const]
 
 ; Automatically changed by Dreamworld - do not change this
-http_listener_port=8004
+http_listener_port=7021
 
 ; Automatically changed by Dreamworld - do not change this
 ;# used by the one-exe-per-instance logic. This becomes the folder for the regions file.
 RegionFolderName=Welcome
 
 ;# {BaseHostname} {} {BaseHostname} {"example.com" "127.0.0.1"} "127.0.0.1"
-BaseHostname = "127.0.0.1"
-	
+BaseHostname=10.6.1.103
+
 ; Automatically changed by Dreamworld - do not change this
 ;# {BaseURL} {} {BaseURL} {"http://${Const|BaseHostname}} "http://${Const|BaseHostname}"
-BaseURL = http://${Const|BaseHostname}
+BaseURL=http://${Const|BaseHostname}
 
 ; Automatically changed by Dreamworld - do not change this
 ;# {PublicPort} {} {PublicPort} {8002} "8002"
-PublicPort=8002
+PublicPort=7002
 
 ; Automatically changed by Dreamworld - do not change this
 ;# {PrivatePort} {} {PrivatePort} {8003} "8003"
-PrivatePort=8003
+PrivatePort=7003
 
 ;# {PrivURL} {} {PrivURL} {"http://${Const|BaseHostname}} "http://${Const|BaseHostname}"
-PrivURL = ${Const|BaseURL}
+PrivURL=${Const|BaseURL}
 
 ; Automatically changed by Dreamworld - do not change this
 ;# Grid Name for Wifi to show
@@ -74,12 +74,9 @@ GridName=DreamGrid
 ; Automatically changed by Dreamworld - do not change this
 ;# Dreamworld runs a listener on this port to run diagnostics. Dreamgrid listens for regions LOGINS enabled
 ;# {DiagnosticsPort} {} {DiagnosticsPort} {8001} "8001"
-DiagnosticsPort=8001
+DiagnosticsPort=7001
 
 [Startup]
-
-; Auto restart by Fly Man
-regionrestart=
 
 ;# {ConsolePrompt} {} {ConsolePrompt} {} "Region (\R) "
 ;; Console prompt
@@ -362,7 +359,7 @@ alert_uri=${Const|PrivURL}:${Const|DiagnosticsPort}
 ;; If false then the texture referenced by MaptileStaticUUID is used instead, which can also be overridden
 ;; in individual region config file(s).  If you do not want to upload map tiles at all, then you will need
 ;; both to set this to false and comment out the [Modules] MapImageServiceModule setting in config-include/
-GenerateMaptiles=true
+GenerateMaptiles=false
 
 ;# {MapImageModule} {} {The map image module to use} {MapImageModule Warp3DImageModule} MapImageModule
 ;; The module to use in order to generate map images.
@@ -479,7 +476,7 @@ enabled=true
 ;# {internal_object_host} {[Startup]emailmodule:DefaultEmailModule enabled:true} {Host name to treat as internal (object to object) email?} {} lsl.opensim.local
 ; internal_object_host = lsl.opensim.local
 ;# {host_domain_header_from} {[Startup]emailmodule:DefaultEmailModule enabled:true} {From address to use in the sent email header?} {} 127.0.0.1
-host_domain_header_from=Alienware.Outworldz.net
+host_domain_header_from=10.6.1.103
 
 ;# {email_pause_time} {[Startup]emailmodule:DefaultEmailModule enabled:true} {Period in seconds to delay after an email is sent.} {} 20
 ; email_pause_time = 20
@@ -528,7 +525,7 @@ http_listener_port=${Const|http_listener_port}
 ; If you need to allow scripts to make some LAN calls use the OutboundDisallowForUserScriptsExcept parameter below.
 ; We recommend that you do not override OutboundDisallowForUserScripts directly unless you are very sure about what you're doing.
 ;
-OutboundDisallowForUserScriptsExcept=192.168.2.155:8001
+OutboundDisallowForUserScriptsExcept=10.6.1.103:7001
 
 ; You can whitelist individual endpoints by IP or FQDN, e.g.
 ;
@@ -560,12 +557,11 @@ OutboundDisallowForUserScriptsExcept=192.168.2.155:8001
 ;; the highest value that is actually needed by existing applications!
 ;; 16384 is the SL compatible value.
 ; HttpBodyMaxLenMAX=16384
-
 ;# {ExternalHostNameForLSL} {} {Hostname to use for HTTP-IN URLs. This should be reachable from the internet.} {}
 ;; Hostname to use in llRequestURL/llRequestSecureURL
 ;; if not defined - default machine name is being used
 ;; (on Windows this mean NETBIOS name - useably only inside local network)
-ExternalHostNameForLSL=http://${Const|BaseHostname}
+ExternalHostNameForLSL=10.6.1.103
 
 ;# {shard} {} {Name to use for X-Secondlife-Shard header? (press enter if unsure)} {} OpenSim
 ;; What is reported as the "X-Secondlife-Shard"
@@ -1117,8 +1113,6 @@ LocalService=remote
 ;; or http://mygridserver.com:82/Grid/ for SimianGrid
 ;; or ${Const|PrivURL}:${Const|PrivatePort} for robust, V2
 ;; Leave it commented for standalones, V2
-
-#!!! blank   !!!???
 GroupsServerURI=${Const|PrivURL}:${Const|PrivatePort}
 
 ;# {HomeURI} {ServicesConnectorModule:Groups HG Service Connector} {What's the home address of this world?} {}
@@ -1305,8 +1299,8 @@ Include-Architecture="config-include/GridHypergrid.ini"
 ;the bin directory for your auto backups for this reason.
 ; Automatically changed by Dreamworld - do not change this
 AutoBackupModuleEnabled=true
-AutoBackup=true
-AutoBackupInterval=720
+AutoBackup=false
+AutoBackupInterval=1440
 AutoBackupBusyCheck=false
 AutoBackupThreshold=1
 AutoBackupSkipAssets=false
@@ -1349,11 +1343,6 @@ density=0.5
 ; update interval for the cloud cover data returned by llCloud().
 ; default is 1000
 cloud_update_rate=1000
-
-; many thanks to Johan Neddings for this module:
-[AutoRestart]
-RegionShutDown=false
-Time=240
 
 ; ##
 ; ## SERVER RELEASE NOTES by Johan Neddings
