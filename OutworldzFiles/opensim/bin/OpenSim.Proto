@@ -65,7 +65,7 @@ PublicPort=7002
 PrivatePort=7003
 
 ;# {PrivURL} {} {PrivURL} {"http://${Const|BaseHostname}} "http://${Const|BaseHostname}"
-PrivURL=${Const|BaseURL}
+PrivURL= http://${Const|BaseHostname}
 
 ; Automatically changed by Dreamworld - do not change this
 ;# Grid Name for Wifi to show
