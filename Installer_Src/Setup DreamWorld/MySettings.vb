@@ -537,10 +537,10 @@ Public Class MySettings
     End Property
     Public Property HomeVectorZ() As String
         Get
-            Return GetMySetting("HomeVectorY", "24")
+            Return GetMySetting("HomeVectorZ", "24")
         End Get
         Set
-            SetMySetting("HomeVectorY", Value)
+            SetMySetting("HomeVectorZ", Value)
         End Set
     End Property
 
