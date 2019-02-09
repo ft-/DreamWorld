@@ -367,8 +367,8 @@ Public Class MySettings
         If (SmtpPort() = "") Then SmtpPort() = "587"
 
         If Theme() = "" Then
-            Theme() = "Black"
-            Form1.CopyWifi("Black")
+            Theme() = "White"
+            Form1.CopyWifi("White")
         ElseIf Theme() = "Black" Then
             Form1.CopyWifi("Black")
         ElseIf Theme() = "White" Then

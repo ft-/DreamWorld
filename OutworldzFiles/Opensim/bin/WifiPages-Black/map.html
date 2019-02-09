@@ -2,7 +2,8 @@
 <html lang="en"> 
 <head>
 <meta charset="utf-8"/>
-<title>OpenSim Region Map</title>
+<title><!-- #get var=GridName --></title>
+
 <style type="text/css">
 html, body {
 	height: 100%;
@@ -20,7 +21,7 @@ html, body {
 <div id="map">
 	<script type="text/javascript">
 
-		var gridname = "Outworldz";
+		var gridname = "<!-- #get var=GridName -->";
 		function initMap() {
 			var map = new google.maps.Map(document.getElementById('map'), {
 				center: {lat: 70, lng: 0, noWrap : false},
@@ -38,13 +39,13 @@ html, body {
 						return null;
 					}
 					var bound = Math.pow(2, zoom);
-					var url = 'http://www.outworldz.com:9000/map-1-' + normalizedCoord.x + '-' + normalizedCoord.y + '-objects.jpg';
+					var url = '../map-1-' + normalizedCoord.x + '-' + normalizedCoord.y + '-objects.jpg';
 					
 					return url;
 				}, 
 				tileSize: new google.maps.Size(64, 64),
-				maxZoom: 3,
-				minZoom: 3,
+				maxZoom: 5,
+				minZoom: 0,
 				radius: 1738000,
 				name: gridname
 			});
@@ -55,8 +56,8 @@ html, body {
 		
 	function calcPos(posX, posY)
 	{
-		var offsetY = 10010;
-		var offsetX = 9510;
+		var offsetY = 1008;
+		var offsetX = 995;
 
 		return {x: (offsetX + posX), y: (offsetY - posY)}
 	}

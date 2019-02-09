@@ -24,7 +24,7 @@ Partial Class FormMaps
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FormMaps))
         Me.MapBox = New System.Windows.Forms.GroupBox()
-        Me.Button1 = New System.Windows.Forms.Button()
+        Me.ViewMap = New System.Windows.Forms.Button()
         Me.MapHelp = New System.Windows.Forms.PictureBox()
         Me.MapPicture = New System.Windows.Forms.PictureBox()
         Me.MapNone = New System.Windows.Forms.RadioButton()
@@ -32,6 +32,7 @@ Partial Class FormMaps
         Me.MapBetter = New System.Windows.Forms.RadioButton()
         Me.MapBest = New System.Windows.Forms.RadioButton()
         Me.MapGood = New System.Windows.Forms.RadioButton()
+        Me.Button2 = New System.Windows.Forms.Button()
         Me.MapBox.SuspendLayout()
         CType(Me.MapHelp, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.MapPicture, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -39,7 +40,8 @@ Partial Class FormMaps
         '
         'MapBox
         '
-        Me.MapBox.Controls.Add(Me.Button1)
+        Me.MapBox.Controls.Add(Me.Button2)
+        Me.MapBox.Controls.Add(Me.ViewMap)
         Me.MapBox.Controls.Add(Me.MapHelp)
         Me.MapBox.Controls.Add(Me.MapPicture)
         Me.MapBox.Controls.Add(Me.MapNone)
@@ -49,19 +51,19 @@ Partial Class FormMaps
         Me.MapBox.Controls.Add(Me.MapGood)
         Me.MapBox.Location = New System.Drawing.Point(12, 12)
         Me.MapBox.Name = "MapBox"
-        Me.MapBox.Size = New System.Drawing.Size(171, 301)
+        Me.MapBox.Size = New System.Drawing.Size(171, 333)
         Me.MapBox.TabIndex = 1866
         Me.MapBox.TabStop = False
         Me.MapBox.Text = "Maps"
         '
-        'Button1
+        'ViewMap
         '
-        Me.Button1.Location = New System.Drawing.Point(25, 265)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(115, 23)
-        Me.Button1.TabIndex = 1858
-        Me.Button1.Text = "Delete All Maps"
-        Me.Button1.UseVisualStyleBackColor = True
+        Me.ViewMap.Location = New System.Drawing.Point(15, 304)
+        Me.ViewMap.Name = "ViewMap"
+        Me.ViewMap.Size = New System.Drawing.Size(125, 23)
+        Me.ViewMap.TabIndex = 1858
+        Me.ViewMap.Text = "Delete All Maps"
+        Me.ViewMap.UseVisualStyleBackColor = True
         '
         'MapHelp
         '
@@ -138,12 +140,21 @@ Partial Class FormMaps
         Me.MapGood.Text = "Good (Warp3D)"
         Me.MapGood.UseVisualStyleBackColor = True
         '
+        'Button2
+        '
+        Me.Button2.Location = New System.Drawing.Point(15, 253)
+        Me.Button2.Name = "Button2"
+        Me.Button2.Size = New System.Drawing.Size(125, 23)
+        Me.Button2.TabIndex = 1859
+        Me.Button2.Text = "View Map Web Page"
+        Me.Button2.UseVisualStyleBackColor = True
+        '
         'FormMaps
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.AutoSize = True
-        Me.ClientSize = New System.Drawing.Size(201, 324)
+        Me.ClientSize = New System.Drawing.Size(201, 357)
         Me.Controls.Add(Me.MapBox)
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
@@ -165,5 +176,6 @@ Partial Class FormMaps
     Friend WithEvents MapBetter As RadioButton
     Friend WithEvents MapBest As RadioButton
     Friend WithEvents MapGood As RadioButton
-    Friend WithEvents Button1 As Button
+    Friend WithEvents ViewMap As Button
+    Friend WithEvents Button2 As Button
 End Class
