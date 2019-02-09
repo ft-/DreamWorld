@@ -2694,11 +2694,11 @@ Public Class Form1
 
             If RegionClass.Booted(RegionNumber) Then
                 Dim Group = RegionClass.GroupName(RegionNumber)
-                For Each Y In RegionClass.RegionListByGroupNum(Group)
-                    ConsoleCommand(RegionClass.GroupName(Y), "alert CPU Intensive Backup Started{ENTER}")
-                    ConsoleCommand(RegionClass.GroupName(Y), "change region " + """" + chosen + """" + "{ENTER}")
-                    ConsoleCommand(RegionClass.GroupName(Y), "save oar " + """" + BackupPath() + RegionClass.RegionName(Y) + "_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{ENTER}")
-                Next
+
+                ConsoleCommand(RegionClass.GroupName(RegionNumber), "alert CPU Intensive Backup Started{ENTER}")
+                ConsoleCommand(RegionClass.GroupName(RegionNumber), "change region " + """" + chosen + """" + "{ENTER}")
+                ConsoleCommand(RegionClass.GroupName(RegionNumber), "save oar " + """" + BackupPath() + myValue + """" + "{ENTER}")
+
             End If
             Me.Focus()
             Print("Saving " + myValue + " to " + BackupPath())
