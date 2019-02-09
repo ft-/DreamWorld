@@ -1,3 +1,8 @@
+2.73
+OAR filesave would dump one region into all OARS. not just one
+Sort Chooser screen
+BaseURL was incorrect in some 2.72
+
 2.72
 Simple Google HTML Map added to http://localhost:8002/wifi/map.html
 Allow only letters, numbers '.' and '-' in DNS names/IP Addresses

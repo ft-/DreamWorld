@@ -33,7 +33,7 @@ Public Class Form1
 
 #Region "Declarations"
 
-    Dim gMyVersion As String = "2.72"
+    Dim gMyVersion As String = "2.73"
     Dim gSimVersion As String = "0.9.1"
 
     ' edit this to compile and run in the correct folder root
@@ -848,13 +848,18 @@ Public Class Form1
     Public Sub CopyWifi(Page As String)
         Try
             System.IO.Directory.Delete(gPath + "WifiPages", True)
-            My.Computer.FileSystem.CopyDirectory(gPath + "WifiPages-" + Page, gPath + "WifiPages", True)
-
             System.IO.Directory.Delete(gPath + "bin\WifiPages", True)
+        Catch ex As Exception
+            Log("Info:" & ex.Message)
+        End Try
+
+        Try
+            My.Computer.FileSystem.CopyDirectory(gPath + "WifiPages-" + Page, gPath + "WifiPages", True)
             My.Computer.FileSystem.CopyDirectory(gPath + "bin\WifiPages-" + Page, gPath + "\bin\WifiPages", True)
         Catch ex As Exception
-            MsgBox("Please try again. Web page is in use by an application.", vbInformation)
+            Log("Info:" & ex.Message)
         End Try
+
 
     End Sub
 
