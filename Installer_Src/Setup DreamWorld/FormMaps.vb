@@ -33,6 +33,12 @@ Public Class FormMaps
             MapBest.Checked = True
             MapPicture.Image = My.Resources.Best
         End If
+
+        If Form1.OpensimIsRunning Then
+            Button2.Enabled = True
+        Else
+            Button2.Enabled = False
+        End If
         Form1.HelpOnce("Maps")
         SetScreen()
 
@@ -83,7 +89,7 @@ Public Class FormMaps
 
     End Sub
 
-    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles ViewMap.Click
 
         Try
             Form1.Print("Clearing Maptiles")
@@ -92,6 +98,13 @@ Public Class FormMaps
             Return
         End Try
         Form1.Print("Maptiles cleared. Set maps on and reboot to make new maps")
+
+    End Sub
+
+    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
+
+        Dim webAddress As String = "http://" + Form1.MySetting.PublicIP + ":" + Form1.MySetting.HttpPort & "/wifi/map.html"
+        Process.Start(webAddress)
 
     End Sub
 End Class

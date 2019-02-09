@@ -852,7 +852,8 @@ Public Class Form1
 
             System.IO.Directory.Delete(gPath + "bin\WifiPages", True)
             My.Computer.FileSystem.CopyDirectory(gPath + "bin\WifiPages-" + Page, gPath + "\bin\WifiPages", True)
-        Catch
+        Catch ex As Exception
+            MsgBox("Please try again. Web page is in use by an application.", vbInformation)
         End Try
 
     End Sub
@@ -1900,6 +1901,8 @@ Public Class Form1
         End If
 
         Log("Info:Robust is running")
+
+
         Return True
 
     End Function
