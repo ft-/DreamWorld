@@ -1,4 +1,6 @@
-﻿Public Class Choice
+﻿Imports System.ComponentModel
+
+Public Class Choice
     Implements IDisposable
 
 #Region "ScreenSize"
@@ -71,7 +73,7 @@
             L.Add(name)
         Next
 
-        L.Sort()
+        DataGridView.Sort(Group, ListSortDirection.Ascending)
 
     End Sub
 
