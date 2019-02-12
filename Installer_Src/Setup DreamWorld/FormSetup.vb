@@ -770,7 +770,7 @@ Public Class Form1
     End Sub
     Public Sub PrintFast(Value As String)
 
-        Log("Info:" + Value)
+        'Log("Info:" + Value)
         PictureBox1.Visible = False
         TextBox1.Visible = True
         TextBox1.Text = Value
