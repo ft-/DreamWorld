@@ -1,5 +1,5 @@
 *.pid
-
+**/WifiPages-Custom
 OutworldzFiles/mysql/data/mysql/*.*
 
 Outworldzfiles/Photo.png
