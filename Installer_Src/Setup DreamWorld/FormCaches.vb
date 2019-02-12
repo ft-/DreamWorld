@@ -60,17 +60,15 @@ Public Class FormCaches
                 Dim fCount As Integer = Directory.GetFiles(Form1.gPath & "bin\ScriptEngines\", "*", SearchOption.AllDirectories).Length
                 Dim folders() = Directory.GetFiles(Form1.gPath & "bin\ScriptEngines\", "*", SearchOption.AllDirectories)
                 Form1.Print("Clearing Script cache. This may take a long time!")
+                Dim ctr As Integer = 0
                 For Each script As String In folders
-                    Dim ctr As Integer = 0
                     Dim ext = Path.GetExtension(script)
                     If ext.ToLower <> ".state" And ext.ToLower <> ".keep" Then
                         My.Computer.FileSystem.DeleteFile(script)
                         ctr = ctr + 1
-                        Form1.PrintFast(ctr.ToString + " of " + fCount.ToString)
+                        Form1.PrintFast("Deleteing " & ctr.ToString + " of " + fCount.ToString & " scripts")
                         Application.DoEvents()
                     End If
-
-
                 Next
 
             End If
@@ -90,12 +88,11 @@ Public Class FormCaches
 
             Try
                 Dim folders() = Directory.GetDirectories(Form1.gPath & "bin\Assetcache\", "*", SearchOption.AllDirectories)
-                Form1.Print("Clearing Asset cache.")
                 Dim ctr As Integer = 0
                 For Each folder As String In folders
                     My.Computer.FileSystem.DeleteDirectory(folder, FileIO.DeleteDirectoryOption.DeleteAllContents)
                     ctr = ctr + 1
-                    Form1.PrintFast(ctr.ToString + " of " + fCount.ToString)
+                    Form1.PrintFast("Deleteing " & ctr.ToString + " of " + fCount.ToString & " assets")
                     Application.DoEvents()
                 Next
             Catch
@@ -113,7 +110,7 @@ Public Class FormCaches
                 For Each folder As String In folders
                     My.Computer.FileSystem.DeleteDirectory(folder, FileIO.DeleteDirectoryOption.DeleteAllContents)
                     ctr = ctr + 1
-                    Form1.PrintFast(ctr.ToString + " of " + fCount.ToString)
+                    Form1.PrintFast("Deleteing " & ctr.ToString + " of " + fCount.ToString & " images")
                     Application.DoEvents()
                 Next
 
