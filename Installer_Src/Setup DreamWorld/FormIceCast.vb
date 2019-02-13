@@ -43,7 +43,10 @@ Public Class Icecast
 
         Dim digitsOnly As Regex = New Regex("[^\d]")
         ShoutcastPort.Text = digitsOnly.Replace(ShoutcastPort.Text, "")
-        Form1.MySetting.SC_PortBase = CType(ShoutcastPort.Text, Integer)
+        Try
+            Form1.MySetting.SC_PortBase = CType(ShoutcastPort.Text, Integer)
+        Catch
+        End Try
 
     End Sub
 
@@ -134,10 +137,10 @@ Public Class Icecast
                               "</logging>" + vbCrLf +
                           "</icecast>" + vbCrLf
 
-        Using outputFile As New StreamWriter(Form1.MyFolder + "\Outworldzfiles\Icecast\icecast_run.xml")
+        Using outputFile As New StreamWriter(Form1.MyFolder + "\Outworldzfiles\Icecast\icecast_run.xml", False)
             outputFile.WriteLine(icecast)
         End Using
-
+        '"<icecast>" & vbCrLf & "<hostname>127.0.0.1</hostname>" & vbCrLf & "<location>DreamGrid</location>" & vbCrLf & "<admin>email@somewhere.com</admin>" & vbCrLf & "<shoutcast-mount>/stream</shoutcast-mount>" & vbCrLf & "<listen-socket>" & vbCrLf & "    <port>7000</port>" & vbCrLf & "</listen-socket>" & vbCrLf & "<listen-socket>" & vbCrLf & "   <port>7001</port>" & vbCrLf & "   <shoutcast-compat>1</shoutcast-compat>" & vbCrLf & "</listen-socket>" & vbCrLf & "<limits>" & vbCrLf & "   <clients>20</clients>" & vbCrLf & "    <sources>4</sources>" & vbCrLf & "    <queue-size>524288</queue-size>" & vbCrLf & "     <client-timeout>30</client-timeout>" & vbCrLf & "    <header-timeout>15</header-timeout>" & vbCrLf & "    <source-timeout>10</source-timeout>" & vbCrLf & "    <burst-on-connect>1</burst-on-connect>" & vbCrLf & "    <burst-size>65535</burst-size>" & vbCrLf & "</limits>" & vbCrLf & "<authentication>" & vbCrLf & "<source-password>A password</source-password>" & vbCrLf & "<relay-password>A password</relay-password>" & vbCrLf & "<admin-user>admin</admin-user>" & vbCrLf & "<admin-password>Admin Password</admin-password>" & vbCrLf & "</authentication>" & vbCrLf & "<http-headers>" & vbCrLf & "    <header name=""Access-Control-Allow-Origin"" value=""*""/>" & vbCrLf & "</http-headers>" & vbCrLf & "<fileserve>1</fileserve>" & vbCrLf & "<paths>" & vbCrLf & "<logdir>./log</logdir>" & vbCrLf & "<webroot>./web</webroot>" & vbCrLf & "<adminroot>./admin</adminroot>" & vbCrLf & "<alias source=""/"" destination=""/status.xsl""/>" & vbCrLf & "</paths>" & vbCrLf & "<logging>" & vbCrLf & "<accesslog>access.log</accesslog>" & vbCrLf & "<errorlog>error.log</errorlog>" & vbCrLf & "<loglevel>3</loglevel>" & vbCrLf & "<logsize>10000</logsize>" & vbCrLf & "</logging>" & vbCrLf & "</icecast>" & vbCrLf
     End Sub
 
     Private Sub LoadURL_Click(sender As Object, e As EventArgs) Handles LoadURL.Click
@@ -161,7 +164,11 @@ Public Class Icecast
 
         Dim digitsOnly As Regex = New Regex("[^\d]")
         ShoutcastPort1.Text = digitsOnly.Replace(ShoutcastPort1.Text, "")
-        Form1.MySetting.SC_PortBase1 = CType(ShoutcastPort1.Text, Integer)
+        Try
+            Form1.MySetting.SC_PortBase1 = CType(ShoutcastPort1.Text, Integer)
+        Catch
+        End Try
+
 
     End Sub
 End Class

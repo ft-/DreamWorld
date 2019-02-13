@@ -1,4 +1,6 @@
-﻿Public Class FormRegions
+﻿Option Explicit On
+
+Public Class FormRegions
 
     Dim RegionClass As RegionMaker = RegionMaker.Instance(Form1.MysqlConn)
 
@@ -97,9 +99,9 @@
         WelcomeBox1.Items.Clear()
 
         For Each X As Integer In RegionClass.RegionNumbers
-            If RegionClass.RegionEnabled(X) Then
-                WelcomeBox1.Items.Add(RegionClass.RegionName(X))
-            End If
+            'If RegionClass.RegionEnabled(X) Then
+            WelcomeBox1.Items.Add(RegionClass.RegionName(X))
+            'End If
         Next
 
         Dim s = WelcomeBox1.FindString(Form1.MySetting.WelcomeRegion)
@@ -113,7 +115,6 @@
         End If
 
     End Sub
-
     Private Sub LoadRegionBox()
         ' All region load
         RegionBox.Items.Clear()
@@ -152,4 +153,24 @@
         Form1.MySetting.HomeVectorZ = Z.Text
     End Sub
 
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles NormalizeButton1.Click
+        Dim result As MsgBoxResult = MsgBox("This moves all regions so the chosen region is at 1000,1000 to fit the map. Proceed?", vbYesNo)
+        If result = vbYes Then
+
+            Dim chosen = Form1.ChooseRegion(False) ' all regions, running or not
+
+            Dim RegionNum = RegionClass.FindRegionByName(chosen)
+            Dim X = RegionClass.CoordX(RegionNum)
+            Dim Y = RegionClass.CoordY(RegionNum)
+
+            Dim DeltaX = 1000 - X
+            Dim DeltaY = 1000 - Y
+            For Each RegionNumber In RegionClass.RegionNumbers
+                RegionClass.CoordX(RegionNumber) = RegionClass.CoordX(RegionNumber) + DeltaX
+                RegionClass.CoordY(RegionNumber) = RegionClass.CoordY(RegionNumber) + DeltaY
+                RegionClass.WriteRegionObject(RegionClass.RegionName(RegionNumber))
+            Next
+
+        End If
+    End Sub
 End Class

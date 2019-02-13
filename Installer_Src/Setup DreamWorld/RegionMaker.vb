@@ -687,8 +687,9 @@ Public Class RegionMaker
                 Catch ex As Exception
 
                 End Try
-
             End If
+        Else
+            fname = fname + "\" + name + ".ini"
         End If
 
         Dim proto = "; * Regions configuration file; " + vbCrLf _

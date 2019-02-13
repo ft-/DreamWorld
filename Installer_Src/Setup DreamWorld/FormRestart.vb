@@ -1,6 +1,4 @@
-﻿Imports System.Diagnostics.Debug
-Imports System.Net
-Imports System.Security.Principal
+﻿Imports System.Security.Principal
 Imports System.Text.RegularExpressions
 
 Public Class FormRestart
@@ -31,8 +29,11 @@ Public Class FormRestart
         End If
         AutoStartCheckbox.Checked = Form1.MySetting.Autostart
         BootStart.Checked = Form1.MySetting.BootStart
+        SequentialCheckBox1.Checked = Form1.MySetting.Sequential
+
         SetScreen()
         Form1.HelpOnce("Restart")
+
         initted = True ' suppress the install of the startup on formload
 
     End Sub
@@ -46,13 +47,11 @@ Public Class FormRestart
         Form1.MySetting.SaveSettings()
 
     End Sub
-
     Private Sub RunOnBoot_Click_1(sender As Object, e As EventArgs) Handles RunOnBoot.Click
 
         Form1.Help("Restart")
 
     End Sub
-
 
     Private Sub BootStart_CheckedChanged(sender As Object, e As EventArgs) Handles BootStart.CheckedChanged
 
@@ -111,6 +110,7 @@ Public Class FormRestart
 
     Private Sub AutoRestartBox_TextChanged(sender As Object, e As EventArgs) Handles AutoRestartBox.TextChanged
 
+        If Not initted Then Return
         Dim digitsOnly As Regex = New Regex("[^\d]")
         AutoRestartBox.Text = digitsOnly.Replace(AutoRestartBox.Text, "")
         If initted Then
@@ -125,6 +125,7 @@ Public Class FormRestart
 
     Private Sub ARTimerBox_CheckedChanged(sender As Object, e As EventArgs) Handles ARTimerBox.CheckedChanged
 
+        If Not initted Then Return
         If ARTimerBox.Checked Then
             Dim BTime As Int16 = CType(Form1.MySetting.AutobackupInterval, Int16)
             If Form1.MySetting.AutoBackup And Form1.MySetting.AutoRestartInterval > 0 And Form1.MySetting.AutoRestartInterval < BTime Then
@@ -138,13 +139,17 @@ Public Class FormRestart
         End If
         Form1.MySetting.SaveSettings()
 
+
     End Sub
 
+    Private Sub SequentialCheckBox1_CheckedChanged(sender As Object, e As EventArgs) Handles SequentialCheckBox1.CheckedChanged
 
+        If Not initted Then Return
+        Form1.MySetting.Sequential = SequentialCheckBox1.Checked
+        Form1.MySetting.SaveSettings()
 
+    End Sub
 
 #End Region
-
-
 
 End Class
