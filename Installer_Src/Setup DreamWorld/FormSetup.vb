@@ -1932,11 +1932,29 @@ Public Class Form1
         Try
             ' Boot them up
             For Each x In RegionClass.RegionNumbers()
-                If RegionClass.RegionEnabled(x) And Not gStopping Then '
+                If RegionClass.RegionEnabled(x) And Not gStopping Then
                     If Not Boot(RegionClass.RegionName(x)) Then
                         'Print("Boot skipped for " + RegionClass.RegionName(x))
                     End If
+                    If MySetting.Sequential Then
+
+                        Dim WaitForIt = False
+                        While WaitForIt
+                            If RegionClass.RegionEnabled(x) _
+                                And Not gStopping _
+                                And RegionClass.WarmingUp(x) _
+                                And Not RegionClass.ShuttingDown(x) _
+                                And Not RegionClass.Booted(x) Then
+                                WaitForIt = True
+                            Else
+                                WaitForIt = False
+                            End If
+                            Application.DoEvents()
+                        End While
+                    End If
+
                 End If
+
                 Application.DoEvents()
             Next
 

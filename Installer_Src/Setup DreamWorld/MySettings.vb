@@ -377,6 +377,14 @@ Public Class MySettings
             Form1.CopyWifi("Custom")
         End If
 
+        'Boot sims one right after the other
+        Try
+            Dim x = Sequential()
+        Catch ex As Exception
+            Sequential() = False
+        End Try
+
+
     End Sub
 
 
@@ -518,6 +526,15 @@ Public Class MySettings
 #End Region
 
 #Region "Properties"
+
+    Public Property Sequential() As Boolean
+        Get
+            Return CType(GetMySetting("Sequential"), Boolean)
+        End Get
+        Set
+            SetMySetting("Sequential", Value.ToString)
+        End Set
+    End Property
 
     Public Property HomeVectorX() As String
         Get
