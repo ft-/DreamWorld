@@ -40,6 +40,7 @@ Public Class Form1
     Dim gDebugPath As String = "\Opensim\Outworldz DreamGrid Source"  ' no slash at end
     Public gDebug As Boolean = False  ' set by code to log some events in when in a debugger
 
+    Dim gCPUMAX As Double = 80 ' max CPU % can be used when booting or we wait til it gets lower 
     ' not https, which breaks stuff
     Public gDomain As String = "http://www.outworldz.com"
     Public gPath As String ' Holds path to Opensim folder
@@ -129,12 +130,16 @@ Public Class Form1
     Dim gWindowCounter As Integer = 0
     Public gRestartNow As Boolean = False ' set true if a person clicks a restart button to get a sim restarted when auto restart is off
 
+
     <CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA2101:SpecifyMarshalingForPInvokeStringArguments", MessageId:="1")>
     <CodeAnalysis.SuppressMessage("Microsoft.Interoperability", "CA1401:PInvokesShouldNotBeVisible")>
     <CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1060:MovePInvokesToNativeMethodsClass")>
     <DllImport("user32.dll")>
     Shared Function SetWindowText(ByVal hwnd As IntPtr, ByVal windowName As String) As Boolean
     End Function
+
+    Dim cpu As New PerformanceCounter()
+
 
     ''' <summary>
     ''' SetWindowTextCall is here to wrap the SetWindowtext API call.  This call fails when there is no 
@@ -429,6 +434,13 @@ Public Class Form1
     ''' Called by Start Button or by AutoStart
     ''' </summary>
     Private Sub Startup()
+
+
+        With cpu
+            .CategoryName = "Processor"
+            .CounterName = "% Processor Time"
+            .InstanceName = "_Total"
+        End With
 
         PrintFast("Starting...")
         gExiting = False  ' suppress exit warning messages
@@ -1024,9 +1036,9 @@ Public Class Form1
         MySetting.LoadOtherIni(gPath + "bin\Opensim.proto", ";")
 
         If MySetting.LSL_HTTP Then
-            MySetting.SetOtherIni("Network", "OutboundDisallowForUserScriptsExcept", MySetting.PublicIP + "|" + MySetting.PrivateURL + ":" + MySetting.DiagnosticPort)
+            ' do nothing - let them edit it
         Else
-            MySetting.SetOtherIni("Network", "OutboundDisallowForUserScriptsExcept", MySetting.PrivateURL + ":" + MySetting.DiagnosticPort)
+            MySetting.SetOtherIni("Network", "OutboundDisallowForUserScriptsExcept", MySetting.PrivateURL + "/32")
         End If
         MySetting.SetOtherIni("Network", "ExternalHostNameForLSL", MySetting.PublicIP)
 
@@ -1936,10 +1948,13 @@ Public Class Form1
                     If Not Boot(RegionClass.RegionName(x)) Then
                         'Print("Boot skipped for " + RegionClass.RegionName(x))
                     End If
-                    If MySetting.Sequential Then
 
-                        Dim WaitForIt = False
+                    If MySetting.Sequential Then
+                        Dim ctr = 60 * 3 ' 3 minute max to start a region
+                        Dim WaitForIt = True
                         While WaitForIt
+                            Sleep(1000)
+
                             If RegionClass.RegionEnabled(x) _
                                 And Not gStopping _
                                 And RegionClass.WarmingUp(x) _
@@ -1949,7 +1964,26 @@ Public Class Form1
                             Else
                                 WaitForIt = False
                             End If
-                            Application.DoEvents()
+                            ctr = ctr - 1
+                            If ctr <= 0 Then WaitForIt = False
+
+                        End While
+                    Else
+
+                        Dim ctr = 60 * 3 ' 3 minute max to start a region
+                        Dim WaitForIt = True
+                        While WaitForIt
+                            Sleep(1000)
+                            Dim CPUTime = cpu.NextValue()
+                            Diagnostics.Debug.Print(CPUTime.ToString)
+
+                            If CPUTime < gCPUMAX Then
+                                WaitForIt = False
+                            End If
+
+                            ctr = ctr - 1
+                            If ctr <= 0 Then WaitForIt = False
+
                         End While
                     End If
 
@@ -1968,6 +2002,8 @@ Public Class Form1
         Return True
 
     End Function
+
+
 
 #End Region
 
@@ -2028,11 +2064,13 @@ Public Class Form1
         ' do first to last by counting backwards
         For LOOPVAR = ExitList.Count - 1 To 0 Step -1
 
-            Dim Name As String = ExitList(LOOPVAR) ' recover the PID as integer
-            Log("Info:Shutdown of " & Name & " Detected")
-            If (Name = "!DWSims") Then
-                Dim bp = 1
-            End If
+            Try
+                Dim Name As String = ExitList(LOOPVAR) ' recover the PID as integer
+                Log("Info:Shutdown of " & Name & " Detected")
+            Catch
+                Return
+            End Try
+
 
             ' find any region in the dos box that exited.
             Dim RegionNumber As Integer
