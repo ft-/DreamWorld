@@ -1,7 +1,8 @@
 2.74 
-Changes to Icecast ports or settings did not take - would not overwrite file.
-More Help for Loopback Device Driver
-
+Teleports 2.4 fix - these do not spam the console.  Does not require any settings to be set such as allow LSL scripts.
+Start Regions Sequentially:  Unchecked, the system starts a new region every few seconds. This can overwhelm the memory and CPU on slower systems. UnChecked normally starts a new region if CPU is 80% or less. Checking this box will start them one at a time and wait for it to boot completely.  It will wait up up to 3 minutes per region, then move on.
+Changes to Icecast ports or settings did not 'stick' would not overwrite file.
+More Help on Loopback, Regions, Start/Stop
 
 2.73
 OAR filesave would dump one region into all OARS. not just one
