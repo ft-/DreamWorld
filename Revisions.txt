@@ -1,3 +1,8 @@
+2.74 
+Changes to Icecast ports or settings did not take - would not overwrite file.
+More Help for Loopback Device Driver
+
+
 2.73
 OAR filesave would dump one region into all OARS. not just one
 Sort Chooser screen
