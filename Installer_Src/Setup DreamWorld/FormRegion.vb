@@ -1028,7 +1028,7 @@ Public Class FormRegion
             If X > -1 Then
 
                 If Form1.CheckPort(Form1.MySetting.PrivateURL, RegionClass.GroupPort(X)) Then
-                    Form1.ConsoleCommand(RegionClass.GroupName(X), "q{enter}")
+                    Form1.ConsoleCommand(RegionClass.GroupName(X), "q{ENTER}" + vbCrLf)
                 End If
                 Dim loopctr = 60 ' wait a minute
                 While Form1.CheckPort(Form1.MySetting.PrivateURL, RegionClass.GroupPort(X)) And loopctr > 0
@@ -1037,7 +1037,7 @@ Public Class FormRegion
                 End While
 
                 If loopctr > 0 Then
-                    Form1.RobustCommand("deregister region id " + UUID.Text + "{enter}")
+                    Form1.RobustCommand("deregister region id " + UUID.Text + "{ENTER}" + vbCrLf)
                     Form1.Print("Region deregistered")
                 End If
             End If

@@ -417,9 +417,9 @@ Public Class RegionList
                 Dim h As IntPtr = Form1.getHwnd(RegionClass.GroupName(n))
                 If h <> IntPtr.Zero Then ShowWindow(hwnd, SHOW_WINDOW.SW_RESTORE)
 
-                Form1.ConsoleCommand(RegionClass.GroupName(n), "q{ENTER}")
-                Form1.ConsoleCommand(RegionClass.GroupName(n), "Q{ENTER}")
-                Form1.ConsoleCommand(RegionClass.GroupName(n), "q{ENTER}")
+                Form1.ConsoleCommand(RegionClass.GroupName(n), "q{ENTER}" + vbCrLf)
+                Form1.ConsoleCommand(RegionClass.GroupName(n), "Q{ENTER}" + vbCrLf)
+                Form1.ConsoleCommand(RegionClass.GroupName(n), "q{ENTER}" + vbCrLf)
                 Form1.Print("Shutdown " + RegionClass.GroupName(n))
 
                 Form1.gRestartNow = True
@@ -447,7 +447,7 @@ Public Class RegionList
     Private Sub StopRegionNum(num As Integer)
 
 
-        If Form1.ConsoleCommand(RegionClass.GroupName(num), "q{ENTER}q{ENTER}") Then
+        If Form1.ConsoleCommand(RegionClass.GroupName(num), "q{ENTER}Q{ENTER}" + vbCrLf) Then
             RegionClass.Booted(num) = False
             RegionClass.WarmingUp(num) = False
             RegionClass.ShuttingDown(num) = True
