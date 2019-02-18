@@ -2621,7 +2621,7 @@ Public Class Form1
                             RegionClass.Timer(Y) = REGION_TIMER.RESTART_PENDING
                             RegionClass.Booted(Y) = False
                             RegionClass.WarmingUp(Y) = False
-                            RegionClass.ShuttingDown(Y) = False
+                            RegionClass.ShuttingDown(Y) = True
                         Next
 
                         UpdateView = True ' make form refresh
