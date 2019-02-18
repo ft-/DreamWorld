@@ -491,7 +491,7 @@ Public Class Form1
         End If
 
         If Not MySetting.RunOnce Then
-            RobustCommand("create user{ENTER}")
+            RobustCommand("create user{ENTER}" + vbCrLf)
             MsgBox("Please type the Grid Owner's avatar name into the Robust window. Press <enter> for UUID and Model name. Then press this OK button", vbInformation, "Info")
             MySetting.RunOnce = True
             MySetting.SaveSettings()
@@ -622,9 +622,9 @@ Public Class Form1
                 Dim hwnd = getHwnd(RegionClass.GroupName(X))
                 If hwnd <> IntPtr.Zero Then ShowWindow(hwnd, SHOW_WINDOW.SW_RESTORE)
 
-                ConsoleCommand(RegionClass.GroupName(X), "q{ENTER}")
-                ConsoleCommand(RegionClass.GroupName(X), "Q{ENTER}")
-                ConsoleCommand(RegionClass.GroupName(X), "q{ENTER}")
+                ConsoleCommand(RegionClass.GroupName(X), "q{ENTER}" + vbCrLf)
+                ConsoleCommand(RegionClass.GroupName(X), "Q{ENTER}" + vbCrLf)
+
 
                 RegionClass.ShuttingDown(X) = True
                 RegionClass.Booted(X) = False
@@ -705,9 +705,8 @@ Public Class Form1
         End Try
 
         If gRobustProcID > 0 Then
-            ConsoleCommand("Robust", "q{ENTER}")
-            ConsoleCommand("Robust", "Q{ENTER}")
-            ConsoleCommand("Robust", "q{ENTER}")
+            ConsoleCommand("Robust", "q{ENTER}" + vbCrLf)
+            ConsoleCommand("Robust", "Q{ENTER}" + vbCrLf)
         End If
 
         ' cannot load OAR or IAR, either
@@ -2400,7 +2399,7 @@ Public Class Form1
             command = command.Replace("(", "{(}")
             command = command.Replace(")", "{)}")
             AppActivate(name)
-            SendKeys.SendWait("{ENTER}")
+            SendKeys.SendWait("{ENTER}" + vbCrLf)
             SendKeys.SendWait(command)
 
         Catch ex As Exception
@@ -2610,9 +2609,9 @@ Public Class Form1
                         Dim hwnd = getHwnd(Groupname)
                         If hwnd <> IntPtr.Zero Then ShowWindow(hwnd, SHOW_WINDOW.SW_RESTORE)
 
-                        ConsoleCommand(RegionClass.GroupName(X), "q{ENTER}")
-                        ConsoleCommand(RegionClass.GroupName(X), "Q{ENTER}")
-                        ConsoleCommand(RegionClass.GroupName(X), "q{ENTER}")
+                        ConsoleCommand(RegionClass.GroupName(X), "q{ENTER}" + vbCrLf)
+                        ConsoleCommand(RegionClass.GroupName(X), "Q{ENTER}" + vbCrLf)
+                        ConsoleCommand(RegionClass.GroupName(X), "q{ENTER}" + vbCrLf)
                         Print("AutoRestarting " + Groupname)
                         RegionClass.Timer(X) = REGION_TIMER.RESTART_PENDING
 
@@ -2756,9 +2755,9 @@ Public Class Form1
             If RegionClass.Booted(RegionNumber) Then
                 Dim Group = RegionClass.GroupName(RegionNumber)
 
-                ConsoleCommand(RegionClass.GroupName(RegionNumber), "alert CPU Intensive Backup Started{ENTER}")
-                ConsoleCommand(RegionClass.GroupName(RegionNumber), "change region " + """" + chosen + """" + "{ENTER}")
-                ConsoleCommand(RegionClass.GroupName(RegionNumber), "save oar " + """" + BackupPath() + myValue + """" + "{ENTER}")
+                ConsoleCommand(RegionClass.GroupName(RegionNumber), "alert CPU Intensive Backup Started{ENTER}" + vbCrLf)
+                ConsoleCommand(RegionClass.GroupName(RegionNumber), "change region " + """" + chosen + """" + "{ENTER}" + vbCrLf)
+                ConsoleCommand(RegionClass.GroupName(RegionNumber), "save oar " + """" + BackupPath() + myValue + """" + "{ENTER}" + vbCrLf)
 
             End If
             Me.Focus()
@@ -2798,14 +2797,14 @@ Public Class Form1
                     Dim Group = RegionClass.GroupName(RegionNumber)
                     For Each Y In RegionClass.RegionListByGroupNum(Group)
 
-                        ConsoleCommand(RegionClass.GroupName(Y), "change region " + chosen + "{ENTER}")
+                        ConsoleCommand(RegionClass.GroupName(Y), "change region " + chosen + "{ENTER}" + vbCrLf)
                         If backMeUp = vbYes Then
-                            ConsoleCommand(RegionClass.GroupName(Y), "alert CPU Intensive Backup Started{ENTER}")
-                            ConsoleCommand(RegionClass.GroupName(Y), "save oar  " + """" + BackupPath() + "Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{ENTER}")
+                            ConsoleCommand(RegionClass.GroupName(Y), "alert CPU Intensive Backup Started{ENTER}" + vbCrLf)
+                            ConsoleCommand(RegionClass.GroupName(Y), "save oar  " + """" + BackupPath() + "Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{ENTER}" + vbCrLf)
                         End If
-                        ConsoleCommand(RegionClass.GroupName(Y), "alert New content Is loading..{ENTER}")
-                        ConsoleCommand(RegionClass.GroupName(Y), "load oar --force-terrain --force-parcels " + """" + thing + """" + "{ENTER}")
-                        ConsoleCommand(RegionClass.GroupName(Y), "alert New content just loaded." + "{ENTER}")
+                        ConsoleCommand(RegionClass.GroupName(Y), "alert New content Is loading..{ENTER}" + vbCrLf)
+                        ConsoleCommand(RegionClass.GroupName(Y), "load oar --force-terrain --force-parcels " + """" + thing + """" + "{ENTER}" + vbCrLf)
+                        ConsoleCommand(RegionClass.GroupName(Y), "alert New content just loaded." + "{ENTER}" + vbCrLf)
 
                     Next
                 End If
@@ -2864,8 +2863,8 @@ Public Class Form1
 
                 For Each Y In RegionClass.RegionListByGroupNum(Group)
                     If Not L.Contains(RegionClass.RegionName(Y)) Then
-                        ConsoleCommand(RegionClass.GroupName(RegionNumber), "change region " + """" + RegionClass.RegionName(Y) + """" + "{ENTER}")
-                        ConsoleCommand(RegionClass.GroupName(RegionNumber), "save oar  " + """" + BackupPath() + RegionClass.RegionName(Y) + "_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{ENTER}")
+                        ConsoleCommand(RegionClass.GroupName(RegionNumber), "change region " + """" + RegionClass.RegionName(Y) + """" + "{ENTER}" + vbCrLf)
+                        ConsoleCommand(RegionClass.GroupName(RegionNumber), "save oar  " + """" + BackupPath() + RegionClass.RegionName(Y) + "_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{ENTER}" + vbCrLf)
                         L.Add(RegionClass.RegionName(Y))
                     End If
                 Next
@@ -2966,7 +2965,7 @@ Public Class Form1
                 Dim GName = RegionClass.GroupName(d)
                 Dim RNUm = RegionClass.FindRegionByName(GName)
                 If RegionClass.Booted(d) And r = 0 Then
-                    ConsoleCommand(RegionClass.GroupName(d), "save iar " + Name + " """ + itemName + """" + " " + Password + " " + """" + BackupPath() + backupName + """" + "{ENTER}")
+                    ConsoleCommand(RegionClass.GroupName(d), "save iar " + Name + " """ + itemName + """" + " " + Password + " " + """" + BackupPath() + backupName + """" + "{ENTER}" + vbCrLf)
                     r = r + 1
                     Me.Focus()
                     Print("Saving " + backupName + " to " + BackupPath())
@@ -3021,14 +3020,14 @@ Public Class Form1
                     Print("Opensimulator will load " + thing + ". This may take some time.")
                     thing = thing.Replace("\", "/")    ' because Opensim uses unix-like slashes, that's why
 
-                    ConsoleCommand(RegionClass.GroupName(Y), "change region " + region + "{ENTER}")
+                    ConsoleCommand(RegionClass.GroupName(Y), "change region " + region + "{ENTER}" + vbCrLf)
                     If backMeUp = vbYes Then
-                        ConsoleCommand(RegionClass.GroupName(Y), "alert CPU Intensive Backup Started {ENTER}")
-                        ConsoleCommand(RegionClass.GroupName(Y), "save oar " + """" + BackupPath() + "Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{ENTER}")
+                        ConsoleCommand(RegionClass.GroupName(Y), "alert CPU Intensive Backup Started {ENTER}" + vbCrLf)
+                        ConsoleCommand(RegionClass.GroupName(Y), "save oar " + """" + BackupPath() + "Backup_" + DateTime.Now.ToString("yyyy-MM-dd_HH_mm_ss") + ".oar" + """" + "{ENTER}" + vbCrLf)
                     End If
-                    ConsoleCommand(RegionClass.GroupName(Y), "alert New content Is loading ...{ENTER}")
-                    ConsoleCommand(RegionClass.GroupName(Y), "load oar --force-terrain --force-parcels " + """" + thing + """" + "{ENTER}")
-                    ConsoleCommand(RegionClass.GroupName(Y), "alert New content just loaded. {ENTER}")
+                    ConsoleCommand(RegionClass.GroupName(Y), "alert New content Is loading ...{ENTER}" + vbCrLf)
+                    ConsoleCommand(RegionClass.GroupName(Y), "load oar --force-terrain --force-parcels " + """" + thing + """" + "{ENTER}" + vbCrLf)
+                    ConsoleCommand(RegionClass.GroupName(Y), "alert New content just loaded. {ENTER}" + vbCrLf)
                     once = True
                 End If
 
@@ -3065,8 +3064,8 @@ Public Class Form1
         Dim user = InputBox("User name that will get this IAR?")
         Dim password = InputBox("Password for user " + user + "?")
         If user.Length > 0 And password.Length > 0 Then
-            ConsoleCommand(RegionClass.GroupName(num), "load iar --merge " + user + " /Objects " + password + " " + """" + thing + """" + "{ENTER}")
-            ConsoleCommand(RegionClass.GroupName(num), "alert IAR content Is loaded{ENTER}")
+            ConsoleCommand(RegionClass.GroupName(num), "load iar --merge " + user + " /Objects " + password + " " + """" + thing + """" + "{ENTER}" + vbCrLf)
+            ConsoleCommand(RegionClass.GroupName(num), "alert IAR content Is loaded{ENTER}" + vbCrLf)
             Print("Opensim is loading your item. You will find it in Inventory in /Objects soon.")
         Else
             Print("Load IAR cancelled - must use the full user name and password.")
@@ -4351,7 +4350,7 @@ Public Class Form1
 
         For Each X As Integer In RegionClass.RegionNumbers
             If RegionClass.Booted(X) Then
-                ConsoleCommand(RegionClass.GroupName(X), "set log level " + msg + "{ENTER}")
+                ConsoleCommand(RegionClass.GroupName(X), "set log level " + msg + "{ENTER}" + vbCrLf)
             End If
         Next
 
@@ -4398,8 +4397,8 @@ Public Class Form1
         Dim name = ChooseRegion(True)
         Dim X = RegionClass.FindRegionByName(name)
         If X > -1 Then
-            ConsoleCommand(RegionClass.GroupName(X), "change region " + name + "{ENTER}")
-            ConsoleCommand(RegionClass.GroupName(X), "restart region " + name + "{ENTER}")
+            ConsoleCommand(RegionClass.GroupName(X), "change region " + name + "{ENTER}" + vbCrLf)
+            ConsoleCommand(RegionClass.GroupName(X), "restart region " + name + "{ENTER}" + vbCrLf)
             UpdateView = True ' make form refresh
         End If
 
@@ -4413,7 +4412,7 @@ Public Class Form1
         Dim name = ChooseRegion(True)
         Dim X = RegionClass.FindRegionByName(name)
         If X > -1 Then
-            ConsoleCommand(RegionClass.GroupName(X), "restart{ENTER}")
+            ConsoleCommand(RegionClass.GroupName(X), "restart{ENTER}" + vbCrLf)
             UpdateView = True ' make form refresh
         End If
 
@@ -4427,8 +4426,8 @@ Public Class Form1
         Dim rname = ChooseRegion(True)
         Dim X = RegionClass.FindRegionByName(rname)
         If X > -1 Then
-            ConsoleCommand(RegionClass.GroupName(X), "change region " + rname + "{ENTER}")
-            ConsoleCommand(RegionClass.GroupName(X), cmd + "{ENTER}")
+            ConsoleCommand(RegionClass.GroupName(X), "change region " + rname + "{ENTER}" + vbCrLf)
+            ConsoleCommand(RegionClass.GroupName(X), cmd + "{ENTER}" + vbCrLf)
         End If
 
     End Sub
@@ -4459,8 +4458,8 @@ Public Class Form1
         If rname.Length > 0 Then
             Dim Message = InputBox("What do you want to say to this region?")
             Dim X = RegionClass.FindRegionByName(rname)
-            ConsoleCommand(RegionClass.GroupName(X), "change region  " + RegionClass.RegionName(X) + "{ENTER}")
-            ConsoleCommand(RegionClass.GroupName(X), "alert " + Message + "{ENTER}")
+            ConsoleCommand(RegionClass.GroupName(X), "change region  " + RegionClass.RegionName(X) + "{ENTER}" + vbCrLf)
+            ConsoleCommand(RegionClass.GroupName(X), "alert " + Message + "{ENTER}" + vbCrLf)
         End If
 
     End Sub
@@ -4478,8 +4477,8 @@ Public Class Form1
             For Each X As Integer In RegionClass.RegionNumbers
                 If RegionClass.AvatarCount(X) > 0 Then
                     HowManyAreOnline = HowManyAreOnline + 1
-                    ConsoleCommand(RegionClass.GroupName(X), "change region  " + RegionClass.RegionName(X) + "{ENTER}")
-                    ConsoleCommand(RegionClass.GroupName(X), "alert " + Message + "{ENTER}")
+                    ConsoleCommand(RegionClass.GroupName(X), "change region  " + RegionClass.RegionName(X) + "{ENTER}" + vbCrLf)
+                    ConsoleCommand(RegionClass.GroupName(X), "alert " + Message + "{ENTER}" + vbCrLf)
                 End If
 
             Next
@@ -4493,17 +4492,17 @@ Public Class Form1
     End Sub
 
     Private Sub AddUserToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AddUserToolStripMenuItem.Click
-        RobustCommand("create user{ENTER}")
+        RobustCommand("create user{ENTER}" + vbCrLf)
     End Sub
 
     Private Sub ChangePasswordToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ChangePasswordToolStripMenuItem.Click
-        RobustCommand("reset user password{ENTER}")
+        RobustCommand("reset user password{ENTER}" + vbCrLf)
     End Sub
 
     Private Sub ShowUserDetailsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ShowUserDetailsToolStripMenuItem.Click
         Dim person = InputBox("Enter the first and last name of the user:")
         If person.Length > 0 Then
-            RobustCommand("show account " + person + "{ENTER}")
+            RobustCommand("show account " + person + "{ENTER}" + vbCrLf)
         End If
     End Sub
 
@@ -4760,19 +4759,19 @@ Public Class Form1
 
     Private Sub ThreadpoolsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ThreadpoolsToolStripMenuItem.Click
         For Each RegionNum As Integer In RegionClass.RegionListByGroupNum("*")
-            ConsoleCommand(RegionClass.RegionName(RegionNum), "show threads{ENTER}")
+            ConsoleCommand(RegionClass.RegionName(RegionNum), "show threads{ENTER}" + vbCrLf)
         Next
     End Sub
 
     Private Sub XengineToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles XengineToolStripMenuItem.Click
         For Each RegionNum As Integer In RegionClass.RegionListByGroupNum("*")
-            ConsoleCommand(RegionClass.RegionName(RegionNum), "xengine status{ENTER}")
+            ConsoleCommand(RegionClass.RegionName(RegionNum), "xengine status{ENTER}" + vbCrLf)
         Next
     End Sub
 
     Private Sub JobEngineToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles JobEngineToolStripMenuItem.Click
         For Each RegionNum As Integer In RegionClass.RegionListByGroupNum("*")
-            ConsoleCommand(RegionClass.RegionName(RegionNum), "debug jobengine status{ENTER}")
+            ConsoleCommand(RegionClass.RegionName(RegionNum), "debug jobengine status{ENTER}" + vbCrLf)
         Next
     End Sub
 

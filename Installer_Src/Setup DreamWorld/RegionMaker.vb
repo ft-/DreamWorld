@@ -1019,7 +1019,7 @@ Public Class RegionMaker
             Dim sid As Guid
 
             Try
-                POST = POST.Replace("\n", "")
+                POST = POST.Replace("{ENTER}", "")
                 POST = POST.Replace("\r", "")
 
                 Dim pattern As Regex = New Regex("uid=([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})")
