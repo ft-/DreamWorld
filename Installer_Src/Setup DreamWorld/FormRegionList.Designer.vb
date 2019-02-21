@@ -33,6 +33,9 @@ Partial Class RegionList
         Me.Addregion = New System.Windows.Forms.Button()
         Me.AllNome = New System.Windows.Forms.CheckBox()
         Me.RegionHelp = New System.Windows.Forms.PictureBox()
+        Me.RunAllButton = New System.Windows.Forms.Button()
+        Me.StopAllButton = New System.Windows.Forms.Button()
+        Me.RestartButton = New System.Windows.Forms.Button()
         CType(Me.RegionHelp, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -69,7 +72,7 @@ Partial Class RegionList
         '
         'ViewButton
         '
-        Me.ViewButton.Location = New System.Drawing.Point(81, 13)
+        Me.ViewButton.Location = New System.Drawing.Point(72, 14)
         Me.ViewButton.Name = "ViewButton"
         Me.ViewButton.Size = New System.Drawing.Size(57, 23)
         Me.ViewButton.TabIndex = 2
@@ -84,7 +87,7 @@ Partial Class RegionList
         '
         'Addregion
         '
-        Me.Addregion.Location = New System.Drawing.Point(154, 13)
+        Me.Addregion.Location = New System.Drawing.Point(135, 13)
         Me.Addregion.Name = "Addregion"
         Me.Addregion.Size = New System.Drawing.Size(57, 23)
         Me.Addregion.TabIndex = 18593
@@ -105,17 +108,50 @@ Partial Class RegionList
         'RegionHelp
         '
         Me.RegionHelp.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.RegionHelp.Location = New System.Drawing.Point(235, 13)
+        Me.RegionHelp.Location = New System.Drawing.Point(387, 13)
         Me.RegionHelp.Name = "RegionHelp"
         Me.RegionHelp.Size = New System.Drawing.Size(28, 27)
         Me.RegionHelp.TabIndex = 1858
         Me.RegionHelp.TabStop = False
         '
+        'RunAllButton
+        '
+        Me.RunAllButton.Location = New System.Drawing.Point(198, 13)
+        Me.RunAllButton.Name = "RunAllButton"
+        Me.RunAllButton.Size = New System.Drawing.Size(57, 23)
+        Me.RunAllButton.TabIndex = 18594
+        Me.RunAllButton.Text = "Run All"
+        Me.RunAllButton.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.RunAllButton.UseVisualStyleBackColor = True
+        '
+        'StopAllButton
+        '
+        Me.StopAllButton.Location = New System.Drawing.Point(261, 12)
+        Me.StopAllButton.Name = "StopAllButton"
+        Me.StopAllButton.Size = New System.Drawing.Size(57, 23)
+        Me.StopAllButton.TabIndex = 18595
+        Me.StopAllButton.Text = "Stop All"
+        Me.StopAllButton.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.StopAllButton.UseVisualStyleBackColor = True
+        '
+        'RestartButton
+        '
+        Me.RestartButton.Location = New System.Drawing.Point(324, 13)
+        Me.RestartButton.Name = "RestartButton"
+        Me.RestartButton.Size = New System.Drawing.Size(57, 23)
+        Me.RestartButton.TabIndex = 18596
+        Me.RestartButton.Text = "Restart All"
+        Me.RestartButton.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.RestartButton.UseVisualStyleBackColor = True
+        '
         'RegionList
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
-        Me.ClientSize = New System.Drawing.Size(485, 395)
+        Me.ClientSize = New System.Drawing.Size(484, 361)
+        Me.Controls.Add(Me.RestartButton)
+        Me.Controls.Add(Me.StopAllButton)
+        Me.Controls.Add(Me.RunAllButton)
         Me.Controls.Add(Me.AllNome)
         Me.Controls.Add(Me.Addregion)
         Me.Controls.Add(Me.RegionHelp)
@@ -139,4 +175,7 @@ Partial Class RegionList
     Friend WithEvents ToolTip1 As ToolTip
     Friend WithEvents Addregion As Button
     Friend WithEvents AllNome As CheckBox
+    Friend WithEvents RunAllButton As Button
+    Friend WithEvents StopAllButton As Button
+    Friend WithEvents RestartButton As Button
 End Class

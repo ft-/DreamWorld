@@ -89,7 +89,7 @@ Public Class RegionList
 
     Private Sub _Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 
-        Me.Size = New System.Drawing.Size(410, 410)
+        Me.Size = New System.Drawing.Size(500, 390)
 
         pixels = 70
 
@@ -627,7 +627,7 @@ Public Class RegionList
 
     End Sub
 
-    Private Sub AllNome_CheckedChanged(sender As Object, e As EventArgs) Handles AllNome.CheckedChanged
+    Private Sub AllNone_CheckedChanged(sender As Object, e As EventArgs) Handles AllNome.CheckedChanged
 
         For Each X As ListViewItem In ListView1.Items
             If ItemsAreChecked Then
@@ -642,7 +642,106 @@ Public Class RegionList
         Else
             ItemsAreChecked = True
         End If
+        UpdateView = True ' make form refresh
 
+    End Sub
+
+    Private Sub RunAllButton_Click(sender As Object, e As EventArgs) Handles RunAllButton.Click
+
+        Try
+            ' Boot them up
+            For Each x In RegionClass.RegionNumbers()
+                If RegionClass.RegionEnabled(x) And Not Form1.gStopping Then
+                    If Not Form1.Boot(RegionClass.RegionName(x)) Then
+                        'Print("Boot skipped for " + RegionClass.RegionName(x))
+                    End If
+
+                    If Form1.MySetting.Sequential Then
+                        Dim ctr = 60 * 3 ' 3 minute max to start a region
+                        Dim WaitForIt = True
+                        While WaitForIt
+                            Form1.Sleep(1000)
+
+                            If RegionClass.RegionEnabled(x) _
+                                And Not Form1.gStopping _
+                                And RegionClass.WarmingUp(x) _
+                                And Not RegionClass.ShuttingDown(x) _
+                                And Not RegionClass.Booted(x) Then
+                                WaitForIt = True
+                            Else
+                                WaitForIt = False
+                            End If
+                            ctr = ctr - 1
+                            If ctr <= 0 Then WaitForIt = False
+
+                        End While
+                    Else
+                        Form1.Sleep(1000)
+                    End If
+
+                End If
+
+                Application.DoEvents()
+            Next
+
+
+        Catch ex As Exception
+            Diagnostics.Debug.Print(ex.Message)
+            Form1.Print("Unable to boot some regions")
+        End Try
+
+    End Sub
+
+    Private Sub StopAllButton_Click(sender As Object, e As EventArgs) Handles StopAllButton.Click
+        For Each X As Integer In RegionClass.RegionNumbers
+            Application.DoEvents()
+
+            If Form1.OpensimIsRunning() And RegionClass.RegionEnabled(X) And Not RegionClass.ShuttingDown(X) Then
+                Dim hwnd = Form1.getHwnd(RegionClass.GroupName(X))
+                If hwnd <> IntPtr.Zero Then ShowWindow(hwnd, SHOW_WINDOW.SW_RESTORE)
+
+                Form1.ConsoleCommand(RegionClass.GroupName(X), "q{ENTER}" + vbCrLf)
+                Form1.ConsoleCommand(RegionClass.GroupName(X), "Q{ENTER}" + vbCrLf)
+                Form1.PrintFast("Stopping " & RegionClass.GroupName(X))
+                ' shut down all regions in the DOS box
+                For Each Y In RegionClass.RegionListByGroupNum(RegionClass.GroupName(X))
+                    RegionClass.Timer(Y) = REGION_TIMER.STOPPED
+                    RegionClass.Booted(Y) = False
+                    RegionClass.WarmingUp(Y) = False
+                    RegionClass.ShuttingDown(Y) = True
+                Next
+
+                UpdateView = True ' make form refresh
+                Form1.Sleep(1000)
+            End If
+        Next
+    End Sub
+
+    Private Sub Button2_Click_1(sender As Object, e As EventArgs) Handles RestartButton.Click
+
+        For Each X As Integer In RegionClass.RegionNumbers
+
+            If Form1.OpensimIsRunning() And RegionClass.RegionEnabled(X) And Not RegionClass.ShuttingDown(X) Then
+                Dim hwnd = Form1.getHwnd(RegionClass.GroupName(X))
+                If hwnd <> IntPtr.Zero Then ShowWindow(hwnd, SHOW_WINDOW.SW_RESTORE)
+
+                Form1.ConsoleCommand(RegionClass.GroupName(X), "q{ENTER}" + vbCrLf)
+                Form1.ConsoleCommand(RegionClass.GroupName(X), "Q{ENTER}" + vbCrLf)
+                Form1.PrintFast("Restarting " & RegionClass.GroupName(X))
+                ' shut down all regions in the DOS box
+                For Each Y In RegionClass.RegionListByGroupNum(RegionClass.GroupName(X))
+                    RegionClass.Timer(Y) = REGION_TIMER.RESTART_PENDING
+                    RegionClass.Booted(Y) = False
+                    RegionClass.WarmingUp(Y) = False
+                    RegionClass.ShuttingDown(Y) = True
+                Next
+
+                UpdateView = True ' make form refresh
+                Form1.Sleep(1000)
+            End If
+
+        Next
+        UpdateView = True ' make form refresh
     End Sub
 
 

@@ -45,7 +45,7 @@ Public Class Form1
     Public gDomain As String = "http://www.outworldz.com"
     Public gPath As String ' Holds path to Opensim folder
 
-    Dim RegionHandles As New Dictionary(Of Integer, String)
+    Public RegionHandles As New Dictionary(Of Integer, String)
     Public MyFolder As String   ' Holds the current folder that we are running in
     Dim gCurSlashDir As String '  holds the current directory info in Unix format for MySQL
     Public gIsRunning As Boolean = False ' used in OpensimIsRunning property
@@ -97,7 +97,7 @@ Public Class Form1
     Dim gContentAvailable As Boolean = False ' assume there is no OAR and IAR data available
     Public MyUPnpMap As UPnp        ' UPNP Declaration
     Dim ws As NetServer             ' Port 8001 Webserver
-    Dim gStopping As Boolean = False    ' Allows an Abort when Stopping is clicked
+    Public gStopping As Boolean = False    ' Allows an Abort when Stopping is clicked
     Dim Timertick As Integer        ' counts the seconds until wallpaper changes
 
     Dim gDNSSTimer As Integer = 0    ' ping server every hour
@@ -148,7 +148,7 @@ Public Class Form1
     ''' <param name="hwnd">Handle to the window to change the text on</param>
     ''' <param name="windowName">the name of the DOS Window such asRobust, or a region name</param>
     ''' 
-    Private Function SetWindowTextCall(ByVal hwnd As IntPtr, ByVal windowName As String) As Boolean
+    Public Function SetWindowTextCall(ByVal hwnd As IntPtr, ByVal windowName As String) As Boolean
 
         Dim status As Boolean = False
         Try
@@ -1928,9 +1928,9 @@ Public Class Form1
 
 #Region "Opensimulator"
 
-    Private Function Start_Opensimulator() As Boolean
+    Public Function Start_Opensimulator() As Boolean
 
-        If OpensimIsRunning() = False Then Return True
+        'If OpensimIsRunning() = False Then Return True
         gStopping = False
         For Each X As Integer In RegionClass.RegionNumbers
             RegionClass.ShuttingDown(X) = False
@@ -2142,7 +2142,7 @@ Public Class Form1
     ''' Creates and exit handler for each region
     ''' </summary>
     ''' <returns>a process handle</returns>
-    Private Function GetNewProcess() As Process
+    Public Function GetNewProcess() As Process
 
         Dim handle = New Handler
         Return handle.Init(RegionHandles, ExitList)
