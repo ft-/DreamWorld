@@ -547,7 +547,7 @@ Public Class FormRegion
         Try
             ' Read the chosen sim name
             chosen = Chooseform.DataGridView.CurrentCell.Value.ToString()
-            If chosen = "New Name" Then
+            If chosen = "! Add New Name" Then
                 chosen = InputBox("Enter the new Dos Box name")
             End If
             If chosen.Length > 0 Then
