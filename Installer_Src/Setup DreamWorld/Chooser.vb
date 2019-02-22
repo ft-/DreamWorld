@@ -26,6 +26,13 @@ Public Class Choice
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
         ' Set the column header style.
+
+        SetScreen()
+
+    End Sub
+
+    Public Sub FillGrid(type As String, Optional JustRunning As Boolean = False)
+
         Dim columnHeaderStyle As New DataGridViewCellStyle
         columnHeaderStyle.Font = New Font("Verdana", 10, FontStyle.Bold)
         DataGridView.ColumnHeadersDefaultCellStyle = columnHeaderStyle
@@ -34,19 +41,13 @@ Public Class Choice
         DataGridView.MultiSelect = False
 
         DataGridView.Text = "Select from..."
-        SetScreen()
-
-    End Sub
-
-    Public Sub FillGrid(type As String, Optional JustRunning As Boolean = False)
-
         Dim RegionClass As RegionMaker = RegionMaker.Instance(Form1.MysqlConn)
 
         Dim L As New List(Of String)
 
         ' add to list Unique Name
         If type = "Group" Then
-            DataGridView.Rows.Add("New Name")
+            DataGridView.Rows.Add("! Add New Name")
         End If
 
         For Each X As Integer In RegionClass.RegionNumbers

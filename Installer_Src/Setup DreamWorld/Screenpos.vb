@@ -41,6 +41,20 @@ Public Class ScreenPos
         Debug.Print("Y>" + ValueY.ToString)
 
     End Sub
+    Public Sub SaveHW(ValueH As Integer, ValueW As Integer)
+
+        Dim ValueHOld = CType(Data("Data")(Name + "_H"), Integer)
+        Dim ValueWOld = CType(Data("Data")(Name + "_W"), Integer)
+
+        LoadXYIni()
+        SetXYIni("Data", Name + "_H", ValueH.ToString)
+        SetXYIni("Data", Name + "_W", ValueW.ToString)
+        SaveXYSettings()
+        Debug.Print("H>" + ValueH.ToString)
+        Debug.Print("W>" + ValueW.ToString)
+
+    End Sub
+
     Public Function Exists() As Boolean
         Dim Value = CType(Data("Data")(Name + "_Initted"), Integer)
         SetXYIni("Data", Name + "_Initted", "1")
@@ -78,7 +92,19 @@ Public Class ScreenPos
         Return r
 
     End Function
+    Public Function GetHW() As List(Of Integer)
 
+        Dim ValueHOld = CType(Data("Data")(Name + "_H"), Integer)
+        Dim ValueWOld = CType(Data("Data")(Name + "_W"), Integer)
+
+        Dim r As New List(Of Integer)
+        r.Add(ValueHOld)
+        r.Add(ValueWOld)
+        Debug.Print("H<" + ValueHOld.ToString)
+        Debug.Print("W<" + ValueWOld.ToString)
+        Return r
+
+    End Function
     Private Sub SetXYIni(section As String, key As String, value As String)
 
         ' sets values into any INI file

@@ -46,6 +46,7 @@ Public Class RegionList
     Private Sub resize_page(ByVal sender As Object, ByVal e As System.EventArgs)
         'Me.Text = "Form screen position = " + Me.Location.ToString
         ScreenPosition.SaveXY(Me.Left, Me.Top)
+        ScreenPosition.SaveHW(Me.Height, Me.Width)
     End Sub
     Private Sub SetScreen()
         Me.Show()
@@ -54,6 +55,21 @@ Public Class RegionList
         Dim xy As List(Of Integer) = ScreenPosition.GetXY()
         Me.Left = xy.Item(0)
         Me.Top = xy.Item(1)
+        Dim hw As List(Of Integer) = ScreenPosition.GetHW()
+
+        ' Me.Size = New System.Drawing.Size(500, 390)
+
+        If hw.Item(0) = 0 Then
+            Me.Height = 400
+        Else
+            Me.Height = hw.Item(0)
+        End If
+        If hw.Item(1) = 0 Then
+            Me.Width = 560
+        Else
+            Me.Width = hw.Item(1)
+        End If
+
     End Sub
 
 #End Region
@@ -88,9 +104,6 @@ Public Class RegionList
 #Region "Loader"
 
     Private Sub _Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-
-        Me.Size = New System.Drawing.Size(410, 410)
-
         pixels = 70
 
         RegionList.FormExists = True
@@ -176,8 +189,18 @@ Public Class RegionList
         ' Width of -2 indicates auto-size.
         ListView1.Columns.Add("Enabled", 120, HorizontalAlignment.Center)
         ListView1.Columns.Add("DOS Box", 100, HorizontalAlignment.Center)
-        ListView1.Columns.Add("Agents", 60, HorizontalAlignment.Center)
-        ListView1.Columns.Add("Status", 120, HorizontalAlignment.Center)
+        ListView1.Columns.Add("Agents", 50, HorizontalAlignment.Center)
+        ListView1.Columns.Add("Status", 80, HorizontalAlignment.Center)
+        ListView1.Columns.Add("X", 50, HorizontalAlignment.Center)
+        ListView1.Columns.Add("Y", 50, HorizontalAlignment.Center)
+        ListView1.Columns.Add("Size", 40, HorizontalAlignment.Center)
+        ' optional
+        ListView1.Columns.Add("Map", 80, HorizontalAlignment.Center)
+        ListView1.Columns.Add("Physics", 120, HorizontalAlignment.Center)
+        ListView1.Columns.Add("Birds", 60, HorizontalAlignment.Center)
+        ListView1.Columns.Add("Tides", 60, HorizontalAlignment.Center)
+        ListView1.Columns.Add("Teleport", 80, HorizontalAlignment.Center)
+
 
         Dim Num As Integer = 0
 
@@ -237,8 +260,70 @@ Public Class RegionList
             item1.Checked = RegionClass.RegionEnabled(X)
             item1.SubItems.Add(RegionClass.GroupName(X).ToString)
             item1.SubItems.Add(RegionClass.AvatarCount(X).ToString)
-
             item1.SubItems.Add(Letter)
+            item1.SubItems.Add(RegionClass.CoordX(X).ToString)
+            item1.SubItems.Add(RegionClass.CoordY(X).ToString)
+            item1.SubItems.Add(RegionClass.SizeX(X).ToString)
+
+            'Map
+            If RegionClass.MapType(X).Length > 0 Then
+                item1.SubItems.Add(RegionClass.MapType(X))
+            Else
+                item1.SubItems.Add(Form1.MySetting.MapType)
+            End If
+
+            ' physics
+            Select Case RegionClass.Physics(X)
+                Case "0"
+                    item1.SubItems.Add("None")
+                Case "1"
+                    item1.SubItems.Add("ODE")
+                Case "2"
+                    item1.SubItems.Add("Bullet")
+                Case "3"
+                    item1.SubItems.Add("Bullet/Threaded")
+                Case "4"
+                    item1.SubItems.Add("ubODE")
+                Case Else
+                    Select Case Form1.MySetting.Physics
+                        Case "0"
+                            item1.SubItems.Add("None")
+                        Case "1"
+                            item1.SubItems.Add("ODE")
+                        Case "2"
+                            item1.SubItems.Add("Bullet")
+                        Case "3"
+                            item1.SubItems.Add("Bullet/Threaded")
+                        Case "4"
+                            item1.SubItems.Add("ubODE")
+                        Case Else
+                            item1.SubItems.Add("?")
+                    End Select
+            End Select
+
+            'birds
+
+            If RegionClass.Birds(X) = "True" Then
+                item1.SubItems.Add("Birds")
+            Else
+                item1.SubItems.Add("")
+            End If
+
+            'Tides
+            If RegionClass.Tides(X) = "True" Then
+                item1.SubItems.Add("Tides")
+            Else
+                item1.SubItems.Add("")
+            End If
+
+            'teleport
+            If RegionClass.Teleport(X) = "True" Then
+                item1.SubItems.Add("Teleport")
+            Else
+                item1.SubItems.Add("")
+            End If
+
+
             ListView1.Items.AddRange(New ListViewItem() {item1})
 
 
@@ -309,26 +394,6 @@ Public Class RegionList
 
         UpdateView() = True
     End Sub
-    Private Sub ListView1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ListView1.SelectedIndexChanged
-
-        Return
-
-        Dim regions As ListView.SelectedListViewItemCollection = Me.ListView1.SelectedItems
-        Dim item As ListViewItem
-
-        For Each item In regions
-            Dim RegionName = item.SubItems(0).Text
-            Dim checked As Boolean = item.Checked
-            Debug.Print("Clicked row " + RegionName)
-            Dim R = RegionClass.FindRegionByName(RegionName)
-            If R >= 0 Then
-                StartStopEdit(checked, R, RegionName)
-            End If
-        Next
-
-        UpdateView() = True
-    End Sub
-
 
     Private Declare Function ShowWindow Lib "user32.dll" (ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
 
@@ -627,7 +692,7 @@ Public Class RegionList
 
     End Sub
 
-    Private Sub AllNome_CheckedChanged(sender As Object, e As EventArgs) Handles AllNome.CheckedChanged
+    Private Sub AllNone_CheckedChanged(sender As Object, e As EventArgs) Handles AllNome.CheckedChanged
 
         For Each X As ListViewItem In ListView1.Items
             If ItemsAreChecked Then
@@ -642,7 +707,106 @@ Public Class RegionList
         Else
             ItemsAreChecked = True
         End If
+        UpdateView = True ' make form refresh
 
+    End Sub
+
+    Private Sub RunAllButton_Click(sender As Object, e As EventArgs) Handles RunAllButton.Click
+
+        Try
+            ' Boot them up
+            For Each x In RegionClass.RegionNumbers()
+                If RegionClass.RegionEnabled(x) And Not Form1.gStopping Then
+                    If Not Form1.Boot(RegionClass.RegionName(x)) Then
+                        'Print("Boot skipped for " + RegionClass.RegionName(x))
+                    End If
+
+                    If Form1.MySetting.Sequential Then
+                        Dim ctr = 60 * 3 ' 3 minute max to start a region
+                        Dim WaitForIt = True
+                        While WaitForIt
+                            Form1.Sleep(1000)
+
+                            If RegionClass.RegionEnabled(x) _
+                                And Not Form1.gStopping _
+                                And RegionClass.WarmingUp(x) _
+                                And Not RegionClass.ShuttingDown(x) _
+                                And Not RegionClass.Booted(x) Then
+                                WaitForIt = True
+                            Else
+                                WaitForIt = False
+                            End If
+                            ctr = ctr - 1
+                            If ctr <= 0 Then WaitForIt = False
+
+                        End While
+                    Else
+                        Form1.Sleep(1000)
+                    End If
+
+                End If
+
+                Application.DoEvents()
+            Next
+
+
+        Catch ex As Exception
+            Diagnostics.Debug.Print(ex.Message)
+            Form1.Print("Unable to boot some regions")
+        End Try
+
+    End Sub
+
+    Private Sub StopAllButton_Click(sender As Object, e As EventArgs) Handles StopAllButton.Click
+        For Each X As Integer In RegionClass.RegionNumbers
+            Application.DoEvents()
+
+            If Form1.OpensimIsRunning() And RegionClass.RegionEnabled(X) And Not RegionClass.ShuttingDown(X) Then
+                Dim hwnd = Form1.getHwnd(RegionClass.GroupName(X))
+                If hwnd <> IntPtr.Zero Then ShowWindow(hwnd, SHOW_WINDOW.SW_RESTORE)
+
+                Form1.ConsoleCommand(RegionClass.GroupName(X), "q{ENTER}" + vbCrLf)
+                Form1.ConsoleCommand(RegionClass.GroupName(X), "Q{ENTER}" + vbCrLf)
+                Form1.PrintFast("Stopping " & RegionClass.GroupName(X))
+                ' shut down all regions in the DOS box
+                For Each Y In RegionClass.RegionListByGroupNum(RegionClass.GroupName(X))
+                    RegionClass.Timer(Y) = REGION_TIMER.STOPPED
+                    RegionClass.Booted(Y) = False
+                    RegionClass.WarmingUp(Y) = False
+                    RegionClass.ShuttingDown(Y) = True
+                Next
+
+                UpdateView = True ' make form refresh
+                Form1.Sleep(1000)
+            End If
+        Next
+    End Sub
+
+    Private Sub Button2_Click_1(sender As Object, e As EventArgs) Handles RestartButton.Click
+
+        For Each X As Integer In RegionClass.RegionNumbers
+
+            If Form1.OpensimIsRunning() And RegionClass.RegionEnabled(X) And Not RegionClass.ShuttingDown(X) Then
+                Dim hwnd = Form1.getHwnd(RegionClass.GroupName(X))
+                If hwnd <> IntPtr.Zero Then ShowWindow(hwnd, SHOW_WINDOW.SW_RESTORE)
+
+                Form1.ConsoleCommand(RegionClass.GroupName(X), "q{ENTER}" + vbCrLf)
+                Form1.ConsoleCommand(RegionClass.GroupName(X), "Q{ENTER}" + vbCrLf)
+                Form1.PrintFast("Restarting " & RegionClass.GroupName(X))
+                ' shut down all regions in the DOS box
+                For Each Y In RegionClass.RegionListByGroupNum(RegionClass.GroupName(X))
+                    RegionClass.Timer(Y) = REGION_TIMER.RESTART_PENDING
+                    RegionClass.Booted(Y) = False
+                    RegionClass.WarmingUp(Y) = False
+                    RegionClass.ShuttingDown(Y) = True
+                Next
+
+                UpdateView = True ' make form refresh
+                Form1.Sleep(1000)
+            End If
+
+        Next
+        UpdateView = True ' make form refresh
     End Sub
 
 
