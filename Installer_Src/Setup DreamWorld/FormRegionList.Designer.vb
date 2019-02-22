@@ -68,15 +68,17 @@ Partial Class RegionList
         Me.Button1.Size = New System.Drawing.Size(53, 23)
         Me.Button1.TabIndex = 1
         Me.Button1.Text = "Refresh"
+        Me.ToolTip1.SetToolTip(Me.Button1, "Reload the grid")
         Me.Button1.UseVisualStyleBackColor = True
         '
         'ViewButton
         '
-        Me.ViewButton.Location = New System.Drawing.Point(72, 14)
+        Me.ViewButton.Location = New System.Drawing.Point(72, 13)
         Me.ViewButton.Name = "ViewButton"
         Me.ViewButton.Size = New System.Drawing.Size(57, 23)
         Me.ViewButton.TabIndex = 2
         Me.ViewButton.Text = "View"
+        Me.ToolTip1.SetToolTip(Me.ViewButton, "Change the Grid View")
         Me.ViewButton.UseVisualStyleBackColor = True
         '
         'ToolTip1
@@ -91,28 +93,30 @@ Partial Class RegionList
         Me.Addregion.Name = "Addregion"
         Me.Addregion.Size = New System.Drawing.Size(57, 23)
         Me.Addregion.TabIndex = 18593
-        Me.Addregion.Text = "Add "
-        Me.Addregion.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.Addregion.Text = "Add"
+        Me.ToolTip1.SetToolTip(Me.Addregion, "Add a Region")
         Me.Addregion.UseVisualStyleBackColor = True
         '
         'AllNome
         '
         Me.AllNome.AutoSize = True
-        Me.AllNome.Location = New System.Drawing.Point(22, 43)
+        Me.AllNome.Location = New System.Drawing.Point(13, 42)
         Me.AllNome.Name = "AllNome"
         Me.AllNome.Size = New System.Drawing.Size(68, 17)
         Me.AllNome.TabIndex = 4
         Me.AllNome.Text = "All/None"
+        Me.ToolTip1.SetToolTip(Me.AllNome, "Selects all or none of the checkboxes")
         Me.AllNome.UseVisualStyleBackColor = True
         '
         'RegionHelp
         '
         Me.RegionHelp.Image = Global.Outworldz.My.Resources.Resources.about
-        Me.RegionHelp.Location = New System.Drawing.Point(387, 13)
+        Me.RegionHelp.Location = New System.Drawing.Point(397, 12)
         Me.RegionHelp.Name = "RegionHelp"
         Me.RegionHelp.Size = New System.Drawing.Size(28, 27)
         Me.RegionHelp.TabIndex = 1858
         Me.RegionHelp.TabStop = False
+        Me.ToolTip1.SetToolTip(Me.RegionHelp, "Get Help")
         '
         'RunAllButton
         '
@@ -121,17 +125,17 @@ Partial Class RegionList
         Me.RunAllButton.Size = New System.Drawing.Size(57, 23)
         Me.RunAllButton.TabIndex = 18594
         Me.RunAllButton.Text = "Run All"
-        Me.RunAllButton.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.ToolTip1.SetToolTip(Me.RunAllButton, "Strats all checked regions")
         Me.RunAllButton.UseVisualStyleBackColor = True
         '
         'StopAllButton
         '
-        Me.StopAllButton.Location = New System.Drawing.Point(261, 12)
+        Me.StopAllButton.Location = New System.Drawing.Point(261, 13)
         Me.StopAllButton.Name = "StopAllButton"
         Me.StopAllButton.Size = New System.Drawing.Size(57, 23)
         Me.StopAllButton.TabIndex = 18595
         Me.StopAllButton.Text = "Stop All"
-        Me.StopAllButton.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.ToolTip1.SetToolTip(Me.StopAllButton, "Stops all checked Regions")
         Me.StopAllButton.UseVisualStyleBackColor = True
         '
         'RestartButton
@@ -141,7 +145,7 @@ Partial Class RegionList
         Me.RestartButton.Size = New System.Drawing.Size(57, 23)
         Me.RestartButton.TabIndex = 18596
         Me.RestartButton.Text = "Restart All"
-        Me.RestartButton.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.ToolTip1.SetToolTip(Me.RestartButton, "restarts all Checked Regions")
         Me.RestartButton.UseVisualStyleBackColor = True
         '
         'RegionList

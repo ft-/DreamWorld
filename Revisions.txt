@@ -1,3 +1,9 @@
+2.75
+Region Panel added some of the the overrides and global region settings. These can be sorted as well.
+Also, the Height and Width you last used are saved and restored.
+Start/Stop/Restart All Buttons added to Region Panel
+Region Chooser fixed to have New Name at top.
+
 2.74 
 Teleports 2.4 fix - these do not spam the console.  Does not require any settings to be set such as allow LSL scripts.  
 Allow LSL when checked, scripts lets you manually edit the Allowed IP Addresses in Opensim.proto

@@ -46,6 +46,7 @@ Public Class RegionList
     Private Sub resize_page(ByVal sender As Object, ByVal e As System.EventArgs)
         'Me.Text = "Form screen position = " + Me.Location.ToString
         ScreenPosition.SaveXY(Me.Left, Me.Top)
+        ScreenPosition.SaveHW(Me.Height, Me.Width)
     End Sub
     Private Sub SetScreen()
         Me.Show()
@@ -54,6 +55,21 @@ Public Class RegionList
         Dim xy As List(Of Integer) = ScreenPosition.GetXY()
         Me.Left = xy.Item(0)
         Me.Top = xy.Item(1)
+        Dim hw As List(Of Integer) = ScreenPosition.GetHW()
+
+        ' Me.Size = New System.Drawing.Size(500, 390)
+
+        If hw.Item(0) = 0 Then
+            Me.Height = 400
+        Else
+            Me.Height = hw.Item(0)
+        End If
+        If hw.Item(1) = 0 Then
+            Me.Width = 560
+        Else
+            Me.Width = hw.Item(1)
+        End If
+
     End Sub
 
 #End Region
@@ -88,9 +104,6 @@ Public Class RegionList
 #Region "Loader"
 
     Private Sub _Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-
-        Me.Size = New System.Drawing.Size(500, 390)
-
         pixels = 70
 
         RegionList.FormExists = True
@@ -176,8 +189,18 @@ Public Class RegionList
         ' Width of -2 indicates auto-size.
         ListView1.Columns.Add("Enabled", 120, HorizontalAlignment.Center)
         ListView1.Columns.Add("DOS Box", 100, HorizontalAlignment.Center)
-        ListView1.Columns.Add("Agents", 60, HorizontalAlignment.Center)
-        ListView1.Columns.Add("Status", 120, HorizontalAlignment.Center)
+        ListView1.Columns.Add("Agents", 50, HorizontalAlignment.Center)
+        ListView1.Columns.Add("Status", 80, HorizontalAlignment.Center)
+        ListView1.Columns.Add("X", 50, HorizontalAlignment.Center)
+        ListView1.Columns.Add("Y", 50, HorizontalAlignment.Center)
+        ListView1.Columns.Add("Size", 40, HorizontalAlignment.Center)
+        ' optional
+        ListView1.Columns.Add("Map", 80, HorizontalAlignment.Center)
+        ListView1.Columns.Add("Physics", 120, HorizontalAlignment.Center)
+        ListView1.Columns.Add("Birds", 60, HorizontalAlignment.Center)
+        ListView1.Columns.Add("Tides", 60, HorizontalAlignment.Center)
+        ListView1.Columns.Add("Teleport", 80, HorizontalAlignment.Center)
+
 
         Dim Num As Integer = 0
 
@@ -237,8 +260,70 @@ Public Class RegionList
             item1.Checked = RegionClass.RegionEnabled(X)
             item1.SubItems.Add(RegionClass.GroupName(X).ToString)
             item1.SubItems.Add(RegionClass.AvatarCount(X).ToString)
-
             item1.SubItems.Add(Letter)
+            item1.SubItems.Add(RegionClass.CoordX(X).ToString)
+            item1.SubItems.Add(RegionClass.CoordY(X).ToString)
+            item1.SubItems.Add(RegionClass.SizeX(X).ToString)
+
+            'Map
+            If RegionClass.MapType(X).Length > 0 Then
+                item1.SubItems.Add(RegionClass.MapType(X))
+            Else
+                item1.SubItems.Add(Form1.MySetting.MapType)
+            End If
+
+            ' physics
+            Select Case RegionClass.Physics(X)
+                Case "0"
+                    item1.SubItems.Add("None")
+                Case "1"
+                    item1.SubItems.Add("ODE")
+                Case "2"
+                    item1.SubItems.Add("Bullet")
+                Case "3"
+                    item1.SubItems.Add("Bullet/Threaded")
+                Case "4"
+                    item1.SubItems.Add("ubODE")
+                Case Else
+                    Select Case Form1.MySetting.Physics
+                        Case "0"
+                            item1.SubItems.Add("None")
+                        Case "1"
+                            item1.SubItems.Add("ODE")
+                        Case "2"
+                            item1.SubItems.Add("Bullet")
+                        Case "3"
+                            item1.SubItems.Add("Bullet/Threaded")
+                        Case "4"
+                            item1.SubItems.Add("ubODE")
+                        Case Else
+                            item1.SubItems.Add("?")
+                    End Select
+            End Select
+
+            'birds
+
+            If RegionClass.Birds(X) = "True" Then
+                item1.SubItems.Add("Birds")
+            Else
+                item1.SubItems.Add("")
+            End If
+
+            'Tides
+            If RegionClass.Tides(X) = "True" Then
+                item1.SubItems.Add("Tides")
+            Else
+                item1.SubItems.Add("")
+            End If
+
+            'teleport
+            If RegionClass.Teleport(X) = "True" Then
+                item1.SubItems.Add("Teleport")
+            Else
+                item1.SubItems.Add("")
+            End If
+
+
             ListView1.Items.AddRange(New ListViewItem() {item1})
 
 
@@ -309,26 +394,6 @@ Public Class RegionList
 
         UpdateView() = True
     End Sub
-    Private Sub ListView1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ListView1.SelectedIndexChanged
-
-        Return
-
-        Dim regions As ListView.SelectedListViewItemCollection = Me.ListView1.SelectedItems
-        Dim item As ListViewItem
-
-        For Each item In regions
-            Dim RegionName = item.SubItems(0).Text
-            Dim checked As Boolean = item.Checked
-            Debug.Print("Clicked row " + RegionName)
-            Dim R = RegionClass.FindRegionByName(RegionName)
-            If R >= 0 Then
-                StartStopEdit(checked, R, RegionName)
-            End If
-        Next
-
-        UpdateView() = True
-    End Sub
-
 
     Private Declare Function ShowWindow Lib "user32.dll" (ByVal hWnd As IntPtr, ByVal nCmdShow As SHOW_WINDOW) As Boolean
 
