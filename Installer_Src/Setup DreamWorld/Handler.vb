@@ -14,8 +14,11 @@
             If Not RegionHandles1.Remove(pid) Then
                 Debug.Print("Cannot locate key for PID " + pid.ToString)
             End If
-
-            Exitlist1.Add(name)
+            If name = "Form1" Then
+                Debug.Print("Blank process")
+            Else
+                Exitlist1.Add(name)
+            End If
         Catch ex As Exception
             Debug.Print(ex.Message)
         End Try

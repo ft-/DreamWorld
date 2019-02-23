@@ -152,7 +152,7 @@ Partial Class RegionList
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
-        Me.ClientSize = New System.Drawing.Size(484, 361)
+        Me.ClientSize = New System.Drawing.Size(542, 361)
         Me.Controls.Add(Me.RestartButton)
         Me.Controls.Add(Me.StopAllButton)
         Me.Controls.Add(Me.RunAllButton)

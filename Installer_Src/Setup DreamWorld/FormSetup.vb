@@ -129,7 +129,7 @@ Public Class Form1
 
     Dim gWindowCounter As Integer = 0
     Public gRestartNow As Boolean = False ' set true if a person clicks a restart button to get a sim restarted when auto restart is off
-
+    Public gManualRestart As Boolean = False
 
     <CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA2101:SpecifyMarshalingForPInvokeStringArguments", MessageId:="1")>
     <CodeAnalysis.SuppressMessage("Microsoft.Interoperability", "CA1401:PInvokesShouldNotBeVisible")>
@@ -2062,64 +2062,78 @@ Public Class Form1
 
         ' do first to last by counting backwards
         For LOOPVAR = ExitList.Count - 1 To 0 Step -1
-
+            Dim RegionName As String
             Try
-                Dim Name As String = ExitList(LOOPVAR) ' recover the PID as integer
-                Log("Info:Shutdown of " & Name & " Detected")
+                RegionName = ExitList(LOOPVAR) ' recover the PID as integer
+                If RegionName <> "Form1" Then
+                    Log("Info:Shutdown of " & Name & " Detected")
+                End If
+
             Catch
+                Try
+                    ExitList.RemoveAt(LOOPVAR)
+                Catch ex As Exception
+                    ErrorLog("Error:Something fucky in region RemoveAt:" + ex.Message)
+                    ErrorLog("LOOPVAR:" & LOOPVAR.ToString & " Count: " & ExitList.Count)
+                End Try
                 Return
             End Try
 
 
             ' find any region in the dos box that exited.
-            Dim RegionNumber As Integer
+            Dim RegionNumber As Integer = -1
             Dim LNames As New List(Of Integer)
-            LNames = RegionClass.RegionListByGroupNum(Name)
+            LNames = RegionClass.RegionListByGroupNum(RegionName)
+
             For Each R In LNames
                 RegionNumber = R
             Next
-
-            Dim Groupname = RegionClass.GroupName(RegionNumber)
-            Dim ShouldIRestart = RegionClass.Timer(RegionNumber)
-            Log("Info:" + Groupname + " Exited with Timer status " + ShouldIRestart.ToString)
-            UpdateView = True ' make form refresh
-            ' Maybe we crashed during warmup.  Skip prompt if auto restarting
-            If RegionClass.WarmingUp(RegionNumber) = True And ShouldIRestart >= 0 Then
-                Dim yesno = MsgBox(RegionClass.RegionName(RegionNumber) + " in DOS Box " + Groupname + " quit while booting up. Do you want to see the log file?", vbYesNo, "Error")
-                If (yesno = vbYes) Then
-                    System.Diagnostics.Process.Start("notepad.exe", RegionClass.IniPath(RegionNumber) + "Opensim.log")
-                    ShouldIRestart = RegionClass.Timer(RegionNumber)
-                End If
-                StopGroup(Groupname)
-
-            ElseIf RegionClass.Booted(RegionNumber) = True And ShouldIRestart > 0 Then
-                ' prompt if crashed.  Skip prompt if auto restarting
-                Dim yesno = MsgBox(RegionClass.RegionName(RegionNumber) + " in DOS Box " + Groupname + " quit unexpectedly. Do you want to see the log file?", vbYesNo, "Error")
-                If (yesno = vbYes) Then
-                    System.Diagnostics.Process.Start("notepad.exe", RegionClass.IniPath(RegionNumber) + "Opensim.log")
-                    ShouldIRestart = RegionClass.Timer(RegionNumber)
-                End If
-                StopGroup(Groupname)
+            ' must have been found, its possible none was found, and that would be 0, the first one, so we skip that.
+            If LNames.Count < 0 Then
+                Log("impossible error")
             Else
-                StopGroup(Groupname)
-            End If
 
-            ' Auto restart if negative 1
-            If ShouldIRestart = REGION_TIMER.RESTART_PENDING And OpensimIsRunning() And Not gExiting Then
+                Dim Groupname = RegionClass.GroupName(RegionNumber)
+                Dim ShouldIRestart = RegionClass.Timer(RegionNumber)
+                Log("Info:" + Groupname + " Exited with Timer status " + ShouldIRestart.ToString)
                 UpdateView = True ' make form refresh
-                PrintFast("Restart Queued for " + Groupname)
-                RegionClass.Timer(RegionNumber) = REGION_TIMER.RESTARTING ' signal a restart is needed (-2)
-            Else
-                PrintFast(Groupname + " stopped")
+                ' Maybe we crashed during warmup.  Skip prompt if auto restarting
+                If RegionClass.WarmingUp(RegionNumber) = True And ShouldIRestart >= 0 Then
+                    Dim yesno = MsgBox(RegionClass.RegionName(RegionNumber) + " in DOS Box " + Groupname + " quit while booting up. Do you want to see the log file?", vbYesNo, "Error")
+                    If (yesno = vbYes) Then
+                        System.Diagnostics.Process.Start("notepad.exe", RegionClass.IniPath(RegionNumber) + "Opensim.log")
+                        ShouldIRestart = RegionClass.Timer(RegionNumber)
+                    End If
+                    StopGroup(Groupname)
+
+                ElseIf RegionClass.Booted(RegionNumber) = True And ShouldIRestart > 0 Then
+                    ' prompt if crashed.  Skip prompt if auto restarting
+                    Dim yesno = MsgBox(RegionClass.RegionName(RegionNumber) + " in DOS Box " + Groupname + " quit unexpectedly. Do you want to see the log file?", vbYesNo, "Error")
+                    If (yesno = vbYes) Then
+                        System.Diagnostics.Process.Start("notepad.exe", RegionClass.IniPath(RegionNumber) + "Opensim.log")
+                        ShouldIRestart = RegionClass.Timer(RegionNumber)
+                    End If
+                    StopGroup(Groupname)
+                Else
+                    StopGroup(Groupname)
+                End If
+
+                ' Auto restart if negative 1
+                If ShouldIRestart = REGION_TIMER.RESTART_PENDING And OpensimIsRunning() And Not gExiting Then
+                    UpdateView = True ' make form refresh
+                    PrintFast("Restart Queued for " + Groupname)
+                    RegionClass.Timer(RegionNumber) = REGION_TIMER.RESTARTING ' signal a restart is needed (-2)
+                Else
+                    PrintFast(Groupname + " stopped")
+                End If
+
+                Try
+                    ExitList.RemoveAt(LOOPVAR)
+                Catch ex As Exception
+                    ErrorLog("Error:Something fucky in region RemoveAt:" + ex.Message)
+                    ErrorLog("LOOPVAR:" & LOOPVAR.ToString & " Count: " & ExitList.Count)
+                End Try
             End If
-
-            Try
-                ExitList.RemoveAt(LOOPVAR)
-            Catch ex As Exception
-                ErrorLog("Error:Something fucky in region RemoveAt:" + ex.Message)
-                ErrorLog("LOOPVAR:" & LOOPVAR.ToString & " Count: " & ExitList.Count)
-            End Try
-
 
         Next
 
@@ -2590,7 +2604,7 @@ Public Class Form1
     ''' </summary>
     Private Sub RegionRestart()
 
-        If MySetting.AutoRestartInterval() = 0 And Not gRestartNow Then Return
+        If MySetting.AutoRestartInterval() = 0 Or gManualRestart And Not gRestartNow Then Return
 
         For Each X As Integer In RegionClass.RegionNumbers
 
